@@ -45,7 +45,7 @@ int	<a href="#htmlAutoCloseTag">htmlAutoCloseTag</a>		(<a href="libxml2-HTMLpars
 <a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlCreateFileParserCtxt">htmlCreateFileParserCtxt</a>	(const char * filename, <br>							 const char * encoding);
 <a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlCreateMemoryParserCtxt">htmlCreateMemoryParserCtxt</a>	(const char * buffer, <br>							 int size);
 <a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlCreatePushParserCtxt">htmlCreatePushParserCtxt</a>	(<a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>							 void * user_data, <br>							 const char * chunk, <br>							 int size, <br>							 const char * filename, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
-<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadDoc">htmlCtxtReadDoc</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
+<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadDoc">htmlCtxtReadDoc</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadFd">htmlCtxtReadFd</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 int fd, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadFile">htmlCtxtReadFile</a>	(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const char * filename, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadIO">htmlCtxtReadIO</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
@@ -480,7 +480,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <div class="refsect2" lang="en">
 <h3>
 <a name="htmlCtxtReadDoc"></a>htmlCtxtReadDoc ()</h3>
-<pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlCtxtReadDoc		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
+<pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlCtxtReadDoc		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
 <p>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</p>
 <div class="variablelist"><table border="0">
@@ -491,7 +491,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <td>an HTML parser context</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>cur</tt></i>:</span></td>
+<td><span class="term"><i><tt>str</tt></i>:</span></td>
 <td>a pointer to a zero terminated string</td>
 </tr>
 <tr>

@@ -53,6 +53,8 @@ int	<a href="#xmlOutputBufferClose">xmlOutputBufferClose</a>		(<a href="libxml2-
 <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	<a href="#xmlOutputBufferCreateFd">xmlOutputBufferCreateFd</a>	(int fd, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);
 <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	<a href="#xmlOutputBufferCreateFile">xmlOutputBufferCreateFile</a>	(FILE * file, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);
 <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	<a href="#xmlOutputBufferCreateFilename">xmlOutputBufferCreateFilename</a>	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder, <br>							 int compression);
+<a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	<a href="#xmlOutputBufferCreateFilenameDefault">xmlOutputBufferCreateFilenameDefault</a>	(<a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func);
+typedef <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> <a href="#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder, <br>							 int compression);
 <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	<a href="#xmlOutputBufferCreateIO">xmlOutputBufferCreateIO</a>	(<a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite, <br>						 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose, <br>						 void * ioctx, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder);
 int	<a href="#xmlOutputBufferFlush">xmlOutputBufferFlush</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlOutputBufferGetContent">xmlOutputBufferGetContent</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);
@@ -68,6 +70,8 @@ char *	<a href="#xmlParserGetDirectory">xmlParserGetDirectory</a>		(const char *
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateFd">xmlParserInputBufferCreateFd</a>	(int fd, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateFile">xmlParserInputBufferCreateFile</a>	(FILE * file, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateFilename">xmlParserInputBufferCreateFilename</a>	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
+<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	<a href="#xmlParserInputBufferCreateFilenameDefault">xmlParserInputBufferCreateFilenameDefault</a>	(<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func);
+typedef <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> <a href="#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateIO">xmlParserInputBufferCreateIO</a>	(<a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>							 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>							 void * ioctx, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateMem">xmlParserInputBufferCreateMem</a>	(const char * mem, <br>							 int size, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	<a href="#xmlParserInputBufferCreateStatic">xmlParserInputBufferCreateStatic</a>	(const char * mem, <br>							 int size, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
@@ -81,6 +85,8 @@ void	<a href="#xmlRegisterDefaultOutputCallbacks">xmlRegisterDefaultOutputCallba
 void	<a href="#xmlRegisterHTTPPostCallbacks">xmlRegisterHTTPPostCallbacks</a>	(void);
 int	<a href="#xmlRegisterInputCallbacks">xmlRegisterInputCallbacks</a>	(<a href="libxml2-xmlIO.html#xmlInputMatchCallback">xmlInputMatchCallback</a> matchFunc, <br>					 <a href="libxml2-xmlIO.html#xmlInputOpenCallback">xmlInputOpenCallback</a> openFunc, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> readFunc, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> closeFunc);
 int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a href="libxml2-xmlIO.html#xmlOutputMatchCallback">xmlOutputMatchCallback</a> matchFunc, <br>					 <a href="libxml2-xmlIO.html#xmlOutputOpenCallback">xmlOutputOpenCallback</a> openFunc, <br>					 <a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> writeFunc, <br>					 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> closeFunc);
+<a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	<a href="#xmlThrDefOutputBufferCreateFilenameDefault">xmlThrDefOutputBufferCreateFilenameDefault</a>	(<a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func);
+<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	<a href="#xmlThrDefParserInputBufferCreateFilenameDefault">xmlThrDefParserInputBufferCreateFilenameDefault</a>	(<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -181,6 +187,35 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlOutputBufferCreateFilenameFunc"></a>Function type xmlOutputBufferCreateFilenameFunc</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateFilenameFunc	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder, <br>							 int compression)<br>
+</pre>
+<p>Signature for the function doing the lookup for a suitable output method corresponding to an URI.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>URI</tt></i>:</span></td>
+<td>the URI to write to</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>encoder</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>compression</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the new <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> in case of success or NULL if no method was found.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlOutputCloseCallback"></a>Function type xmlOutputCloseCallback</h3>
 <pre class="programlisting">int	xmlOutputCloseCallback		(void * context)<br>
 </pre>
@@ -266,6 +301,31 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the number of bytes written or -1 in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlParserInputBufferCreateFilenameFunc"></a>Function type xmlParserInputBufferCreateFilenameFunc</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateFilenameFunc	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
+</pre>
+<p>Signature for the function doing the lookup for a suitable input method corresponding to an URI.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>URI</tt></i>:</span></td>
+<td>the URI to read from</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>enc</tt></i>:</span></td>
+<td>the requested source encoding</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the new <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in case of success or NULL if no method was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -869,6 +929,27 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlOutputBufferCreateFilenameDefault"></a>xmlOutputBufferCreateFilenameDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	xmlOutputBufferCreateFilenameDefault	(<a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func)<br>
+</pre>
+<p>Registers a callback for URI output file handling</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td>function pointer to the new OutputBufferCreateFilenameFunc</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the old value of the registration function</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlOutputBufferCreateIO"></a>xmlOutputBufferCreateIO ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateIO	(<a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite, <br>						 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose, <br>						 void * ioctx, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br>
 </pre>
@@ -1139,6 +1220,27 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the new parser input or NULL</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlParserInputBufferCreateFilenameDefault"></a>xmlParserInputBufferCreateFilenameDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	xmlParserInputBufferCreateFilenameDefault	(<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func)<br>
+</pre>
+<p>Registers a callback for URI input file handling</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td>function pointer to the new ParserInputBufferCreateFilenameFunc</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the old value of the registration function</td>
 </tr>
 </tbody>
 </table></div>
@@ -1437,6 +1539,48 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the registered handler number or -1 in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefOutputBufferCreateFilenameDefault"></a>xmlThrDefOutputBufferCreateFilenameDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a>	xmlThrDefOutputBufferCreateFilenameDefault	(<a href="libxml2-xmlIO.html#xmlOutputBufferCreateFilenameFunc">xmlOutputBufferCreateFilenameFunc</a> func)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefParserInputBufferCreateFilenameDefault"></a>xmlThrDefParserInputBufferCreateFilenameDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	xmlThrDefParserInputBufferCreateFilenameDefault	(<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
 </tr>
 </tbody>
 </table></div>

@@ -110,7 +110,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDictExists"></a>xmlDictExists ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlDictExists		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int len)<br>
 </pre>
-<p>Check if the @name exists in the dictionary @dict.</p>
+<p>Check if a string exists in the dictionary.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -175,25 +175,25 @@ The content of this structure is not made public by the API.
 <a name="xmlDictLookup"></a>xmlDictLookup ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlDictLookup		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int len)<br>
 </pre>
-<p>Add the @name to the dictionary @dict if not present.</p>
+<p>Lookup a string and add it to the dictionary if it wasn't found.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>dict</tt></i>:</span></td>
-<td>the dictionary</td>
+<td>dictionary</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td>string key</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>the length of the name, if -1 it is recomputed</td>
+<td>length of the key, if -1 it is recomputed</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the internal copy of the name or NULL in case of internal error</td>
+<td>the interned copy of the string or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -229,7 +229,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDictQLookup"></a>xmlDictQLookup ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlDictQLookup		(<a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Add the QName @prefix:@name to the hash @dict if not present.</p>
+<p>Lookup the QName @prefix:@name and add it to the dictionary if it wasn't found.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -247,7 +247,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the internal copy of the QName or NULL in case of internal error</td>
+<td>the interned copy of the string or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -330,7 +330,7 @@ The content of this structure is not made public by the API.
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td></td>
+<td>0.</td>
 </tr></tbody>
 </table></div>
 </div>

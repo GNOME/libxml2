@@ -25,35 +25,35 @@
 <pre class="synopsis">#define <a href="#XML_CAST_FPTR">XML_CAST_FPTR</a>(fptr);
 typedef struct _xmlHashTable <a href="#xmlHashTable">xmlHashTable</a>;
 typedef <a href="libxml2-hash.html#xmlHashTable">xmlHashTable</a> * <a href="#xmlHashTablePtr">xmlHashTablePtr</a>;
-int	<a href="#xmlHashAddEntry">xmlHashAddEntry</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 void * userdata);
-int	<a href="#xmlHashAddEntry2">xmlHashAddEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 void * userdata);
-int	<a href="#xmlHashAddEntry3">xmlHashAddEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 void * userdata);
+int	<a href="#xmlHashAddEntry">xmlHashAddEntry</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload);
+int	<a href="#xmlHashAddEntry2">xmlHashAddEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload);
+int	<a href="#xmlHashAddEntry3">xmlHashAddEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload);
 typedef void * <a href="#xmlHashCopier">xmlHashCopier</a>			(void * payload, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCopy">xmlHashCopy</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> f);
+<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCopy">xmlHashCopy</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> copy);
 <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCreate">xmlHashCreate</a>		(int size);
 <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCreateDict">xmlHashCreateDict</a>	(int size, <br>					 <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
 typedef void <a href="#xmlHashDeallocator">xmlHashDeallocator</a>		(void * payload, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#xmlHashDefaultDeallocator">xmlHashDefaultDeallocator</a>	(void * entry, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#xmlHashFree">xmlHashFree</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
-void *	<a href="#xmlHashLookup">xmlHashLookup</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void *	<a href="#xmlHashLookup2">xmlHashLookup2</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2);
-void *	<a href="#xmlHashLookup3">xmlHashLookup3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3);
-void *	<a href="#xmlHashQLookup">xmlHashQLookup</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void *	<a href="#xmlHashQLookup2">xmlHashQLookup2</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2);
-void *	<a href="#xmlHashQLookup3">xmlHashQLookup3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix3, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3);
-int	<a href="#xmlHashRemoveEntry">xmlHashRemoveEntry</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
-int	<a href="#xmlHashRemoveEntry2">xmlHashRemoveEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
-int	<a href="#xmlHashRemoveEntry3">xmlHashRemoveEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
-void	<a href="#xmlHashScan">xmlHashScan</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> f, <br>					 void * data);
-void	<a href="#xmlHashScan3">xmlHashScan3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> f, <br>					 void * data);
-void	<a href="#xmlHashScanFull">xmlHashScanFull</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> f, <br>					 void * data);
-void	<a href="#xmlHashScanFull3">xmlHashScanFull3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> f, <br>					 void * data);
+void	<a href="#xmlHashDefaultDeallocator">xmlHashDefaultDeallocator</a>	(void * entry, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key);
+void	<a href="#xmlHashFree">xmlHashFree</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
+void *	<a href="#xmlHashLookup">xmlHashLookup</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key);
+void *	<a href="#xmlHashLookup2">xmlHashLookup2</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2);
+void *	<a href="#xmlHashLookup3">xmlHashLookup3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3);
+void *	<a href="#xmlHashQLookup">xmlHashQLookup</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
+void *	<a href="#xmlHashQLookup2">xmlHashQLookup2</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2);
+void *	<a href="#xmlHashQLookup3">xmlHashQLookup3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix3, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3);
+int	<a href="#xmlHashRemoveEntry">xmlHashRemoveEntry</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
+int	<a href="#xmlHashRemoveEntry2">xmlHashRemoveEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
+int	<a href="#xmlHashRemoveEntry3">xmlHashRemoveEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
+void	<a href="#xmlHashScan">xmlHashScan</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> scan, <br>					 void * data);
+void	<a href="#xmlHashScan3">xmlHashScan3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> scan, <br>					 void * data);
+void	<a href="#xmlHashScanFull">xmlHashScanFull</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> scan, <br>					 void * data);
+void	<a href="#xmlHashScanFull3">xmlHashScanFull3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> scan, <br>					 void * data);
 typedef void <a href="#xmlHashScanner">xmlHashScanner</a>			(void * payload, <br>					 void * data, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 typedef void <a href="#xmlHashScannerFull">xmlHashScannerFull</a>		(void * payload, <br>					 void * data, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3);
-int	<a href="#xmlHashSize">xmlHashSize</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table);
-int	<a href="#xmlHashUpdateEntry">xmlHashUpdateEntry</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 void * userdata, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
-int	<a href="#xmlHashUpdateEntry2">xmlHashUpdateEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 void * userdata, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
-int	<a href="#xmlHashUpdateEntry3">xmlHashUpdateEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 void * userdata, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f);
+int	<a href="#xmlHashSize">xmlHashSize</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash);
+int	<a href="#xmlHashUpdateEntry">xmlHashUpdateEntry</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
+int	<a href="#xmlHashUpdateEntry2">xmlHashUpdateEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
+int	<a href="#xmlHashUpdateEntry3">xmlHashUpdateEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -200,27 +200,27 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashAddEntry"></a>xmlHashAddEntry ()</h3>
-<pre class="programlisting">int	xmlHashAddEntry			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 void * userdata)<br>
+<pre class="programlisting">int	xmlHashAddEntry			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload)<br>
 </pre>
-<p>Add the @userdata to the hash @table. This can later be retrieved by using the @name. Duplicate names generate errors.</p>
+<p>Add a hash table entry. If an entry with this key already exists, payload will not be updated and -1 is returned. This return value can't be distinguished from out-of-memory errors, so this function should be used with care.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>userdata</tt></i>:</span></td>
-<td>a pointer to the userdata</td>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 the addition succeeded and -1 in case of error.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -229,31 +229,31 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashAddEntry2"></a>xmlHashAddEntry2 ()</h3>
-<pre class="programlisting">int	xmlHashAddEntry2		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 void * userdata)<br>
+<pre class="programlisting">int	xmlHashAddEntry2		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload)<br>
 </pre>
-<p>Add the @userdata to the hash @table. This can later be retrieved by using the (@name, @name2) tuple. Duplicate tuples generate errors.</p>
+<p>Add a hash table entry with two strings as key. See <a href="libxml2-hash.html#xmlHashAddEntry">xmlHashAddEntry</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>userdata</tt></i>:</span></td>
-<td>a pointer to the userdata</td>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 the addition succeeded and -1 in case of error.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -262,35 +262,35 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashAddEntry3"></a>xmlHashAddEntry3 ()</h3>
-<pre class="programlisting">int	xmlHashAddEntry3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 void * userdata)<br>
+<pre class="programlisting">int	xmlHashAddEntry3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload)<br>
 </pre>
-<p>Add the @userdata to the hash @table. This can later be retrieved by using the tuple (@name, @name2, @name3). Duplicate entries generate errors.</p>
+<p>Add a hash table entry with three strings as key. See <a href="libxml2-hash.html#xmlHashAddEntry">xmlHashAddEntry</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata</td>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>userdata</tt></i>:</span></td>
-<td>a pointer to the userdata</td>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 the addition succeeded and -1 in case of error.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -299,23 +299,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashCopy"></a>xmlHashCopy ()</h3>
-<pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCopy		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> f)<br>
+<pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCopy		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> copy)<br>
 </pre>
-<p>Scan the hash @table and applied @f to each value.</p>
+<p>Copy the hash @table using @copy to copy payloads.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the copier function for items in the hash</td>
+<td><span class="term"><i><tt>copy</tt></i>:</span></td>
+<td>copier function for items in the hash</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the new table or NULL in case of error.</td>
+<td>the new table or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -326,17 +326,17 @@ The content of this structure is not made public by the API.
 <a name="xmlHashCreate"></a>xmlHashCreate ()</h3>
 <pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCreate		(int size)<br>
 </pre>
-<p>Create a new <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>.</p>
+<p>Create a new hash table. Set size to zero if the number of entries can't be estimated.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>size</tt></i>:</span></td>
-<td>the size of the hash table</td>
+<td>initial size of the hash table</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the newly created object, or NULL if an error occurred.</td>
+<td>the newly created object, or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -347,7 +347,7 @@ The content of this structure is not made public by the API.
 <a name="xmlHashCreateDict"></a>xmlHashCreateDict ()</h3>
 <pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCreateDict	(int size, <br>					 <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict)<br>
 </pre>
-<p>Create a new <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> which will use @dict as the internal dictionary</p>
+<p>Create a new hash table backed by a dictionary. This can reduce resource usage considerably if most keys passed to API functions originate from this dictionary.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -361,7 +361,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the newly created object, or NULL if an error occurred.</td>
+<td>the newly created object, or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -370,19 +370,19 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashDefaultDeallocator"></a>xmlHashDefaultDeallocator ()</h3>
-<pre class="programlisting">void	xmlHashDefaultDeallocator	(void * entry, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
+<pre class="programlisting">void	xmlHashDefaultDeallocator	(void * entry, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key)<br>
 </pre>
-<p>Free a hash table entry with <a href="libxml2-globals.html#xmlFree">xmlFree</a>.</p>
+<p>Free a hash table entry with <a href="libxml2-xmlmemory.html#xmlFree">xmlFree</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>entry</tt></i>:</span></td>
-<td>the hash table entry</td>
+<td>hash table entry</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the entry's name</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>the entry's string key</td>
 </tr>
 </tbody>
 </table></div>
@@ -391,19 +391,19 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashFree"></a>xmlHashFree ()</h3>
-<pre class="programlisting">void	xmlHashFree			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">void	xmlHashFree			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Free the hash @table and its contents. The userdata is deallocated with @f if provided.</p>
+<p>Free the hash and its contents. The payload is deallocated with @dealloc if provided.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for items in the hash</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function or NULL</td>
 </tr>
 </tbody>
 </table></div>
@@ -412,23 +412,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashLookup"></a>xmlHashLookup ()</h3>
-<pre class="programlisting">void *	xmlHashLookup			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
+<pre class="programlisting">void *	xmlHashLookup			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key)<br>
 </pre>
-<p>Find the userdata specified by the @name.</p>
+<p>Find the entry specified by @key.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>string key</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the pointer to the userdata</td>
+<td>a pointer to the payload or NULL if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -437,27 +437,27 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashLookup2"></a>xmlHashLookup2 ()</h3>
-<pre class="programlisting">void *	xmlHashLookup2			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2)<br>
+<pre class="programlisting">void *	xmlHashLookup2			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2)<br>
 </pre>
-<p>Find the userdata specified by the (@name, @name2) tuple.</p>
+<p>Find the payload specified by the (@key, @key2) tuple.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the pointer to the userdata</td>
+<td>a pointer to the payload or NULL if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -466,31 +466,31 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashLookup3"></a>xmlHashLookup3 ()</h3>
-<pre class="programlisting">void *	xmlHashLookup3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3)<br>
+<pre class="programlisting">void *	xmlHashLookup3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3)<br>
 </pre>
-<p>Find the userdata specified by the (@name, @name2, @name3) tuple.</p>
+<p>Find the payload specified by the (@key, @key2, @key3) tuple.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata</td>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the a pointer to the userdata</td>
+<td>a pointer to the payload or NULL if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -499,27 +499,27 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashQLookup"></a>xmlHashQLookup ()</h3>
-<pre class="programlisting">void *	xmlHashQLookup			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
+<pre class="programlisting">void *	xmlHashQLookup			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Find the userdata specified by the QName @prefix:@name/@name.</p>
+<p>Find the payload specified by the QName @prefix:@name or @name.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix</tt></i>:</span></td>
-<td>the prefix of the userdata</td>
+<td>prefix of the string key</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td>local name of the string key</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the pointer to the userdata</td>
+<td>a pointer to the payload or NULL if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -528,35 +528,35 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashQLookup2"></a>xmlHashQLookup2 ()</h3>
-<pre class="programlisting">void *	xmlHashQLookup2			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2)<br>
+<pre class="programlisting">void *	xmlHashQLookup2			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2)<br>
 </pre>
-<p>Find the userdata specified by the QNames tuple</p>
+<p>Find the payload specified by the QNames tuple.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix</tt></i>:</span></td>
-<td>the prefix of the userdata</td>
+<td>first prefix</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td>first local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix2</tt></i>:</span></td>
-<td>the second prefix of the userdata</td>
+<td>second prefix</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td>second local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the pointer to the userdata</td>
+<td>a pointer to the payload or NULL if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -565,43 +565,43 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashQLookup3"></a>xmlHashQLookup3 ()</h3>
-<pre class="programlisting">void *	xmlHashQLookup3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix3, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3)<br>
+<pre class="programlisting">void *	xmlHashQLookup3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix3, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3)<br>
 </pre>
-<p>Find the userdata specified by the (@name, @name2, @name3) tuple.</p>
+<p>Find the payload specified by the QNames tuple.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix</tt></i>:</span></td>
-<td>the prefix of the userdata</td>
+<td>first prefix</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td>first local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix2</tt></i>:</span></td>
-<td>the second prefix of the userdata</td>
+<td>second prefix</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td>second local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix3</tt></i>:</span></td>
-<td>the third prefix of the userdata</td>
+<td>third prefix</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata</td>
+<td>third local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the a pointer to the userdata</td>
+<td>a pointer to the payload or NULL if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -610,27 +610,27 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashRemoveEntry"></a>xmlHashRemoveEntry ()</h3>
-<pre class="programlisting">int	xmlHashRemoveEntry		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">int	xmlHashRemoveEntry		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Find the userdata specified by the @name and remove it from the hash @table. Existing userdata for this tuple will be removed and freed with @f.</p>
+<p>Find the entry specified by the @key and remove it from the hash table. Payload will be freed with @dealloc.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for removed item (if any)</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function for removed item or NULL</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if the removal succeeded and -1 in case of error or not found.</td>
+<td>0 on success and -1 if no entry was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -639,31 +639,31 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashRemoveEntry2"></a>xmlHashRemoveEntry2 ()</h3>
-<pre class="programlisting">int	xmlHashRemoveEntry2		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">int	xmlHashRemoveEntry2		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Find the userdata specified by the (@name, @name2) tuple and remove it from the hash @table. Existing userdata for this tuple will be removed and freed with @f.</p>
+<p>Remove an entry with two strings as key. See <a href="libxml2-hash.html#xmlHashRemoveEntry">xmlHashRemoveEntry</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for removed item (if any)</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function for removed item or NULL</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if the removal succeeded and -1 in case of error or not found.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -672,35 +672,35 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashRemoveEntry3"></a>xmlHashRemoveEntry3 ()</h3>
-<pre class="programlisting">int	xmlHashRemoveEntry3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">int	xmlHashRemoveEntry3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Find the userdata specified by the (@name, @name2, @name3) tuple and remove it from the hash @table. Existing userdata for this tuple will be removed and freed with @f.</p>
+<p>Remove an entry with three strings as key. See <a href="libxml2-hash.html#xmlHashRemoveEntry">xmlHashRemoveEntry</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata</td>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for removed item (if any)</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function for removed item or NULL</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if the removal succeeded and -1 in case of error or not found.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -709,23 +709,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashScan"></a>xmlHashScan ()</h3>
-<pre class="programlisting">void	xmlHashScan			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> f, <br>					 void * data)<br>
+<pre class="programlisting">void	xmlHashScan			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> scan, <br>					 void * data)<br>
 </pre>
-<p>Scan the hash @table and applied @f to each value.</p>
+<p>Scan the hash @table and apply @scan to each value.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the scanner function for items in the hash</td>
+<td><span class="term"><i><tt>scan</tt></i>:</span></td>
+<td>scanner function for items in the hash</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>data</tt></i>:</span></td>
-<td>extra data passed to f</td>
+<td>extra data passed to @scan</td>
 </tr>
 </tbody>
 </table></div>
@@ -734,35 +734,35 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashScan3"></a>xmlHashScan3 ()</h3>
-<pre class="programlisting">void	xmlHashScan3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> f, <br>					 void * data)<br>
+<pre class="programlisting">void	xmlHashScan3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 <a href="libxml2-hash.html#xmlHashScanner">xmlHashScanner</a> scan, <br>					 void * data)<br>
 </pre>
-<p>Scan the hash @table and applied @f to each value matching (@name, @name2, @name3) tuple. If one of the names is null, the comparison is considered to match.</p>
+<p>Scan the hash @table and apply @scan to each value matching (@key, @key2, @key3) tuple. If one of the keys is null, the comparison is considered to match.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata or NULL</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key or NULL</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata or NULL</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key or NULL</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata or NULL</td>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key or NULL</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the scanner function for items in the hash</td>
+<td><span class="term"><i><tt>scan</tt></i>:</span></td>
+<td>scanner function for items in the hash</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>data</tt></i>:</span></td>
-<td>extra data passed to f</td>
+<td>extra data passed to @scan</td>
 </tr>
 </tbody>
 </table></div>
@@ -771,23 +771,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashScanFull"></a>xmlHashScanFull ()</h3>
-<pre class="programlisting">void	xmlHashScanFull			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> f, <br>					 void * data)<br>
+<pre class="programlisting">void	xmlHashScanFull			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> scan, <br>					 void * data)<br>
 </pre>
-<p>Scan the hash @table and applied @f to each value.</p>
+<p>Scan the hash @table and apply @scan to each value.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the scanner function for items in the hash</td>
+<td><span class="term"><i><tt>scan</tt></i>:</span></td>
+<td>scanner function for items in the hash</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>data</tt></i>:</span></td>
-<td>extra data passed to f</td>
+<td>extra data passed to @scan</td>
 </tr>
 </tbody>
 </table></div>
@@ -796,35 +796,35 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashScanFull3"></a>xmlHashScanFull3 ()</h3>
-<pre class="programlisting">void	xmlHashScanFull3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> f, <br>					 void * data)<br>
+<pre class="programlisting">void	xmlHashScanFull3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 <a href="libxml2-hash.html#xmlHashScannerFull">xmlHashScannerFull</a> scan, <br>					 void * data)<br>
 </pre>
-<p>Scan the hash @table and applied @f to each value matching (@name, @name2, @name3) tuple. If one of the names is null, the comparison is considered to match.</p>
+<p>Scan the hash @table and apply @scan to each value matching (@key, @key2, @key3) tuple. If one of the keys is null, the comparison is considered to match.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata or NULL</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key or NULL</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata or NULL</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key or NULL</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata or NULL</td>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key or NULL</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the scanner function for items in the hash</td>
+<td><span class="term"><i><tt>scan</tt></i>:</span></td>
+<td>scanner function for items in the hash</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>data</tt></i>:</span></td>
-<td>extra data passed to f</td>
+<td>extra data passed to @scan</td>
 </tr>
 </tbody>
 </table></div>
@@ -833,19 +833,19 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashSize"></a>xmlHashSize ()</h3>
-<pre class="programlisting">int	xmlHashSize			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table)<br>
+<pre class="programlisting">int	xmlHashSize			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash)<br>
 </pre>
-<p>Query the number of elements installed in the hash @table.</p>
+<p>Query the number of elements in the hash table.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of elements in the hash table or -1 in case of error</td>
+<td>the number of elements in the hash table or -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -854,31 +854,31 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashUpdateEntry"></a>xmlHashUpdateEntry ()</h3>
-<pre class="programlisting">int	xmlHashUpdateEntry		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 void * userdata, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">int	xmlHashUpdateEntry		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Add the @userdata to the hash @table. This can later be retrieved by using the @name. Existing entry for this @name will be removed and freed with @f if found.</p>
+<p>Add a hash table entry. If an entry with this key already exists, the old payload will be freed and updated with the new value.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>userdata</tt></i>:</span></td>
-<td>a pointer to the userdata</td>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for replaced item (if any)</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function for replaced item or NULL</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 the addition succeeded and -1 in case of error.</td>
+<td>0 in case of success, -1 if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -887,35 +887,35 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashUpdateEntry2"></a>xmlHashUpdateEntry2 ()</h3>
-<pre class="programlisting">int	xmlHashUpdateEntry2		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 void * userdata, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">int	xmlHashUpdateEntry2		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Add the @userdata to the hash @table. This can later be retrieved by using the (@name, @name2) tuple. Existing entry for this tuple will be removed and freed with @f if found.</p>
+<p>Add a hash table entry with two strings as key. See <a href="libxml2-hash.html#xmlHashUpdateEntry">xmlHashUpdateEntry</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>userdata</tt></i>:</span></td>
-<td>a pointer to the userdata</td>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for replaced item (if any)</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function for replaced item or NULL</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 the addition succeeded and -1 in case of error.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -924,39 +924,39 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlHashUpdateEntry3"></a>xmlHashUpdateEntry3 ()</h3>
-<pre class="programlisting">int	xmlHashUpdateEntry3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> table, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name3, <br>					 void * userdata, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> f)<br>
+<pre class="programlisting">int	xmlHashUpdateEntry3		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> dealloc)<br>
 </pre>
-<p>Add the @userdata to the hash @table. This can later be retrieved by using the tuple (@name, @name2, @name3). Existing entry for this tuple will be removed and freed with @f if found.</p>
+<p>Add a hash table entry with three strings as key. See <a href="libxml2-hash.html#xmlHashUpdateEntry">xmlHashUpdateEntry</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>table</tt></i>:</span></td>
-<td>the hash table</td>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the userdata</td>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name2</tt></i>:</span></td>
-<td>a second name of the userdata</td>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>name3</tt></i>:</span></td>
-<td>a third name of the userdata</td>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>userdata</tt></i>:</span></td>
-<td>a pointer to the userdata</td>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>f</tt></i>:</span></td>
-<td>the deallocator function for replaced item (if any)</td>
+<td><span class="term"><i><tt>dealloc</tt></i>:</span></td>
+<td>deallocator function for replaced item or NULL</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 the addition succeeded and -1 in case of error.</td>
+<td>0 on success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>

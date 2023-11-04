@@ -22,12 +22,7 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">#define <a href="#DEBUG_MEMORY">DEBUG_MEMORY</a>;
-#define <a href="#xmlMalloc">xmlMalloc</a>;
-#define <a href="#xmlMallocAtomic">xmlMallocAtomic</a>;
-#define <a href="#xmlMemStrdup">xmlMemStrdup</a>;
-#define <a href="#xmlRealloc">xmlRealloc</a>;
-void	<a href="#xmlCleanupMemory">xmlCleanupMemory</a>		(void);
+<pre class="synopsis">void	<a href="#xmlCleanupMemory">xmlCleanupMemory</a>		(void);
 typedef void <a href="#xmlFreeFunc">xmlFreeFunc</a>			(void * mem);
 int	<a href="#xmlGcMemGet">xmlGcMemGet</a>			(<a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> * freeFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> * mallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> * mallocAtomicFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> * reallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> * strdupFunc);
 int	<a href="#xmlGcMemSetup">xmlGcMemSetup</a>			(<a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocAtomicFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> strdupFunc);
@@ -58,14 +53,6 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <div class="refsect1" lang="en">
 <h2>Details</h2>
 <div class="refsect2" lang="en">
-<div class="refsect2" lang="en">
-<h3>
-<a name="DEBUG_MEMORY">Macro </a>DEBUG_MEMORY</h3>
-<pre class="programlisting">#define <a href="#DEBUG_MEMORY">DEBUG_MEMORY</a>;
-</pre>
-<p><a href="libxml2-xmlmemory.html#DEBUG_MEMORY">DEBUG_MEMORY</a> replaces the allocator with a collect and debug shell to the libc allocator. <a href="libxml2-xmlmemory.html#DEBUG_MEMORY">DEBUG_MEMORY</a> should only be activated when debugging libxml i.e. if libxml has been configured with --with-debug-mem too. #define DEBUG_MEMORY_FREED #define <a href="libxml2-xmlversion.html#DEBUG_MEMORY_LOCATION">DEBUG_MEMORY_LOCATION</a></p>
-</div>
-<hr>
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlFreeFunc"></a>Function type xmlFreeFunc</h3>
@@ -146,6 +133,46 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlFree">Variable </a>xmlFree</h3>
+<pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> xmlFree;
+</pre>
+<p>@mem: an already allocated block of memory The variable holding the libxml free() implementation</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlMalloc">Variable </a>xmlMalloc</h3>
+<pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> xmlMalloc;
+</pre>
+<p>@size: the size requested in bytes The variable holding the libxml malloc() implementation Returns a pointer to the newly allocated block or NULL in case of error</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlMallocAtomic">Variable </a>xmlMallocAtomic</h3>
+<pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> xmlMallocAtomic;
+</pre>
+<p>@size: the size requested in bytes The variable holding the libxml malloc() implementation for atomic data (i.e. blocks not containing pointers), useful when using a garbage collecting allocator. Returns a pointer to the newly allocated block or NULL in case of error</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlMemStrdup">Variable </a>xmlMemStrdup</h3>
+<pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> xmlMemStrdup;
+</pre>
+<p>@str: a zero terminated string The variable holding the libxml strdup() implementation Returns the copy of the string or NULL in case of error</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlRealloc">Variable </a>xmlRealloc</h3>
+<pre class="programlisting"><a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> xmlRealloc;
+</pre>
+<p>@mem: an already allocated block of memory @size: the new size requested in bytes The variable holding the libxml realloc() implementation Returns a pointer to the newly reallocated block or NULL in case of error</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

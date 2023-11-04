@@ -27,6 +27,7 @@
 #define <a href="#XML_DETECT_IDS">XML_DETECT_IDS</a>;
 #define <a href="#XML_SAX2_MAGIC">XML_SAX2_MAGIC</a>;
 #define <a href="#XML_SKIP_IDS">XML_SKIP_IDS</a>;
+typedef struct _xmlAttrHashBucket <a href="#xmlAttrHashBucket">xmlAttrHashBucket</a>;
 typedef enum <a href="#xmlFeature">xmlFeature</a>;
 typedef enum <a href="#xmlParserInputState">xmlParserInputState</a>;
 typedef enum <a href="#xmlParserMode">xmlParserMode</a>;
@@ -34,6 +35,7 @@ typedef struct _xmlParserNodeInfo <a href="#xmlParserNodeInfo">xmlParserNodeInfo
 typedef <a href="libxml2-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a> * <a href="#xmlParserNodeInfoPtr">xmlParserNodeInfoPtr</a>;
 typedef struct _xmlParserNodeInfoSeq <a href="#xmlParserNodeInfoSeq">xmlParserNodeInfoSeq</a>;
 typedef <a href="libxml2-parser.html#xmlParserNodeInfoSeq">xmlParserNodeInfoSeq</a> * <a href="#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a>;
+typedef struct _xmlParserNsData <a href="#xmlParserNsData">xmlParserNsData</a>;
 typedef enum <a href="#xmlParserOption">xmlParserOption</a>;
 typedef struct _xmlSAXHandlerV1 <a href="#xmlSAXHandlerV1">xmlSAXHandlerV1</a>;
 typedef <a href="libxml2-parser.html#xmlSAXHandlerV1">xmlSAXHandlerV1</a> * <a href="#xmlSAXHandlerV1Ptr">xmlSAXHandlerV1Ptr</a>;
@@ -72,16 +74,17 @@ long	<a href="#xmlByteConsumed">xmlByteConsumed</a>			(<a href="libxml2-tree.htm
 void	<a href="#xmlCleanupParser">xmlCleanupParser</a>		(void);
 void	<a href="#xmlClearNodeInfoSeq">xmlClearNodeInfoSeq</a>		(<a href="libxml2-parser.html#xmlParserNodeInfoSeqPtr">xmlParserNodeInfoSeqPtr</a> seq);
 void	<a href="#xmlClearParserCtxt">xmlClearParserCtxt</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlCreateDocParserCtxt">xmlCreateDocParserCtxt</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur);
+<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlCreateDocParserCtxt">xmlCreateDocParserCtxt</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlCreateIOParserCtxt">xmlCreateIOParserCtxt</a>	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 void * user_data, <br>						 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>						 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>						 void * ioctx, <br>						 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlCreatePushParserCtxt">xmlCreatePushParserCtxt</a>	(<a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> sax, <br>						 void * user_data, <br>						 const char * chunk, <br>						 int size, <br>						 const char * filename);
-<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCtxtReadDoc">xmlCtxtReadDoc</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
+<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCtxtReadDoc">xmlCtxtReadDoc</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCtxtReadFd">xmlCtxtReadFd</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int fd, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCtxtReadFile">xmlCtxtReadFile</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const char * filename, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCtxtReadIO">xmlCtxtReadIO</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	<a href="#xmlCtxtReadMemory">xmlCtxtReadMemory</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const char * buffer, <br>					 int size, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 void	<a href="#xmlCtxtReset">xmlCtxtReset</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 int	<a href="#xmlCtxtResetPush">xmlCtxtResetPush</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const char * chunk, <br>					 int size, <br>					 const char * filename, <br>					 const char * encoding);
+void	<a href="#xmlCtxtSetMaxAmplification">xmlCtxtSetMaxAmplification</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 unsigned maxAmpl);
 int	<a href="#xmlCtxtUseOptions">xmlCtxtUseOptions</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int options);
 typedef <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> <a href="#xmlExternalEntityLoader">xmlExternalEntityLoader</a>	(const char * URL, <br>						 const char * ID, <br>						 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> context);
 void	<a href="#xmlFreeParserCtxt">xmlFreeParserCtxt</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
@@ -141,6 +144,14 @@ int	<a href="#xmlSetFeature">xmlSetFeature</a>			(<a href="libxml2-tree.html#xml
 void	<a href="#xmlSetupParserForBuffer">xmlSetupParserForBuffer</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buffer, <br>					 const char * filename);
 void	<a href="#xmlStopParser">xmlStopParser</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(int val);
+int	<a href="#xmlThrDefDoValidityCheckingDefaultValue">xmlThrDefDoValidityCheckingDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefGetWarningsDefaultValue">xmlThrDefGetWarningsDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefKeepBlanksDefaultValue">xmlThrDefKeepBlanksDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefLineNumbersDefaultValue">xmlThrDefLineNumbersDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefLoadExtDtdDefaultValue">xmlThrDefLoadExtDtdDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefParserDebugEntities">xmlThrDefParserDebugEntities</a>	(int v);
+int	<a href="#xmlThrDefPedanticParserDefaultValue">xmlThrDefPedanticParserDefaultValue</a>	(int v);
+int	<a href="#xmlThrDefSubstituteEntitiesDefaultValue">xmlThrDefSubstituteEntitiesDefaultValue</a>	(int v);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -152,7 +163,7 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
 <a name="XML_COMPLETE_ATTRS">Macro </a>XML_COMPLETE_ATTRS</h3>
 <pre class="programlisting">#define <a href="#XML_COMPLETE_ATTRS">XML_COMPLETE_ATTRS</a>;
 </pre>
-<p>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs. Use it to initialize <a href="libxml2-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a>.</p>
+<p>Bit in the loadsubset context field to tell to do complete the elements attributes lists with the ones defaulted from the DTDs. Use it to initialize xmlLoadExtDtdDefaultValue.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -168,7 +179,7 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
 <a name="XML_DETECT_IDS">Macro </a>XML_DETECT_IDS</h3>
 <pre class="programlisting">#define <a href="#XML_DETECT_IDS">XML_DETECT_IDS</a>;
 </pre>
-<p>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize <a href="libxml2-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a>.</p>
+<p>Bit in the loadsubset context field to tell to do ID/REFs lookups. Use it to initialize xmlLoadExtDtdDefaultValue.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -184,7 +195,17 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
 <a name="XML_SKIP_IDS">Macro </a>XML_SKIP_IDS</h3>
 <pre class="programlisting">#define <a href="#XML_SKIP_IDS">XML_SKIP_IDS</a>;
 </pre>
-<p>Bit in the loadsubset context field to tell to not do ID/REFs registration. Used to initialize <a href="libxml2-globals.html#xmlLoadExtDtdDefaultValue">xmlLoadExtDtdDefaultValue</a> in some special cases.</p>
+<p>Bit in the loadsubset context field to tell to not do ID/REFs registration. Used to initialize xmlLoadExtDtdDefaultValue in some special cases.</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlAttrHashBucket">Structure </a>xmlAttrHashBucket</h3>
+<pre class="programlisting">struct _xmlAttrHashBucket {
+The content of this structure is not made public by the API.
+} xmlAttrHashBucket;
+</pre>
+<p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -251,7 +272,8 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
     <a name="XML_PARSER_SYSTEM_LITERAL">XML_PARSER_SYSTEM_LITERAL</a> = 13 /* within a SYSTEM value */
     <a name="XML_PARSER_EPILOG">XML_PARSER_EPILOG</a> = 14 /* the Misc* after the last end tag */
     <a name="XML_PARSER_IGNORE">XML_PARSER_IGNORE</a> = 15 /* within an IGNORED section */
-    <a name="XML_PARSER_PUBLIC_LITERAL">XML_PARSER_PUBLIC_LITERAL</a> = 16 /*  within a PUBLIC value */
+    <a name="XML_PARSER_PUBLIC_LITERAL">XML_PARSER_PUBLIC_LITERAL</a> = 16 /* within a PUBLIC value */
+    <a name="XML_PARSER_XML_DECL">XML_PARSER_XML_DECL</a> = 17 /*  before XML decl (but after BOM) */
 };
 </pre>
 <p></p>
@@ -310,6 +332,16 @@ int	<a href="#xmlSubstituteEntitiesDefault">xmlSubstituteEntitiesDefault</a>	(in
 <h3>
 <a name="xmlParserNodeInfoSeqPtr">Typedef </a>xmlParserNodeInfoSeqPtr</h3>
 <pre class="programlisting"><a href="libxml2-parser.html#xmlParserNodeInfoSeq">xmlParserNodeInfoSeq</a> * xmlParserNodeInfoSeqPtr;
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlParserNsData">Structure </a>xmlParserNsData</h3>
+<pre class="programlisting">struct _xmlParserNsData {
+The content of this structure is not made public by the API.
+} xmlParserNsData;
 </pre>
 <p></p>
 </div>
@@ -1026,7 +1058,7 @@ The content of this structure is not made public by the API.
 <a name="setDocumentLocatorSAXFunc"></a>Function type setDocumentLocatorSAXFunc</h3>
 <pre class="programlisting">void	setDocumentLocatorSAXFunc	(void * ctx, <br>					 <a href="libxml2-tree.html#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a> loc)<br>
 </pre>
-<p>Receive the document locator at startup, actually <a href="libxml2-globals.html#xmlDefaultSAXLocator">xmlDefaultSAXLocator</a>. Everything is available on the context, so this is useless in our case.</p>
+<p>Receive the document locator at startup, actually xmlDefaultSAXLocator. Everything is available on the context, so this is useless in our case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1235,6 +1267,14 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlParserVersion">Variable </a>xmlParserVersion</h3>
+<pre class="programlisting">const char * const xmlParserVersion;
+</pre>
+<p>Constant string describing the internal version of the library</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlByteConsumed"></a>xmlByteConsumed ()</h3>
 <pre class="programlisting">long	xmlByteConsumed			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
@@ -1295,14 +1335,14 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlCreateDocParserCtxt"></a>xmlCreateDocParserCtxt ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlCreateDocParserCtxt	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur)<br>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlCreateDocParserCtxt	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str)<br>
 </pre>
 <p>Creates a parser context for an XML in-memory document.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>cur</tt></i>:</span></td>
+<td><span class="term"><i><tt>str</tt></i>:</span></td>
 <td>a pointer to an array of <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a>
 </td>
 </tr>
@@ -1395,7 +1435,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlCtxtReadDoc"></a>xmlCtxtReadDoc ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlCtxtReadDoc		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlCtxtReadDoc		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
 <p>parse an XML in-memory document and build a tree. This reuses the existing @ctxt parser context</p>
 <div class="variablelist"><table border="0">
@@ -1406,7 +1446,7 @@ The content of this structure is not made public by the API.
 <td>an XML parser context</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>cur</tt></i>:</span></td>
+<td><span class="term"><i><tt>str</tt></i>:</span></td>
 <td>a pointer to a zero terminated string</td>
 </tr>
 <tr>
@@ -1644,6 +1684,27 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlCtxtSetMaxAmplification"></a>xmlCtxtSetMaxAmplification ()</h3>
+<pre class="programlisting">void	xmlCtxtSetMaxAmplification	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 unsigned maxAmpl)<br>
+</pre>
+<p>To protect against exponential entity expansion ("billion laughs"), the size of serialized output is (roughly) limited to the input size multiplied by this factor. The default value is 5. When working with documents making heavy use of entity expansion, it can be necessary to increase the value. For security reasons, this should only be considered when processing trusted input.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XML parser context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>maxAmpl</tt></i>:</span></td>
+<td>maximum amplification factor</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlCtxtUseOptions"></a>xmlCtxtUseOptions ()</h3>
 <pre class="programlisting">int	xmlCtxtUseOptions		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int options)<br>
 </pre>
@@ -1822,7 +1883,7 @@ The content of this structure is not made public by the API.
 <a name="xmlInitParser"></a>xmlInitParser ()</h3>
 <pre class="programlisting">void	xmlInitParser			(void)<br>
 </pre>
-<p>Initialization function for the XML parser. This is not reentrant. Call once before processing in case of use in multithreaded programs.</p>
+<p>Initialization function for the XML parser. Call once from the main thread before using the library in multithreaded programs.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -3144,6 +3205,174 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the last value for 0 for no substitution, 1 for substitution.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefDoValidityCheckingDefaultValue"></a>xmlThrDefDoValidityCheckingDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefDoValidityCheckingDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefGetWarningsDefaultValue"></a>xmlThrDefGetWarningsDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefGetWarningsDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefKeepBlanksDefaultValue"></a>xmlThrDefKeepBlanksDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefKeepBlanksDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefLineNumbersDefaultValue"></a>xmlThrDefLineNumbersDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefLineNumbersDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefLoadExtDtdDefaultValue"></a>xmlThrDefLoadExtDtdDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefLoadExtDtdDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefParserDebugEntities"></a>xmlThrDefParserDebugEntities ()</h3>
+<pre class="programlisting">int	xmlThrDefParserDebugEntities	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefPedanticParserDefaultValue"></a>xmlThrDefPedanticParserDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefPedanticParserDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefSubstituteEntitiesDefaultValue"></a>xmlThrDefSubstituteEntitiesDefaultValue ()</h3>
+<pre class="programlisting">int	xmlThrDefSubstituteEntitiesDefaultValue	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
 </tr>
 </tbody>
 </table></div>

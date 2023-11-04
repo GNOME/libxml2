@@ -36,6 +36,7 @@ const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncode
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncodeEntitiesReentrant">xmlEncodeEntitiesReentrant</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * input);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlEncodeSpecialChars">xmlEncodeSpecialChars</a>	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * input);
 void	<a href="#xmlFreeEntitiesTable">xmlFreeEntitiesTable</a>		(<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);
+void	<a href="#xmlFreeEntity">xmlFreeEntity</a>			(<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetDocEntity">xmlGetDocEntity</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetDtdEntity">xmlGetDtdEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlGetParameterEntity">xmlGetParameterEntity</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
@@ -335,6 +336,21 @@ The content of this structure is not made public by the API.
 <tbody><tr>
 <td><span class="term"><i><tt>table</tt></i>:</span></td>
 <td>An entity table</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlFreeEntity"></a>xmlFreeEntity ()</h3>
+<pre class="programlisting">void	xmlFreeEntity			(<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody><tr>
+<td><span class="term"><i><tt>entity</tt></i>:</span></td>
+<td></td>
 </tr></tbody>
 </table></div>
 </div>

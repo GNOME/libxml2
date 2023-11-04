@@ -26,10 +26,10 @@
 typedef <a href="libxml2-threads.html#xmlMutex">xmlMutex</a> * <a href="#xmlMutexPtr">xmlMutexPtr</a>;
 typedef struct _xmlRMutex <a href="#xmlRMutex">xmlRMutex</a>;
 typedef <a href="libxml2-threads.html#xmlRMutex">xmlRMutex</a> * <a href="#xmlRMutexPtr">xmlRMutexPtr</a>;
+int	<a href="#xmlCheckThreadLocalStorage">xmlCheckThreadLocalStorage</a>	(void);
 void	<a href="#xmlCleanupThreads">xmlCleanupThreads</a>		(void);
 void	<a href="#xmlFreeMutex">xmlFreeMutex</a>			(<a href="libxml2-threads.html#xmlMutexPtr">xmlMutexPtr</a> tok);
 void	<a href="#xmlFreeRMutex">xmlFreeRMutex</a>			(<a href="libxml2-threads.html#xmlRMutexPtr">xmlRMutexPtr</a> tok);
-<a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>	<a href="#xmlGetGlobalState">xmlGetGlobalState</a>	(void);
 int	<a href="#xmlGetThreadId">xmlGetThreadId</a>			(void);
 void	<a href="#xmlInitThreads">xmlInitThreads</a>			(void);
 int	<a href="#xmlIsMainThread">xmlIsMainThread</a>			(void);
@@ -85,6 +85,21 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlCheckThreadLocalStorage"></a>xmlCheckThreadLocalStorage ()</h3>
+<pre class="programlisting">int	xmlCheckThreadLocalStorage	(void)<br>
+</pre>
+<p>Check whether thread-local storage could be allocated. In cross-platform code running in multithreaded environments, this function should be called once in each thread before calling other library functions to make sure that thread-local storage was allocated properly.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody><tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success or -1 if a memory allocation failed. A failed allocation signals a typically fatal and irrecoverable out-of-memory situation. Don't call any library functions in this case. This function never fails if the library is compiled with support for thread-local storage. This function never fails for the "main" thread which is the first thread calling <a href="libxml2-parser.html#xmlInitParser">xmlInitParser</a>. Available since v2.12.0.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlCleanupThreads"></a>xmlCleanupThreads ()</h3>
 <pre class="programlisting">void	xmlCleanupThreads		(void)<br>
 </pre>
@@ -123,21 +138,6 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlGetGlobalState"></a>xmlGetGlobalState ()</h3>
-<pre class="programlisting"><a href="libxml2-globals.html#xmlGlobalStatePtr">xmlGlobalStatePtr</a>	xmlGetGlobalState	(void)<br>
-</pre>
-<p>DEPRECATED: Internal function, do not use. xmlGetGlobalState() is called to retrieve the global state for a thread.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody><tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the thread global state or NULL in case of error</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlGetThreadId"></a>xmlGetThreadId ()</h3>
 <pre class="programlisting">int	xmlGetThreadId			(void)<br>
 </pre>
@@ -164,7 +164,7 @@ The content of this structure is not made public by the API.
 <a name="xmlIsMainThread"></a>xmlIsMainThread ()</h3>
 <pre class="programlisting">int	xmlIsMainThread			(void)<br>
 </pre>
-<p>DEPRECATED: Internal function, do not use. xmlIsMainThread() check whether the current thread is the main thread.</p>
+<p>DEPRECATED: Internal function, do not use. Check whether the current thread is the main thread.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>

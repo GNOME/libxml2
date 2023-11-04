@@ -35,6 +35,9 @@ int	<a href="#xmlSaveSetEscape">xmlSaveSetEscape</a>		(<a href="libxml2-xmlsave.
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFilename">xmlSaveToFilename</a>	(const char * filename, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToIO">xmlSaveToIO</a>		(<a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite, <br>					 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * encoding, <br>					 int options);
 long	<a href="#xmlSaveTree">xmlSaveTree</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
+int	<a href="#xmlThrDefIndentTreeOutput">xmlThrDefIndentTreeOutput</a>	(int v);
+int	<a href="#xmlThrDefSaveNoEmptyTags">xmlThrDefSaveNoEmptyTags</a>	(int v);
+const char *	<a href="#xmlThrDefTreeIndentString">xmlThrDefTreeIndentString</a>	(const char * v);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -332,11 +335,74 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td></td>
+<td>the top node of the subtree to save</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the number of byte written or -1 in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefIndentTreeOutput"></a>xmlThrDefIndentTreeOutput ()</h3>
+<pre class="programlisting">int	xmlThrDefIndentTreeOutput	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefSaveNoEmptyTags"></a>xmlThrDefSaveNoEmptyTags ()</h3>
+<pre class="programlisting">int	xmlThrDefSaveNoEmptyTags	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefTreeIndentString"></a>xmlThrDefTreeIndentString ()</h3>
+<pre class="programlisting">const char *	xmlThrDefTreeIndentString	(const char * v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
 </tr>
 </tbody>
 </table></div>

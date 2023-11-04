@@ -397,7 +397,7 @@ The content of this structure is not made public by the API.
     <a href="libxml2-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a>	comp	: the precompiled expression
     int	xptr	: it this an XPointer expression
     <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	ancestor	: used for walking preceding axis
-    int	valueFrame	: unused
+    int	valueFrame	: always zero for compatibility
 } xmlXPathParserContext;
 </pre>
 <p></p>
@@ -1297,7 +1297,7 @@ The content of this structure is not made public by the API.
 <a name="xmlXPathIsInf"></a>xmlXPathIsInf ()</h3>
 <pre class="programlisting">int	xmlXPathIsInf			(double val)<br>
 </pre>
-<p></p>
+<p>Checks whether a double is an infinity.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1318,7 +1318,7 @@ The content of this structure is not made public by the API.
 <a name="xmlXPathIsNaN"></a>xmlXPathIsNaN ()</h3>
 <pre class="programlisting">int	xmlXPathIsNaN			(double val)<br>
 </pre>
-<p></p>
+<p>Checks whether a double is a NaN.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

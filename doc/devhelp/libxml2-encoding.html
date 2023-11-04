@@ -22,7 +22,8 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">typedef enum <a href="#xmlCharEncoding">xmlCharEncoding</a>;
+<pre class="synopsis">typedef enum <a href="#xmlCharEncError">xmlCharEncError</a>;
+typedef enum <a href="#xmlCharEncoding">xmlCharEncoding</a>;
 typedef struct _xmlCharEncodingHandler <a href="#xmlCharEncodingHandler">xmlCharEncodingHandler</a>;
 typedef <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * <a href="#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>;
 int	<a href="#UTF8Toisolat1">UTF8Toisolat1</a>			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
@@ -52,6 +53,21 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <div class="refsect1" lang="en">
 <h2>Details</h2>
 <div class="refsect2" lang="en">
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlCharEncError">Enum </a>xmlCharEncError</h3>
+<pre class="programlisting">enum <a href="#xmlCharEncError">xmlCharEncError</a> {
+    <a name="XML_ENC_ERR_MEMORY">XML_ENC_ERR_MEMORY</a> = -5
+    <a name="XML_ENC_ERR_INTERNAL">XML_ENC_ERR_INTERNAL</a> = -4
+    <a name="XML_ENC_ERR_PARTIAL">XML_ENC_ERR_PARTIAL</a> = -3
+    <a name="XML_ENC_ERR_INPUT">XML_ENC_ERR_INPUT</a> = -2
+    <a name="XML_ENC_ERR_SPACE">XML_ENC_ERR_SPACE</a> = -1
+    <a name="XML_ENC_ERR_SUCCESS">XML_ENC_ERR_SUCCESS</a> = 0
+};
+</pre>
+<p></p>
+</div>
+<hr>
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlCharEncoding">Enum </a>xmlCharEncoding</h3>
@@ -202,7 +218,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
+<td>the number of bytes written or an XML_ENC_ERR code. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
 </tr>
 </tbody>
 </table></div>
@@ -235,7 +251,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written if success, or -1 otherwise The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
+<td>the number of bytes written or an XML_ENC_ERR code. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
 </tr>
 </tbody>
 </table></div>
@@ -310,7 +326,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td></td>
+<td>the number of bytes written or an XML_ENC_ERR code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -339,7 +355,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of byte written if success, or -1 general error -2 if the transcoding fails (for *in is not valid utf8 string or the result of transformation can't fit into the encoding we want), or</td>
+<td>the number of bytes written or an XML_ENC_ERR code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -368,7 +384,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of byte written if success, or -1 general error -2 if the transcoding fails (for *in is not valid utf8 string or the result of transformation can't fit into the encoding we want), or</td>
+<td>the number of bytes written or an XML_ENC_ERR code.</td>
 </tr>
 </tbody>
 </table></div>

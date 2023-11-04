@@ -28,11 +28,11 @@ typedef enum <a href="#xmlErrorLevel">xmlErrorLevel</a>;
 typedef <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * <a href="#xmlErrorPtr">xmlErrorPtr</a>;
 typedef enum <a href="#xmlParserErrors">xmlParserErrors</a>;
 void	<a href="#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>	(<a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler);
-int	<a href="#xmlCopyError">xmlCopyError</a>			(<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> from, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to);
-<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	<a href="#xmlCtxtGetLastError">xmlCtxtGetLastError</a>	(void * ctx);
+int	<a href="#xmlCopyError">xmlCopyError</a>			(const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * from, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to);
+const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	<a href="#xmlCtxtGetLastError">xmlCtxtGetLastError</a>	(void * ctx);
 void	<a href="#xmlCtxtResetLastError">xmlCtxtResetLastError</a>		(void * ctx);
 typedef void <a href="#xmlGenericErrorFunc">xmlGenericErrorFunc</a>		(void * ctx, <br>					 const char * msg, <br>					 ... ...);
-<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	<a href="#xmlGetLastError">xmlGetLastError</a>		(void);
+const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	<a href="#xmlGetLastError">xmlGetLastError</a>	(void);
 void	<a href="#xmlParserError">xmlParserError</a>			(void * ctx, <br>					 const char * msg, <br>					 ... ...);
 void	<a href="#xmlParserPrintFileContext">xmlParserPrintFileContext</a>	(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
 void	<a href="#xmlParserPrintFileInfo">xmlParserPrintFileInfo</a>		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
@@ -43,7 +43,9 @@ void	<a href="#xmlResetError">xmlResetError</a>			(<a href="libxml2-xmlerror.htm
 void	<a href="#xmlResetLastError">xmlResetLastError</a>		(void);
 void	<a href="#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a>		(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
 void	<a href="#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a>	(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
-typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error);
+typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void * userData, <br>					 const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * error);
+void	<a href="#xmlThrDefSetGenericErrorFunc">xmlThrDefSetGenericErrorFunc</a>	(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler);
+void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc</a>	(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -250,6 +252,7 @@ typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void
     <a name="XML_ERR_NAME_TOO_LONG">XML_ERR_NAME_TOO_LONG</a> = 110 /* 110 */
     <a name="XML_ERR_USER_STOP">XML_ERR_USER_STOP</a> = 111 /* 111 */
     <a name="XML_ERR_COMMENT_ABRUPTLY_ENDED">XML_ERR_COMMENT_ABRUPTLY_ENDED</a> = 112 /* 112 */
+    <a name="XML_WAR_ENCODING_MISMATCH">XML_WAR_ENCODING_MISMATCH</a> = 113 /* 113 */
     <a name="XML_NS_ERR_XML_NAMESPACE">XML_NS_ERR_XML_NAMESPACE</a> = 200
     <a name="XML_NS_ERR_UNDEFINED_NAMESPACE">XML_NS_ERR_UNDEFINED_NAMESPACE</a> = 201 /* 201 */
     <a name="XML_NS_ERR_QNAME">XML_NS_ERR_QNAME</a> = 202 /* 202 */
@@ -906,7 +909,7 @@ typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlStructuredErrorFunc"></a>Function type xmlStructuredErrorFunc</h3>
-<pre class="programlisting">void	xmlStructuredErrorFunc		(void * userData, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> error)<br>
+<pre class="programlisting">void	xmlStructuredErrorFunc		(void * userData, <br>					 const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * error)<br>
 </pre>
 <p>Signature of the function to use when there is an error and the module handles the new error reporting mechanism.</p>
 <div class="variablelist"><table border="0">
@@ -942,7 +945,7 @@ typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlCopyError"></a>xmlCopyError ()</h3>
-<pre class="programlisting">int	xmlCopyError			(<a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> from, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to)<br>
+<pre class="programlisting">int	xmlCopyError			(const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * from, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to)<br>
 </pre>
 <p>Save the original error to the new place.</p>
 <div class="variablelist"><table border="0">
@@ -967,7 +970,7 @@ typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlCtxtGetLastError"></a>xmlCtxtGetLastError ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlCtxtGetLastError	(void * ctx)<br>
+<pre class="programlisting">const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	xmlCtxtGetLastError	(void * ctx)<br>
 </pre>
 <p>Get the last parsing error registered.</p>
 <div class="variablelist"><table border="0">
@@ -1003,14 +1006,14 @@ typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlGetLastError"></a>xmlGetLastError ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a>	xmlGetLastError		(void)<br>
+<pre class="programlisting">const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	xmlGetLastError	(void)<br>
 </pre>
 <p>Get the last global error registered. This is per thread if compiled with thread support.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>NULL if no error occurred or a pointer to the error</td>
+<td>a pointer to the error</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -1205,6 +1208,48 @@ typedef void <a href="#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>		(void
 <tr>
 <td><span class="term"><i><tt>handler</tt></i>:</span></td>
 <td>the new handler function</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefSetGenericErrorFunc"></a>xmlThrDefSetGenericErrorFunc ()</h3>
+<pre class="programlisting">void	xmlThrDefSetGenericErrorFunc	(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctx</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>handler</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefSetStructuredErrorFunc"></a>xmlThrDefSetStructuredErrorFunc ()</h3>
+<pre class="programlisting">void	xmlThrDefSetStructuredErrorFunc	(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctx</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>handler</tt></i>:</span></td>
+<td></td>
 </tr>
 </tbody>
 </table></div>

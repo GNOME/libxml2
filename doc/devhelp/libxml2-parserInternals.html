@@ -1302,7 +1302,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseCharData"></a>xmlParseCharData ()</h3>
 <pre class="programlisting">void	xmlParseCharData		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int cdata)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse character data. Always makes progress if the first char isn't '&lt;' or '&amp;'. if we are within a CDATA section ']]&gt;' marks an end of section. The right angle bracket (&gt;) may be represented using the string "&amp;gt;", and must, for compatibility, be escaped using "&amp;gt;" or a character <a href="libxml2-SAX.html#reference">reference</a> when it appears in the string "]]&gt;" in content, when that string is not marking the end of a CDATA section. [14] CharData ::= [^&lt;&amp;]* - ([^&lt;&amp;]* ']]&gt;' [^&lt;&amp;]*)</p>
+<p>DEPRECATED: Internal function, don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2410,7 +2410,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlSwitchEncoding"></a>xmlSwitchEncoding ()</h3>
 <pre class="programlisting">int	xmlSwitchEncoding		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>change the input functions when discovering the character encoding of a given entity.</p>
+<p>Use encoding specified by enum to decode input data. This function can be used to enforce the encoding of chunks passed to <a href="libxml2-parser.html#xmlParseChunk">xmlParseChunk</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2435,7 +2435,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlSwitchInputEncoding"></a>xmlSwitchInputEncoding ()</h3>
 <pre class="programlisting">int	xmlSwitchInputEncoding		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler)<br>
 </pre>
-<p>change the input functions when discovering the character encoding of a given entity.</p>
+<p>DEPRECATED: Internal function, don't use. Use encoding handler to decode input data.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2464,7 +2464,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlSwitchToEncoding"></a>xmlSwitchToEncoding ()</h3>
 <pre class="programlisting">int	xmlSwitchToEncoding		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler)<br>
 </pre>
-<p>change the input functions when discovering the character encoding of a given entity.</p>
+<p>Use encoding handler to decode input data. This function can be used to enforce the encoding of chunks passed to <a href="libxml2-parser.html#xmlParseChunk">xmlParseChunk</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

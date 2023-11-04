@@ -134,6 +134,8 @@ void	<a href="#xmlDOMWrapFreeCtxt">xmlDOMWrapFreeCtxt</a>		(<a href="libxml2-tre
 <a href="libxml2-tree.html#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a>	<a href="#xmlDOMWrapNewCtxt">xmlDOMWrapNewCtxt</a>	(void);
 int	<a href="#xmlDOMWrapReconcileNamespaces">xmlDOMWrapReconcileNamespaces</a>	(<a href="libxml2-tree.html#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>					 int options);
 int	<a href="#xmlDOMWrapRemoveNode">xmlDOMWrapRemoveNode</a>		(<a href="libxml2-tree.html#xmlDOMWrapCtxtPtr">xmlDOMWrapCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 int options);
+<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlDeregisterNodeDefault">xmlDeregisterNodeDefault</a>	(<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
+typedef void <a href="#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlDocCopyNode">xmlDocCopyNode</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int extended);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlDocCopyNodeList">xmlDocCopyNodeList</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 int	<a href="#xmlDocDump">xmlDocDump</a>			(FILE * f, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur);
@@ -218,6 +220,8 @@ void	<a href="#xmlNodeSetName">xmlNodeSetName</a>			(<a href="libxml2-tree.html#
 void	<a href="#xmlNodeSetSpacePreserve">xmlNodeSetSpacePreserve</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int val);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlPreviousElementSibling">xmlPreviousElementSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 int	<a href="#xmlReconciliateNs">xmlReconciliateNs</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
+<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>	(<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
+typedef void <a href="#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 int	<a href="#xmlRemoveProp">xmlRemoveProp</a>			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlReplaceNode">xmlReplaceNode</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> old, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 int	<a href="#xmlSaveFile">xmlSaveFile</a>			(const char * filename, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur);
@@ -242,6 +246,10 @@ const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSplitQ
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlStringLenGetNodeList">xmlStringLenGetNodeList</a>	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br>					 int len);
 int	<a href="#xmlTextConcat">xmlTextConcat</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlTextMerge">xmlTextMerge</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> first, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> second);
+<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	<a href="#xmlThrDefBufferAllocScheme">xmlThrDefBufferAllocScheme</a>	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v);
+int	<a href="#xmlThrDefDefaultBufferSize">xmlThrDefDefaultBufferSize</a>	(int v);
+<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	<a href="#xmlThrDefDeregisterNodeDefault">xmlThrDefDeregisterNodeDefault</a>	(<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func);
+<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlThrDefRegisterNodeDefault">xmlThrDefRegisterNodeDefault</a>	(<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
 void	<a href="#xmlUnlinkNode">xmlUnlinkNode</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 int	<a href="#xmlUnsetNsProp">xmlUnsetNsProp</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 int	<a href="#xmlUnsetProp">xmlUnsetProp</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
@@ -516,11 +524,11 @@ The content of this structure is not made public by the API.
     struct _xmlDtd *	extSubset	: the document external subset
     struct _xmlNs *	oldNs	: Global namespace, the old way
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	version	: the XML version string
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	encoding	: external initial encoding, if any
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	encoding	: actual encoding, if any
     void *	ids	: Hash table for ID attributes if any
     void *	refs	: Hash table for IDREFs attributes if any
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	URL	: The URI for that document
-    int	charset	: Internal flag for charset handling, actually an <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>
+    int	charset	: unused
     struct _xmlDict *	dict	: dict used to allocate names or NULL
     void *	psvi	: for type/PSVI information
     int	parseFlags	: set of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a> used to parse the document
@@ -952,7 +960,7 @@ The content of this structure is not made public by the API.
     int *	spaceTab	: array of space infos
     int	depth	: to prevent entity substitution loops
     <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	entity	: used to check entities boundaries
-    int	charset	: encoding of the in-memory content actually an <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>
+    int	charset	: unused
     int	nodelen	: Those two fields are there to
     int	nodemem	: Speed up large node parsing
     int	pedantic	: signal pedantic warnings
@@ -973,7 +981,7 @@ The content of this structure is not made public by the API.
     int	nsNr	: the number of inherited namespaces
     int	nsMax	: the size of the arrays
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * *	nsTab	: the array of prefix/namespace name
-    int *	attallocs	: which <a href="libxml2-SAX.html#attribute">attribute</a> were allocated
+    unsigned *	attallocs	: which <a href="libxml2-SAX.html#attribute">attribute</a> were allocated
     <a href="libxml2-parser.html#xmlStartTag">xmlStartTag</a> *	pushTab	: array of data for push
     <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	attsDefault	: defaulted attributes if any
     <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	attsSpecial	: non-CDATA attributes if any
@@ -997,6 +1005,10 @@ The content of this structure is not made public by the API.
     int	endCheckState	: quote state for push parser
     unsigned short	nbErrors	: number of errors
     unsigned short	nbWarnings	: number of warnings
+    unsigned	maxAmpl	: maximum amplification factor
+    <a href="libxml2-parser.html#xmlParserNsData">xmlParserNsData</a> *	nsdb	: namespace database
+    unsigned	attrHashMax	: allocated size
+    <a href="libxml2-parser.html#xmlAttrHashBucket">xmlAttrHashBucket</a> *	attrHash	: atttribute hash table
 } xmlParserCtxt;
 </pre>
 <p></p>
@@ -1025,9 +1037,9 @@ The content of this structure is not made public by the API.
     int	col	: Current column
     unsigned long	consumed	: How many xmlChars already consumed
     <a href="libxml2-parser.html#xmlParserInputDeallocate">xmlParserInputDeallocate</a>	free	: function to deallocate the base
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	encoding	: the encoding string for entity
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	encoding	: unused
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	version	: the version string for entity
-    int	standalone	: Was that entity marked standalone
+    int	flags	: Flags
     int	id	: an unique identifier for the entity
     unsigned long	parentConsumed	: consumed bytes from parents
     <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	entity	: entity, if any
@@ -1192,6 +1204,36 @@ The content of this structure is not made public by the API.
 <td>an <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> or NULL in case of an error.</td>
 </tr>
 </tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlDeregisterNodeFunc"></a>Function type xmlDeregisterNodeFunc</h3>
+<pre class="programlisting">void	xmlDeregisterNodeFunc		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
+</pre>
+<p>Signature for the deregistration callback of a discarded node</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody><tr>
+<td><span class="term"><i><tt>node</tt></i>:</span></td>
+<td>the current node</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlRegisterNodeFunc"></a>Function type xmlRegisterNodeFunc</h3>
+<pre class="programlisting">void	xmlRegisterNodeFunc		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
+</pre>
+<p>Signature for the registration callback of a created node</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody><tr>
+<td><span class="term"><i><tt>node</tt></i>:</span></td>
+<td>the current node</td>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
@@ -1422,7 +1464,7 @@ The content of this structure is not made public by the API.
 <a name="xmlBufNodeDump"></a>xmlBufNodeDump ()</h3>
 <pre class="programlisting">size_t	xmlBufNodeDump			(<a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int level, <br>					 int format)<br>
 </pre>
-<p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+<p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1670,7 +1712,7 @@ The content of this structure is not made public by the API.
 <a name="xmlBufferCreateStatic"></a>xmlBufferCreateStatic ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a>	xmlBufferCreateStatic	(void * mem, <br>					 size_t size)<br>
 </pre>
-<p>Create an XML buffer initialized with bytes.</p>
+<p></p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1684,7 +1726,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td></td>
+<td>an XML buffer initialized with bytes.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2403,6 +2445,27 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlDeregisterNodeDefault"></a>xmlDeregisterNodeDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlDeregisterNodeDefault	(<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br>
+</pre>
+<p>Registers a callback for node destruction</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td>function pointer to the new DeregisterNodeFunc</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the previous value of the deregistration function</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlDocCopyNode"></a>xmlDocCopyNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlDocCopyNode		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int extended)<br>
 </pre>
@@ -2485,7 +2548,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDocDumpFormatMemory"></a>xmlDocDumpFormatMemory ()</h3>
 <pre class="programlisting">void	xmlDocDumpFormatMemory		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** mem, <br>					 int * size, <br>					 int format)<br>
 </pre>
-<p>Dump an XML document in memory and return the #xmlChar * and it's size. It's up to the caller to free the memory with xmlFree(). Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+<p>Dump an XML document in memory and return the #xmlChar * and it's size. It's up to the caller to free the memory with xmlFree(). Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2514,7 +2577,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDocDumpFormatMemoryEnc"></a>xmlDocDumpFormatMemoryEnc ()</h3>
 <pre class="programlisting">void	xmlDocDumpFormatMemoryEnc	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> out_doc, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** doc_txt_ptr, <br>					 int * doc_txt_len, <br>					 const char * txt_encoding, <br>					 int format)<br>
 </pre>
-<p>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory with xmlFree(). Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+<p>Dump the current DOM tree into memory using the character encoding specified by the caller. Note it is up to the caller of this function to free the allocated memory with xmlFree(). Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2619,7 +2682,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written or -1 in case of failure. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</td>
+<td>the number of bytes written or -1 in case of failure. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</td>
 </tr>
 </tbody>
 </table></div>
@@ -4059,7 +4122,7 @@ The content of this structure is not made public by the API.
 <a name="xmlNodeDump"></a>xmlNodeDump ()</h3>
 <pre class="programlisting">int	xmlNodeDump			(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int level, <br>					 int format)<br>
 </pre>
-<p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called. Since this is using <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> structures it is limited to 2GB and somehow deprecated, use xmlNodeDumpOutput() instead.</p>
+<p>Dump an XML node, recursive behaviour,children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called. Since this is using <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> structures it is limited to 2GB and somehow deprecated, use xmlNodeDumpOutput() instead.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4096,7 +4159,7 @@ The content of this structure is not made public by the API.
 <a name="xmlNodeDumpOutput"></a>xmlNodeDumpOutput ()</h3>
 <pre class="programlisting">void	xmlNodeDumpOutput		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int level, <br>					 int format, <br>					 const char * encoding)<br>
 </pre>
-<p>Dump an XML node, recursive behaviour, children are printed too. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+<p>Dump an XML node, recursive behaviour, children are printed too. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4473,6 +4536,27 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlRegisterNodeDefault"></a>xmlRegisterNodeDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	xmlRegisterNodeDefault	(<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br>
+</pre>
+<p>Registers a callback for node creation</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td>function pointer to the new RegisterNodeFunc</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the old value of the registration function</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlRemoveProp"></a>xmlRemoveProp ()</h3>
 <pre class="programlisting">int	xmlRemoveProp			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur)<br>
 </pre>
@@ -4606,7 +4690,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSaveFormatFile"></a>xmlSaveFormatFile ()</h3>
 <pre class="programlisting">int	xmlSaveFormatFile		(const char * filename, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur, <br>					 int format)<br>
 </pre>
-<p>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is "-" the stdout file is used. If @format is set then the document will be indented on output. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</p>
+<p>Dump an XML document to a file. Will use compression if compiled in and enabled. If @filename is "-" the stdout file is used. If @format is set then the document will be indented on output. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4657,7 +4741,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written or -1 in case of error. Note that @format = 1 provide node indenting only if <a href="libxml2-globals.html#xmlIndentTreeOutput">xmlIndentTreeOutput</a> = 1 or xmlKeepBlanksDefault(0) was called</td>
+<td>the number of bytes written or -1 in case of error. Note that @format = 1 provide node indenting only if xmlIndentTreeOutput = 1 or xmlKeepBlanksDefault(0) was called</td>
 </tr>
 </tbody>
 </table></div>
@@ -5084,6 +5168,90 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the first text node augmented</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefBufferAllocScheme"></a>xmlThrDefBufferAllocScheme ()</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a>	xmlThrDefBufferAllocScheme	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefDefaultBufferSize"></a>xmlThrDefDefaultBufferSize ()</h3>
+<pre class="programlisting">int	xmlThrDefDefaultBufferSize	(int v)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>v</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefDeregisterNodeDefault"></a>xmlThrDefDeregisterNodeDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlThrDefDeregisterNodeDefault	(<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlThrDefRegisterNodeDefault"></a>xmlThrDefRegisterNodeDefault ()</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	xmlThrDefRegisterNodeDefault	(<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br>
+</pre>
+<p></p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>func</tt></i>:</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td></td>
 </tr>
 </tbody>
 </table></div>

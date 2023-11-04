@@ -109,6 +109,7 @@ int	<a href="#xmlTextReaderRelaxNGValidateCtxt">xmlTextReaderRelaxNGValidateCtxt
 int	<a href="#xmlTextReaderSchemaValidate">xmlTextReaderSchemaValidate</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 const char * xsd);
 int	<a href="#xmlTextReaderSchemaValidateCtxt">xmlTextReaderSchemaValidateCtxt</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br>					 int options);
 void	<a href="#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlreader.html#xmlTextReaderErrorFunc">xmlTextReaderErrorFunc</a> f, <br>					 void * arg);
+void	<a href="#xmlTextReaderSetMaxAmplification">xmlTextReaderSetMaxAmplification</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 unsigned maxAmpl);
 int	<a href="#xmlTextReaderSetParserProp">xmlTextReaderSetParserProp</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 int prop, <br>					 int value);
 int	<a href="#xmlTextReaderSetSchema">xmlTextReaderSetSchema</a>		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
 void	<a href="#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> f, <br>						 void * arg);
@@ -2156,6 +2157,27 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>arg</tt></i>:</span></td>
 <td>a user argument to pass to the callback function</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlTextReaderSetMaxAmplification"></a>xmlTextReaderSetMaxAmplification ()</h3>
+<pre class="programlisting">void	xmlTextReaderSetMaxAmplification	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 unsigned maxAmpl)<br>
+</pre>
+<p>Set the maximum amplification factor. See <a href="libxml2-parser.html#xmlCtxtSetMaxAmplification">xmlCtxtSetMaxAmplification</a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>reader</tt></i>:</span></td>
+<td>an XML reader</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>maxAmpl</tt></i>:</span></td>
+<td>maximum amplification factor</td>
 </tr>
 </tbody>
 </table></div>

@@ -8333,11 +8333,11 @@ test_xmlDictLookup(void) {
 
     int mem_base;
     const xmlChar * ret_val;
-    xmlDictPtr dict; /* the dictionary */
+    xmlDictPtr dict; /* dictionary */
     int n_dict;
-    xmlChar * name; /* the name of the userdata */
+    xmlChar * name; /* string key */
     int n_name;
-    int len; /* the length of the name, if -1 it is recomputed */
+    int len; /* length of the key, if -1 it is recomputed */
     int n_len;
 
     for (n_dict = 0;n_dict < gen_nb_xmlDictPtr;n_dict++) {
@@ -9750,7 +9750,7 @@ static int
 test_entities(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing entities : 11 of 17 functions ...\n");
+    if (quiet == 0) printf("Testing entities : 11 of 18 functions ...\n");
     test_ret += test_xmlAddDocEntity();
     test_ret += test_xmlAddDtdEntity();
     test_ret += test_xmlCopyEntitiesTable();
@@ -9776,35 +9776,35 @@ test_xmlHashAddEntry(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    void * userdata; /* a pointer to the userdata */
-    int n_userdata;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* string key */
+    int n_key;
+    void * payload; /* pointer to the payload */
+    int n_payload;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_userdata = 0;n_userdata < gen_nb_userdata;n_userdata++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_payload = 0;n_payload < gen_nb_void_ptr;n_payload++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        userdata = gen_userdata(n_userdata, 2);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        payload = gen_void_ptr(n_payload, 2);
 
-        ret_val = xmlHashAddEntry(table, (const xmlChar *)name, userdata);
+        ret_val = xmlHashAddEntry(hash, (const xmlChar *)key, payload);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_userdata(n_userdata, userdata, 2);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_void_ptr(n_payload, payload, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashAddEntry",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_userdata);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_payload);
             printf("\n");
         }
     }
@@ -9822,41 +9822,41 @@ test_xmlHashAddEntry2(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    void * userdata; /* a pointer to the userdata */
-    int n_userdata;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    void * payload; /* pointer to the payload */
+    int n_payload;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_userdata = 0;n_userdata < gen_nb_userdata;n_userdata++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_payload = 0;n_payload < gen_nb_void_ptr;n_payload++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        userdata = gen_userdata(n_userdata, 3);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        payload = gen_void_ptr(n_payload, 3);
 
-        ret_val = xmlHashAddEntry2(table, (const xmlChar *)name, (const xmlChar *)name2, userdata);
+        ret_val = xmlHashAddEntry2(hash, (const xmlChar *)key, (const xmlChar *)key2, payload);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_userdata(n_userdata, userdata, 3);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_void_ptr(n_payload, payload, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashAddEntry2",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_userdata);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_payload);
             printf("\n");
         }
     }
@@ -9875,47 +9875,47 @@ test_xmlHashAddEntry3(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    xmlChar * name3; /* a third name of the userdata */
-    int n_name3;
-    void * userdata; /* a pointer to the userdata */
-    int n_userdata;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    xmlChar * key3; /* third string key */
+    int n_key3;
+    void * payload; /* pointer to the payload */
+    int n_payload;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_name3 = 0;n_name3 < gen_nb_const_xmlChar_ptr;n_name3++) {
-    for (n_userdata = 0;n_userdata < gen_nb_userdata;n_userdata++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_key3 = 0;n_key3 < gen_nb_const_xmlChar_ptr;n_key3++) {
+    for (n_payload = 0;n_payload < gen_nb_void_ptr;n_payload++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        name3 = gen_const_xmlChar_ptr(n_name3, 3);
-        userdata = gen_userdata(n_userdata, 4);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        key3 = gen_const_xmlChar_ptr(n_key3, 3);
+        payload = gen_void_ptr(n_payload, 4);
 
-        ret_val = xmlHashAddEntry3(table, (const xmlChar *)name, (const xmlChar *)name2, (const xmlChar *)name3, userdata);
+        ret_val = xmlHashAddEntry3(hash, (const xmlChar *)key, (const xmlChar *)key2, (const xmlChar *)key3, payload);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_const_xmlChar_ptr(n_name3, (const xmlChar *)name3, 3);
-        des_userdata(n_userdata, userdata, 4);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_const_xmlChar_ptr(n_key3, (const xmlChar *)key3, 3);
+        des_void_ptr(n_payload, payload, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashAddEntry3",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_name3);
-            printf(" %d", n_userdata);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_key3);
+            printf(" %d", n_payload);
             printf("\n");
         }
     }
@@ -9964,28 +9964,28 @@ test_xmlHashDefaultDeallocator(void) {
     int test_ret = 0;
 
     int mem_base;
-    void * entry; /* the hash table entry */
+    void * entry; /* hash table entry */
     int n_entry;
-    xmlChar * name; /* the entry's name */
-    int n_name;
+    xmlChar * key; /* the entry's string key */
+    int n_key;
 
     for (n_entry = 0;n_entry < gen_nb_void_ptr;n_entry++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
         mem_base = xmlMemBlocks();
         entry = gen_void_ptr(n_entry, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
+        key = gen_const_xmlChar_ptr(n_key, 1);
 
-        xmlHashDefaultDeallocator(entry, (const xmlChar *)name);
+        xmlHashDefaultDeallocator(entry, (const xmlChar *)key);
         call_tests++;
         des_void_ptr(n_entry, entry, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashDefaultDeallocator",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
             printf(" %d", n_entry);
-            printf(" %d", n_name);
+            printf(" %d", n_key);
             printf("\n");
         }
     }
@@ -10002,29 +10002,29 @@ test_xmlHashLookup(void) {
 
     int mem_base;
     void * ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* string key */
+    int n_key;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
 
-        ret_val = xmlHashLookup(table, (const xmlChar *)name);
+        ret_val = xmlHashLookup(hash, (const xmlChar *)key);
         desret_void_ptr(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashLookup",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
             printf("\n");
         }
     }
@@ -10041,35 +10041,35 @@ test_xmlHashLookup2(void) {
 
     int mem_base;
     void * ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
 
-        ret_val = xmlHashLookup2(table, (const xmlChar *)name, (const xmlChar *)name2);
+        ret_val = xmlHashLookup2(hash, (const xmlChar *)key, (const xmlChar *)key2);
         desret_void_ptr(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashLookup2",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
             printf("\n");
         }
     }
@@ -10087,41 +10087,41 @@ test_xmlHashLookup3(void) {
 
     int mem_base;
     void * ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    xmlChar * name3; /* a third name of the userdata */
-    int n_name3;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    xmlChar * key3; /* third string key */
+    int n_key3;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_name3 = 0;n_name3 < gen_nb_const_xmlChar_ptr;n_name3++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_key3 = 0;n_key3 < gen_nb_const_xmlChar_ptr;n_key3++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        name3 = gen_const_xmlChar_ptr(n_name3, 3);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        key3 = gen_const_xmlChar_ptr(n_key3, 3);
 
-        ret_val = xmlHashLookup3(table, (const xmlChar *)name, (const xmlChar *)name2, (const xmlChar *)name3);
+        ret_val = xmlHashLookup3(hash, (const xmlChar *)key, (const xmlChar *)key2, (const xmlChar *)key3);
         desret_void_ptr(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_const_xmlChar_ptr(n_name3, (const xmlChar *)name3, 3);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_const_xmlChar_ptr(n_key3, (const xmlChar *)key3, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashLookup3",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_name3);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_key3);
             printf("\n");
         }
     }
@@ -10140,25 +10140,25 @@ test_xmlHashQLookup(void) {
 
     int mem_base;
     void * ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * prefix; /* the prefix of the userdata */
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * prefix; /* prefix of the string key */
     int n_prefix;
-    xmlChar * name; /* the name of the userdata */
+    xmlChar * name; /* local name of the string key */
     int n_name;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
     for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
     for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
         prefix = gen_const_xmlChar_ptr(n_prefix, 1);
         name = gen_const_xmlChar_ptr(n_name, 2);
 
-        ret_val = xmlHashQLookup(table, (const xmlChar *)prefix, (const xmlChar *)name);
+        ret_val = xmlHashQLookup(hash, (const xmlChar *)prefix, (const xmlChar *)name);
         desret_void_ptr(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
+        des_xmlHashTablePtr(n_hash, hash, 0);
         des_const_xmlChar_ptr(n_prefix, (const xmlChar *)prefix, 1);
         des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 2);
         xmlResetLastError();
@@ -10166,7 +10166,7 @@ test_xmlHashQLookup(void) {
             printf("Leak of %d blocks found in xmlHashQLookup",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
+            printf(" %d", n_hash);
             printf(" %d", n_prefix);
             printf(" %d", n_name);
             printf("\n");
@@ -10186,33 +10186,33 @@ test_xmlHashQLookup2(void) {
 
     int mem_base;
     void * ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * prefix; /* the prefix of the userdata */
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * prefix; /* first prefix */
     int n_prefix;
-    xmlChar * name; /* the name of the userdata */
+    xmlChar * name; /* first local name */
     int n_name;
-    xmlChar * prefix2; /* the second prefix of the userdata */
+    xmlChar * prefix2; /* second prefix */
     int n_prefix2;
-    xmlChar * name2; /* a second name of the userdata */
+    xmlChar * name2; /* second local name */
     int n_name2;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
     for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
     for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
     for (n_prefix2 = 0;n_prefix2 < gen_nb_const_xmlChar_ptr;n_prefix2++) {
     for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
         prefix = gen_const_xmlChar_ptr(n_prefix, 1);
         name = gen_const_xmlChar_ptr(n_name, 2);
         prefix2 = gen_const_xmlChar_ptr(n_prefix2, 3);
         name2 = gen_const_xmlChar_ptr(n_name2, 4);
 
-        ret_val = xmlHashQLookup2(table, (const xmlChar *)prefix, (const xmlChar *)name, (const xmlChar *)prefix2, (const xmlChar *)name2);
+        ret_val = xmlHashQLookup2(hash, (const xmlChar *)prefix, (const xmlChar *)name, (const xmlChar *)prefix2, (const xmlChar *)name2);
         desret_void_ptr(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
+        des_xmlHashTablePtr(n_hash, hash, 0);
         des_const_xmlChar_ptr(n_prefix, (const xmlChar *)prefix, 1);
         des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 2);
         des_const_xmlChar_ptr(n_prefix2, (const xmlChar *)prefix2, 3);
@@ -10222,7 +10222,7 @@ test_xmlHashQLookup2(void) {
             printf("Leak of %d blocks found in xmlHashQLookup2",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
+            printf(" %d", n_hash);
             printf(" %d", n_prefix);
             printf(" %d", n_name);
             printf(" %d", n_prefix2);
@@ -10246,22 +10246,22 @@ test_xmlHashQLookup3(void) {
 
     int mem_base;
     void * ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * prefix; /* the prefix of the userdata */
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * prefix; /* first prefix */
     int n_prefix;
-    xmlChar * name; /* the name of the userdata */
+    xmlChar * name; /* first local name */
     int n_name;
-    xmlChar * prefix2; /* the second prefix of the userdata */
+    xmlChar * prefix2; /* second prefix */
     int n_prefix2;
-    xmlChar * name2; /* a second name of the userdata */
+    xmlChar * name2; /* second local name */
     int n_name2;
-    xmlChar * prefix3; /* the third prefix of the userdata */
+    xmlChar * prefix3; /* third prefix */
     int n_prefix3;
-    xmlChar * name3; /* a third name of the userdata */
+    xmlChar * name3; /* third local name */
     int n_name3;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
     for (n_prefix = 0;n_prefix < gen_nb_const_xmlChar_ptr;n_prefix++) {
     for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
     for (n_prefix2 = 0;n_prefix2 < gen_nb_const_xmlChar_ptr;n_prefix2++) {
@@ -10269,7 +10269,7 @@ test_xmlHashQLookup3(void) {
     for (n_prefix3 = 0;n_prefix3 < gen_nb_const_xmlChar_ptr;n_prefix3++) {
     for (n_name3 = 0;n_name3 < gen_nb_const_xmlChar_ptr;n_name3++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
         prefix = gen_const_xmlChar_ptr(n_prefix, 1);
         name = gen_const_xmlChar_ptr(n_name, 2);
         prefix2 = gen_const_xmlChar_ptr(n_prefix2, 3);
@@ -10277,10 +10277,10 @@ test_xmlHashQLookup3(void) {
         prefix3 = gen_const_xmlChar_ptr(n_prefix3, 5);
         name3 = gen_const_xmlChar_ptr(n_name3, 6);
 
-        ret_val = xmlHashQLookup3(table, (const xmlChar *)prefix, (const xmlChar *)name, (const xmlChar *)prefix2, (const xmlChar *)name2, (const xmlChar *)prefix3, (const xmlChar *)name3);
+        ret_val = xmlHashQLookup3(hash, (const xmlChar *)prefix, (const xmlChar *)name, (const xmlChar *)prefix2, (const xmlChar *)name2, (const xmlChar *)prefix3, (const xmlChar *)name3);
         desret_void_ptr(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
+        des_xmlHashTablePtr(n_hash, hash, 0);
         des_const_xmlChar_ptr(n_prefix, (const xmlChar *)prefix, 1);
         des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 2);
         des_const_xmlChar_ptr(n_prefix2, (const xmlChar *)prefix2, 3);
@@ -10292,7 +10292,7 @@ test_xmlHashQLookup3(void) {
             printf("Leak of %d blocks found in xmlHashQLookup3",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
+            printf(" %d", n_hash);
             printf(" %d", n_prefix);
             printf(" %d", n_name);
             printf(" %d", n_prefix2);
@@ -10320,35 +10320,35 @@ test_xmlHashRemoveEntry(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlHashDeallocator f; /* the deallocator function for removed item (if any) */
-    int n_f;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* string key */
+    int n_key;
+    xmlHashDeallocator dealloc; /* deallocator function for removed item or NULL */
+    int n_dealloc;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_f = 0;n_f < gen_nb_xmlHashDeallocator;n_f++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_dealloc = 0;n_dealloc < gen_nb_xmlHashDeallocator;n_dealloc++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        f = gen_xmlHashDeallocator(n_f, 2);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        dealloc = gen_xmlHashDeallocator(n_dealloc, 2);
 
-        ret_val = xmlHashRemoveEntry(table, (const xmlChar *)name, f);
+        ret_val = xmlHashRemoveEntry(hash, (const xmlChar *)key, dealloc);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_xmlHashDeallocator(n_f, f, 2);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_xmlHashDeallocator(n_dealloc, dealloc, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashRemoveEntry",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_f);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_dealloc);
             printf("\n");
         }
     }
@@ -10366,41 +10366,41 @@ test_xmlHashRemoveEntry2(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    xmlHashDeallocator f; /* the deallocator function for removed item (if any) */
-    int n_f;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    xmlHashDeallocator dealloc; /* deallocator function for removed item or NULL */
+    int n_dealloc;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_f = 0;n_f < gen_nb_xmlHashDeallocator;n_f++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_dealloc = 0;n_dealloc < gen_nb_xmlHashDeallocator;n_dealloc++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        f = gen_xmlHashDeallocator(n_f, 3);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        dealloc = gen_xmlHashDeallocator(n_dealloc, 3);
 
-        ret_val = xmlHashRemoveEntry2(table, (const xmlChar *)name, (const xmlChar *)name2, f);
+        ret_val = xmlHashRemoveEntry2(hash, (const xmlChar *)key, (const xmlChar *)key2, dealloc);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_xmlHashDeallocator(n_f, f, 3);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_xmlHashDeallocator(n_dealloc, dealloc, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashRemoveEntry2",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_f);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_dealloc);
             printf("\n");
         }
     }
@@ -10419,47 +10419,47 @@ test_xmlHashRemoveEntry3(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    xmlChar * name3; /* a third name of the userdata */
-    int n_name3;
-    xmlHashDeallocator f; /* the deallocator function for removed item (if any) */
-    int n_f;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    xmlChar * key3; /* third string key */
+    int n_key3;
+    xmlHashDeallocator dealloc; /* deallocator function for removed item or NULL */
+    int n_dealloc;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_name3 = 0;n_name3 < gen_nb_const_xmlChar_ptr;n_name3++) {
-    for (n_f = 0;n_f < gen_nb_xmlHashDeallocator;n_f++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_key3 = 0;n_key3 < gen_nb_const_xmlChar_ptr;n_key3++) {
+    for (n_dealloc = 0;n_dealloc < gen_nb_xmlHashDeallocator;n_dealloc++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        name3 = gen_const_xmlChar_ptr(n_name3, 3);
-        f = gen_xmlHashDeallocator(n_f, 4);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        key3 = gen_const_xmlChar_ptr(n_key3, 3);
+        dealloc = gen_xmlHashDeallocator(n_dealloc, 4);
 
-        ret_val = xmlHashRemoveEntry3(table, (const xmlChar *)name, (const xmlChar *)name2, (const xmlChar *)name3, f);
+        ret_val = xmlHashRemoveEntry3(hash, (const xmlChar *)key, (const xmlChar *)key2, (const xmlChar *)key3, dealloc);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_const_xmlChar_ptr(n_name3, (const xmlChar *)name3, 3);
-        des_xmlHashDeallocator(n_f, f, 4);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_const_xmlChar_ptr(n_key3, (const xmlChar *)key3, 3);
+        des_xmlHashDeallocator(n_dealloc, dealloc, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashRemoveEntry3",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_name3);
-            printf(" %d", n_f);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_key3);
+            printf(" %d", n_dealloc);
             printf("\n");
         }
     }
@@ -10519,23 +10519,23 @@ test_xmlHashSize(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
 
-        ret_val = xmlHashSize(table);
+        ret_val = xmlHashSize(hash);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
+        des_xmlHashTablePtr(n_hash, hash, 0);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashSize",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
+            printf(" %d", n_hash);
             printf("\n");
         }
     }
@@ -10551,41 +10551,41 @@ test_xmlHashUpdateEntry(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    void * userdata; /* a pointer to the userdata */
-    int n_userdata;
-    xmlHashDeallocator f; /* the deallocator function for replaced item (if any) */
-    int n_f;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* string key */
+    int n_key;
+    void * payload; /* pointer to the payload */
+    int n_payload;
+    xmlHashDeallocator dealloc; /* deallocator function for replaced item or NULL */
+    int n_dealloc;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_userdata = 0;n_userdata < gen_nb_userdata;n_userdata++) {
-    for (n_f = 0;n_f < gen_nb_xmlHashDeallocator;n_f++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_payload = 0;n_payload < gen_nb_void_ptr;n_payload++) {
+    for (n_dealloc = 0;n_dealloc < gen_nb_xmlHashDeallocator;n_dealloc++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        userdata = gen_userdata(n_userdata, 2);
-        f = gen_xmlHashDeallocator(n_f, 3);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        payload = gen_void_ptr(n_payload, 2);
+        dealloc = gen_xmlHashDeallocator(n_dealloc, 3);
 
-        ret_val = xmlHashUpdateEntry(table, (const xmlChar *)name, userdata, f);
+        ret_val = xmlHashUpdateEntry(hash, (const xmlChar *)key, payload, dealloc);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_userdata(n_userdata, userdata, 2);
-        des_xmlHashDeallocator(n_f, f, 3);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_void_ptr(n_payload, payload, 2);
+        des_xmlHashDeallocator(n_dealloc, dealloc, 3);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashUpdateEntry",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_userdata);
-            printf(" %d", n_f);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_payload);
+            printf(" %d", n_dealloc);
             printf("\n");
         }
     }
@@ -10604,47 +10604,47 @@ test_xmlHashUpdateEntry2(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    void * userdata; /* a pointer to the userdata */
-    int n_userdata;
-    xmlHashDeallocator f; /* the deallocator function for replaced item (if any) */
-    int n_f;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    void * payload; /* pointer to the payload */
+    int n_payload;
+    xmlHashDeallocator dealloc; /* deallocator function for replaced item or NULL */
+    int n_dealloc;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_userdata = 0;n_userdata < gen_nb_userdata;n_userdata++) {
-    for (n_f = 0;n_f < gen_nb_xmlHashDeallocator;n_f++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_payload = 0;n_payload < gen_nb_void_ptr;n_payload++) {
+    for (n_dealloc = 0;n_dealloc < gen_nb_xmlHashDeallocator;n_dealloc++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        userdata = gen_userdata(n_userdata, 3);
-        f = gen_xmlHashDeallocator(n_f, 4);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        payload = gen_void_ptr(n_payload, 3);
+        dealloc = gen_xmlHashDeallocator(n_dealloc, 4);
 
-        ret_val = xmlHashUpdateEntry2(table, (const xmlChar *)name, (const xmlChar *)name2, userdata, f);
+        ret_val = xmlHashUpdateEntry2(hash, (const xmlChar *)key, (const xmlChar *)key2, payload, dealloc);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_userdata(n_userdata, userdata, 3);
-        des_xmlHashDeallocator(n_f, f, 4);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_void_ptr(n_payload, payload, 3);
+        des_xmlHashDeallocator(n_dealloc, dealloc, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashUpdateEntry2",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_userdata);
-            printf(" %d", n_f);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_payload);
+            printf(" %d", n_dealloc);
             printf("\n");
         }
     }
@@ -10664,53 +10664,53 @@ test_xmlHashUpdateEntry3(void) {
 
     int mem_base;
     int ret_val;
-    xmlHashTablePtr table; /* the hash table */
-    int n_table;
-    xmlChar * name; /* the name of the userdata */
-    int n_name;
-    xmlChar * name2; /* a second name of the userdata */
-    int n_name2;
-    xmlChar * name3; /* a third name of the userdata */
-    int n_name3;
-    void * userdata; /* a pointer to the userdata */
-    int n_userdata;
-    xmlHashDeallocator f; /* the deallocator function for replaced item (if any) */
-    int n_f;
+    xmlHashTablePtr hash; /* hash table */
+    int n_hash;
+    xmlChar * key; /* first string key */
+    int n_key;
+    xmlChar * key2; /* second string key */
+    int n_key2;
+    xmlChar * key3; /* third string key */
+    int n_key3;
+    void * payload; /* pointer to the payload */
+    int n_payload;
+    xmlHashDeallocator dealloc; /* deallocator function for replaced item or NULL */
+    int n_dealloc;
 
-    for (n_table = 0;n_table < gen_nb_xmlHashTablePtr;n_table++) {
-    for (n_name = 0;n_name < gen_nb_const_xmlChar_ptr;n_name++) {
-    for (n_name2 = 0;n_name2 < gen_nb_const_xmlChar_ptr;n_name2++) {
-    for (n_name3 = 0;n_name3 < gen_nb_const_xmlChar_ptr;n_name3++) {
-    for (n_userdata = 0;n_userdata < gen_nb_userdata;n_userdata++) {
-    for (n_f = 0;n_f < gen_nb_xmlHashDeallocator;n_f++) {
+    for (n_hash = 0;n_hash < gen_nb_xmlHashTablePtr;n_hash++) {
+    for (n_key = 0;n_key < gen_nb_const_xmlChar_ptr;n_key++) {
+    for (n_key2 = 0;n_key2 < gen_nb_const_xmlChar_ptr;n_key2++) {
+    for (n_key3 = 0;n_key3 < gen_nb_const_xmlChar_ptr;n_key3++) {
+    for (n_payload = 0;n_payload < gen_nb_void_ptr;n_payload++) {
+    for (n_dealloc = 0;n_dealloc < gen_nb_xmlHashDeallocator;n_dealloc++) {
         mem_base = xmlMemBlocks();
-        table = gen_xmlHashTablePtr(n_table, 0);
-        name = gen_const_xmlChar_ptr(n_name, 1);
-        name2 = gen_const_xmlChar_ptr(n_name2, 2);
-        name3 = gen_const_xmlChar_ptr(n_name3, 3);
-        userdata = gen_userdata(n_userdata, 4);
-        f = gen_xmlHashDeallocator(n_f, 5);
+        hash = gen_xmlHashTablePtr(n_hash, 0);
+        key = gen_const_xmlChar_ptr(n_key, 1);
+        key2 = gen_const_xmlChar_ptr(n_key2, 2);
+        key3 = gen_const_xmlChar_ptr(n_key3, 3);
+        payload = gen_void_ptr(n_payload, 4);
+        dealloc = gen_xmlHashDeallocator(n_dealloc, 5);
 
-        ret_val = xmlHashUpdateEntry3(table, (const xmlChar *)name, (const xmlChar *)name2, (const xmlChar *)name3, userdata, f);
+        ret_val = xmlHashUpdateEntry3(hash, (const xmlChar *)key, (const xmlChar *)key2, (const xmlChar *)key3, payload, dealloc);
         desret_int(ret_val);
         call_tests++;
-        des_xmlHashTablePtr(n_table, table, 0);
-        des_const_xmlChar_ptr(n_name, (const xmlChar *)name, 1);
-        des_const_xmlChar_ptr(n_name2, (const xmlChar *)name2, 2);
-        des_const_xmlChar_ptr(n_name3, (const xmlChar *)name3, 3);
-        des_userdata(n_userdata, userdata, 4);
-        des_xmlHashDeallocator(n_f, f, 5);
+        des_xmlHashTablePtr(n_hash, hash, 0);
+        des_const_xmlChar_ptr(n_key, (const xmlChar *)key, 1);
+        des_const_xmlChar_ptr(n_key2, (const xmlChar *)key2, 2);
+        des_const_xmlChar_ptr(n_key3, (const xmlChar *)key3, 3);
+        des_void_ptr(n_payload, payload, 4);
+        des_xmlHashDeallocator(n_dealloc, dealloc, 5);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlHashUpdateEntry3",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
-            printf(" %d", n_table);
-            printf(" %d", n_name);
-            printf(" %d", n_name2);
-            printf(" %d", n_name3);
-            printf(" %d", n_userdata);
-            printf(" %d", n_f);
+            printf(" %d", n_hash);
+            printf(" %d", n_key);
+            printf(" %d", n_key2);
+            printf(" %d", n_key3);
+            printf(" %d", n_payload);
+            printf(" %d", n_dealloc);
             printf("\n");
         }
     }
@@ -29269,6 +29269,10 @@ test_initGenericErrorDefaultFunc(void) {
 }
 
 
+#define gen_nb_const_xmlError_ptr 1
+#define gen_const_xmlError_ptr(no, nr) NULL
+#define des_const_xmlError_ptr(no, val, nr)
+
 #define gen_nb_xmlErrorPtr 1
 #define gen_xmlErrorPtr(no, nr) NULL
 #define des_xmlErrorPtr(no, val, nr)
@@ -29279,21 +29283,21 @@ test_xmlCopyError(void) {
 
     int mem_base;
     int ret_val;
-    xmlErrorPtr from; /* a source error */
+    xmlError * from; /* a source error */
     int n_from;
     xmlErrorPtr to; /* a target error */
     int n_to;
 
-    for (n_from = 0;n_from < gen_nb_xmlErrorPtr;n_from++) {
+    for (n_from = 0;n_from < gen_nb_const_xmlError_ptr;n_from++) {
     for (n_to = 0;n_to < gen_nb_xmlErrorPtr;n_to++) {
         mem_base = xmlMemBlocks();
-        from = gen_xmlErrorPtr(n_from, 0);
+        from = gen_const_xmlError_ptr(n_from, 0);
         to = gen_xmlErrorPtr(n_to, 1);
 
-        ret_val = xmlCopyError(from, to);
+        ret_val = xmlCopyError((const xmlError *)from, to);
         desret_int(ret_val);
         call_tests++;
-        des_xmlErrorPtr(n_from, from, 0);
+        des_const_xmlError_ptr(n_from, (const xmlError *)from, 0);
         des_xmlErrorPtr(n_to, to, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {

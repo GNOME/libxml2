@@ -1,5 +1,5 @@
 exampledir = $(docdir)/python/examples
-dist_example_DATA = $(PYTESTS) $(XMLS)
+dist_example_DATA = $(PYTESTS) $(XMLS) setup_test.py
 
 PYTESTS=	\
     build.py	\

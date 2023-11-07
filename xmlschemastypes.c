@@ -28,6 +28,7 @@
 #include <libxml/hash.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
+#include <string.h>
 
 #include <libxml/xmlschemas.h>
 #include <libxml/schemasInternals.h>
@@ -77,15 +78,11 @@ struct _xmlSchemaValDuration {
 
 typedef struct _xmlSchemaValDecimal xmlSchemaValDecimal;
 typedef xmlSchemaValDecimal *xmlSchemaValDecimalPtr;
-struct _xmlSchemaValDecimal {
-    /* would use long long but not portable */
-    unsigned long lo;
-    unsigned long mi;
-    unsigned long hi;
-    unsigned int extra;
-    unsigned int sign:1;
-    unsigned int frac:7;
-    unsigned int total:8;
+struct _xmlSchemaValDecimal
+{
+	xmlChar *str;
+	unsigned integralPlaces;
+	unsigned fractionalPlaces;
 };
 
 typedef struct _xmlSchemaValQName xmlSchemaValQName;
@@ -231,6 +228,8 @@ static xmlSchemaFacetPtr
 xmlSchemaNewMinLengthFacet(int value)
 {
     xmlSchemaFacetPtr ret;
+    size_t bufsize;
+    xmlSchemaValDecimal *decimal;
 
     ret = xmlSchemaNewFacet();
     if (ret == NULL) {
@@ -240,9 +239,19 @@ xmlSchemaNewMinLengthFacet(int value)
     ret->val = xmlSchemaNewValue(XML_SCHEMAS_NNINTEGER);
     if (ret->val == NULL) {
         xmlFree(ret);
-	return(NULL);
+        return(NULL);
     }
-    ret->val->value.decimal.lo = value;
+    bufsize = snprintf(NULL, 0, "%+d.0", value) + 1;
+    decimal = &ret->val->value.decimal;
+    decimal->str = xmlMalloc(bufsize);
+    if (decimal->str == NULL)
+    {
+        xmlSchemaFreeFacet(ret);
+        return NULL;
+    }
+    snprintf((char *)decimal->str, bufsize, "%+d.0", value);
+    decimal->integralPlaces = bufsize - 4;
+    decimal->fractionalPlaces = 1;
     return (ret);
 }
 
@@ -319,6 +328,90 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 	             XML_SCHEMAS_NAMESPACE_NAME, ret);
     ret->builtInType = type;
     return(ret);
+}
+
+static const xmlChar *
+xmlSchemaValDecimalGetFractionalPart(const xmlSchemaValDecimal *decimal)
+{
+    /* 2 = sign+dot */
+    return decimal->str+2+decimal->integralPlaces;
+}
+
+static int
+xmlSchemaValDecimalIsInteger(const xmlSchemaValDecimal *decimal)
+{
+    return decimal->fractionalPlaces == 1 && xmlSchemaValDecimalGetFractionalPart(decimal)[0] == '0';
+}
+
+static unsigned long
+xmlSchemaValDecimalGetSignificantDigitCount(const xmlSchemaValDecimal *decimal)
+{
+	unsigned fractionalPlaces = xmlSchemaValDecimalIsInteger(decimal) ? 0 : decimal->fractionalPlaces;
+	unsigned integralPlaces = decimal->integralPlaces;
+	if(integralPlaces == 1 && decimal->str[1] == '0')
+	{
+		integralPlaces = 0;
+	}
+	if(integralPlaces+fractionalPlaces == 0)
+	{
+		/* 0, but that's still 1 significant digit */
+		return 1;
+	}
+	return integralPlaces+fractionalPlaces;
+}
+
+/**
+ * @brief Compares two decimals
+ * 
+ * @param lhs 
+ * @param rhs 
+ * @return positive value if lhs > rhs, negative if lhs < rhs, or 0 if lhs == rhs
+ */
+static int xmlSchemaValDecimalCompare(const xmlSchemaValDecimal *lhs, const xmlSchemaValDecimal *rhs)
+{
+    int sign = 1;
+    /* may be +0 and -0 for some reason, handle */
+    if(strcmp((const char*)lhs->str+1, "0.0") == 0 &&
+        strcmp((const char*)rhs->str+1, "0.0") == 0)
+    {
+        return 0;
+    }
+    /* first take care of sign */
+    if(lhs->str[0] != rhs->str[0])
+    {
+        /* ASCII- > ASCII+ */
+        return rhs->str[0]-lhs->str[0];
+    }
+    /* signs are equal, but if negative the comparison must be reversed */
+    if(lhs->str[0] == '-')
+    {
+        sign = -1;
+    }
+    /* internal representation never contains leading zeroes, longer decimal representation = larger number */
+    if(lhs->integralPlaces != rhs->integralPlaces)
+    {
+        return ((int)lhs->integralPlaces-(int)rhs->integralPlaces)*sign;
+    }
+    /* same length, only digits => lexicographical sorting == numerical sorting.
+       If integral parts are equal it will compare compare fractional parts. Again, lexicographical is good enough,
+       length doesn't matter. We'll be starting from 0.1, always comparing like to like, and NULL < '0'
+       If one is shorter and is equal until end, it must be smaller, since there are no trailing zeroes
+       and the longer number must therefore have at least one non-zero digit after the other has ended.
+       +1 to skip the sign
+    */
+    return strcmp((const char*)lhs->str+1, (const char*)rhs->str+1)*sign;
+}
+
+static int xmlSchemaValDecimalCompareWithInteger(const xmlSchemaValDecimal *lhs, long rhs)
+{
+    /* can handle integers up to 128 bits, should be good for a while */
+    char buf[43];
+    xmlSchemaValDecimal tmpVal;
+    /* 3 = sign+dot+0+NULL */
+    tmpVal.integralPlaces = snprintf(buf, sizeof(buf), "%+ld.0", rhs)-3;
+    tmpVal.str = (xmlChar*)buf;
+    tmpVal.fractionalPlaces = 1;
+    return xmlSchemaValDecimalCompare(lhs, &tmpVal);
 }
 
 /*
@@ -1172,6 +1265,23 @@ xmlSchemaFreeValue(xmlSchemaValPtr value) {
 	    case XML_SCHEMAS_BASE64BINARY:
 		if (value->value.base64.str != NULL)
 		    xmlFree(value->value.base64.str);
+		break;
+	    case XML_SCHEMAS_DECIMAL:
+	    case XML_SCHEMAS_INTEGER:
+	    case XML_SCHEMAS_NNINTEGER:
+	    case XML_SCHEMAS_PINTEGER:
+	    case XML_SCHEMAS_NPINTEGER:
+	    case XML_SCHEMAS_NINTEGER:
+	    case XML_SCHEMAS_INT:
+	    case XML_SCHEMAS_UINT:
+	    case XML_SCHEMAS_LONG:
+	    case XML_SCHEMAS_ULONG:
+	    case XML_SCHEMAS_SHORT:
+	    case XML_SCHEMAS_USHORT:
+	    case XML_SCHEMAS_BYTE:
+	    case XML_SCHEMAS_UBYTE:
+		if (value->value.decimal.str != NULL)
+		    xmlFree(value->value.decimal.str);
 		break;
 	    default:
 		break;
@@ -2232,21 +2342,16 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
 /**
  * xmlSchemaParseUInt:
  * @str: pointer to the string R/W
- * @llo: pointer to the low result
- * @lmi: pointer to the mid result
- * @lhi: pointer to the high result
+ * @val: pointer to the resulting decimal
  *
- * Parse an unsigned long into 3 fields.
+ * Parse an unsigned long into a decimal.
  *
  * Returns the number of significant digits in the number or
  * -1 if overflow of the capacity and -2 if it's not a number.
  */
-static int
-xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
-                   unsigned long *lmi, unsigned long *lhi) {
-    unsigned long lo = 0, mi = 0, hi = 0;
-    const xmlChar *tmp, *cur = *str;
-    int ret = 0, i = 0;
+static int xmlSchemaParseUInt(const xmlChar **str, xmlSchemaValDecimalPtr val) {
+	const xmlChar *tmp, *cur = *str;
+	int ret = 0, i = 0;
 
     if (!((*cur >= '0') && (*cur <= '9')))
         return(-2);
@@ -2254,31 +2359,29 @@ xmlSchemaParseUInt(const xmlChar **str, unsigned long *llo,
     while (*cur == '0') {        /* ignore leading zeroes */
         cur++;
     }
+    /* back up in case there is nothing after the leading zeroes */
+    if(!(*cur >= '0' && *cur <= '9'))
+    {
+        --cur;
+    }
     tmp = cur;
     while ((*tmp != 0) && (*tmp >= '0') && (*tmp <= '9')) {
         i++;tmp++;ret++;
     }
-    if (i > 24) {
-        *str = tmp;
-        return(-1);
+    if (val->integralPlaces + val->fractionalPlaces < (unsigned)i + 1)
+    {
+        if (val->str != NULL)
+        {
+            xmlFree(val->str);
+        }
+        /*  sign, dot, fractional 0 and NULL terminator */
+        val->str = xmlMalloc(i + 4);
     }
-    while (i > 16) {
-        hi = hi * 10 + (*cur++ - '0');
-        i--;
-    }
-    while (i > 8) {
-        mi = mi * 10 + (*cur++ - '0');
-        i--;
-    }
-    while (i > 0) {
-        lo = lo * 10 + (*cur++ - '0');
-        i--;
-    }
+    val->fractionalPlaces = 1;
+    val->integralPlaces = i;
+    snprintf((char *)val->str, i + 4, "+%.*s.0", i, cur);
 
-    *str = cur;
-    *llo = lo;
-    *lmi = mi;
-    *lhi = hi;
+    *str = tmp;
     return(ret);
 }
 
@@ -2466,9 +2569,11 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
             }
         case XML_SCHEMAS_DECIMAL:{
                 const xmlChar *cur = value;
-                unsigned int len, neg, integ, hasLeadingZeroes;
-		xmlChar cval[25];
-		xmlChar *cptr = cval;
+                const xmlChar *numStart, *numEnd;
+                xmlSchemaValDecimal decimal;
+                xmlChar sign;
+
+                memset(&decimal, 0, sizeof(decimal));
 
                 if ((cur == NULL) || (*cur == 0))
                     goto return1;
@@ -2482,9 +2587,9 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		/*
 		* First we handle an optional sign.
 		*/
-		neg = 0;
+                sign = '+';
                 if (*cur == '-') {
-		    neg = 1;
+                    sign = '-';
                     cur++;
 		} else if (*cur == '+')
                     cur++;
@@ -2493,47 +2598,44 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		*/
 		if (*cur == 0)
 		    goto return1;
-		/*
-		 * Next we "pre-parse" the number, in preparation for calling
-		 * the common routine xmlSchemaParseUInt.  We get rid of any
-		 * leading zeroes (because we have reserved only 25 chars),
-		 * and note the position of a decimal point.
-		 */
-		len = 0;
-		integ = ~0u;
-		hasLeadingZeroes = 0;
+
 		/*
 		* Skip leading zeroes.
 		*/
 		while (*cur == '0') {
 		    cur++;
-		    hasLeadingZeroes = 1;
 		}
-		if (*cur != 0) {
-		    do {
-			if ((*cur >= '0') && (*cur <= '9')) {
-			    *cptr++ = *cur++;
-			    len++;
-			} else if (*cur == '.') {
-			    cur++;
-			    integ = len;
-			    do {
-				if ((*cur >= '0') && (*cur <= '9')) {
-				    *cptr++ = *cur++;
-				    len++;
-				} else
-				    break;
-			    } while (len < 24);
-			    /*
-			    * Disallow "." but allow "00."
-			    */
-			    if ((len == 0) && (!hasLeadingZeroes))
-				goto return1;
-			    break;
-			} else
-			    break;
-		    } while (len < 24);
-		}
+
+                numStart = cur;
+
+                while ((*cur >= '0') && (*cur <= '9')) {
+                    ++cur;
+                    ++decimal.integralPlaces;
+                }
+                if (*cur == '.') {
+                    ++cur;
+                }
+                while ((*cur >= '0') && (*cur <= '9')) {
+                    ++cur;
+                    ++decimal.fractionalPlaces;
+                }
+
+                /*  disallow "." */
+                if (
+                    decimal.fractionalPlaces == 0 && decimal.integralPlaces == 0
+                    && (numStart == value || numStart[-1] != '0')
+                ) {
+                    goto return1;
+                }
+
+                numEnd = cur;
+
+                /*  find if there are trailing FRACTIONAL zeroes, and deal with them if necessary */
+                while (numEnd > numStart && decimal.fractionalPlaces && numEnd[-1] == '0') {
+                    --numEnd;
+                    --decimal.fractionalPlaces;
+                }
+
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
 		if (*cur != 0)
@@ -2541,49 +2643,35 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 if (val != NULL) {
                     v = xmlSchemaNewValue(XML_SCHEMAS_DECIMAL);
                     if (v != NULL) {
-			/*
-			* Now evaluate the significant digits of the number
-			*/
-			if (len != 0) {
-
-			    if (integ != ~0u) {
-				/*
-				* Get rid of trailing zeroes in the
-				* fractional part.
-				*/
-				while ((len != integ) && (*(cptr-1) == '0')) {
-				    cptr--;
-				    len--;
-				}
-			    }
-			    /*
-			    * Terminate the (preparsed) string.
-			    */
-			    if (len != 0) {
-				*cptr = 0;
-				cptr = cval;
-
-				xmlSchemaParseUInt((const xmlChar **)&cptr,
-				    &v->value.decimal.lo,
-				    &v->value.decimal.mi,
-				    &v->value.decimal.hi);
-			    }
-			}
-			/*
-			* Set the total digits to 1 if a zero value.
-			*/
-                        v->value.decimal.sign = neg;
-			if (len == 0) {
-			    /* Speedup for zero values. */
-			    v->value.decimal.total = 1;
-			} else {
-			    v->value.decimal.total = len;
-			    if (integ == ~0u)
-				v->value.decimal.frac = 0;
-			    else
-				v->value.decimal.frac = len - integ;
-			}
+                        /*  create a standardized representation */
+                        size_t bufsize;
+                        const char *integralStart = (const char *)numStart;
+                        const char *fractionalStart = (const char *)numEnd - decimal.fractionalPlaces;
+                        if (decimal.integralPlaces == 0)
+                        {
+                            integralStart = "0";
+                            decimal.integralPlaces = 1;
+                        }
+                        if (decimal.fractionalPlaces == 0)
+                        {
+                            fractionalStart = "0";
+                            decimal.fractionalPlaces = 1;
+                        }
+                        /*  3 = sign, dot, NULL terminator */
+                        bufsize = decimal.integralPlaces + decimal.fractionalPlaces + 3;
+                        decimal.str = xmlMalloc(bufsize);
+                        if (!decimal.str)
+                        {
+                            goto error;
+                        }
+                        snprintf((char *)decimal.str, bufsize, "%c%.*s.%.*s", sign, decimal.integralPlaces, integralStart,
+                                decimal.fractionalPlaces, fractionalStart);
+                        v->value.decimal = decimal;
                         *val = v;
+                    }
+                    else
+                    {
+                        goto error;
                     }
                 }
                 goto return0;
@@ -3339,199 +3427,152 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
         case XML_SCHEMAS_PINTEGER:
         case XML_SCHEMAS_NPINTEGER:
         case XML_SCHEMAS_NINTEGER:
-        case XML_SCHEMAS_NNINTEGER:{
-                const xmlChar *cur = value;
-                unsigned long lo, mi, hi;
-                int sign = 0;
-
-                if (cur == NULL)
-                    goto return1;
-		if (normOnTheFly)
-		    while IS_WSP_BLANK_CH(*cur) cur++;
-                if (*cur == '-') {
-                    sign = 1;
-                    cur++;
-                } else if (*cur == '+')
-                    cur++;
-                ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
-                if (ret < 0)
-                    goto return1;
-		if (normOnTheFly)
-		    while IS_WSP_BLANK_CH(*cur) cur++;
-                if (*cur != 0)
-                    goto return1;
-                if (type->builtInType == XML_SCHEMAS_NPINTEGER) {
-                    if ((sign == 0) &&
-                        ((hi != 0) || (mi != 0) || (lo != 0)))
-                        goto return1;
-                } else if (type->builtInType == XML_SCHEMAS_PINTEGER) {
-                    if (sign == 1)
-                        goto return1;
-                    if ((hi == 0) && (mi == 0) && (lo == 0))
-                        goto return1;
-                } else if (type->builtInType == XML_SCHEMAS_NINTEGER) {
-                    if (sign == 0)
-                        goto return1;
-                    if ((hi == 0) && (mi == 0) && (lo == 0))
-                        goto return1;
-                } else if (type->builtInType == XML_SCHEMAS_NNINTEGER) {
-                    if ((sign == 1) &&
-                        ((hi != 0) || (mi != 0) || (lo != 0)))
-                        goto return1;
-                }
-                if (val != NULL) {
-                    v = xmlSchemaNewValue(type->builtInType);
-                    if (v != NULL) {
-			if (ret == 0)
-			    ret++;
-                        v->value.decimal.lo = lo;
-                        v->value.decimal.mi = mi;
-                        v->value.decimal.hi = hi;
-                        v->value.decimal.sign = sign;
-                        v->value.decimal.frac = 0;
-                        v->value.decimal.total = ret;
-                        *val = v;
-                    }
-                }
-                goto return0;
-            }
+        case XML_SCHEMAS_NNINTEGER:
         case XML_SCHEMAS_LONG:
         case XML_SCHEMAS_BYTE:
         case XML_SCHEMAS_SHORT:
-        case XML_SCHEMAS_INT:{
-                const xmlChar *cur = value;
-                unsigned long lo, mi, hi;
-                int sign = 0;
-
-                if (cur == NULL)
-                    goto return1;
-		if (normOnTheFly)
-		    while IS_WSP_BLANK_CH(*cur) cur++;
-                if (*cur == '-') {
-                    sign = 1;
-                    cur++;
-                } else if (*cur == '+')
-                    cur++;
-                ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
-                if (ret < 0)
-                    goto return1;
-		if (normOnTheFly)
-		    while IS_WSP_BLANK_CH(*cur) cur++;
-                if (*cur != 0)
-                    goto return1;
-                if (type->builtInType == XML_SCHEMAS_LONG) {
-                    if (hi >= 922) {
-                        if (hi > 922)
-                            goto return1;
-                        if (mi >= 33720368) {
-                            if (mi > 33720368)
-                                goto return1;
-                            if ((sign == 0) && (lo > 54775807))
-                                goto return1;
-                            if ((sign == 1) && (lo > 54775808))
-                                goto return1;
-                        }
-                    }
-                } else if (type->builtInType == XML_SCHEMAS_INT) {
-                    if (hi != 0)
-                        goto return1;
-                    if (mi >= 21) {
-                        if (mi > 21)
-                            goto return1;
-                        if ((sign == 0) && (lo > 47483647))
-                            goto return1;
-                        if ((sign == 1) && (lo > 47483648))
-                            goto return1;
-                    }
-                } else if (type->builtInType == XML_SCHEMAS_SHORT) {
-                    if ((mi != 0) || (hi != 0))
-                        goto return1;
-                    if ((sign == 1) && (lo > 32768))
-                        goto return1;
-                    if ((sign == 0) && (lo > 32767))
-                        goto return1;
-                } else if (type->builtInType == XML_SCHEMAS_BYTE) {
-                    if ((mi != 0) || (hi != 0))
-                        goto return1;
-                    if ((sign == 1) && (lo > 128))
-                        goto return1;
-                    if ((sign == 0) && (lo > 127))
-                        goto return1;
-                }
-                if (val != NULL) {
-                    v = xmlSchemaNewValue(type->builtInType);
-                    if (v != NULL) {
-                        v->value.decimal.lo = lo;
-                        v->value.decimal.mi = mi;
-                        v->value.decimal.hi = hi;
-                        v->value.decimal.sign = sign;
-                        v->value.decimal.frac = 0;
-                        v->value.decimal.total = ret;
-                        *val = v;
-                    }
-                }
-                goto return0;
-            }
+        case XML_SCHEMAS_INT:
         case XML_SCHEMAS_UINT:
         case XML_SCHEMAS_ULONG:
         case XML_SCHEMAS_USHORT:
-        case XML_SCHEMAS_UBYTE:{
+        case XML_SCHEMAS_UBYTE: {
                 const xmlChar *cur = value;
-                unsigned long lo, mi, hi;
+                xmlSchemaValDecimal decimal;
+                xmlChar sign = '+';
 
-		if (normOnTheFly)
-		    while IS_WSP_BLANK_CH(*cur) cur++;
-                ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);
-                if (ret < 0)
+                memset(&decimal, 0, sizeof(decimal));
+
+                if (cur == NULL)
                     goto return1;
+ 		if (normOnTheFly)
+		    while IS_WSP_BLANK_CH(*cur) cur++;
+                if (*cur == '-') {
+                    sign = '-';
+                    cur++;
+                } else if (*cur == '+')
+                    cur++;
+                ret = xmlSchemaParseUInt(&cur, &decimal);
+                /* add sign */
+                if (ret < 0)
+                    goto valIntegerReturn1;
+                decimal.str[0] = sign;
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
                 if (*cur != 0)
-                    goto return1;
-                if (type->builtInType == XML_SCHEMAS_ULONG) {
-                    if (hi >= 1844) {
-                        if (hi > 1844)
-                            goto return1;
-                        if (mi >= 67440737) {
-                            if (mi > 67440737)
-                                goto return1;
-                            if (lo > 9551615)
-                                goto return1;
-                        }
-                    }
-                } else if (type->builtInType == XML_SCHEMAS_UINT) {
-                    if (hi != 0)
-                        goto return1;
-                    if (mi >= 42) {
-                        if (mi > 42)
-                            goto return1;
-                        if (lo > 94967295)
-                            goto return1;
-                    }
-                } else if (type->builtInType == XML_SCHEMAS_USHORT) {
-                    if ((mi != 0) || (hi != 0))
-                        goto return1;
-                    if (lo > 65535)
-                        goto return1;
-                } else if (type->builtInType == XML_SCHEMAS_UBYTE) {
-                    if ((mi != 0) || (hi != 0))
-                        goto return1;
-                    if (lo > 255)
-                        goto return1;
+                    goto valIntegerReturn1;
+                if (type->builtInType == XML_SCHEMAS_NPINTEGER)
+                {
+                    if(xmlSchemaValDecimalCompareWithInteger(&decimal, 0) > 0)
+                        goto valIntegerReturn1;
+                }
+                else if (type->builtInType == XML_SCHEMAS_PINTEGER)
+                {
+                    if (sign == '-')
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) <= 0)
+                        goto valIntegerReturn1;
+                }
+                else if (type->builtInType == XML_SCHEMAS_NINTEGER)
+                {
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) >= 0)
+                        goto valIntegerReturn1;
+                }
+                else if (type->builtInType == XML_SCHEMAS_NNINTEGER)
+                {
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) < 0)
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_LONG)
+                {
+                    /* (u)int64_t may not be available on 32 bit platform, just use decimal */
+                    xmlSchemaValDecimal tmpDecimal;
+                    static const char maxLong[] = "+9223372036854775807.0";
+                    static const char minLong[] = "-9223372036854775808.0";
+                    tmpDecimal.fractionalPlaces = 1;
+                    tmpDecimal.integralPlaces = 19;
+                    tmpDecimal.str = BAD_CAST maxLong;
+                    if (xmlSchemaValDecimalCompare(&decimal, &tmpDecimal) > 0)
+                        goto valIntegerReturn1;
+                    tmpDecimal.str = BAD_CAST minLong;
+                    if (xmlSchemaValDecimalCompare(&decimal, &tmpDecimal) < 0)
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_ULONG)
+                {
+                    xmlSchemaValDecimal tmpDecimal;
+                    static const char maxULong[] = "+18446744073709551615.0";
+                    tmpDecimal.fractionalPlaces = 1;
+                    tmpDecimal.integralPlaces = 20;
+                    tmpDecimal.str = (xmlChar*)maxULong;
+                    if (xmlSchemaValDecimalCompare(&decimal, &tmpDecimal) > 0)
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) < 0)
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_INT)
+                {
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0x7fffffff) > 0) /* INT32_MAX */
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, -0x7fffffff-1) < 0) /* INT32_MIN */
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_SHORT)
+                {
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0x7fff) > 0) /* INT16_MAX */
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, -0x8000) < 0) /* INT16_MIN */
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_BYTE)
+                {if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0x7f) > 0) /* INT8_MAX */
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, -0x80) < 0) /* INT8_MIN */
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_UINT)
+                {
+                    xmlSchemaValDecimal tmpDecimal;
+                    static const char maxUInt[] = "+4294967295.0";
+                    tmpDecimal.fractionalPlaces = 1;
+                    tmpDecimal.integralPlaces = 10;
+                    tmpDecimal.str = (xmlChar*)maxUInt;
+                    if (xmlSchemaValDecimalCompare(&decimal, &tmpDecimal) > 0)
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) < 0)
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_USHORT)
+                {
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0xffff) > 0) /* UINT16_MAX */
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) < 0)
+                        goto valIntegerReturn1;
+                }
+                else if(type->builtInType == XML_SCHEMAS_UBYTE)
+                {
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0xff) > 0) /* UINT8_MAX */
+                        goto valIntegerReturn1;
+                    if (xmlSchemaValDecimalCompareWithInteger(&decimal, 0) < 0)
+                        goto valIntegerReturn1;
                 }
                 if (val != NULL) {
                     v = xmlSchemaNewValue(type->builtInType);
                     if (v != NULL) {
-                        v->value.decimal.lo = lo;
-                        v->value.decimal.mi = mi;
-                        v->value.decimal.hi = hi;
-                        v->value.decimal.sign = 0;
-                        v->value.decimal.frac = 0;
-                        v->value.decimal.total = ret;
+                        v->value.decimal = decimal;
                         *val = v;
                     }
                 }
+                else if(decimal.str != NULL)
+                {
+                    xmlFree(decimal.str);
+                }
                 goto return0;
+            valIntegerReturn1:
+                if(decimal.str != NULL)
+                {
+                    xmlFree(decimal.str);
+                }
+                goto return1;
             }
     }
 
@@ -3628,139 +3669,16 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 static int
 xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
 {
-    xmlSchemaValPtr swp;
-    int order = 1, integx, integy, dlen;
-    unsigned long hi, mi, lo;
-
-    /*
-     * First test: If x is -ve and not zero
-     */
-    if ((x->value.decimal.sign) &&
-	((x->value.decimal.lo != 0) ||
-	 (x->value.decimal.mi != 0) ||
-	 (x->value.decimal.hi != 0))) {
-	/*
-	 * Then if y is -ve and not zero reverse the compare
-	 */
-	if ((y->value.decimal.sign) &&
-	    ((y->value.decimal.lo != 0) ||
-	     (y->value.decimal.mi != 0) ||
-	     (y->value.decimal.hi != 0)))
-	    order = -1;
-	/*
-	 * Otherwise (y >= 0) we have the answer
-	 */
-	else
-	    return (-1);
-    /*
-     * If x is not -ve and y is -ve we have the answer
-     */
-    } else if ((y->value.decimal.sign) &&
-	       ((y->value.decimal.lo != 0) ||
-		(y->value.decimal.mi != 0) ||
-		(y->value.decimal.hi != 0))) {
-        return (1);
+    int res = xmlSchemaValDecimalCompare(&x->value.decimal, &y->value.decimal);
+    if(res > 0)
+    {
+        return 1;
     }
-    /*
-     * If it's not simply determined by a difference in sign,
-     * then we need to compare the actual values of the two nums.
-     * To do this, we start by looking at the integral parts.
-     * If the number of integral digits differ, then we have our
-     * answer.
-     */
-    integx = x->value.decimal.total - x->value.decimal.frac;
-    integy = y->value.decimal.total - y->value.decimal.frac;
-    /*
-    * NOTE: We changed the "total" for values like "0.1"
-    *   (or "-0.1" or ".1") to be 1, which was 2 previously.
-    *   Therefore the special case, when such values are
-    *   compared with 0, needs to be handled separately;
-    *   otherwise a zero would be recognized incorrectly as
-    *   greater than those values. This has the nice side effect
-    *   that we gain an overall optimized comparison with zeroes.
-    * Note that a "0" has a "total" of 1 already.
-    */
-    if (integx == 1) {
-	if (x->value.decimal.lo == 0) {
-	    if (integy != 1)
-		return -order;
-	    else if (y->value.decimal.lo != 0)
-		return -order;
-	    else
-		return(0);
-	}
+    if(res < 0)
+    {
+        return -1;
     }
-    if (integy == 1) {
-	if (y->value.decimal.lo == 0) {
-	    if (integx != 1)
-		return order;
-	    else if (x->value.decimal.lo != 0)
-		return order;
-	    else
-		return(0);
-	}
-    }
-
-    if (integx > integy)
-	return order;
-    else if (integy > integx)
-	return -order;
-
-    /*
-     * If the number of integral digits is the same for both numbers,
-     * then things get a little more complicated.  We need to "normalize"
-     * the numbers in order to properly compare them.  To do this, we
-     * look at the total length of each number (length => number of
-     * significant digits), and divide the "shorter" by 10 (decreasing
-     * the length) until they are of equal length.
-     */
-    dlen = x->value.decimal.total - y->value.decimal.total;
-    if (dlen < 0) {	/* y has more digits than x */
-	swp = x;
-	hi = y->value.decimal.hi;
-	mi = y->value.decimal.mi;
-	lo = y->value.decimal.lo;
-	dlen = -dlen;
-	order = -order;
-    } else {		/* x has more digits than y */
-	swp = y;
-	hi = x->value.decimal.hi;
-	mi = x->value.decimal.mi;
-	lo = x->value.decimal.lo;
-    }
-    while (dlen > 8) {	/* in effect, right shift by 10**8 */
-	lo = mi;
-	mi = hi;
-	hi = 0;
-	dlen -= 8;
-    }
-    while (dlen > 0) {
-	unsigned long rem1, rem2;
-	rem1 = (hi % 10) * 100000000L;
-	hi = hi / 10;
-	rem2 = (mi % 10) * 100000000L;
-	mi = (mi + rem1) / 10;
-	lo = (lo + rem2) / 10;
-	dlen--;
-    }
-    if (hi > swp->value.decimal.hi) {
-	return order;
-    } else if (hi == swp->value.decimal.hi) {
-	if (mi > swp->value.decimal.mi) {
-	    return order;
-	} else if (mi == swp->value.decimal.mi) {
-	    if (lo > swp->value.decimal.lo) {
-		return order;
-	    } else if (lo == swp->value.decimal.lo) {
-		if (x->value.decimal.total == y->value.decimal.total) {
-		    return 0;
-		} else {
-		    return order;
-		}
-	    }
-	}
-    }
-    return -order;
+    return 0;
 }
 
 /**
@@ -3946,6 +3864,24 @@ xmlSchemaCopyValue(xmlSchemaValPtr val)
 		if (val->value.base64.str != NULL)
 		    cur->value.base64.str =
                     xmlStrdup(BAD_CAST val->value.base64.str);
+		break;
+            case XML_SCHEMAS_DECIMAL:
+            case XML_SCHEMAS_INTEGER:
+            case XML_SCHEMAS_PINTEGER:
+            case XML_SCHEMAS_NPINTEGER:
+            case XML_SCHEMAS_NINTEGER:
+            case XML_SCHEMAS_NNINTEGER:
+            case XML_SCHEMAS_LONG:
+            case XML_SCHEMAS_BYTE:
+            case XML_SCHEMAS_SHORT:
+            case XML_SCHEMAS_INT:
+            case XML_SCHEMAS_UINT:
+            case XML_SCHEMAS_ULONG:
+            case XML_SCHEMAS_USHORT:
+            case XML_SCHEMAS_UBYTE:
+                cur = xmlSchemaDupVal(val);
+                if (val->value.decimal.str != NULL)
+                    cur->value.decimal.str = xmlStrdup(BAD_CAST val->value.decimal.str);
 		break;
 	    default:
 		cur = xmlSchemaDupVal(val);
@@ -5312,9 +5248,10 @@ xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
     /*
     * TODO: Check if this is a decimal.
     */
+    char *discard;
     if (facet == NULL || facet->val == NULL)
         return 0;
-    return ((unsigned long) facet->val->value.decimal.lo);
+    return strtoul((const char*)facet->val->value.decimal.str+1, &discard, 10);
 }
 
 /**
@@ -5342,21 +5279,21 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
     * (compare value.decimal.mi and value.decimal.hi as well?).
     */
     if (facet->type == XML_SCHEMA_FACET_LENGTH) {
-	if (actualLen != facet->val->value.decimal.lo) {
+        if (actualLen != xmlSchemaGetFacetValueAsULong(facet)) {
 	    if (expectedLen != NULL)
-		*expectedLen = facet->val->value.decimal.lo;
+                *expectedLen = xmlSchemaGetFacetValueAsULong(facet);
 	    return (XML_SCHEMAV_CVC_LENGTH_VALID);
 	}
     } else if (facet->type == XML_SCHEMA_FACET_MINLENGTH) {
-	if (actualLen < facet->val->value.decimal.lo) {
+        if (actualLen < xmlSchemaGetFacetValueAsULong(facet)) {
 	    if (expectedLen != NULL)
-		*expectedLen = facet->val->value.decimal.lo;
+                *expectedLen = xmlSchemaGetFacetValueAsULong(facet);
 	    return (XML_SCHEMAV_CVC_MINLENGTH_VALID);
 	}
     } else if (facet->type == XML_SCHEMA_FACET_MAXLENGTH) {
-	if (actualLen > facet->val->value.decimal.lo) {
+        if (actualLen > xmlSchemaGetFacetValueAsULong(facet)) {
 	    if (expectedLen != NULL)
-		*expectedLen = facet->val->value.decimal.lo;
+                *expectedLen = xmlSchemaGetFacetValueAsULong(facet);
 	    return (XML_SCHEMAV_CVC_MAXLENGTH_VALID);
 	}
     } else
@@ -5409,7 +5346,8 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
     if ((facet->val == NULL) ||
 	((facet->val->type != XML_SCHEMAS_DECIMAL) &&
 	 (facet->val->type != XML_SCHEMAS_NNINTEGER)) ||
-	(facet->val->value.decimal.frac != 0)) {
+	!(xmlSchemaValDecimalIsInteger(&facet->val->value.decimal)))
+ {
 	return(-1);
     }
     if ((val != NULL) && (val->type == XML_SCHEMAS_HEXBINARY))
@@ -5469,16 +5407,16 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
     }
     *length = (unsigned long) len;
     /*
-    * TODO: Return the whole expected value, i.e. "lo", "mi" and "hi".
+    * TODO: Return the whole expected value. (This may be possible now with xmlSchemaValDecimalCompareWithInteger)
     */
     if (facet->type == XML_SCHEMA_FACET_LENGTH) {
-	if (len != facet->val->value.decimal.lo)
+        if (len != xmlSchemaGetFacetValueAsULong(facet))
 	    return(XML_SCHEMAV_CVC_LENGTH_VALID);
     } else if (facet->type == XML_SCHEMA_FACET_MINLENGTH) {
-	if (len < facet->val->value.decimal.lo)
+        if (len < xmlSchemaGetFacetValueAsULong(facet))
 	    return(XML_SCHEMAV_CVC_MINLENGTH_VALID);
     } else {
-	if (len > facet->val->value.decimal.lo)
+        if (len > xmlSchemaGetFacetValueAsULong(facet))
 	    return(XML_SCHEMAV_CVC_MAXLENGTH_VALID);
     }
 
@@ -5674,7 +5612,7 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	    if ((facet->val == NULL) ||
 		((facet->val->type != XML_SCHEMAS_DECIMAL) &&
 		 (facet->val->type != XML_SCHEMAS_NNINTEGER)) ||
-		(facet->val->value.decimal.frac != 0)) {
+		!xmlSchemaValDecimalIsInteger(&facet->val->value.decimal)) {
 		return(-1);
 	    }
 	    if ((val != NULL) && (val->type == XML_SCHEMAS_HEXBINARY))
@@ -5723,14 +5661,13 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 		}
 	    }
 	    if (facet->type == XML_SCHEMA_FACET_LENGTH) {
-		if (len != facet->val->value.decimal.lo)
+                if (len != xmlSchemaGetFacetValueAsULong(facet))
 		    return(XML_SCHEMAV_CVC_LENGTH_VALID);
 	    } else if (facet->type == XML_SCHEMA_FACET_MINLENGTH) {
-		if (len < facet->val->value.decimal.lo)
+                if (len < xmlSchemaGetFacetValueAsULong(facet))
 		    return(XML_SCHEMAV_CVC_MINLENGTH_VALID);
-	    } else {
-		if (len > facet->val->value.decimal.lo)
-		    return(XML_SCHEMAV_CVC_MAXLENGTH_VALID);
+	    } else if (len > xmlSchemaGetFacetValueAsULong(facet)) {
+                return (XML_SCHEMAV_CVC_MAXLENGTH_VALID);
 	    }
 	    break;
 	}
@@ -5740,7 +5677,7 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	    if ((facet->val == NULL) ||
 		((facet->val->type != XML_SCHEMAS_PINTEGER) &&
 		 (facet->val->type != XML_SCHEMAS_NNINTEGER)) ||
-		(facet->val->value.decimal.frac != 0)) {
+		!xmlSchemaValDecimalIsInteger(&facet->val->value.decimal)) {
 		return(-1);
 	    }
 	    if ((val == NULL) ||
@@ -5761,11 +5698,11 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 		return(-1);
 	    }
 	    if (facet->type == XML_SCHEMA_FACET_TOTALDIGITS) {
-	        if (val->value.decimal.total > facet->val->value.decimal.lo)
+                if (xmlSchemaValDecimalGetSignificantDigitCount(&val->value.decimal) > xmlSchemaGetFacetValueAsULong(facet))
 	            return(XML_SCHEMAV_CVC_TOTALDIGITS_VALID);
 
 	    } else if (facet->type == XML_SCHEMA_FACET_FRACTIONDIGITS) {
-	        if (val->value.decimal.frac > facet->val->value.decimal.lo)
+			if ((xmlSchemaValDecimalIsInteger(&val->value.decimal) ? 0 : val->value.decimal.fractionalPlaces) > xmlSchemaGetFacetValueAsULong(facet))
 		    return(XML_SCHEMAV_CVC_FRACTIONDIGITS_VALID);
 	    }
 	    break;
@@ -5997,75 +5934,13 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 		    BAD_CAST val->value.qname.uri);
 	    }
 	    break;
-	case XML_SCHEMAS_DECIMAL:
-	    /*
-	    * TODO: Lookout for a more simple implementation.
-	    */
-	    if ((val->value.decimal.total == 1) &&
-		(val->value.decimal.lo == 0)) {
-		*retValue = xmlStrdup(BAD_CAST "0.0");
-	    } else {
-		xmlSchemaValDecimal dec = val->value.decimal;
-		int bufsize;
-		char *buf = NULL, *offs;
-
-		/* Add room for the decimal point as well. */
-		bufsize = dec.total + 2;
-		if (dec.sign)
-		    bufsize++;
-		/* Add room for leading/trailing zero. */
-		if ((dec.frac == 0) || (dec.frac == dec.total))
-		    bufsize++;
-		buf = xmlMalloc(bufsize);
-		if (buf == NULL)
-		    return(-1);
-		offs = buf;
-		if (dec.sign)
-		    *offs++ = '-';
-		if (dec.frac == dec.total) {
-		    *offs++ = '0';
-		    *offs++ = '.';
-		}
-		if (dec.hi != 0)
-		    snprintf(offs, bufsize - (offs - buf),
-			"%lu%lu%lu", dec.hi, dec.mi, dec.lo);
-		else if (dec.mi != 0)
-		    snprintf(offs, bufsize - (offs - buf),
-			"%lu%lu", dec.mi, dec.lo);
-		else
-		    snprintf(offs, bufsize - (offs - buf),
-			"%lu", dec.lo);
-
-		if (dec.frac != 0) {
-		    if (dec.frac != dec.total) {
-			int diff = dec.total - dec.frac;
-			/*
-			* Insert the decimal point.
-			*/
-			memmove(offs + diff + 1, offs + diff, dec.frac +1);
-			offs[diff] = '.';
-		    } else {
-			unsigned int i = 0;
-			/*
-			* Insert missing zeroes behind the decimal point.
-			*/
-			while (*(offs + i) != 0)
-			    i++;
-			if (i < dec.total) {
-			    memmove(offs + (dec.total - i), offs, i +1);
-			    memset(offs, '0', dec.total - i);
-			}
-		    }
-		} else {
-		    /*
-		    * Append decimal point and zero.
-		    */
-		    offs = buf + bufsize - 1;
-		    *offs-- = 0;
-		    *offs-- = '0';
-		    *offs-- = '.';
-		}
-		*retValue = BAD_CAST buf;
+	case XML_SCHEMAS_DECIMAL: {
+                xmlChar *start = val->value.decimal.str;
+                if(start[0] == '+')
+                {
+                    start += 1;
+                }
+                *retValue = xmlStrdup(start);
 	    }
 	    break;
 	case XML_SCHEMAS_INTEGER:
@@ -6080,40 +5955,20 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 	case XML_SCHEMAS_UINT:
         case XML_SCHEMAS_ULONG:
         case XML_SCHEMAS_USHORT:
-        case XML_SCHEMAS_UBYTE:
-	    if ((val->value.decimal.total == 1) &&
-		(val->value.decimal.lo == 0))
-		*retValue = xmlStrdup(BAD_CAST "0");
-	    else {
-		xmlSchemaValDecimal dec = val->value.decimal;
-		int bufsize = dec.total + 1;
-
-		/* Add room for the decimal point as well. */
-		if (dec.sign)
-		    bufsize++;
-		*retValue = xmlMalloc(bufsize);
-		if (*retValue == NULL)
-		    return(-1);
-		if (dec.hi != 0) {
-		    if (dec.sign)
-			snprintf((char *) *retValue, bufsize,
-			    "-%lu%lu%lu", dec.hi, dec.mi, dec.lo);
-		    else
-			snprintf((char *) *retValue, bufsize,
-			    "%lu%lu%lu", dec.hi, dec.mi, dec.lo);
-		} else if (dec.mi != 0) {
-		    if (dec.sign)
-			snprintf((char *) *retValue, bufsize,
-			    "-%lu%lu", dec.mi, dec.lo);
-		    else
-			snprintf((char *) *retValue, bufsize,
-			    "%lu%lu", dec.mi, dec.lo);
-		} else {
-		    if (dec.sign)
-			snprintf((char *) *retValue, bufsize, "-%lu", dec.lo);
-		    else
-			snprintf((char *) *retValue, bufsize, "%lu", dec.lo);
-		}
+        case XML_SCHEMAS_UBYTE: {
+            xmlChar *start = val->value.decimal.str;
+            /* 2 = sign+NULL */
+            size_t bufSize = val->value.decimal.integralPlaces+2;
+            if(start[0] == '+')
+            {
+                start += 1;
+                bufSize -= 1;
+            }
+            *retValue = xmlMalloc(bufSize);
+            if(*retValue) {
+                /* no need to limit string length in format, it will only print bufSize-1 chars anyways */
+                snprintf((char*)*retValue, bufSize, "%s", start);
+            }
 	    }
 	    break;
 	case XML_SCHEMAS_BOOLEAN:

@@ -923,9 +923,9 @@ xmlInitRandom(void) {
     /* TODO: Get seed values from system PRNG */
 
     globalRngState[0] = (unsigned) time(NULL) ^
-                        HASH_ROL((unsigned) (size_t) &xmlInitRandom, 8);
-    globalRngState[1] = HASH_ROL((unsigned) (size_t) &xmlRngMutex, 16) ^
-                        HASH_ROL((unsigned) (size_t) &var, 24);
+                        HASH_ROL((unsigned) ((size_t) &xmlInitRandom & 0xFFFFFFFF), 8);
+    globalRngState[1] = HASH_ROL((unsigned) ((size_t) &xmlRngMutex & 0xFFFFFFFF), 16) ^
+                        HASH_ROL((unsigned) ((size_t) &var & 0xFFFFFFFF), 24);
 }
 
 void

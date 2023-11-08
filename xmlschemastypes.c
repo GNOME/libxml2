@@ -1273,7 +1273,7 @@ static const unsigned int daysInMonthLeap[12] =
 	((dt)->hour == 24 && (dt)->min == 0 && (dt)->sec == 0)
 
 #define VALID_TIME(dt)						\
-	(((VALID_HOUR(dt->hour) && VALID_MIN(dt->min) &&	\
+	(((VALID_HOUR((int)dt->hour) && VALID_MIN((int)dt->min) &&	\
 	  VALID_SEC(dt->sec)) || VALID_END_OF_DAY(dt)) &&	\
 	 VALID_TZO(dt->tzo))
 

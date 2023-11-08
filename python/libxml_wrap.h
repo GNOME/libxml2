@@ -65,7 +65,10 @@
 /*
  * Macros to ignore deprecation warnings
  */
-#if defined(__clang__) || \
+#if defined(__LCC__)
+#define XML_IGNORE_DEPRECATION_WARNINGS \
+    _Pragma("diag_suppress 1215")
+#elif defined(__clang__) || \
     (defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 406))
 #define XML_IGNORE_DEPRECATION_WARNINGS \
     _Pragma("GCC diagnostic push") \

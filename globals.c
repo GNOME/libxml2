@@ -118,6 +118,11 @@ static XML_THREAD_LOCAL xmlGlobalState globalState;
     defined(__GLIBC__) && \
     __GLIBC__ * 100 + __GLIBC_MINOR__ < 234
 
+#pragma weak pthread_getspecific
+#pragma weak pthread_setspecific
+#pragma weak pthread_key_create
+#pragma weak pthread_key_delete
+
 #define XML_PTHREAD_WEAK
 
 static int libxml_is_threaded = -1;

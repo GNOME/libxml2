@@ -122,6 +122,8 @@ static XML_THREAD_LOCAL xmlGlobalState globalState;
 #pragma weak pthread_setspecific
 #pragma weak pthread_key_create
 #pragma weak pthread_key_delete
+#pragma weak pthread_equal
+#pragma weak pthread_self
 
 #define XML_PTHREAD_WEAK
 
@@ -571,7 +573,13 @@ void xmlInitGlobalsInternal(void) {
             (pthread_getspecific != NULL) &&
             (pthread_setspecific != NULL) &&
             (pthread_key_create != NULL) &&
-            (pthread_key_delete != NULL);
+            (pthread_key_delete != NULL) &&
+            /*
+             * pthread_equal can be inline, resuting in -Waddress warnings.
+             * Let's assume it's available if all the other functions are.
+             */
+            /* (pthread_equal != NULL) && */
+            (pthread_self != NULL);
     if (libxml_is_threaded == 0)
         return;
 #endif /* XML_PTHREAD_WEAK */

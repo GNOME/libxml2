@@ -646,6 +646,8 @@ static void
 initSAX(xmlParserCtxtPtr ctxt) {
     ctxt->sax->startElementNs = NULL;
     ctxt->sax->endElementNs = NULL;
+    ctxt->sax->startElement = NULL;
+    ctxt->sax->endElement = NULL;
     ctxt->sax->characters = NULL;
     ctxt->sax->cdataBlock = NULL;
     ctxt->sax->ignorableWhitespace = NULL;

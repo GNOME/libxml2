@@ -909,8 +909,8 @@ static xmlMutex xmlRngMutex;
 static unsigned globalRngState[2];
 
 #ifdef XML_THREAD_LOCAL
-XML_THREAD_LOCAL static int localRngInitialized = 0;
-XML_THREAD_LOCAL static unsigned localRngState[2];
+static XML_THREAD_LOCAL int localRngInitialized = 0;
+static XML_THREAD_LOCAL unsigned localRngState[2];
 #endif
 
 ATTRIBUTE_NO_SANITIZE_INTEGER

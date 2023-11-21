@@ -913,15 +913,42 @@ xmlHashScan(xmlHashTablePtr hash, xmlHashScanner scan, void *data) {
 void
 xmlHashScanFull(xmlHashTablePtr hash, xmlHashScannerFull scan, void *data) {
     const xmlHashEntry *entry, *end;
+    xmlHashEntry old;
+    unsigned i;
 
     if ((hash == NULL) || (hash->size == 0) || (scan == NULL))
         return;
 
+    /*
+     * We must handle the case that a scanned entry is removed when executing
+     * the callback (xmlCleanSpecialAttr and possibly other places).
+     *
+     * Find the start of a probe sequence to avoid scanning entries twice if
+     * a deletion happens.
+     */
+    entry = hash->table;
     end = &hash->table[hash->size];
+    while (entry->hashValue != 0) {
+        if (++entry >= end)
+            entry = hash->table;
+    }
 
-    for (entry = hash->table; entry < end; entry++) {
-        if ((entry->hashValue != 0) && (entry->payload != NULL))
-            scan(entry->payload, data, entry->key, entry->key2, entry->key3);
+    for (i = 0; i < hash->size; i++) {
+        if ((entry->hashValue != 0) && (entry->payload != NULL)) {
+            /*
+             * Make sure to rescan after a possible deletion.
+             */
+            do {
+                old = *entry;
+                scan(entry->payload, data, entry->key, entry->key2, entry->key3);
+            } while ((entry->hashValue != 0) &&
+                     (entry->payload != NULL) &&
+                     ((entry->key != old.key) ||
+                      (entry->key2 != old.key2) ||
+                      (entry->key3 != old.key3)));
+        }
+        if (++entry >= end)
+            entry = hash->table;
     }
 }
 
@@ -966,22 +993,47 @@ xmlHashScanFull3(xmlHashTablePtr hash, const xmlChar *key,
                  const xmlChar *key2, const xmlChar *key3,
                  xmlHashScannerFull scan, void *data) {
     const xmlHashEntry *entry, *end;
+    xmlHashEntry old;
+    unsigned i;
 
     if ((hash == NULL) || (hash->size == 0) || (scan == NULL))
         return;
 
+    /*
+     * We must handle the case that a scanned entry is removed when executing
+     * the callback (xmlCleanSpecialAttr and possibly other places).
+     *
+     * Find the start of a probe sequence to avoid scanning entries twice if
+     * a deletion happens.
+     */
+    entry = hash->table;
     end = &hash->table[hash->size];
+    while (entry->hashValue != 0) {
+        if (++entry >= end)
+            entry = hash->table;
+    }
 
-    for (entry = hash->table; entry < end; entry++) {
-        if (entry->hashValue == 0)
-            continue;
-        if (((key == NULL) ||
-             (strcmp((const char *) key, (const char *) entry->key) == 0)) &&
-            ((key2 == NULL) || (xmlFastStrEqual(key2, entry->key2))) &&
-            ((key3 == NULL) || (xmlFastStrEqual(key3, entry->key3))) &&
-            (entry->payload != NULL)) {
-            scan(entry->payload, data, entry->key, entry->key2, entry->key3);
+    for (i = 0; i < hash->size; i++) {
+        if ((entry->hashValue != 0) && (entry->payload != NULL)) {
+            /*
+             * Make sure to rescan after a possible deletion.
+             */
+            do {
+                if (((key != NULL) && (strcmp((const char *) key,
+                                              (const char *) entry->key) != 0)) ||
+                    ((key2 != NULL) && (!xmlFastStrEqual(key2, entry->key2))) ||
+                    ((key3 != NULL) && (!xmlFastStrEqual(key3, entry->key3))))
+                    break;
+                old = *entry;
+                scan(entry->payload, data, entry->key, entry->key2, entry->key3);
+            } while ((entry->hashValue != 0) &&
+                     (entry->payload != NULL) &&
+                     ((entry->key != old.key) ||
+                      (entry->key2 != old.key2) ||
+                      (entry->key3 != old.key3)));
         }
+        if (++entry >= end)
+            entry = hash->table;
     }
 }
 

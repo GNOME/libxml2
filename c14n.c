@@ -513,8 +513,8 @@ xmlC14NIsXmlNs(xmlNsPtr ns)
 static int
 xmlC14NNsCompare(const void *data1, const void *data2)
 {
-    const xmlNsPtr ns1 = (const xmlNsPtr) data1;
-    const xmlNsPtr ns2 = (const xmlNsPtr) data2;
+    const xmlNs *ns1 = data1;
+    const xmlNs *ns2 = data2;
     if (ns1 == ns2)
         return (0);
     if (ns1 == NULL)
@@ -536,7 +536,7 @@ xmlC14NNsCompare(const void *data1, const void *data2)
  * Returns 1 on success or 0 on fail.
  */
 static int
-xmlC14NPrintNamespaces(const xmlNsPtr ns, xmlC14NCtxPtr ctx)
+xmlC14NPrintNamespaces(const xmlNs *ns, xmlC14NCtxPtr ctx)
 {
 
     if ((ns == NULL) || (ctx == NULL)) {
@@ -561,7 +561,7 @@ xmlC14NPrintNamespaces(const xmlNsPtr ns, xmlC14NCtxPtr ctx)
 
 static int
 xmlC14NPrintNamespacesWalker(const void *ns, void *ctx) {
-    return xmlC14NPrintNamespaces((const xmlNsPtr) ns, (xmlC14NCtxPtr) ctx);
+    return xmlC14NPrintNamespaces(ns, ctx);
 }
 
 /**
@@ -886,8 +886,8 @@ xmlC14NIsXmlAttr(xmlAttrPtr attr)
 static int
 xmlC14NAttrsCompare(const void *data1, const void *data2)
 {
-    const xmlAttrPtr attr1 = (const xmlAttrPtr) data1;
-    const xmlAttrPtr attr2 = (const xmlAttrPtr) data2;
+    const xmlAttr *attr1 = data1;
+    const xmlAttr *attr2 = data2;
     int ret = 0;
 
     /*
@@ -940,7 +940,7 @@ xmlC14NAttrsCompare(const void *data1, const void *data2)
 static int
 xmlC14NPrintAttrs(const void *data, void *user)
 {
-    const xmlAttrPtr attr = (const xmlAttrPtr) data;
+    const xmlAttr *attr = data;
     xmlC14NCtxPtr ctx = (xmlC14NCtxPtr) user;
     xmlChar *value;
     xmlChar *buffer;

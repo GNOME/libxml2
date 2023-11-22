@@ -309,11 +309,6 @@ dnl Checking types
 dnl
 AC_TYPE_UINT32_T
 
-dnl
-dnl Checking libraries
-dnl
-AC_CHECK_FUNCS(snprintf vsnprintf,, NEED_TRIO=1)
-
 dnl Checks for library functions.
 AC_CHECK_FUNCS([gettimeofday ftime stat isascii mmap munmap])
 

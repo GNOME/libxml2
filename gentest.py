@@ -825,7 +825,7 @@ test_%s(void) {
                 test.write(", ")
             else:
                 need = 1
-            if rtype != crtype:
+            if rtype != crtype and (rtype[-3:] != "Ptr" or rtype[:6] != "const "):
                 test.write("(%s)" % rtype)
             test.write("%s" % nam);
         test.write(");\n")
@@ -841,7 +841,7 @@ test_%s(void) {
                 test.write(", ")
             else:
                 need = 1
-            if rtype != crtype:
+            if rtype != crtype and (rtype[-3:] != "Ptr" or rtype[:6] != "const "):
                 test.write("(%s)" % rtype)
             test.write("%s" % nam)
         test.write(");\n")
@@ -859,7 +859,7 @@ test_%s(void) {
         # a better, more generic way to do this!
         if info.find('destroy') == -1:
             test.write("        des_%s(n_%s, " % (type, nam))
-            if rtype != crtype:
+            if rtype != crtype and (rtype[-3:] != "Ptr" or rtype[:6] != "const "):
                 test.write("(%s)" % rtype)
             test.write("%s, %d);\n" % (nam, i))
         i = i + 1;

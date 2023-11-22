@@ -2320,10 +2320,10 @@ test_htmlNodeStatus(void) {
         node = gen_const_htmlNodePtr(n_node, 0);
         legacy = gen_int(n_legacy, 1);
 
-        ret_val = htmlNodeStatus((const htmlNodePtr)node, legacy);
+        ret_val = htmlNodeStatus(node, legacy);
         desret_htmlStatus(ret_val);
         call_tests++;
-        des_const_htmlNodePtr(n_node, (const htmlNodePtr)node, 0);
+        des_const_htmlNodePtr(n_node, node, 0);
         des_int(n_legacy, legacy, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
@@ -10886,11 +10886,11 @@ test_xmlListCopy(void) {
         cur = gen_xmlListPtr(n_cur, 0);
         old = gen_const_xmlListPtr(n_old, 1);
 
-        ret_val = xmlListCopy(cur, (const xmlListPtr)old);
+        ret_val = xmlListCopy(cur, old);
         desret_int(ret_val);
         call_tests++;
         des_xmlListPtr(n_cur, cur, 0);
-        des_const_xmlListPtr(n_old, (const xmlListPtr)old, 1);
+        des_const_xmlListPtr(n_old, old, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlListCopy",
@@ -13645,10 +13645,10 @@ test_xmlParserAddNodeInfo(void) {
         ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
         info = gen_const_xmlParserNodeInfoPtr(n_info, 1);
 
-        xmlParserAddNodeInfo(ctxt, (const xmlParserNodeInfoPtr)info);
+        xmlParserAddNodeInfo(ctxt, info);
         call_tests++;
         des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        des_const_xmlParserNodeInfoPtr(n_info, (const xmlParserNodeInfoPtr)info, 1);
+        des_const_xmlParserNodeInfoPtr(n_info, info, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlParserAddNodeInfo",
@@ -13691,11 +13691,11 @@ test_xmlParserFindNodeInfo(void) {
         ctx = gen_const_xmlParserCtxtPtr(n_ctx, 0);
         node = gen_const_xmlNodePtr(n_node, 1);
 
-        ret_val = xmlParserFindNodeInfo((const xmlParserCtxtPtr)ctx, (const xmlNodePtr)node);
+        ret_val = xmlParserFindNodeInfo(ctx, node);
         desret_const_xmlParserNodeInfo_ptr(ret_val);
         call_tests++;
-        des_const_xmlParserCtxtPtr(n_ctx, (const xmlParserCtxtPtr)ctx, 0);
-        des_const_xmlNodePtr(n_node, (const xmlNodePtr)node, 1);
+        des_const_xmlParserCtxtPtr(n_ctx, ctx, 0);
+        des_const_xmlNodePtr(n_node, node, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlParserFindNodeInfo",
@@ -13734,11 +13734,11 @@ test_xmlParserFindNodeInfoIndex(void) {
         seq = gen_const_xmlParserNodeInfoSeqPtr(n_seq, 0);
         node = gen_const_xmlNodePtr(n_node, 1);
 
-        ret_val = xmlParserFindNodeInfoIndex((const xmlParserNodeInfoSeqPtr)seq, (const xmlNodePtr)node);
+        ret_val = xmlParserFindNodeInfoIndex(seq, node);
         desret_unsigned_long(ret_val);
         call_tests++;
-        des_const_xmlParserNodeInfoSeqPtr(n_seq, (const xmlParserNodeInfoSeqPtr)seq, 0);
-        des_const_xmlNodePtr(n_node, (const xmlNodePtr)node, 1);
+        des_const_xmlParserNodeInfoSeqPtr(n_seq, seq, 0);
+        des_const_xmlNodePtr(n_node, node, 1);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlParserFindNodeInfoIndex",

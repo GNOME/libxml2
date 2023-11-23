@@ -6307,7 +6307,7 @@ htmlAttrAllowed(const htmlElemDesc* elt, const xmlChar* attr, int legacy) {
  *	for other nodes, HTML_NA (no checks performed)
  */
 htmlStatus
-htmlNodeStatus(const htmlNodePtr node, int legacy) {
+htmlNodeStatus(htmlNodePtr node, int legacy) {
   if ( ! node )
     return HTML_INVALID ;
 

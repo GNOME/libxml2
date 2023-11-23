@@ -300,7 +300,7 @@ typedef enum {
 XMLPUBFUN htmlStatus htmlAttrAllowed(const htmlElemDesc*, const xmlChar*, int) ;
 XMLPUBFUN int htmlElementAllowedHere(const htmlElemDesc*, const xmlChar*) ;
 XMLPUBFUN htmlStatus htmlElementStatusHere(const htmlElemDesc*, const htmlElemDesc*) ;
-XMLPUBFUN htmlStatus htmlNodeStatus(const htmlNodePtr, int) ;
+XMLPUBFUN htmlStatus htmlNodeStatus(htmlNodePtr, int) ;
 /**
  * htmlDefaultSubelement:
  * @elt: HTML element

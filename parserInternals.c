@@ -2120,7 +2120,7 @@ xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
  * Returns an xmlParserNodeInfo block pointer or NULL
  */
 const xmlParserNodeInfo *
-xmlParserFindNodeInfo(const xmlParserCtxtPtr ctx, const xmlNodePtr node)
+xmlParserFindNodeInfo(xmlParserCtxtPtr ctx, xmlNodePtr node)
 {
     unsigned long pos;
 
@@ -2186,8 +2186,8 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  * Returns a long indicating the position of the record
  */
 unsigned long
-xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
-                           const xmlNodePtr node)
+xmlParserFindNodeInfoIndex(xmlParserNodeInfoSeqPtr seq,
+                           xmlNodePtr node)
 {
     unsigned long upper, lower, middle;
     int found = 0;
@@ -2228,7 +2228,7 @@ xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq,
  */
 void
 xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
-                     const xmlParserNodeInfoPtr info)
+                     xmlParserNodeInfoPtr info)
 {
     unsigned long pos;
 

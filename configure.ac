@@ -530,9 +530,6 @@ case ${host} in
     *-*-solaris*)
         XML_LIBDIR="${XML_LIBDIR} -R${libdir}"
         ;;
-    hppa*-hp-mpeix)
-        NEED_TRIO=1
-	;;
     *-*-cygwin* | *-*-mingw* | *-*-msys* )
         # If the host is Windows, and shared libraries are disabled, we
         # need to add -DLIBXML_STATIC to AM_CFLAGS in order for linking to
@@ -838,18 +835,6 @@ AC_SUBST(WITH_MODULES)
 AC_SUBST(MODULE_PLATFORM_LIBS)
 AC_SUBST(MODULE_EXTENSION)
 AM_CONDITIONAL(WITH_MODULES_SOURCES, test "$WITH_MODULES" = "1")
-
-dnl
-dnl Check for trio string functions
-dnl
-if test "${NEED_TRIO}" = "1" ; then
-    echo Adding trio library for string functions
-    WITH_TRIO=1
-else
-    WITH_TRIO=0
-fi
-AM_CONDITIONAL(WITH_TRIO_SOURCES, test "${NEED_TRIO}" = "1")
-AC_SUBST(WITH_TRIO)
 
 dnl
 dnl Thread-related stuff

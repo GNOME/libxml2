@@ -29,11 +29,6 @@
 #include "libxml_wrap.h"
 #include "libxml2-py.h"
 
-#if defined(WITH_TRIO)
-#include "trio.h"
-#define vsnprintf trio_vsnprintf
-#endif
-
 #if PY_MAJOR_VERSION >= 3
 PyObject *PyInit_libxml2mod(void);
 

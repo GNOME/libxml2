@@ -19,10 +19,6 @@ debugsym=None
 # C parser analysis code
 #
 ignored_files = {
-  "trio": "too many non standard macros",
-  "trio.c": "too many non standard macros",
-  "trionan.c": "too many non standard macros",
-  "triostr.c": "too many non standard macros",
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
   "testOOM.c": "out of memory tester",

@@ -28,7 +28,6 @@ var verMicroSuffix;
 var verCvs;
 var useCvsVer = true;
 /* Libxml features. */
-var withTrio = false;
 var withThreads = "native";
 var withFtp = true;
 var withHttp = true;
@@ -113,7 +112,6 @@ function usage()
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
 	txt += "either 'yes' or 'no', if not stated otherwise.\n\n";
 	txt += "\nXML processor options, default value given in parentheses:\n\n";
-	txt += "  trio:       Enable TRIO string manipulator (" + (withTrio? "yes" : "no")  + ")\n";
 	txt += "  threads:    Enable thread safety [no|ctls|native|posix] (" + (withThreads)  + ") \n";
 	txt += "  ftp:        Enable FTP client (" + (withFtp? "yes" : "no")  + ")\n";
 	txt += "  http:       Enable HTTP client (" + (withHttp? "yes" : "no")  + ")\n";
@@ -209,7 +207,6 @@ function discoverVersion()
 	cf.Close();
 	vf.WriteLine("XML_SRCDIR=" + srcDirXml);
 	vf.WriteLine("UTILS_SRCDIR=" + srcDirUtils);
-	vf.WriteLine("WITH_TRIO=" + (withTrio? "1" : "0"));
 	vf.WriteLine("WITH_THREADS=" + withThreads);
 	vf.WriteLine("WITH_FTP=" + (withFtp? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHttp? "1" : "0"));
@@ -296,8 +293,6 @@ function configureLibxml()
 				verMajor*10000 + verMinor*100 + verMicro*1));
 		} else if (s.search(/\@LIBXML_VERSION_EXTRA\@/) != -1) {
 			of.WriteLine(s.replace(/\@LIBXML_VERSION_EXTRA\@/, verCvs));
-		} else if (s.search(/\@WITH_TRIO\@/) != -1) {
-			of.WriteLine(s.replace(/\@WITH_TRIO\@/, withTrio? "1" : "0"));
 		} else if (s.search(/\@WITH_THREADS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_THREADS\@/, withThreads == "no"? "0" : "1"));
 		} else if (s.search(/\@WITH_THREAD_ALLOC\@/) != -1) {
@@ -451,9 +446,7 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 	if (opt.length == 0)
 		opt = arg.substring(0, arg.indexOf(":"));
 	if (opt.length > 0) {
-		if (opt == "trio")
-			withTrio = strToBool(arg.substring(opt.length + 1, arg.length));
-		else if (opt == "threads")
+		if (opt == "threads")
 			withThreads = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "ftp")
 			withFtp = strToBool(arg.substring(opt.length + 1, arg.length));
@@ -647,7 +640,6 @@ WScript.Echo("Created config.h.");
 // Display the final configuration. 
 var txtOut = "\nXML processor configuration\n";
 txtOut += "---------------------------\n";
-txtOut += "              Trio: " + boolToStr(withTrio) + "\n";
 txtOut += "     Thread safety: " + withThreads + "\n";
 txtOut += "        FTP client: " + boolToStr(withFtp) + "\n";
 txtOut += "       HTTP client: " + boolToStr(withHttp) + "\n";

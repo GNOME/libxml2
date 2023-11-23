@@ -38,11 +38,6 @@
   #define SYSCONFDIR "/etc"
 #endif
 
-#ifdef WITH_TRIO
-  #define TRIO_REPLACE_STDIO
-  #include "trio.h"
-#endif
-
 #if !defined(_WIN32) && \
     !defined(__CYGWIN__) && \
     (defined(__clang__) || \

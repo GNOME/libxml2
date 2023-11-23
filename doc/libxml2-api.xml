@@ -6437,7 +6437,18 @@ set at the end of parsing'/>
       <field name='unparsedEntityDecl' type='unparsedEntityDeclSAXFunc' info=''/>
       <field name='setDocumentLocator' type='setDocumentLocatorSAXFunc' info=''/>
       <field name='startDocument' type='startDocumentSAXFunc' info=''/>
-      <field name='endDocument' type='endDocumentSAXFunc' info=''/>
+      <field name='endDocument' type='endDocumentSAXFunc' info='* `startElement` and `endElement` are only used by the legacy SAX1
+* interface and should not be used in new software. If you really
+* have to enable SAX1, the preferred way is set the `initialized`
+* member to 1 instead of XML_SAX2_MAGIC.
+*
+* For backward compatibility, it&apos;s also possible to set the
+* `startElementNs` and `endElementNs` handlers to NULL.
+*
+* You can also set the XML_PARSE_SAX1 parser option, but versions
+* older than 2.12.0 will probably crash if this option is provided
+* together with custom SAX callbacks.
+*'/>
       <field name='startElement' type='startElementSAXFunc' info=''/>
       <field name='endElement' type='endElementSAXFunc' info=''/>
       <field name='reference' type='referenceSAXFunc' info=''/>
@@ -6450,8 +6461,11 @@ set at the end of parsing'/>
       <field name='fatalError' type='fatalErrorSAXFunc' info=' unused error() get all the errors'/>
       <field name='getParameterEntity' type='getParameterEntitySAXFunc' info=''/>
       <field name='cdataBlock' type='cdataBlockSAXFunc' info=''/>
-      <field name='externalSubset' type='externalSubsetSAXFunc' info=''/>
-      <field name='initialized' type='unsigned int' info=' The following fields are extensions available only on version 2'/>
+      <field name='externalSubset' type='externalSubsetSAXFunc' info='* `initialized` should always be set to XML_SAX2_MAGIC to enable the
+* modern SAX2 interface.
+*'/>
+      <field name='initialized' type='unsigned int' info='* The following members are only used by the SAX2 interface.
+*'/>
       <field name='_private' type='void *' info=''/>
       <field name='startElementNs' type='startElementNsSAX2Func' info=''/>
       <field name='endElementNs' type='endElementNsSAX2Func' info=''/>
@@ -7523,7 +7537,7 @@ Could we use @subtypes for this?'/>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
       <info>Checks whether the tree node is valid.  Experimental (the author only uses the HTML enhancements in a SAX parser)</info>
       <return type='htmlStatus' info='for Element nodes, a return from htmlElementAllowedHere (if legacy allowed) or htmlElementStatusHere (otherwise). for Attribute nodes, a return from htmlAttrAllowed for other nodes, HTML_NA (no checks performed)'/>
-      <arg name='node' type='const htmlNodePtr' info='an htmlNodePtr in a tree'/>
+      <arg name='node' type='htmlNodePtr' info='an htmlNodePtr in a tree'/>
       <arg name='legacy' type='int' info='whether to allow deprecated elements (YES is faster here for Element nodes)'/>
     </function>
     <function name='htmlParseCharRef' file='HTMLparser' module='HTMLparser'>
@@ -10595,7 +10609,7 @@ Could we use @subtypes for this?'/>
       <info>Move all the element from the old list in the new list</info>
       <return type='int' info='0 in case of success 1 in case of error'/>
       <arg name='cur' type='xmlListPtr' info='the new list'/>
-      <arg name='old' type='const xmlListPtr' info='the old list'/>
+      <arg name='old' type='xmlListPtr' info='the old list'/>
     </function>
     <function name='xmlListCreate' file='list' module='list'>
       <info>Create a new list</info>
@@ -10622,7 +10636,7 @@ Could we use @subtypes for this?'/>
     <function name='xmlListDup' file='list' module='list'>
       <info>Duplicate the list</info>
       <return type='xmlListPtr' info='a new copy of the list or NULL in case of error'/>
-      <arg name='old' type='const xmlListPtr' info='the list'/>
+      <arg name='old' type='xmlListPtr' info='the list'/>
     </function>
     <function name='xmlListEmpty' file='list' module='list'>
       <info>Is the list empty ?</info>
@@ -12199,7 +12213,7 @@ Could we use @subtypes for this?'/>
       <info>DEPRECATED: Don&apos;t use.  Insert node info record into the sorted sequence</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='info' type='const xmlParserNodeInfoPtr' info='a node info sequence pointer'/>
+      <arg name='info' type='xmlParserNodeInfoPtr' info='a node info sequence pointer'/>
     </function>
     <function name='xmlParserError' file='xmlerror' module='error'>
       <info>Display and format an error messages, gives file, line, position and extra parameters.</info>
@@ -12211,14 +12225,14 @@ Could we use @subtypes for this?'/>
     <function name='xmlParserFindNodeInfo' file='parser' module='parserInternals'>
       <info>DEPRECATED: Don&apos;t use.  Find the parser node info struct for a given node</info>
       <return type='const xmlParserNodeInfo *' info='an xmlParserNodeInfo block pointer or NULL'/>
-      <arg name='ctx' type='const xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='node' type='const xmlNodePtr' info='an XML node within the tree'/>
+      <arg name='ctx' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='node' type='xmlNodePtr' info='an XML node within the tree'/>
     </function>
     <function name='xmlParserFindNodeInfoIndex' file='parser' module='parserInternals'>
       <info>DEPRECATED: Don&apos;t use.  xmlParserFindNodeInfoIndex : Find the index that the info record for the given node is or should be at in a sorted sequence</info>
       <return type='unsigned long' info='a long indicating the position of the record'/>
-      <arg name='seq' type='const xmlParserNodeInfoSeqPtr' info='a node info sequence pointer'/>
-      <arg name='node' type='const xmlNodePtr' info='an XML node pointer'/>
+      <arg name='seq' type='xmlParserNodeInfoSeqPtr' info='a node info sequence pointer'/>
+      <arg name='node' type='xmlNodePtr' info='an XML node pointer'/>
     </function>
     <function name='xmlParserGetDirectory' file='xmlIO' module='xmlIO'>
       <info>lookup the directory for that file</info>

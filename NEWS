@@ -1,5 +1,20 @@
 NEWS file for libxml2
 
+v2.12.1: Nov 23 2023
+
+### Regressions
+
+- hash: Fix deletion of entries during scan
+- parser: Only enable SAX2 if there are SAX2 element handlers
+
+### Build fixes
+
+- autotools: Stop checking for snprintf
+- dict: Fix '__thread' before 'static'
+- fix: pthread weak references in globals.c (Mike Dalessio)
+- tests: Fix build with older MSVC
+
+
 v2.12.0: Nov 16 2023
 
 ### Major changes

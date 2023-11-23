@@ -603,10 +603,6 @@ static char *resultFilename(const char *filename, const char *out,
         out = "";
 
     strncpy(suffixbuff,suffix,499);
-#ifdef VMS
-    if(strstr(base,".") && suffixbuff[0]=='.')
-      suffixbuff[0]='_';
-#endif
 
     if (snprintf(res, 499, "%s%s%s", out, base, suffixbuff) >= 499)
         res[499] = 0;

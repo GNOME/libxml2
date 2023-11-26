@@ -849,7 +849,14 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
              *   the single character #xA.
              */
             if (c == '\r') {
-                *len = ((cur[1] == '\n') ? 2 : 1);
+                /*
+                 * TODO: This function shouldn't change the 'cur' pointer
+                 * as side effect, but the NEXTL macro in parser.c relies
+                 * on this behavior when incrementing line numbers.
+                 */
+                if (cur[1] == '\n')
+                    ctxt->input->cur++;
+                *len = 1;
                 c = '\n';
             } else if (c == 0) {
                 if (ctxt->input->cur >= ctxt->input->end) {

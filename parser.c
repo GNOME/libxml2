@@ -8949,7 +8949,7 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
 static xmlHashedString
 xmlParseQNameHashed(xmlParserCtxtPtr ctxt, xmlHashedString *prefix) {
     xmlHashedString l, p;
-    int start;
+    int start, isNCName = 0;
 
     l.name = NULL;
     p.name = NULL;
@@ -8960,10 +8960,13 @@ xmlParseQNameHashed(xmlParserCtxtPtr ctxt, xmlHashedString *prefix) {
     start = CUR_PTR - BASE_PTR;
 
     l = xmlParseNCName(ctxt);
-    if ((l.name != NULL) && (CUR == ':')) {
-        NEXT;
-	p = l;
-	l = xmlParseNCName(ctxt);
+    if (l.name != NULL) {
+        isNCName = 1;
+        if (CUR == ':') {
+            NEXT;
+            p = l;
+            l = xmlParseNCName(ctxt);
+        }
     }
     if ((l.name == NULL) || (CUR == ':')) {
         xmlChar *tmp;
@@ -8972,7 +8975,7 @@ xmlParseQNameHashed(xmlParserCtxtPtr ctxt, xmlHashedString *prefix) {
         p.name = NULL;
         if (ctxt->instate == XML_PARSER_EOF)
             return(l);
-        if ((CUR != ':') && (CUR_PTR <= BASE_PTR + start))
+        if ((isNCName == 0) && (CUR != ':'))
             return(l);
         tmp = xmlParseNmtoken(ctxt);
         if (tmp != NULL)

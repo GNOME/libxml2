@@ -19,6 +19,8 @@ without serious troubles on a variety of systems (Linux, Unix, Windows,
 CygWin, MacOS X, RISC Os, OS/2, QNX, MVS,
 ...)</description>
   <developer-forum rdf:resource="https://discourse.gnome.org/tag/libxml2" />
+  <download-page rdf:resource="https://download.gnome.org/sources/libxml2/" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/libxml2/issues/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#infrastructure" />
   <programming-language>C</programming-language>
 

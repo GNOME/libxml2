@@ -92,7 +92,6 @@ math(EXPR LIBXML_VERSION_NUMBER "
 set(MODULE_EXTENSION "${CMAKE_SHARED_LIBRARY_SUFFIX}")
 
 set(PACKAGE "libxml2")
-set(PACKAGE_BUGREPORT "xml@gnome.org")
 set(PACKAGE_NAME "libxml2")
 set(PACKAGE_STRING "libxml2 ${VERSION}")
 set(PACKAGE_TARNAME "libxml2")
@@ -160,7 +159,6 @@ if (NOT MSVC)
 	check_include_files(unistd.h HAVE_UNISTD_H)
 	check_symbol_exists(va_copy stdarg.h HAVE_VA_COPY)
 	check_symbol_exists(__va_copy stdarg.h HAVE___VA_COPY)
-	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <stdarg.h>
 		void a(va_list* ap) {};
@@ -725,7 +723,6 @@ set(CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "${PACKAGE_TARNAME}-utils")
 set(CPACK_DEBIAN_RUNTIME_PACKAGE_SECTION "libs")
 set(CPACK_NSIS_PACKAGE_NAME ${PACKAGE_STRING})
 set(CPACK_NSIS_URL_INFO_ABOUT ${PACKAGE_URL})
-set(CPACK_PACKAGE_CONTACT ${PACKAGE_BUGREPORT})
 set(CPACK_PACKAGE_DISPLAY_NAME ${PACKAGE_STRING})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PACKAGE_TARNAME}-${PACKAGE_VERSION}")
 set(CPACK_PACKAGE_NAME ${PACKAGE_TARNAME})

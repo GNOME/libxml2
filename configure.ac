@@ -317,37 +317,6 @@ AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 #  undef /**/ HAVE_MMAP
 #endif])
 
-dnl Checking for va_copy availability
-AC_MSG_CHECKING([for va_copy])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h>
-va_list ap1,ap2;]], [[va_copy(ap1,ap2);]])],
-have_va_copy=yes,
-have_va_copy=no)
-AC_MSG_RESULT($have_va_copy)
-if test x"$have_va_copy" = x"yes"; then
-    AC_DEFINE(HAVE_VA_COPY,1,[Whether va_copy() is available])
-else
-    AC_MSG_CHECKING([for __va_copy])
-    AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h>
-    va_list ap1,ap2;]], [[__va_copy(ap1,ap2);]])],
-    have___va_copy=yes,
-    have___va_copy=no)
-    AC_MSG_RESULT($have___va_copy)
-    if test x"$have___va_copy" = x"yes"; then
-        AC_DEFINE(HAVE___VA_COPY,1,[Whether __va_copy() is available])
-    fi
-fi
-
-dnl Checking whether va_list is an array type
-AC_MSG_CHECKING([whether va_list is an array type])
-AC_TRY_COMPILE2([
-#include <stdarg.h>
-void a(va_list * ap) {}],[
-va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1],[
-  AC_MSG_RESULT(no)],[
-  AC_MSG_RESULT(yes)
-  AC_DEFINE([VA_LIST_IS_ARRAY], [1],[Define if va_list is an array type])])
-
 dnl
 dnl Checks for inet libraries
 dnl

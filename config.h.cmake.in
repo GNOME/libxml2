@@ -90,14 +90,8 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine HAVE_UNISTD_H 1
 
-/* Whether va_copy() is available */
-#cmakedefine HAVE_VA_COPY 1
-
 /* Define to 1 if you have the <zlib.h> header file. */
 #cmakedefine HAVE_ZLIB_H 1
-
-/* Whether __va_copy() is available */
-#cmakedefine HAVE___VA_COPY 1
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #cmakedefine LT_OBJDIR "@LT_OBJDIR@"
@@ -125,9 +119,6 @@
 
 /* Support for IPv6 */
 #cmakedefine SUPPORT_IP6 1
-
-/* Define if va_list is an array type */
-#cmakedefine VA_LIST_IS_ARRAY 1
 
 /* Version number of package */
 #cmakedefine VERSION "@VERSION@"

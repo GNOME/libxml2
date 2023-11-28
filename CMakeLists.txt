@@ -157,19 +157,7 @@ if (NOT MSVC)
 	check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)
 	check_include_files(sys/time.h HAVE_SYS_TIME_H)
 	check_include_files(unistd.h HAVE_UNISTD_H)
-	check_symbol_exists(va_copy stdarg.h HAVE_VA_COPY)
-	check_symbol_exists(__va_copy stdarg.h HAVE___VA_COPY)
 	set(LT_OBJDIR ".libs/")
-	check_c_source_compiles("
-		#include <stdarg.h>
-		void a(va_list* ap) {};
-		int main() { va_list ap1, ap2; a(&ap1); ap2 = (va_list) ap1; return 0; }
-	" VA_LIST_IS_ARRAY_TEST)
-	if(VA_LIST_IS_ARRAY_TEST)
-		set(VA_LIST_IS_ARRAY FALSE)
-	else()
-		set(VA_LIST_IS_ARRAY TRUE)
-	endif()
 	check_c_source_compiles("
 		#include <stddef.h>
 		#include <sys/socket.h>

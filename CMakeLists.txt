@@ -91,7 +91,6 @@ math(EXPR LIBXML_VERSION_NUMBER "
 set(MODULE_EXTENSION "${CMAKE_SHARED_LIBRARY_SUFFIX}")
 
 set(PACKAGE "libxml2")
-set(PACKAGE_BUGREPORT "xml@gnome.org")
 set(PACKAGE_NAME "libxml2")
 set(PACKAGE_STRING "libxml2 ${VERSION}")
 set(PACKAGE_TARNAME "libxml2")
@@ -157,7 +156,6 @@ if (NOT MSVC)
 	check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)
 	check_include_files(sys/time.h HAVE_SYS_TIME_H)
 	check_include_files(unistd.h HAVE_UNISTD_H)
-	set(LT_OBJDIR ".libs/")
 	check_c_source_compiles("
 		#include <stddef.h>
 		#include <sys/socket.h>
@@ -708,7 +706,6 @@ set(CPACK_DEBIAN_RUNTIME_PACKAGE_RECOMMENDS "${PACKAGE_TARNAME}-utils")
 set(CPACK_DEBIAN_RUNTIME_PACKAGE_SECTION "libs")
 set(CPACK_NSIS_PACKAGE_NAME ${PACKAGE_STRING})
 set(CPACK_NSIS_URL_INFO_ABOUT ${PACKAGE_URL})
-set(CPACK_PACKAGE_CONTACT ${PACKAGE_BUGREPORT})
 set(CPACK_PACKAGE_DISPLAY_NAME ${PACKAGE_STRING})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PACKAGE_TARNAME}-${PACKAGE_VERSION}")
 set(CPACK_PACKAGE_NAME ${PACKAGE_TARNAME})

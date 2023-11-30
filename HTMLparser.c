@@ -5121,7 +5121,8 @@ htmlNewSAXParserCtxt(const htmlSAXHandler *sax, void *userData)
  * @buffer:  a pointer to a char array
  * @size:  the size of the array
  *
- * Create a parser context for an HTML in-memory document.
+ * Create a parser context for an HTML in-memory document. The input buffer
+ * must not contain a terminating null byte.
  *
  * Returns the new parser context or NULL
  */
@@ -6629,7 +6630,8 @@ htmlReadFile(const char *filename, const char *encoding, int options)
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of htmlParserOption(s)
  *
- * parse an XML in-memory document and build a tree.
+ * Parse an HTML in-memory document and build a tree. The input buffer must
+ * not contain a terminating null byte.
  *
  * Returns the resulting document tree
  */
@@ -6821,7 +6823,8 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of htmlParserOption(s)
  *
- * parse an XML in-memory document and build a tree.
+ * Parse an HTML in-memory document and build a tree. The input buffer must
+ * not contain a terminating null byte.
  * This reuses the existing @ctxt parser context
  *
  * Returns the resulting document tree

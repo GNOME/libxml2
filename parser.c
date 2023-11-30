@@ -13987,7 +13987,8 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
  * @buffer:  a pointer to a char array
  * @size:  the size of the array
  *
- * Create a parser context for an XML in-memory document.
+ * Create a parser context for an XML in-memory document. The input buffer
+ * must not contain a terminating null byte.
  *
  * Returns the new parser context or NULL
  */
@@ -14831,7 +14832,8 @@ xmlReadFile(const char *filename, const char *encoding, int options)
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption
  *
- * parse an XML in-memory document and build a tree.
+ * Parse an XML in-memory document and build a tree. The input buffer must
+ * not contain a terminating null byte.
  *
  * Returns the resulting document tree
  */
@@ -15023,7 +15025,8 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
  * @encoding:  the document encoding, or NULL
  * @options:  a combination of xmlParserOption
  *
- * parse an XML in-memory document and build a tree.
+ * Parse an XML in-memory document and build a tree. The input buffer must
+ * not contain a terminating null byte.
  * This reuses the existing @ctxt parser context
  *
  * Returns the resulting document tree

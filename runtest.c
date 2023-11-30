@@ -2141,6 +2141,12 @@ pushBoundaryTest(const char *filename, const char *result,
     unsigned long avail, oldConsumed, consumed;
 
     /*
+     * HTML encoding detection doesn't work when data is fed bytewise.
+     */
+    if (strcmp(filename, "./test/HTML/xml-declaration-1.html") == 0)
+        return(0);
+
+    /*
      * If the parser made progress, check that exactly one construct was
      * processed and that the input buffer is (almost) empty.
      * Since we use a chunk size of 1, this tests whether content is

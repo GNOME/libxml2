@@ -4852,6 +4852,14 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     xmlDetectEncoding(ctxt);
 
     /*
+     * This is wrong but matches long-standing behavior. In most cases,
+     * a document starting with an XML declaration will specify UTF-8.
+     */
+    if (((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) &&
+        (xmlStrncmp(ctxt->input->cur, BAD_CAST "<?xm", 4) == 0))
+        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_UTF8);
+
+    /*
      * Wipe out everything which is before the first '<'
      */
     SKIP_BLANKS;
@@ -5408,6 +5416,16 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 */
 	        goto done;
             case XML_PARSER_START:
+                /*
+                 * This is wrong but matches long-standing behavior. In most
+                 * cases, a document starting with an XML declaration will
+                 * specify UTF-8.
+                 */
+                if (((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) &&
+                    (xmlStrncmp(ctxt->input->cur, BAD_CAST "<?xm", 4) == 0)) {
+                    xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_UTF8);
+                }
+
 	        /*
 		 * Very first chars read from the document flow.
 		 */

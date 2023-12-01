@@ -100,8 +100,14 @@ static xmlMutex xmlThrDefMutex;
  * On Darwin, thread-local storage destructors seem to be run before
  * pthread thread-specific data destructors. This causes ASan to
  * report a use-after-free.
+ *
+ * On Windows, we can't use TLS in static builds. The RegisterWait
+ * callback would run after TLS was deallocated.
  */
-#if defined(XML_THREAD_LOCAL) && !defined(__APPLE__)
+#if defined(XML_THREAD_LOCAL) && \
+    !defined(__APPLE__) && \
+    (!defined(HAVE_WIN32_THREADS) || \
+     !defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
 #define USE_TLS
 #endif
 

@@ -13416,6 +13416,8 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
 	ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
 	ctxt->dictNames = 1;
+        newDoc->dict = ctxt->dict;
+        xmlDictReference(newDoc->dict);
     } else {
 	xmlCtxtUseOptionsInternal(ctxt, XML_PARSE_NODICT, NULL);
     }
@@ -13441,7 +13443,6 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 	ctxt->myDoc = newDoc;
     } else {
 	ctxt->myDoc = newDoc;
-	newDoc->children->doc = doc;
 	/* Ensure that doc has XML spec namespace */
 	xmlSearchNsByHref(doc, (xmlNodePtr)doc, XML_XML_NAMESPACE);
 	newDoc->oldNs = doc->oldNs;

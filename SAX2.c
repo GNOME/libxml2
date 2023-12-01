@@ -1897,8 +1897,17 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     memset(ret, 0, sizeof(xmlAttr));
     ret->type = XML_ATTRIBUTE_NODE;
 
+    /*
+     * xmlParseBalancedChunkMemoryRecover had a bug that could result in
+     * a mismatch between ctxt->node->doc and ctxt->myDoc. We use
+     * ctxt->node->doc here, but we should somehow make sure that the
+     * document pointers match.
+     */
+
+    /* assert(ctxt->node->doc == ctxt->myDoc); */
+
     ret->parent = ctxt->node;
-    ret->doc = ctxt->myDoc;
+    ret->doc = ctxt->node->doc;
     ret->ns = namespace;
 
     if (ctxt->dictNames)

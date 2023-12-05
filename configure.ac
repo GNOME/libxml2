@@ -136,7 +136,7 @@ AC_ARG_WITH(legacy,
 [  --with-legacy           maximum ABI compatibility (off)])
 
 AC_ARG_WITH(tls,
-[  --with-tls              thread-local storage (on)])
+[  --with-tls              thread-local storage (off)])
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
 AC_ARG_WITH(coverage,

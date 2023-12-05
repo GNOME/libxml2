@@ -439,7 +439,7 @@ XML_INCLUDEDIR='-I${includedir}/libxml2'
 XML_CFLAGS=""
 
 dnl Thread-local storage
-if test "$with_tls" != "no"; then
+if test "$with_tls" = "yes"; then
     AC_COMPILE_IFELSE([
         AC_LANG_SOURCE([_Thread_local int v;]) ], [
         AC_DEFINE([XML_THREAD_LOCAL], [_Thread_local], [TLS specifier]) ], [

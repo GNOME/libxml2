@@ -52,6 +52,7 @@ option(LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON)
 option(LIBXML2_WITH_TESTS "Build tests" ON)
 option(LIBXML2_WITH_THREADS "Add multithread support" ON)
 option(LIBXML2_WITH_THREAD_ALLOC "Add per-thread memory" OFF)
+option(LIBXML2_WITH_TLS "Enable thread-local storage" OFF)
 option(LIBXML2_WITH_TREE "Add the DOM like tree manipulation APIs" ON)
 set(LIBXML2_WITH_TRIO OFF)
 set(LIBXML2_WITH_UNICODE ON)
@@ -195,28 +196,30 @@ if (NOT MSVC)
 	endif()
 endif()
 
-check_c_source_compiles(
-    "_Thread_local int v; int main(){return 0;}"
-    XML_THREAD_LOCAL_C11
-)
-if (XML_THREAD_LOCAL_C11)
-    set(XML_THREAD_LOCAL "_Thread_local")
-else()
-    check_c_source_compiles(
-        "__thread int v; int main(){return 0;}"
-        XML_THREAD_LOCAL_THREAD
-    )
-    if (XML_THREAD_LOCAL_THREAD)
-        set(XML_THREAD_LOCAL "__thread")
-    else()
-        check_c_source_compiles(
-            "__declspec(thread) int v; int main(){return 0;}"
-            XML_THREAD_LOCAL_DECLSPEC
-        )
-        if (XML_THREAD_LOCAL_DECLSPEC)
-            set(XML_THREAD_LOCAL "__declspec(thread)")
-        endif()
-    endif()
+if(LIBXML2_WITH_TLS)
+	check_c_source_compiles(
+		"_Thread_local int v; int main(){return 0;}"
+		XML_THREAD_LOCAL_C11
+	)
+	if (XML_THREAD_LOCAL_C11)
+		set(XML_THREAD_LOCAL "_Thread_local")
+	else()
+		check_c_source_compiles(
+			"__thread int v; int main(){return 0;}"
+			XML_THREAD_LOCAL_THREAD
+		)
+		if (XML_THREAD_LOCAL_THREAD)
+			set(XML_THREAD_LOCAL "__thread")
+		else()
+			check_c_source_compiles(
+				"__declspec(thread) int v; int main(){return 0;}"
+				XML_THREAD_LOCAL_DECLSPEC
+			)
+			if (XML_THREAD_LOCAL_DECLSPEC)
+				set(XML_THREAD_LOCAL "__declspec(thread)")
+			endif()
+		endif()
+	endif()
 endif()
 
 set(

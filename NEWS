@@ -1,5 +1,22 @@
 NEWS file for libxml2
 
+v2.12.2: Dec 5 2023
+
+### Regressions
+
+- parser: Fix invalid free in xmlParseBalancedChunkMemoryRecover
+- globals: Disable TLS in static Windows builds
+- html: Reenable buggy detection of XML declarations
+- tree: Fix regression when copying DTDs
+- parser: Make CRLF increment line number
+
+### Build fixes
+
+- build: Disable compiler TLS by default
+- cmake: Update config.h.cmake.in
+- tests: Fix tests --with-valid --without-xinclude
+
+
 v2.12.1: Nov 23 2023
 
 ### Regressions

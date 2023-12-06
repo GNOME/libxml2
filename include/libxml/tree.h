@@ -9,6 +9,15 @@
  * Author: Daniel Veillard
  */
 
+#ifndef XML_TREE_INTERNALS
+
+/*
+ * Emulate circular dependency for backward compatibility
+ */
+#include <libxml/parser.h>
+
+#else /* XML_TREE_INTERNALS */
+
 #ifndef __XML_TREE_H__
 #define __XML_TREE_H__
 
@@ -1368,4 +1377,6 @@ XML_DEPRECATED XMLPUBFUN int
 #endif
 
 #endif /* __XML_TREE_H__ */
+
+#endif /* XML_TREE_INTERNALS */
 

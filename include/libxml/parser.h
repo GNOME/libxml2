@@ -841,15 +841,30 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
  */
 
 XMLPUBVAR const char *const xmlParserVersion;
+XML_DEPRECATED
+XMLPUBVAR const int oldXMLWDcompatibility;
+XML_DEPRECATED
+XMLPUBVAR const xmlSAXLocator xmlDefaultSAXLocator;
+#ifdef LIBXML_SAX1_ENABLED
+XML_DEPRECATED
+XMLPUBVAR const xmlSAXHandlerV1 xmlDefaultSAXHandler;
+#endif
+
 #ifdef LIBXML_THREAD_ENABLED
 /* backward compatibility */
 XMLPUBFUN const char *const *__xmlParserVersion(void);
+XML_DEPRECATED
+XMLPUBFUN const int *__oldXMLWDcompatibility(void);
+XML_DEPRECATED
+XMLPUBFUN const xmlSAXLocator *__xmlDefaultSAXLocator(void);
+#ifdef LIBXML_SAX1_ENABLED
+XML_DEPRECATED
+XMLPUBFUN const xmlSAXHandlerV1 *__xmlDefaultSAXHandler(void);
+#endif
 #endif
 
 /** DOC_DISABLE */
-#define XML_GLOBALS_PARSER_CORE \
-  XML_OP(oldXMLWDcompatibility, int, XML_DEPRECATED) \
-  XML_OP(xmlDefaultSAXLocator, xmlSAXLocator, XML_DEPRECATED) \
+#define XML_GLOBALS_PARSER \
   XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlGetWarningsDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlKeepBlanksDefaultValue, int, XML_DEPRECATED) \
@@ -858,17 +873,6 @@ XMLPUBFUN const char *const *__xmlParserVersion(void);
   XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED)
-
-#ifdef LIBXML_SAX1_ENABLED
-  #define XML_GLOBALS_PARSER_SAX1 \
-    XML_OP(xmlDefaultSAXHandler, xmlSAXHandlerV1, XML_DEPRECATED)
-#else
-  #define XML_GLOBALS_PARSER_SAX1
-#endif
-
-#define XML_GLOBALS_PARSER \
-  XML_GLOBALS_PARSER_CORE \
-  XML_GLOBALS_PARSER_SAX1
 
 #define XML_OP XML_DECLARE_GLOBAL
 XML_GLOBALS_PARSER

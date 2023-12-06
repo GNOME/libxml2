@@ -859,7 +859,10 @@ XMLPUBFUN const char *const *__xmlParserVersion(void);
   XML_OP(xmlLoadExtDtdDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED)
+  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED) \
+  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
+  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
+  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY)
 
 #ifdef LIBXML_SAX1_ENABLED
   #define XML_GLOBALS_PARSER_SAX1 \
@@ -893,6 +896,9 @@ XML_GLOBALS_PARSER
     XML_GLOBAL_MACRO(xmlPedanticParserDefaultValue)
   #define xmlSubstituteEntitiesDefaultValue \
     XML_GLOBAL_MACRO(xmlSubstituteEntitiesDefaultValue)
+  #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)
+  #define xmlTreeIndentString XML_GLOBAL_MACRO(xmlTreeIndentString)
+  #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)
 #endif
 /** DOC_ENABLE */
 

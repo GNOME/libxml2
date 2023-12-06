@@ -11,7 +11,9 @@
 #define __XML_PARSER_H__
 
 #include <libxml/xmlversion.h>
+#define XML_TREE_INTERNALS
 #include <libxml/tree.h>
+#undef XML_TREE_INTERNALS
 #include <libxml/dict.h>
 #include <libxml/hash.h>
 #include <libxml/valid.h>

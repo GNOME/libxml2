@@ -860,9 +860,9 @@ XMLPUBFUN const char *const *__xmlParserVersion(void);
   XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
-  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
-  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY)
+  XML_OP(xmlIndentTreeOutput, int, XML_NO_ATTR) \
+  XML_OP(xmlTreeIndentString, const char *, XML_NO_ATTR) \
+  XML_OP(xmlSaveNoEmptyTags, int, XML_NO_ATTR)
 
 #ifdef LIBXML_SAX1_ENABLED
   #define XML_GLOBALS_PARSER_SAX1 \

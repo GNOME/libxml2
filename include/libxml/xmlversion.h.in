@@ -492,7 +492,7 @@ XMLPUBFUN void xmlCheckVersion(int version);
 #endif
 #endif /* __GNUC__ */
 
-#define XML_EMPTY
+#define XML_NO_ATTR
 
 #ifdef LIBXML_THREAD_ENABLED
   #define XML_DECLARE_GLOBAL(name, type, attrs) \

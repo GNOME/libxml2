@@ -911,6 +911,12 @@ XMLPUBFUN void
 		xmlInitParser		(void);
 XMLPUBFUN void
 		xmlCleanupParser	(void);
+XML_DEPRECATED
+XMLPUBFUN void
+		xmlInitGlobals		(void);
+XML_DEPRECATED
+XMLPUBFUN void
+		xmlCleanupGlobals	(void);
 
 /*
  * Input functions

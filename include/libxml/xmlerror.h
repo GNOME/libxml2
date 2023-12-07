@@ -861,10 +861,10 @@ typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);
 /** DOC_DISABLE */
 #define XML_GLOBALS_ERROR \
   XML_OP(xmlLastError, xmlError, XML_DEPRECATED) \
-  XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_EMPTY) \
-  XML_OP(xmlGenericErrorContext, void *, XML_EMPTY) \
-  XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_EMPTY) \
-  XML_OP(xmlStructuredErrorContext, void *, XML_EMPTY)
+  XML_OP(xmlGenericError, xmlGenericErrorFunc, XML_NO_ATTR) \
+  XML_OP(xmlGenericErrorContext, void *, XML_NO_ATTR) \
+  XML_OP(xmlStructuredError, xmlStructuredErrorFunc, XML_NO_ATTR) \
+  XML_OP(xmlStructuredErrorContext, void *, XML_NO_ATTR)
 
 #define XML_OP XML_DECLARE_GLOBAL
 XML_GLOBALS_ERROR

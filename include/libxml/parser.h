@@ -873,9 +873,9 @@ XMLPUBFUN const xmlSAXHandlerV1 *__xmlDefaultSAXHandler(void);
   XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlIndentTreeOutput, int, XML_EMPTY) \
-  XML_OP(xmlTreeIndentString, const char *, XML_EMPTY) \
-  XML_OP(xmlSaveNoEmptyTags, int, XML_EMPTY)
+  XML_OP(xmlIndentTreeOutput, int, XML_NO_ATTR) \
+  XML_OP(xmlTreeIndentString, const char *, XML_NO_ATTR) \
+  XML_OP(xmlSaveNoEmptyTags, int, XML_NO_ATTR)
 
 #define XML_OP XML_DECLARE_GLOBAL
 XML_GLOBALS_PARSER

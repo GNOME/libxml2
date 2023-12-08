@@ -1689,13 +1689,11 @@ xmlParserNsPush(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
         oldIndex = ctxt->nsdb->defaultNsIndex;
 
         if (oldIndex != INT_MAX) {
-            if (defAttr != 0)
-                return(0);
-
             extra = &ctxt->nsdb->extra[oldIndex];
 
             if (extra->elementId == ctxt->nsdb->elementId) {
-                xmlErrAttributeDup(ctxt, NULL, BAD_CAST "xmlns");
+                if (defAttr == 0)
+                    xmlErrAttributeDup(ctxt, NULL, BAD_CAST "xmlns");
                 return(0);
             }
 
@@ -1715,14 +1713,12 @@ xmlParserNsPush(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
     if (oldIndex != INT_MAX) {
         extra = &ctxt->nsdb->extra[oldIndex];
 
-        if (defAttr != 0)
-            return(0);
-
         /*
          * Check for duplicate definitions on the same element.
          */
         if (extra->elementId == ctxt->nsdb->elementId) {
-            xmlErrAttributeDup(ctxt, BAD_CAST "xmlns", prefix->name);
+            if (defAttr == 0)
+                xmlErrAttributeDup(ctxt, BAD_CAST "xmlns", prefix->name);
             return(0);
         }
 

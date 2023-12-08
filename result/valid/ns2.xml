@@ -7,5 +7,5 @@
 <!ATTLIST a:inner attr CDATA #FIXED "yes">
 ]>
 <a:outer xmlns:a="urn:namespace">
-  <a:inner/>
+  <a:inner xmlns:a="urn:namespace"/>
 </a:outer>

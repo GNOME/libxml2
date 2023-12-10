@@ -25,8 +25,6 @@
   #endif
 #endif
 
-#define XML_MAX_ERRORS 100
-
 #define XML_GET_VAR_STR(msg, str) \
     do { \
         va_list ap; \
@@ -500,8 +498,6 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
     xmlParserCtxtPtr ctxt = NULL;
     xmlNodePtr node = (xmlNodePtr) nod;
     char *str = NULL;
-    xmlParserInputPtr input = NULL;
-
     /* xmlLastError is a macro retrieving the per-thread global. */
     xmlErrorPtr lastError = &xmlLastError;
     xmlErrorPtr to = lastError;
@@ -515,25 +511,6 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
         (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
 	(domain == XML_FROM_IO) || (domain == XML_FROM_VALID)) {
 	ctxt = (xmlParserCtxtPtr) ctx;
-
-        if (ctxt != NULL) {
-            if (level == XML_ERR_WARNING) {
-                if (ctxt->nbWarnings >= XML_MAX_ERRORS)
-                    return(0);
-                ctxt->nbWarnings += 1;
-            } else {
-                if (ctxt->nbErrors >= XML_MAX_ERRORS)
-                    return(0);
-                ctxt->nbErrors += 1;
-            }
-
-            if ((schannel == NULL) && (ctxt->sax != NULL) &&
-                (ctxt->sax->initialized == XML_SAX2_MAGIC) &&
-                (ctxt->sax->serror != NULL)) {
-                schannel = ctxt->sax->serror;
-                data = ctxt->userData;
-            }
-        }
     }
     /*
      * Check if structured error handler set
@@ -560,18 +537,10 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
     /*
      * specific processing if a parser context is provided
      */
-    if ((ctxt != NULL) && (ctxt->input != NULL)) {
-        if (file == NULL) {
-            input = ctxt->input;
-            if ((input->filename == NULL) && (ctxt->inputNr > 1)) {
-                input = ctxt->inputTab[ctxt->inputNr - 2];
-            }
-            file = input->filename;
-            line = input->line;
-            col = input->col;
-        }
+    if (ctxt != NULL)
         to = &ctxt->lastError;
-    } else if ((node != NULL) && (file == NULL)) {
+
+    if ((node != NULL) && (file == NULL)) {
 	int i;
 
 	if ((node->doc != NULL) && (node->doc->URL != NULL)) {
@@ -678,14 +647,7 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
     /*
      * Find the callback channel if channel param is NULL
      */
-    if ((ctxt != NULL) && (channel == NULL) &&
-        (xmlStructuredError == NULL) && (ctxt->sax != NULL)) {
-        if (level == XML_ERR_WARNING)
-	    channel = ctxt->sax->warning;
-        else
-	    channel = ctxt->sax->error;
-	data = ctxt->userData;
-    } else if (channel == NULL) {
+    if ((ctxt == NULL) && (channel == NULL)) {
 	channel = xmlGenericError;
 	data = xmlGenericErrorContext;
     }

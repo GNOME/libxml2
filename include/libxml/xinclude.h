@@ -115,6 +115,8 @@ XMLPUBFUN xmlXIncludeCtxtPtr
 XMLPUBFUN int
 		xmlXIncludeSetFlags	(xmlXIncludeCtxtPtr ctxt,
 					 int flags);
+XMLPUBFUN int
+		xmlXIncludeGetLastError	(xmlXIncludeCtxtPtr ctxt);
 XMLPUBFUN void
 		xmlXIncludeFreeContext	(xmlXIncludeCtxtPtr ctxt);
 XMLPUBFUN int

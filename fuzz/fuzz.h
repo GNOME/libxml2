@@ -60,6 +60,12 @@ int
 xmlFuzzMallocFailed(void);
 
 void
+xmlFuzzResetMallocFailed(void);
+
+void
+xmlFuzzCheckMallocFailure(const char *func, int expect);
+
+void
 xmlFuzzDataInit(const char *data, size_t size);
 
 void

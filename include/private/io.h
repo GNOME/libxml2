@@ -8,8 +8,8 @@
 XML_HIDDEN void
 __xmlIOErr(int domain, int code, const char *extra);
 XML_HIDDEN void
-__xmlLoaderErr(void *ctx, const char *msg,
-               const char *filename) LIBXML_ATTR_FORMAT(2,0);
+xmlLoaderErr(xmlParserCtxtPtr ctxt, const char *msg,
+             const char *filename) LIBXML_ATTR_FORMAT(2,0);
 
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateString(const xmlChar *str);

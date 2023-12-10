@@ -2465,6 +2465,7 @@ errParseTest(const char *filename, const char *result, const char *err,
     if (options & XML_PARSE_XINCLUDE) {
 	doc = xmlReadFile(filename, NULL, options);
 	if (xmlXIncludeProcessFlags(doc, options) < 0) {
+            testErrorHandler(NULL, "%s : failed to parse\n", filename);
 	    xmlFreeDoc(doc);
             doc = NULL;
         }

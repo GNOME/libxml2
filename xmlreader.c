@@ -41,6 +41,7 @@
 
 #include "private/buf.h"
 #include "private/tree.h"
+#include "private/parser.h"
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include "private/xinclude.h"
 #endif
@@ -202,6 +203,13 @@ static int xmlTextReaderNextTree(xmlTextReaderPtr reader);
 
 static void xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur);
 static void xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur);
+
+static void
+xmlTextReaderErrMemory(xmlTextReaderPtr reader) {
+    xmlErrMemory(reader->ctxt, NULL);
+    reader->mode = XML_TEXTREADER_MODE_ERROR;
+    reader->state = XML_TEXTREADER_ERROR;
+}
 
 /**
  * xmlTextReaderFreeProp:
@@ -501,7 +509,7 @@ xmlTextReaderEntPush(xmlTextReaderPtr reader, xmlNodePtr value)
         tmp = (xmlNodePtr *) xmlRealloc(reader->entTab,
                                         newSize * sizeof(*tmp));
         if (tmp == NULL) {
-            xmlGenericError(xmlGenericErrorContext, "xmlRealloc failed !\n");
+            xmlTextReaderErrMemory(reader);
             return (-1);
         }
         reader->entTab = tmp;
@@ -718,11 +726,10 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
                         break;
 		    }
 		} else if (val < 0) {
-                    xmlGenericError(xmlGenericErrorContext,
-                                    "xmlParserInputBufferRead failed\n");
-		    reader->mode = XML_TEXTREADER_MODE_EOF;
-		    reader->state = oldstate;
-		    return(val);
+                    xmlFatalErr(reader->ctxt, reader->input->error, NULL);
+                    reader->mode = XML_TEXTREADER_MODE_ERROR;
+                    reader->state = XML_TEXTREADER_ERROR;
+                    return(-1);
 		}
 
 	    } else
@@ -804,8 +811,8 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
  *
  * Push the current node for validation
  */
-static void
-xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
+static int
+xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
     xmlNodePtr node = reader->node;
 
 #ifdef LIBXML_VALID_ENABLED
@@ -819,13 +826,29 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
 	    xmlChar *qname;
 
 	    qname = xmlStrdup(node->ns->prefix);
+            if (qname == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    qname = xmlStrcat(qname, BAD_CAST ":");
+            if (qname == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    qname = xmlStrcat(qname, node->name);
+            if (qname == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
 				    reader->ctxt->myDoc, node, qname);
-	    if (qname != NULL)
-		xmlFree(qname);
+	    xmlFree(qname);
 	}
+        /*if (reader->ctxt->errNo == XML_ERR_NO_MEMORY) {
+            reader->mode = XML_TEXTREADER_MODE_ERROR;
+            reader->state = XML_TEXTREADER_ERROR;
+            return(-1);
+        }*/
     }
 #endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -833,7 +856,7 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
                (reader->rngValidCtxt != NULL)) {
 	int ret;
 
-	if (reader->rngFullNode != NULL) return;
+	if (reader->rngFullNode != NULL) return(0);
 	ret = xmlRelaxNGValidatePushElement(reader->rngValidCtxt,
 	                                    reader->ctxt->myDoc,
 					    node);
@@ -855,6 +878,8 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader ATTRIBUTE_UNUSED) {
 	    reader->rngValidErrors++;
     }
 #endif
+
+    return(0);
 }
 
 /**
@@ -894,7 +919,7 @@ xmlTextReaderValidateCData(xmlTextReaderPtr reader,
  *
  * Pop the current node from validation
  */
-static void
+static int
 xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
     xmlNodePtr node = reader->node;
 
@@ -909,13 +934,29 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	    xmlChar *qname;
 
 	    qname = xmlStrdup(node->ns->prefix);
+            if (qname == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    qname = xmlStrcat(qname, BAD_CAST ":");
+            if (qname == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    qname = xmlStrcat(qname, node->name);
+            if (qname == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
 				    reader->ctxt->myDoc, node, qname);
-	    if (qname != NULL)
-		xmlFree(qname);
+	    xmlFree(qname);
 	}
+        /*if (reader->ctxt->errNo == XML_ERR_NO_MEMORY) {
+            reader->mode = XML_TEXTREADER_MODE_ERROR;
+            reader->state = XML_TEXTREADER_ERROR;
+            return(-1);
+        }*/
     }
 #endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
@@ -926,7 +967,7 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	if (reader->rngFullNode != NULL) {
 	    if (node == reader->rngFullNode)
 	        reader->rngFullNode = NULL;
-	    return;
+	    return(0);
 	}
 	ret = xmlRelaxNGValidatePopElement(reader->rngValidCtxt,
 	                                   reader->ctxt->myDoc,
@@ -935,6 +976,8 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	    reader->rngValidErrors++;
     }
 #endif
+
+    return(0);
 }
 
 /**
@@ -973,7 +1016,8 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 #ifdef LIBXML_REGEXP_ENABLED
 	} else if (node->type == XML_ELEMENT_NODE) {
 	    reader->node = node;
-	    xmlTextReaderValidatePush(reader);
+	    if (xmlTextReaderValidatePush(reader) < 0)
+                return;
 	} else if ((node->type == XML_TEXT_NODE) ||
 		   (node->type == XML_CDATA_SECTION_NODE)) {
             xmlTextReaderValidateCData(reader, node->content,
@@ -988,7 +1032,8 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	    node = node->children;
 	    continue;
 	} else if (node->type == XML_ELEMENT_NODE) {
-	    xmlTextReaderValidatePop(reader);
+	    if (xmlTextReaderValidatePop(reader) < 0)
+                return;
 	}
 skip_children:
 	if (node->next != NULL) {
@@ -1009,7 +1054,8 @@ skip_children:
 		    }
 		}
 		reader->node = node;
-		xmlTextReaderValidatePop(reader);
+		if (xmlTextReaderValidatePop(reader) < 0)
+                    return;
 	    }
 	    if ((node->type == XML_ENTITY_DECL) &&
 		(reader->ent != NULL) && (reader->ent->children == node)) {
@@ -1066,7 +1112,8 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
     if ((reader == NULL) || (reader->node == NULL) || (reader->ctxt == NULL))
         return(-1);
     do {
-	if (reader->ctxt->instate == XML_PARSER_EOF) return(1);
+	if (PARSER_STOPPED(reader->ctxt))
+            return(1);
 
         if (xmlTextReaderGetSuccessor(reader->node) != NULL)
 	    return(1);
@@ -1224,13 +1271,11 @@ get_next_node:
 	   ((reader->ctxt->node == NULL) ||
 	    (reader->ctxt->node == reader->node) ||
 	    (reader->ctxt->node == reader->node->parent)) &&
-	   (reader->ctxt->instate != XML_PARSER_EOF)) {
+	   (reader->ctxt->instate != XML_PARSER_EOF) &&
+	   (PARSER_STOPPED(reader->ctxt) == 0)) {
 	val = xmlTextReaderPushData(reader);
-	if (val < 0){
-		reader->mode = XML_TEXTREADER_MODE_ERROR;
-		reader->state = XML_TEXTREADER_ERROR;
+	if (val < 0)
 	    return(-1);
-	}
 	if (reader->node == NULL)
 	    goto node_end;
     }
@@ -1260,7 +1305,8 @@ get_next_node:
 #ifdef LIBXML_REGEXP_ENABLED
 	if ((reader->validate) &&
 	    (reader->node->type == XML_ELEMENT_NODE))
-	    xmlTextReaderValidatePop(reader);
+	    if (xmlTextReaderValidatePop(reader) < 0)
+                return(-1);
 #endif /* LIBXML_REGEXP_ENABLED */
         if ((reader->preserves > 0) &&
 	    (reader->node->extra & NODE_IS_SPRESERVED))
@@ -1297,8 +1343,11 @@ get_next_node:
 	goto node_found;
     }
 #ifdef LIBXML_REGEXP_ENABLED
-    if ((reader->validate != XML_TEXTREADER_NOT_VALIDATE) && (reader->node->type == XML_ELEMENT_NODE))
-	xmlTextReaderValidatePop(reader);
+    if ((reader->validate != XML_TEXTREADER_NOT_VALIDATE) &&
+        (reader->node->type == XML_ELEMENT_NODE)) {
+        if (xmlTextReaderValidatePop(reader) < 0)
+            return(-1);
+    }
 #endif /* LIBXML_REGEXP_ENABLED */
     if ((reader->preserves > 0) &&
 	(reader->node->extra & NODE_IS_SPRESERVED))
@@ -1370,6 +1419,10 @@ node_found:
 	 (xmlStrEqual(reader->node->ns->href, XINCLUDE_OLD_NS)))) {
 	if (reader->xincctxt == NULL) {
 	    reader->xincctxt = xmlXIncludeNewContext(reader->ctxt->myDoc);
+            if (reader->xincctxt == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	    xmlXIncludeSetFlags(reader->xincctxt,
 	                        reader->parserFlags & (~XML_PARSE_NOXINCNODE));
             xmlXIncludeSetStreamingMode(reader->xincctxt, 1);
@@ -1378,8 +1431,14 @@ node_found:
 	 * expand that node and process it
 	 */
 	if (xmlTextReaderExpand(reader) == NULL)
-	    return -1;
-	xmlXIncludeProcessNode(reader->xincctxt, reader->node);
+	    return(-1);
+        if (xmlXIncludeProcessNode(reader->xincctxt, reader->node) < 0) {
+            int err = xmlXIncludeGetLastError(reader->xincctxt);
+
+            if (err == XML_ERR_NO_MEMORY)
+                xmlTextReaderErrMemory(reader);
+            return(-1);
+        }
     }
     if ((reader->node != NULL) && (reader->node->type == XML_XINCLUDE_START)) {
         reader->in_xinclude++;
@@ -1424,7 +1483,8 @@ node_found:
 	if ((node->type == XML_ELEMENT_NODE) &&
             ((reader->state != XML_TEXTREADER_END) &&
 	     (reader->state != XML_TEXTREADER_BACKTRACK))) {
-	    xmlTextReaderValidatePush(reader);
+	    if (xmlTextReaderValidatePush(reader) < 0)
+                return(-1);
 	} else if ((node->type == XML_TEXT_NODE) ||
 		   (node->type == XML_CDATA_SECTION_NODE)) {
             xmlTextReaderValidateCData(reader, node->content,
@@ -1923,11 +1983,8 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     if (input == NULL)
 	return(NULL);
     ret = xmlMalloc(sizeof(xmlTextReader));
-    if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewTextReader : malloc failed\n");
+    if (ret == NULL)
 	return(NULL);
-    }
     memset(ret, 0, sizeof(xmlTextReader));
     ret->doc = NULL;
     ret->entTab = NULL;
@@ -1937,8 +1994,6 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->buffer = xmlBufCreateSize(100);
     if (ret->buffer == NULL) {
         xmlFree(ret);
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewTextReader : malloc failed\n");
 	return(NULL);
     }
     /* no operation on a reader should require a huge buffer */
@@ -1948,8 +2003,6 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     if (ret->sax == NULL) {
 	xmlBufFree(ret->buffer);
 	xmlFree(ret);
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewTextReader : malloc failed\n");
 	return(NULL);
     }
     xmlSAXVersion(ret->sax, 2);
@@ -1995,8 +2048,6 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     }
 
     if (ret->ctxt == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewTextReader : malloc failed\n");
 	xmlBufFree(ret->buffer);
 	xmlFree(ret->sax);
 	xmlFree(ret);
@@ -2752,12 +2803,24 @@ xmlTextReaderReadAttributeValue(xmlTextReaderPtr reader) {
 	if (reader->faketext == NULL) {
 	    reader->faketext = xmlNewDocText(reader->node->doc,
 		                             ns->href);
+            if (reader->faketext == NULL) {
+                xmlTextReaderErrMemory(reader);
+                return(-1);
+            }
 	} else {
             if ((reader->faketext->content != NULL) &&
 	        (reader->faketext->content !=
 		 (xmlChar *) &(reader->faketext->properties)))
 		xmlFree(reader->faketext->content);
-	    reader->faketext->content = xmlStrdup(ns->href);
+            if (ns->href == NULL) {
+                reader->faketext->content = NULL;
+            } else {
+                reader->faketext->content = xmlStrdup(ns->href);
+                if (reader->faketext->content == NULL) {
+                    xmlTextReaderErrMemory(reader);
+                    return(-1);
+                }
+            }
 	}
 	reader->curnode = reader->faketext;
     } else {
@@ -3471,11 +3534,8 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
 	    else {
 		if (reader->buffer == NULL) {
 		    reader->buffer = xmlBufCreateSize(100);
-                    if (reader->buffer == NULL) {
-                        xmlGenericError(xmlGenericErrorContext,
-                                        "xmlTextReaderSetup : malloc failed\n");
+                    if (reader->buffer == NULL)
                         return (NULL);
-                    }
 		    xmlBufSetAllocationScheme(reader->buffer,
 		                              XML_BUFFER_ALLOC_DOUBLEIT);
                 } else
@@ -3849,7 +3909,7 @@ xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern,
 	reader->patternTab = (xmlPatternPtr *) xmlMalloc(reader->patternMax *
 					      sizeof(reader->patternTab[0]));
         if (reader->patternTab == NULL) {
-            xmlGenericError(xmlGenericErrorContext, "xmlMalloc failed !\n");
+            xmlTextReaderErrMemory(reader);
             return (-1);
         }
     }
@@ -3860,7 +3920,7 @@ xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern,
                                       reader->patternMax *
                                       sizeof(reader->patternTab[0]));
         if (tmp == NULL) {
-            xmlGenericError(xmlGenericErrorContext, "xmlRealloc failed !\n");
+            xmlTextReaderErrMemory(reader);
 	    reader->patternMax /= 2;
             return (-1);
         }
@@ -4579,7 +4639,6 @@ xmlTextReaderBuildMessage(const char *msg, va_list ap) {
         chars = vsnprintf(str, size, msg, aq);
         va_end(aq);
         if (chars < 0) {
-	    xmlGenericError(xmlGenericErrorContext, "vsnprintf failed !\n");
 	    if (str)
 		xmlFree(str);
 	    return NULL;
@@ -4591,7 +4650,6 @@ xmlTextReaderBuildMessage(const char *msg, va_list ap) {
 	else
 		size = MAX_ERR_MSG_SIZE;
         if ((larger = (char *) xmlRealloc(str, size)) == NULL) {
-	    xmlGenericError(xmlGenericErrorContext, "xmlRealloc failed !\n");
 	    if (str)
                 xmlFree(str);
             return NULL;
@@ -4995,8 +5053,6 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
     if (reader->buffer == NULL)
         reader->buffer = xmlBufCreateSize(100);
     if (reader->buffer == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlTextReaderSetup : malloc failed\n");
         return (-1);
     }
     /* no operation on a reader should require a huge buffer */
@@ -5005,8 +5061,6 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
     if (reader->sax == NULL)
 	reader->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (reader->sax == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-                        "xmlTextReaderSetup : malloc failed\n");
         return (-1);
     }
     xmlSAXVersion(reader->sax, 2);
@@ -5053,13 +5107,15 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
                 reader->base = 0;
                 reader->cur = 0;
             }
+            if (reader->ctxt == NULL) {
+                return (-1);
+            }
         } else {
 	    xmlParserInputPtr inputStream;
 	    xmlParserInputBufferPtr buf;
-	    xmlCharEncoding enc = XML_CHAR_ENCODING_NONE;
 
 	    xmlCtxtReset(reader->ctxt);
-	    buf = xmlAllocParserInputBuffer(enc);
+	    buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
 	    if (buf == NULL) return(-1);
 	    inputStream = xmlNewInputStream(reader->ctxt);
 	    if (inputStream == NULL) {
@@ -5078,11 +5134,6 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 	    inputPush(reader->ctxt, inputStream);
 	    reader->cur = 0;
 	}
-        if (reader->ctxt == NULL) {
-            xmlGenericError(xmlGenericErrorContext,
-                            "xmlTextReaderSetup : malloc failed\n");
-            return (-1);
-        }
     }
     if (reader->dict != NULL) {
         if (reader->ctxt->dict != NULL) {
@@ -5138,13 +5189,8 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
         reader->validate = XML_TEXTREADER_VALIDATE_DTD;
 
     xmlCtxtUseOptions(reader->ctxt, options);
-    if (encoding != NULL) {
-        xmlCharEncodingHandlerPtr hdlr;
-
-        hdlr = xmlFindCharEncodingHandler(encoding);
-        if (hdlr != NULL)
-            xmlSwitchToEncoding(reader->ctxt, hdlr);
-    }
+    if (encoding != NULL)
+        xmlSwitchEncodingName(reader->ctxt, encoding);
     if ((URL != NULL) && (reader->ctxt->input != NULL) &&
         (reader->ctxt->input->filename == NULL))
         reader->ctxt->input->filename = (char *)
@@ -5166,6 +5212,14 @@ void
 xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader, unsigned maxAmpl)
 {
     xmlCtxtSetMaxAmplification(reader->ctxt, maxAmpl);
+}
+
+const xmlError *
+xmlTextReaderGetLastError(xmlTextReaderPtr reader)
+{
+    if (reader == NULL)
+        return(NULL);
+    return(&reader->ctxt->lastError);
 }
 
 /**
@@ -5207,8 +5261,6 @@ xmlReaderWalker(xmlDocPtr doc)
 
     ret = xmlMalloc(sizeof(xmlTextReader));
     if (ret == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-		"xmlNewTextReader : malloc failed\n");
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlTextReader));

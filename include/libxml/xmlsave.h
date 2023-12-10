@@ -74,6 +74,8 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlSaveClose		(xmlSaveCtxtPtr ctxt);
 XMLPUBFUN int
+		xmlSaveFinish		(xmlSaveCtxtPtr ctxt);
+XMLPUBFUN int
 		xmlSaveSetEscape	(xmlSaveCtxtPtr ctxt,
 					 xmlCharEncodingOutputFunc escape);
 XMLPUBFUN int

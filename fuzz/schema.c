@@ -30,7 +30,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     if (size > 50000)
         return(0);
 
-    maxAlloc = xmlFuzzReadInt(4) % (size + 1);
+    maxAlloc = xmlFuzzReadInt(4) % (size + 100);
 
     xmlFuzzDataInit(data, size);
     xmlFuzzReadEntities();

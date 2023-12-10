@@ -28,6 +28,7 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
 
 int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
+    xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     const char *docBuffer, *docUrl;
     size_t maxAlloc, docSize;
@@ -36,7 +37,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
     opts |= XML_PARSE_XINCLUDE;
-    maxAlloc = xmlFuzzReadInt(4) % (size + 1);
+    maxAlloc = xmlFuzzReadInt(4) % (size + 100);
 
     xmlFuzzReadEntities();
     docBuffer = xmlFuzzMainEntity(&docSize);
@@ -47,9 +48,35 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Pull parser */
 
     xmlFuzzMemSetLimit(maxAlloc);
-    doc = xmlReadMemory(docBuffer, docSize, docUrl, NULL, opts);
-    xmlXIncludeProcessFlags(doc, opts);
-    xmlFreeDoc(doc);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt != NULL) {
+        xmlXIncludeCtxtPtr xinc;
+        xmlDocPtr copy;
+
+        doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
+        xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
+                                  ctxt->errNo == XML_ERR_NO_MEMORY);
+
+        xmlFuzzResetMallocFailed();
+        xinc = xmlXIncludeNewContext(doc);
+        xmlXIncludeSetFlags(xinc, opts);
+        xmlXIncludeProcessNode(xinc, (xmlNodePtr) doc);
+        if (doc != NULL) {
+            xmlFuzzCheckMallocFailure("xmlXIncludeProcessNode",
+                    xinc == NULL ||
+                    xmlXIncludeGetLastError(xinc) == XML_ERR_NO_MEMORY);
+        }
+        xmlXIncludeFreeContext(xinc);
+
+        xmlFuzzResetMallocFailed();
+        copy = xmlCopyDoc(doc, 1);
+        if (doc != NULL)
+            xmlFuzzCheckMallocFailure("xmlCopyNode", copy == NULL);
+        xmlFreeDoc(copy);
+
+        xmlFreeDoc(doc);
+        xmlFreeParserCtxt(ctxt);
+    }
 
     /* Reader */
 

@@ -440,6 +440,7 @@ struct _xmlAttr {
     xmlNs           *ns;        /* pointer to the associated namespace */
     xmlAttributeType atype;     /* the attribute type if validating */
     void            *psvi;	/* for type/PSVI information */
+    struct _xmlID   *id;        /* the ID struct */
 };
 
 /**

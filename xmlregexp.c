@@ -38,16 +38,6 @@
 
 #define MAX_PUSH 10000000
 
-/*
- * -2 and -3 are used by xmlValidateElementType for other things.
- */
-#define XML_REGEXP_OK               0
-#define XML_REGEXP_NOT_FOUND        (-1)
-#define XML_REGEXP_INTERNAL_ERROR   (-4)
-#define XML_REGEXP_OUT_OF_MEMORY    (-5)
-#define XML_REGEXP_INTERNAL_LIMIT   (-6)
-#define XML_REGEXP_INVALID_UTF8     (-7)
-
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -698,8 +688,13 @@ xmlRegNewParserCtxt(const xmlChar *string) {
     if (ret == NULL)
 	return(NULL);
     memset(ret, 0, sizeof(xmlRegParserCtxt));
-    if (string != NULL)
+    if (string != NULL) {
 	ret->string = xmlStrdup(string);
+        if (ret->string == NULL) {
+            xmlFree(ret);
+            return(NULL);
+        }
+    }
     ret->cur = ret->string;
     ret->neg = 0;
     ret->negs = 0;
@@ -3060,7 +3055,6 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 	exec->rollbacks = (xmlRegExecRollback *) xmlMalloc(exec->maxRollbacks *
 		                             sizeof(xmlRegExecRollback));
 	if (exec->rollbacks == NULL) {
-	    xmlRegexpErrMemory(NULL, "saving regexp");
 	    exec->maxRollbacks = 0;
             exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
@@ -3075,7 +3069,6 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 	tmp = (xmlRegExecRollback *) xmlRealloc(exec->rollbacks,
 			exec->maxRollbacks * sizeof(xmlRegExecRollback));
 	if (tmp == NULL) {
-	    xmlRegexpErrMemory(NULL, "saving regexp");
 	    exec->maxRollbacks /= 2;
             exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
@@ -3092,7 +3085,6 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
 	    exec->rollbacks[exec->nbRollbacks].counts = (int *)
 		xmlMalloc(exec->comp->nbCounters * sizeof(int));
 	    if (exec->rollbacks[exec->nbRollbacks].counts == NULL) {
-		xmlRegexpErrMemory(NULL, "saving regexp");
 		exec->status = XML_REGEXP_OUT_OF_MEMORY;
 		return;
 	    }
@@ -3157,7 +3149,6 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
     if (comp->nbCounters > 0) {
 	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int));
 	if (exec->counts == NULL) {
-	    xmlRegexpErrMemory(NULL, "running regexp");
 	    return(XML_REGEXP_OUT_OF_MEMORY);
 	}
         memset(exec->counts, 0, comp->nbCounters * sizeof(int));
@@ -3440,10 +3431,8 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
     if ((comp->compact == NULL) && (comp->states == NULL))
         return(NULL);
     exec = (xmlRegExecCtxtPtr) xmlMalloc(sizeof(xmlRegExecCtxt));
-    if (exec == NULL) {
-	xmlRegexpErrMemory(NULL, "creating execution context");
+    if (exec == NULL)
 	return(NULL);
-    }
     memset(exec, 0, sizeof(xmlRegExecCtxt));
     exec->inputString = NULL;
     exec->index = 0;
@@ -3467,7 +3456,6 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
 	exec->counts = (int *) xmlMalloc(comp->nbCounters * sizeof(int)
 	                                 * 2);
 	if (exec->counts == NULL) {
-	    xmlRegexpErrMemory(NULL, "creating execution context");
 	    xmlFree(exec);
 	    return(NULL);
 	}
@@ -3524,6 +3512,19 @@ xmlRegFreeExecCtxt(xmlRegExecCtxtPtr exec) {
 }
 
 static void
+xmlRegExecSetErrString(xmlRegExecCtxtPtr exec, const xmlChar *value) {
+    if (exec->errString != NULL)
+        xmlFree(exec->errString);
+    if (value == NULL) {
+        exec->errString = NULL;
+    } else {
+        exec->errString = xmlStrdup(value);
+        if (exec->errString == NULL)
+            exec->status = XML_REGEXP_OUT_OF_MEMORY;
+    }
+}
+
+static void
 xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	                    void *data) {
     if (exec->inputStackMax == 0) {
@@ -3531,8 +3532,8 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	exec->inputStack = (xmlRegInputTokenPtr)
 	    xmlMalloc(exec->inputStackMax * sizeof(xmlRegInputToken));
 	if (exec->inputStack == NULL) {
-	    xmlRegexpErrMemory(NULL, "pushing input string");
 	    exec->inputStackMax = 0;
+            exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
 	}
     } else if (exec->inputStackNr + 1 >= exec->inputStackMax) {
@@ -3542,13 +3543,21 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	tmp = (xmlRegInputTokenPtr) xmlRealloc(exec->inputStack,
 			exec->inputStackMax * sizeof(xmlRegInputToken));
 	if (tmp == NULL) {
-	    xmlRegexpErrMemory(NULL, "pushing input string");
 	    exec->inputStackMax /= 2;
+            exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
 	}
 	exec->inputStack = tmp;
     }
-    exec->inputStack[exec->inputStackNr].value = xmlStrdup(value);
+    if (value == NULL) {
+        exec->inputStack[exec->inputStackNr].value = NULL;
+    } else {
+        exec->inputStack[exec->inputStackNr].value = xmlStrdup(value);
+        if (exec->inputStack[exec->inputStackNr].value == NULL) {
+            exec->status = XML_REGEXP_OUT_OF_MEMORY;
+            return;
+        }
+    }
     exec->inputStack[exec->inputStackNr].data = data;
     exec->inputStackNr++;
     exec->inputStack[exec->inputStackNr].value = NULL;
@@ -3667,12 +3676,10 @@ xmlRegCompactPushString(xmlRegExecCtxtPtr exec,
      * current token
      */
 error:
-    if (exec->errString != NULL)
-        xmlFree(exec->errString);
-    exec->errString = xmlStrdup(value);
     exec->errStateNo = state;
     exec->status = XML_REGEXP_NOT_FOUND;
-    return(XML_REGEXP_NOT_FOUND);
+    xmlRegExecSetErrString(exec, value);
+    return(exec->status);
 }
 
 /**
@@ -3921,9 +3928,7 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		     * entering a sink state, save the current state as error
 		     * state.
 		     */
-		    if (exec->errString != NULL)
-			xmlFree(exec->errString);
-		    exec->errString = xmlStrdup(value);
+                    xmlRegExecSetErrString(exec, value);
 		    exec->errState = exec->state;
 		    memcpy(exec->errCounts, exec->counts,
 			   exec->comp->nbCounters * sizeof(int));
@@ -3960,9 +3965,7 @@ rollback:
 	    if ((progress) && (exec->state != NULL) &&
 	        (exec->state->type != XML_REGEXP_SINK_STATE)) {
 	        progress = 0;
-		if (exec->errString != NULL)
-		    xmlFree(exec->errString);
-		exec->errString = xmlStrdup(value);
+                xmlRegExecSetErrString(exec, value);
 		exec->errState = exec->state;
                 if (exec->comp->nbCounters)
                     memcpy(exec->errCounts, exec->counts,
@@ -4665,6 +4668,8 @@ xmlFAParseCharProp(xmlRegParserCtxtPtr ctxt) {
 	}
 	type = XML_REGEXP_BLOCK_NAME;
 	blockName = xmlStrndup(start, ctxt->cur - start);
+        if (blockName == NULL)
+	    xmlRegexpErrMemory(ctxt, NULL);
     } else {
 	ERROR("Unknown char property");
 	return;
@@ -5676,6 +5681,11 @@ xmlAutomataNewTransition(xmlAutomataPtr am, xmlAutomataStatePtr from,
         return(NULL);
     atom->data = data;
     atom->valuep = xmlStrdup(token);
+    if (atom->valuep == NULL) {
+        xmlRegFreeAtom(atom);
+        xmlRegexpErrMemory(am, NULL);
+        return(NULL);
+    }
 
     if (xmlFAGenerateTransitions(am, from, to, atom) < 0) {
         xmlRegFreeAtom(atom);
@@ -6287,6 +6297,8 @@ xmlAutomataCompile(xmlAutomataPtr am) {
 
     if ((am == NULL) || (am->error != 0)) return(NULL);
     xmlFAEliminateEpsilonTransitions(am);
+    if (am->error != 0)
+        return(NULL);
     /* xmlFAComputesDeterminism(am); */
     ret = xmlRegEpxFromParse(am);
 

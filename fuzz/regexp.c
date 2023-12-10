@@ -28,7 +28,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         return(0);
 
     xmlFuzzDataInit(data, size);
-    maxAlloc = xmlFuzzReadInt(4) % (size * 8 + 1);
+    maxAlloc = xmlFuzzReadInt(4) % (size * 8 + 100);
     str1 = xmlFuzzReadString(NULL);
 
     xmlFuzzMemSetLimit(maxAlloc);

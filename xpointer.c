@@ -45,6 +45,7 @@
 #define XPTR_XMLNS_SCHEME
 
 #include "private/error.h"
+#include "private/xpath.h"
 
 #define TODO								\
     xmlGenericError(xmlGenericErrorContext,				\
@@ -63,31 +64,18 @@
  ************************************************************************/
 
 /**
- * xmlXPtrErrMemory:
- * @extra:  extra information
- *
- * Handle a redefinition of attribute error
- */
-static void
-xmlXPtrErrMemory(const char *extra)
-{
-    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_XPOINTER,
-		    XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0, extra,
-		    NULL, NULL, 0, 0,
-		    "Memory allocation failed : %s\n", extra);
-}
-
-/**
  * xmlXPtrErr:
  * @ctxt:  an XPTR evaluation context
  * @extra:  extra information
  *
- * Handle a redefinition of attribute error
+ * Handle an XPointer error
  */
 static void LIBXML_ATTR_FORMAT(3,0)
 xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
            const char * msg, const xmlChar *extra)
 {
+    if (ctxt->context->lastError.code == XML_ERR_NO_MEMORY)
+        return;
     if (ctxt != NULL)
         ctxt->error = error;
     if ((ctxt == NULL) || (ctxt->context == NULL)) {
@@ -106,18 +94,26 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
     ctxt->context->lastError.code = error;
     ctxt->context->lastError.level = XML_ERR_ERROR;
     ctxt->context->lastError.str1 = (char *) xmlStrdup(ctxt->base);
+    if (ctxt->context->lastError.str1 == NULL) {
+        xmlXPathPErrMemory(ctxt, NULL);
+        return;
+    }
     ctxt->context->lastError.int1 = ctxt->cur - ctxt->base;
     ctxt->context->lastError.node = ctxt->context->debugNode;
     if (ctxt->context->error != NULL) {
 	ctxt->context->error(ctxt->context->userData,
 	                     &ctxt->context->lastError);
     } else {
-	__xmlRaiseError(NULL, NULL, NULL,
+        int res;
+
+	res = __xmlRaiseError(NULL, NULL, NULL,
 			NULL, ctxt->context->debugNode, XML_FROM_XPOINTER,
 			error, XML_ERR_ERROR, NULL, 0,
 			(const char *) extra, (const char *) ctxt->base, NULL,
 			ctxt->cur - ctxt->base, 0,
 			msg, extra);
+        if (res < 0)
+            xmlXPathPErrMemory(ctxt, NULL);
     }
 }
 
@@ -207,6 +203,21 @@ xmlXPtrGetNthChild(xmlNodePtr cur, int no) {
  *		Handling of XPointer specific types			*
  *									*
  ************************************************************************/
+
+/**
+ * xmlXPtrErrMemory:
+ * @extra:  extra information
+ *
+ * Handle a redefinition of attribute error
+ */
+static void
+xmlXPtrErrMemory(const char *extra)
+{
+    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_XPOINTER,
+		    XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0, extra,
+		    NULL, NULL, 0, 0,
+		    "Memory allocation failed : %s\n", extra);
+}
 
 /**
  * xmlXPtrCmpPoints:
@@ -959,7 +970,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     len++;
     buffer = (xmlChar *) xmlMallocAtomic(len);
     if (buffer == NULL) {
-        xmlXPtrErrMemory("allocating buffer");
+        xmlXPathPErrMemory(ctxt, "allocating buffer");
         xmlFree(name);
 	return;
     }
@@ -1230,7 +1241,7 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
 	ctxt->valueTab = (xmlXPathObjectPtr *)
 			 xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
 	if (ctxt->valueTab == NULL) {
-	    xmlXPtrErrMemory("allocating evaluation context");
+	    xmlXPathPErrMemory(ctxt, "allocating evaluation context");
 	    return;
 	}
 	ctxt->valueNr = 0;
@@ -1351,10 +1362,16 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
     if ((ctx == NULL) || (str == NULL))
 	return(NULL);
 
+    xmlResetError(&ctx->lastError);
+
     ctxt = xmlXPathNewParserContext(str, ctx);
-    if (ctxt == NULL)
+    if (ctxt == NULL) {
+        xmlXPathErrMemory(ctx, NULL);
 	return(NULL);
+    }
     xmlXPtrEvalXPointer(ctxt);
+    if (ctx->lastError.code != XML_ERR_OK)
+        goto error;
 
     if ((ctxt->value != NULL) &&
 #ifdef LIBXML_XPTR_LOCS_ENABLED
@@ -1392,11 +1409,12 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 		   "xmlXPtrEval: object(s) left on the eval stack\n",
 		   NULL);
     }
-    if (ctxt->error != XPATH_EXPRESSION_OK) {
+    if (ctx->lastError.code != XML_ERR_OK) {
 	xmlXPathFreeObject(res);
 	res = NULL;
     }
 
+error:
     xmlXPathFreeParserContext(ctxt);
     return(res);
 }

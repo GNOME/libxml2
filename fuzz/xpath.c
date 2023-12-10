@@ -29,7 +29,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzDataInit(data, size);
 
-    maxAlloc = xmlFuzzReadInt(4) % (size + 1);
+    maxAlloc = xmlFuzzReadInt(4) % (size + 100);
     expr = xmlFuzzReadString(&exprSize);
     xml = xmlFuzzReadString(&xmlSize);
 
@@ -42,10 +42,19 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
         xpctxt = xmlXPathNewContext(doc);
         if (xpctxt != NULL) {
+            int res;
+
             /* Operation limit to avoid timeout */
             xpctxt->opLimit = 500000;
 
+            res = xmlXPathContextSetCache(xpctxt, 1, 4, 0);
+            xmlFuzzCheckMallocFailure("xmlXPathContextSetCache", res == -1);
+
+            xmlFuzzResetMallocFailed();
             xmlXPathFreeObject(xmlXPtrEval(BAD_CAST expr, xpctxt));
+            xmlFuzzCheckMallocFailure("xmlXPtrEval",
+                                      xpctxt->lastError.code ==
+                                      XML_ERR_NO_MEMORY);
             xmlXPathFreeContext(xpctxt);
         }
 

@@ -373,6 +373,18 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info)
         case XML_IO_UNKNOWN:
             errmsg = "I/O error";
             break;
+        case XML_ERR_RESOURCE_LIMIT:
+            errmsg = "Resource limit exceeded";
+            break;
+        case XML_ERR_ARGUMENT:
+            errmsg = "Invalid argument";
+            break;
+        case XML_ERR_SYSTEM:
+            errmsg = "Out of system resources";
+            break;
+        case XML_ERR_REDECL_PREDEF_ENTITY:
+            errmsg = "Invalid redeclaration of predefined entity";
+            break;
 #if 0
         case:
             errmsg = "";

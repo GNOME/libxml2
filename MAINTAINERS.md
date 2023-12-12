@@ -85,6 +85,24 @@ Create a new GitLab release on
 Announce the release by sending an email to the mailing list at
 xml@gnome.org.
 
+## Breaking the ABI
+
+Unfortunately, libxml2 exposes many internal structs which makes some
+beneficial changes impossible without breaking the ABI.
+
+The following changes are allowed (after careful consideration):
+
+- Appending members to structs which client code should never allocate
+  directly. A notable example is xmlParserCtxt. Other structs like
+  xmlError are allocated directly by client code and must not be changed.
+
+- Making a void function return a value.
+
+- Making functions accept const pointers unless it's a typedef for a
+  callback.
+
+- Changing signedness of struct members or function arguments.
+
 ## Updating the CI Docker image
 
 Note that the CI image is used for libxslt as well. Run the following

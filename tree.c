@@ -1657,7 +1657,7 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
     int attr;
 
     if (list == NULL)
-        return (NULL);
+        return xmlStrdup(BAD_CAST "");
     if ((list->parent != NULL) && (list->parent->type == XML_ATTRIBUTE_NODE))
         attr = 1;
     else
@@ -1727,6 +1727,8 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
         }
         node = node->next;
     }
+    if (ret == NULL)
+        ret = xmlStrdup(BAD_CAST "");
     return (ret);
 
 error:
@@ -1755,7 +1757,7 @@ xmlNodeListGetRawString(const xmlDoc *doc, const xmlNode *list, int inLine)
     xmlEntityPtr ent;
 
     if (list == NULL)
-        return (NULL);
+        return xmlStrdup(BAD_CAST "");
 
     while (node != NULL) {
         if ((node->type == XML_TEXT_NODE) ||
@@ -1807,6 +1809,8 @@ xmlNodeListGetRawString(const xmlDoc *doc, const xmlNode *list, int inLine)
         }
         node = node->next;
     }
+    if (ret == NULL)
+        ret = xmlStrdup(BAD_CAST "");
     return (ret);
 }
 #endif /* LIBXML_TREE_ENABLED */

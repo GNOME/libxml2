@@ -8392,9 +8392,9 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    xmlXPathObjectPtr str;
-    xmlXPathObjectPtr from;
-    xmlXPathObjectPtr to;
+    xmlXPathObjectPtr str = NULL;
+    xmlXPathObjectPtr from = NULL;
+    xmlXPathObjectPtr to = NULL;
     xmlBufPtr target;
     int offset, max;
     int ch;
@@ -8409,6 +8409,8 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     from = valuePop(ctxt);
     CAST_TO_STRING;
     str = valuePop(ctxt);
+    if (ctxt->error != 0)
+        goto error;
 
     target = xmlBufCreate();
     if (target) {
@@ -8449,6 +8451,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     }
     valuePush(ctxt, xmlXPathCacheNewString(ctxt, xmlBufContent(target)));
     xmlBufFree(target);
+error:
     xmlXPathReleaseObject(ctxt->context, str);
     xmlXPathReleaseObject(ctxt->context, from);
     xmlXPathReleaseObject(ctxt->context, to);

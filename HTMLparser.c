@@ -6719,7 +6719,8 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
 
     htmlCtxtReset(ctxt);
 
-    input = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
+    input = xmlParserInputBufferCreateStatic(buffer, size,
+                                             XML_CHAR_ENCODING_NONE);
     if (input == NULL) {
         htmlErrMemory(ctxt, NULL);
 	return(NULL);

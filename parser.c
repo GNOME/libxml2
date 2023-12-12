@@ -14871,7 +14871,8 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
 
     xmlCtxtReset(ctxt);
 
-    input = xmlParserInputBufferCreateMem(buffer, size, XML_CHAR_ENCODING_NONE);
+    input = xmlParserInputBufferCreateStatic(buffer, size,
+                                             XML_CHAR_ENCODING_NONE);
     if (input == NULL) {
         xmlErrMemory(ctxt, NULL);
 	return(NULL);

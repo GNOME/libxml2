@@ -1,5 +1,20 @@
 NEWS file for libxml2
 
+v2.12.3: Dec 12 2023
+
+### Regressions
+
+- parser: Fix namespaces redefined from default attributes
+
+### Build fixes
+
+- include: Rename XML_EMPTY helper macro
+- include: Move declaration of xmlInitGlobals
+- include: Add missing includes
+- include: Move globals from xmlsave.h to parser.h
+- include: Readd circular dependency between tree.h and parser.h
+
+
 v2.12.2: Dec 5 2023
 
 ### Regressions

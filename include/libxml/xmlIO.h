@@ -218,7 +218,6 @@ XMLPUBFUN xmlParserInputBufferPtr
 XMLPUBFUN xmlParserInputBufferPtr
 	xmlParserInputBufferCreateMem		(const char *mem, int size,
 	                                         xmlCharEncoding enc);
-XML_DEPRECATED
 XMLPUBFUN xmlParserInputBufferPtr
 	xmlParserInputBufferCreateStatic	(const char *mem, int size,
 	                                         xmlCharEncoding enc);

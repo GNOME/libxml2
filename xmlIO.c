@@ -2831,7 +2831,8 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 }
 
 typedef struct {
-    const char *mem;
+    char *mem;
+    const char *cur;
     size_t size;
 } xmlMemIOCtxt;
 
@@ -2842,8 +2843,8 @@ xmlMemRead(void *vctxt, char *buf, int size) {
     if ((size_t) size > ctxt->size)
         size = ctxt->size;
 
-    memcpy(buf, ctxt->mem, size);
-    ctxt->mem += size;
+    memcpy(buf, ctxt->cur, size);
+    ctxt->cur += size;
     ctxt->size -= size;
 
     return size;
@@ -2851,7 +2852,11 @@ xmlMemRead(void *vctxt, char *buf, int size) {
 
 static int
 xmlMemClose(void *vctxt) {
-    xmlFree(vctxt);
+    xmlMemIOCtxt *ctxt = vctxt;
+
+    if (ctxt->mem != 0)
+        xmlFree(ctxt->mem);
+    xmlFree(ctxt);
     return(0);
 }
 
@@ -2861,18 +2866,70 @@ xmlMemClose(void *vctxt) {
  * @size:  the length of the memory block
  * @enc:  the charset encoding if known
  *
- * Create a buffered parser input for the progressive parsing for the input
- * from a memory area.
+ * Create a parser input buffer for parsing from a memory area.
  *
- * Returns the new parser input or NULL
+ * This function makes a copy of the whole input buffer. If you are sure
+ * that the contents of the buffer will remain valid until the document
+ * was parsed, you can avoid the copy by using
+ * xmlParserInputBufferCreateStatic.
+ *
+ * The encoding argument is deprecated and should be set to
+ * XML_CHAR_ENCODING_NONE. The encoding can be changed with
+ * xmlSwitchEncoding or xmlSwitchEncodingName later on.
+ *
+ * Returns the new parser input or NULL in case of error.
  */
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
+    xmlParserInputBufferPtr buf;
+    xmlMemIOCtxt *ctxt;
+    char *copy;
+
+    if ((size < 0) || (mem == NULL))
+        return(NULL);
+
+    copy = (char *) xmlStrndup((const xmlChar *) mem, size);
+    if (copy == NULL)
+        return(NULL);
+
+    buf = xmlParserInputBufferCreateStatic(copy, size, enc);
+    if (buf == NULL) {
+        xmlFree(copy);
+        return(NULL);
+    }
+
+    ctxt = buf->context;
+    ctxt->mem = copy;
+
+    return(buf);
+}
+
+/**
+ * xmlParserInputBufferCreateStatic:
+ * @mem:  the memory input
+ * @size:  the length of the memory block
+ * @enc:  the charset encoding if known
+ *
+ * Create a parser input buffer for parsing from a memory area.
+ *
+ * This functions assumes that the contents of the input buffer remain
+ * valid until the document was parsed. Use xmlParserInputBufferCreateMem
+ * otherwise.
+ *
+ * The encoding argument is deprecated and should be set to
+ * XML_CHAR_ENCODING_NONE. The encoding can be changed with
+ * xmlSwitchEncoding or xmlSwitchEncodingName later on.
+ *
+ * Returns the new parser input or NULL in case of error.
+ */
+xmlParserInputBufferPtr
+xmlParserInputBufferCreateStatic(const char *mem, int size,
+                                 xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
     xmlMemIOCtxt *ctxt;
 
-    if (size < 0) return(NULL);
-    if (mem == NULL) return(NULL);
+    if ((size < 0) || (mem == NULL))
+        return(NULL);
 
     ret = xmlAllocParserInputBuffer(enc);
     if (ret == NULL)
@@ -2883,7 +2940,8 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
         xmlFreeParserInputBuffer(ret);
         return(NULL);
     }
-    ctxt->mem = mem;
+    ctxt->mem = NULL;
+    ctxt->cur = mem;
     ctxt->size = size;
 
     ret->context = ctxt;
@@ -2891,22 +2949,6 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
     ret->closecallback = xmlMemClose;
 
     return(ret);
-}
-
-/**
- * xmlParserInputBufferCreateStatic:
- * @mem:  the memory input
- * @size:  the length of the memory block
- * @enc:  the charset encoding if known
- *
- * DEPRECATED: Use xmlParserInputBufferCreateMem.
- *
- * Returns the new parser input or NULL
- */
-xmlParserInputBufferPtr
-xmlParserInputBufferCreateStatic(const char *mem, int size,
-                                 xmlCharEncoding enc) {
-    return(xmlParserInputBufferCreateMem(mem, size, enc));
 }
 
 typedef struct {

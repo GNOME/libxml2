@@ -1324,6 +1324,7 @@ static const xmlCharEncodingHandler defaultHandlers[] = {
 static const xmlCharEncodingHandler *xmlUTF16LEHandler = &defaultHandlers[1];
 static const xmlCharEncodingHandler *xmlUTF16BEHandler = &defaultHandlers[2];
 static const xmlCharEncodingHandler *xmlLatin1Handler = &defaultHandlers[4];
+static const xmlCharEncodingHandler *xmlAsciiHandler = &defaultHandlers[5];
 
 /* the size should be growable, but it's not a big deal ... */
 #define MAX_ENCODING_HANDLERS 50
@@ -1803,6 +1804,9 @@ xmlLookupCharEncodingHandler(xmlCharEncoding enc,
             numNames = sizeof(ucs2Names) / sizeof(ucs2Names[0]);
 	    break;
 
+        case XML_CHAR_ENCODING_ASCII:
+	    *out = (xmlCharEncodingHandler *) xmlAsciiHandler;
+            return(0);
         case XML_CHAR_ENCODING_8859_1:
 	    *out = (xmlCharEncodingHandler *) xmlLatin1Handler;
             return(0);

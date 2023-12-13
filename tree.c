@@ -5412,8 +5412,10 @@ xmlNodeGetBaseSafe(const xmlDoc *doc, const xmlNode *cur, xmlChar **baseOut) {
 	}
 	if (cur->type == XML_ELEMENT_NODE) {
 	    if (xmlNodeGetAttrValue(cur, BAD_CAST "base", XML_XML_NAMESPACE,
-                                    &base) < 0)
+                                    &base) < 0) {
+                xmlFree(ret);
                 return(-1);
+            }
 	    if (base != NULL) {
 		if (ret != NULL) {
 		    res = xmlBuildURISafe(ret, base, &newbase);

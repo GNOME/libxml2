@@ -1915,7 +1915,7 @@ typedef xmlTextReaderPyCtxt *xmlTextReaderPyCtxtPtr;
 static void 
 libxml_xmlTextReaderErrorCallback(void *arg, 
 				  const char *msg,
-				  int severity,
+				  xmlParserSeverities severity,
 				  xmlTextReaderLocatorPtr locator)
 {
     xmlTextReaderPyCtxt *pyCtxt = (xmlTextReaderPyCtxt *)arg;
@@ -1987,7 +1987,7 @@ libxml_xmlTextReaderSetErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
 	Py_XINCREF(pyobj_arg);
 	pyCtxt->arg = pyobj_arg;
 	xmlTextReaderSetErrorHandler(reader,
-	    (xmlTextReaderErrorFunc) libxml_xmlTextReaderErrorCallback,
+	                             libxml_xmlTextReaderErrorCallback,
 	                             pyCtxt);
     }
 

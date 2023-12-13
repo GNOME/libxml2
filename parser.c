@@ -6793,7 +6793,11 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 }
                 NEXT;
 
-                while ((PARSER_STOPPED(ctxt) == 0) && (RAW != 0)) {
+                while (PARSER_STOPPED(ctxt) == 0) {
+                    if (RAW == 0) {
+                        xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
+                        goto error;
+                    }
                     if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
                         SKIP(3);
                         ignoreDepth++;
@@ -6804,25 +6808,20 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                         }
                     } else if ((RAW == ']') && (NXT(1) == ']') &&
                                (NXT(2) == '>')) {
+                        SKIP(3);
                         if (ignoreDepth == 0)
                             break;
-                        SKIP(3);
                         ignoreDepth--;
                     } else {
                         NEXT;
                     }
                 }
 
-		if (RAW == 0) {
-		    xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
-                    goto error;
-		}
                 if (ctxt->input->id != id) {
                     xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                    "All markup of the conditional section is"
                                    " not in the same entity\n");
                 }
-                SKIP(3);
             } else {
                 xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID_KEYWORD, NULL);
                 xmlHaltParser(ctxt);

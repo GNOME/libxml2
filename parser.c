@@ -13135,13 +13135,11 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 	ctxt->wellFormed = 0;
     }
 
-    if (!ctxt->wellFormed) {
-        if (ctxt->errNo == 0)
-	    ret = XML_ERR_INTERNAL_ERROR;
-	else
-	    ret = (xmlParserErrors)ctxt->errNo;
-    } else {
+    if ((ctxt->wellFormed) ||
+        ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
         ret = XML_ERR_OK;
+    } else {
+	ret = (xmlParserErrors) ctxt->errNo;
     }
 
     /*

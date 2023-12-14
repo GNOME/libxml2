@@ -859,10 +859,16 @@ XMLPUBFUN const char *const *__xmlParserVersion(void);
   XML_OP(xmlLoadExtDtdDefaultValue, int, XML_DEPRECATED) \
   XML_OP(xmlParserDebugEntities, int, XML_DEPRECATED) \
   XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlIndentTreeOutput, int, XML_NO_ATTR) \
-  XML_OP(xmlTreeIndentString, const char *, XML_NO_ATTR) \
-  XML_OP(xmlSaveNoEmptyTags, int, XML_NO_ATTR)
+  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED)
+
+#ifdef LIBXML_OUTPUT_ENABLED
+  #define XML_GLOBALS_PARSER_OUTPUT \
+    XML_OP(xmlIndentTreeOutput, int, XML_NO_ATTR) \
+    XML_OP(xmlTreeIndentString, const char *, XML_NO_ATTR) \
+    XML_OP(xmlSaveNoEmptyTags, int, XML_NO_ATTR)
+#else
+  #define XML_GLOBALS_PARSER_OUTPUT
+#endif
 
 #ifdef LIBXML_SAX1_ENABLED
   #define XML_GLOBALS_PARSER_SAX1 \
@@ -873,6 +879,7 @@ XMLPUBFUN const char *const *__xmlParserVersion(void);
 
 #define XML_GLOBALS_PARSER \
   XML_GLOBALS_PARSER_CORE \
+  XML_GLOBALS_PARSER_OUTPUT \
   XML_GLOBALS_PARSER_SAX1
 
 #define XML_OP XML_DECLARE_GLOBAL
@@ -896,9 +903,11 @@ XML_GLOBALS_PARSER
     XML_GLOBAL_MACRO(xmlPedanticParserDefaultValue)
   #define xmlSubstituteEntitiesDefaultValue \
     XML_GLOBAL_MACRO(xmlSubstituteEntitiesDefaultValue)
-  #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)
-  #define xmlTreeIndentString XML_GLOBAL_MACRO(xmlTreeIndentString)
-  #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)
+  #ifdef LIBXML_OUTPUT_ENABLED
+    #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)
+    #define xmlTreeIndentString XML_GLOBAL_MACRO(xmlTreeIndentString)
+    #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)
+  #endif
 #endif
 /** DOC_ENABLE */
 

@@ -348,6 +348,7 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
     return(lenread);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlFileWrite:
  * @context:  the I/O context
@@ -392,6 +393,7 @@ xmlPythonFileWrite (void * context, const char * buffer, int len) {
     }
     return(written);
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlPythonFileClose:
@@ -1364,11 +1366,11 @@ libxml_xmlCreatePushParser(ATTRIBUTE_UNUSED PyObject * self,
     return (pyret);
 }
 
+#ifdef LIBXML_HTML_ENABLED
 PyObject *
 libxml_htmlCreatePushParser(ATTRIBUTE_UNUSED PyObject * self,
                             PyObject * args)
 {
-#ifdef LIBXML_HTML_ENABLED
     const char *chunk;
     int size;
     const char *URI;
@@ -1391,16 +1393,13 @@ libxml_htmlCreatePushParser(ATTRIBUTE_UNUSED PyObject * self,
                                    XML_CHAR_ENCODING_NONE);
     pyret = libxml_xmlParserCtxtPtrWrap(ret);
     return (pyret);
-#else
-    Py_INCREF(Py_None);
-    return (Py_None);
-#endif /* LIBXML_HTML_ENABLED */
 }
+#endif /* LIBXML_HTML_ENABLED */
 
+#ifdef LIBXML_SAX1_ENABLED
 PyObject *
 libxml_xmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
-#ifdef LIBXML_SAX1_ENABLED
     int recover;
     const char *URI;
     PyObject *pyobj_SAX = NULL;
@@ -1421,15 +1420,15 @@ libxml_xmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     ctxt = xmlNewSAXParserCtxt(SAX, pyobj_SAX);
     xmlCtxtReadFile(ctxt, URI, NULL, 0);
     xmlFreeParserCtxt(ctxt);
-#endif /* LIBXML_SAX1_ENABLED */
     Py_INCREF(Py_None);
     return (Py_None);
 }
+#endif /* LIBXML_SAX1_ENABLED */
 
+#ifdef LIBXML_HTML_ENABLED
 PyObject *
 libxml_htmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
-#ifdef LIBXML_HTML_ENABLED
     const char *URI;
     const char *encoding;
     PyObject *pyobj_SAX = NULL;
@@ -1453,11 +1452,8 @@ libxml_htmlSAXParseFile(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     htmlFreeParserCtxt(ctxt);
     Py_INCREF(Py_None);
     return (Py_None);
-#else
-    Py_INCREF(Py_None);
-    return (Py_None);
-#endif /* LIBXML_HTML_ENABLED */
 }
+#endif /* LIBXML_HTML_ENABLED */
 
 /************************************************************************
  *									*

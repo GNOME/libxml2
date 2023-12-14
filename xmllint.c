@@ -2013,10 +2013,10 @@ static void walkDoc(xmlDocPtr doc) {
 static void doXPathDump(xmlXPathObjectPtr cur) {
     switch(cur->type) {
         case XPATH_NODESET: {
-            int i;
-            xmlNodePtr node;
 #ifdef LIBXML_OUTPUT_ENABLED
             xmlOutputBufferPtr buf;
+            xmlNodePtr node;
+            int i;
 
             if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
                 if (!quiet) {

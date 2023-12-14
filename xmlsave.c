@@ -729,6 +729,7 @@ xmlAttrDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
     }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     xmlOutputBufferWrite(buf, 2, "=\"");
+#ifdef LIBXML_HTML_ENABLED
     if ((ctxt->options & XML_SAVE_XHTML) &&
         (cur->ns == NULL) &&
         ((cur->children == NULL) ||
@@ -736,7 +737,9 @@ xmlAttrDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
          (cur->children->content[0] == 0)) &&
         (htmlIsBooleanAttr(cur->name))) {
         xmlOutputBufferWriteString(buf, (const char *) cur->name);
-    } else {
+    } else
+#endif
+    {
         xmlAttrSerializeContent(buf, cur);
     }
     xmlOutputBufferWrite(buf, 1, "\"");

@@ -1352,7 +1352,14 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
      * Is there already some content down the pipe to convert ?
      */
     if (xmlBufIsEmpty(in->buffer) == 0) {
+        xmlBufPtr buf;
         size_t processed;
+
+        buf = xmlBufCreate();
+        if (buf == NULL) {
+            xmlErrMemory(ctxt, NULL);
+            return(-1);
+        }
 
         /*
          * Shrink the current input buffer.
@@ -1362,11 +1369,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         xmlBufShrink(in->buffer, processed);
         input->consumed += processed;
         in->raw = in->buffer;
-        in->buffer = xmlBufCreate();
-        if (in->buffer == NULL) {
-            xmlErrMemory(ctxt, NULL);
-            return(-1);
-        }
+        in->buffer = buf;
         in->rawconsumed = processed;
 
         nbchars = xmlCharEncInput(in);

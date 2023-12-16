@@ -1635,12 +1635,14 @@ xmlCreateEnumeration(const xmlChar *name) {
  */
 void
 xmlFreeEnumeration(xmlEnumerationPtr cur) {
-    if (cur == NULL) return;
+    while (cur != NULL) {
+        xmlEnumerationPtr next = cur->next;
 
-    if (cur->next != NULL) xmlFreeEnumeration(cur->next);
+        xmlFree((xmlChar *) cur->name);
+        xmlFree(cur);
 
-    if (cur->name != NULL) xmlFree((xmlChar *) cur->name);
-    xmlFree(cur);
+        cur = next;
+    }
 }
 
 #ifdef LIBXML_TREE_ENABLED
@@ -1655,14 +1657,26 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
  */
 xmlEnumerationPtr
 xmlCopyEnumeration(xmlEnumerationPtr cur) {
-    xmlEnumerationPtr ret;
+    xmlEnumerationPtr ret = NULL;
+    xmlEnumerationPtr last = NULL;
 
-    if (cur == NULL) return(NULL);
-    ret = xmlCreateEnumeration((xmlChar *) cur->name);
-    if (ret == NULL) return(NULL);
+    while (cur != NULL) {
+        xmlEnumerationPtr copy = xmlCreateEnumeration(cur->name);
 
-    if (cur->next != NULL) ret->next = xmlCopyEnumeration(cur->next);
-    else ret->next = NULL;
+        if (copy == NULL) {
+            xmlFreeEnumeration(ret);
+            return(NULL);
+        }
+
+        if (ret == NULL) {
+            ret = last = copy;
+        } else {
+            last->next = copy;
+            last = copy;
+        }
+
+        cur = cur->next;
+    }
 
     return(ret);
 }
@@ -1678,16 +1692,15 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
  */
 static void
 xmlDumpEnumeration(xmlBufferPtr buf, xmlEnumerationPtr cur) {
-    if ((buf == NULL) || (cur == NULL))
-        return;
+    while (cur != NULL) {
+        xmlBufferWriteCHAR(buf, cur->name);
+        if (cur->next != NULL)
+            xmlBufferWriteChar(buf, " | ");
 
-    xmlBufferWriteCHAR(buf, cur->name);
-    if (cur->next == NULL)
-	xmlBufferWriteChar(buf, ")");
-    else {
-	xmlBufferWriteChar(buf, " | ");
-	xmlDumpEnumeration(buf, cur->next);
+        cur = cur->next;
     }
+
+    xmlBufferWriteChar(buf, ")");
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

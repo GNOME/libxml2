@@ -206,7 +206,7 @@ static void xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur);
 
 static void
 xmlTextReaderErrMemory(xmlTextReaderPtr reader) {
-    xmlErrMemory(reader->ctxt, NULL);
+    xmlCtxtErrMemory(reader->ctxt);
     reader->mode = XML_TEXTREADER_MODE_ERROR;
     reader->state = XML_TEXTREADER_ERROR;
 }

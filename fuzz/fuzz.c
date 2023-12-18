@@ -378,14 +378,14 @@ xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
         return(NULL);
     input->filename = (char *) xmlCharStrdup(URL);
     if (input->filename == NULL) {
-        xmlErrMemory(ctxt, NULL);
+        xmlCtxtErrMemory(ctxt);
         xmlFreeInputStream(input);
         return(NULL);
     }
     input->buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
                                                XML_CHAR_ENCODING_NONE);
     if (input->buf == NULL) {
-        xmlErrMemory(ctxt, NULL);
+        xmlCtxtErrMemory(ctxt);
         xmlFreeInputStream(input);
         return(NULL);
     }

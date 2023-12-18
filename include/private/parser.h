@@ -29,6 +29,8 @@
 #define PARSER_STOPPED(ctxt) ((ctxt)->disableSAX > 1)
 
 XML_HIDDEN void
+xmlErrMemory(xmlParserCtxtPtr ctxt);
+XML_HIDDEN void
 xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
               int domain, int code, xmlErrorLevel level,
               const xmlChar *str1, const xmlChar *str2, const xmlChar *str3,

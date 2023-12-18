@@ -202,7 +202,6 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
 }
 #endif
 
-#if defined(LIBXML_HTTP_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 /**
  * xmlIOErrMemory:
  * @extra:  extra information
@@ -210,11 +209,10 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
  * Handle an out of memory condition
  */
 static void
-xmlIOErrMemory(const char *extra)
+xmlIOErrMemory(void)
 {
-    __xmlSimpleError(XML_FROM_IO, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+    xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_IO, NULL);
 }
-#endif
 
 /**
  * __xmlIOErr:
@@ -228,6 +226,7 @@ void
 __xmlIOErr(int domain, int code, const char *extra)
 {
     unsigned int idx;
+    int res;
 
     if (code == 0) {
 	if (errno == 0) code = 0;
@@ -390,7 +389,12 @@ __xmlIOErr(int domain, int code, const char *extra)
     if (code >= XML_IO_UNKNOWN) idx = code - XML_IO_UNKNOWN;
     if (idx >= (sizeof(IOerr) / sizeof(IOerr[0]))) idx = 0;
 
-    __xmlSimpleError(domain, code, NULL, IOerr[idx], extra);
+    res = __xmlRaiseError(NULL, NULL, NULL, NULL, NULL,
+                          domain, code, XML_ERR_ERROR, NULL, 0,
+                          extra, NULL, NULL, 0, 0,
+                          IOerr[idx], extra);
+    if (res < 0)
+        xmlIOErrMemory();
 }
 
 /**
@@ -1460,7 +1464,7 @@ xmlCreateZMemBuff( int compression ) {
 
     buff = xmlMalloc( sizeof( xmlZMemBuff ) );
     if ( buff == NULL ) {
-	xmlIOErrMemory("creating buffer context");
+	xmlIOErrMemory();
 	return ( NULL );
     }
 
@@ -1469,7 +1473,7 @@ xmlCreateZMemBuff( int compression ) {
     buff->zbuff = xmlMalloc( buff->size );
     if ( buff->zbuff == NULL ) {
 	xmlFreeZMemBuff( buff );
-	xmlIOErrMemory("creating buffer");
+	xmlIOErrMemory();
 	return ( NULL );
     }
 
@@ -1753,7 +1757,7 @@ xmlIOHTTPOpenW(const char *post_uri, int compression ATTRIBUTE_UNUSED)
 
     ctxt = xmlMalloc(sizeof(xmlIOHTTPWriteCtxt));
     if (ctxt == NULL) {
-	xmlIOErrMemory("creating HTTP output context");
+	xmlIOErrMemory();
         return (NULL);
     }
 
@@ -1761,7 +1765,7 @@ xmlIOHTTPOpenW(const char *post_uri, int compression ATTRIBUTE_UNUSED)
 
     ctxt->uri = (char *) xmlStrdup((const xmlChar *)post_uri);
     if (ctxt->uri == NULL) {
-	xmlIOErrMemory("copying URI");
+	xmlIOErrMemory();
         xmlFreeHTTPWriteCtxt(ctxt);
         return (NULL);
     }
@@ -4009,7 +4013,7 @@ xmlLoadExternalEntity(const char *URL, const char *ID,
 
 	canonicFilename = (char *) xmlCanonicPath((const xmlChar *) URL);
 	if (canonicFilename == NULL) {
-            xmlErrMemory(ctxt, "building canonical path\n");
+            xmlCtxtErrMemory(ctxt);
 	    return(NULL);
 	}
 

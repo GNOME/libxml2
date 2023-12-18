@@ -272,8 +272,7 @@ const int oldXMLWDcompatibility = 0; /* DEPRECATED */
  * while handling entities.
  * Disabled by default
  */
-int xmlParserDebugEntities = 0;
-static int xmlParserDebugEntitiesThrDef = 0;
+const int xmlParserDebugEntities = 0;
 /**
  * xmlDoValidityCheckingDefaultValue:
  *
@@ -782,7 +781,6 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
     gs->gs_xmlKeepBlanksDefaultValue = xmlKeepBlanksDefaultValueThrDef;
     gs->gs_xmlLineNumbersDefaultValue = xmlLineNumbersDefaultValueThrDef;
     gs->gs_xmlLoadExtDtdDefaultValue = xmlLoadExtDtdDefaultValueThrDef;
-    gs->gs_xmlParserDebugEntities = xmlParserDebugEntitiesThrDef;
     gs->gs_xmlPedanticParserDefaultValue = xmlPedanticParserDefaultValueThrDef;
     gs->gs_xmlSubstituteEntitiesDefaultValue =
         xmlSubstituteEntitiesDefaultValueThrDef;
@@ -905,6 +903,11 @@ __xmlParserVersion(void) {
 const int *
 __oldXMLWDcompatibility(void) {
     return &oldXMLWDcompatibility;
+}
+
+const int *
+__xmlParserDebugEntities(void) {
+    return &xmlParserDebugEntities;
 }
 
 const xmlSAXLocator *
@@ -1124,13 +1127,8 @@ int xmlThrDefLoadExtDtdDefaultValue(int v) {
     return ret;
 }
 
-int xmlThrDefParserDebugEntities(int v) {
-    int ret;
-    xmlMutexLock(&xmlThrDefMutex);
-    ret = xmlParserDebugEntitiesThrDef;
-    xmlParserDebugEntitiesThrDef = v;
-    xmlMutexUnlock(&xmlThrDefMutex);
-    return ret;
+int xmlThrDefParserDebugEntities(int v ATTRIBUTE_UNUSED) {
+    return(xmlParserDebugEntities);
 }
 
 int xmlThrDefPedanticParserDefaultValue(int v) {

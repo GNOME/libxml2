@@ -30,11 +30,6 @@
 static xmlElementPtr
 xmlGetDtdElementDesc2(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name);
 
-#define TODO								\
-    xmlGenericError(xmlGenericErrorContext,				\
-	    "Unimplemented block at %s:%d\n",				\
-            __FILE__, __LINE__);
-
 #ifdef LIBXML_VALID_ENABLED
 static int
 xmlValidateAttributeValueInternal(xmlDocPtr doc, xmlAttributeType type,
@@ -54,21 +49,17 @@ xmlValidateAttributeValueInternal(xmlDocPtr doc, xmlAttributeType type,
  * Handle an out of memory error
  */
 static void
-xmlVErrMemory(xmlValidCtxtPtr ctxt, const char *extra)
+xmlVErrMemory(xmlValidCtxtPtr ctxt)
 {
     if (ctxt != NULL) {
         if (ctxt->flags & XML_VCTXT_USE_PCTXT) {
-            xmlParserCtxtPtr pctxt = ctxt->userData;
-
-            xmlErrMemory(pctxt, extra);
+            xmlCtxtErrMemory(ctxt->userData);
         } else {
-            xmlError *lastError = &xmlLastError;
-
-            xmlResetLastError();
-            lastError->domain = XML_FROM_PARSER;
-            lastError->code = XML_ERR_NO_MEMORY;
-            lastError->level = XML_ERR_FATAL;
+            xmlRaiseMemoryError(NULL, ctxt->error, ctxt->userData,
+                                XML_FROM_VALID, NULL);
         }
+    } else {
+        xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_VALID, NULL);
     }
 }
 
@@ -91,18 +82,19 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
     } else {
         xmlGenericErrorFunc channel = NULL;
         void *data = NULL;
+        int res;
 
         if (ctxt != NULL) {
             channel = ctxt->error;
             data = ctxt->userData;
         }
-        xmlVRaiseError(NULL, channel, data, NULL, node,
-                        XML_FROM_VALID, code, level,
-                        NULL, 0, 
-                        (const char *) str1, (const char *) str2,
-                        (const char *) str2,
-                        int1, 0,
-                        msg, ap);
+        res = xmlVRaiseError(NULL, channel, data, NULL, node,
+                             XML_FROM_VALID, code, level, NULL, 0,
+                             (const char *) str1, (const char *) str2,
+                             (const char *) str2, int1, 0,
+                             msg, ap);
+        if (res < 0)
+            xmlVErrMemory(ctxt);
     }
     va_end(ap);
 }
@@ -215,7 +207,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(ctxt->vstateMax *
 		              sizeof(ctxt->vstateTab[0]));
         if (ctxt->vstateTab == NULL) {
-	    xmlVErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt);
 	    return(-1);
 	}
     }
@@ -226,7 +218,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
 	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
         if (tmp == NULL) {
-	    xmlVErrMemory(ctxt, "realloc failed");
+	    xmlVErrMemory(ctxt);
 	    return(-1);
 	}
 	ctxt->vstateMax *= 2;
@@ -242,7 +234,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementPtr elemDecl, xmlNodePtr node) {
 	    ctxt->vstateTab[ctxt->vstateNr].exec =
 		xmlRegNewExecCtxt(elemDecl->contModel, NULL, NULL);
             if (ctxt->vstateTab[ctxt->vstateNr].exec == NULL) {
-                xmlVErrMemory(ctxt, NULL);
+                xmlVErrMemory(ctxt);
                 return(-1);
             }
 	} else {
@@ -326,7 +318,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 	ctxt->vstateTab = (xmlValidState *) xmlMalloc(
 		     ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
 	if (ctxt->vstateTab == NULL) {
-	    xmlVErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt);
 	    return(-1);
 	}
     }
@@ -336,7 +328,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
         tmp = (xmlValidState *) xmlRealloc(ctxt->vstateTab,
 	             2 * ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
         if (tmp == NULL) {
-	    xmlVErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt);
 	    return(-1);
 	}
 	ctxt->vstateMax *= 2;
@@ -384,7 +376,7 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
             (xmlNodePtr *) xmlMalloc(ctxt->nodeMax *
                                      sizeof(ctxt->nodeTab[0]));
         if (ctxt->nodeTab == NULL) {
-	    xmlVErrMemory(ctxt, "malloc failed");
+	    xmlVErrMemory(ctxt);
             ctxt->nodeMax = 0;
             return (0);
         }
@@ -394,7 +386,7 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
         tmp = (xmlNodePtr *) xmlRealloc(ctxt->nodeTab,
 			      ctxt->nodeMax * 2 * sizeof(ctxt->nodeTab[0]));
         if (tmp == NULL) {
-	    xmlVErrMemory(ctxt, "realloc failed");
+	    xmlVErrMemory(ctxt);
             return (0);
         }
         ctxt->nodeMax *= 2;
@@ -471,7 +463,7 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
 
 	    fullname = xmlBuildQName(content->name, content->prefix, fn, 50);
 	    if (fullname == NULL) {
-	        xmlVErrMemory(ctxt, "Building content model");
+	        xmlVErrMemory(ctxt);
 		return(0);
 	    }
 
@@ -622,7 +614,7 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
 
     ctxt->am = xmlNewAutomata();
     if (ctxt->am == NULL) {
-        xmlVErrMemory(ctxt, NULL);
+        xmlVErrMemory(ctxt);
 	return(0);
     }
     ctxt->state = xmlAutomataGetInitState(ctxt->am);
@@ -630,7 +622,7 @@ xmlValidBuildContentModel(xmlValidCtxtPtr ctxt, xmlElementPtr elem) {
     xmlAutomataSetFinalState(ctxt->am, ctxt->state);
     elem->contModel = xmlAutomataCompile(ctxt->am);
     if (elem->contModel == NULL) {
-        xmlVErrMemory(ctxt, NULL);
+        xmlVErrMemory(ctxt);
         goto done;
     }
     if (xmlRegexpIsDeterminist(elem->contModel) != 1) {
@@ -1428,7 +1420,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
     return(ret);
 
 mem_error:
-    xmlVErrMemory(ctxt, NULL);
+    xmlVErrMemory(ctxt);
     if (prefix != NULL)
         xmlFree(prefix);
     return(NULL);
@@ -1933,7 +1925,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
 	else
 	    ret->defaultValue = xmlStrdup(defaultValue);
         if (ret->defaultValue == NULL)
-            xmlVErrMemory(ctxt, NULL);
+            xmlVErrMemory(ctxt);
     }
 
     /*
@@ -2019,7 +2011,7 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
     return(ret);
 
 mem_error:
-    xmlVErrMemory(ctxt, "malloc failed");
+    xmlVErrMemory(ctxt);
     xmlFreeEnumeration(tree);
     xmlFreeAttribute(ret);
     return(NULL);
@@ -2329,7 +2321,7 @@ xmlAddNotationDecl(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
     return(ret);
 
 mem_error:
-    xmlVErrMemory(ctxt, "malloc failed");
+    xmlVErrMemory(ctxt);
     xmlFreeNotation(ret);
     return(NULL);
 }
@@ -2621,7 +2613,7 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
 
     res = xmlAddIDSafe(doc, value, attr, xmlIsStreaming(ctxt), &id);
     if (res < 0) {
-        xmlVErrMemory(ctxt, "malloc failed");
+        xmlVErrMemory(ctxt);
     }
 #ifdef LIBXML_VALID_ENABLED
     else if (res == 0) {
@@ -2961,7 +2953,7 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     return(ret);
 
 failed:
-    xmlVErrMemory(ctxt, NULL);
+    xmlVErrMemory(ctxt);
     if (ret != NULL) {
         if (ret->value != NULL)
 	    xmlFree((char *)ret->value);
@@ -3224,7 +3216,7 @@ xmlGetDtdElementDesc2(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name) 
     return(cur);
 
 mem_error:
-    xmlVErrMemory(ctxt, NULL);
+    xmlVErrMemory(ctxt);
     xmlFree(prefix);
     xmlFreeElement(cur);
     return(NULL);
@@ -3464,7 +3456,7 @@ xmlCtxtGetDtdElementDesc(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
 
     localName = xmlSplitQName4(name, &prefix);
     if (localName == NULL) {
-        xmlVErrMemory(ctxt, NULL);
+        xmlVErrMemory(ctxt);
         return(NULL);
     }
     cur = xmlHashLookup2(table, localName, prefix);
@@ -3944,7 +3936,7 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
 	    dup = xmlStrdup(value);
 	    if (dup == NULL) {
-                xmlVErrMemory(ctxt, NULL);
+                xmlVErrMemory(ctxt);
 		return(0);
             }
 	    cur = dup;
@@ -4086,7 +4078,7 @@ xmlValidCtxtNormalizeAttributeValue(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     return(ret);
 
 mem_error:
-    xmlVErrMemory(ctxt, NULL);
+    xmlVErrMemory(ctxt);
 
 done:
     xmlFree(prefix);
@@ -4429,7 +4421,7 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
 	fullname = xmlBuildQName(elem->name, elem->ns->prefix, fn, 50);
 	if (fullname == NULL) {
-            xmlVErrMemory(ctxt, NULL);
+            xmlVErrMemory(ctxt);
 	    return(0);
         }
         attrDecl = xmlGetDtdQAttrDesc(doc->intSubset, fullname,
@@ -4593,7 +4585,7 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 
 	fullname = xmlBuildQName(elem->name, prefix, fn, 50);
 	if (fullname == NULL) {
-	    xmlVErrMemory(ctxt, "Validating namespace");
+	    xmlVErrMemory(ctxt);
 	    return(0);
 	}
 	if (ns->prefix != NULL) {
@@ -5274,7 +5266,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
 	ctxt->nodeTab = NULL;
 	exec = xmlRegNewExecCtxt(elemDecl->contModel, NULL, NULL);
 	if (exec == NULL) {
-            xmlVErrMemory(ctxt, NULL);
+            xmlVErrMemory(ctxt);
             return(-1);
         }
         cur = child;
@@ -5309,7 +5301,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
                         fullname = xmlBuildQName(cur->name,
                                                  cur->ns->prefix, fn, 50);
                         if (fullname == NULL) {
-                            xmlVErrMemory(ctxt, NULL);
+                            xmlVErrMemory(ctxt);
                             ret = -1;
                             goto fail;
                         }
@@ -5324,7 +5316,7 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
                     break;
             }
             if (ret == XML_REGEXP_OUT_OF_MEMORY)
-                xmlVErrMemory(ctxt, NULL);
+                xmlVErrMemory(ctxt);
             /*
              * Switch to next element
              */
@@ -5348,7 +5340,7 @@ fail:
     ctxt->vstateTab = (xmlValidState *) xmlMalloc(
 		 ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
     if (ctxt->vstateTab == NULL) {
-	xmlVErrMemory(ctxt, "malloc failed");
+	xmlVErrMemory(ctxt);
 	return(-1);
     }
     /*
@@ -5407,7 +5399,7 @@ fail:
 		     */
 		    tmp = (xmlNodePtr) xmlMalloc(sizeof(xmlNode));
 		    if (tmp == NULL) {
-			xmlVErrMemory(ctxt, "malloc failed");
+			xmlVErrMemory(ctxt);
 			xmlFreeNodeList(repl);
 			ret = -1;
 			goto done;
@@ -5800,7 +5792,7 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		    if (state->exec != NULL) {
 			ret = xmlRegExecPushString(state->exec, qname, NULL);
                         if (ret == XML_REGEXP_OUT_OF_MEMORY) {
-                            xmlVErrMemory(ctxt, NULL);
+                            xmlVErrMemory(ctxt);
                             return(0);
                         }
 			if (ret < 0) {
@@ -6361,7 +6353,7 @@ xmlValidateRoot(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 
 		fullname = xmlBuildQName(root->name, root->ns->prefix, fn, 50);
 		if (fullname == NULL) {
-		    xmlVErrMemory(ctxt, NULL);
+		    xmlVErrMemory(ctxt);
 		    return(0);
 		}
 		ret = xmlStrEqual(doc->intSubset->name, fullname);
@@ -6416,7 +6408,7 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr root) {
             while (attr != NULL) {
                 value = xmlNodeListGetString(doc, attr->children, 0);
                 if (value == NULL)
-                    xmlVErrMemory(ctxt, NULL);
+                    xmlVErrMemory(ctxt);
                 ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
                 if (value != NULL)
                     xmlFree((char *)value);
@@ -6478,7 +6470,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 
 	dup = xmlStrdup(name);
 	if (dup == NULL) {
-            xmlVErrMemory(ctxt, NULL);
+            xmlVErrMemory(ctxt);
 	    return;
 	}
 	cur = dup;
@@ -6513,7 +6505,7 @@ xmlValidateRef(xmlRefPtr ref, xmlValidCtxtPtr ctxt,
 
 	dup = xmlStrdup(name);
 	if (dup == NULL) {
-	    xmlVErrMemory(ctxt, "IDREFS split");
+	    xmlVErrMemory(ctxt);
 	    ctxt->valid = 0;
 	    return;
 	}

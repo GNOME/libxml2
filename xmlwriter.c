@@ -4509,7 +4509,7 @@ xmlTextWriterStartDocumentCallback(void *ctx)
         if (ctxt->myDoc == NULL)
             ctxt->myDoc = htmlNewDocNoDtD(NULL, NULL);
         if (ctxt->myDoc == NULL) {
-            xmlErrMemory(ctxt, NULL);
+            xmlCtxtErrMemory(ctxt);
             return;
         }
     } else
@@ -4527,7 +4527,7 @@ xmlTextWriterStartDocumentCallback(void *ctx)
                 doc->standalone = ctxt->standalone;
             }
         } else {
-            xmlErrMemory(ctxt, NULL);
+            xmlCtxtErrMemory(ctxt);
             return;
         }
     }

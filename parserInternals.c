@@ -62,7 +62,6 @@
  * @version: the include version number
  *
  * check the compiled lib version against the include one.
- * This can warn or immediately kill the application
  */
 void
 xmlCheckVersion(int version) {
@@ -71,15 +70,11 @@ xmlCheckVersion(int version) {
     xmlInitParser();
 
     if ((myversion / 10000) != (version / 10000)) {
-	xmlGenericError(xmlGenericErrorContext,
-		"Fatal: program compiled against libxml %d using libxml %d\n",
-		(version / 10000), (myversion / 10000));
 	fprintf(stderr,
 		"Fatal: program compiled against libxml %d using libxml %d\n",
 		(version / 10000), (myversion / 10000));
-    }
-    if ((myversion / 100) < (version / 100)) {
-	xmlGenericError(xmlGenericErrorContext,
+    } else if ((myversion / 100) < (version / 100)) {
+	fprintf(stderr,
 		"Warning: program compiled against libxml %d using older %d\n",
 		(version / 100), (myversion / 100));
     }
@@ -94,49 +89,56 @@ xmlCheckVersion(int version) {
 
 
 /**
- * xmlErrMemory:
+ * xmlCtxtSetErrorHandler:
  * @ctxt:  an XML parser context
- * @extra:  extra information
+ * @handler:  error handler
+ * @data:  data for error handler
  *
- * Handle a redefinition of attribute error
+ * Set an error handler for a parser context.
  */
 void
-xmlErrMemory(xmlParserCtxtPtr ctxt, const char *extra ATTRIBUTE_UNUSED)
+xmlCtxtSetErrorHandler(xmlParserCtxtPtr ctxt, xmlStructuredErrorFunc handler,
+                       void *data)
 {
-    xmlError *lastError = &xmlLastError;
+    if (ctxt == NULL)
+        return;
+    ctxt->errorHandler = handler;
+    ctxt->errorCtxt = data;
+}
 
-    xmlResetLastError();
-    lastError->domain = XML_FROM_PARSER;
-    lastError->code = XML_ERR_NO_MEMORY;
-    lastError->level = XML_ERR_FATAL;
+/**
+ * xmlCtxtErrMemory:
+ * @ctxt:  an XML parser context
+ * @domain:  domain
+ *
+ * Handle an out-of-memory error
+ */
+void
+xmlCtxtErrMemory(xmlParserCtxtPtr ctxt)
+{
+    xmlStructuredErrorFunc schannel = NULL;
+    xmlGenericErrorFunc channel = NULL;
+    void *data;
 
     ctxt->errNo = XML_ERR_NO_MEMORY;
     ctxt->instate = XML_PARSER_EOF; /* TODO: Remove after refactoring */
     ctxt->wellFormed = 0;
     ctxt->disableSAX = 2;
 
-    xmlResetError(&ctxt->lastError);
-    ctxt->lastError.domain = XML_FROM_PARSER;
-    ctxt->lastError.code = XML_ERR_NO_MEMORY;
-    ctxt->lastError.level = XML_ERR_FATAL;
-
-    if ((ctxt->sax->initialized == XML_SAX2_MAGIC) &&
+    if (ctxt->errorHandler) {
+        schannel = ctxt->errorHandler;
+        data = ctxt->errorCtxt;
+    } else if ((ctxt->sax->initialized == XML_SAX2_MAGIC) &&
         (ctxt->sax->serror != NULL)) {
-        ctxt->sax->serror(ctxt->userData, &ctxt->lastError);
-    } else if (xmlStructuredError != NULL) {
-        xmlStructuredError(ctxt->userData, &ctxt->lastError);
+        schannel = ctxt->sax->serror;
+        data = ctxt->userData;
     } else {
-        xmlGenericErrorFunc channel = ctxt->sax->error;
-
-        if ((channel == xmlParserError) ||
-            (channel == xmlParserWarning) ||
-            (channel == xmlParserValidityError) ||
-            (channel == xmlParserValidityWarning))
-            channel = xmlGenericError;
-
-        if (channel != NULL)
-            channel(ctxt->userData, "parser error : out of memory\n");
+        channel = ctxt->sax->error;
+        data = ctxt->userData;
     }
+
+    xmlRaiseMemoryError(schannel, channel, data, XML_FROM_PARSER,
+                        &ctxt->lastError);
 }
 
 void
@@ -146,7 +148,7 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
               int int1, const char *msg, va_list ap)
 {
     xmlStructuredErrorFunc schannel = NULL;
-    xmlGenericErrorFunc channel;
+    xmlGenericErrorFunc channel = NULL;
     void *data;
     const char *file = NULL;
     int line = 0;
@@ -157,7 +159,7 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
 	return;
 
     if (code == XML_ERR_NO_MEMORY) {
-        xmlErrMemory(ctxt, NULL);
+        xmlErrMemory(ctxt);
         return;
     }
 
@@ -171,10 +173,14 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
         ctxt->nbErrors += 1;
     }
 
-    if (ctxt->sax->initialized == XML_SAX2_MAGIC)
+    if (ctxt->errorHandler) {
+        schannel = ctxt->errorHandler;
+        data = ctxt->errorCtxt;
+    } else if ((ctxt->sax->initialized == XML_SAX2_MAGIC) &&
+        (ctxt->sax->serror != NULL)) {
         schannel = ctxt->sax->serror;
-
-    if ((domain == XML_FROM_VALID) || (domain == XML_FROM_DTD)) {
+        data = ctxt->userData;
+    } else if ((domain == XML_FROM_VALID) || (domain == XML_FROM_DTD)) {
         if (level == XML_ERR_WARNING)
             channel = ctxt->vctxt.warning;
         else
@@ -206,7 +212,7 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
                          msg, ap);
 
     if (res < 0) {
-        xmlErrMemory(ctxt, NULL);
+        xmlErrMemory(ctxt);
         return;
     }
 
@@ -1357,7 +1363,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
         buf = xmlBufCreate();
         if (buf == NULL) {
-            xmlErrMemory(ctxt, NULL);
+            xmlErrMemory(ctxt);
             return(-1);
         }
 
@@ -1375,7 +1381,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         nbchars = xmlCharEncInput(in);
         xmlBufResetInput(in->buffer, input);
         if (nbchars == XML_ENC_ERR_MEMORY) {
-            xmlErrMemory(ctxt, NULL);
+            xmlErrMemory(ctxt);
         } else if (nbchars < 0) {
             xmlErrInternal(ctxt,
                            "switching encoding: encoder error\n",
@@ -1573,7 +1579,7 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
                 xmlFree(encoding);
                 encoding = xmlStrdup(BAD_CAST autoEnc);
                 if (encoding == NULL)
-                    xmlErrMemory(ctxt, NULL);
+                    xmlErrMemory(ctxt);
             }
         }
     }
@@ -1623,7 +1629,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
 
     input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
-        xmlErrMemory(ctxt,  "couldn't allocate a new input stream\n");
+        xmlErrMemory(ctxt);
 	return(NULL);
     }
     memset(input, 0, sizeof(xmlParserInput));
@@ -1637,7 +1643,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
      */
     if (ctxt != NULL) {
         if (input->id >= INT_MAX) {
-            xmlErrMemory(ctxt, "Input ID overflow\n");
+            xmlErrMemory(ctxt);
             return(NULL);
         }
         input->id = ctxt->input_id++;
@@ -1663,8 +1669,6 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
     xmlParserInputPtr inputStream;
 
     if (input == NULL) return(NULL);
-    if (xmlParserDebugEntities)
-	xmlGenericError(xmlGenericErrorContext, "new input from I/O\n");
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	return(NULL);
@@ -1700,9 +1704,6 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	               NULL);
 	return(NULL);
     }
-    if (xmlParserDebugEntities)
-	xmlGenericError(xmlGenericErrorContext,
-		"new input from entity: %s\n", entity->name);
     if (entity->content == NULL) {
 	switch (entity->etype) {
             case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
@@ -1768,17 +1769,14 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
 	               NULL);
 	return(NULL);
     }
-    if (xmlParserDebugEntities)
-	xmlGenericError(xmlGenericErrorContext,
-		"new fixed input: %.30s\n", buffer);
     buf = xmlParserInputBufferCreateString(buffer);
     if (buf == NULL) {
-	xmlErrMemory(ctxt, NULL);
+	xmlErrMemory(ctxt);
         return(NULL);
     }
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
-        xmlErrMemory(ctxt,  "couldn't allocate a new input stream\n");
+        xmlErrMemory(ctxt);
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
@@ -1803,9 +1801,6 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     char *directory = NULL;
     xmlChar *URI = NULL;
 
-    if (xmlParserDebugEntities)
-	xmlGenericError(xmlGenericErrorContext,
-		"new input from file: %s\n", filename);
     if (ctxt == NULL) return(NULL);
     buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
@@ -2007,7 +2002,7 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     if (ctxt->nsdb == NULL) {
         ctxt->nsdb = xmlParserNsCreate();
         if (ctxt->nsdb == NULL) {
-            xmlErrMemory(ctxt, NULL);
+            xmlErrMemory(ctxt);
             return(-1);
         }
     }
@@ -2341,7 +2336,7 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
                                                      byte_size);
 
             if (tmp_buffer == NULL) {
-		xmlErrMemory(ctxt, "failed to allocate buffer\n");
+		xmlErrMemory(ctxt);
                 return;
             }
             ctxt->node_seq.buffer = tmp_buffer;

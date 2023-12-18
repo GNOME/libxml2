@@ -41,11 +41,6 @@ extern double xmlXPathPINF;
 extern double xmlXPathNINF;
 #endif
 
-#define TODO								\
-    xmlGenericError(xmlGenericErrorContext,				\
-	    "Unimplemented block at %s:%d\n",				\
-            __FILE__, __LINE__);
-
 #define XML_SCHEMAS_NAMESPACE_NAME \
     (const xmlChar *)"http://www.w3.org/2001/XMLSchema"
 
@@ -200,9 +195,9 @@ static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
  * Handle an out of memory condition
  */
 static void
-xmlSchemaTypeErrMemory(xmlNodePtr node, const char *extra)
+xmlSchemaTypeErrMemory(void)
 {
-    __xmlSimpleError(XML_FROM_DATATYPE, XML_ERR_NO_MEMORY, node, NULL, extra);
+    xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_DATATYPE, NULL);
 }
 
 /************************************************************************
@@ -265,7 +260,7 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 
     ret = (xmlSchemaTypePtr) xmlMalloc(sizeof(xmlSchemaType));
     if (ret == NULL) {
-        xmlSchemaTypeErrMemory(NULL, "could not initialize basic types");
+        xmlSchemaTypeErrMemory();
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlSchemaType));
@@ -373,7 +368,7 @@ xmlSchemaAddParticle(void)
     ret = (xmlSchemaParticlePtr)
 	xmlMalloc(sizeof(xmlSchemaParticle));
     if (ret == NULL) {
-	xmlSchemaTypeErrMemory(NULL, "allocating particle component");
+	xmlSchemaTypeErrMemory();
 	return (NULL);
     }
     memset(ret, 0, sizeof(xmlSchemaParticle));
@@ -435,7 +430,7 @@ xmlSchemaInitTypes(void)
         return (0);
     xmlSchemaTypesBank = xmlHashCreate(40);
     if (xmlSchemaTypesBank == NULL) {
-	xmlSchemaTypeErrMemory(NULL, NULL);
+	xmlSchemaTypeErrMemory();
         goto error;
     }
 
@@ -466,7 +461,7 @@ xmlSchemaInitTypes(void)
 	sequence = (xmlSchemaModelGroupPtr)
 	    xmlMalloc(sizeof(xmlSchemaModelGroup));
 	if (sequence == NULL) {
-	    xmlSchemaTypeErrMemory(NULL, "allocating model group component");
+	    xmlSchemaTypeErrMemory();
 	    goto error;
 	}
 	memset(sequence, 0, sizeof(xmlSchemaModelGroup));
@@ -482,7 +477,7 @@ xmlSchemaInitTypes(void)
 	/* The wildcard */
 	wild = (xmlSchemaWildcardPtr) xmlMalloc(sizeof(xmlSchemaWildcard));
 	if (wild == NULL) {
-	    xmlSchemaTypeErrMemory(NULL, "allocating wildcard component");
+	    xmlSchemaTypeErrMemory();
 	    goto error;
 	}
 	memset(wild, 0, sizeof(xmlSchemaWildcard));
@@ -495,8 +490,7 @@ xmlSchemaInitTypes(void)
 	*/
 	wild = (xmlSchemaWildcardPtr) xmlMalloc(sizeof(xmlSchemaWildcard));
 	if (wild == NULL) {
-	    xmlSchemaTypeErrMemory(NULL, "could not create an attribute "
-		"wildcard on anyType");
+	    xmlSchemaTypeErrMemory();
 	    goto error;
 	}
 	memset(wild, 0, sizeof(xmlSchemaWildcard));
@@ -3046,7 +3040,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         ret = 4;
                 }
                 if ((ret == 0) && (val != NULL)) {
-                    TODO;
+                    /* TODO */
                 }
                 if ((ret == 0) && (node != NULL) &&
                     (node->type == XML_ATTRIBUTE_NODE)) {
@@ -3198,7 +3192,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 		    */
                     cur = xmlStrndup(start, i);
                     if (cur == NULL) {
-		        xmlSchemaTypeErrMemory(node, "allocating hexbin data");
+		        xmlSchemaTypeErrMemory();
                         xmlFree(v);
                         goto return1;
                     }
@@ -3325,7 +3319,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     base =
                         (xmlChar *) xmlMallocAtomic(i + pad + 1);
                     if (base == NULL) {
-		        xmlSchemaTypeErrMemory(node, "allocating base64 data");
+		        xmlSchemaTypeErrMemory();
                         xmlFree(v);
                         goto return1;
                     }
@@ -5045,7 +5039,7 @@ xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
 	    * TODO: Compare those against QName.
 	    */
 	    if (ytype == XML_SCHEMAS_QNAME) {
-		TODO
+		/* TODO */
 		if (y == NULL)
 		    return(-2);
 		return (-2);
@@ -5170,7 +5164,7 @@ xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
         case XML_SCHEMAS_IDREFS:
         case XML_SCHEMAS_ENTITIES:
         case XML_SCHEMAS_NMTOKENS:
-	    TODO
+	    /* TODO */
 	    break;
     }
     return -2;
@@ -5471,7 +5465,8 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
 		*/
 		return (0);
 	    default:
-		TODO
+		/* TODO */
+                break;
 	}
     }
     *length = (unsigned long) len;
@@ -5725,7 +5720,8 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 			    len = xmlSchemaNormLen(value);
 			break;
 		    default:
-		        TODO
+		        /* TODO */
+                        break;
 		}
 	    }
 	    if (facet->type == XML_SCHEMA_FACET_LENGTH) {
@@ -5776,7 +5772,8 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 	    }
 	    break;
 	default:
-	    TODO
+	    /* TODO */
+            break;
     }
     return(0);
 

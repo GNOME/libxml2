@@ -154,7 +154,7 @@ static const char* const IOerr[] = {
     "No such process",		/* ESRCH */
     "Operation timed out",	/* ETIMEDOUT */
     "Improper link",		/* EXDEV */
-    "Attempt to load network entity %s", /* XML_IO_NETWORK_ATTEMPT */
+    "Attempt to load network entity", /* XML_IO_NETWORK_ATTEMPT */
     "encoder error",		/* XML_IO_ENCODER */
     "flush error",
     "write error",
@@ -4053,7 +4053,8 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
     if (resource != NULL) {
         if ((!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "ftp://", 6)) ||
             (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
-            xmlIOErr(XML_IO_NETWORK_ATTEMPT, (const char *) resource);
+            xmlLoaderErr(ctxt, "Attempt to load network entity %s",
+                         (const char *) resource);
 	    if (resource != (xmlChar *) URL)
 		xmlFree(resource);
 	    return(NULL);

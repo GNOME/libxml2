@@ -99,7 +99,7 @@ libxml2.registerInputCallback(my_input_cb)
 run_test(desc="Loading entity with custom callback",
         docpath=startURL, catalog=None,
         exp_status="loaded", exp_err=[
-            (-1, "Attempt to load network entity http://example.com/dtds/sample.dtd"),
+            ( 3, "Attempt to load network entity http://example.com/dtds/sample.dtd"),
             ( 4, "Entity 'sample.entity' not defined\n")
             ])
 

@@ -149,7 +149,7 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
 {
     xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
-    void *data;
+    void *data = NULL;
     const char *file = NULL;
     int line = 0;
     int col = 0;
@@ -173,25 +173,29 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
         ctxt->nbErrors += 1;
     }
 
-    if (ctxt->errorHandler) {
-        schannel = ctxt->errorHandler;
-        data = ctxt->errorCtxt;
-    } else if ((ctxt->sax->initialized == XML_SAX2_MAGIC) &&
-        (ctxt->sax->serror != NULL)) {
-        schannel = ctxt->sax->serror;
-        data = ctxt->userData;
-    } else if ((domain == XML_FROM_VALID) || (domain == XML_FROM_DTD)) {
-        if (level == XML_ERR_WARNING)
-            channel = ctxt->vctxt.warning;
-        else
-            channel = ctxt->vctxt.error;
-        data = ctxt->vctxt.userData;
-    } else {
-        if (level == XML_ERR_WARNING)
-            channel = ctxt->sax->warning;
-        else
-            channel = ctxt->sax->error;
-        data = ctxt->userData;
+    if (((ctxt->options & XML_PARSE_NOERROR) == 0) &&
+        ((level != XML_ERR_WARNING) ||
+         ((ctxt->options & XML_PARSE_NOWARNING) == 0))) {
+        if (ctxt->errorHandler) {
+            schannel = ctxt->errorHandler;
+            data = ctxt->errorCtxt;
+        } else if ((ctxt->sax->initialized == XML_SAX2_MAGIC) &&
+            (ctxt->sax->serror != NULL)) {
+            schannel = ctxt->sax->serror;
+            data = ctxt->userData;
+        } else if ((domain == XML_FROM_VALID) || (domain == XML_FROM_DTD)) {
+            if (level == XML_ERR_WARNING)
+                channel = ctxt->vctxt.warning;
+            else
+                channel = ctxt->vctxt.error;
+            data = ctxt->vctxt.userData;
+        } else {
+            if (level == XML_ERR_WARNING)
+                channel = ctxt->sax->warning;
+            else
+                channel = ctxt->sax->error;
+            data = ctxt->userData;
+        }
     }
 
     if (ctxt->input != NULL) {

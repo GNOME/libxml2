@@ -674,8 +674,6 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
 	schannel(data, to);
     } else if (xmlStructuredError != NULL) {
         xmlStructuredError(xmlStructuredErrorContext, to);
-    } else if ((ctxt == NULL) && (channel == NULL)) {
-	xmlGenericError(xmlGenericErrorContext, "%s", to->message);
     } else if (channel != NULL) {
 	channel(data, "%s", to->message);
     }

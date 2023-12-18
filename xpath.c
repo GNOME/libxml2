@@ -663,7 +663,8 @@ xmlXPathPErrMemory(xmlXPathParserContextPtr ctxt)
 void
 xmlXPathErr(xmlXPathParserContextPtr ctxt, int code)
 {
-    xmlStructuredErrorFunc serror = NULL;
+    xmlStructuredErrorFunc schannel = NULL;
+    xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
     xmlNodePtr node = NULL;
     int res;
@@ -701,12 +702,17 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int code)
         err->int1 = ctxt->cur - ctxt->base;
         err->node = ctxt->context->debugNode;
 
-        serror = ctxt->context->error;
+        schannel = ctxt->context->error;
         data = ctxt->context->userData;
         node = ctxt->context->debugNode;
     }
 
-    res = __xmlRaiseError(serror, NULL, data, NULL, node, XML_FROM_XPATH,
+    if (schannel == NULL) {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
+    }
+
+    res = __xmlRaiseError(schannel, channel, data, NULL, node, XML_FROM_XPATH,
                           code + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
                           XML_ERR_ERROR, NULL, 0,
                           (const char *) ctxt->base, NULL, NULL,

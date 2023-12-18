@@ -483,6 +483,11 @@ xmlRngPErr(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node, int error,
         ctxt->nbErrors++;
     }
 
+    if ((channel == NULL) && (schannel == NULL)) {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
+    }
+
     res = __xmlRaiseError(schannel, channel, data, NULL, node,
                           XML_FROM_RELAXNGP, error, XML_ERR_ERROR, NULL, 0,
                           (const char *) str1, (const char *) str2, NULL, 0, 0,
@@ -518,6 +523,11 @@ xmlRngVErr(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node, int error,
 	    channel = ctxt->error;
         data = ctxt->userData;
         ctxt->nbErrors++;
+    }
+
+    if ((channel == NULL) && (schannel == NULL)) {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
     }
 
     res = __xmlRaiseError(schannel, channel, data, NULL, node,
@@ -10569,9 +10579,16 @@ xmlRelaxNGValidateDocument(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
 
         memset(&vctxt, 0, sizeof(xmlValidCtxt));
         vctxt.valid = 1;
-        vctxt.error = ctxt->error;
-        vctxt.warning = ctxt->warning;
-        vctxt.userData = ctxt->userData;
+
+        if (ctxt->error == NULL) {
+            vctxt.error = xmlGenericError;
+            vctxt.warning = xmlGenericError;
+            vctxt.userData = xmlGenericErrorContext;
+        } else {
+            vctxt.error = ctxt->error;
+            vctxt.warning = ctxt->warning;
+            vctxt.userData = ctxt->userData;
+        }
 
         if (xmlValidateDocumentFinal(&vctxt, doc) != 1)
             ret = -1;

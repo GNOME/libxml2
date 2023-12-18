@@ -1946,6 +1946,11 @@ xmlSchemaPErrFull(xmlSchemaParserCtxtPtr ctxt, xmlNodePtr node, int code,
         schannel = ctxt->serror;
     }
 
+    if ((channel == NULL) && (schannel == NULL)) {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
+    }
+
     va_start(ap, msg);
     res = xmlVRaiseError(schannel, channel, data, ctxt, node,
                          XML_FROM_SCHEMASP, code, level, file, line,
@@ -2087,6 +2092,11 @@ xmlSchemaVErrFull(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr node, int code,
         }
         data = ctxt->errCtxt;
         schannel = ctxt->serror;
+    }
+
+    if ((channel == NULL) && (schannel == NULL)) {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
     }
 
     va_start(ap, msg);

@@ -14421,22 +14421,17 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options, const char *encodi
         ctxt->keepBlanks = 1;
     if (options & XML_PARSE_DTDVALID) {
         ctxt->validate = 1;
-        if (options & XML_PARSE_NOWARNING)
-            ctxt->vctxt.warning = NULL;
-        if (options & XML_PARSE_NOERROR)
-            ctxt->vctxt.error = NULL;
         options -= XML_PARSE_DTDVALID;
 	ctxt->options |= XML_PARSE_DTDVALID;
     } else
         ctxt->validate = 0;
     if (options & XML_PARSE_NOWARNING) {
-        ctxt->sax->warning = NULL;
         options -= XML_PARSE_NOWARNING;
+	ctxt->options |= XML_PARSE_NOWARNING;
     }
     if (options & XML_PARSE_NOERROR) {
-        ctxt->sax->error = NULL;
-        ctxt->sax->fatalError = NULL;
         options -= XML_PARSE_NOERROR;
+	ctxt->options |= XML_PARSE_NOERROR;
     }
 #ifdef LIBXML_SAX1_ENABLED
     if (options & XML_PARSE_SAX1) {

@@ -47,16 +47,6 @@
 #include "private/error.h"
 #include "private/xpath.h"
 
-#define TODO								\
-    xmlGenericError(xmlGenericErrorContext,				\
-	    "Unimplemented block at %s:%d\n",				\
-            __FILE__, __LINE__);
-
-#define STRANGE							\
-    xmlGenericError(xmlGenericErrorContext,				\
-	    "Internal error at %s:%d\n",				\
-            __FILE__, __LINE__);
-
 /************************************************************************
  *									*
  *		Some factorized error routines				*
@@ -71,50 +61,51 @@
  * Handle an XPointer error
  */
 static void LIBXML_ATTR_FORMAT(3,0)
-xmlXPtrErr(xmlXPathParserContextPtr ctxt, int error,
+xmlXPtrErr(xmlXPathParserContextPtr ctxt, int code,
            const char * msg, const xmlChar *extra)
 {
-    if (ctxt->context->lastError.code == XML_ERR_NO_MEMORY)
+    xmlStructuredErrorFunc serror = NULL;
+    void *data = NULL;
+    xmlNodePtr node = NULL;
+    int res;
+
+    if (ctxt == NULL)
         return;
-    if (ctxt != NULL)
-        ctxt->error = error;
-    if ((ctxt == NULL) || (ctxt->context == NULL)) {
-	__xmlRaiseError(NULL, NULL, NULL,
-			NULL, NULL, XML_FROM_XPOINTER, error,
-			XML_ERR_ERROR, NULL, 0,
-			(const char *) extra, NULL, NULL, 0, 0,
-			msg, extra);
-	return;
-    }
-
-    /* cleanup current last error */
-    xmlResetError(&ctxt->context->lastError);
-
-    ctxt->context->lastError.domain = XML_FROM_XPOINTER;
-    ctxt->context->lastError.code = error;
-    ctxt->context->lastError.level = XML_ERR_ERROR;
-    ctxt->context->lastError.str1 = (char *) xmlStrdup(ctxt->base);
-    if (ctxt->context->lastError.str1 == NULL) {
-        xmlXPathPErrMemory(ctxt, NULL);
+    /* Only report the first error */
+    if (ctxt->error != 0)
         return;
-    }
-    ctxt->context->lastError.int1 = ctxt->cur - ctxt->base;
-    ctxt->context->lastError.node = ctxt->context->debugNode;
-    if (ctxt->context->error != NULL) {
-	ctxt->context->error(ctxt->context->userData,
-	                     &ctxt->context->lastError);
-    } else {
-        int res;
 
-	res = __xmlRaiseError(NULL, NULL, NULL,
-			NULL, ctxt->context->debugNode, XML_FROM_XPOINTER,
-			error, XML_ERR_ERROR, NULL, 0,
-			(const char *) extra, (const char *) ctxt->base, NULL,
-			ctxt->cur - ctxt->base, 0,
-			msg, extra);
-        if (res < 0)
-            xmlXPathPErrMemory(ctxt, NULL);
+    ctxt->error = code;
+
+    if (ctxt->context != NULL) {
+        xmlErrorPtr err = &ctxt->context->lastError;
+
+        /* cleanup current last error */
+        xmlResetError(err);
+
+        err->domain = XML_FROM_XPOINTER;
+        err->code = code;
+        err->level = XML_ERR_ERROR;
+        err->str1 = (char *) xmlStrdup(ctxt->base);
+        if (err->str1 == NULL) {
+            xmlXPathPErrMemory(ctxt);
+            return;
+        }
+        err->int1 = ctxt->cur - ctxt->base;
+        err->node = ctxt->context->debugNode;
+
+        serror = ctxt->context->error;
+        data = ctxt->context->userData;
+        node = ctxt->context->debugNode;
     }
+
+    res = __xmlRaiseError(serror, NULL, data, NULL, node,
+                          XML_FROM_XPOINTER, code, XML_ERR_ERROR, NULL, 0,
+                          (const char *) extra, (const char *) ctxt->base,
+                          NULL, ctxt->cur - ctxt->base, 0,
+                          msg, extra);
+    if (res < 0)
+        xmlXPathPErrMemory(ctxt);
 }
 
 /************************************************************************
@@ -211,12 +202,9 @@ xmlXPtrGetNthChild(xmlNodePtr cur, int no) {
  * Handle a redefinition of attribute error
  */
 static void
-xmlXPtrErrMemory(const char *extra)
+xmlXPtrErrMemory(const char *extra ATTRIBUTE_UNUSED)
 {
-    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_XPOINTER,
-		    XML_ERR_NO_MEMORY, XML_ERR_ERROR, NULL, 0, extra,
-		    NULL, NULL, 0, 0,
-		    "Memory allocation failed : %s\n", extra);
+    xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_XPOINTER, NULL);
 }
 
 /**
@@ -970,7 +958,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     len++;
     buffer = (xmlChar *) xmlMallocAtomic(len);
     if (buffer == NULL) {
-        xmlXPathPErrMemory(ctxt, "allocating buffer");
+        xmlXPathPErrMemory(ctxt);
         xmlFree(name);
 	return;
     }
@@ -1241,7 +1229,7 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
 	ctxt->valueTab = (xmlXPathObjectPtr *)
 			 xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
 	if (ctxt->valueTab == NULL) {
-	    xmlXPathPErrMemory(ctxt, "allocating evaluation context");
+	    xmlXPathPErrMemory(ctxt);
 	    return;
 	}
 	ctxt->valueNr = 0;
@@ -1366,7 +1354,7 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 
     ctxt = xmlXPathNewParserContext(str, ctx);
     if (ctxt == NULL) {
-        xmlXPathErrMemory(ctx, NULL);
+        xmlXPathErrMemory(ctx);
 	return(NULL);
     }
     xmlXPtrEvalXPointer(ctxt);
@@ -1553,7 +1541,7 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 		    /* Do not copy DTD information */
 		    break;
 		case XML_ENTITY_DECL:
-		    TODO /* handle crossing entities -> stack needed */
+		    /* TODO: handle crossing entities -> stack needed */
 		    break;
 		case XML_XINCLUDE_START:
 		case XML_XINCLUDE_END:
@@ -1561,7 +1549,6 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 		    break;
 		case XML_ATTRIBUTE_NODE:
 		    /* Humm, should not happen ! */
-		    STRANGE
 		    break;
 		default:
 		    tmp = xmlCopyNode(cur, 1);
@@ -1569,7 +1556,6 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 	    }
 	    if (tmp != NULL) {
 		if ((list == NULL) || ((last == NULL) && (parent == NULL)))  {
-		    STRANGE
 		    return(NULL);
 		}
 		if (last != NULL)
@@ -1583,7 +1569,6 @@ xmlXPtrBuildRangeNodeList(xmlXPathObjectPtr range) {
 	 * Skip to next node in document order
 	 */
 	if ((list == NULL) || ((last == NULL) && (parent == NULL)))  {
-	    STRANGE
 	    return(NULL);
 	}
 	cur = xmlXPtrAdvanceNode(cur, NULL);
@@ -2012,7 +1997,8 @@ xmlXPtrCoveringRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
 		}
 	    }
 	default:
-	    TODO /* missed one case ??? */
+	    /* TODO: missed one case ??? */
+            break;
     }
     return(NULL);
 }
@@ -2159,7 +2145,8 @@ xmlXPtrInsideRange(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr loc) {
 	    }
         }
 	default:
-	    TODO /* missed one case ??? */
+	    /* TODO: missed one case ??? */
+            break;
     }
     return(NULL);
 }
@@ -2294,7 +2281,6 @@ found:
 	(cur->type != XML_HTML_DOCUMENT_NODE) &&
 	(cur->type != XML_CDATA_SECTION_NODE)) {
 	    if (cur->type == XML_ENTITY_REF_NODE) {	/* Shouldn't happen */
-		TODO
 		goto skip;
 	    }
 	    goto next;
@@ -2368,7 +2354,6 @@ xmlXPtrAdvanceChar(xmlNodePtr *node, int *indx, int bytes) {
 	}
 	if (pos > len) {
 	    /* Strange, the indx in the text node is greater than it's len */
-	    STRANGE
 	    pos = len;
 	}
 	if (pos + bytes >= len) {

@@ -5,6 +5,9 @@
  */
 
 #include <libxml/parser.h>
+#include <libxml/xmlreader.h>
+
+#include <string.h>
 
 #ifdef LIBXML_PUSH_ENABLED
 static int
@@ -66,6 +69,85 @@ testHugeEncodedChunk(void) {
 }
 #endif
 
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_XINCLUDE_ENABLED)
+typedef struct {
+    char *message;
+    int code;
+} testReaderErrorCtxt;
+
+static void
+testReaderError(void *arg, const char *msg,
+                xmlParserSeverities severity ATTRIBUTE_UNUSED,
+                xmlTextReaderLocatorPtr locator ATTRIBUTE_UNUSED) {
+    testReaderErrorCtxt *ctxt = arg;
+
+    if (ctxt->message != NULL)
+        xmlFree(ctxt->message);
+    ctxt->message = xmlMemStrdup(msg);
+}
+
+static void
+testStructuredReaderError(void *arg, const xmlError *error) {
+    testReaderErrorCtxt *ctxt = arg;
+
+    if (ctxt->message != NULL)
+        xmlFree(ctxt->message);
+    ctxt->message = xmlMemStrdup(error->message);
+    ctxt->code = error->code;
+}
+
+static int
+testReaderXIncludeError(void) {
+    /*
+     * Test whether XInclude errors are reported to the custom error
+     * handler of a reader.
+     */
+    const char *doc =
+        "<doc xmlns:xi='http://www.w3.org/2001/XInclude'>\n"
+        "  <xi:include/>\n"
+        "</doc>\n";
+    xmlTextReader *reader;
+    testReaderErrorCtxt errorCtxt;
+    int err = 0;
+
+    reader = xmlReaderForDoc(BAD_CAST doc, NULL, NULL, XML_PARSE_XINCLUDE);
+    xmlTextReaderSetErrorHandler(reader, testReaderError, &errorCtxt);
+    errorCtxt.message = NULL;
+    errorCtxt.code = 0;
+    while (xmlTextReaderRead(reader) > 0)
+        ;
+
+    if (errorCtxt.message == NULL ||
+        strstr(errorCtxt.message, "failed") == NULL) {
+        fprintf(stderr, "xmlTextReaderSetErrorHandler failed\n");
+        err = 1;
+    }
+
+    xmlFree(errorCtxt.message);
+    xmlFreeTextReader(reader);
+
+    reader = xmlReaderForDoc(BAD_CAST doc, NULL, NULL, XML_PARSE_XINCLUDE);
+    xmlTextReaderSetStructuredErrorHandler(reader, testStructuredReaderError,
+                                           &errorCtxt);
+    errorCtxt.message = NULL;
+    errorCtxt.code = 0;
+    while (xmlTextReaderRead(reader) > 0)
+        ;
+
+    if (errorCtxt.code != XML_XINCLUDE_HREF_URI ||
+        errorCtxt.message == NULL ||
+        strstr(errorCtxt.message, "failed") == NULL) {
+        fprintf(stderr, "xmlTextReaderSetStructuredErrorHandler failed\n");
+        err = 1;
+    }
+
+    xmlFree(errorCtxt.message);
+    xmlFreeTextReader(reader);
+
+    return err;
+}
+#endif
+
 int
 main(void) {
     int err = 0;
@@ -73,6 +155,9 @@ main(void) {
 #ifdef LIBXML_PUSH_ENABLED
     err |= testHugePush();
     err |= testHugeEncodedChunk();
+#endif
+#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_XINCLUDE_ENABLED)
+    err |= testReaderXIncludeError();
 #endif
 
     return err;

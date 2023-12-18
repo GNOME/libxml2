@@ -42,27 +42,6 @@ static int xmlModulePlatformSymbol(void *handle, const char *name, void **result
  ************************************************************************/
 
 /**
- * xmlModuleErrMemory:
- * @extra:  extra information
- *
- * Handle an out of memory condition
- */
-static void
-xmlModuleErrMemory(xmlModulePtr module, const char *extra)
-{
-    const char *name = NULL;
-
-    if (module != NULL) {
-        name = (const char *) module->name;
-    }
-
-    __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                    XML_ERR_NO_MEMORY, XML_ERR_FATAL, NULL, 0, extra,
-                    name, NULL, 0, 0,
-                    "Memory allocation failed : %s\n", extra);
-}
-
-/**
  * xmlModuleOpen:
  * @name: the module name
  * @options: a set of xmlModuleOption
@@ -82,10 +61,8 @@ xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
     xmlModulePtr module;
 
     module = (xmlModulePtr) xmlMalloc(sizeof(xmlModule));
-    if (module == NULL) {
-        xmlModuleErrMemory(NULL, "creating module");
+    if (module == NULL)
         return (NULL);
-    }
 
     memset(module, 0, sizeof(xmlModule));
 
@@ -93,9 +70,6 @@ xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
 
     if (module->handle == NULL) {
         xmlFree(module);
-        __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        name, NULL, 0, 0, "failed to open %s\n", name);
         return(NULL);
     }
 
@@ -122,23 +96,13 @@ xmlModuleSymbol(xmlModulePtr module, const char *name, void **symbol)
 {
     int rc = -1;
 
-    if ((NULL == module) || (symbol == NULL) || (name == NULL)) {
-        __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        NULL, NULL, 0, 0, "null parameter\n");
+    if ((NULL == module) || (symbol == NULL) || (name == NULL))
         return rc;
-    }
 
     rc = xmlModulePlatformSymbol(module->handle, name, symbol);
 
-    if (rc == -1) {
-        __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_OPEN, XML_ERR_FATAL, NULL, 0, 0,
-                        name, NULL, 0, 0,
-                        "failed to find symbol: %s\n",
-			(name == NULL ? "NULL" : name));
+    if (rc == -1)
         return rc;
-    }
 
     return rc;
 }
@@ -158,22 +122,13 @@ xmlModuleClose(xmlModulePtr module)
 {
     int rc;
 
-    if (NULL == module) {
-        __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, 0,
-                        NULL, NULL, 0, 0, "null module pointer\n");
+    if (NULL == module)
         return -1;
-    }
 
     rc = xmlModulePlatformClose(module->handle);
 
-    if (rc != 0) {
-        __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, 0,
-                        (const char *) module->name, NULL, 0, 0,
-                        "failed to close: %s\n", module->name);
+    if (rc != 0)
         return -2;
-    }
 
     rc = xmlModuleFree(module);
     return (rc);
@@ -192,12 +147,8 @@ xmlModuleClose(xmlModulePtr module)
 int
 xmlModuleFree(xmlModulePtr module)
 {
-    if (NULL == module) {
-        __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_MODULE,
-                        XML_MODULE_CLOSE, XML_ERR_FATAL, NULL, 0, NULL,
-                        NULL, NULL, 0, 0, "null module pointer\n");
+    if (NULL == module)
         return -1;
-    }
 
     xmlFree(module->name);
     xmlFree(module);

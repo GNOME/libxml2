@@ -11,6 +11,7 @@
 #include "libxml.h"
 
 #ifdef LIBXML_LEGACY_ENABLED
+#include <stdio.h>
 #include <string.h>
 
 #include <libxml/tree.h>
@@ -55,7 +56,7 @@ htmlDecodeEntities(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "htmlDecodeEntities() deprecated function reached\n");
         deprecated = 1;
     }
@@ -416,7 +417,7 @@ xmlDecodeEntities(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlDecodeEntities() deprecated function reached\n");
         deprecated = 1;
     }
@@ -446,7 +447,7 @@ xmlNamespaceParseNCName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlNamespaceParseNCName() deprecated function reached\n");
         deprecated = 1;
     }
@@ -481,7 +482,7 @@ xmlNamespaceParseQName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlNamespaceParseQName() deprecated function reached\n");
         deprecated = 1;
     }
@@ -510,7 +511,7 @@ xmlNamespaceParseNSDef(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlNamespaceParseNSDef() deprecated function reached\n");
         deprecated = 1;
     }
@@ -533,7 +534,7 @@ xmlParseQuotedString(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlParseQuotedString() deprecated function reached\n");
         deprecated = 1;
     }
@@ -561,7 +562,7 @@ xmlParseNamespace(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlParseNamespace() deprecated function reached\n");
         deprecated = 1;
     }
@@ -593,7 +594,7 @@ xmlScanName(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlScanName() deprecated function reached\n");
         deprecated = 1;
     }
@@ -633,7 +634,7 @@ xmlParserHandleReference(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlParserHandleReference() deprecated function reached\n");
         deprecated = 1;
     }
@@ -659,7 +660,7 @@ xmlHandleEntity(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlHandleEntity() deprecated function reached\n");
         deprecated = 1;
     }
@@ -683,7 +684,7 @@ xmlNewGlobalNs(xmlDocPtr doc ATTRIBUTE_UNUSED,
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlNewGlobalNs() deprecated function reached\n");
         deprecated = 1;
     }
@@ -703,7 +704,7 @@ xmlUpgradeOldNs(xmlDocPtr doc ATTRIBUTE_UNUSED)
     static int deprecated = 0;
 
     if (!deprecated) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "xmlUpgradeOldNs() deprecated function reached\n");
         deprecated = 1;
     }
@@ -729,9 +730,9 @@ xmlEncodeEntities(xmlDocPtr doc ATTRIBUTE_UNUSED,
     static int warning = 1;
 
     if (warning) {
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "Deprecated API xmlEncodeEntities() used\n");
-        xmlGenericError(xmlGenericErrorContext,
+        fprintf(stderr,
                         "   change code to use xmlEncodeEntitiesReentrant()\n");
         warning = 0;
     }
@@ -747,7 +748,7 @@ static int deprecated_v1_msg = 0;
 
 #define DEPRECATED(n)						\
     if (deprecated_v1_msg == 0)					\
-	xmlGenericError(xmlGenericErrorContext,			\
+	fprintf(stderr,			\
 	  "Use of deprecated SAXv1 function %s\n", n);		\
     deprecated_v1_msg++;
 

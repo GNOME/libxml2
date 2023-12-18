@@ -334,17 +334,6 @@ htmlIsBooleanAttr(const xmlChar *name)
  *			Output error handlers				*
  *									*
  ************************************************************************/
-/**
- * htmlSaveErrMemory:
- * @extra:  extra information
- *
- * Handle an out of memory condition
- */
-static void
-htmlSaveErrMemory(const char *extra)
-{
-    __xmlSimpleError(XML_FROM_OUTPUT, XML_ERR_NO_MEMORY, NULL, NULL, extra);
-}
 
 /**
  * htmlSaveErr:
@@ -358,6 +347,7 @@ static void
 htmlSaveErr(int code, xmlNodePtr node, const char *extra)
 {
     const char *msg = NULL;
+    int res;
 
     switch(code) {
         case XML_SAVE_NOT_UTF8:
@@ -375,7 +365,13 @@ htmlSaveErr(int code, xmlNodePtr node, const char *extra)
 	default:
 	    msg = "unexpected error number\n";
     }
-    __xmlSimpleError(XML_FROM_OUTPUT, code, node, msg, extra);
+
+    res = __xmlRaiseError(NULL, NULL, NULL, NULL, node,
+                          XML_FROM_OUTPUT, code, XML_ERR_ERROR, NULL, 0,
+                          extra, NULL, NULL, 0, 0,
+                          msg, extra);
+    if (res < 0)
+        xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_OUTPUT, NULL);
 }
 
 /************************************************************************
@@ -435,10 +431,8 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	return (-1);
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
-    if (outbuf == NULL) {
-        htmlSaveErrMemory("allocating HTML output buffer");
+    if (outbuf == NULL)
 	return (-1);
-    }
     memset(outbuf, 0, sizeof(xmlOutputBuffer));
     outbuf->buffer = buf;
     outbuf->encoder = NULL;

@@ -28,11 +28,6 @@
 
 #define XHTML_NS_NAME BAD_CAST "http://www.w3.org/1999/xhtml"
 
-#define TODO								\
-    xmlGenericError(xmlGenericErrorContext,				\
-	    "Unimplemented block at %s:%d\n",				\
-            __FILE__, __LINE__);
-
 struct _xmlSaveCtxt {
     void *_private;
     int type;
@@ -63,9 +58,9 @@ struct _xmlSaveCtxt {
  * Handle an out of memory condition
  */
 static void
-xmlSaveErrMemory(const char *extra)
+xmlSaveErrMemory(void)
 {
-    __xmlSimpleError(XML_FROM_OUTPUT, XML_ERR_NO_MEMORY, NULL, NULL, extra);
+    xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_OUTPUT, NULL);
 }
 
 /**
@@ -80,6 +75,7 @@ static void
 xmlSaveErr(int code, xmlNodePtr node, const char *extra)
 {
     const char *msg = NULL;
+    int res;
 
     switch(code) {
         case XML_SAVE_NOT_UTF8:
@@ -97,7 +93,13 @@ xmlSaveErr(int code, xmlNodePtr node, const char *extra)
 	default:
 	    msg = "unexpected error number\n";
     }
-    __xmlSimpleError(XML_FROM_OUTPUT, code, node, msg, extra);
+
+    res = __xmlRaiseError(NULL, NULL, NULL, NULL, node,
+                          XML_FROM_OUTPUT, code, XML_ERR_ERROR, NULL, 0,
+                          extra, NULL, NULL, 0, 0,
+                          msg, extra);
+    if (res < 0)
+        xmlSaveErrMemory();
 }
 
 /************************************************************************
@@ -258,8 +260,7 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
 	    if (outend - out < 6) break;
 	    out = xmlSerializeHexCharRef(out, *in++);
 	} else {
-	    xmlGenericError(xmlGenericErrorContext,
-		"xmlEscapeEntities : char out of range\n");
+	    xmlSaveErr(XML_SAVE_CHAR_INVALID, NULL, NULL);
 	    in++;
 	    goto error;
 	}
@@ -340,7 +341,7 @@ xmlNewSaveCtxt(const char *encoding, int options)
 
     ret = (xmlSaveCtxtPtr) xmlMalloc(sizeof(xmlSaveCtxt));
     if (ret == NULL) {
-	xmlSaveErrMemory("creating saving context");
+	xmlSaveErrMemory();
 	return ( NULL );
     }
     memset(ret, 0, sizeof(xmlSaveCtxt));
@@ -513,14 +514,19 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
         xmlCharEncodingHandler *handler;
         int res;
 
-	res = xmlOpenCharEncodingHandler((const char *) encoding, &handler);
+	res = xmlOpenCharEncodingHandler(encoding, &handler);
         if (res != 0) {
+            if (res < 0)
+                xmlSaveErrMemory();
+            else
+                xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
             buf->error = res;
             return(-1);
         }
 	buf->conv = xmlBufCreate();
 	if (buf->conv == NULL) {
 	    xmlCharEncCloseFunc(handler);
+            xmlSaveErrMemory();
             buf->error = XML_ERR_NO_MEMORY;
 	    return(-1);
 	}
@@ -2195,7 +2201,7 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (outbuf == NULL) {
-        xmlSaveErrMemory("creating buffer");
+        xmlSaveErrMemory();
         return (-1);
     }
     memset(outbuf, 0, (size_t) sizeof(xmlOutputBuffer));
@@ -2370,7 +2376,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     }
 
     if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
-        xmlSaveErrMemory("creating buffer");
+        xmlSaveErrMemory();
         xmlCharEncCloseFunc(conv_hdlr);
         return;
     }
@@ -2404,7 +2410,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     return;
 
 error:
-    xmlSaveErrMemory("creating output");
+    xmlSaveErrMemory();
     xmlOutputBufferClose(out_buff);
     return;
 }

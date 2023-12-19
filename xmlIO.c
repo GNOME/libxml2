@@ -36,18 +36,6 @@
 #include <direct.h>
 #endif
 
-#ifndef S_ISDIR
-#  ifdef _S_ISDIR
-#    define S_ISDIR(x) _S_ISDIR(x)
-#  elif defined(S_IFDIR)
-#    ifdef S_IFMT
-#      define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
-#    elif defined(_S_IFMT)
-#      define S_ISDIR(m) (((m) & _S_IFMT) == S_IFDIR)
-#    endif
-#  endif
-#endif
-
 #include <libxml/xmlIO.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -69,6 +57,22 @@
 /* #define VERBOSE_FAILURE */
 
 #define MINLEN 4000
+
+#ifndef STDIN_FILENO
+  #define STDIN_FILENO 0
+#endif
+
+#ifndef S_ISDIR
+#  ifdef _S_ISDIR
+#    define S_ISDIR(x) _S_ISDIR(x)
+#  elif defined(S_IFDIR)
+#    ifdef S_IFMT
+#      define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#    elif defined(_S_IFMT)
+#      define S_ISDIR(m) (((m) & _S_IFMT) == S_IFDIR)
+#    endif
+#  endif
+#endif
 
 /*
  * Input I/O callback sets
@@ -628,8 +632,7 @@ xmlWrapStatUtf8(const char *path, struct _stat *info) {
  * xmlCheckFilename:
  * @path:  the path to check
  *
- * function checks to see if @path is a valid source
- * (file, socket...) for XML.
+ * DEPRECATED: Internal function, don't use.
  *
  * if stat is not available on the target machine,
  * returns 1.  if stat fails, returns 0 (if calling
@@ -673,6 +676,100 @@ xmlCheckFilename (const char *path)
 #endif
 #endif /* HAVE_STAT */
     return 1;
+}
+
+/**
+ * xmlFdOpen:
+ * @filename:  the URI for matching
+ * @out:  pointer to resulting context
+ *
+ * Returns an xmlParserErrors code
+ */
+static int
+xmlFdOpen(const char *filename, void **out) {
+    const char *escaped = NULL;
+    char *unescaped = NULL;
+    int fd;
+    int ret;
+
+    *out = (void *) 0;
+    if (filename == NULL)
+        return(XML_ERR_ARGUMENT);
+
+    if (!strcmp(filename, "-")) {
+        *out = (void *) (ptrdiff_t) STDIN_FILENO;
+	return(XML_ERR_OK);
+    }
+
+    /*
+     * TODO: This should be moved to uri.c. We also need support for
+     * UNC paths on Windows.
+     */
+    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
+#if defined (_WIN32)
+	escaped = &filename[17];
+#else
+	escaped = &filename[16];
+#endif
+    } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
+#if defined (_WIN32)
+	escaped = &filename[8];
+#else
+	escaped = &filename[7];
+#endif
+    } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:/", 6)) {
+        /* lots of generators seems to lazy to read RFC 1738 */
+#if defined (_WIN32)
+	escaped = &filename[6];
+#else
+	escaped = &filename[5];
+#endif
+    }
+
+    if (escaped != NULL) {
+        unescaped = xmlURIUnescapeString(escaped, 0, NULL);
+        if (unescaped == NULL)
+            return(XML_ERR_NO_MEMORY);
+        filename = unescaped;
+    }
+
+#if defined(_WIN32)
+    {
+        wchar_t *wpath;
+
+        wpath = __xmlIOWin32UTF8ToWChar(filename);
+        if (wpath == NULL)
+            return(XML_ERR_NO_MEMORY);
+	fd = _wopen(wpath, _O_RDONLY | _O_BINARY);
+        xmlFree(wpath);
+    }
+#else
+    fd = open(filename, O_RDONLY);
+#endif /* WIN32 */
+
+    if (fd < 0) {
+        /*
+         * Windows and possibly other platforms return EINVAL
+         * for invalid filenames.
+         */
+        if ((errno == ENOENT) || (errno == EINVAL)) {
+            ret = XML_IO_ENOENT;
+        } else {
+            /*
+             * This error won't be forwarded to the parser context
+             * which will report it a second time.
+             */
+            ret = xmlIOErr(0, filename);
+        }
+    } else {
+        *out = (void *) (ptrdiff_t) fd;
+        ret = XML_ERR_OK;
+    }
+
+    if (unescaped != NULL)
+        xmlFree(unescaped);
+
+    return(ret);
 }
 
 /**
@@ -737,7 +834,7 @@ xmlFdClose (void * context) {
  * xmlFileMatch:
  * @filename:  the URI for matching
  *
- * input from FILE *
+ * DEPRECATED: Internal function, don't use.
  *
  * Returns 1 if matches, 0 otherwise
  */
@@ -852,7 +949,7 @@ xmlFileOpenSafe(const char *filename, void **out) {
  * xmlFileOpen:
  * @filename:  the URI for matching
  *
- * Open a file.
+ * DEPRECATED: Internal function, don't use.
  *
  * Returns an IO context or NULL in case or failure
  */
@@ -921,7 +1018,7 @@ xmlFileOpenW (const char *filename) {
  * @buffer:  where to drop data
  * @len:  number of bytes to write
  *
- * Read @len bytes to @buffer from the I/O channel.
+ * DEPRECATED: Internal function, don't use.
  *
  * Returns the number of bytes written or < 0 in case of failure
  */
@@ -965,7 +1062,7 @@ xmlFileWrite (void * context, const char * buffer, int len) {
  * xmlFileClose:
  * @context:  the I/O context
  *
- * Close an I/O channel
+ * DEPRECATED: Internal function, don't use.
  *
  * Returns 0 or -1 in case of error
  */
@@ -2190,11 +2287,12 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
 #endif /* LIBXML_ZLIB_ENABLED */
 
     if (xmlFileMatch(filename)) {
-        ret = xmlFileOpenSafe(filename, &buf->context);
+        ret = xmlFdOpen(filename, &buf->context);
 
-        if (buf->context != NULL) {
-            buf->readcallback = xmlFileRead;
-            buf->closecallback = xmlFileClose;
+        /* Note that context can be NULL for stdin */
+        if (ret == XML_ERR_OK) {
+            buf->readcallback = xmlFdRead;
+            buf->closecallback = xmlFdClose;
             return(XML_ERR_OK);
         }
         if (ret != XML_IO_ENOENT)

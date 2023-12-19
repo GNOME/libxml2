@@ -347,19 +347,24 @@ XMLPUBFUN xmlParserInputPtr
 XMLPUBFUN xmlChar *
 	xmlNormalizeWindowsPath		(const xmlChar *path);
 
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlCheckFilename		(const char *path);
 /**
  * Default 'file://' protocol callbacks
  */
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlFileMatch			(const char *filename);
+XML_DEPRECATED
 XMLPUBFUN void *
 	xmlFileOpen			(const char *filename);
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlFileRead			(void * context,
 					 char * buffer,
 					 int len);
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlFileClose			(void * context);
 

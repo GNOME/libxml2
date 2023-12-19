@@ -425,33 +425,59 @@ xmlIOErr(int code, const char *extra)
 }
 
 /**
- * xmlLoaderErr:
- * @ctx:  parser context
- * @code:  error code
- * @filename:  file name
+ * xmlCtxtErrIO:
+ * @ctxt:  parser context
+ * @code:  xmlParserErrors code
+ * @uri:  filename or URI (optional)
  *
- * Handle a resource access error
+ * If filename is empty, use the one from context input if available.
+ *
+ * Report an IO error to the parser context.
  */
 void
-xmlLoaderErr(xmlParserCtxtPtr ctxt, int code, const char *filename)
+xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
 {
+    const char *errstr, *msg, *str1, *str2;
     xmlErrorLevel level;
     unsigned idx = 0;
 
-    if (ctxt->validate)
-        level = XML_ERR_ERROR;
-    else
-        level = XML_ERR_WARNING;
+    if (ctxt == NULL)
+        return;
+
+    if ((code == XML_IO_ENOENT) ||
+        (code == XML_IO_NETWORK_ATTEMPT) ||
+        (code == XML_IO_UNKNOWN)) {
+        if (ctxt->validate == 0)
+            level = XML_ERR_WARNING;
+        else
+            level = XML_ERR_ERROR;
+    } else {
+        level = XML_ERR_FATAL;
+    }
 
     if (code >= XML_IO_UNKNOWN) {
         idx = code - XML_IO_UNKNOWN;
         if (idx >= (sizeof(IOerr) / sizeof(IOerr[0])))
             idx = 0;
     }
+    errstr = IOerr[idx];
 
+    if (uri == NULL) {
+        msg = "%s\n";
+        str1 = errstr;
+        str2 = NULL;
+    } else {
+        msg = "failed to load \"%s\": %s\n";
+        str1 = uri;
+        str2 = errstr;
+    }
+
+    /*
+     * TODO: Set filename in error
+     */
     xmlErrParser(ctxt, NULL, XML_FROM_IO, code, level,
-                 (const xmlChar *) filename, NULL, NULL, 0,
-		 "failed to load \"%s\": %s\n", filename, IOerr[idx]);
+                 (const xmlChar *) uri, NULL, NULL, 0,
+		 msg, str1, str2);
 }
 
 /************************************************************************
@@ -787,7 +813,8 @@ xmlFdRead (void * context, char * buffer, int len) {
     int ret;
 
     ret = read((int) (ptrdiff_t) context, &buffer[0], len);
-    if (ret < 0) xmlIOErr(0, "read()");
+    if (ret < 0)
+        return(-xmlIOErr(0, "fread()"));
     return(ret);
 }
 
@@ -1028,7 +1055,8 @@ xmlFileRead (void * context, char * buffer, int len) {
     if ((context == NULL) || (buffer == NULL))
         return(-1);
     ret = fread(&buffer[0], 1,  len, (FILE *) context);
-    if (ret < 0) xmlIOErr(0, "fread()");
+    if (ret < 0)
+        return(-xmlIOErr(0, "fread()"));
     return(ret);
 }
 
@@ -3410,7 +3438,10 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
 	if (res <= 0)
 	    in->readcallback = endOfInput;
         if (res < 0) {
-            in->error = XML_IO_UNKNOWN;
+            if (res == -1)
+                in->error = XML_IO_UNKNOWN;
+            else
+                in->error = -res;
             return(-1);
         }
 
@@ -3926,9 +3957,9 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
         if (code >= 400) {
             /* fatal error */
 	    if (ret->filename != NULL)
-                xmlLoaderErr(ctxt, XML_IO_LOAD_ERROR, ret->filename);
+                xmlCtxtErrIO(ctxt, XML_IO_LOAD_ERROR, ret->filename);
 	    else
-                xmlLoaderErr(ctxt, XML_IO_LOAD_ERROR, "<null>");
+                xmlCtxtErrIO(ctxt, XML_IO_LOAD_ERROR, "<null>");
             xmlFreeInputStream(ret);
             ret = NULL;
         } else {
@@ -4193,7 +4224,7 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
     if (resource != NULL) {
         if ((!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "ftp://", 6)) ||
             (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
-            xmlLoaderErr(ctxt, XML_IO_NETWORK_ATTEMPT,
+            xmlCtxtErrIO(ctxt, XML_IO_NETWORK_ATTEMPT,
                          (const char *) resource);
 	    if (resource != (xmlChar *) URL)
 		xmlFree(resource);

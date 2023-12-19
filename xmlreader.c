@@ -742,7 +742,7 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
                         break;
 		    }
 		} else if (val < 0) {
-                    xmlFatalErr(reader->ctxt, reader->input->error, NULL);
+                    xmlCtxtErrIO(reader->ctxt, reader->input->error, NULL);
                     reader->mode = XML_TEXTREADER_MODE_ERROR;
                     reader->state = XML_TEXTREADER_ERROR;
                     return(-1);

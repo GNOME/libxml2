@@ -315,6 +315,10 @@ XMLPUBFUN xmlParserCtxtPtr
 						 const xmlChar *base);
 XMLPUBFUN void
 			xmlCtxtErrMemory	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN void
+			xmlCtxtErrIO		(xmlParserCtxtPtr ctxt,
+						 int code,
+						 const char *uri);
 XMLPUBFUN int
 			xmlSwitchEncoding	(xmlParserCtxtPtr ctxt,
 						 xmlCharEncoding enc);

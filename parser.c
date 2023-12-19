@@ -8118,7 +8118,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     xmlBufResetInput(input->buf->buffer, input);
 
     if (res < 0) {
-        xmlFatalErr(ctxt, input->buf->error, NULL);
+        xmlCtxtErrIO(ctxt, input->buf->error, NULL);
         goto error;
     }
 
@@ -11934,7 +11934,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
 	if (res < 0) {
-            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
 	    xmlHaltParser(ctxt);
 	    return(ctxt->errNo);
 	}
@@ -11961,7 +11961,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	res = xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
 	xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
-            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
             xmlHaltParser(ctxt);
             return(ctxt->errNo);
         }
@@ -12085,7 +12085,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
-            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
             xmlHaltParser(ctxt);
         }
     }
@@ -14348,7 +14348,7 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
         res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
         xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
-            xmlFatalErr(ctxt, ctxt->input->buf->error, NULL);
+            xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
             xmlHaltParser(ctxt);
             return(1);
         }

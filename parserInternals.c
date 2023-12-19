@@ -616,7 +616,7 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
     xmlBufUpdateInput(buf->buffer, in, curBase);
 
     if (ret < 0) {
-        xmlFatalErr(ctxt, buf->error, NULL);
+        xmlCtxtErrIO(ctxt, buf->error, NULL);
     }
 
     return(ret);
@@ -1812,7 +1812,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     code = xmlParserInputBufferCreateFilenameSafe(filename,
                                                   XML_CHAR_ENCODING_NONE, &buf);
     if (buf == NULL) {
-        xmlLoaderErr(ctxt, code, filename);
+        xmlCtxtErrIO(ctxt, code, filename);
 	return(NULL);
     }
 

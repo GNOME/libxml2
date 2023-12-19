@@ -321,6 +321,7 @@ xmlOutputBufferPtr
 
 #ifdef LIBXML_HTTP_ENABLED
 /*  This function only exists if HTTP support built into the library  */
+XML_DEPRECATED
 XMLPUBFUN void
 	xmlRegisterHTTPPostCallbacks	(void );
 #endif /* LIBXML_HTTP_ENABLED */

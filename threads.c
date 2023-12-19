@@ -591,11 +591,6 @@ xmlInitParser(void) {
         xmlInitXPathInternal();
 #endif
 
-        xmlRegisterDefaultInputCallbacks();
-#ifdef LIBXML_OUTPUT_ENABLED
-        xmlRegisterDefaultOutputCallbacks();
-#endif /* LIBXML_OUTPUT_ENABLED */
-
         xmlParserInnerInitialized = 1;
     }
 
@@ -642,11 +637,6 @@ xmlCleanupParser(void) {
 #endif
 
     /* These functions should never call xmlFree. */
-
-    xmlCleanupInputCallbacks();
-#ifdef LIBXML_OUTPUT_ENABLED
-    xmlCleanupOutputCallbacks();
-#endif
 
     xmlCleanupDictInternal();
     xmlCleanupRandom();

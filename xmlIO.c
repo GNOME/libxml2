@@ -405,9 +405,9 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
     /*
      * TODO: Set filename in error
      */
-    xmlErrParser(ctxt, NULL, XML_FROM_IO, code, level,
-                 (const xmlChar *) uri, NULL, NULL, 0,
-		 msg, str1, str2);
+    xmlCtxtErr(ctxt, NULL, XML_FROM_IO, code, level,
+               (const xmlChar *) uri, NULL, NULL, 0,
+               msg, str1, str2);
 }
 
 /************************************************************************

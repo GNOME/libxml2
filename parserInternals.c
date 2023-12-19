@@ -142,10 +142,10 @@ xmlCtxtErrMemory(xmlParserCtxtPtr ctxt)
 }
 
 void
-xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
-              int domain, int code, xmlErrorLevel level,
-              const xmlChar *str1, const xmlChar *str2, const xmlChar *str3,
-              int int1, const char *msg, va_list ap)
+xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
+            xmlParserErrors code, xmlErrorLevel level,
+            const xmlChar *str1, const xmlChar *str2, const xmlChar *str3,
+            int int1, const char *msg, va_list ap)
 {
     xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
@@ -159,7 +159,7 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
 	return;
 
     if (code == XML_ERR_NO_MEMORY) {
-        xmlErrMemory(ctxt);
+        xmlCtxtErrMemory(ctxt);
         return;
     }
 
@@ -216,7 +216,7 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
                          msg, ap);
 
     if (res < 0) {
-        xmlErrMemory(ctxt);
+        xmlCtxtErrMemory(ctxt);
         return;
     }
 
@@ -232,16 +232,16 @@ xmlVErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
 }
 
 void
-xmlErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
-             int domain, int code, xmlErrorLevel level,
-             const xmlChar *str1, const xmlChar *str2, const xmlChar *str3,
-             int int1, const char *msg, ...)
+xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
+           xmlParserErrors code, xmlErrorLevel level,
+           const xmlChar *str1, const xmlChar *str2, const xmlChar *str3,
+           int int1, const char *msg, ...)
 {
     va_list ap;
 
     va_start(ap, msg);
-    xmlVErrParser(ctxt, node, domain, code, level,
-                  str1, str2, str3, int1, msg, ap);
+    xmlCtxtVErr(ctxt, node, domain, code, level,
+                str1, str2, str3, int1, msg, ap);
     va_end(ap);
 }
 
@@ -258,8 +258,8 @@ xmlErrInternal(xmlParserCtxtPtr ctxt, const char *msg, const xmlChar * str)
 {
     if (ctxt == NULL)
         return;
-    xmlErrParser(ctxt, NULL, XML_FROM_PARSER, XML_ERR_INTERNAL_ERROR,
-                 XML_ERR_FATAL, str, NULL, NULL, 0, msg, str);
+    xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, XML_ERR_INTERNAL_ERROR,
+               XML_ERR_FATAL, str, NULL, NULL, 0, msg, str);
 }
 
 /**
@@ -278,12 +278,12 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info)
     errmsg = xmlErrString(error);
 
     if (info == NULL) {
-        xmlErrParser(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
-                     NULL, NULL, NULL, 0, "%s\n", errmsg);
+        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+                   NULL, NULL, NULL, 0, "%s\n", errmsg);
     } else {
-        xmlErrParser(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
-                     (const xmlChar *) info, NULL, NULL, 0,
-                     "%s: %s\n", errmsg, info);
+        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+                   (const xmlChar *) info, NULL, NULL, 0,
+                   "%s: %s\n", errmsg, info);
     }
 }
 
@@ -300,8 +300,8 @@ static void LIBXML_ATTR_FORMAT(3,0)
 xmlErrEncodingInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                   const char *msg, int val)
 {
-    xmlErrParser(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
-                 NULL, NULL, NULL, val, msg, val);
+    xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+               NULL, NULL, NULL, val, msg, val);
 }
 
 /**
@@ -1117,7 +1117,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
         buf = xmlBufCreate();
         if (buf == NULL) {
-            xmlErrMemory(ctxt);
+            xmlCtxtErrMemory(ctxt);
             return(-1);
         }
 
@@ -1135,7 +1135,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         nbchars = xmlCharEncInput(in);
         xmlBufResetInput(in->buffer, input);
         if (nbchars == XML_ENC_ERR_MEMORY) {
-            xmlErrMemory(ctxt);
+            xmlCtxtErrMemory(ctxt);
         } else if (nbchars < 0) {
             xmlCtxtErrIO(ctxt, in->error, NULL);
             xmlHaltParser(ctxt);
@@ -1331,7 +1331,7 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
                 xmlFree(encoding);
                 encoding = xmlStrdup(BAD_CAST autoEnc);
                 if (encoding == NULL)
-                    xmlErrMemory(ctxt);
+                    xmlCtxtErrMemory(ctxt);
             }
         }
     }
@@ -1381,7 +1381,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
 
     input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
-        xmlErrMemory(ctxt);
+        xmlCtxtErrMemory(ctxt);
 	return(NULL);
     }
     memset(input, 0, sizeof(xmlParserInput));
@@ -1395,7 +1395,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
      */
     if (ctxt != NULL) {
         if (input->id >= INT_MAX) {
-            xmlErrMemory(ctxt);
+            xmlCtxtErrMemory(ctxt);
             return(NULL);
         }
         input->id = ctxt->input_id++;
@@ -1523,12 +1523,12 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
     }
     buf = xmlParserInputBufferCreateString(buffer);
     if (buf == NULL) {
-	xmlErrMemory(ctxt);
+	xmlCtxtErrMemory(ctxt);
         return(NULL);
     }
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
-        xmlErrMemory(ctxt);
+        xmlCtxtErrMemory(ctxt);
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
@@ -1752,7 +1752,7 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     if (ctxt->nsdb == NULL) {
         ctxt->nsdb = xmlParserNsCreate();
         if (ctxt->nsdb == NULL) {
-            xmlErrMemory(ctxt);
+            xmlCtxtErrMemory(ctxt);
             return(-1);
         }
     }
@@ -2086,7 +2086,7 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
                                                      byte_size);
 
             if (tmp_buffer == NULL) {
-		xmlErrMemory(ctxt);
+		xmlCtxtErrMemory(ctxt);
                 return;
             }
             ctxt->node_seq.buffer = tmp_buffer;

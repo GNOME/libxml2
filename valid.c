@@ -77,8 +77,8 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
 
     va_start(ap, msg);
     if (pctxt != NULL) {
-        xmlVErrParser(pctxt, node, XML_FROM_VALID, code, level,
-                      str1, str2, str3, int1, msg, ap);
+        xmlCtxtVErr(pctxt, node, XML_FROM_VALID, code, level,
+                    str1, str2, str3, int1, msg, ap);
     } else {
         xmlGenericErrorFunc channel = NULL;
         void *data = NULL;

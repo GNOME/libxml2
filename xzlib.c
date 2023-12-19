@@ -321,8 +321,12 @@ is_format_lzma(xz_statep state)
      * If someone complains, this will be reconsidered.
      */
     if (dict_size != UINT32_MAX) {
-        uint32_t d = dict_size - 1;
+        uint32_t d;
 
+        if (dict_size == 0)
+            return 0;
+
+        d = dict_size - 1;
         d |= d >> 2;
         d |= d >> 3;
         d |= d >> 4;

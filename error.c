@@ -918,3 +918,324 @@ xmlCopyError(const xmlError *from, xmlErrorPtr to) {
                        fmt, from->message));
 }
 
+/**
+ * xmlErrString:
+ * @code:  an xmlParserErrors code
+ *
+ * Returns an error message for a code.
+ */
+const char *
+xmlErrString(xmlParserErrors code) {
+    const char *errmsg;
+
+    switch (code) {
+        case XML_ERR_INVALID_HEX_CHARREF:
+            errmsg = "CharRef: invalid hexadecimal value";
+            break;
+        case XML_ERR_INVALID_DEC_CHARREF:
+            errmsg = "CharRef: invalid decimal value";
+            break;
+        case XML_ERR_INVALID_CHARREF:
+            errmsg = "CharRef: invalid value";
+            break;
+        case XML_ERR_INTERNAL_ERROR:
+            errmsg = "internal error";
+            break;
+        case XML_ERR_PEREF_AT_EOF:
+            errmsg = "PEReference at end of document";
+            break;
+        case XML_ERR_PEREF_IN_PROLOG:
+            errmsg = "PEReference in prolog";
+            break;
+        case XML_ERR_PEREF_IN_EPILOG:
+            errmsg = "PEReference in epilog";
+            break;
+        case XML_ERR_PEREF_NO_NAME:
+            errmsg = "PEReference: no name";
+            break;
+        case XML_ERR_PEREF_SEMICOL_MISSING:
+            errmsg = "PEReference: expecting ';'";
+            break;
+        case XML_ERR_ENTITY_LOOP:
+            errmsg = "Detected an entity reference loop";
+            break;
+        case XML_ERR_ENTITY_NOT_STARTED:
+            errmsg = "EntityValue: \" or ' expected";
+            break;
+        case XML_ERR_ENTITY_PE_INTERNAL:
+            errmsg = "PEReferences forbidden in internal subset";
+            break;
+        case XML_ERR_ENTITY_NOT_FINISHED:
+            errmsg = "EntityValue: \" or ' expected";
+            break;
+        case XML_ERR_ATTRIBUTE_NOT_STARTED:
+            errmsg = "AttValue: \" or ' expected";
+            break;
+        case XML_ERR_LT_IN_ATTRIBUTE:
+            errmsg = "Unescaped '<' not allowed in attributes values";
+            break;
+        case XML_ERR_LITERAL_NOT_STARTED:
+            errmsg = "SystemLiteral \" or ' expected";
+            break;
+        case XML_ERR_LITERAL_NOT_FINISHED:
+            errmsg = "Unfinished System or Public ID \" or ' expected";
+            break;
+        case XML_ERR_MISPLACED_CDATA_END:
+            errmsg = "Sequence ']]>' not allowed in content";
+            break;
+        case XML_ERR_URI_REQUIRED:
+            errmsg = "SYSTEM or PUBLIC, the URI is missing";
+            break;
+        case XML_ERR_PUBID_REQUIRED:
+            errmsg = "PUBLIC, the Public Identifier is missing";
+            break;
+        case XML_ERR_HYPHEN_IN_COMMENT:
+            errmsg = "Comment must not contain '--' (double-hyphen)";
+            break;
+        case XML_ERR_PI_NOT_STARTED:
+            errmsg = "xmlParsePI : no target name";
+            break;
+        case XML_ERR_RESERVED_XML_NAME:
+            errmsg = "Invalid PI name";
+            break;
+        case XML_ERR_NOTATION_NOT_STARTED:
+            errmsg = "NOTATION: Name expected here";
+            break;
+        case XML_ERR_NOTATION_NOT_FINISHED:
+            errmsg = "'>' required to close NOTATION declaration";
+            break;
+        case XML_ERR_VALUE_REQUIRED:
+            errmsg = "Entity value required";
+            break;
+        case XML_ERR_URI_FRAGMENT:
+            errmsg = "Fragment not allowed";
+            break;
+        case XML_ERR_ATTLIST_NOT_STARTED:
+            errmsg = "'(' required to start ATTLIST enumeration";
+            break;
+        case XML_ERR_NMTOKEN_REQUIRED:
+            errmsg = "NmToken expected in ATTLIST enumeration";
+            break;
+        case XML_ERR_ATTLIST_NOT_FINISHED:
+            errmsg = "')' required to finish ATTLIST enumeration";
+            break;
+        case XML_ERR_MIXED_NOT_STARTED:
+            errmsg = "MixedContentDecl : '|' or ')*' expected";
+            break;
+        case XML_ERR_PCDATA_REQUIRED:
+            errmsg = "MixedContentDecl : '#PCDATA' expected";
+            break;
+        case XML_ERR_ELEMCONTENT_NOT_STARTED:
+            errmsg = "ContentDecl : Name or '(' expected";
+            break;
+        case XML_ERR_ELEMCONTENT_NOT_FINISHED:
+            errmsg = "ContentDecl : ',' '|' or ')' expected";
+            break;
+        case XML_ERR_PEREF_IN_INT_SUBSET:
+            errmsg =
+                "PEReference: forbidden within markup decl in internal subset";
+            break;
+        case XML_ERR_GT_REQUIRED:
+            errmsg = "expected '>'";
+            break;
+        case XML_ERR_CONDSEC_INVALID:
+            errmsg = "XML conditional section '[' expected";
+            break;
+        case XML_ERR_EXT_SUBSET_NOT_FINISHED:
+            errmsg = "Content error in the external subset";
+            break;
+        case XML_ERR_CONDSEC_INVALID_KEYWORD:
+            errmsg =
+                "conditional section INCLUDE or IGNORE keyword expected";
+            break;
+        case XML_ERR_CONDSEC_NOT_FINISHED:
+            errmsg = "XML conditional section not closed";
+            break;
+        case XML_ERR_XMLDECL_NOT_STARTED:
+            errmsg = "Text declaration '<?xml' required";
+            break;
+        case XML_ERR_XMLDECL_NOT_FINISHED:
+            errmsg = "parsing XML declaration: '?>' expected";
+            break;
+        case XML_ERR_EXT_ENTITY_STANDALONE:
+            errmsg = "external parsed entities cannot be standalone";
+            break;
+        case XML_ERR_ENTITYREF_SEMICOL_MISSING:
+            errmsg = "EntityRef: expecting ';'";
+            break;
+        case XML_ERR_DOCTYPE_NOT_FINISHED:
+            errmsg = "DOCTYPE improperly terminated";
+            break;
+        case XML_ERR_LTSLASH_REQUIRED:
+            errmsg = "EndTag: '</' not found";
+            break;
+        case XML_ERR_EQUAL_REQUIRED:
+            errmsg = "expected '='";
+            break;
+        case XML_ERR_STRING_NOT_CLOSED:
+            errmsg = "String not closed expecting \" or '";
+            break;
+        case XML_ERR_STRING_NOT_STARTED:
+            errmsg = "String not started expecting ' or \"";
+            break;
+        case XML_ERR_ENCODING_NAME:
+            errmsg = "Invalid XML encoding name";
+            break;
+        case XML_ERR_STANDALONE_VALUE:
+            errmsg = "standalone accepts only 'yes' or 'no'";
+            break;
+        case XML_ERR_DOCUMENT_EMPTY:
+            errmsg = "Document is empty";
+            break;
+        case XML_ERR_DOCUMENT_END:
+            errmsg = "Extra content at the end of the document";
+            break;
+        case XML_ERR_NOT_WELL_BALANCED:
+            errmsg = "chunk is not well balanced";
+            break;
+        case XML_ERR_EXTRA_CONTENT:
+            errmsg = "extra content at the end of well balanced chunk";
+            break;
+        case XML_ERR_VERSION_MISSING:
+            errmsg = "Malformed declaration expecting version";
+            break;
+        case XML_ERR_NAME_TOO_LONG:
+            errmsg = "Name too long";
+            break;
+        case XML_ERR_INVALID_ENCODING:
+            errmsg = "Invalid bytes in character encoding";
+            break;
+        case XML_ERR_RESOURCE_LIMIT:
+            errmsg = "Resource limit exceeded";
+            break;
+        case XML_ERR_ARGUMENT:
+            errmsg = "Invalid argument";
+            break;
+        case XML_ERR_SYSTEM:
+            errmsg = "Out of system resources";
+            break;
+        case XML_ERR_REDECL_PREDEF_ENTITY:
+            errmsg = "Invalid redeclaration of predefined entity";
+            break;
+
+        case XML_IO_UNKNOWN:
+            errmsg = "Unknown IO error"; break;
+        case XML_IO_EACCES:
+            errmsg = "Permission denied"; break;
+        case XML_IO_EAGAIN:
+            errmsg = "Resource temporarily unavailable"; break;
+        case XML_IO_EBADF:
+            errmsg = "Bad file descriptor"; break;
+        case XML_IO_EBADMSG:
+            errmsg = "Bad message"; break;
+        case XML_IO_EBUSY:
+            errmsg = "Resource busy"; break;
+        case XML_IO_ECANCELED:
+            errmsg = "Operation canceled"; break;
+        case XML_IO_ECHILD:
+            errmsg = "No child processes"; break;
+        case XML_IO_EDEADLK:
+            errmsg = "Resource deadlock avoided"; break;
+        case XML_IO_EDOM:
+            errmsg = "Domain error"; break;
+        case XML_IO_EEXIST:
+            errmsg = "File exists"; break;
+        case XML_IO_EFAULT:
+            errmsg = "Bad address"; break;
+        case XML_IO_EFBIG:
+            errmsg = "File too large"; break;
+        case XML_IO_EINPROGRESS:
+            errmsg = "Operation in progress"; break;
+        case XML_IO_EINTR:
+            errmsg = "Interrupted function call"; break;
+        case XML_IO_EINVAL:
+            errmsg = "Invalid argument"; break;
+        case XML_IO_EIO:
+            errmsg = "Input/output error"; break;
+        case XML_IO_EISDIR:
+            errmsg = "Is a directory"; break;
+        case XML_IO_EMFILE:
+            errmsg = "Too many open files"; break;
+        case XML_IO_EMLINK:
+            errmsg = "Too many links"; break;
+        case XML_IO_EMSGSIZE:
+            errmsg = "Inappropriate message buffer length"; break;
+        case XML_IO_ENAMETOOLONG:
+            errmsg = "Filename too long"; break;
+        case XML_IO_ENFILE:
+            errmsg = "Too many open files in system"; break;
+        case XML_IO_ENODEV:
+            errmsg = "No such device"; break;
+        case XML_IO_ENOENT:
+            errmsg = "No such file or directory"; break;
+        case XML_IO_ENOEXEC:
+            errmsg = "Exec format error"; break;
+        case XML_IO_ENOLCK:
+            errmsg = "No locks available"; break;
+        case XML_IO_ENOMEM:
+            errmsg = "Not enough space"; break;
+        case XML_IO_ENOSPC:
+            errmsg = "No space left on device"; break;
+        case XML_IO_ENOSYS:
+            errmsg = "Function not implemented"; break;
+        case XML_IO_ENOTDIR:
+            errmsg = "Not a directory"; break;
+        case XML_IO_ENOTEMPTY:
+            errmsg = "Directory not empty"; break;
+        case XML_IO_ENOTSUP:
+            errmsg = "Not supported"; break;
+        case XML_IO_ENOTTY:
+            errmsg = "Inappropriate I/O control operation"; break;
+        case XML_IO_ENXIO:
+            errmsg = "No such device or address"; break;
+        case XML_IO_EPERM:
+            errmsg = "Operation not permitted"; break;
+        case XML_IO_EPIPE:
+            errmsg = "Broken pipe"; break;
+        case XML_IO_ERANGE:
+            errmsg = "Result too large"; break;
+        case XML_IO_EROFS:
+            errmsg = "Read-only file system"; break;
+        case XML_IO_ESPIPE:
+            errmsg = "Invalid seek"; break;
+        case XML_IO_ESRCH:
+            errmsg = "No such process"; break;
+        case XML_IO_ETIMEDOUT:
+            errmsg = "Operation timed out"; break;
+        case XML_IO_EXDEV:
+            errmsg = "Improper link"; break;
+        case XML_IO_NETWORK_ATTEMPT:
+            errmsg = "Attempt to load network entity"; break;
+        case XML_IO_ENCODER:
+            errmsg = "encoder error"; break;
+        case XML_IO_FLUSH:
+            errmsg = "flush error"; break;
+        case XML_IO_WRITE:
+            errmsg = "write error"; break;
+        case XML_IO_NO_INPUT:
+            errmsg = "no input"; break;
+        case XML_IO_BUFFER_FULL:
+            errmsg = "buffer full"; break;
+        case XML_IO_LOAD_ERROR:
+            errmsg = "loading error"; break;
+        case XML_IO_ENOTSOCK:
+            errmsg = "not a socket"; break;
+        case XML_IO_EISCONN:
+            errmsg = "already connected"; break;
+        case XML_IO_ECONNREFUSED:
+            errmsg = "connection refused"; break;
+        case XML_IO_ENETUNREACH:
+            errmsg = "unreachable network"; break;
+        case XML_IO_EADDRINUSE:
+            errmsg = "address in use"; break;
+        case XML_IO_EALREADY:
+            errmsg = "already in use"; break;
+        case XML_IO_EAFNOSUPPORT:
+            errmsg = "unknown address family"; break;
+
+        default:
+            errmsg = "Unregistered error message";
+    }
+
+    return(errmsg);
+}

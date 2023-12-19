@@ -28,5 +28,7 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel, xmlGenericErrorFunc channel,
 XML_HIDDEN void
 xmlGenericErrorDefaultFunc(void *ctx, const char *msg,
                            ...) LIBXML_ATTR_FORMAT(2,3);
+XML_HIDDEN const char *
+xmlErrString(xmlParserErrors code);
 
 #endif /* XML_ERROR_H_PRIVATE__ */

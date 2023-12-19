@@ -120,66 +120,6 @@ static int xmlOutputCallbackNr = 1;
  *									*
  ************************************************************************/
 
-static const char* const IOerr[] = {
-    "Unknown IO error",         /* UNKNOWN */
-    "Permission denied",	/* EACCES */
-    "Resource temporarily unavailable",/* EAGAIN */
-    "Bad file descriptor",	/* EBADF */
-    "Bad message",		/* EBADMSG */
-    "Resource busy",		/* EBUSY */
-    "Operation canceled",	/* ECANCELED */
-    "No child processes",	/* ECHILD */
-    "Resource deadlock avoided",/* EDEADLK */
-    "Domain error",		/* EDOM */
-    "File exists",		/* EEXIST */
-    "Bad address",		/* EFAULT */
-    "File too large",		/* EFBIG */
-    "Operation in progress",	/* EINPROGRESS */
-    "Interrupted function call",/* EINTR */
-    "Invalid argument",		/* EINVAL */
-    "Input/output error",	/* EIO */
-    "Is a directory",		/* EISDIR */
-    "Too many open files",	/* EMFILE */
-    "Too many links",		/* EMLINK */
-    "Inappropriate message buffer length",/* EMSGSIZE */
-    "Filename too long",	/* ENAMETOOLONG */
-    "Too many open files in system",/* ENFILE */
-    "No such device",		/* ENODEV */
-    "No such file or directory",/* ENOENT */
-    "Exec format error",	/* ENOEXEC */
-    "No locks available",	/* ENOLCK */
-    "Not enough space",		/* ENOMEM */
-    "No space left on device",	/* ENOSPC */
-    "Function not implemented",	/* ENOSYS */
-    "Not a directory",		/* ENOTDIR */
-    "Directory not empty",	/* ENOTEMPTY */
-    "Not supported",		/* ENOTSUP */
-    "Inappropriate I/O control operation",/* ENOTTY */
-    "No such device or address",/* ENXIO */
-    "Operation not permitted",	/* EPERM */
-    "Broken pipe",		/* EPIPE */
-    "Result too large",		/* ERANGE */
-    "Read-only file system",	/* EROFS */
-    "Invalid seek",		/* ESPIPE */
-    "No such process",		/* ESRCH */
-    "Operation timed out",	/* ETIMEDOUT */
-    "Improper link",		/* EXDEV */
-    "Attempt to load network entity", /* XML_IO_NETWORK_ATTEMPT */
-    "encoder error",		/* XML_IO_ENCODER */
-    "flush error",
-    "write error",
-    "no input",
-    "buffer full",
-    "loading error",
-    "not a socket",		/* ENOTSOCK */
-    "already connected",	/* EISCONN */
-    "connection refused",	/* ECONNREFUSED */
-    "unreachable network",	/* ENETUNREACH */
-    "address in use",		/* EADDRINUSE */
-    "already in use",		/* EALREADY */
-    "unknown address family",	/* EAFNOSUPPORT */
-};
-
 #if defined(_WIN32)
 /**
  * __xmlIOWin32UTF8ToWChar:
@@ -235,7 +175,6 @@ xmlIOErrMemory(void)
 int
 __xmlIOErr(int domain, int code, const char *extra)
 {
-    unsigned int idx;
     int res;
 
     if (code == 0) {
@@ -395,14 +334,11 @@ __xmlIOErr(int domain, int code, const char *extra)
 #endif
         else code = XML_IO_UNKNOWN;
     }
-    idx = 0;
-    if (code >= XML_IO_UNKNOWN) idx = code - XML_IO_UNKNOWN;
-    if (idx >= (sizeof(IOerr) / sizeof(IOerr[0]))) idx = 0;
 
     res = __xmlRaiseError(NULL, NULL, NULL, NULL, NULL,
                           domain, code, XML_ERR_ERROR, NULL, 0,
                           extra, NULL, NULL, 0, 0,
-                          IOerr[idx], extra);
+                          "%s", xmlErrString(code));
     if (res < 0) {
         xmlIOErrMemory();
         return(XML_ERR_NO_MEMORY);
@@ -439,7 +375,6 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
 {
     const char *errstr, *msg, *str1, *str2;
     xmlErrorLevel level;
-    unsigned idx = 0;
 
     if (ctxt == NULL)
         return;
@@ -455,12 +390,7 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
         level = XML_ERR_FATAL;
     }
 
-    if (code >= XML_IO_UNKNOWN) {
-        idx = code - XML_IO_UNKNOWN;
-        if (idx >= (sizeof(IOerr) / sizeof(IOerr[0])))
-            idx = 0;
-    }
-    errstr = IOerr[idx];
+    errstr = xmlErrString(code);
 
     if (uri == NULL) {
         msg = "%s\n";

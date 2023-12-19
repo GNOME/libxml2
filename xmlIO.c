@@ -1048,7 +1048,7 @@ xmlBufferWrite (void * context, const char * buffer, int len) {
  */
 static int
 xmlGzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
-    return(1);
+    return(strcmp(filename, "-") != 0);
 }
 
 /**
@@ -1254,7 +1254,7 @@ xmlGzfileClose (void * context) {
  */
 static int
 xmlXzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
-    return(1);
+    return(strcmp(filename, "-") != 0);
 }
 
 /**
@@ -2148,47 +2148,43 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
 
 #ifdef LIBXML_LZMA_ENABLED
     if (xmlXzfileMatch(filename)) {
-        buf->context = xmlXzfileOpen(filename);
+        void *context = xmlXzfileOpen(filename);
 
-        if (buf->context != NULL) {
-            buf->readcallback = xmlXzfileRead;
-            buf->closecallback = xmlXzfileClose;
-
-            if (strcmp(filename, "-") != 0)
+        if (context != NULL) {
+            if (__libxml2_xzcompressed(context) > 0) {
+                buf->context = context;
+                buf->readcallback = xmlXzfileRead;
+                buf->closecallback = xmlXzfileClose;
                 buf->compressed = __libxml2_xzcompressed(buf->context);
 
-            return(XML_ERR_OK);
+                return(XML_ERR_OK);
+            }
+
+            xmlXzfileClose(context);
         }
     }
 #endif /* LIBXML_LZMA_ENABLED */
 
 #ifdef LIBXML_ZLIB_ENABLED
     if (xmlGzfileMatch(filename)) {
-        buf->context = xmlGzfileOpen(filename);
+        void *context = xmlGzfileOpen(filename);
 
-        if (buf->context != NULL) {
-            buf->readcallback = xmlGzfileRead;
-            buf->closecallback = xmlGzfileClose;
+        if (context != NULL) {
+            char buff4[4];
 
-            if (strcmp(filename, "-") != 0) {
-#if defined(ZLIB_VERNUM) && ZLIB_VERNUM >= 0x1230
-                buf->compressed = !gzdirect(buf->context);
-#else
-                if (((z_stream *)context)->avail_in > 4) {
-                    char *cptr, buff4[4];
-                    cptr = (char *) ((z_stream *)buf->context)->next_in;
-                    if (gzread(context, buff4, 4) == 4) {
-                        if (strncmp(buff4, cptr, 4) == 0)
-                            buf->compressed = 0;
-                        else
-                            buf->compressed = 1;
-                        gzrewind(context);
-                    }
-                }
-#endif
+            if ((gzread(context, buff4, 4) > 0) &&
+                (gzdirect(context) == 0)) {
+                gzrewind(context);
+
+                buf->context = context;
+                buf->readcallback = xmlGzfileRead;
+                buf->closecallback = xmlGzfileClose;
+                buf->compressed = 1;
+
+                return(XML_ERR_OK);
             }
 
-            return(XML_ERR_OK);
+            xmlGzfileClose(context);
         }
     }
 #endif /* LIBXML_ZLIB_ENABLED */

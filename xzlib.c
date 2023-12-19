@@ -195,6 +195,12 @@ xz_compressed(xzFile f) {
         case COPY:
 	    return(0);
 	case GZIP:
+#ifdef LIBXML_ZLIB_ENABLED
+            /* Don't use lzma for gzip */
+	    return(0);
+#else
+	    return(1);
+#endif
 	case LZMA:
 	    return(1);
     }
@@ -205,11 +211,6 @@ xzFile
 __libxml2_xzopen(const char *path, const char *mode)
 {
     return xz_open(path, -1, mode);
-}
-
-int
-__libxml2_xzcompressed(xzFile f) {
-    return xz_compressed(f);
 }
 
 xzFile
@@ -698,6 +699,13 @@ xz_skip(xz_statep state, uint64_t len)
                 return -1;
         }
     return 0;
+}
+
+int
+__libxml2_xzcompressed(xzFile f) {
+    xz_head(f);
+
+    return xz_compressed(f);
 }
 
 int

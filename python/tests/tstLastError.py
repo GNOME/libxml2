@@ -58,8 +58,8 @@ class TestCase(unittest.TestCase):
                         ("dummy.xml",None,0),
                         libxml2.treeError,
                         domain=libxml2.XML_FROM_IO,
-                        code=libxml2.XML_IO_LOAD_ERROR,
-                        message='failed to load external entity "dummy.xml"\n',
+                        code=libxml2.XML_IO_ENOENT,
+                        message='failed to load "dummy.xml": No such file or directory\n',
                         level=libxml2.XML_ERR_WARNING,
                         file=None,
                         line=0)

@@ -1804,17 +1804,15 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputPtr inputStream;
     char *directory = NULL;
     xmlChar *URI = NULL;
+    int code;
 
-    if (ctxt == NULL) return(NULL);
-    buf = xmlParserInputBufferCreateFilename(filename, XML_CHAR_ENCODING_NONE);
+    if ((ctxt == NULL) || (filename == NULL))
+        return(NULL);
+
+    code = xmlParserInputBufferCreateFilenameSafe(filename,
+                                                  XML_CHAR_ENCODING_NONE, &buf);
     if (buf == NULL) {
-	if (filename == NULL)
-            xmlLoaderErr(ctxt,
-                         "failed to load external entity: NULL filename\n",
-                         NULL);
-	else
-            xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n",
-                         (const char *) filename);
+        xmlLoaderErr(ctxt, code, filename);
 	return(NULL);
     }
 

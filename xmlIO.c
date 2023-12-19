@@ -228,7 +228,7 @@ xmlIOErrMemory(void)
  *
  * Handle an I/O error
  */
-void
+int
 __xmlIOErr(int domain, int code, const char *extra)
 {
     unsigned int idx;
@@ -399,8 +399,12 @@ __xmlIOErr(int domain, int code, const char *extra)
                           domain, code, XML_ERR_ERROR, NULL, 0,
                           extra, NULL, NULL, 0, 0,
                           IOerr[idx], extra);
-    if (res < 0)
+    if (res < 0) {
         xmlIOErrMemory();
+        return(XML_ERR_NO_MEMORY);
+    }
+
+    return(code);
 }
 
 /**
@@ -410,33 +414,40 @@ __xmlIOErr(int domain, int code, const char *extra)
  *
  * Handle an I/O error
  */
-static void
+static int
 xmlIOErr(int code, const char *extra)
 {
-    __xmlIOErr(XML_FROM_IO, code, extra);
+    return(__xmlIOErr(XML_FROM_IO, code, extra));
 }
 
 /**
- * __xmlLoaderErr:
- * @ctx: the parser context
- * @extra:  extra information
+ * xmlLoaderErr:
+ * @ctx:  parser context
+ * @code:  error code
+ * @filename:  file name
  *
  * Handle a resource access error
  */
 void
-xmlLoaderErr(xmlParserCtxtPtr ctxt, const char *msg, const char *filename)
+xmlLoaderErr(xmlParserCtxtPtr ctxt, int code, const char *filename)
 {
     xmlErrorLevel level;
+    unsigned idx = 0;
 
     if (ctxt->validate)
         level = XML_ERR_ERROR;
     else
         level = XML_ERR_WARNING;
 
-    xmlErrParser(ctxt, NULL, XML_FROM_IO, XML_IO_LOAD_ERROR, level,
-                 (const xmlChar *) filename, NULL, NULL, 0,
-		 msg, filename);
+    if (code >= XML_IO_UNKNOWN) {
+        idx = code - XML_IO_UNKNOWN;
+        if (idx >= (sizeof(IOerr) / sizeof(IOerr[0])))
+            idx = 0;
+    }
 
+    xmlErrParser(ctxt, NULL, XML_FROM_IO, code, level,
+                 (const xmlChar *) filename, NULL, NULL, 0,
+		 "failed to load \"%s\": %s\n", filename, IOerr[idx]);
 }
 
 /************************************************************************
@@ -736,25 +747,28 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlFileOpen_real:
+ * xmlFileOpenReal:
  * @filename:  the URI for matching
+ * @out:  pointer to resulting context
  *
  * input from FILE *, supports compressed input
- * if @filename is " " then the standard input is used
+ * if @filename is "-" then the standard input is used
  *
  * Returns an I/O context or NULL in case of error
  */
-static void *
-xmlFileOpen_real (const char *filename) {
+static int
+xmlFileOpenReal(const char *filename, void **out) {
     const char *path = filename;
     FILE *fd;
+    int ret = XML_ERR_OK;
 
+    *out = NULL;
     if (filename == NULL)
-        return(NULL);
+        return(XML_ERR_ARGUMENT);
 
     if (!strcmp(filename, "-")) {
-	fd = stdin;
-	return((void *) fd);
+        *out = stdin;
+	return(XML_ERR_OK);
     }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
@@ -778,45 +792,76 @@ xmlFileOpen_real (const char *filename) {
 #endif
     }
 
-    /* Do not check DDNAME on zOS ! */
-#if !defined(__MVS__)
-    if (!xmlCheckFilename(path))
-        return(NULL);
-#endif
-
 #if defined(_WIN32)
     fd = xmlWrapOpenUtf8(path, 0);
 #else
     fd = fopen(path, "rb");
 #endif /* WIN32 */
-    if (fd == NULL) xmlIOErr(0, path);
-    return((void *) fd);
+
+    if (fd == NULL) {
+        /*
+         * Windows and possibly other platforms return EINVAL
+         * for invalid filenames.
+         */
+        if ((errno == ENOENT) || (errno == EINVAL)) {
+            ret = XML_IO_ENOENT;
+        } else {
+            /*
+             * This error won't be forwarded to the parser context
+             * which will report it a second time.
+             */
+            ret = xmlIOErr(0, path);
+        }
+    }
+
+    *out = fd;
+    return(ret);
+}
+
+/**
+ * xmlFileOpenSafe:
+ * @filename:  the URI for matching
+ * @out:  pointer to resulting context
+ *
+ * Wrapper around xmlFileOpen_real that try it with an unescaped
+ * version of @filename, if this fails fallback to @filename
+ *
+ * Returns an xmlParserErrors code.
+ */
+static int
+xmlFileOpenSafe(const char *filename, void **out) {
+    char *unescaped;
+    int retval;
+
+    retval = xmlFileOpenReal(filename, out);
+    if (retval == XML_ERR_OK)
+        return(retval);
+
+    if (retval == XML_IO_ENOENT) {
+        unescaped = xmlURIUnescapeString(filename, 0, NULL);
+        if (unescaped == NULL)
+            return(XML_ERR_NO_MEMORY);
+        retval = xmlFileOpenReal(unescaped, out);
+        xmlFree(unescaped);
+    }
+
+    return retval;
 }
 
 /**
  * xmlFileOpen:
  * @filename:  the URI for matching
  *
- * Wrapper around xmlFileOpen_real that try it with an unescaped
- * version of @filename, if this fails fallback to @filename
+ * Open a file.
  *
- * Returns a handler or NULL in case or failure
+ * Returns an IO context or NULL in case or failure
  */
 void *
-xmlFileOpen (const char *filename) {
-    char *unescaped;
-    void *retval;
+xmlFileOpen(const char *filename) {
+    void *context;
 
-    retval = xmlFileOpen_real(filename);
-    if (retval == NULL) {
-	unescaped = xmlURIUnescapeString(filename, 0, NULL);
-	if (unescaped != NULL) {
-	    retval = xmlFileOpen_real(unescaped);
-	    xmlFree(unescaped);
-	}
-    }
-
-    return retval;
+    xmlFileOpenSafe(filename, &context);
+    return(context);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -2066,8 +2111,17 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
 
+/**
+ * xmlInputDefaultOpen:
+ * @buf:  input buffer to be filled
+ * @filename:  filename or URI
+ *
+ * Returns an xmlParserErrors code.
+ */
 static int
 xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
+    int ret;
+
 #ifdef LIBXML_FTP_ENABLED
     if (xmlIOFTPMatch(filename)) {
         buf->context = xmlIOFTPOpen(filename);
@@ -2140,13 +2194,15 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
 #endif /* LIBXML_ZLIB_ENABLED */
 
     if (xmlFileMatch(filename)) {
-        buf->context = xmlFileOpen(filename);
+        ret = xmlFileOpenSafe(filename, &buf->context);
 
         if (buf->context != NULL) {
             buf->readcallback = xmlFileRead;
             buf->closecallback = xmlFileClose;
             return(XML_ERR_OK);
         }
+        if (ret != XML_IO_ENOENT)
+            return(ret);
     }
 
     return(XML_IO_ENOENT);
@@ -2163,6 +2219,15 @@ xmlRegisterDefaultInputCallbacks(void) {
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
+/**
+ * xmlOutputDefaultOpen:
+ * @buf:  input buffer to be filled
+ * @filename:  filename or URI
+ * @compression:  compression level or 0
+ * @is_file_uri:  whether filename is a file URI
+ *
+ * Returns an xmlParserErrors code.
+ */
 static int
 xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
                      int compression, int is_file_uri) {
@@ -2448,49 +2513,71 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-xmlParserInputBufferPtr
-__xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
-    xmlParserInputBufferPtr ret;
-    int i = 0;
+/**
+ * xmlParserInputBufferCreateFilenameInt:
+ * @URI:  the filename or URI
+ * @enc:  encoding enum (deprecated)
+ * @out:  pointer to resulting input buffer
+ *
+ * Returns an xmlParserErrors code.
+ */
+static int
+xmlParserInputBufferCreateFilenameInt(const char *URI, xmlCharEncoding enc,
+                                      xmlParserInputBufferPtr *out) {
+    xmlParserInputBufferPtr buf;
+    int ret;
+    int i;
 
-    if (URI == NULL) return(NULL);
+    *out = NULL;
+    if (URI == NULL)
+        return(XML_ERR_ARGUMENT);
 
     /*
      * Allocate the Input buffer front-end.
      */
-    ret = xmlAllocParserInputBuffer(enc);
-    if (ret == NULL)
-        return(NULL);
+    buf = xmlAllocParserInputBuffer(enc);
+    if (buf == NULL)
+        return(XML_ERR_NO_MEMORY);
 
     /*
      * Try to find one of the input accept method accepting that scheme
      * Go in reverse to give precedence to user defined handlers.
      */
+    ret = XML_IO_ENOENT;
     for (i = xmlInputCallbackNr - 1; i >= 0; i--) {
         xmlInputCallback *cb = &xmlInputCallbackTable[i];
 
         if (cb->matchcallback == xmlIODefaultMatch) {
-            int code = xmlInputDefaultOpen(ret, URI);
+            ret = xmlInputDefaultOpen(buf, URI);
 
-            if (code == XML_ERR_OK)
+            if ((ret == XML_ERR_OK) || (ret != XML_IO_ENOENT))
                 break;
-            /* TODO: Handle other errors */
         } else if ((cb->matchcallback != NULL) &&
                    (cb->matchcallback(URI) != 0)) {
-            ret->context = cb->opencallback(URI);
-            if (ret->context != NULL) {
-                ret->readcallback = cb->readcallback;
-                ret->closecallback = cb->closecallback;
+            buf->context = cb->opencallback(URI);
+            if (buf->context != NULL) {
+                buf->readcallback = cb->readcallback;
+                buf->closecallback = cb->closecallback;
+                ret = XML_ERR_OK;
                 break;
             }
         }
     }
-    if (ret->context == NULL) {
-        xmlFreeParserInputBuffer(ret);
-        /* TODO: Return not found error */
-	return(NULL);
+    if (ret != XML_ERR_OK) {
+        xmlFreeParserInputBuffer(buf);
+        *out = NULL;
+	return(ret);
     }
 
+    *out = buf;
+    return(ret);
+}
+
+xmlParserInputBufferPtr
+__xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
+    xmlParserInputBufferPtr ret;
+
+    xmlParserInputBufferCreateFilenameInt(URI, enc, &ret);
     return(ret);
 }
 
@@ -2500,7 +2587,7 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
  * @enc:  the charset encoding if known
  *
  * Create a buffered parser input for the progressive parsing of a file
- * If filename is "-' then we use stdin as the input.
+ * If filename is "-" then we use stdin as the input.
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
  * Do an encoding check if enc == XML_CHAR_ENCODING_NONE
@@ -2509,10 +2596,32 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
  */
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
-    if ((xmlParserInputBufferCreateFilenameValue)) {
-		return xmlParserInputBufferCreateFilenameValue(URI, enc);
-	}
-	return __xmlParserInputBufferCreateFilename(URI, enc);
+    if (xmlParserInputBufferCreateFilenameValue != NULL)
+        return(xmlParserInputBufferCreateFilenameValue(URI, enc));
+
+    return(__xmlParserInputBufferCreateFilename(URI, enc));
+}
+
+/**
+ * xmlParserInputBufferCreateFilenameSafe:
+ * @URI:  the filename or URI
+ * @enc:  encoding enum (deprecated)
+ * @out:  pointer to resulting input buffer
+ *
+ * Returns an xmlParserErrors code.
+ */
+int
+xmlParserInputBufferCreateFilenameSafe(const char *URI, xmlCharEncoding enc,
+                                       xmlParserInputBufferPtr *out) {
+    if (xmlParserInputBufferCreateFilenameValue != NULL) {
+        *out = xmlParserInputBufferCreateFilenameValue(URI, enc);
+
+        if (*out == NULL)
+            return(XML_IO_ENOENT);
+        return(XML_ERR_OK);
+    }
+
+    return(xmlParserInputBufferCreateFilenameInt(URI, enc, out));
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -3723,10 +3832,9 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
         if (code >= 400) {
             /* fatal error */
 	    if (ret->filename != NULL)
-                xmlLoaderErr(ctxt, "failed to load HTTP resource \"%s\"\n",
-                             (const char *) ret->filename);
+                xmlLoaderErr(ctxt, XML_IO_LOAD_ERROR, ret->filename);
 	    else
-                xmlLoaderErr(ctxt, "failed to load HTTP resource\n", NULL);
+                xmlLoaderErr(ctxt, XML_IO_LOAD_ERROR, "<null>");
             xmlFreeInputStream(ret);
             ret = NULL;
         } else {
@@ -3877,6 +3985,9 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     xmlParserInputPtr ret = NULL;
     xmlChar *resource = NULL;
 
+    if (URL == NULL)
+        return(NULL);
+
     if ((ctxt != NULL) && (ctxt->options & XML_PARSE_NONET)) {
         int options = ctxt->options;
 
@@ -3892,13 +4003,6 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
     if (resource == NULL)
         resource = (xmlChar *) URL;
 
-    if (resource == NULL) {
-        if (ID == NULL)
-            ID = "NULL";
-        if (ctxt != NULL)
-            xmlLoaderErr(ctxt, "failed to load external entity \"%s\"\n", ID);
-        return (NULL);
-    }
     ret = xmlNewInputFromFile(ctxt, (const char *) resource);
     if ((resource != NULL) && (resource != (xmlChar *) URL))
         xmlFree(resource);
@@ -3995,7 +4099,7 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
     if (resource != NULL) {
         if ((!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "ftp://", 6)) ||
             (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
-            xmlLoaderErr(ctxt, "Attempt to load network entity %s",
+            xmlLoaderErr(ctxt, XML_IO_NETWORK_ATTEMPT,
                          (const char *) resource);
 	    if (resource != (xmlChar *) URL)
 		xmlFree(resource);

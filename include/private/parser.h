@@ -46,10 +46,6 @@ XML_HIDDEN void LIBXML_ATTR_FORMAT(3,0)
 xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
               const char *msg, const xmlChar *str1, const xmlChar *str2);
 XML_HIDDEN void
-__xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
-                 const char *msg, const xmlChar *str1,
-                 const xmlChar *str2) LIBXML_ATTR_FORMAT(3,0);
-XML_HIDDEN void
 xmlHaltParser(xmlParserCtxtPtr ctxt);
 XML_HIDDEN int
 xmlParserGrow(xmlParserCtxtPtr ctxt);

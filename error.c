@@ -543,7 +543,23 @@ xmlReportError(xmlParserCtxtPtr ctxt, const xmlError *err)
     }
 
     if (ctxt != NULL) {
+        if ((input != NULL) &&
+            ((input->buf == NULL) || (input->buf->encoder == NULL)) &&
+            (code == XML_ERR_INVALID_ENCODING) &&
+            (input->cur < input->end)) {
+            int i;
+
+            channel(data, "Bytes:");
+            for (i = 0; i < 4; i++) {
+                if (input->cur + i >= input->end)
+                    break;
+                channel(data, " 0x%02X", input->cur[i]);
+            }
+            channel(data, "\n");
+        }
+
         xmlParserPrintFileContextInternal(input, channel, data);
+
         if (cur != NULL) {
             if (cur->filename)
                 channel(data, "%s:%d: \n", cur->filename, cur->line);

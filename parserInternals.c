@@ -246,24 +246,6 @@ xmlErrParser(xmlParserCtxtPtr ctxt, xmlNodePtr node,
 }
 
 /**
- * __xmlErrEncoding:
- * @ctxt:  an XML parser context
- * @xmlerr:  the error number
- * @msg:  the error message
- * @str1:  an string info
- * @str2:  an string info
- *
- * Handle an encoding error
- */
-void
-__xmlErrEncoding(xmlParserCtxtPtr ctxt, xmlParserErrors xmlerr,
-                 const char *msg, const xmlChar * str1, const xmlChar * str2)
-{
-    xmlErrParser(ctxt, NULL, XML_FROM_PARSER, xmlerr, XML_ERR_FATAL,
-                 str1, str2, NULL, 0, msg, str1, str2);
-}
-
-/**
  * xmlErrInternal:
  * @ctxt:  an XML parser context
  * @msg:  the error message
@@ -659,21 +641,7 @@ xmlNextChar(xmlParserCtxtPtr ctxt)
 encoding_error:
     /* Only report the first error */
     if ((ctxt->input->flags & XML_INPUT_ENCODING_ERROR) == 0) {
-        if ((ctxt == NULL) || (ctxt->input == NULL) ||
-            (ctxt->input->end - ctxt->input->cur < 4)) {
-            __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-                         "Input is not proper UTF-8, indicate encoding !\n",
-                         NULL, NULL);
-        } else {
-            char buffer[150];
-
-            snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-                            ctxt->input->cur[0], ctxt->input->cur[1],
-                            ctxt->input->cur[2], ctxt->input->cur[3]);
-            __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-                         "Input is not proper UTF-8, indicate encoding !\n%s",
-                         BAD_CAST buffer, NULL);
-        }
+        xmlCtxtErrIO(ctxt, XML_ERR_INVALID_ENCODING, NULL);
         ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
     }
     ctxt->input->cur++;
@@ -809,20 +777,7 @@ xmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
 encoding_error:
     /* Only report the first error */
     if ((ctxt->input->flags & XML_INPUT_ENCODING_ERROR) == 0) {
-        if (ctxt->input->end - ctxt->input->cur < 4) {
-            __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-                         "Input is not proper UTF-8, indicate encoding !\n",
-                         NULL, NULL);
-        } else {
-            char buffer[150];
-
-            snprintf(&buffer[0], 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-                            ctxt->input->cur[0], ctxt->input->cur[1],
-                            ctxt->input->cur[2], ctxt->input->cur[3]);
-            __xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-                         "Input is not proper UTF-8, indicate encoding !\n%s",
-                         BAD_CAST buffer, NULL);
-        }
+        xmlCtxtErrIO(ctxt, XML_ERR_INVALID_ENCODING, NULL);
         ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
     }
     *len = 1;
@@ -1050,14 +1005,9 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
     }
 
     if (res != 0) {
-        if (res == XML_ERR_UNSUPPORTED_ENCODING) {
-            const char *name = xmlGetCharEncodingName(enc);
+        const char *name = xmlGetCharEncodingName(enc);
 
-            __xmlErrEncoding(ctxt, res, "encoding not supported: %s\n",
-                             BAD_CAST (name ? name : "<null>"), NULL);
-        } else {
-            xmlFatalErr(ctxt, res, NULL);
-        }
+        xmlFatalErr(ctxt, res, (name ? name : "<null>"));
         return(-1);
     }
 
@@ -1090,13 +1040,12 @@ xmlSwitchEncodingName(xmlParserCtxtPtr ctxt, const char *encoding) {
     xmlCharEncodingHandlerPtr handler;
     int res;
 
+    if (encoding == NULL)
+        return(-1);
+
     res = xmlOpenCharEncodingHandler(encoding, &handler);
     if (res != 0) {
-        if (res == XML_ERR_UNSUPPORTED_ENCODING)
-            __xmlErrEncoding(ctxt, res, "Unsupported encoding: %s\n",
-                             (const xmlChar *) encoding, NULL);
-        else
-            xmlFatalErr(ctxt, res, NULL);
+        xmlFatalErr(ctxt, res, encoding);
         return(-1);
     }
 
@@ -1188,9 +1137,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         if (nbchars == XML_ENC_ERR_MEMORY) {
             xmlErrMemory(ctxt);
         } else if (nbchars < 0) {
-            xmlErrInternal(ctxt,
-                           "switching encoding: encoder error\n",
-                           NULL);
+            xmlCtxtErrIO(ctxt, in->error, NULL);
             xmlHaltParser(ctxt);
             return (-1);
         }

@@ -11877,19 +11877,10 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 done:
     return(ret);
 encoding_error:
-    if (ctxt->input->end - ctxt->input->cur < 4) {
-	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-		     "Input is not proper UTF-8, indicate encoding !\n",
-		     NULL, NULL);
-    } else {
-        char buffer[150];
-
-	snprintf(buffer, 149, "Bytes: 0x%02X 0x%02X 0x%02X 0x%02X\n",
-			ctxt->input->cur[0], ctxt->input->cur[1],
-			ctxt->input->cur[2], ctxt->input->cur[3]);
-	__xmlErrEncoding(ctxt, XML_ERR_INVALID_CHAR,
-		     "Input is not proper UTF-8, indicate encoding !\n%s",
-		     BAD_CAST buffer, NULL);
+    /* Only report the first error */
+    if ((ctxt->input->flags & XML_INPUT_ENCODING_ERROR) == 0) {
+        xmlCtxtErrIO(ctxt, XML_ERR_INVALID_ENCODING, NULL);
+        ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
     }
     return(0);
 }

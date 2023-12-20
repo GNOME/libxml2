@@ -116,41 +116,9 @@ static int xmlOutputCallbackNr = 1;
 
 /************************************************************************
  *									*
- *		Tree memory error handler				*
+ *			Error handling					*
  *									*
  ************************************************************************/
-
-#if defined(_WIN32)
-/**
- * __xmlIOWin32UTF8ToWChar:
- * @u8String:  uft-8 string
- *
- * Convert a string from utf-8 to wchar (WINDOWS ONLY!)
- */
-static wchar_t *
-__xmlIOWin32UTF8ToWChar(const char *u8String)
-{
-    wchar_t *wString = NULL;
-
-    if (u8String) {
-        int wLen =
-            MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, u8String,
-                                -1, NULL, 0);
-        if (wLen) {
-            wString = xmlMalloc(wLen * sizeof(wchar_t));
-            if (wString) {
-                if (MultiByteToWideChar
-                    (CP_UTF8, 0, u8String, -1, wString, wLen) == 0) {
-                    xmlFree(wString);
-                    wString = NULL;
-                }
-            }
-        }
-    }
-
-    return wString;
-}
-#endif
 
 /**
  * xmlIOErrMemory:
@@ -412,96 +380,41 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
 
 /************************************************************************
  *									*
- *		Tree memory error handler				*
- *									*
- ************************************************************************/
-/**
- * xmlNormalizeWindowsPath:
- * @path: the input file path
- *
- * This function is obsolete. Please see xmlURIFromPath in uri.c for
- * a better solution.
- *
- * Returns a canonicalized version of the path
- */
-xmlChar *
-xmlNormalizeWindowsPath(const xmlChar *path)
-{
-    return xmlCanonicPath(path);
-}
-
-/**
- * xmlCleanupInputCallbacks:
- *
- * clears the entire input callback table. this includes the
- * compiled-in I/O.
- */
-void
-xmlCleanupInputCallbacks(void)
-{
-    xmlInputCallbackNr = 0;
-}
-
-/**
- * xmlPopInputCallbacks:
- *
- * Clear the top input callback from the input stack. this includes the
- * compiled-in I/O.
- *
- * Returns the number of input callback registered or -1 in case of error.
- */
-int
-xmlPopInputCallbacks(void)
-{
-    if (xmlInputCallbackNr <= 0)
-        return(-1);
-
-    xmlInputCallbackNr--;
-
-    return(xmlInputCallbackNr);
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * xmlCleanupOutputCallbacks:
- *
- * clears the entire output callback table. this includes the
- * compiled-in I/O callbacks.
- */
-void
-xmlCleanupOutputCallbacks(void)
-{
-    xmlOutputCallbackNr = 0;
-}
-
-/**
- * xmlPopOutputCallbacks:
- *
- * Remove the top output callbacks from the output stack. This includes the
- * compiled-in I/O.
- *
- * Returns the number of output callback registered or -1 in case of error.
- */
-int
-xmlPopOutputCallbacks(void)
-{
-    if (xmlOutputCallbackNr <= 0)
-        return(-1);
-
-    xmlOutputCallbackNr--;
-
-    return(xmlOutputCallbackNr);
-}
-
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-/************************************************************************
- *									*
  *		Standard I/O for file accesses				*
  *									*
  ************************************************************************/
 
 #if defined(_WIN32)
+
+/**
+ * __xmlIOWin32UTF8ToWChar:
+ * @u8String:  uft-8 string
+ *
+ * Convert a string from utf-8 to wchar (WINDOWS ONLY!)
+ */
+static wchar_t *
+__xmlIOWin32UTF8ToWChar(const char *u8String)
+{
+    wchar_t *wString = NULL;
+
+    if (u8String) {
+        int wLen =
+            MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, u8String,
+                                -1, NULL, 0);
+        if (wLen) {
+            wString = xmlMalloc(wLen * sizeof(wchar_t));
+            if (wString) {
+                if (MultiByteToWideChar
+                    (CP_UTF8, 0, u8String, -1, wString, wLen) == 0) {
+                    xmlFree(wString);
+                    wString = NULL;
+                }
+            }
+        }
+    }
+
+    return wString;
+}
 
 /**
  *  xmlWrapOpenUtf8:
@@ -583,6 +496,21 @@ xmlWrapStatUtf8(const char *path, struct _stat *info) {
 }
 
 #endif
+
+/**
+ * xmlNormalizeWindowsPath:
+ * @path: the input file path
+ *
+ * This function is obsolete. Please see xmlURIFromPath in uri.c for
+ * a better solution.
+ *
+ * Returns a canonicalized version of the path
+ */
+xmlChar *
+xmlNormalizeWindowsPath(const xmlChar *path)
+{
+    return xmlCanonicPath(path);
+}
 
 /**
  * xmlCheckFilename:
@@ -2109,57 +2037,11 @@ xmlIOFTPClose (void * context) {
 }
 #endif /* LIBXML_FTP_ENABLED */
 
-/**
- * xmlRegisterInputCallbacks:
- * @matchFunc:  the xmlInputMatchCallback
- * @openFunc:  the xmlInputOpenCallback
- * @readFunc:  the xmlInputReadCallback
- * @closeFunc:  the xmlInputCloseCallback
- *
- * Register a new set of I/O callback for handling parser input.
- *
- * Returns the registered handler number or -1 in case of error
- */
-int
-xmlRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
-	xmlInputOpenCallback openFunc, xmlInputReadCallback readFunc,
-	xmlInputCloseCallback closeFunc) {
-    if (xmlInputCallbackNr >= MAX_INPUT_CALLBACK) {
-	return(-1);
-    }
-    xmlInputCallbackTable[xmlInputCallbackNr].matchcallback = matchFunc;
-    xmlInputCallbackTable[xmlInputCallbackNr].opencallback = openFunc;
-    xmlInputCallbackTable[xmlInputCallbackNr].readcallback = readFunc;
-    xmlInputCallbackTable[xmlInputCallbackNr].closecallback = closeFunc;
-    return(xmlInputCallbackNr++);
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * xmlRegisterOutputCallbacks:
- * @matchFunc:  the xmlOutputMatchCallback
- * @openFunc:  the xmlOutputOpenCallback
- * @writeFunc:  the xmlOutputWriteCallback
- * @closeFunc:  the xmlOutputCloseCallback
- *
- * Register a new set of I/O callback for handling output.
- *
- * Returns the registered handler number or -1 in case of error
- */
-int
-xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
-	xmlOutputOpenCallback openFunc, xmlOutputWriteCallback writeFunc,
-	xmlOutputCloseCallback closeFunc) {
-    if (xmlOutputCallbackNr >= MAX_OUTPUT_CALLBACK) {
-	return(-1);
-    }
-    xmlOutputCallbackTable[xmlOutputCallbackNr].matchcallback = matchFunc;
-    xmlOutputCallbackTable[xmlOutputCallbackNr].opencallback = openFunc;
-    xmlOutputCallbackTable[xmlOutputCallbackNr].writecallback = writeFunc;
-    xmlOutputCallbackTable[xmlOutputCallbackNr].closecallback = closeFunc;
-    return(xmlOutputCallbackNr++);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
+/************************************************************************
+ *									*
+ *			Input/output buffers				*
+ *									*
+ ************************************************************************/
 
 static int
 xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
@@ -2260,16 +2142,6 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
     return(XML_IO_ENOENT);
 }
 
-/**
- * xmlRegisterDefaultInputCallbacks:
- *
- * Registers the default compiled-in I/O handlers.
- */
-void
-xmlRegisterDefaultInputCallbacks(void) {
-    xmlRegisterInputCallbacks(xmlIODefaultMatch, NULL, NULL, NULL);
-}
-
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlOutputDefaultOpen:
@@ -2321,29 +2193,7 @@ xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
 
     return(XML_IO_ENOENT);
 }
-
-/**
- * xmlRegisterDefaultOutputCallbacks:
- *
- * Registers the default compiled-in I/O handlers.
- */
-void
-xmlRegisterDefaultOutputCallbacks (void) {
-    xmlRegisterOutputCallbacks(xmlIODefaultMatch, NULL, NULL, NULL);
-}
-
-#ifdef LIBXML_HTTP_ENABLED
-/**
- * xmlRegisterHTTPPostCallbacks:
- *
- * DEPRECATED: Has no effect.
- */
-void
-xmlRegisterHTTPPostCallbacks(void) {
-    xmlRegisterDefaultOutputCallbacks();
-}
 #endif
-#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlAllocParserInputBuffer:
@@ -4166,4 +4016,156 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
 	xmlFree(resource);
     return(input);
 }
+
+/************************************************************************
+ *									*
+ *			Input/output callbacks				*
+ *									*
+ ************************************************************************/
+
+/**
+ * xmlRegisterInputCallbacks:
+ * @matchFunc:  the xmlInputMatchCallback
+ * @openFunc:  the xmlInputOpenCallback
+ * @readFunc:  the xmlInputReadCallback
+ * @closeFunc:  the xmlInputCloseCallback
+ *
+ * Register a new set of I/O callback for handling parser input.
+ *
+ * Returns the registered handler number or -1 in case of error
+ */
+int
+xmlRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
+	xmlInputOpenCallback openFunc, xmlInputReadCallback readFunc,
+	xmlInputCloseCallback closeFunc) {
+    if (xmlInputCallbackNr >= MAX_INPUT_CALLBACK) {
+	return(-1);
+    }
+    xmlInputCallbackTable[xmlInputCallbackNr].matchcallback = matchFunc;
+    xmlInputCallbackTable[xmlInputCallbackNr].opencallback = openFunc;
+    xmlInputCallbackTable[xmlInputCallbackNr].readcallback = readFunc;
+    xmlInputCallbackTable[xmlInputCallbackNr].closecallback = closeFunc;
+    return(xmlInputCallbackNr++);
+}
+
+/**
+ * xmlRegisterDefaultInputCallbacks:
+ *
+ * Registers the default compiled-in I/O handlers.
+ */
+void
+xmlRegisterDefaultInputCallbacks(void) {
+    xmlRegisterInputCallbacks(xmlIODefaultMatch, NULL, NULL, NULL);
+}
+
+/**
+ * xmlPopInputCallbacks:
+ *
+ * Clear the top input callback from the input stack. this includes the
+ * compiled-in I/O.
+ *
+ * Returns the number of input callback registered or -1 in case of error.
+ */
+int
+xmlPopInputCallbacks(void)
+{
+    if (xmlInputCallbackNr <= 0)
+        return(-1);
+
+    xmlInputCallbackNr--;
+
+    return(xmlInputCallbackNr);
+}
+
+/**
+ * xmlCleanupInputCallbacks:
+ *
+ * clears the entire input callback table. this includes the
+ * compiled-in I/O.
+ */
+void
+xmlCleanupInputCallbacks(void)
+{
+    xmlInputCallbackNr = 0;
+}
+
+#ifdef LIBXML_OUTPUT_ENABLED
+/**
+ * xmlRegisterOutputCallbacks:
+ * @matchFunc:  the xmlOutputMatchCallback
+ * @openFunc:  the xmlOutputOpenCallback
+ * @writeFunc:  the xmlOutputWriteCallback
+ * @closeFunc:  the xmlOutputCloseCallback
+ *
+ * Register a new set of I/O callback for handling output.
+ *
+ * Returns the registered handler number or -1 in case of error
+ */
+int
+xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
+	xmlOutputOpenCallback openFunc, xmlOutputWriteCallback writeFunc,
+	xmlOutputCloseCallback closeFunc) {
+    if (xmlOutputCallbackNr >= MAX_OUTPUT_CALLBACK) {
+	return(-1);
+    }
+    xmlOutputCallbackTable[xmlOutputCallbackNr].matchcallback = matchFunc;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].opencallback = openFunc;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].writecallback = writeFunc;
+    xmlOutputCallbackTable[xmlOutputCallbackNr].closecallback = closeFunc;
+    return(xmlOutputCallbackNr++);
+}
+
+/**
+ * xmlRegisterDefaultOutputCallbacks:
+ *
+ * Registers the default compiled-in I/O handlers.
+ */
+void
+xmlRegisterDefaultOutputCallbacks (void) {
+    xmlRegisterOutputCallbacks(xmlIODefaultMatch, NULL, NULL, NULL);
+}
+
+/**
+ * xmlPopOutputCallbacks:
+ *
+ * Remove the top output callbacks from the output stack. This includes the
+ * compiled-in I/O.
+ *
+ * Returns the number of output callback registered or -1 in case of error.
+ */
+int
+xmlPopOutputCallbacks(void)
+{
+    if (xmlOutputCallbackNr <= 0)
+        return(-1);
+
+    xmlOutputCallbackNr--;
+
+    return(xmlOutputCallbackNr);
+}
+
+/**
+ * xmlCleanupOutputCallbacks:
+ *
+ * clears the entire output callback table. this includes the
+ * compiled-in I/O callbacks.
+ */
+void
+xmlCleanupOutputCallbacks(void)
+{
+    xmlOutputCallbackNr = 0;
+}
+
+#ifdef LIBXML_HTTP_ENABLED
+/**
+ * xmlRegisterHTTPPostCallbacks:
+ *
+ * DEPRECATED: Has no effect.
+ */
+void
+xmlRegisterHTTPPostCallbacks(void) {
+    xmlRegisterDefaultOutputCallbacks();
+}
+#endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 

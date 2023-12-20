@@ -90,10 +90,8 @@ xmlIODefaultMatch(const char *filename);
 
 #define MAX_INPUT_CALLBACK 10
 
-static xmlInputCallback xmlInputCallbackTable[MAX_INPUT_CALLBACK] = {
-    { xmlIODefaultMatch, NULL, NULL, NULL }
-};
-static int xmlInputCallbackNr = 1;
+static xmlInputCallback xmlInputCallbackTable[MAX_INPUT_CALLBACK];
+static int xmlInputCallbackNr;
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /*
@@ -108,10 +106,8 @@ typedef struct _xmlOutputCallback {
 
 #define MAX_OUTPUT_CALLBACK 10
 
-static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK] = {
-    { xmlIODefaultMatch, NULL, NULL, NULL },
-};
-static int xmlOutputCallbackNr = 1;
+static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
+static int xmlOutputCallbackNr;
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************
@@ -4022,6 +4018,23 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
  *			Input/output callbacks				*
  *									*
  ************************************************************************/
+
+/**
+ * xmlInitIOCallbacks:
+ *
+ * Initialize callback tables.
+ */
+void
+xmlInitIOCallbacks(void)
+{
+    xmlInputCallbackNr = 1;
+    xmlInputCallbackTable[0].matchcallback = xmlIODefaultMatch;
+
+#ifdef LIBXML_OUTPUT_ENABLED
+    xmlOutputCallbackNr = 1;
+    xmlOutputCallbackTable[0].matchcallback = xmlIODefaultMatch;
+#endif
+}
 
 /**
  * xmlRegisterInputCallbacks:

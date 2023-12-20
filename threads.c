@@ -30,6 +30,7 @@
 #include "private/dict.h"
 #include "private/enc.h"
 #include "private/globals.h"
+#include "private/io.h"
 #include "private/memory.h"
 #include "private/threads.h"
 #include "private/xpath.h"
@@ -590,6 +591,7 @@ xmlInitParser(void) {
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
         xmlInitXPathInternal();
 #endif
+        xmlInitIOCallbacks();
 
         xmlParserInnerInitialized = 1;
     }

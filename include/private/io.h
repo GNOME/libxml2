@@ -5,6 +5,9 @@
 #include <libxml/tree.h>
 #include <libxml/xmlversion.h>
 
+XML_HIDDEN void
+xmlInitIOCallbacks(void);
+
 XML_HIDDEN int
 __xmlIOErr(int domain, int code, const char *extra);
 

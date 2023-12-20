@@ -8614,6 +8614,8 @@ xmlXPathNumberFunction(xmlXPathParserContextPtr ctxt, int nargs) {
 	    valuePush(ctxt, xmlXPathCacheNewFloat(ctxt, 0.0));
 	} else {
 	    xmlChar* content = xmlNodeGetContent(ctxt->context->node);
+            if (content == NULL)
+                xmlXPathPErrMemory(ctxt, NULL);
 
 	    res = xmlXPathStringEvalNumber(content);
 	    valuePush(ctxt, xmlXPathCacheNewFloat(ctxt, res));

@@ -110,8 +110,8 @@ if WITH_XPTR_SOURCES
 libxml2_la_SOURCES += xlink.c xpointer.c
 endif
 
-DEPS = $(top_builddir)/libxml2.la
-LDADDS = $(top_builddir)/libxml2.la
+DEPS = libxml2.la
+LDADDS = libxml2.la
 
 
 m4datadir = $(datadir)/aclocal

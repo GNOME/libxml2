@@ -429,10 +429,6 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 
     xmlCtxtUseOptions(pctxt, ctxt->parseFlags | XML_PARSE_DTDLOAD);
 
-    /* Don't read from stdin. */
-    if ((URL != NULL) && (strcmp(URL, "-") == 0))
-        URL = "./-";
-
     inputStream = xmlLoadExternalEntity(URL, NULL, pctxt);
     if (inputStream == NULL)
         goto error;
@@ -1662,11 +1658,6 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, const xmlChar *url,
     int len;
     int res;
     const xmlChar *content;
-
-
-    /* Don't read from stdin. */
-    if (xmlStrcmp(url, BAD_CAST "-") == 0)
-        url = BAD_CAST "./-";
 
     /*
      * Check the URL and remove any fragment identifier

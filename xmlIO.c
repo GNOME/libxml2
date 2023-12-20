@@ -58,10 +58,6 @@
 
 #define MINLEN 4000
 
-#ifndef STDIN_FILENO
-  #define STDIN_FILENO 0
-#endif
-
 #ifndef S_ISDIR
 #  ifdef _S_ISDIR
 #    define S_ISDIR(x) _S_ISDIR(x)
@@ -576,11 +572,6 @@ xmlFdOpen(const char *filename, void **out) {
     if (filename == NULL)
         return(XML_ERR_ARGUMENT);
 
-    if (!strcmp(filename, "-")) {
-        *out = (void *) (ptrdiff_t) STDIN_FILENO;
-	return(XML_ERR_OK);
-    }
-
     /*
      * TODO: This should be moved to uri.c. We also need support for
      * UNC paths on Windows.
@@ -730,7 +721,6 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
  * @out:  pointer to resulting context
  *
  * input from FILE *, supports compressed input
- * if @filename is "-" then the standard input is used
  *
  * Returns an I/O context or NULL in case of error
  */
@@ -743,11 +733,6 @@ xmlFileOpenReal(const char *filename, void **out) {
     *out = NULL;
     if (filename == NULL)
         return(XML_ERR_ARGUMENT);
-
-    if (!strcmp(filename, "-")) {
-        *out = stdin;
-	return(XML_ERR_OK);
-    }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
 #if defined (_WIN32)
@@ -1027,7 +1012,7 @@ xmlBufferWrite (void * context, const char * buffer, int len) {
  */
 static int
 xmlGzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
-    return(strcmp(filename, "-") != 0);
+    return(1);
 }
 
 /**
@@ -1043,16 +1028,6 @@ static void *
 xmlGzfileOpen_real (const char *filename) {
     const char *path = NULL;
     gzFile fd;
-
-    if (!strcmp(filename, "-")) {
-        int duped_fd = dup(fileno(stdin));
-        fd = gzdopen(duped_fd, "rb");
-        if (fd == Z_NULL && duped_fd >= 0) {
-            close(duped_fd);  /* gzdOpen() does not close on failure */
-        }
-
-	return((void *) fd);
-    }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17))
 #if defined (_WIN32)
@@ -1233,7 +1208,7 @@ xmlGzfileClose (void * context) {
  */
 static int
 xmlXzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
-    return(strcmp(filename, "-") != 0);
+    return(1);
 }
 
 /**
@@ -1249,11 +1224,6 @@ static void *
 xmlXzfileOpen_real (const char *filename) {
     const char *path = NULL;
     xzFile fd;
-
-    if (!strcmp(filename, "-")) {
-        fd = __libxml2_xzdopen(dup(fileno(stdin)), "rb");
-	return((void *) fd);
-    }
 
     if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
 	path = &filename[16];
@@ -2485,7 +2455,6 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
  * @enc:  the charset encoding if known
  *
  * Create a buffered parser input for the progressive parsing of a file
- * If filename is "-" then we use stdin as the input.
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
  * Do an encoding check if enc == XML_CHAR_ENCODING_NONE

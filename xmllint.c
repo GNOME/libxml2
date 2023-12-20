@@ -85,6 +85,10 @@
 #define XML_XML_DEFAULT_CATALOG "file://" SYSCONFDIR "/xml/catalog"
 #endif
 
+#ifndef STDIN_FILENO
+  #define STDIN_FILENO 0
+#endif
+
 typedef enum {
     XMLLINT_RETURN_OK = 0,	/* No error */
     XMLLINT_ERR_UNCLASS = 1,	/* Unclassified */
@@ -1604,8 +1608,12 @@ testSAX(const char *filename) {
 	xmlSchemaValidCtxtPtr vctxt;
         xmlParserInputBufferPtr buf;
 
-        buf = xmlParserInputBufferCreateFilename(filename,
-                XML_CHAR_ENCODING_NONE);
+        if (strcmp(filename, "-") == 0)
+            buf = xmlParserInputBufferCreateFd(STDIN_FILENO,
+                    XML_CHAR_ENCODING_NONE);
+        else
+            buf = xmlParserInputBufferCreateFilename(filename,
+                    XML_CHAR_ENCODING_NONE);
         if (buf == NULL)
             return;
 
@@ -1649,7 +1657,11 @@ testSAX(const char *filename) {
 	}
         if (maxAmpl > 0)
             xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-        xmlCtxtReadFile(ctxt, filename, NULL, options);
+
+        if (strcmp(filename, "-") == 0)
+            xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
+        else
+            xmlCtxtReadFile(ctxt, filename, NULL, options);
 
 	if (ctxt->myDoc != NULL) {
 	    fprintf(stderr, "SAX generated a doc !\n");
@@ -1783,6 +1795,9 @@ static void streamFile(char *filename) {
 	                            NULL, options);
     } else
 #endif
+    if (strcmp(filename, "-") == 0)
+	reader = xmlReaderForFd(STDIN_FILENO, "-", NULL, options);
+    else
 	reader = xmlReaderForFile(filename, NULL, options);
 #ifdef LIBXML_PATTERN_ENABLED
     if (patternc != NULL) {
@@ -2189,7 +2204,10 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
     }
 #endif
     else if (html) {
-	doc = htmlReadFile(filename, NULL, options);
+        if (strcmp(filename, "-") == 0)
+            doc = htmlReadFd(STDIN_FILENO, "-", NULL, options);
+        else
+            doc = htmlReadFile(filename, NULL, options);
     }
 #endif /* LIBXML_HTML_ENABLED */
     else {
@@ -2245,7 +2263,7 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_PUSH_ENABLED */
         if (testIO) {
 	    if ((filename[0] == '-') && (filename[1] == 0)) {
-	        doc = xmlReadFd(0, NULL, NULL, options);
+	        doc = xmlReadFd(STDIN_FILENO, "-", NULL, options);
 	    } else {
 	        FILE *f;
 
@@ -2280,7 +2298,10 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
             ctxt->vctxt.error = xmlHTMLValidityError;
             ctxt->vctxt.warning = xmlHTMLValidityWarning;
 
-            doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+            if (strcmp(filename, "-") == 0)
+                doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
+            else
+                doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
 
             if (rectxt == NULL)
                 xmlFreeParserCtxt(ctxt);
@@ -2339,7 +2360,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 
             if (maxAmpl > 0)
                 xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-            doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+
+            if (strcmp(filename, "-") == 0)
+                doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
+            else
+                doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
 
             if (ctxt->valid == 0)
                 progresult = XMLLINT_ERR_RDFILE;
@@ -2348,7 +2373,11 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_VALID_ENABLED */
 	} else {
 	    if (rectxt != NULL) {
-	        doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
+                if (strcmp(filename, "-") == 0)
+                    doc = xmlCtxtReadFd(rectxt, STDIN_FILENO, "-", NULL,
+                                        options);
+                else
+                    doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
 	    } else {
                 xmlParserCtxtPtr ctxt;
 
@@ -2360,7 +2389,13 @@ static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
                 }
                 if (maxAmpl > 0)
                     xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-                doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+
+                if (strcmp(filename, "-") == 0)
+                    doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
+                                        options);
+                else
+                    doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+
                 xmlFreeParserCtxt(ctxt);
             }
 	}

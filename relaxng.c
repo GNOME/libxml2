@@ -7501,6 +7501,8 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
  * @warn:  the warning callback
  * @ctx:  contextual data for the callbacks
  *
+ * DEPRECATED: Use xmlRelaxNGSetParserStructuredErrors.
+ *
  * Set the callback functions used to handle errors for a validation context
  */
 void
@@ -10741,6 +10743,8 @@ xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt)
  * @err:  the error function
  * @warn: the warning function
  * @ctx: the functions context
+ *
+ * DEPRECATED: Use xmlRelaxNGSetValidStructuredErrors.
  *
  * Set the error and warning callback information
  */

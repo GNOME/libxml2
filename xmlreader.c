@@ -4604,6 +4604,8 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
  * @f:	the callback function to call on error and warnings
  * @arg:    a user argument to pass to the callback function
  *
+ * DEPRECATED: Use xmlTextReaderSetStructuredErrorHandler.
+ *
  * Register a callback function that will be called on error and warnings.
  *
  * If @f is NULL, the default error and warning handlers are restored.

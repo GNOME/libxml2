@@ -94,7 +94,21 @@ xmlCheckVersion(int version) {
  * @handler:  error handler
  * @data:  data for error handler
  *
- * Set an error handler for a parser context.
+ * Register a callback function that will be called on errors and
+ * warnings. If handler is NULL, the error handler will be deactivated.
+ *
+ * This is the recommended way to collect errors from the parser and
+ * takes precedence over all other error reporting mechanisms.
+ * These are (in order of precedence):
+ *
+ * - per-context structured handler (xmlCtxtSetErrorHandler)
+ * - per-context structured "serror" SAX handler
+ * - global structured handler (xmlSetStructuredErrorFunc)
+ * - per-context generic "error" and "warning" SAX handlers
+ * - global generic handler (xmlSetGenericErrorFunc)
+ * - print to stderr
+ *
+ * Available since 2.13.0.
  */
 void
 xmlCtxtSetErrorHandler(xmlParserCtxtPtr ctxt, xmlStructuredErrorFunc handler,

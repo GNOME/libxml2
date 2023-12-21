@@ -2364,7 +2364,10 @@ xmlXIncludeGetLastError(xmlXIncludeCtxtPtr ctxt) {
  * @handler:  error handler
  * @data:  user data which will be passed to the handler
  *
- * Set the error handler.
+ * Register a callback function that will be called on errors and
+ * warnings. If handler is NULL, the error handler will be deactivated.
+ *
+ * Available since 2.13.0.
  */
 void
 xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,

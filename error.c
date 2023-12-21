@@ -224,14 +224,21 @@ initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)
  * @ctx:  the new error handling context
  * @handler:  the new handler function
  *
- * Function to reset the handler and the error context for out of
- * context error messages.
- * This simply means that @handler will be called for subsequent
- * error messages while not parsing nor validating. And @ctx will
- * be passed as first argument to @handler
- * One can simply force messages to be emitted to another FILE * than
- * stderr by setting @ctx to this file handle and @handler to NULL.
- * For multi-threaded applications, this must be set separately for each thread.
+ * DEPRECATED: See xmlSetStructuredErrorFunc for alternatives.
+ *
+ * Set the global "generic" handler and context for error messages.
+ * The generic error handler will only receive fragments of error
+ * messages which should be concatenated or printed to a stream.
+ *
+ * If handler is NULL, use the built-in default handler which prints
+ * to stderr.
+ *
+ * Since this is a global setting, it's a good idea to reset the
+ * error handler to its default value after collecting the errors
+ * you're interested in.
+ *
+ * For multi-threaded applications, this must be set separately for
+ * each thread.
  */
 void
 xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
@@ -247,12 +254,30 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  * @ctx:  the new error handling context
  * @handler:  the new handler function
  *
- * Function to reset the handler and the error context for out of
- * context structured error messages.
- * This simply means that @handler will be called for subsequent
- * error messages while not parsing nor validating. And @ctx will
- * be passed as first argument to @handler
- * For multi-threaded applications, this must be set separately for each thread.
+ * DEPRECATED: Use a per-context error handler.
+ *
+ * It's recommended to use the per-context error handlers instead:
+ *
+ * - xmlCtxtSetErrorHandler (since 2.13.0)
+ * - xmlTextReaderSetStructuredErrorHandler
+ * - xmlXPathSetErrorHandler (since 2.13.0)
+ * - xmlXIncludeSetErrorHandler (since 2.13.0)
+ * - xmlSchemaSetParserStructuredErrors
+ * - xmlSchemaSetValidStructuredErrors
+ * - xmlRelaxNGSetParserStructuredErrors
+ * - xmlRelaxNGSetValidStructuredErrors
+ *
+ * Set the global "structured" handler and context for error messages.
+ * If handler is NULL, the error handler is deactivated.
+ *
+ * The structured error handler takes precedence over "generic"
+ * handlers, even per-context generic handlers.
+ *
+ * Since this is a global setting, it's a good idea to deactivate the
+ * error handler after collecting the errors you're interested in.
+ *
+ * For multi-threaded applications, this must be set separately for
+ * each thread.
  */
 void
 xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {

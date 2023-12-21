@@ -21346,6 +21346,8 @@ exit_failure:
  * @warn:  the warning callback
  * @ctx:  contextual data for the callbacks
  *
+ * DEPRECATED: Use xmlSchemaSetParserStructuredErrors.
+ *
  * Set the callback functions used to handle errors for a validation context
  */
 void
@@ -27649,6 +27651,8 @@ xmlSchemaIsValid(xmlSchemaValidCtxtPtr ctxt)
  * @err:  the error function
  * @warn: the warning function
  * @ctx: the functions context
+ *
+ * DEPRECATED: Use xmlSchemaSetValidStructuredErrors.
  *
  * Set the error and warning callback information
  */

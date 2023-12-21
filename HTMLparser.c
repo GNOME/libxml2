@@ -6755,6 +6755,7 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
     input = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
         return (NULL);
+    input->closecallback = NULL;
     stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (stream == NULL) {
         xmlFreeParserInputBuffer(input);

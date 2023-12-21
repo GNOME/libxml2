@@ -3809,7 +3809,7 @@ rngTest(const char *filename,
         if (compareFileMem(err, testErrors, testErrorsSize)) {
             fprintf(stderr, "Error for %s on %s failed\n", instance,
                     filename);
-            res = 1;
+            ret = 1;
         }
     }
     globfree(&globbuf);

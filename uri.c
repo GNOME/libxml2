@@ -51,7 +51,6 @@ static void xmlCleanURI(xmlURIPtr uri);
  *            "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
  *            "u" | "v" | "w" | "x" | "y" | "z"
  */
-
 #define IS_LOWALPHA(x) (((x) >= 'a') && ((x) <= 'z'))
 
 /*
@@ -72,7 +71,6 @@ static void xmlCleanURI(xmlURIPtr uri);
 /*
  * alphanum = alpha | digit
  */
-
 #define IS_ALPHANUM(x) (IS_ALPHA(x) || IS_DIGIT(x))
 
 /*
@@ -86,16 +84,15 @@ static void xmlCleanURI(xmlURIPtr uri);
 /*
  * unwise = "{" | "}" | "|" | "\" | "^" | "`"
  */
-
 #define IS_UNWISE(p)                                                    \
       (((*(p) == '{')) || ((*(p) == '}')) || ((*(p) == '|')) ||         \
        ((*(p) == '\\')) || ((*(p) == '^')) || ((*(p) == '[')) ||        \
        ((*(p) == ']')) || ((*(p) == '`')))
+
 /*
  * reserved = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | "," |
  *            "[" | "]"
  */
-
 #define IS_RESERVED(x) (((x) == ';') || ((x) == '/') || ((x) == '?') || \
         ((x) == ':') || ((x) == '@') || ((x) == '&') || ((x) == '=') || \
         ((x) == '+') || ((x) == '$') || ((x) == ',') || ((x) == '[') || \
@@ -104,13 +101,11 @@ static void xmlCleanURI(xmlURIPtr uri);
 /*
  * unreserved = alphanum | mark
  */
-
 #define IS_UNRESERVED(x) (IS_ALPHANUM(x) || IS_MARK(x))
 
 /*
  * Skip to next pointer char, handle escaped sequences
  */
-
 #define NEXT(p) ((*p == '%')? p += 3 : p++)
 
 /*
@@ -122,7 +117,6 @@ static void xmlCleanURI(xmlURIPtr uri);
  *
  * path          = [ abs_path | opaque_part ]
  */
-
 #define STRNDUP(s, n) (char *) xmlStrndup((const xmlChar *)(s), (n))
 
 /************************************************************************
@@ -164,7 +158,7 @@ static void xmlCleanURI(xmlURIPtr uri);
 /*
  *    unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
  */
-#define ISA_UNRESERVED(p)						\
+#define ISA_STRICTLY_UNRESERVED(p)					\
       ((ISA_ALPHA(p)) || (ISA_DIGIT(p)) || ((*(p) == '-')) ||		\
        ((*(p) == '.')) || ((*(p) == '_')) || ((*(p) == '~')))
 
@@ -177,9 +171,46 @@ static void xmlCleanURI(xmlURIPtr uri);
 /*
  *    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
  */
-#define ISA_PCHAR(p)							\
-     (ISA_UNRESERVED(p) || ISA_PCT_ENCODED(p) || ISA_SUB_DELIM(p) ||	\
+#define ISA_PCHAR(u, p)							\
+     (ISA_UNRESERVED(u, p) || ISA_PCT_ENCODED(p) || ISA_SUB_DELIM(p) ||	\
       ((*(p) == ':')) || ((*(p) == '@')))
+
+/*
+ * From https://www.w3.org/TR/leiri/
+ *
+ * " " / "<" / ">" / '"' / "{" / "}" / "|"
+ * / "\" / "^" / "`" / %x0-1F / %x7F-D7FF
+ * / %xE000-FFFD / %x10000-10FFFF
+ */
+#define ISA_UCSCHAR(p) \
+    ((*(p) <= 0x20) || (*(p) >= 0x7F) || (*(p) == '<') || (*(p) == '>') || \
+     (*(p) == '"')  || (*(p) == '{')  || (*(p) == '}') || (*(p) == '|') || \
+     (*(p) == '\\') || (*(p) == '^')  || (*(p) == '`'))
+
+#define ISA_UNRESERVED(u, p) (xmlIsUnreserved(u, p))
+
+#define XML_URI_ALLOW_UNWISE    1
+#define XML_URI_NO_UNESCAPE     2
+#define XML_URI_ALLOW_UCSCHAR   4
+
+static int
+xmlIsUnreserved(xmlURIPtr uri, const char *cur) {
+    if (uri == NULL)
+        return(0);
+
+    if (ISA_STRICTLY_UNRESERVED(cur))
+        return(1);
+
+    if (uri->cleanup & XML_URI_ALLOW_UNWISE) {
+        if (IS_UNWISE(cur))
+            return(1);
+    } else if (uri->cleanup & XML_URI_ALLOW_UCSCHAR) {
+        if (ISA_UCSCHAR(cur))
+            return(1);
+    }
+
+    return(0);
+}
 
 /**
  * xmlParse3986Scheme:
@@ -234,14 +265,13 @@ xmlParse3986Fragment(xmlURIPtr uri, const char **str)
 
     cur = *str;
 
-    while ((ISA_PCHAR(cur)) || (*cur == '/') || (*cur == '?') ||
-           (*cur == '[') || (*cur == ']') ||
-           ((uri != NULL) && (uri->cleanup & 1) && (IS_UNWISE(cur))))
+    while ((ISA_PCHAR(uri, cur)) || (*cur == '/') || (*cur == '?') ||
+           (*cur == '[') || (*cur == ']'))
         NEXT(cur);
     if (uri != NULL) {
         if (uri->fragment != NULL)
             xmlFree(uri->fragment);
-	if (uri->cleanup & 2)
+	if (uri->cleanup & XML_URI_NO_UNESCAPE)
 	    uri->fragment = STRNDUP(*str, cur - *str);
 	else
 	    uri->fragment = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -270,13 +300,12 @@ xmlParse3986Query(xmlURIPtr uri, const char **str)
 
     cur = *str;
 
-    while ((ISA_PCHAR(cur)) || (*cur == '/') || (*cur == '?') ||
-           ((uri != NULL) && (uri->cleanup & 1) && (IS_UNWISE(cur))))
+    while ((ISA_PCHAR(uri, cur)) || (*cur == '/') || (*cur == '?'))
         NEXT(cur);
     if (uri != NULL) {
         if (uri->query != NULL)
             xmlFree(uri->query);
-	if (uri->cleanup & 2)
+	if (uri->cleanup & XML_URI_NO_UNESCAPE)
 	    uri->query = STRNDUP(*str, cur - *str);
 	else
 	    uri->query = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -353,13 +382,13 @@ xmlParse3986Userinfo(xmlURIPtr uri, const char **str)
     const char *cur;
 
     cur = *str;
-    while (ISA_UNRESERVED(cur) || ISA_PCT_ENCODED(cur) ||
+    while (ISA_UNRESERVED(uri, cur) || ISA_PCT_ENCODED(cur) ||
            ISA_SUB_DELIM(cur) || (*cur == ':'))
 	NEXT(cur);
     if (*cur == '@') {
 	if (uri != NULL) {
 	    if (uri->user != NULL) xmlFree(uri->user);
-	    if (uri->cleanup & 2)
+	    if (uri->cleanup & XML_URI_NO_UNESCAPE)
 		uri->user = STRNDUP(*str, cur - *str);
 	    else
 		uri->user = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -469,7 +498,8 @@ not_ipv4:
     /*
      * then this should be a hostname which can be empty
      */
-    while (ISA_UNRESERVED(cur) || ISA_PCT_ENCODED(cur) || ISA_SUB_DELIM(cur))
+    while (ISA_UNRESERVED(uri, cur) ||
+           ISA_PCT_ENCODED(cur) || ISA_SUB_DELIM(cur))
         NEXT(cur);
 found:
     if (uri != NULL) {
@@ -477,7 +507,7 @@ found:
 	uri->authority = NULL;
 	if (uri->server != NULL) xmlFree(uri->server);
 	if (cur != host) {
-	    if (uri->cleanup & 2)
+	    if (uri->cleanup & XML_URI_NO_UNESCAPE)
 		uri->server = STRNDUP(host, cur - host);
 	    else
 		uri->server = xmlURIUnescapeString(host, cur - host, NULL);
@@ -547,17 +577,17 @@ xmlParse3986Authority(xmlURIPtr uri, const char **str)
  * Returns 0 or the error code
  */
 static int
-xmlParse3986Segment(const char **str, char forbid, int empty)
+xmlParse3986Segment(xmlURIPtr uri, const char **str, char forbid, int empty)
 {
     const char *cur;
 
     cur = *str;
-    if (!ISA_PCHAR(cur)) {
+    if (!ISA_PCHAR(uri, cur)) {
         if (empty)
 	    return(0);
 	return(1);
     }
-    while (ISA_PCHAR(cur) && (*cur != forbid))
+    while (ISA_PCHAR(uri, cur) && (*cur != forbid))
         NEXT(cur);
     *str = cur;
     return (0);
@@ -585,13 +615,13 @@ xmlParse3986PathAbEmpty(xmlURIPtr uri, const char **str)
 
     while (*cur == '/') {
         cur++;
-	ret = xmlParse3986Segment(&cur, 0, 1);
+	ret = xmlParse3986Segment(uri, &cur, 0, 1);
 	if (ret != 0) return(ret);
     }
     if (uri != NULL) {
 	if (uri->path != NULL) xmlFree(uri->path);
         if (*str != cur) {
-            if (uri->cleanup & 2)
+            if (uri->cleanup & XML_URI_NO_UNESCAPE)
                 uri->path = STRNDUP(*str, cur - *str);
             else
                 uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -628,18 +658,18 @@ xmlParse3986PathAbsolute(xmlURIPtr uri, const char **str)
     if (*cur != '/')
         return(1);
     cur++;
-    ret = xmlParse3986Segment(&cur, 0, 0);
+    ret = xmlParse3986Segment(uri, &cur, 0, 0);
     if (ret == 0) {
 	while (*cur == '/') {
 	    cur++;
-	    ret = xmlParse3986Segment(&cur, 0, 1);
+	    ret = xmlParse3986Segment(uri, &cur, 0, 1);
 	    if (ret != 0) return(ret);
 	}
     }
     if (uri != NULL) {
 	if (uri->path != NULL) xmlFree(uri->path);
         if (cur != *str) {
-            if (uri->cleanup & 2)
+            if (uri->cleanup & XML_URI_NO_UNESCAPE)
                 uri->path = STRNDUP(*str, cur - *str);
             else
                 uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -673,17 +703,17 @@ xmlParse3986PathRootless(xmlURIPtr uri, const char **str)
 
     cur = *str;
 
-    ret = xmlParse3986Segment(&cur, 0, 0);
+    ret = xmlParse3986Segment(uri, &cur, 0, 0);
     if (ret != 0) return(ret);
     while (*cur == '/') {
         cur++;
-	ret = xmlParse3986Segment(&cur, 0, 1);
+	ret = xmlParse3986Segment(uri, &cur, 0, 1);
 	if (ret != 0) return(ret);
     }
     if (uri != NULL) {
 	if (uri->path != NULL) xmlFree(uri->path);
         if (cur != *str) {
-            if (uri->cleanup & 2)
+            if (uri->cleanup & XML_URI_NO_UNESCAPE)
                 uri->path = STRNDUP(*str, cur - *str);
             else
                 uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -717,17 +747,17 @@ xmlParse3986PathNoScheme(xmlURIPtr uri, const char **str)
 
     cur = *str;
 
-    ret = xmlParse3986Segment(&cur, ':', 0);
+    ret = xmlParse3986Segment(uri, &cur, ':', 0);
     if (ret != 0) return(ret);
     while (*cur == '/') {
         cur++;
-	ret = xmlParse3986Segment(&cur, 0, 1);
+	ret = xmlParse3986Segment(uri, &cur, 0, 1);
 	if (ret != 0) return(ret);
     }
     if (uri != NULL) {
 	if (uri->path != NULL) xmlFree(uri->path);
         if (cur != *str) {
-            if (uri->cleanup & 2)
+            if (uri->cleanup & XML_URI_NO_UNESCAPE)
                 uri->path = STRNDUP(*str, cur - *str);
             else
                 uri->path = xmlURIUnescapeString(*str, cur - *str, NULL);
@@ -780,7 +810,7 @@ xmlParse3986HierPart(xmlURIPtr uri, const char **str)
     } else if (*cur == '/') {
         ret = xmlParse3986PathAbsolute(uri, &cur);
 	if (ret != 0) return(ret);
-    } else if (ISA_PCHAR(cur)) {
+    } else if (ISA_PCHAR(uri, cur)) {
         ret = xmlParse3986PathRootless(uri, &cur);
 	if (ret != 0) return(ret);
     } else {
@@ -823,7 +853,7 @@ xmlParse3986RelativeRef(xmlURIPtr uri, const char *str) {
     } else if (*str == '/') {
 	ret = xmlParse3986PathAbsolute(uri, &str);
 	if (ret != 0) return(ret);
-    } else if (ISA_PCHAR(str)) {
+    } else if (ISA_PCHAR(uri, str)) {
         ret = xmlParse3986PathNoScheme(uri, &str);
 	if (ret != 0) return(ret);
     } else {
@@ -1023,7 +1053,7 @@ xmlParseURIRaw(const char *str, int raw) {
     uri = xmlCreateURI();
     if (uri != NULL) {
         if (raw) {
-	    uri->cleanup |= 2;
+	    uri->cleanup |= XML_URI_NO_UNESCAPE;
 	}
 	ret = xmlParseURIReference(uri, str);
         if (ret) {
@@ -1786,7 +1816,7 @@ xmlURIEscape(const xmlChar * str)
 	/*
 	 * Allow escaping errors in the unescaped form
 	 */
-        uri->cleanup = 1;
+        uri->cleanup = XML_URI_ALLOW_UNWISE;
         ret2 = xmlParseURIReference(uri, (const char *)str);
         if (ret2) {
             xmlFreeURI(uri);

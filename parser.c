@@ -10816,6 +10816,39 @@ xmlParseMisc(xmlParserCtxtPtr ctxt) {
     }
 }
 
+static void
+xmlFinishDocument(xmlParserCtxtPtr ctxt) {
+    xmlDocPtr doc;
+
+    /*
+     * SAX: end of the document processing.
+     */
+    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
+        ctxt->sax->endDocument(ctxt->userData);
+
+    doc = ctxt->myDoc;
+    if (doc != NULL) {
+        if (ctxt->wellFormed) {
+            doc->properties |= XML_DOC_WELLFORMED;
+            if (ctxt->valid)
+                doc->properties |= XML_DOC_DTDVALID;
+            if (ctxt->nsWellFormed)
+                doc->properties |= XML_DOC_NSVALID;
+        }
+
+        if (ctxt->options & XML_PARSE_OLD10)
+            doc->properties |= XML_DOC_OLD10;
+
+        /*
+         * Remove locally kept entity definitions if the tree was not built
+         */
+	if (xmlStrEqual(doc->version, SAX_COMPAT_MODE)) {
+            xmlFreeDoc(doc);
+            ctxt->myDoc = NULL;
+        }
+    }
+}
+
 /**
  * xmlParseDocument:
  * @ctxt:  an XML parser context
@@ -10949,37 +10982,16 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
             xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,
                            "Truncated multi-byte sequence at EOF\n");
         }
-	ctxt->instate = XML_PARSER_EOF;
     }
 
-    /*
-     * SAX: end of the document processing.
-     */
-    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-        ctxt->sax->endDocument(ctxt->userData);
+    ctxt->instate = XML_PARSER_EOF;
+    xmlFinishDocument(ctxt);
 
-    /*
-     * Remove locally kept entity definitions if the tree was not built
-     */
-    if ((ctxt->myDoc != NULL) &&
-	(xmlStrEqual(ctxt->myDoc->version, SAX_COMPAT_MODE))) {
-	xmlFreeDoc(ctxt->myDoc);
-	ctxt->myDoc = NULL;
-    }
-
-    if ((ctxt->wellFormed) && (ctxt->myDoc != NULL)) {
-        ctxt->myDoc->properties |= XML_DOC_WELLFORMED;
-	if (ctxt->valid)
-	    ctxt->myDoc->properties |= XML_DOC_DTDVALID;
-	if (ctxt->nsWellFormed)
-	    ctxt->myDoc->properties |= XML_DOC_NSVALID;
-	if (ctxt->options & XML_PARSE_OLD10)
-	    ctxt->myDoc->properties |= XML_DOC_OLD10;
-    }
     if (! ctxt->wellFormed) {
 	ctxt->valid = 0;
 	return(-1);
     }
+
     return(0);
 }
 
@@ -11512,9 +11524,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 	        if (cur != '<') {
 		    xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
                                    "Start tag expected, '<' not found");
-		    xmlHaltParser(ctxt);
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-			ctxt->sax->endDocument(ctxt->userData);
+                    ctxt->instate = XML_PARSER_EOF;
+                    xmlFinishDocument(ctxt);
 		    goto done;
 		}
 		if ((!terminate) && (!xmlParseLookupGt(ctxt)))
@@ -11535,9 +11546,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 #endif /* LIBXML_SAX1_ENABLED */
 		if (name == NULL) {
 		    spacePop(ctxt);
-		    xmlHaltParser(ctxt);
-		    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-			ctxt->sax->endDocument(ctxt->userData);
+                    ctxt->instate = XML_PARSER_EOF;
+                    xmlFinishDocument(ctxt);
 		    goto done;
 		}
 #ifdef LIBXML_VALID_ENABLED
@@ -11847,8 +11857,7 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                     if (ctxt->errNo == XML_ERR_OK)
                         xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
 		    ctxt->instate = XML_PARSER_EOF;
-                    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-                        ctxt->sax->endDocument(ctxt->userData);
+                    xmlFinishDocument(ctxt);
                 } else {
 		    ctxt->instate = XML_PARSER_START_TAG;
 		}
@@ -11982,10 +11991,9 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
                            "Truncated multi-byte sequence at EOF\n");
         }
 	if (ctxt->instate != XML_PARSER_EOF) {
-	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-		ctxt->sax->endDocument(ctxt->userData);
+            ctxt->instate = XML_PARSER_EOF;
+            xmlFinishDocument(ctxt);
 	}
-	ctxt->instate = XML_PARSER_EOF;
     }
     if (ctxt->wellFormed == 0)
 	return((xmlParserErrors) ctxt->errNo);

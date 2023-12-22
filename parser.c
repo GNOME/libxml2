@@ -12042,16 +12042,6 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
     ctxt->dictNames = 1;
-    if (filename == NULL) {
-	ctxt->directory = NULL;
-    } else {
-        ctxt->directory = xmlParserGetDirectory(filename);
-        if (ctxt->directory == NULL) {
-            xmlFreeParserCtxt(ctxt);
-            xmlFreeParserInputBuffer(buf);
-            return(NULL);
-        }
-    }
 
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {
@@ -13452,14 +13442,6 @@ xmlCreateEntityParserCtxtInternal(xmlSAXHandlerPtr sax, void *userData,
 
     inputPush(ctxt, inputStream);
 
-    if (ctxt->directory == NULL) {
-        ctxt->directory = xmlParserGetDirectory((char *)URL);
-        if (ctxt->directory == NULL) {
-            xmlErrMemory(ctxt);
-            goto error;
-        }
-    }
-
     xmlFree(uri);
     return(ctxt);
 
@@ -13522,7 +13504,6 @@ xmlCreateURLParserCtxt(const char *filename, int options)
 {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr inputStream;
-    char *directory = NULL;
 
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL)
@@ -13539,10 +13520,6 @@ xmlCreateURLParserCtxt(const char *filename, int options)
     }
 
     inputPush(ctxt, inputStream);
-    if ((ctxt->directory == NULL) && (directory == NULL))
-        directory = xmlParserGetDirectory(filename);
-    if ((ctxt->directory == NULL) && (directory != NULL))
-        ctxt->directory = directory;
 
     return(ctxt);
 }
@@ -13606,9 +13583,6 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
     if (data!=NULL) {
 	ctxt->_private = data;
     }
-
-    if (ctxt->directory == NULL)
-        ctxt->directory = xmlParserGetDirectory(filename);
 
     ctxt->recovery = recovery;
 
@@ -14227,8 +14201,6 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->version = NULL;
     DICT_FREE(ctxt->encoding);
     ctxt->encoding = NULL;
-    DICT_FREE(ctxt->directory);
-    ctxt->directory = NULL;
     DICT_FREE(ctxt->extSubURI);
     ctxt->extSubURI = NULL;
     DICT_FREE(ctxt->extSubSystem);
@@ -14316,12 +14288,6 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     }
 
     xmlCtxtReset(ctxt);
-
-    if (filename == NULL) {
-        ctxt->directory = NULL;
-    } else {
-        ctxt->directory = xmlParserGetDirectory(filename);
-    }
 
     inputStream = xmlNewInputStream(ctxt);
     if (inputStream == NULL) {

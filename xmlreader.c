@@ -2102,7 +2102,6 @@ xmlTextReaderPtr
 xmlNewTextReaderFilename(const char *URI) {
     xmlParserInputBufferPtr input;
     xmlTextReaderPtr ret;
-    char *directory = NULL;
 
     input = xmlParserInputBufferCreateFilename(URI, XML_CHAR_ENCODING_NONE);
     if (input == NULL)
@@ -2113,12 +2112,6 @@ xmlNewTextReaderFilename(const char *URI) {
 	return(NULL);
     }
     ret->allocs |= XML_TEXTREADER_INPUT;
-    if (ret->ctxt->directory == NULL)
-        directory = xmlParserGetDirectory(URI);
-    if ((ret->ctxt->directory == NULL) && (directory != NULL))
-        ret->ctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
-    if (directory != NULL)
-	xmlFree(directory);
     return(ret);
 }
 

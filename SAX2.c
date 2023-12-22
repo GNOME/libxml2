@@ -412,8 +412,6 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId
     if (ctx == NULL) return(NULL);
     if (ctxt->input != NULL)
 	base = ctxt->input->filename;
-    if (base == NULL)
-	base = ctxt->directory;
 
     if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0)
         xmlSAX2ErrMemory(ctxt);
@@ -556,8 +554,6 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 
         if (ctxt->input != NULL)
             base = ctxt->input->filename;
-        if (base == NULL)
-            base = ctxt->directory;
 
         if (base != NULL) {
             if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0)

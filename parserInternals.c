@@ -1420,7 +1420,6 @@ xmlFreeInputStream(xmlParserInputPtr input) {
     if (input == NULL) return;
 
     if (input->filename != NULL) xmlFree((char *) input->filename);
-    if (input->directory != NULL) xmlFree((char *) input->directory);
     if (input->version != NULL) xmlFree((char *) input->version);
     if ((input->free != NULL) && (input->base != NULL))
         input->free((xmlChar *) input->base);
@@ -1736,10 +1735,6 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
             if (redir != NULL) {
                 if (ret->filename != NULL)
                     xmlFree((xmlChar *) ret->filename);
-                if (ret->directory != NULL) {
-                    xmlFree((xmlChar *) ret->directory);
-                    ret->directory = NULL;
-                }
                 ret->filename =
                     (char *) xmlStrdup((const xmlChar *) redir);
             }
@@ -1762,7 +1757,6 @@ xmlParserInputPtr
 xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr inputStream;
-    char *directory = NULL;
     xmlChar *URI = NULL;
     int code;
 
@@ -1791,15 +1785,12 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 	URI = xmlStrdup((xmlChar *) filename);
     else
 	URI = xmlStrdup((xmlChar *) inputStream->filename);
-    directory = xmlParserGetDirectory((const char *) URI);
     if (inputStream->filename != NULL) xmlFree((char *)inputStream->filename);
     inputStream->filename = (char *) xmlCanonicPath((const xmlChar *) URI);
     if (URI != NULL) xmlFree((char *) URI);
-    inputStream->directory = directory;
 
     xmlBufResetInput(inputStream->buf->buffer, inputStream);
-    if ((ctxt->directory == NULL) && (directory != NULL))
-        ctxt->directory = (char *) xmlStrdup((const xmlChar *) directory);
+
     return(inputStream);
 }
 
@@ -2035,7 +2026,6 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->external = 0;
     ctxt->instate = XML_PARSER_START;
     ctxt->token = 0;
-    ctxt->directory = NULL;
 
     /* Allocate the Node stack */
     if (ctxt->nodeTab == NULL) {
@@ -2179,7 +2169,6 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
     if (ctxt->sax != NULL)
 #endif /* LIBXML_SAX1_ENABLED */
         xmlFree(ctxt->sax);
-    if (ctxt->directory != NULL) xmlFree((char *) ctxt->directory);
     if (ctxt->vctxt.nodeTab != NULL) xmlFree(ctxt->vctxt.nodeTab);
     if (ctxt->atts != NULL) xmlFree((xmlChar * *)ctxt->atts);
     if (ctxt->dict != NULL) xmlDictFree(ctxt->dict);

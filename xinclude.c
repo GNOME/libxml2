@@ -339,14 +339,6 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 
     inputPush(pctxt, inputStream);
 
-    if (pctxt->directory == NULL) {
-        pctxt->directory = xmlParserGetDirectory(URL);
-        if (pctxt->directory == NULL) {
-            xmlXIncludeErrMemory(ctxt);
-            goto error;
-        }
-    }
-
     pctxt->loadsubset |= XML_DETECT_IDS;
 
     xmlParseDocument(pctxt);

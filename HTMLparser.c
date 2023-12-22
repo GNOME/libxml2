@@ -2265,7 +2265,6 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
     }
     memset(input, 0, sizeof(htmlParserInput));
     input->filename = NULL;
-    input->directory = NULL;
     input->base = NULL;
     input->cur = NULL;
     input->buf = NULL;
@@ -5861,12 +5860,6 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
-    if (filename == NULL) {
-	ctxt->directory = NULL;
-    } else {
-        ctxt->directory = xmlParserGetDirectory(filename);
-    }
-
     inputStream = htmlNewInputStream(ctxt);
     if (inputStream == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -6272,8 +6265,6 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->version = NULL;
     DICT_FREE(ctxt->encoding);
     ctxt->encoding = NULL;
-    DICT_FREE(ctxt->directory);
-    ctxt->directory = NULL;
     DICT_FREE(ctxt->extSubURI);
     ctxt->extSubURI = NULL;
     DICT_FREE(ctxt->extSubSystem);

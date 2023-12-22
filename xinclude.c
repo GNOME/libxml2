@@ -150,13 +150,25 @@ static void LIBXML_ATTR_FORMAT(4,0)
 xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
                const char *msg, const xmlChar *extra)
 {
+    xmlStructuredErrorFunc schannel = NULL;
+    xmlGenericErrorFunc channel = NULL;
+    void *data = NULL;
     int res;
 
     if (ctxt->fatalErr != 0)
         return;
     ctxt->nbErrors++;
-    res = __xmlRaiseError(ctxt->errorHandler, NULL, ctxt->errorCtxt,
-                          ctxt, node, XML_FROM_XINCLUDE, error, XML_ERR_ERROR,
+
+    schannel = ctxt->errorHandler;
+    data = ctxt->errorCtxt;
+
+    if (schannel == NULL) {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
+    }
+
+    res = __xmlRaiseError(schannel, channel, data, ctxt, node,
+                          XML_FROM_XINCLUDE, error, XML_ERR_ERROR,
                           NULL, 0, (const char *) extra, NULL, NULL, 0, 0,
 		          msg, (const char *) extra);
     if (res < 0) {

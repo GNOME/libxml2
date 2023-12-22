@@ -118,7 +118,7 @@ testReaderXIncludeError(void) {
         ;
 
     if (errorCtxt.message == NULL ||
-        strstr(errorCtxt.message, "failed") == NULL) {
+        strstr(errorCtxt.message, "href or xpointer") == NULL) {
         fprintf(stderr, "xmlTextReaderSetErrorHandler failed\n");
         err = 1;
     }
@@ -134,9 +134,9 @@ testReaderXIncludeError(void) {
     while (xmlTextReaderRead(reader) > 0)
         ;
 
-    if (errorCtxt.code != XML_XINCLUDE_HREF_URI ||
+    if (errorCtxt.code != XML_XINCLUDE_NO_HREF ||
         errorCtxt.message == NULL ||
-        strstr(errorCtxt.message, "failed") == NULL) {
+        strstr(errorCtxt.message, "href or xpointer") == NULL) {
         fprintf(stderr, "xmlTextReaderSetStructuredErrorHandler failed\n");
         err = 1;
     }

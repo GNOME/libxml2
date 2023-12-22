@@ -1070,6 +1070,16 @@ entityDeclDebug(void *ctx, const xmlChar *name, int type,
     xmlEntityPtr ent;
     const xmlChar *nullstr = BAD_CAST "(null)";
 
+    ent = xmlNewEntity(NULL, name, type, publicId, systemId, content);
+    if (systemId != NULL)
+        ent->URI = xmlBuildURI(systemId, (const xmlChar *) ctxt->filename);
+
+    if ((type == XML_INTERNAL_PARAMETER_ENTITY) ||
+        (type == XML_EXTERNAL_PARAMETER_ENTITY))
+        xmlHashAddEntry(ctxt->parameterEntities, name, ent);
+    else
+        xmlHashAddEntry(ctxt->generalEntities, name, ent);
+
     /* not all libraries handle printing null pointers nicely */
     if (publicId == NULL)
         publicId = nullstr;
@@ -1082,16 +1092,6 @@ entityDeclDebug(void *ctx, const xmlChar *name, int type,
 	return;
     fprintf(SAXdebug, "SAX.entityDecl(%s, %d, %s, %s, %s)\n",
             name, type, publicId, systemId, content);
-
-    ent = xmlNewEntity(NULL, name, type, publicId, systemId, content);
-    if (systemId != NULL)
-        ent->URI = xmlBuildURI(systemId, (const xmlChar *) ctxt->filename);
-
-    if ((type == XML_INTERNAL_PARAMETER_ENTITY) ||
-        (type == XML_EXTERNAL_PARAMETER_ENTITY))
-        xmlHashAddEntry(ctxt->parameterEntities, name, ent);
-    else
-        xmlHashAddEntry(ctxt->generalEntities, name, ent);
 }
 
 /**

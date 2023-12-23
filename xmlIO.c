@@ -56,6 +56,10 @@
 
 #define MINLEN 4000
 
+#ifndef STDOUT_FILENO
+  #define STDOUT_FILENO 1
+#endif
+
 #ifndef S_ISDIR
 #  ifdef _S_ISDIR
 #    define S_ISDIR(x) _S_ISDIR(x)
@@ -365,99 +369,20 @@ __xmlIOWin32UTF8ToWChar(const char *u8String)
     return wString;
 }
 
-/**
- *  xmlWrapOpenUtf8:
- * @path:  the path in utf-8 encoding
- * @mode:  type of access (0 - read, 1 - write)
- *
- * function opens the file specified by @path
- *
- */
-static FILE*
-xmlWrapOpenUtf8(const char *path,int mode)
-{
-    FILE *fd = NULL;
-    wchar_t *wPath;
-
-    wPath = __xmlIOWin32UTF8ToWChar(path);
-    if(wPath)
-    {
-       fd = _wfopen(wPath, mode ? L"wb" : L"rb");
-       xmlFree(wPath);
-    }
-    /* maybe path in native encoding */
-    if(fd == NULL)
-       fd = fopen(path, mode ? "wb" : "rb");
-
-    return fd;
-}
-
-#ifdef LIBXML_ZLIB_ENABLED
-static gzFile
-xmlWrapGzOpenUtf8(const char *path, const char *mode)
-{
-    gzFile fd;
-    wchar_t *wPath;
-
-    fd = gzopen (path, mode);
-    if (fd)
-        return fd;
-
-    wPath = __xmlIOWin32UTF8ToWChar(path);
-    if(wPath)
-    {
-	int d, m = (strstr(mode, "r") ? O_RDONLY : O_RDWR);
-#ifdef _O_BINARY
-        m |= (strstr(mode, "b") ? _O_BINARY : 0);
-#endif
-	d = _wopen(wPath, m);
-	if (d >= 0)
-	    fd = gzdopen(d, mode);
-        xmlFree(wPath);
-    }
-
-    return fd;
-}
-#endif
-
-/**
- *  xmlWrapStatUtf8:
- * @path:  the path in utf-8 encoding
- * @info:  structure that stores results
- *
- * function obtains information about the file or directory
- *
- */
-static int
-xmlWrapStatUtf8(const char *path, struct _stat *info) {
-    int retval = -1;
-    wchar_t *wPath;
-
-    wPath = __xmlIOWin32UTF8ToWChar(path);
-    if (wPath) {
-       retval = _wstat(wPath, info);
-       xmlFree(wPath);
-    }
-    /* maybe path in native encoding */
-    if(retval < 0)
-       retval = _stat(path, info);
-    return retval;
-}
-
 #endif
 
 /**
  * xmlNormalizeWindowsPath:
  * @path: the input file path
  *
- * DEPRECATED: See xmlURIFromPath in uri.c for a better solution.
+ * DEPRECATED: This never really worked.
  *
- * Returns a canonicalized version of the path
+ * Returns a copy of path.
  */
 xmlChar *
 xmlNormalizeWindowsPath(const xmlChar *path)
 {
-    return xmlCanonicPath(path);
+    return xmlStrdup(path);
 }
 
 /**
@@ -472,9 +397,8 @@ xmlNormalizeWindowsPath(const xmlChar *path)
  * if stat succeeds and the file is a directory,
  * returns 2.  otherwise returns 1.
  */
-
 int
-xmlCheckFilename (const char *path)
+xmlCheckFilename(const char *path)
 {
 #ifdef HAVE_STAT
 #if defined(_WIN32)
@@ -482,31 +406,44 @@ xmlCheckFilename (const char *path)
 #else
     struct stat stat_buffer;
 #endif
+    int res;
 #endif
+
     if (path == NULL)
 	return(0);
 
 #ifdef HAVE_STAT
 #if defined(_WIN32)
-    /*
-     * On Windows stat and wstat do not work with long pathname,
-     * which start with '\\?\'
-     */
-    if ((path[0] == '\\') && (path[1] == '\\') && (path[2] == '?') &&
-	(path[3] == '\\') )
-	    return 1;
+    {
+        wchar_t *wpath;
 
-    if (xmlWrapStatUtf8(path, &stat_buffer) == -1)
-        return 0;
+        /*
+         * On Windows stat and wstat do not work with long pathname,
+         * which start with '\\?\'
+         */
+        if ((path[0] == '\\') && (path[1] == '\\') && (path[2] == '?') &&
+            (path[3] == '\\') )
+                return 1;
+
+        wpath = __xmlIOWin32UTF8ToWChar(path);
+        if (wpath == NULL)
+            return(0);
+        res = _wstat(wpath, &stat_buffer);
+        xmlFree(wpath);
+    }
 #else
-    if (stat(path, &stat_buffer) == -1)
-        return 0;
+    res = stat(path, &stat_buffer);
 #endif
+
+    if (res < 0)
+        return 0;
+
 #ifdef S_ISDIR
     if (S_ISDIR(stat_buffer.st_mode))
         return 2;
 #endif
 #endif /* HAVE_STAT */
+
     return 1;
 }
 
@@ -549,12 +486,13 @@ xmlConvertUriToPath(const char *uri, char **out) {
  * Returns an xmlParserErrors code
  */
 static int
-xmlFdOpen(const char *filename, void **out) {
+xmlFdOpen(const char *filename, int write, int *out) {
     char *fromUri = NULL;
+    int flags;
     int fd;
     int ret;
 
-    *out = (void *) 0;
+    *out = -1;
     if (filename == NULL)
         return(XML_ERR_ARGUMENT);
 
@@ -573,11 +511,19 @@ xmlFdOpen(const char *filename, void **out) {
             xmlFree(fromUri);
             return(XML_ERR_NO_MEMORY);
         }
-	fd = _wopen(wpath, _O_RDONLY | _O_BINARY);
+        if (write)
+            flags = _O_WRONLY | _O_CREAT | _O_TRUNC;
+        else
+            flags = _O_RDONLY;
+	fd = _wopen(wpath, flags | _O_BINARY, 0777);
         xmlFree(wpath);
     }
 #else
-    fd = open(filename, O_RDONLY);
+    if (write)
+        flags = O_WRONLY | O_CREAT | O_TRUNC;
+    else
+        flags = O_RDONLY;
+    fd = open(filename, flags, 0777);
 #endif /* WIN32 */
 
     if (fd < 0) {
@@ -595,7 +541,7 @@ xmlFdOpen(const char *filename, void **out) {
             ret = xmlIOErr(0, filename);
         }
     } else {
-        *out = (void *) (ptrdiff_t) fd;
+        *out = fd;
         ret = XML_ERR_OK;
     }
 
@@ -676,17 +622,17 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlFileOpenReal:
+ * xmlFileOpenSafe:
  * @filename:  the URI for matching
  * @out:  pointer to resulting context
  *
- * input from FILE *, supports compressed input
+ * input from FILE *
  *
  * Returns an I/O context or NULL in case of error
  */
 static int
-xmlFileOpenReal(const char *filename, void **out) {
-    const char *path = filename;
+xmlFileOpenSafe(const char *filename, int write, void **out) {
+    char *fromUri = NULL;
     FILE *fd;
     int ret = XML_ERR_OK;
 
@@ -694,31 +640,26 @@ xmlFileOpenReal(const char *filename, void **out) {
     if (filename == NULL)
         return(XML_ERR_ARGUMENT);
 
-    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file://localhost/", 17)) {
-#if defined (_WIN32)
-	path = &filename[17];
-#else
-	path = &filename[16];
-#endif
-    } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:///", 8)) {
-#if defined (_WIN32)
-	path = &filename[8];
-#else
-	path = &filename[7];
-#endif
-    } else if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "file:/", 6)) {
-        /* lots of generators seems to lazy to read RFC 1738 */
-#if defined (_WIN32)
-	path = &filename[6];
-#else
-	path = &filename[5];
-#endif
-    }
+    if (xmlConvertUriToPath(filename, &fromUri) < 0)
+        return(XML_ERR_NO_MEMORY);
+
+    if (fromUri != NULL)
+        filename = fromUri;
 
 #if defined(_WIN32)
-    fd = xmlWrapOpenUtf8(path, 0);
+    {
+        wchar_t *wpath;
+
+        wpath = __xmlIOWin32UTF8ToWChar(filename);
+        if (wpath == NULL) {
+            xmlFree(fromUri);
+            return(XML_ERR_NO_MEMORY);
+        }
+	fd = _wfopen(wpath, write ? L"wb" : L"rb");
+        xmlFree(wpath);
+    }
 #else
-    fd = fopen(path, "rb");
+    fd = fopen(filename, write ? "wb" : "rb");
 #endif /* WIN32 */
 
     if (fd == NULL) {
@@ -733,42 +674,13 @@ xmlFileOpenReal(const char *filename, void **out) {
              * This error won't be forwarded to the parser context
              * which will report it a second time.
              */
-            ret = xmlIOErr(0, path);
+            ret = xmlIOErr(0, filename);
         }
     }
 
     *out = fd;
+    xmlFree(fromUri);
     return(ret);
-}
-
-/**
- * xmlFileOpenSafe:
- * @filename:  the URI for matching
- * @out:  pointer to resulting context
- *
- * Wrapper around xmlFileOpen_real that try it with an unescaped
- * version of @filename, if this fails fallback to @filename
- *
- * Returns an xmlParserErrors code.
- */
-static int
-xmlFileOpenSafe(const char *filename, void **out) {
-    char *unescaped;
-    int retval;
-
-    retval = xmlFileOpenReal(filename, out);
-    if (retval == XML_ERR_OK)
-        return(retval);
-
-    if (retval == XML_IO_ENOENT) {
-        unescaped = xmlURIUnescapeString(filename, 0, NULL);
-        if (unescaped == NULL)
-            return(XML_ERR_NO_MEMORY);
-        retval = xmlFileOpenReal(unescaped, out);
-        xmlFree(unescaped);
-    }
-
-    return retval;
 }
 
 /**
@@ -783,51 +695,9 @@ void *
 xmlFileOpen(const char *filename) {
     void *context;
 
-    xmlFileOpenSafe(filename, &context);
+    xmlFileOpenSafe(filename, 0, &context);
     return(context);
 }
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * xmlFileOpenW:
- * @filename:  the URI for matching
- *
- * output to from FILE *,
- * if @filename is "-" then the standard output is used
- *
- * Returns an I/O context or NULL in case of error
- */
-static void *
-xmlFileOpenW (const char *filename) {
-    char *fromUri = NULL;
-    FILE *fd;
-
-    if (!strcmp(filename, "-")) {
-	fd = stdout;
-	return((void *) fd);
-    }
-
-    if (xmlConvertUriToPath(filename, &fromUri) < 0)
-        return(NULL);
-
-    if (fromUri != NULL)
-        filename = fromUri;
-
-#if defined(_WIN32)
-    fd = xmlWrapOpenUtf8(filename, 1);
-#elif(__MVS__)
-    fd = fopen(filename, "w");
-#else
-    fd = fopen(filename, "wb");
-#endif /* WIN32 */
-
-    if (fd == NULL)
-        xmlIOErr(0, filename);
-
-    xmlFree(fromUri);
-    return((void *) fd);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlFileRead:
@@ -953,119 +823,6 @@ xmlBufferWrite (void * context, const char * buffer, int len) {
  *		I/O for compressed file accesses			*
  *									*
  ************************************************************************/
-/**
- * xmlGzfileMatch:
- * @filename:  the URI for matching
- *
- * input from compressed file test
- *
- * Returns 1 if matches, 0 otherwise
- */
-static int
-xmlGzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
-    return(1);
-}
-
-/**
- * xmlGzfileOpen_real:
- * @filename:  the URI for matching
- *
- * input from compressed file open
- * if @filename is " " then the standard input is used
- *
- * Returns an I/O context or NULL in case of error
- */
-static void *
-xmlGzfileOpen_real (const char *filename) {
-    char *fromUri = NULL;
-    gzFile fd;
-
-    if (xmlConvertUriToPath(filename, &fromUri) < 0)
-        return(NULL);
-
-    if (fromUri != NULL)
-        filename = fromUri;
-
-    if (!xmlCheckFilename(filename))
-        return(NULL);
-
-#if defined(_WIN32)
-    fd = xmlWrapGzOpenUtf8(filename, "rb");
-#else
-    fd = gzopen(filename, "rb");
-#endif
-
-    xmlFree(fromUri);
-    return((void *) fd);
-}
-
-/**
- * xmlGzfileOpen:
- * @filename:  the URI for matching
- *
- * Wrapper around xmlGzfileOpen_real if the open fails, it will
- * try to unescape @filename
- */
-static void *
-xmlGzfileOpen (const char *filename) {
-    char *unescaped;
-    void *retval;
-
-    retval = xmlGzfileOpen_real(filename);
-    if (retval == NULL) {
-	unescaped = xmlURIUnescapeString(filename, 0, NULL);
-	if (unescaped != NULL) {
-	    retval = xmlGzfileOpen_real(unescaped);
-	}
-	xmlFree(unescaped);
-    }
-    return retval;
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * xmlGzfileOpenW:
- * @filename:  the URI for matching
- * @compression:  the compression factor (0 - 9 included)
- *
- * input from compressed file open
- * if @filename is " " then the standard input is used
- *
- * Returns an I/O context or NULL in case of error
- */
-static void *
-xmlGzfileOpenW (const char *filename, int compression) {
-    char *fromUri = NULL;
-    char mode[15];
-    gzFile fd;
-
-    snprintf(mode, sizeof(mode), "wb%d", compression);
-    if (!strcmp(filename, "-")) {
-        int duped_fd = dup(fileno(stdout));
-        fd = gzdopen(duped_fd, "rb");
-        if (fd == Z_NULL && duped_fd >= 0) {
-            close(duped_fd);  /* gzdOpen() does not close on failure */
-        }
-
-	return((void *) fd);
-    }
-
-    if (xmlConvertUriToPath(filename, &fromUri) < 0)
-        return(NULL);
-
-    if (fromUri != NULL)
-        filename = fromUri;
-
-#if defined(_WIN32)
-    fd = xmlWrapGzOpenUtf8(filename, mode);
-#else
-    fd = gzopen(filename, mode);
-#endif
-
-    xmlFree(fromUri);
-    return((void *) fd);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
  * xmlGzfileRead:
@@ -1123,82 +880,15 @@ xmlGzfileClose (void * context) {
 }
 #endif /* LIBXML_ZLIB_ENABLED */
 
-#ifdef LIBXML_LZMA_ENABLED
 /************************************************************************
  *									*
  *		I/O for compressed file accesses			*
  *									*
  ************************************************************************/
+
+#ifdef LIBXML_LZMA_ENABLED
+
 #include "private/xzlib.h"
-/**
- * xmlXzfileMatch:
- * @filename:  the URI for matching
- *
- * input from compressed file test
- *
- * Returns 1 if matches, 0 otherwise
- */
-static int
-xmlXzfileMatch (const char *filename ATTRIBUTE_UNUSED) {
-    return(1);
-}
-
-/**
- * xmlXzFileOpen_real:
- * @filename:  the URI for matching
- *
- * input from compressed file open
- * if @filename is " " then the standard input is used
- *
- * Returns an I/O context or NULL in case of error
- */
-static void *
-xmlXzfileOpen_real (const char *filename) {
-    char *fromUri = NULL;
-    xzFile fd;
-
-    if (xmlConvertUriToPath(filename, &fromUri) < 0)
-        return(NULL);
-
-    if (fromUri != NULL)
-        filename = fromUri;
-
-    if (!xmlCheckFilename(filename)) {
-        xmlFree(fromUri);
-        return(NULL);
-    }
-
-    fd = __libxml2_xzopen(filename, "rb");
-
-    xmlFree(fromUri);
-    return((void *) fd);
-}
-
-/**
- * xmlXzfileOpen:
- * @filename:  the URI for matching
- *
- * Wrapper around xmlXzfileOpen_real that try it with an unescaped
- * version of @filename, if this fails fallback to @filename
- *
- * Returns a handler or NULL in case or failure
- */
-static void *
-xmlXzfileOpen (const char *filename) {
-    char *unescaped;
-    void *retval;
-
-    retval = xmlXzfileOpen_real(filename);
-    if (retval == NULL) {
-	unescaped = xmlURIUnescapeString(filename, 0, NULL);
-	if (unescaped != NULL) {
-	    retval = xmlXzfileOpen_real(unescaped);
-	}
-	xmlFree(unescaped);
-    }
-
-    return retval;
-}
 
 /**
  * xmlXzfileRead:
@@ -1420,6 +1110,7 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
 static int
 xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
     int ret;
+    int fd;
 
 #ifdef LIBXML_FTP_ENABLED
     if (xmlIOFTPMatch(filename)) {
@@ -1445,37 +1136,56 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
     }
 #endif /* LIBXML_HTTP_ENABLED */
 
-#ifdef LIBXML_LZMA_ENABLED
-    if (xmlXzfileMatch(filename)) {
-        void *context = xmlXzfileOpen(filename);
+    if (!xmlFileMatch(filename))
+        return(XML_IO_ENOENT);
 
-        if (context != NULL) {
-            if (__libxml2_xzcompressed(context) > 0) {
-                buf->context = context;
+#ifdef LIBXML_LZMA_ENABLED
+    {
+        xzFile xzStream;
+
+        ret = xmlFdOpen(filename, 0, &fd);
+        if (ret != XML_ERR_OK)
+            return(ret);
+
+        xzStream = __libxml2_xzdopen(filename, fd, "rb");
+
+        if (xzStream == NULL) {
+            close(fd);
+        } else {
+            if (__libxml2_xzcompressed(xzStream) > 0) {
+                buf->context = xzStream;
                 buf->readcallback = xmlXzfileRead;
                 buf->closecallback = xmlXzfileClose;
-                buf->compressed = __libxml2_xzcompressed(buf->context);
+                buf->compressed = 1;
 
                 return(XML_ERR_OK);
             }
 
-            xmlXzfileClose(context);
+            xmlXzfileClose(xzStream);
         }
     }
 #endif /* LIBXML_LZMA_ENABLED */
 
 #ifdef LIBXML_ZLIB_ENABLED
-    if (xmlGzfileMatch(filename)) {
-        void *context = xmlGzfileOpen(filename);
+    {
+        gzFile gzStream;
 
-        if (context != NULL) {
+        ret = xmlFdOpen(filename, 0, &fd);
+        if (ret != XML_ERR_OK)
+            return(ret);
+
+        gzStream = gzdopen(fd, "rb");
+
+        if (gzStream == NULL) {
+            close(fd);
+        } else {
             char buff4[4];
 
-            if ((gzread(context, buff4, 4) > 0) &&
-                (gzdirect(context) == 0)) {
-                gzrewind(context);
+            if ((gzread(gzStream, buff4, 4) > 0) &&
+                (gzdirect(gzStream) == 0)) {
+                gzrewind(gzStream);
 
-                buf->context = context;
+                buf->context = gzStream;
                 buf->readcallback = xmlGzfileRead;
                 buf->closecallback = xmlGzfileClose;
                 buf->compressed = 1;
@@ -1483,25 +1193,19 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
                 return(XML_ERR_OK);
             }
 
-            xmlGzfileClose(context);
+            xmlGzfileClose(gzStream);
         }
     }
 #endif /* LIBXML_ZLIB_ENABLED */
 
-    if (xmlFileMatch(filename)) {
-        ret = xmlFdOpen(filename, &buf->context);
+    ret = xmlFdOpen(filename, 0, &fd);
+    if (ret != XML_ERR_OK)
+        return(ret);
 
-        /* Note that context can be NULL for stdin */
-        if (ret == XML_ERR_OK) {
-            buf->readcallback = xmlFdRead;
-            buf->closecallback = xmlFdClose;
-            return(XML_ERR_OK);
-        }
-        if (ret != XML_IO_ENOENT)
-            return(ret);
-    }
-
-    return(XML_IO_ENOENT);
+    buf->context = (void *) (ptrdiff_t) fd;
+    buf->readcallback = xmlFdRead;
+    buf->closecallback = xmlFdClose;
+    return(XML_ERR_OK);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -1516,32 +1220,49 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
  */
 static int
 xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
-                     int compression, int is_file_uri) {
+                     int compression) {
+    int fd;
+
     (void) compression;
-    (void) is_file_uri;
+
+    if (!strcmp(filename, "-")) {
+        fd = dup(STDOUT_FILENO);
+
+        if (fd < 0)
+            return(xmlIOErr(0, "dup()"));
+    } else {
+        int ret;
+
+        ret = xmlFdOpen(filename, /* write */ 1, &fd);
+        if (ret != XML_ERR_OK)
+            return(ret);
+    }
 
 #ifdef LIBXML_ZLIB_ENABLED
-    if ((compression > 0) && (compression <= 9) && (is_file_uri == 1)) {
-        buf->context = xmlGzfileOpenW(filename, compression);
-        if (buf->context != NULL) {
-            buf->writecallback = xmlGzfileWrite;
-            buf->closecallback = xmlGzfileClose;
-            return(XML_ERR_OK);
+    if ((compression > 0) && (compression <= 9)) {
+        gzFile gzStream;
+        char mode[15];
+
+        snprintf(mode, sizeof(mode), "wb%d", compression);
+        gzStream = gzdopen(fd, mode);
+
+        if (gzStream == NULL) {
+            close(fd);
+            return(xmlIOErr(XML_IO_UNKNOWN, "gzdopen()"));
         }
+
+        buf->context = gzStream;
+        buf->writecallback = xmlGzfileWrite;
+        buf->closecallback = xmlGzfileClose;
+
+        return(XML_ERR_OK);
     }
 #endif /* LIBXML_ZLIB_ENABLED */
 
-    if (xmlFileMatch(filename)) {
-        buf->context = xmlFileOpenW(filename);
-
-        if (buf->context != NULL) {
-            buf->writecallback = xmlFileWrite;
-            buf->closecallback = xmlFileClose;
-            return(XML_ERR_OK);
-        }
-    }
-
-    return(XML_IO_ENOENT);
+    buf->context = (void *) (ptrdiff_t) fd;
+    buf->writecallback = xmlFdWrite;
+    buf->closecallback = xmlFdClose;
+    return(XML_ERR_OK);
 }
 #endif
 
@@ -1884,17 +1605,12 @@ __xmlOutputBufferCreateFilename(const char *URI,
     xmlURIPtr puri;
     int i = 0;
     char *unescaped = NULL;
-    int is_file_uri = 1;
 
     if (URI == NULL)
         return(NULL);
 
     puri = xmlParseURI(URI);
     if (puri != NULL) {
-        if ((puri->scheme != NULL) &&
-           (!xmlStrEqual(BAD_CAST puri->scheme, BAD_CAST "file")))
-           is_file_uri = 0;
-
         /*
          * try to limit the damages of the URI unescaping code.
          */
@@ -1927,7 +1643,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
         int code;
 
         if (cb->matchcallback == xmlIODefaultMatch) {
-            code = xmlOutputDefaultOpen(ret, URI, compression, is_file_uri);
+            code = xmlOutputDefaultOpen(ret, URI, compression);
             /* TODO: Handle other errors */
             if (code == XML_ERR_OK)
                 break;

@@ -214,18 +214,9 @@ __libxml2_xzopen(const char *path, const char *mode)
 }
 
 xzFile
-__libxml2_xzdopen(int fd, const char *mode)
+__libxml2_xzdopen(const char *path, int fd, const char *mode)
 {
-    char *path;                 /* identifier for error messages */
-    size_t path_size = 7 + 3 * sizeof(int);
-    xzFile xz;
-
-    if (fd == -1 || (path = xmlMalloc(path_size)) == NULL)
-        return NULL;
-    snprintf(path, path_size, "<fd:%d>", fd);       /* for debugging */
-    xz = xz_open(path, fd, mode);
-    xmlFree(path);
-    return xz;
+    return xz_open(path, fd, mode);
 }
 
 static int

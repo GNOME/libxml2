@@ -1548,6 +1548,12 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 	}
 	return(NULL);
     }
+
+    /*
+     * We create an input stream with a NULL buffer here and make the
+     * input pointers reference the entity content directly. This is
+     * unusual and somewhat dangerous.
+     */
     input = xmlNewInputStream(ctxt);
     if (input == NULL) {
 	return(NULL);
@@ -1558,9 +1564,9 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     if (entity->length == 0)
         entity->length = xmlStrlen(entity->content);
     input->cur = entity->content;
-    input->length = entity->length;
-    input->end = &entity->content[input->length];
+    input->end = &entity->content[entity->length];
     input->entity = entity;
+
     return(input);
 }
 

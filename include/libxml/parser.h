@@ -64,7 +64,7 @@ struct _xmlParserInput {
     const xmlChar *base;              /* Base of the array to parse */
     const xmlChar *cur;               /* Current char being parsed */
     const xmlChar *end;               /* end of the array to parse */
-    int length;                       /* length if known */
+    int length;                       /* unused */
     int line;                         /* Current line */
     int col;                          /* Current column */
     unsigned long consumed;           /* How many xmlChars already consumed */

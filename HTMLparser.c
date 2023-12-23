@@ -2274,7 +2274,6 @@ htmlNewInputStream(htmlParserCtxtPtr ctxt) {
     input->free = NULL;
     input->version = NULL;
     input->consumed = 0;
-    input->length = 0;
     return(input);
 }
 #endif

@@ -140,7 +140,7 @@ __xmlIOErr(int domain, int code, const char *extra)
     int res;
 
     if (code == 0) {
-	if (errno == 0) code = 0;
+	if (errno == 0) code = XML_IO_UNKNOWN;
 #ifdef EACCES
         else if (errno == EACCES) code = XML_IO_EACCES;
 #endif
@@ -557,15 +557,32 @@ xmlFdOpen(const char *filename, int write, int *out) {
  *
  * Read @len bytes to @buffer from the I/O channel.
  *
- * Returns the number of bytes written
+ * Returns the number of bytes read
  */
 static int
-xmlFdRead (void * context, char * buffer, int len) {
-    int ret;
+xmlFdRead(void *context, char *buffer, int len) {
+    int fd = (int) (ptrdiff_t) context;
+    int ret = 0;
+    int bytes;
 
-    ret = read((int) (ptrdiff_t) context, &buffer[0], len);
-    if (ret < 0)
-        return(-xmlIOErr(0, "fread()"));
+    while (len > 0) {
+        bytes = read(fd, buffer, len);
+        if (bytes < 0) {
+            /*
+             * If we already got some bytes, return them without
+             * raising an error.
+             */
+            if (ret > 0)
+                break;
+            return(-xmlIOErr(0, "read()"));
+        }
+        if (bytes == 0)
+            break;
+        ret += bytes;
+        buffer += bytes;
+        len -= bytes;
+    }
+
     return(ret);
 }
 
@@ -581,13 +598,20 @@ xmlFdRead (void * context, char * buffer, int len) {
  * Returns the number of bytes written
  */
 static int
-xmlFdWrite (void * context, const char * buffer, int len) {
+xmlFdWrite(void *context, const char *buffer, int len) {
+    int fd = (int) (ptrdiff_t) context;
     int ret = 0;
+    int bytes;
 
-    if (len > 0) {
-	ret = write((int) (ptrdiff_t) context, &buffer[0], len);
-	if (ret < 0) xmlIOErr(0, "write()");
+    while (len > 0) {
+	bytes = write(fd, buffer, len);
+	if (bytes < 0)
+            return(-xmlIOErr(0, "write()"));
+        ret += bytes;
+        buffer += bytes;
+        len -= bytes;
     }
+
     return(ret);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -707,17 +731,28 @@ xmlFileOpen(const char *filename) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * Returns the number of bytes written or < 0 in case of failure
+ * Returns the number of bytes read or < 0 in case of failure
  */
 int
-xmlFileRead (void * context, char * buffer, int len) {
-    int ret;
+xmlFileRead(void * context, char * buffer, int len) {
+    FILE *file = context;
+    size_t bytes;
+
     if ((context == NULL) || (buffer == NULL))
         return(-1);
-    ret = fread(&buffer[0], 1,  len, (FILE *) context);
-    if (ret < 0)
+
+    /*
+     * The C standard doesn't mandate that fread sets errno, only
+     * POSIX does. The Windows documentation isn't really clear.
+     * Set errno to zero which will be reported as unknown error
+     * if fread fails without setting errno.
+     */
+    errno = 0;
+    bytes = fread(buffer, 1, len, file);
+    if ((bytes < (size_t) len) && (ferror(file)))
         return(-xmlIOErr(0, "fread()"));
-    return(ret);
+
+    return(len);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -732,17 +767,19 @@ xmlFileRead (void * context, char * buffer, int len) {
  * Returns the number of bytes written
  */
 static int
-xmlFileWrite (void * context, const char * buffer, int len) {
-    int items;
+xmlFileWrite(void *context, const char *buffer, int len) {
+    FILE *file = context;
+    size_t bytes;
 
     if ((context == NULL) || (buffer == NULL))
         return(-1);
-    items = fwrite(&buffer[0], len, 1, (FILE *) context);
-    if ((items == 0) && (ferror((FILE *) context))) {
-        xmlIOErr(0, "fwrite()");
-	return(-1);
-    }
-    return(items * len);
+
+    errno = 0;
+    bytes = fwrite(buffer, 1, len, file);
+    if (bytes < (size_t) len)
+        return(-xmlIOErr(0, "fwrite()"));
+
+    return(len);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

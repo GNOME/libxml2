@@ -627,9 +627,12 @@ xmlFdWrite(void *context, const char *buffer, int len) {
 static int
 xmlFdClose (void * context) {
     int ret;
+
     ret = close((int) (ptrdiff_t) context);
-    if (ret < 0) xmlIOErr(0, "close()");
-    return(ret);
+    if (ret < 0)
+        return(xmlIOErr(0, "close()"));
+
+    return(XML_ERR_OK);
 }
 
 /**
@@ -784,36 +787,6 @@ xmlFileWrite(void *context, const char *buffer, int len) {
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
- * xmlFileClose:
- * @context:  the I/O context
- *
- * DEPRECATED: Internal function, don't use.
- *
- * Returns 0 or -1 in case of error
- */
-int
-xmlFileClose (void * context) {
-    FILE *fil;
-    int ret;
-
-    if (context == NULL)
-        return(-1);
-    fil = (FILE *) context;
-    if ((fil == stdout) || (fil == stderr)) {
-        ret = fflush(fil);
-	if (ret < 0)
-	    xmlIOErr(0, "fflush()");
-	return(0);
-    }
-    if (fil == stdin)
-	return(0);
-    ret = ( fclose((FILE *) context) == EOF ) ? -1 : 0;
-    if (ret < 0)
-        xmlIOErr(0, "fclose()");
-    return(ret);
-}
-
-/**
  * xmlFileFlush:
  * @context:  the I/O context
  *
@@ -821,14 +794,41 @@ xmlFileClose (void * context) {
  */
 static int
 xmlFileFlush (void * context) {
-    int ret;
+    FILE *file = context;
+
+    if (file == NULL)
+        return(-1);
+
+    if (fflush(file) != 0)
+        return(xmlIOErr(0, "fflush()"));
+
+    return(XML_ERR_OK);
+}
+
+/**
+ * xmlFileClose:
+ * @context:  the I/O context
+ *
+ * DEPRECATED: Internal function, don't use.
+ *
+ * Returns 0 or -1 an error code case of error
+ */
+int
+xmlFileClose (void * context) {
+    FILE *file = context;
 
     if (context == NULL)
         return(-1);
-    ret = ( fflush((FILE *) context) == EOF ) ? -1 : 0;
-    if (ret < 0)
-        xmlIOErr(0, "fflush()");
-    return(ret);
+
+    if (file == stdin)
+        return(0);
+    if ((file == stdout) || (file == stderr))
+        return(xmlFileFlush(file));
+
+    if (fclose(file) != 0)
+        return(xmlIOErr(0, "fclose()"));
+
+    return(0);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -1493,17 +1493,33 @@ xmlFreeParserInputBuffer(xmlParserInputBufferPtr in) {
 int
 xmlOutputBufferClose(xmlOutputBufferPtr out)
 {
-    int written;
-    int err_rc = 0;
+    int ret;
 
     if (out == NULL)
         return (-1);
+
     if (out->writecallback != NULL)
         xmlOutputBufferFlush(out);
+
     if (out->closecallback != NULL) {
-        err_rc = out->closecallback(out->context);
+        int code = out->closecallback(out->context);
+
+        if ((code != XML_ERR_OK) && (out->error == XML_ERR_OK)) {
+            if (code < 0)
+                out->error = XML_IO_UNKNOWN;
+            else
+                out->error = code;
+        }
     }
-    written = out->written;
+
+    /*
+     * TODO: Report the error code
+     */
+    if (out->error != XML_ERR_OK)
+        ret = -1;
+    else
+        ret = out->written;
+
     if (out->conv) {
         xmlBufFree(out->conv);
         out->conv = NULL;
@@ -1516,10 +1532,9 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
         out->buffer = NULL;
     }
 
-    if (out->error)
-        err_rc = -1;
     xmlFree(out);
-    return ((err_rc == 0) ? written : err_rc);
+
+    return(ret);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -1754,7 +1769,7 @@ xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
     if (ret != NULL) {
         ret->context = file;
 	ret->readcallback = xmlFileRead;
-	ret->closecallback = xmlFileFlush;
+	ret->closecallback = NULL;
     }
 
     return(ret);

@@ -19,9 +19,20 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#include <errno.h>
 #include <limits.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#ifdef HAVE_SYS_RANDOM_H
+#include <sys/random.h>
+#endif
+
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <bcrypt.h>
+#endif
 
 #include "private/dict.h"
 #include "private/threads.h"
@@ -916,16 +927,42 @@ static XML_THREAD_LOCAL unsigned localRngState[2];
 ATTRIBUTE_NO_SANITIZE_INTEGER
 void
 xmlInitRandom(void) {
-    int var;
-
     xmlInitMutex(&xmlRngMutex);
 
-    /* TODO: Get seed values from system PRNG */
+    {
+#ifdef _WIN32
+        NTSTATUS status;
 
-    globalRngState[0] = (unsigned) time(NULL) ^
-                        HASH_ROL((unsigned) ((size_t) &xmlInitRandom & 0xFFFFFFFF), 8);
-    globalRngState[1] = HASH_ROL((unsigned) ((size_t) &xmlRngMutex & 0xFFFFFFFF), 16) ^
-                        HASH_ROL((unsigned) ((size_t) &var & 0xFFFFFFFF), 24);
+        status = BCryptGenRandom(NULL, (unsigned char *) globalRngState,
+                                 sizeof(globalRngState),
+                                 BCRYPT_USE_SYSTEM_PREFERRED_RNG);
+        if (!BCRYPT_SUCCESS(status)) {
+            fprintf(stderr, "libxml2: BCryptGenRandom failed with "
+                    "error code %lu\n", GetLastError());
+            abort();
+        }
+#elif defined(HAVE_GETENTROPY)
+        while (1) {
+            if (getentropy(globalRngState, sizeof(globalRngState)) == 0)
+                break;
+
+            if (errno != EINTR) {
+                fprintf(stderr, "libxml2: getentropy failed with "
+                        "error code %d\n", errno);
+                abort();
+            }
+        }
+#else
+        int var;
+
+        globalRngState[0] =
+                (unsigned) time(NULL) ^
+                HASH_ROL((unsigned) ((size_t) &xmlInitRandom & 0xFFFFFFFF), 8);
+        globalRngState[1] =
+                HASH_ROL((unsigned) ((size_t) &xmlRngMutex & 0xFFFFFFFF), 16) ^
+                HASH_ROL((unsigned) ((size_t) &var & 0xFFFFFFFF), 24);
+#endif
+    }
 }
 
 void

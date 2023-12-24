@@ -300,6 +300,7 @@ AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([sys/socket.h netinet/in.h arpa/inet.h netdb.h])
 AC_CHECK_HEADERS([sys/select.h poll.h])
 AC_CHECK_HEADERS([sys/time.h sys/timeb.h])
+AC_CHECK_HEADERS([sys/random.h])
 AC_CHECK_HEADERS([dl.h dlfcn.h])
 AC_CHECK_HEADERS([glob.h])
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
@@ -310,7 +311,7 @@ dnl
 AC_TYPE_UINT32_T
 
 dnl Checks for library functions.
-AC_CHECK_FUNCS([gettimeofday ftime stat isascii mmap munmap])
+AC_CHECK_FUNCS([getentropy gettimeofday ftime isascii stat mmap munmap])
 
 AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 #if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)
@@ -1104,6 +1105,15 @@ else
 fi
 AC_SUBST(WITH_ICU)
 
+dnl
+dnl Crypto libraries
+dnl
+case "$host" in
+    *-*-mingw*)
+        CRYPTO_LIBS="-lbcrypt"
+        ;;
+esac
+
 if test "$with_coverage" = "yes" && test "${GCC}" = "yes"
 then
     echo Enabling code coverage for GCC
@@ -1115,7 +1125,7 @@ fi
 
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"
-NON_PC_LIBS="${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${NET_LIBS}"
+NON_PC_LIBS="${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${NET_LIBS} ${CRYPTO_LIBS}"
 XML_PC_LIBS="${XML_PC_LIBS} ${NON_PC_LIBS}"
 XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${NON_PC_LIBS}"
 XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${THREAD_CFLAGS} ${ICONV_CFLAGS}"

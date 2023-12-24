@@ -583,9 +583,9 @@ xmlInitParser(void) {
             atexit(xmlCleanupParser);
 #endif
 
-        xmlInitMemoryInternal(); /* Should come second */
+        xmlInitRandom(); /* Required by xmlInitGlobalsInternal */
+        xmlInitMemoryInternal();
         xmlInitGlobalsInternal();
-        xmlInitRandom();
         xmlInitDictInternal();
         xmlInitEncodingInternal();
 #if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)

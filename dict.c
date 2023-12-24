@@ -35,6 +35,7 @@
 #endif
 
 #include "private/dict.h"
+#include "private/globals.h"
 #include "private/threads.h"
 
 #include <libxml/parser.h>
@@ -919,11 +920,6 @@ static xmlMutex xmlRngMutex;
 
 static unsigned globalRngState[2];
 
-#ifdef XML_THREAD_LOCAL
-static XML_THREAD_LOCAL int localRngInitialized = 0;
-static XML_THREAD_LOCAL unsigned localRngState[2];
-#endif
-
 ATTRIBUTE_NO_SANITIZE_INTEGER
 void
 xmlInitRandom(void) {
@@ -985,18 +981,7 @@ xoroshiro64ss(unsigned *s) {
 }
 
 unsigned
-xmlRandom(void) {
-#ifdef XML_THREAD_LOCAL
-    if (!localRngInitialized) {
-        xmlMutexLock(&xmlRngMutex);
-        localRngState[0] = xoroshiro64ss(globalRngState);
-        localRngState[1] = xoroshiro64ss(globalRngState);
-        localRngInitialized = 1;
-        xmlMutexUnlock(&xmlRngMutex);
-    }
-
-    return(xoroshiro64ss(localRngState));
-#else
+xmlGlobalRandom(void) {
     unsigned ret;
 
     xmlMutexLock(&xmlRngMutex);
@@ -1004,6 +989,14 @@ xmlRandom(void) {
     xmlMutexUnlock(&xmlRngMutex);
 
     return(ret);
+}
+
+unsigned
+xmlRandom(void) {
+#ifdef LIBXML_THREAD_ENABLED
+    return(xoroshiro64ss(xmlGetLocalRngState()));
+#else
+    return(xmlGlobalRandom());
 #endif
 }
 

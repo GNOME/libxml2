@@ -26,6 +26,7 @@
 #include <libxml/SAX.h>
 #include <libxml/SAX2.h>
 
+#include "private/dict.h"
 #include "private/error.h"
 #include "private/globals.h"
 #include "private/threads.h"
@@ -73,6 +74,10 @@ struct _xmlGlobalState {
     defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
     void *threadHandle;
     void *waitHandle;
+#endif
+
+#ifdef LIBXML_THREAD_ENABLED
+    unsigned localRngState[2];
 #endif
 
 #define XML_OP XML_DECLARE_MEMBER
@@ -161,6 +166,10 @@ xmlFreeGlobalState(void *state);
  *	All the user accessible global variables of the library		*
  *									*
  ************************************************************************/
+
+#ifdef LIBXML_THREAD_ENABLED
+static unsigned xmlMainThreadRngState[2];
+#endif
 
 /*
  * Memory allocation routines
@@ -593,6 +602,11 @@ void xmlInitGlobalsInternal(void) {
 #endif
     mainthread = GetCurrentThreadId();
 #endif
+
+#ifdef LIBXML_THREAD_ENABLED
+    xmlMainThreadRngState[0] = xmlGlobalRandom();
+    xmlMainThreadRngState[1] = xmlGlobalRandom();
+#endif
 }
 
 /**
@@ -753,6 +767,11 @@ static void
 xmlInitGlobalState(xmlGlobalStatePtr gs) {
     xmlMutexLock(&xmlThrDefMutex);
 
+#ifdef LIBXML_THREAD_ENABLED
+    gs->localRngState[0] = xmlGlobalRandom();
+    gs->localRngState[1] = xmlGlobalRandom();
+#endif
+
     gs->gs_xmlBufferAllocScheme = xmlBufferAllocSchemeThrDef;
     gs->gs_xmlDefaultBufferSize = xmlDefaultBufferSizeThrDef;
     gs->gs_xmlDoValidityCheckingDefaultValue =
@@ -892,6 +911,16 @@ XML_GLOBALS_IO
 XML_GLOBALS_PARSER
 XML_GLOBALS_TREE
 #undef XML_OP
+
+#ifdef LIBXML_THREAD_ENABLED
+unsigned *
+xmlGetLocalRngState(void) {
+    if (IS_MAIN_THREAD)
+        return(xmlMainThreadRngState);
+    else
+        return(xmlGetThreadLocalStorage(0)->localRngState);
+}
+#endif
 
 /* For backward compatibility */
 

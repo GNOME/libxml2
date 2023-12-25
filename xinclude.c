@@ -54,7 +54,6 @@ struct _xmlXIncludeRef {
     xmlNodePtr            inc; /* the included copy */
     int                   xml; /* xml or txt */
     int	             fallback; /* fallback was loaded */
-    int		      emptyFb; /* flag to show fallback empty */
     int		    expanding; /* flag to detect inclusion loops */
     int		      replace; /* should the node be replaced? */
 };
@@ -1034,7 +1033,7 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlXPathObjectPtr obj,
         case XPATH_NODESET: {
 	    xmlNodeSetPtr set = obj->nodesetval;
 	    if (set == NULL)
-		return(NULL);
+		break;
 	    for (i = 0;i < set->nodeNr;i++) {
                 xmlNodePtr node;
 
@@ -1048,11 +1047,11 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlXPathObjectPtr obj,
                         if (node == NULL) {
                             xmlXIncludeErr(ctxt, set->nodeTab[i],
                                            XML_ERR_INTERNAL_ERROR,
-                                           "document without root\n", NULL);
+                                          "document without root\n", NULL);
                             continue;
                         }
                         break;
-		    case XML_TEXT_NODE:
+                    case XML_TEXT_NODE:
 		    case XML_CDATA_SECTION_NODE:
 		    case XML_ELEMENT_NODE:
 		    case XML_PI_NODE:
@@ -1485,11 +1484,7 @@ loaded:
                 xmlXPathFreeObject(xptr);
                 goto error;
 	    case XPATH_NODESET:
-	        if ((xptr->nodesetval == NULL) ||
-		    (xptr->nodesetval->nodeNr <= 0)) {
-                    xmlXPathFreeObject(xptr);
-                    goto error;
-		}
+                break;
 
 #ifdef LIBXML_XPTR_LOCS_ENABLED
 	    case XPATH_RANGE:
@@ -1768,11 +1763,8 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback,
 	ref->inc = xmlXIncludeCopyNode(ctxt, fallback, 1, ref->base);
 	if (ctxt->nbErrors > oldNbErrors)
 	    ret = -1;
-        else if (ref->inc == NULL)
-            ref->emptyFb = 1;
     } else {
         ref->inc = NULL;
-	ref->emptyFb = 1;	/* flag empty callback */
     }
     ref->fallback = 1;
     return(ret);
@@ -1932,7 +1924,6 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
 
     list = ref->inc;
     ref->inc = NULL;
-    ref->emptyFb = 0;
 
     /*
      * Check against the risk of generating a multi-rooted document
@@ -2140,10 +2131,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
      */
     for (i = start; i < ctxt->incNr; i++) {
 	if (ctxt->incTab[i]->replace != 0) {
-            if ((ctxt->incTab[i]->inc != NULL) ||
-                (ctxt->incTab[i]->emptyFb != 0)) {	/* (empty fallback) */
-                xmlXIncludeIncludeNode(ctxt, ctxt->incTab[i]);
-            }
+            xmlXIncludeIncludeNode(ctxt, ctxt->incTab[i]);
             ctxt->incTab[i]->replace = 0;
         } else {
             /*

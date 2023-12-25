@@ -5,7 +5,7 @@
 ]>
 <doc>
     <a xmlns="urn:a"><elem/></a>
-    <b xmlns="urn:b"><elem/></b>
-    <a xmlns:ns="urn:a"><elem/></a>
-    <b xmlns:ns="urn:b"><elem/></b>
+    <b xmlns="urn:b"><default:elem xmlns:default="urn:a"/></b>
+    <a xmlns:ns="urn:a"><ns:elem/></a>
+    <b xmlns:ns="urn:b"><ns:elem xmlns:ns="urn:a"/></b>
 </doc>

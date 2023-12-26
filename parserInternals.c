@@ -437,7 +437,7 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
     if (buf == NULL)
         return(0);
     /* Don't grow push parser buffer. */
-    if ((ctxt->progressive) && (ctxt->inputNr <= 1))
+    if ((ctxt->progressive) && (!PARSER_IN_PE(ctxt)))
         return(0);
     /* Don't grow memory buffers. */
     if ((buf->encoder == NULL) && (buf->readcallback == NULL))
@@ -529,7 +529,7 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
     if (buf == NULL)
         return;
     /* Don't shrink pull parser memory buffers. */
-    if (((ctxt->progressive == 0) || (ctxt->inputNr > 1)) &&
+    if ((ctxt->progressive == 0) &&
         (buf->encoder == NULL) &&
         (buf->readcallback == NULL))
         return;
@@ -2029,7 +2029,6 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->hasExternalSubset = 0;
     ctxt->hasPErefs = 0;
     ctxt->html = 0;
-    ctxt->external = 0;
     ctxt->instate = XML_PARSER_START;
     ctxt->token = 0;
 

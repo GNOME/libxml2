@@ -6277,7 +6277,6 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->hasExternalSubset = 0;
     ctxt->hasPErefs = 0;
     ctxt->html = 1;
-    ctxt->external = 0;
     ctxt->instate = XML_PARSER_START;
     ctxt->token = 0;
 

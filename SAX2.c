@@ -1219,8 +1219,6 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
     } else
 #endif /* LIBXML_VALID_ENABLED */
            if (((ctxt->loadsubset & XML_SKIP_IDS) == 0) &&
-	       (((ctxt->replaceEntities == 0) && (ctxt->external != 2)) ||
-	        ((ctxt->replaceEntities != 0) && (ctxt->inSubset == 0))) &&
                /* Don't create IDs containing entity references */
                (ret->children != NULL) &&
                (ret->children->type == XML_TEXT_NODE) &&
@@ -1955,8 +1953,6 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     } else
 #endif /* LIBXML_VALID_ENABLED */
            if (((ctxt->loadsubset & XML_SKIP_IDS) == 0) &&
-	       (((ctxt->replaceEntities == 0) && (ctxt->external != 2)) ||
-	        ((ctxt->replaceEntities != 0) && (ctxt->inSubset == 0))) &&
                /* Don't create IDs containing entity references */
                (ret->children != NULL) &&
                (ret->children->type == XML_TEXT_NODE) &&

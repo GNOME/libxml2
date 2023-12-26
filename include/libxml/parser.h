@@ -220,7 +220,7 @@ struct _xmlParserCtxt {
 
     int     hasExternalSubset;        /* reference and external subset */
     int             hasPErefs;        /* the internal subset has PE refs */
-    int              external;        /* are we parsing an external entity */
+    int              external;        /* unused */
 
     int                 valid;        /* is the document valid */
     int              validate;        /* shall we try to validate ? */

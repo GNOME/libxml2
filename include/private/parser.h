@@ -28,6 +28,16 @@
 
 #define PARSER_STOPPED(ctxt) ((ctxt)->disableSAX > 1)
 
+#define PARSER_IN_PE(ctxt) \
+    (((ctxt)->input->entity != NULL) && \
+     (((ctxt)->input->entity->etype == XML_INTERNAL_PARAMETER_ENTITY) || \
+      ((ctxt)->input->entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)))
+
+#define PARSER_EXTERNAL(ctxt) \
+    (((ctxt)->inSubset == 2) || \
+     (((ctxt)->input->entity != NULL) && \
+      ((ctxt)->input->entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)))
+
 XML_HIDDEN void
 xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
             xmlParserErrors code, xmlErrorLevel level,

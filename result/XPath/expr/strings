@@ -144,6 +144,22 @@ Expression: substring("12345",-5000000000,5000000004)
 Object is a string : 123
 
 ========================
+Expression: substring-after("12345678","345")
+Object is a string : 678
+
+========================
+Expression: substring-after("12345678","999")
+Object is a string : 
+
+========================
+Expression: substring-before("12345678","345")
+Object is a string : 12
+
+========================
+Expression: substring-before("12345678","999")
+Object is a string : 
+
+========================
 Expression: string-length("")
 Object is a number : 0
 

@@ -8141,30 +8141,34 @@ xmlXPathSubstringFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  */
 void
 xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-  xmlXPathObjectPtr str;
-  xmlXPathObjectPtr find;
-  xmlBufPtr target;
-  const xmlChar *point;
-  int offset;
+    xmlXPathObjectPtr str = NULL;
+    xmlXPathObjectPtr find = NULL;
+    const xmlChar *point;
+    xmlChar *result;
 
-  CHECK_ARITY(2);
-  CAST_TO_STRING;
-  find = valuePop(ctxt);
-  CAST_TO_STRING;
-  str = valuePop(ctxt);
+    CHECK_ARITY(2);
+    CAST_TO_STRING;
+    find = valuePop(ctxt);
+    CAST_TO_STRING;
+    str = valuePop(ctxt);
+    if (ctxt->error != 0)
+        goto error;
 
-  target = xmlBufCreate();
-  if (target) {
     point = xmlStrstr(str->stringval, find->stringval);
-    if (point) {
-      offset = point - str->stringval;
-      xmlBufAdd(target, str->stringval, offset);
+    if (point == NULL) {
+        result = xmlStrdup(BAD_CAST "");
+    } else {
+        result = xmlStrndup(str->stringval, point - str->stringval);
     }
-    valuePush(ctxt, xmlXPathCacheNewString(ctxt, xmlBufContent(target)));
-    xmlBufFree(target);
-  }
-  xmlXPathReleaseObject(ctxt->context, str);
-  xmlXPathReleaseObject(ctxt->context, find);
+    if (result == NULL) {
+        xmlXPathPErrMemory(ctxt);
+        goto error;
+    }
+    valuePush(ctxt, xmlXPathCacheWrapString(ctxt, result));
+
+error:
+    xmlXPathReleaseObject(ctxt->context, str);
+    xmlXPathReleaseObject(ctxt->context, find);
 }
 
 /**
@@ -8176,38 +8180,41 @@ xmlXPathSubstringBeforeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  *    string substring-after(string, string)
  * The substring-after function returns the substring of the first
  * argument string that follows the first occurrence of the second
- * argument string in the first argument string, or the empty stringi
+ * argument string in the first argument string, or the empty string
  * if the first argument string does not contain the second argument
  * string. For example, substring-after("1999/04/01","/") returns 04/01,
  * and substring-after("1999/04/01","19") returns 99/04/01.
  */
 void
 xmlXPathSubstringAfterFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-  xmlXPathObjectPtr str;
-  xmlXPathObjectPtr find;
-  xmlBufPtr target;
-  const xmlChar *point;
-  int offset;
+    xmlXPathObjectPtr str = NULL;
+    xmlXPathObjectPtr find = NULL;
+    const xmlChar *point;
+    xmlChar *result;
 
-  CHECK_ARITY(2);
-  CAST_TO_STRING;
-  find = valuePop(ctxt);
-  CAST_TO_STRING;
-  str = valuePop(ctxt);
+    CHECK_ARITY(2);
+    CAST_TO_STRING;
+    find = valuePop(ctxt);
+    CAST_TO_STRING;
+    str = valuePop(ctxt);
+    if (ctxt->error != 0)
+        goto error;
 
-  target = xmlBufCreate();
-  if (target) {
     point = xmlStrstr(str->stringval, find->stringval);
-    if (point) {
-      offset = point - str->stringval + xmlStrlen(find->stringval);
-      xmlBufAdd(target, &str->stringval[offset],
-		   xmlStrlen(str->stringval) - offset);
+    if (point == NULL) {
+        result = xmlStrdup(BAD_CAST "");
+    } else {
+        result = xmlStrdup(point + xmlStrlen(find->stringval));
     }
-    valuePush(ctxt, xmlXPathCacheNewString(ctxt, xmlBufContent(target)));
-    xmlBufFree(target);
-  }
-  xmlXPathReleaseObject(ctxt->context, str);
-  xmlXPathReleaseObject(ctxt->context, find);
+    if (result == NULL) {
+        xmlXPathPErrMemory(ctxt);
+        goto error;
+    }
+    valuePush(ctxt, xmlXPathCacheWrapString(ctxt, result));
+
+error:
+    xmlXPathReleaseObject(ctxt->context, str);
+    xmlXPathReleaseObject(ctxt->context, find);
 }
 
 /**

@@ -12357,21 +12357,43 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
  *									*
  ************************************************************************/
 
-static xmlNodePtr
+static xmlParserErrors
 xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
-                    int hasTextDecl) {
+                    int hasTextDecl, xmlNodePtr *list) {
     xmlParserInputPtr oldInput;
     xmlNodePtr oldNode, root = NULL;
     int oldNameNr, oldSpaceNr, oldNodeNr;
     int oldWellFormed;
     int oldProgressive;
     int oldNodeLen, oldNodeMem;
+    xmlParserNsData *nsdb, *oldNsdb;
+    int ret;
+
+    if (list != NULL)
+        *list = NULL;
 
     if (((ctxt->depth > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
 	(ctxt->depth > 100)) {
         xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
                        "Maximum entity nesting depth exceeded");
-        return(NULL);
+        return(XML_ERR_ENTITY_LOOP);
+    }
+
+    root = xmlNewDocNode(ctxt->myDoc, NULL, BAD_CAST "pseudoroot", NULL);
+    if (root == NULL) {
+        xmlErrMemory(ctxt);
+        return(XML_ERR_NO_MEMORY);
+    }
+
+    /*
+     * We need to reset the namespace database, so that entities don't
+     * pick up namespaces from the parent of a reference.
+     */
+    nsdb = xmlParserNsCreate();
+    if (nsdb == NULL) {
+        xmlErrMemory(ctxt);
+        xmlFreeNode(root);
+        return(XML_ERR_NO_MEMORY);
     }
 
     oldNode = ctxt->node;
@@ -12380,16 +12402,11 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     oldProgressive = ctxt->progressive;
     oldNodeLen = ctxt->nodelen;
     oldNodeMem = ctxt->nodemem;
+    oldNsdb = ctxt->nsdb;
 
     oldNameNr = ctxt->nameNr;
     oldSpaceNr = ctxt->spaceNr;
     oldNodeNr = ctxt->nodeNr;
-
-    root = xmlNewDocNode(ctxt->myDoc, NULL, BAD_CAST "pseudoroot", NULL);
-    if (root == NULL) {
-        xmlErrMemory(ctxt);
-        return(NULL);
-    }
 
     /*
      * TODO: It would be nice if we could simply push the input onto
@@ -12400,6 +12417,7 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     ctxt->progressive = 0;
     ctxt->nodelen = 0;
     ctxt->nodemem = 0;
+    ctxt->nsdb = nsdb;
 
     nameNsPush(ctxt, root->name, NULL, NULL, 0, 0);
     spacePush(ctxt, -1);
@@ -12436,10 +12454,28 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 	xmlFatalErr(ctxt, XML_ERR_EXTRA_CONTENT, NULL);
     }
 
-    if ((ctxt->wellFormed == 0) &&
-        ((ctxt->recovery == 0) || (ctxt->errNo == XML_ERR_NO_MEMORY))) {
-        xmlFreeNode(root);
-        root = NULL;
+    if ((ctxt->wellFormed) ||
+        ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
+        if (list != NULL) {
+            xmlNodePtr cur;
+
+            /*
+             * Return the newly created nodeset after unlinking it from
+             * its pseudo parent.
+             */
+            cur = root->children;
+            *list = cur;
+            while (cur != NULL) {
+                cur->parent = NULL;
+                cur = cur->next;
+            }
+            root->children = NULL;
+            root->last = NULL;
+        }
+
+        ret = XML_ERR_OK;
+    } else {
+        ret = ctxt->errNo;
     }
 
     /*
@@ -12469,8 +12505,12 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     ctxt->progressive = oldProgressive;
     ctxt->nodelen = oldNodeLen;
     ctxt->nodemem = oldNodeMem;
+    ctxt->nsdb = oldNsdb;
 
-    return(root);
+    xmlParserNsFree(nsdb);
+    xmlFreeNode(root);
+
+    return(ret);
 }
 
 /**
@@ -12494,8 +12534,8 @@ int
 xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
                            const xmlChar *ID, xmlNodePtr *list) {
     xmlParserInputPtr input;
-    xmlNodePtr root;
     unsigned long consumed;
+    int ret;
 
     if (list != NULL)
         *list = NULL;
@@ -12507,24 +12547,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     if (input == NULL)
         return(ctxt->errNo);
 
-    root = xmlCtxtParseContent(ctxt, input, 1 /* hasTextDecl */);
-
-    if ((list != NULL) && (root != NULL)) {
-        xmlNodePtr cur;
-
-        /*
-         * Return the newly created nodeset after unlinking it from
-         * their pseudo parent.
-         */
-        cur = root->children;
-        *list = cur;
-        while (cur != NULL) {
-            cur->parent = NULL;
-            cur = cur->next;
-        }
-        root->children = NULL;
-        root->last = NULL;
-    }
+    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, list);
 
     /*
      * Also record the size of the entity parsed
@@ -12535,10 +12558,9 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     xmlSaturatedAdd(&ctxt->sizeentities, consumed);
     xmlSaturatedAdd(&ctxt->sizeentcopy, consumed);
 
-    xmlFreeNode(root);
     xmlFreeInputStream(input);
 
-    return(ctxt->errNo);
+    return(ret);
 }
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -12638,8 +12660,8 @@ static xmlParserErrors
 xmlCtxtParseInternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *string,
                            xmlNodePtr *list) {
     xmlParserInputPtr input;
-    xmlNodePtr root;
     unsigned long consumed;
+    int ret;
 
     if (list != NULL)
         *list = NULL;
@@ -12651,24 +12673,7 @@ xmlCtxtParseInternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *string,
     if (input == NULL)
         return(ctxt->errNo);
 
-    root = xmlCtxtParseContent(ctxt, input, 0 /* hasTextDecl */);
-
-    if ((list != NULL) && (root != NULL)) {
-        xmlNodePtr cur;
-
-        /*
-         * Return the newly created nodeset after unlinking it from
-         * their pseudo parent.
-         */
-        cur = root->children;
-        *list = cur;
-        while (cur != NULL) {
-            cur->parent = NULL;
-            cur = cur->next;
-        }
-        root->children = NULL;
-        root->last = NULL;
-    }
+    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 0, list);
 
     /*
      * Also record the size of the entity parsed
@@ -12678,10 +12683,9 @@ xmlCtxtParseInternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *string,
 
     xmlSaturatedAdd(&ctxt->sizeentcopy, consumed);
 
-    xmlFreeNode(root);
     xmlFreeInputStream(input);
 
-    return(ctxt->errNo);
+    return(ret);
 }
 
 /**

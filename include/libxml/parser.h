@@ -226,7 +226,7 @@ struct _xmlParserCtxt {
     int              validate;        /* shall we try to validate ? */
     xmlValidCtxt        vctxt;        /* The validity context */
 
-    xmlParserInputState instate;      /* current type of input */
+    xmlParserInputState instate;      /* push parser state */
     int                 token;        /* next char look-ahead */
 
     char           *directory;        /* unused */
@@ -253,7 +253,7 @@ struct _xmlParserCtxt {
     int *              spaceTab;      /* array of space infos */
 
     int                depth;         /* to prevent entity substitution loops */
-    xmlParserInputPtr  entity;        /* used to check entities boundaries */
+    xmlParserInputPtr  entity;        /* unused */
     int                charset;       /* unused */
     int                nodelen;       /* Those two fields are there to */
     int                nodemem;       /* Speed up large node parsing */
@@ -268,7 +268,7 @@ struct _xmlParserCtxt {
     xmlDictPtr         dict;          /* dictionary for the parser */
     const xmlChar *   *atts;          /* array for the attributes callbacks */
     int                maxatts;       /* the size of the array */
-    int                docdict;       /* use strings from dict to build tree */
+    int                docdict;       /* unused */
 
     /*
      * pre-interned strings
@@ -306,7 +306,7 @@ struct _xmlParserCtxt {
     xmlError          lastError;
     xmlParserMode     parseMode;    /* the parser mode */
     unsigned long    nbentities;    /* unused */
-    unsigned long  sizeentities;    /* size of parsed entities */
+    unsigned long  sizeentities;    /* size of external entities */
 
     /* for use by HTML non-recursive parser */
     xmlParserNodeInfo *nodeInfo;      /* Current NodeInfo */

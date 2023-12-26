@@ -286,7 +286,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	xmlParserInputPtr *oldinputTab;
 	xmlParserInputPtr input = NULL;
 	const xmlChar *oldencoding;
-	int oldprogressive;
         unsigned long consumed;
         size_t buffered;
 
@@ -314,9 +313,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	oldinputMax = ctxt->inputMax;
 	oldinputTab = ctxt->inputTab;
 	oldencoding = ctxt->encoding;
-        oldprogressive = ctxt->progressive;
 	ctxt->encoding = NULL;
-        ctxt->progressive = 0;
 
 	ctxt->inputTab = (xmlParserInputPtr *)
 	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
@@ -328,7 +325,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	    ctxt->inputMax = oldinputMax;
 	    ctxt->inputTab = oldinputTab;
 	    ctxt->encoding = oldencoding;
-            ctxt->progressive = oldprogressive;
 	    return;
 	}
 	ctxt->inputNr = 0;
@@ -382,7 +378,6 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	     (!xmlDictOwns(ctxt->dict, ctxt->encoding))))
 	    xmlFree((xmlChar *) ctxt->encoding);
 	ctxt->encoding = oldencoding;
-        ctxt->progressive = oldprogressive;
 	/* ctxt->wellFormed = oldwellFormed; */
     }
 }

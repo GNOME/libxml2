@@ -437,7 +437,7 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
     if (buf == NULL)
         return(0);
     /* Don't grow push parser buffer. */
-    if ((ctxt->progressive) && (!PARSER_IN_PE(ctxt)))
+    if (PARSER_PROGRESSIVE(ctxt))
         return(0);
     /* Don't grow memory buffers. */
     if ((buf->encoder == NULL) && (buf->readcallback == NULL))
@@ -529,7 +529,7 @@ xmlParserShrink(xmlParserCtxtPtr ctxt) {
     if (buf == NULL)
         return;
     /* Don't shrink pull parser memory buffers. */
-    if ((ctxt->progressive == 0) &&
+    if ((!PARSER_PROGRESSIVE(ctxt)) &&
         (buf->encoder == NULL) &&
         (buf->readcallback == NULL))
         return;

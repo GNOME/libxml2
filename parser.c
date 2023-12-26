@@ -2143,13 +2143,15 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
         xmlParserGrow(ctxt);						\
   } while (0)
 
-/* Don't shrink push parser buffer. */
 #define SHRINK \
-    if ((ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
+    if ((!PARSER_PROGRESSIVE(ctxt)) && \
+        (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
 	(ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
 	xmlParserShrink(ctxt);
 
-#define GROW if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)	\
+#define GROW \
+    if ((!PARSER_PROGRESSIVE(ctxt)) && \
+        (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)) \
 	xmlParserGrow(ctxt);
 
 #define SKIP_BLANKS xmlSkipBlankChars(ctxt)
@@ -7926,7 +7928,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     const xmlChar *oldencoding;
     xmlChar *content = NULL;
     size_t length, i;
-    int oldinputNr, oldinputMax, oldprogressive;
+    int oldinputNr, oldinputMax;
     int ret = -1;
     int res;
 
@@ -7952,13 +7954,11 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     oldinputMax = ctxt->inputMax;
     oldinputTab = ctxt->inputTab;
     oldencoding = ctxt->encoding;
-    oldprogressive = ctxt->progressive;
 
     ctxt->input = NULL;
     ctxt->inputNr = 0;
     ctxt->inputMax = 1;
     ctxt->encoding = NULL;
-    ctxt->progressive = 0;
     ctxt->inputTab = xmlMalloc(sizeof(xmlParserInputPtr));
     if (ctxt->inputTab == NULL) {
         xmlErrMemory(ctxt);
@@ -8039,7 +8039,6 @@ error:
     ctxt->inputMax = oldinputMax;
     ctxt->inputTab = oldinputTab;
     ctxt->encoding = oldencoding;
-    ctxt->progressive = oldprogressive;
 
     xmlFree(content);
 
@@ -11784,7 +11783,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
     if (ctxt->input == NULL)
         return(-1);
 
-    ctxt->progressive = 1;
+    ctxt->input->flags |= XML_INPUT_PROGRESSIVE;
     if (ctxt->instate == XML_PARSER_START)
         xmlDetectSAX2(ctxt);
     if ((size > 0) && (chunk != NULL) && (!terminate) &&
@@ -11916,6 +11915,8 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
+
+    inputStream->flags |= XML_INPUT_PROGRESSIVE;
 
     if (filename == NULL)
 	inputStream->filename = NULL;
@@ -12258,7 +12259,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     xmlNodePtr oldNode, root = NULL;
     int oldNameNr, oldSpaceNr, oldNodeNr;
     int oldWellFormed;
-    int oldProgressive;
     int oldNodeLen, oldNodeMem;
     xmlParserNsData *nsdb, *oldNsdb;
     int ret;
@@ -12293,7 +12293,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     oldNode = ctxt->node;
     oldInput = ctxt->input;
     oldWellFormed = ctxt->wellFormed;
-    oldProgressive = ctxt->progressive;
     oldNodeLen = ctxt->nodelen;
     oldNodeMem = ctxt->nodemem;
     oldNsdb = ctxt->nsdb;
@@ -12308,7 +12307,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
      * ctxt->inputNr > 1 means that we're inside a parameter entity.
      */
     ctxt->input = input;
-    ctxt->progressive = 0;
     ctxt->nodelen = 0;
     ctxt->nodemem = 0;
     ctxt->nsdb = nsdb;
@@ -12396,7 +12394,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     ctxt->node = oldNode;
     ctxt->input = oldInput;
     ctxt->wellFormed = oldWellFormed && ctxt->wellFormed;
-    ctxt->progressive = oldProgressive;
     ctxt->nodelen = oldNodeLen;
     ctxt->nodemem = oldNodeMem;
     ctxt->nsdb = oldNsdb;

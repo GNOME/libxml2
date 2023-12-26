@@ -25,8 +25,12 @@
 #define XML_INPUT_AUTO_OTHER        (4u << 1)
 #define XML_INPUT_USES_ENC_DECL     (1u << 4)
 #define XML_INPUT_ENCODING_ERROR    (1u << 5)
+#define XML_INPUT_PROGRESSIVE       (1u << 6)
 
 #define PARSER_STOPPED(ctxt) ((ctxt)->disableSAX > 1)
+
+#define PARSER_PROGRESSIVE(ctxt) \
+    ((ctxt)->input->flags & XML_INPUT_PROGRESSIVE)
 
 #define PARSER_IN_PE(ctxt) \
     (((ctxt)->input->entity != NULL) && \

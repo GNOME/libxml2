@@ -255,13 +255,16 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 #define CUR_PTR ctxt->input->cur
 #define BASE_PTR ctxt->input->base
 
-#define SHRINK if ((ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
-		   (ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
-	xmlParserShrink(ctxt)
+#define SHRINK \
+    if ((!PARSER_PROGRESSIVE(ctxt)) && \
+        (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
+	(ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
+	xmlParserShrink(ctxt);
 
-#define GROW if ((ctxt->progressive == 0) &&				\
-		 (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK))	\
-	xmlParserGrow(ctxt)
+#define GROW \
+    if ((!PARSER_PROGRESSIVE(ctxt)) && \
+        (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)) \
+	xmlParserGrow(ctxt);
 
 #define SKIP_BLANKS htmlSkipBlankChars(ctxt)
 
@@ -5867,6 +5870,8 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
 
+    inputStream->flags |= XML_INPUT_PROGRESSIVE;
+
     if (filename == NULL)
 	inputStream->filename = NULL;
     else
@@ -5890,7 +5895,6 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
             xmlHaltParser(ctxt);
         }
     }
-    ctxt->progressive = 1;
 
     if (enc != XML_CHAR_ENCODING_NONE)
         xmlSwitchEncoding(ctxt, enc);

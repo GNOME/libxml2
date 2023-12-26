@@ -12260,8 +12260,8 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     int oldNameNr, oldSpaceNr, oldNodeNr;
     int oldWellFormed;
     int oldNodeLen, oldNodeMem;
-    xmlParserNsData *nsdb, *oldNsdb;
-    int ret;
+    xmlParserNsData *nsdb = NULL, *oldNsdb;
+    int ret = XML_ERR_NO_MEMORY;
 
     if (list != NULL)
         *list = NULL;
@@ -12276,7 +12276,7 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     root = xmlNewDocNode(ctxt->myDoc, NULL, BAD_CAST "pseudoroot", NULL);
     if (root == NULL) {
         xmlErrMemory(ctxt);
-        return(XML_ERR_NO_MEMORY);
+        goto error;
     }
 
     /*
@@ -12286,8 +12286,12 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     nsdb = xmlParserNsCreate();
     if (nsdb == NULL) {
         xmlErrMemory(ctxt);
-        xmlFreeNode(root);
-        return(XML_ERR_NO_MEMORY);
+        goto error;
+    }
+
+    if (xmlPushInput(ctxt, input) < 0) {
+        xmlErrMemory(ctxt);
+        goto error;
     }
 
     oldNode = ctxt->node;
@@ -12301,12 +12305,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     oldSpaceNr = ctxt->spaceNr;
     oldNodeNr = ctxt->nodeNr;
 
-    /*
-     * TODO: It would be nice if we could simply push the input onto
-     * the input stack. But there's still some code that assumes that
-     * ctxt->inputNr > 1 means that we're inside a parameter entity.
-     */
-    ctxt->input = input;
     ctxt->nodelen = 0;
     ctxt->nodemem = 0;
     ctxt->nsdb = nsdb;
@@ -12398,6 +12396,10 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     ctxt->nodemem = oldNodeMem;
     ctxt->nsdb = oldNsdb;
 
+    /* xmlPopInput would free the stream */
+    inputPop(ctxt);
+
+error:
     xmlParserNsFree(nsdb);
     xmlFreeNode(root);
 

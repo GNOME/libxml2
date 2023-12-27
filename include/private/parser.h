@@ -83,4 +83,8 @@ xmlParserNsUpdateSax(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
 XML_HIDDEN void *
 xmlParserNsLookupSax(xmlParserCtxtPtr ctxt, const xmlChar *prefix);
 
+XML_HIDDEN xmlParserInputPtr
+xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
+                const char *chunk, int size, const char *encoding);
+
 #endif /* XML_PARSER_H_PRIVATE__ */

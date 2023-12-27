@@ -1913,10 +1913,53 @@ static int
 xmlMemClose(void *vctxt) {
     xmlMemIOCtxt *ctxt = vctxt;
 
-    if (ctxt->mem != 0)
+    if (ctxt->mem != NULL)
         xmlFree(ctxt->mem);
     xmlFree(ctxt);
     return(0);
+}
+
+xmlParserInputBufferPtr
+xmlNewInputBufferMemory(const void *mem, size_t size, int flags,
+                        xmlCharEncoding enc) {
+    xmlParserInputBufferPtr ret;
+    xmlMemIOCtxt *ctxt;
+    char *copy = NULL;
+
+    if ((flags & XML_INPUT_BUF_STATIC) == 0) {
+        if (size + 1 == 0)
+            return(NULL);
+        copy = xmlMalloc(size + 1);
+        if (copy == NULL)
+            return(NULL);
+        memcpy(copy, mem, size);
+        copy[size] = 0;
+
+        mem = copy;
+    }
+
+    ret = xmlAllocParserInputBuffer(enc);
+    if (ret == NULL) {
+        xmlFree(copy);
+        return(NULL);
+    }
+
+    ctxt = xmlMalloc(sizeof(*ctxt));
+    if (ctxt == NULL) {
+        xmlFreeParserInputBuffer(ret);
+        xmlFree(copy);
+        return(NULL);
+    }
+
+    ctxt->mem = copy;
+    ctxt->cur = mem;
+    ctxt->size = size;
+
+    ret->context = ctxt;
+    ret->readcallback = xmlMemRead;
+    ret->closecallback = xmlMemClose;
+
+    return(ret);
 }
 
 /**
@@ -1940,27 +1983,10 @@ xmlMemClose(void *vctxt) {
  */
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
-    xmlParserInputBufferPtr buf;
-    xmlMemIOCtxt *ctxt;
-    char *copy;
-
-    if ((size < 0) || (mem == NULL))
+    if ((mem == NULL) || (size < 0))
         return(NULL);
 
-    copy = (char *) xmlStrndup((const xmlChar *) mem, size);
-    if (copy == NULL)
-        return(NULL);
-
-    buf = xmlParserInputBufferCreateStatic(copy, size, enc);
-    if (buf == NULL) {
-        xmlFree(copy);
-        return(NULL);
-    }
-
-    ctxt = buf->context;
-    ctxt->mem = copy;
-
-    return(buf);
+    return(xmlNewInputBufferMemory(mem, size, 0, enc));
 }
 
 /**
@@ -1984,40 +2010,20 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateStatic(const char *mem, int size,
                                  xmlCharEncoding enc) {
-    xmlParserInputBufferPtr ret;
-    xmlMemIOCtxt *ctxt;
-
-    if ((size < 0) || (mem == NULL))
+    if ((mem == NULL) || (size < 0))
         return(NULL);
 
-    ret = xmlAllocParserInputBuffer(enc);
-    if (ret == NULL)
-        return(NULL);
-
-    ctxt = xmlMalloc(sizeof(*ctxt));
-    if (ctxt == NULL) {
-        xmlFreeParserInputBuffer(ret);
-        return(NULL);
-    }
-    ctxt->mem = NULL;
-    ctxt->cur = mem;
-    ctxt->size = size;
-
-    ret->context = ctxt;
-    ret->readcallback = xmlMemRead;
-    ret->closecallback = xmlMemClose;
-
-    return(ret);
+    return(xmlNewInputBufferMemory(mem, size, XML_INPUT_BUF_STATIC, enc));
 }
 
 typedef struct {
-    const xmlChar *str;
+    const char *str;
 } xmlStringIOCtxt;
 
 static int
 xmlStringRead(void *vctxt, char *buf, int size) {
     xmlStringIOCtxt *ctxt = vctxt;
-    const xmlChar *zero;
+    const char *zero;
     size_t len;
 
     zero = memchr(ctxt->str, 0, size);
@@ -2035,21 +2041,14 @@ xmlStringClose(void *vctxt) {
     return(0);
 }
 
-/**
- * xmlParserInputBufferCreateString:
- * @str:  a null-terminated string
- *
- * Create a buffered parser input for the progressive parsing for the input
- * from a null-terminated C string.
- *
- * Returns the new parser input or NULL
- */
 xmlParserInputBufferPtr
-xmlParserInputBufferCreateString(const xmlChar *str) {
+xmlNewInputBufferString(const char *str, int flags) {
     xmlParserInputBufferPtr ret;
     xmlStringIOCtxt *ctxt;
 
-    if (str == NULL) return(NULL);
+    if ((flags & XML_INPUT_BUF_STATIC) == 0)
+        return(xmlNewInputBufferMemory(str, strlen(str), flags,
+                                       XML_CHAR_ENCODING_NONE));
 
     ret = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (ret == NULL)
@@ -2060,6 +2059,7 @@ xmlParserInputBufferCreateString(const xmlChar *str) {
         xmlFreeParserInputBuffer(ret);
         return(NULL);
     }
+
     ctxt->str = str;
 
     ret->context = ctxt;

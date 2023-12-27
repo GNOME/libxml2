@@ -1509,63 +1509,22 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr input,
  * Returns the new input stream or NULL
  */
 xmlParserInputPtr
-xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
+xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     xmlParserInputPtr input;
 
-    if (entity == NULL) {
-        xmlErrInternal(ctxt, "xmlNewEntityInputStream entity = NULL\n",
-	               NULL);
+    if ((ctxt == NULL) || (ent == NULL))
 	return(NULL);
-    }
-    if (entity->content == NULL) {
-	switch (entity->etype) {
-            case XML_EXTERNAL_GENERAL_UNPARSED_ENTITY:
-	        xmlErrInternal(ctxt, "Cannot parse entity %s\n",
-		               entity->name);
-                break;
-            case XML_EXTERNAL_GENERAL_PARSED_ENTITY:
-            case XML_EXTERNAL_PARAMETER_ENTITY:
-		input = xmlLoadExternalEntity((char *) entity->URI,
-		       (char *) entity->ExternalID, ctxt);
-                if (input != NULL)
-                    input->entity = entity;
-                return(input);
-            case XML_INTERNAL_GENERAL_ENTITY:
-	        xmlErrInternal(ctxt,
-		      "Internal entity %s without content !\n",
-		               entity->name);
-                break;
-            case XML_INTERNAL_PARAMETER_ENTITY:
-	        xmlErrInternal(ctxt,
-		      "Internal parameter entity %s without content !\n",
-		               entity->name);
-                break;
-            case XML_INTERNAL_PREDEFINED_ENTITY:
-	        xmlErrInternal(ctxt,
-		      "Predefined entity %s without content !\n",
-		               entity->name);
-                break;
-	}
-	return(NULL);
+
+    if (ent->content != NULL) {
+        input = xmlNewStringInputStream(ctxt, ent->content);
+    } else if (ent->URI != NULL) {
+        input = xmlLoadExternalEntity((char *) ent->URI,
+                                      (char *) ent->ExternalID, ctxt);
+    } else {
+        input = xmlNewStringInputStream(ctxt, "");
     }
 
-    /*
-     * We create an input stream with a NULL buffer here and make the
-     * input pointers reference the entity content directly. This is
-     * unusual and somewhat dangerous.
-     */
-    input = xmlNewInputStream(ctxt);
-    if (input == NULL) {
-	return(NULL);
-    }
-    if (entity->URI != NULL)
-	input->filename = (char *) xmlStrdup((xmlChar *) entity->URI);
-    input->base = entity->content;
-    if (entity->length == 0)
-        entity->length = xmlStrlen(entity->content);
-    input->cur = entity->content;
-    input->end = &entity->content[entity->length];
-    input->entity = entity;
+    input->entity = ent;
 
     return(input);
 }

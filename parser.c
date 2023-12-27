@@ -114,11 +114,6 @@ struct _xmlAttrHashBucket {
     int index;
 };
 
-static xmlParserCtxtPtr
-xmlCreateEntityParserCtxtInternal(xmlSAXHandlerPtr sax, void *userData,
-        const xmlChar *URL, const xmlChar *ID, const xmlChar *base,
-        xmlParserCtxtPtr pctx);
-
 static int
 xmlParseElementStart(xmlParserCtxtPtr ctxt);
 
@@ -12174,23 +12169,9 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     /*
      * Load entity
      */
-    if (ent->content != NULL) {
-        input = xmlNewStringInputStream(ctxt, ent->content);
-    } else if ((ent->URI != NULL) || (ent->ExternalID != NULL)) {
-        input = xmlLoadExternalEntity((char *) ent->URI,
-                                      (char *) ent->ExternalID, ctxt);
-    } else {
-        /* Assume the content is empty */
-        return(XML_ERR_OK);
-    }
-
+    input = xmlNewEntityInputStream(ctxt, ent);
     if (input == NULL)
         return(ctxt->errNo);
-
-    /*
-     * Set entity in input stream
-     */
-    input->entity = ent;
 
     /*
      * We need to reset the namespace database, so that entities don't
@@ -12698,82 +12679,6 @@ xmlParseEntity(const char *filename) {
 #endif /* LIBXML_SAX1_ENABLED */
 
 /**
- * xmlCreateEntityParserCtxtInternal:
- * @URL:  the entity URL
- * @ID:  the entity PUBLIC ID
- * @base:  a possible base for the target URI
- * @pctx:  parser context used to set options on new context
- *
- * Create a parser context for an external entity
- * Automatic support for ZLIB/Compress compressed document is provided
- * by default if found at compile-time.
- *
- * Returns the new parser context or NULL
- */
-static xmlParserCtxtPtr
-xmlCreateEntityParserCtxtInternal(xmlSAXHandlerPtr sax, void *userData,
-        const xmlChar *URL, const xmlChar *ID, const xmlChar *base,
-        xmlParserCtxtPtr pctx) {
-    xmlParserCtxtPtr ctxt;
-    xmlParserInputPtr inputStream;
-    xmlChar *uri = NULL;
-
-    ctxt = xmlNewSAXParserCtxt(sax, userData);
-    if (ctxt == NULL) {
-        xmlErrMemory(pctx);
-	return(NULL);
-    }
-
-    if (pctx != NULL) {
-        if (pctx->errorHandler != NULL)
-            xmlCtxtSetErrorHandler(ctxt, pctx->errorHandler, pctx->errorCtxt);
-
-        ctxt->options = pctx->options;
-        ctxt->_private = pctx->_private;
-	ctxt->input_id = pctx->input_id;
-    }
-
-    /* Don't read from stdin. */
-    if (xmlStrcmp(URL, BAD_CAST "-") == 0)
-        URL = BAD_CAST "./-";
-
-    if (base != NULL) {
-        if (xmlBuildURISafe(URL, base, &uri) < 0) {
-            xmlErrMemory(ctxt);
-            goto error;
-        }
-        if (uri != NULL)
-            URL = uri;
-    }
-
-    inputStream = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
-    if (inputStream == NULL)
-        goto error;
-
-    inputPush(ctxt, inputStream);
-
-    xmlFree(uri);
-    return(ctxt);
-
-error:
-    if (pctx != NULL) {
-        if (xmlCopyError(&ctxt->lastError, &pctx->lastError) < 0) {
-            xmlErrMemory(pctx);
-        } else {
-            pctx->errNo = ctxt->errNo;
-            if (ctxt->disableSAX > pctx->disableSAX)
-                pctx->disableSAX = ctxt->disableSAX;
-            if (ctxt->wellFormed == 0)
-                pctx->wellFormed = 0;
-        }
-    }
-
-    xmlFree(uri);
-    xmlFreeParserCtxt(ctxt);
-    return(NULL);
-}
-
-/**
  * xmlCreateEntityParserCtxt:
  * @URL:  the entity URL
  * @ID:  the entity PUBLIC ID
@@ -12788,8 +12693,35 @@ error:
 xmlParserCtxtPtr
 xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
 	                  const xmlChar *base) {
-    return xmlCreateEntityParserCtxtInternal(NULL, NULL, URL, ID, base, NULL);
+    xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr inputStream;
+    xmlChar *uri = NULL;
 
+    ctxt = xmlNewParserCtxt();
+    if (ctxt == NULL)
+	return(NULL);
+
+    if (base != NULL) {
+        if (xmlBuildURISafe(URL, base, &uri) < 0)
+            goto error;
+        if (uri != NULL)
+            URL = uri;
+    }
+
+    inputStream = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
+    if (inputStream == NULL)
+        goto error;
+
+    if (inputPush(ctxt, inputStream) < 0)
+        goto error;
+
+    xmlFree(uri);
+    return(ctxt);
+
+error:
+    xmlFree(uri);
+    xmlFreeParserCtxt(ctxt);
+    return(NULL);
 }
 
 /************************************************************************

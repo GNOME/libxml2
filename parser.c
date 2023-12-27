@@ -11751,7 +11751,8 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 
     if (ioread == NULL) return(NULL);
 
-    buf = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx, enc);
+    buf = xmlParserInputBufferCreateIO(ioread, ioclose, ioctx,
+                                       XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
         if (ioclose != NULL)
             ioclose(ioctx);
@@ -11770,6 +11771,13 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
     inputPush(ctxt, inputStream);
+
+    if (enc != XML_CHAR_ENCODING_NONE) {
+        if (xmlSwitchEncoding(ctxt, enc) < 0) {
+            xmlFreeParserCtxt(ctxt);
+            return(NULL);
+        }
+    }
 
     return(ctxt);
 }

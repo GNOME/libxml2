@@ -2521,7 +2521,6 @@ xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
              int streaming, xmlIDPtr *id) {
     xmlIDPtr ret;
     xmlIDTablePtr table;
-    int res;
 
     if (id != NULL)
         *id = NULL;
@@ -2542,9 +2541,23 @@ xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
     table = (xmlIDTablePtr) doc->ids;
     if (table == NULL)  {
         doc->ids = table = xmlHashCreateDict(0, doc->dict);
+        if (table == NULL)
+            return(-1);
+    } else {
+        ret = xmlHashLookup(table, value);
+        if (ret != NULL) {
+            /*
+             * Update the attribute to make entities work.
+             */
+            if (ret->attr != NULL) {
+                ret->attr->id = NULL;
+                ret->attr = attr;
+            }
+	    attr->atype = XML_ATTRIBUTE_ID;
+            attr->id = ret;
+            return(0);
+        }
     }
-    if (table == NULL)
-        return(-1);
 
     ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
     if (ret == NULL)
@@ -2579,15 +2592,13 @@ xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
     }
     ret->lineno = xmlGetLineNo(attr->parent);
 
-    res = xmlHashAdd(table, value, ret);
-    if (res <= 0) {
+    if (xmlHashAddEntry(table, value, ret) < 0) {
 	xmlFreeID(ret);
-	return(res);
+	return(-1);
     }
-    if (attr != NULL) {
-	attr->atype = XML_ATTRIBUTE_ID;
-        attr->id = ret;
-    }
+
+    attr->atype = XML_ATTRIBUTE_ID;
+    attr->id = ret;
 
     if (id != NULL)
         *id = ret;

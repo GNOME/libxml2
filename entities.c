@@ -83,7 +83,7 @@ xmlFreeEntity(xmlEntityPtr entity)
         dict = entity->doc->dict;
 
 
-    if ((entity->children) && (entity->owner == 1) &&
+    if ((entity->children) &&
         (entity == (xmlEntityPtr) entity->children->parent))
         xmlFreeNodeList(entity->children);
     if ((entity->name != NULL) &&
@@ -152,7 +152,6 @@ xmlCreateEntity(xmlDocPtr doc, const xmlChar *name, int type,
     ret->URI = NULL; /* to be computed by the layer knowing
 			the defining entity */
     ret->orig = NULL;
-    ret->owner = 0;
 
     return(ret);
 

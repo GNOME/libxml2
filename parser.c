@@ -209,8 +209,7 @@ xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options,
                           const char *encoding);
 
 static xmlParserErrors
-xmlCtxtParseEntity(xmlParserCtxtPtr oldctxt, xmlEntityPtr ent,
-                   xmlNodePtr *lst);
+xmlCtxtParseEntity(xmlParserCtxtPtr oldctxt, xmlEntityPtr ent);
 
 static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
@@ -6985,9 +6984,7 @@ void
 xmlParseReference(xmlParserCtxtPtr ctxt) {
     xmlEntityPtr ent;
     xmlChar *val;
-    xmlNodePtr list = NULL;
     xmlParserErrors ret = XML_ERR_OK;
-
 
     if (RAW != '&')
         return;
@@ -7064,9 +7061,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
      *
      * Proposed fix:
      *
-     * - Remove the ent->owner optimization which tries to avoid the
-     *   initial copy of the entity. Always make entities own the
-     *   subtree.
      * - Ignore current namespace declarations when parsing the
      *   entity. If a prefix can't be resolved, don't report an error
      *   but mark it as unresolved.
@@ -7083,51 +7077,15 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         (ctxt->replaceEntities) ||
         (ctxt->validate)) {
         if ((ent->flags & XML_ENT_PARSED) == 0) {
-            ret = xmlCtxtParseEntity(ctxt, ent, &list);
+            ret = xmlCtxtParseEntity(ctxt, ent);
 
-            if ((ret == XML_ERR_OK) && (list != NULL)) {
-                ent->children = list;
-                /*
-                 * Prune it directly in the generated document
-                 * except for single text nodes.
-                 */
-                if ((ctxt->replaceEntities == 0) ||
-                    (ctxt->parseMode == XML_PARSE_READER) ||
-                    ((list->type == XML_TEXT_NODE) &&
-                     (list->next == NULL))) {
-                    ent->owner = 1;
-                    while (list != NULL) {
-                        list->parent = (xmlNodePtr) ent;
-                        if (list->doc != ent->doc)
-                            xmlSetTreeDoc(list, ent->doc);
-                        if (list->next == NULL)
-                            ent->last = list;
-                        list = list->next;
-                    }
-                    list = NULL;
-                } else {
-                    ent->owner = 0;
-                    while (list != NULL) {
-                        list->parent = (xmlNodePtr) ctxt->node;
-                        list->doc = ctxt->myDoc;
-                        if (list->next == NULL)
-                            ent->last = list;
-                        list = list->next;
-                    }
-                    list = ent->children;
-                }
-            } else {
-                if ((ret != XML_ERR_OK) &&
-                    (ret != XML_WAR_UNDECLARED_ENTITY)) {
-                    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
-                             "Entity '%s' failed to parse\n", ent->name);
-                    if (ent->content != NULL)
-                        ent->content[0] = 0;
-                }
-                if (list != NULL) {
-                    xmlFreeNodeList(list);
-                    list = NULL;
-                }
+            if ((ret != XML_ERR_OK) &&
+                (ret != XML_ERR_ENTITY_LOOP) &&
+                (ret != XML_WAR_UNDECLARED_ENTITY)) {
+                xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
+                         "Entity '%s' failed to parse\n", ent->name);
+                if (ent->content != NULL)
+                    ent->content[0] = 0;
             }
         } else if (ent->children != NULL) {
             /*
@@ -7139,139 +7097,54 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         } else {
             /*
              * Probably running in SAX mode and the callbacks don't
-             * build the entity content. So unless we already went
-             * though parsing for first checking go though the entity
-             * content to generate callbacks associated to the entity
+             * build the entity content. Parse the entity again.
              *
              * This will also be triggered in normal tree builder mode
              * if an entity happens to be empty, causing unnecessary
              * reloads. It's hard to come up with a reliable check in
              * which mode we're running.
              */
-            xmlCtxtParseEntity(ctxt, ent, &list);
+            xmlCtxtParseEntity(ctxt, ent);
         }
     }
 
     if (ctxt->replaceEntities == 0) {
 	/*
-	 * Create a node.
+	 * Create a reference
 	 */
         if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
 	    (!ctxt->disableSAX))
 	    ctxt->sax->reference(ctxt->userData, ent->name);
     } else if ((ent->children != NULL) && (ctxt->node != NULL)) {
+        xmlNodePtr copy, cur;
+
         /*
-         * Seems we are generating the DOM content, do
-         * a simple tree copy for all references except the first
-         * In the first occurrence list contains the replacement.
-	 *
-	 * There is a problem on the handling of _private for entities
-	 * (bug 155816): Should we copy the content of the field from
-	 * the entity (possibly overwriting some value set by the user
-	 * when a copy is created), should we leave it alone, or should
-	 * we try to take care of different situations?  The problem
-	 * is exacerbated by the usage of this field by the xmlReader.
-	 * To fix this bug, we look at _private on the created node
-	 * and, if it's NULL, we copy in whatever was in the entity.
-	 * If it's not NULL we leave it alone.  This is somewhat of a
-	 * hack - maybe we should have further tests to determine
-	 * what to do.
+         * Seems we are generating the DOM content, copy the tree
 	 */
-        if (((list == NULL) && (ent->owner == 0)) ||
-            (ctxt->parseMode == XML_PARSE_READER)) {
-            xmlNodePtr nw = NULL, cur, firstChild = NULL;
+        cur = ent->children;
+        while (cur != NULL) {
+            copy = xmlDocCopyNode(cur, ctxt->myDoc, 1);
 
-            /*
-             * when operating on a reader, the entities definitions
-             * are always owning the entities subtree.
-            if (ctxt->parseMode == XML_PARSE_READER)
-                ent->owner = 1;
-             */
-
-            cur = ent->children;
-            while (cur != NULL) {
-                nw = xmlDocCopyNode(cur, ctxt->myDoc, 1);
-                if (nw == NULL) {
-                    xmlErrMemory(ctxt);
-                } else {
-                    if (nw->_private == NULL)
-                        nw->_private = cur->_private;
-                    if (firstChild == NULL){
-                        firstChild = nw;
-                    }
-                    nw = xmlAddChild(ctxt->node, nw);
-                    if (nw == NULL)
-                        xmlErrMemory(ctxt);
-                }
-                if (cur == ent->last) {
-                    /*
-                     * needed to detect some strange empty
-                     * node cases in the reader tests
-                     */
-                    if ((ctxt->parseMode == XML_PARSE_READER) &&
-                        (nw != NULL) &&
-                        (nw->type == XML_ELEMENT_NODE) &&
-                        (nw->children == NULL))
-                        nw->extra = 1;
-
-                    break;
-                }
-                cur = cur->next;
+            if (copy == NULL) {
+                xmlErrMemory(ctxt);
+                break;
             }
-	} else if ((list == NULL) || (ctxt->inputNr > 0)) {
-            xmlNodePtr nw = NULL, cur, next, last,
-                       firstChild = NULL;
 
-            /*
-             * Copy the entity child list and make it the new
-             * entity child list. The goal is to make sure any
-             * ID or REF referenced will be the one from the
-             * document content and not the entity copy.
-             */
-            cur = ent->children;
-            ent->children = NULL;
-            last = ent->last;
-            ent->last = NULL;
-            while (cur != NULL) {
-                next = cur->next;
-                cur->next = NULL;
-                cur->parent = NULL;
-                nw = xmlDocCopyNode(cur, ctxt->myDoc, 1);
-                if (nw == NULL) {
-                    xmlErrMemory(ctxt);
-                } else {
-                    if (nw->_private == NULL)
-                        nw->_private = cur->_private;
-                    if (firstChild == NULL){
-                        firstChild = cur;
-                    }
-                    if (xmlAddChild((xmlNodePtr) ent, nw) == NULL)
-                        xmlErrMemory(ctxt);
-                }
-                if (xmlAddChild(ctxt->node, cur) == NULL)
-                    xmlErrMemory(ctxt);
-                if (cur == last)
-                    break;
-                cur = next;
+            if (ctxt->parseMode == XML_PARSE_READER) {
+                /* Needed for reader */
+                copy->extra = cur->extra;
+                /* Maybe needed for reader */
+                copy->_private = cur->_private;
             }
-            if (ent->owner == 0)
-                ent->owner = 1;
-        } else {
-            const xmlChar *nbktext;
 
             /*
-             * the name change is to avoid coalescing of the
-             * node with a possible previous text one which
-             * would make ent->children a dangling pointer
+             * We have to call xmlAddChild to coalesce text nodes
              */
-            nbktext = xmlDictLookup(ctxt->dict, BAD_CAST "nbktext",
-                                    -1);
-            if (ent->children->type == XML_TEXT_NODE)
-                ent->children->name = nbktext;
-            if ((ent->last != ent->children) &&
-                (ent->last->type == XML_TEXT_NODE))
-                ent->last->name = nbktext;
-            xmlAddChildList(ctxt->node, ent->children);
+            copy = xmlAddChild(ctxt->node, copy);
+            if (copy == NULL)
+                xmlErrMemory(ctxt);
+
+            cur = cur->next;
         }
 
         /*
@@ -7280,7 +7153,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
          */
         ctxt->nodemem = 0;
         ctxt->nodelen = 0;
-        return;
     }
 }
 
@@ -12266,17 +12138,16 @@ error:
 }
 
 static xmlParserErrors
-xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent, xmlNodePtr *list) {
+xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     xmlParserInputPtr input;
     xmlParserNsData *nsdb = NULL;
     xmlParserNsData *oldNsdb = ctxt->nsdb;
+    xmlNodePtr list;
     unsigned long oldsizeentcopy = ctxt->sizeentcopy;
     unsigned long consumed;
     int isExternal;
     int alreadyParsed;
     int ret;
-
-    *list = NULL;
 
     isExternal = (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY);
     alreadyParsed = (ent->flags & XML_ENT_PARSED) ? 1 : 0;
@@ -12336,7 +12207,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent, xmlNodePtr *list) {
     ctxt->nsdb = nsdb;
     ent->flags |= XML_ENT_EXPANDING;
 
-    ret = xmlCtxtParseContent(ctxt, input, isExternal, list);
+    ret = xmlCtxtParseContent(ctxt, input, isExternal, &list);
 
     ent->flags &= ~XML_ENT_EXPANDING;
     ctxt->nsdb = oldNsdb;
@@ -12353,14 +12224,21 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent, xmlNodePtr *list) {
             xmlSaturatedAdd(&ctxt->sizeentities, consumed);
 
         ent->expandedSize = ctxt->sizeentcopy;
+        ent->children = list;
+
+        while (list != NULL) {
+            list->parent = (xmlNodePtr) ent;
+            if (list->next == NULL)
+                ent->last = list;
+            list = list->next;
+        }
+    } else {
+        xmlFreeNodeList(list);
     }
 
     /* This adds the old size back */
-    if (xmlParserEntityCheck(ctxt, oldsizeentcopy)) {
-        xmlFreeNodeList(*list);
-        *list = NULL;
+    if (xmlParserEntityCheck(ctxt, oldsizeentcopy))
         ret = ctxt->errNo;
-    }
 
     xmlParserNsFree(nsdb);
     xmlFreeInputStream(input);

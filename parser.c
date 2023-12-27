@@ -207,11 +207,6 @@ static xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
 static int
 xmlCtxtUseOptionsInternal(xmlParserCtxtPtr ctxt, int options,
                           const char *encoding);
-#ifdef LIBXML_LEGACY_ENABLED
-static void
-xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
-                      xmlNodePtr lastNode);
-#endif /* LIBXML_LEGACY_ENABLED */
 
 static xmlParserErrors
 xmlCtxtParseEntity(xmlParserCtxtPtr oldctxt, xmlEntityPtr ent,
@@ -7121,10 +7116,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
                     list = list->next;
                 }
                 list = ent->children;
-#ifdef LIBXML_LEGACY_ENABLED
-                if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
-                    xmlAddEntityReference(ent, list, NULL);
-#endif /* LIBXML_LEGACY_ENABLED */
             }
 	} else {
             if ((ret != XML_ERR_OK) &&
@@ -7251,10 +7242,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		    }
 		    cur = cur->next;
 		}
-#ifdef LIBXML_LEGACY_ENABLED
-		if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
-		  xmlAddEntityReference(ent, firstChild, nw);
-#endif /* LIBXML_LEGACY_ENABLED */
 	    } else if ((list == NULL) || (ctxt->inputNr > 0)) {
 		xmlNodePtr nw = NULL, cur, next, last,
 			   firstChild = NULL;
@@ -7293,10 +7280,6 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
 		}
 		if (ent->owner == 0)
 		    ent->owner = 1;
-#ifdef LIBXML_LEGACY_ENABLED
-		if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY)
-		  xmlAddEntityReference(ent, firstChild, nw);
-#endif /* LIBXML_LEGACY_ENABLED */
 	    } else {
 		const xmlChar *nbktext;
 
@@ -13562,47 +13545,6 @@ xmlParseDoc(const xmlChar *cur) {
     return(xmlSAXParseDoc(NULL, cur, 0));
 }
 #endif /* LIBXML_SAX1_ENABLED */
-
-#ifdef LIBXML_LEGACY_ENABLED
-/************************************************************************
- *									*
- *	Specific function to keep track of entities references		*
- *	and used by the XSLT debugger					*
- *									*
- ************************************************************************/
-
-static xmlEntityReferenceFunc xmlEntityRefFunc = NULL;
-
-/**
- * xmlAddEntityReference:
- * @ent : A valid entity
- * @firstNode : A valid first node for children of entity
- * @lastNode : A valid last node of children entity
- *
- * Notify of a reference to an entity of type XML_EXTERNAL_GENERAL_PARSED_ENTITY
- */
-static void
-xmlAddEntityReference(xmlEntityPtr ent, xmlNodePtr firstNode,
-                      xmlNodePtr lastNode)
-{
-    if (xmlEntityRefFunc != NULL) {
-        (*xmlEntityRefFunc) (ent, firstNode, lastNode);
-    }
-}
-
-
-/**
- * xmlSetEntityReferenceFunc:
- * @func: A valid function
- *
- * Set the function to call call back when a xml reference has been made
- */
-void
-xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func)
-{
-    xmlEntityRefFunc = func;
-}
-#endif /* LIBXML_LEGACY_ENABLED */
 
 /************************************************************************
  *									*

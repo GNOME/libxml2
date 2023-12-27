@@ -739,6 +739,17 @@ xmlEncodeEntities(xmlDocPtr doc ATTRIBUTE_UNUSED,
     return (NULL);
 }
 
+/**
+ * xmlSetEntityReferenceFunc:
+ * @func: A valid function
+ *
+ * Set the function to call call back when a xml reference has been made
+ */
+void
+xmlSetEntityReferenceFunc(xmlEntityReferenceFunc func ATTRIBUTE_UNUSED)
+{
+}
+
 /************************************************************************
  *									*
  *		Old set of SAXv1 functions				*

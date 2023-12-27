@@ -175,9 +175,11 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
     if (ctxt == NULL)
         return;
 
-    if ((code == XML_IO_ENOENT) ||
-        (code == XML_IO_NETWORK_ATTEMPT) ||
-        (code == XML_IO_UNKNOWN)) {
+    if (code == XML_ERR_UNSUPPORTED_ENCODING) {
+        level = XML_ERR_WARNING;
+    } else if ((code == XML_IO_ENOENT) ||
+               (code == XML_IO_NETWORK_ATTEMPT) ||
+               (code == XML_IO_UNKNOWN)) {
         if (ctxt->validate == 0)
             level = XML_ERR_WARNING;
         else

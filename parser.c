@@ -6864,12 +6864,6 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
      * We must have the encoding declaration
      */
     xmlParseEncodingDecl(ctxt);
-    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-	/*
-	 * The XML REC instructs us to stop parsing right here
-	 */
-        return;
-    }
 
     SKIP_BLANKS;
     if ((RAW == '?') && (NXT(1) == '>')) {
@@ -6916,13 +6910,6 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
 
     if (CMP5(CUR_PTR, '<', '?', 'x', 'm', 'l')) {
 	xmlParseTextDecl(ctxt);
-	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-	    /*
-	     * The XML REC instructs us to stop parsing right here
-	     */
-	    xmlHaltParser(ctxt);
-	    return;
-	}
     }
     if (ctxt->myDoc == NULL) {
         ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
@@ -10371,12 +10358,6 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 	xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED, "Blank needed here\n");
     }
     xmlParseEncodingDecl(ctxt);
-    if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-	/*
-	 * The XML REC instructs us to stop parsing right here
-	 */
-        return;
-    }
 
     /*
      * We may have the standalone status.
@@ -10527,12 +10508,6 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	 * Note that we will switch encoding on the fly.
 	 */
 	xmlParseXMLDecl(ctxt);
-	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-	    /*
-	     * The XML REC instructs us to stop parsing right here
-	     */
-	    return(-1);
-	}
 	SKIP_BLANKS;
     } else {
 	ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
@@ -10663,12 +10638,6 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
 	 * Note that we will switch encoding on the fly.
 	 */
 	xmlParseXMLDecl(ctxt);
-	if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-	    /*
-	     * The XML REC instructs us to stop parsing right here
-	     */
-	    return(-1);
-	}
 	SKIP_BLANKS;
     } else {
 	ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
@@ -11102,14 +11071,6 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
 			(IS_BLANK_CH(ctxt->input->cur[5]))) {
 			ret += 5;
 			xmlParseXMLDecl(ctxt);
-			if (ctxt->errNo == XML_ERR_UNSUPPORTED_ENCODING) {
-			    /*
-			     * The XML REC instructs us to stop parsing right
-			     * here
-			     */
-			    xmlHaltParser(ctxt);
-			    return(0);
-			}
 		    } else {
 			ctxt->version = xmlCharStrdup(XML_DEFAULT_VERSION);
                         if (ctxt->version == NULL) {

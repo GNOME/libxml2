@@ -9009,11 +9009,8 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
 	hattname = xmlParseAttribute2(ctxt, prefix, localname,
                                           &haprefix, &attvalue, &len,
                                           &alloc);
-        if (hattname.name == NULL) {
-	    xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	         "xmlParseStartTag: problem parsing attributes\n");
+        if (hattname.name == NULL)
 	    break;
-	}
         if (attvalue == NULL)
             goto next_attr;
         attname = hattname.name;

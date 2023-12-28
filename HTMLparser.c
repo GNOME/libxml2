@@ -3134,7 +3134,8 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
     cur = CUR_CHAR(l);
     while (((cur != '<') || (ctxt->token == '<')) &&
            ((cur != '&') || (ctxt->token == '&')) &&
-	   (cur != 0)) {
+	   (cur != 0) &&
+           (!PARSER_STOPPED(ctxt))) {
 	if (!(IS_CHAR(cur))) {
 	    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
 	                "Invalid char in CDATA 0x%X\n", cur);
@@ -4186,7 +4187,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
-    while (1) {
+    while (!PARSER_STOPPED(ctxt)) {
         GROW;
 
 	/*

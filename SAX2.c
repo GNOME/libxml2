@@ -2417,7 +2417,9 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 	    }
             if ((ctxt->nodelen + len > XML_MAX_TEXT_LENGTH) &&
                 ((ctxt->options & XML_PARSE_HUGE) == 0)) {
-                xmlSAX2ErrMemory(ctxt);
+                xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
+                            "Text node too long, try XML_PARSE_HUGE");
+                xmlHaltParser(ctxt);
                 return;
             }
 	    if (ctxt->nodelen + len >= ctxt->nodemem) {

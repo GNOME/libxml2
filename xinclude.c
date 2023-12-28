@@ -628,7 +628,10 @@ xmlXIncludeBaseFixup(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur, xmlNodePtr copy,
             goto done;
         }
 
-        if (relBase[0] != 0) {
+        /*
+         * If the new base doesn't contain a slash, it can be omitted.
+         */
+        if (xmlStrchr(relBase, '/') != NULL) {
             res = xmlNodeSetBase(copy, relBase);
             if (res < 0)
                 xmlXIncludeErrMemory(ctxt);

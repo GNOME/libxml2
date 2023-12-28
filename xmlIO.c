@@ -137,6 +137,10 @@ xmlIOErrMemory(void)
 int
 __xmlIOErr(int domain, int code, const char *extra)
 {
+    xmlStructuredErrorFunc schannel = NULL;
+    xmlGenericErrorFunc channel = NULL;
+    void *data = NULL;
+    const char *fmt, *arg;
     int res;
 
     if (code == 0) {
@@ -297,10 +301,26 @@ __xmlIOErr(int domain, int code, const char *extra)
         else code = XML_IO_UNKNOWN;
     }
 
-    res = __xmlRaiseError(NULL, NULL, NULL, NULL, NULL,
+    if (xmlStructuredError) {
+        schannel = xmlStructuredError;
+        data = xmlStructuredErrorContext;
+    } else {
+        channel = xmlGenericError;
+        data = xmlGenericErrorContext;
+    }
+
+    if (code == XML_IO_NETWORK_ATTEMPT) {
+        fmt = "Attempt to load network entity %s";
+        arg = extra;
+    } else {
+        fmt = "%s";
+        arg = xmlErrString(code);
+    }
+
+    res = __xmlRaiseError(schannel, channel, data, NULL, NULL,
                           domain, code, XML_ERR_ERROR, NULL, 0,
                           extra, NULL, NULL, 0, 0,
-                          "%s", xmlErrString(code));
+                          fmt, arg);
     if (res < 0) {
         xmlIOErrMemory();
         return(XML_ERR_NO_MEMORY);

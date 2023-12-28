@@ -2122,22 +2122,14 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
     if (resource != NULL) {
         if ((!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "ftp://", 6)) ||
             (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
-            int res;
-
+            xmlCtxtErrIO(ctxt, XML_IO_NETWORK_ATTEMPT,
+                         (const char *) resource);
             /*
-             * Forward this error to the generic error handler, not to
-             * the parser context for backward compatibility.
-             * Several downstream test suites rely on this behavior.
+             * Also forward the error directly to the global error
+             * handler, which the XML::LibXML test suite expects.
              */
-            res = __xmlRaiseError(NULL, xmlGenericError,
-                                  xmlGenericErrorContext, NULL, NULL,
-                                  XML_FROM_IO, XML_IO_NETWORK_ATTEMPT,
-                                  XML_ERR_ERROR, NULL, 0,
-                                  (const char *) resource, NULL, NULL, 0, 0,
-                                  "Attempt to load network entity %s",
-                                  resource);
-            if (res < 0)
-                xmlCtxtErrMemory(ctxt);
+            __xmlIOErr(XML_FROM_IO, XML_IO_NETWORK_ATTEMPT,
+                       (const char *) resource);
 	    if (resource != (xmlChar *) URL)
 		xmlFree(resource);
 	    return(NULL);

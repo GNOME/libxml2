@@ -1897,8 +1897,10 @@ xmlIsAbsolutePath(const xmlChar *path) {
  */
 static int
 xmlResolvePath(const xmlChar *escRef, const xmlChar *base, xmlChar **out) {
-    char *result = NULL;
+    const xmlChar *fragment;
+    xmlChar *tmp = NULL;
     xmlChar *ref = NULL;
+    xmlChar *result = NULL;
     int ret = -1;
     int i;
 
@@ -1918,8 +1920,17 @@ xmlResolvePath(const xmlChar *escRef, const xmlChar *base, xmlChar **out) {
 
     /*
      * If a URI is resolved, we can assume it is a valid URI and not
-     * a filesystem path. This means we have to unescape it.
+     * a filesystem path. This means we have to unescape the part
+     * before the fragment.
      */
+    fragment = xmlStrchr(escRef, '#');
+    if (fragment != NULL) {
+        tmp = xmlStrndup(escRef, fragment - escRef);
+        if (tmp == NULL)
+            goto err_memory;
+        escRef = tmp;
+    }
+
     ref = (xmlChar *) xmlURIUnescapeString((char *) escRef, -1, NULL);
     if (ref == NULL)
         goto err_memory;
@@ -1954,18 +1965,25 @@ xmlResolvePath(const xmlChar *escRef, const xmlChar *base, xmlChar **out) {
     /*
      * Normalize
      */
-    xmlNormalizePath(result, 1);
+    xmlNormalizePath((char *) result, 1);
 
 done:
     if (result == NULL) {
-        result = (char *) ref;
+        result = ref;
         ref = NULL;
     }
 
-    *out = (xmlChar *) result;
+    if (fragment != NULL) {
+        result = xmlStrcat(result, fragment);
+        if (result == NULL)
+            goto err_memory;
+    }
+
+    *out = result;
     ret = 0;
 
 err_memory:
+    xmlFree(tmp);
     xmlFree(ref);
     return(ret);
 }

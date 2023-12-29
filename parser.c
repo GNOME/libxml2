@@ -108,6 +108,7 @@ struct _xmlParserNsData {
 
     unsigned elementId;
     int defaultNsIndex;
+    int minNsIndex;
 };
 
 struct _xmlAttrHashBucket {
@@ -1408,8 +1409,12 @@ xmlParserNsLookupUri(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix) {
     if (prefix->name == ctxt->str_xml)
         return(ctxt->str_xml_ns);
 
+    /*
+     * minNsIndex is used when building an entity tree. We must
+     * ignore namespaces declared outside the entity.
+     */
     nsIndex = xmlParserNsLookup(ctxt, prefix, NULL);
-    if (nsIndex == INT_MAX)
+    if ((nsIndex == INT_MAX) || (nsIndex < ctxt->nsdb->minNsIndex))
         return(NULL);
 
     ret = ctxt->nsTab[nsIndex * 2 + 1];
@@ -1442,7 +1447,7 @@ xmlParserNsLookupSax(xmlParserCtxtPtr ctxt, const xmlChar *prefix) {
     else
         hprefix.hashValue = 0;
     nsIndex = xmlParserNsLookup(ctxt, &hprefix, NULL);
-    if (nsIndex == INT_MAX)
+    if ((nsIndex == INT_MAX) || (nsIndex < ctxt->nsdb->minNsIndex))
         return(NULL);
 
     return(ctxt->nsdb->extra[nsIndex].saxData);
@@ -1475,7 +1480,7 @@ xmlParserNsUpdateSax(xmlParserCtxtPtr ctxt, const xmlChar *prefix,
     else
         hprefix.hashValue = 0;
     nsIndex = xmlParserNsLookup(ctxt, &hprefix, NULL);
-    if (nsIndex == INT_MAX)
+    if ((nsIndex == INT_MAX) || (nsIndex < ctxt->nsdb->minNsIndex))
         return(-1);
 
     ctxt->nsdb->extra[nsIndex].saxData = saxData;
@@ -9221,7 +9226,8 @@ next_attr:
             haprefix.name = aprefix;
             haprefix.hashValue = (size_t) atts[i+2];
             nsIndex = xmlParserNsLookup(ctxt, &haprefix, NULL);
-	    if (nsIndex == INT_MAX) {
+
+	    if ((nsIndex == INT_MAX) || (nsIndex < ctxt->nsdb->minNsIndex)) {
                 xmlNsErr(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
 		    "Namespace prefix %s for %s on %s is not defined\n",
 		    aprefix, attname, localname);
@@ -9338,7 +9344,8 @@ next_attr:
                     uriHashValue = URI_HASH_XML;
                 } else if (aprefix != NULL) {
                     nsIndex = xmlParserNsLookup(ctxt, &attr->prefix, NULL);
-                    if (nsIndex == INT_MAX) {
+                    if ((nsIndex == INT_MAX) ||
+                        (nsIndex < ctxt->nsdb->minNsIndex)) {
                         xmlNsErr(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
                                  "Namespace prefix %s for %s on %s is not "
                                  "defined\n",
@@ -12015,16 +12022,17 @@ error:
 static void
 xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     xmlParserInputPtr input;
-    xmlParserNsData *nsdb = NULL;
-    xmlParserNsData *oldNsdb = ctxt->nsdb;
     xmlNodePtr list;
     unsigned long oldsizeentcopy = ctxt->sizeentcopy;
     unsigned long consumed;
     int isExternal;
     int alreadyParsed;
+    int buildTree;
+    int oldMinNsIndex;
 
     isExternal = (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY);
     alreadyParsed = (ent->flags & XML_ENT_PARSED) ? 1 : 0;
+    buildTree = (ctxt->node != NULL);
 
     ent->flags |= XML_ENT_PARSED | XML_ENT_CHECKED;
 
@@ -12045,15 +12053,13 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
         return;
 
     /*
-     * We need to reset the namespace database, so that entities don't
-     * pick up namespaces from the parent of a reference.
+     * When building a tree, we need to limit the scope of namespace
+     * declarations, so that entities don't reference xmlNs structs
+     * from the parent of a reference.
      */
-    nsdb = xmlParserNsCreate();
-    if (nsdb == NULL) {
-        xmlErrMemory(ctxt);
-        xmlFreeInputStream(input);
-        return;
-    }
+    oldMinNsIndex = ctxt->nsdb->minNsIndex;
+    if (buildTree)
+        ctxt->nsdb->minNsIndex = ctxt->nsNr;
 
     /*
      * We don't set parentConsumed for general entities, so we have
@@ -12063,14 +12069,28 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
 
     /*
      * Parse content
+     *
+     * This initiates a recursive call chain:
+     *
+     * - xmlCtxtParseContent
+     * - xmlParseContent
+     * - xmlParseReference
+     * - xmlCtxtParseEntity
+     *
+     * The nesting depth is limited by the maximum number of inputs,
+     * see xmlPushInput.
+     *
+     * It's possible to make this non-recursive (minNsIndex must be
+     * stored in the input struct) at the expense of code readability.
      */
-    ctxt->nsdb = nsdb;
+
     ent->flags |= XML_ENT_EXPANDING;
 
-    list = xmlCtxtParseContent(ctxt, input, isExternal, (ctxt->node != NULL));
+    list = xmlCtxtParseContent(ctxt, input, isExternal, buildTree);
 
     ent->flags &= ~XML_ENT_EXPANDING;
-    ctxt->nsdb = oldNsdb;
+
+    ctxt->nsdb->minNsIndex = oldMinNsIndex;
 
     /*
      * Entity size accounting
@@ -12099,7 +12119,6 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     /* This adds the old size back */
     xmlParserEntityCheck(ctxt, oldsizeentcopy);
 
-    xmlParserNsFree(nsdb);
     xmlFreeInputStream(input);
 }
 

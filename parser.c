@@ -199,8 +199,8 @@ static const char* const xmlW3CPIs[] = {
 static xmlEntityPtr xmlParseStringPEReference(xmlParserCtxtPtr ctxt,
                                               const xmlChar **str);
 
-static xmlParserErrors
-xmlCtxtParseEntity(xmlParserCtxtPtr oldctxt, xmlEntityPtr ent);
+static void
+xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent);
 
 static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
@@ -6950,7 +6950,6 @@ void
 xmlParseReference(xmlParserCtxtPtr ctxt) {
     xmlEntityPtr ent;
     xmlChar *val;
-    xmlParserErrors ret = XML_ERR_OK;
 
     if (RAW != '&')
         return;
@@ -7043,16 +7042,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         (ctxt->replaceEntities) ||
         (ctxt->validate)) {
         if ((ent->flags & XML_ENT_PARSED) == 0) {
-            ret = xmlCtxtParseEntity(ctxt, ent);
-
-            if ((ret != XML_ERR_OK) &&
-                (ret != XML_ERR_ENTITY_LOOP) &&
-                (ret != XML_WAR_UNDECLARED_ENTITY)) {
-                xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
-                         "Entity '%s' failed to parse\n", ent->name);
-                if (ent->content != NULL)
-                    ent->content[0] = 0;
-            }
+            xmlCtxtParseEntity(ctxt, ent);
         } else if (ent->children != NULL) {
             /*
              * We also check for amplification if entities aren't substituted.
@@ -11934,16 +11924,12 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
  *									*
  ************************************************************************/
 
-static xmlParserErrors
+static xmlNodePtr
 xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
-                    int hasTextDecl, xmlNodePtr *list, int buildTree) {
+                    int hasTextDecl, int buildTree) {
     xmlNodePtr root = NULL;
-    int oldWellFormed;
-    int ret = XML_ERR_NO_MEMORY;
+    xmlNodePtr list = NULL;
     xmlChar *rootName = BAD_CAST "#root";
-
-    if (list != NULL)
-        *list = NULL;
 
     if (buildTree) {
         root = xmlNewDocNode(ctxt->myDoc, NULL, rootName, NULL);
@@ -11956,9 +11942,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (xmlPushInput(ctxt, input) < 0)
         goto error;
 
-    oldWellFormed = ctxt->wellFormed;
-
-    ctxt->wellFormed = 1;
     ctxt->nodelen = 0;
     ctxt->nodemem = 0;
 
@@ -11991,17 +11974,12 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
     xmlParseContent(ctxt);
 
-    if ((RAW == '<') && (NXT(1) == '/')) {
+    if ((RAW == '<') && (NXT(1) == '/'))
 	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
-    } else if ((ctxt->wellFormed) &&
-               (ctxt->input->cur < ctxt->input->end)) {
-        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
-                       "entity not fully processed\n");
-    }
 
     if ((ctxt->wellFormed) ||
         ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
-        if ((root != NULL) && (list != NULL)) {
+        if (root != NULL) {
             xmlNodePtr cur;
 
             /*
@@ -12009,7 +11987,7 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
              * its pseudo parent.
              */
             cur = root->children;
-            *list = cur;
+            list = cur;
             while (cur != NULL) {
                 cur->parent = NULL;
                 cur = cur->next;
@@ -12017,13 +11995,7 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
             root->children = NULL;
             root->last = NULL;
         }
-
-        ret = XML_ERR_OK;
-    } else {
-        ret = ctxt->errNo;
     }
-
-    ctxt->wellFormed = oldWellFormed && ctxt->wellFormed;
 
     if (buildTree)
         nodePop(ctxt);
@@ -12037,10 +12009,10 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 error:
     xmlFreeNode(root);
 
-    return(ret);
+    return(list);
 }
 
-static xmlParserErrors
+static void
 xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     xmlParserInputPtr input;
     xmlParserNsData *nsdb = NULL;
@@ -12050,7 +12022,6 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     unsigned long consumed;
     int isExternal;
     int alreadyParsed;
-    int ret;
 
     isExternal = (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY);
     alreadyParsed = (ent->flags & XML_ENT_PARSED) ? 1 : 0;
@@ -12063,7 +12034,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     if (ent->flags & XML_ENT_EXPANDING) {
         xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
         xmlHaltParser(ctxt);
-        return(XML_ERR_ENTITY_LOOP);
+        return;
     }
 
     /*
@@ -12071,7 +12042,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      */
     input = xmlNewEntityInputStream(ctxt, ent);
     if (input == NULL)
-        return(ctxt->errNo);
+        return;
 
     /*
      * We need to reset the namespace database, so that entities don't
@@ -12081,7 +12052,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     if (nsdb == NULL) {
         xmlErrMemory(ctxt);
         xmlFreeInputStream(input);
-        return(XML_ERR_NO_MEMORY);
+        return;
     }
 
     /*
@@ -12096,8 +12067,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     ctxt->nsdb = nsdb;
     ent->flags |= XML_ENT_EXPANDING;
 
-    ret = xmlCtxtParseContent(ctxt, input, isExternal, &list,
-                              (ctxt->node != NULL));
+    list = xmlCtxtParseContent(ctxt, input, isExternal, (ctxt->node != NULL));
 
     ent->flags &= ~XML_ENT_EXPANDING;
     ctxt->nsdb = oldNsdb;
@@ -12127,13 +12097,10 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     }
 
     /* This adds the old size back */
-    if (xmlParserEntityCheck(ctxt, oldsizeentcopy))
-        ret = ctxt->errNo;
+    xmlParserEntityCheck(ctxt, oldsizeentcopy);
 
     xmlParserNsFree(nsdb);
     xmlFreeInputStream(input);
-
-    return(ret);
 }
 
 /**
@@ -12155,12 +12122,12 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
 
 int
 xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
-                           const xmlChar *ID, xmlNodePtr *list) {
+                           const xmlChar *ID, xmlNodePtr *listOut) {
     xmlParserInputPtr input;
-    int ret;
+    xmlNodePtr list;
 
-    if (list != NULL)
-        *list = NULL;
+    if (listOut != NULL)
+        *listOut = NULL;
 
     if (ctxt == NULL)
         return(XML_ERR_ARGUMENT);
@@ -12169,10 +12136,14 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     if (input == NULL)
         return(ctxt->errNo);
 
-    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, list, 1);
+    list = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, 1);
+    if (*listOut != NULL)
+        *listOut = list;
+    else
+        xmlFreeNodeList(list);
 
     xmlFreeInputStream(input);
-    return(ret);
+    return(ctxt->errNo);
 }
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -12478,14 +12449,15 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
  */
 int
 xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
-     void *user_data, int depth, const xmlChar *string, xmlNodePtr *list,
+     void *user_data, int depth, const xmlChar *string, xmlNodePtr *listOut,
      int recover) {
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
+    xmlNodePtr list;
     int ret;
 
-    if (list != NULL)
-        *list = NULL;
+    if (listOut != NULL)
+        *listOut = NULL;
 
     if (string == NULL)
         return(XML_ERR_ARGUMENT);
@@ -12505,7 +12477,13 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     if (input == NULL)
         return(ctxt->errNo);
 
-    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 0, list, 1);
+    list = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 0, 1);
+    if (listOut != NULL)
+        *listOut = list;
+    else
+        xmlFreeNodeList(list);
+
+    ret = ctxt->errNo;
 
     xmlFreeInputStream(input);
     xmlFreeParserCtxt(ctxt);
@@ -13511,6 +13489,9 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt)
         ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
         ret = ctxt->myDoc;
     } else {
+        if (ctxt->errNo == XML_ERR_OK)
+            xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR, "unknown error\n");
+
         ret = NULL;
 	xmlFreeDoc(ctxt->myDoc);
     }

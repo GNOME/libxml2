@@ -73,7 +73,7 @@ struct _xmlParserInput {
     const xmlChar *version;           /* the version string for entity */
     int flags;                        /* Flags */
     int id;                           /* an unique identifier for the entity */
-    unsigned long parentConsumed;     /* consumed bytes from parents */
+    unsigned long parentConsumed;     /* unused */
     xmlEntityPtr entity;              /* entity, if any */
 };
 

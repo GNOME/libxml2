@@ -449,36 +449,40 @@ static int
 xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
 {
     unsigned long consumed;
+    unsigned long *expandedSize;
     xmlParserInputPtr input = ctxt->input;
     xmlEntityPtr entity = input->entity;
+
+    if ((entity) && (entity->flags & XML_ENT_CHECKED))
+        return(0);
 
     /*
      * Compute total consumed bytes so far, including input streams of
      * external entities.
      */
-    consumed = input->parentConsumed;
-    if ((entity == NULL) ||
-        ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-         ((entity->flags & XML_ENT_PARSED) == 0))) {
-        xmlSaturatedAdd(&consumed, input->consumed);
-        xmlSaturatedAddSizeT(&consumed, input->cur - input->base);
-    }
+    consumed = input->consumed;
+    xmlSaturatedAddSizeT(&consumed, input->cur - input->base);
     xmlSaturatedAdd(&consumed, ctxt->sizeentities);
+
+    if (entity)
+        expandedSize = &entity->expandedSize;
+    else
+        expandedSize = &ctxt->sizeentcopy;
 
     /*
      * Add extra cost and some fixed cost.
      */
-    xmlSaturatedAdd(&ctxt->sizeentcopy, extra);
-    xmlSaturatedAdd(&ctxt->sizeentcopy, XML_ENT_FIXED_COST);
+    xmlSaturatedAdd(expandedSize, extra);
+    xmlSaturatedAdd(expandedSize, XML_ENT_FIXED_COST);
 
     /*
      * It's important to always use saturation arithmetic when tracking
      * entity sizes to make the size checks reliable. If "sizeentcopy"
      * overflows, we have to abort.
      */
-    if ((ctxt->sizeentcopy > XML_PARSER_ALLOWED_EXPANSION) &&
-        ((ctxt->sizeentcopy >= ULONG_MAX) ||
-         (ctxt->sizeentcopy / ctxt->maxAmpl > consumed))) {
+    if ((*expandedSize > XML_PARSER_ALLOWED_EXPANSION) &&
+        ((*expandedSize >= ULONG_MAX) ||
+         (*expandedSize / ctxt->maxAmpl > consumed))) {
         xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
                        "Maximum entity amplification factor exceeded, see "
                        "xmlCtxtSetMaxAmplification.\n");
@@ -2257,25 +2261,29 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
             if (inParam == 0)
                 break;
 
-            consumed = ctxt->input->consumed;
-            xmlSaturatedAddSizeT(&consumed,
-                                 ctxt->input->cur - ctxt->input->base);
-
-            /*
-             * Add to sizeentities when parsing an external entity
-             * for the first time.
-             */
             ent = ctxt->input->entity;
-            if ((ent->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-                ((ent->flags & XML_ENT_PARSED) == 0)) {
-                ent->flags |= XML_ENT_PARSED;
 
-                xmlSaturatedAdd(&ctxt->sizeentities, consumed);
+            if ((ent->flags & XML_ENT_CHECKED) == 0) {
+                consumed = ctxt->input->consumed;
+                xmlSaturatedAddSizeT(&consumed,
+                                     ctxt->input->cur - ctxt->input->base);
+
+                xmlSaturatedAdd(&ent->expandedSize, consumed);
+
+                /*
+                 * Add to sizeentities when parsing an external entity
+                 * for the first time.
+                 */
+                if (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
+                    xmlSaturatedAdd(&ctxt->sizeentities, consumed);
+                }
+
+                ent->flags |= XML_ENT_CHECKED;
             }
 
-            xmlParserEntityCheck(ctxt, consumed);
-
             xmlPopInput(ctxt);
+
+            xmlParserEntityCheck(ctxt, ent->expandedSize);
 
             inParam = PARSER_IN_PE(ctxt);
             expandParam = PARSER_EXTERNAL(ctxt);
@@ -4036,9 +4044,11 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
 		    if ((ent->etype != XML_INTERNAL_PREDEFINED_ENTITY) &&
 			(ent->content != NULL)) {
                         if ((ent->flags & XML_ENT_CHECKED) == 0) {
-                            unsigned long oldCopy = ctxt->sizeentcopy;
-
-                            ctxt->sizeentcopy = ent->length;
+                            xmlEntityPtr entity = ctxt->input->entity;
+                            int oldCopy = entity ?
+                                entity->expandedSize :
+                                ctxt->sizeentcopy;
+                            int newCopy;
 
                             ++ctxt->depth;
                             rep = xmlStringDecodeEntitiesInt(ctxt,
@@ -4055,7 +4065,12 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
                              */
                             if (ctxt->inSubset == 0) {
                                 ent->flags |= XML_ENT_CHECKED;
-                                ent->expandedSize = ctxt->sizeentcopy;
+
+                                newCopy = entity ?
+                                    entity->expandedSize :
+                                    ctxt->sizeentcopy;
+                                ent->expandedSize =
+                                    newCopy - oldCopy + ent->length;
                             }
 
                             if (rep != NULL) {
@@ -4065,7 +4080,7 @@ xmlParseAttValueComplex(xmlParserCtxtPtr ctxt, int *attlen, int normalize) {
                                 ent->content[0] = 0;
                             }
 
-                            if (xmlParserEntityCheck(ctxt, oldCopy))
+                            if (xmlParserEntityCheck(ctxt, ent->length))
                                 goto error;
                         } else {
                             if (xmlParserEntityCheck(ctxt, ent->expandedSize))
@@ -7048,14 +7063,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
         (ctxt->validate)) {
         if ((ent->flags & XML_ENT_PARSED) == 0) {
             xmlCtxtParseEntity(ctxt, ent);
-        } else if (ent->children != NULL) {
-            /*
-             * We also check for amplification if entities aren't substituted.
-             * They might be expanded later.
-             */
-            if (xmlParserEntityCheck(ctxt, ent->expandedSize))
-                return;
-        } else {
+        } else if (ent->children == NULL) {
             /*
              * Probably running in SAX mode and the callbacks don't
              * build the entity content. Parse the entity again.
@@ -7068,6 +7076,13 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
             xmlCtxtParseEntity(ctxt, ent);
         }
     }
+
+    /*
+     * We also check for amplification if entities aren't substituted.
+     * They might be expanded later.
+     */
+    if (xmlParserEntityCheck(ctxt, ent->expandedSize))
+        return;
 
     if (ctxt->replaceEntities == 0) {
 	/*
@@ -7580,9 +7595,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 		  "Internal: %%%s; is not a parameter entity\n",
 			  name, NULL);
 	} else {
-            unsigned long parentConsumed;
-            xmlEntityPtr oldEnt;
-
 	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
 	        ((ctxt->options & XML_PARSE_NOENT) == 0) &&
 		((ctxt->options & XML_PARSE_DTDVALID) == 0) &&
@@ -7598,17 +7610,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                 return;
             }
 
-            /* Must be computed from old input before pushing new input. */
-            parentConsumed = ctxt->input->parentConsumed;
-            oldEnt = ctxt->input->entity;
-            if ((oldEnt == NULL) ||
-                ((oldEnt->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-                 ((oldEnt->flags & XML_ENT_PARSED) == 0))) {
-                xmlSaturatedAdd(&parentConsumed, ctxt->input->consumed);
-                xmlSaturatedAddSizeT(&parentConsumed,
-                                     ctxt->input->cur - ctxt->input->base);
-            }
-
 	    input = xmlNewEntityInputStream(ctxt, entity);
 	    if (xmlPushInput(ctxt, input) < 0) {
                 xmlFreeInputStream(input);
@@ -7616,8 +7617,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
             }
 
             entity->flags |= XML_ENT_EXPANDING;
-
-            input->parentConsumed = parentConsumed;
 
 	    if (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
                 xmlDetectEncoding(ctxt);
@@ -12023,18 +12022,13 @@ static void
 xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     xmlParserInputPtr input;
     xmlNodePtr list;
-    unsigned long oldsizeentcopy = ctxt->sizeentcopy;
     unsigned long consumed;
     int isExternal;
-    int alreadyParsed;
     int buildTree;
     int oldMinNsIndex;
 
     isExternal = (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY);
-    alreadyParsed = (ent->flags & XML_ENT_PARSED) ? 1 : 0;
     buildTree = (ctxt->node != NULL);
-
-    ent->flags |= XML_ENT_PARSED | XML_ENT_CHECKED;
 
     /*
      * Recursion check
@@ -12042,7 +12036,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     if (ent->flags & XML_ENT_EXPANDING) {
         xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
         xmlHaltParser(ctxt);
-        return;
+        goto error;
     }
 
     /*
@@ -12050,7 +12044,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      */
     input = xmlNewEntityInputStream(ctxt, ent);
     if (input == NULL)
-        return;
+        goto error;
 
     /*
      * When building a tree, we need to limit the scope of namespace
@@ -12060,12 +12054,6 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     oldMinNsIndex = ctxt->nsdb->minNsIndex;
     if (buildTree)
         ctxt->nsdb->minNsIndex = ctxt->nsNr;
-
-    /*
-     * We don't set parentConsumed for general entities, so we have
-     * to reset sizeentcopy temporarily.
-     */
-    ctxt->sizeentcopy = 0;
 
     /*
      * Parse content
@@ -12097,13 +12085,14 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      */
     consumed = input->consumed;
     xmlSaturatedAddSizeT(&consumed, input->cur - input->base);
-    xmlSaturatedAdd(&ctxt->sizeentcopy, consumed);
 
-    if (!alreadyParsed) {
+    if ((ent->flags & XML_ENT_CHECKED) == 0)
+        xmlSaturatedAdd(&ent->expandedSize, consumed);
+
+    if ((ent->flags & XML_ENT_PARSED) == 0) {
         if (isExternal)
             xmlSaturatedAdd(&ctxt->sizeentities, consumed);
 
-        ent->expandedSize = ctxt->sizeentcopy;
         ent->children = list;
 
         while (list != NULL) {
@@ -12116,10 +12105,10 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
         xmlFreeNodeList(list);
     }
 
-    /* This adds the old size back */
-    xmlParserEntityCheck(ctxt, oldsizeentcopy);
-
     xmlFreeInputStream(input);
+
+error:
+    ent->flags |= XML_ENT_PARSED | XML_ENT_CHECKED;
 }
 
 /**

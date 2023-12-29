@@ -175,11 +175,9 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
     if (ctxt == NULL)
         return;
 
-    if (code == XML_ERR_UNSUPPORTED_ENCODING) {
-        level = XML_ERR_WARNING;
-    } else if ((code == XML_IO_ENOENT) ||
-               (code == XML_IO_NETWORK_ATTEMPT) ||
-               (code == XML_IO_UNKNOWN)) {
+    if ((code == XML_IO_ENOENT) ||
+        (code == XML_IO_NETWORK_ATTEMPT) ||
+        (code == XML_IO_UNKNOWN)) {
         if (ctxt->validate == 0)
             level = XML_ERR_WARNING;
         else
@@ -318,17 +316,23 @@ xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
 void
-xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *info)
+xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors code, const char *info)
 {
     const char *errmsg;
+    xmlErrorLevel level;
 
-    errmsg = xmlErrString(error);
+    if (code == XML_ERR_UNSUPPORTED_ENCODING)
+        level = XML_ERR_WARNING;
+    else
+        level = XML_ERR_FATAL;
+
+    errmsg = xmlErrString(code);
 
     if (info == NULL) {
-        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, code, level,
                    NULL, NULL, NULL, 0, "%s\n", errmsg);
     } else {
-        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_FATAL,
+        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, code, level,
                    (const xmlChar *) info, NULL, NULL, 0,
                    "%s: %s\n", errmsg, info);
     }
@@ -1560,12 +1564,8 @@ xmlNewInputInternal(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
         }
     }
 
-    if (encoding != NULL) {
-        if (xmlSwitchInputEncodingName(ctxt, input, encoding) < 0) {
-            xmlFreeInputStream(input);
-            return(NULL);
-        }
-    }
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
 
     return(input);
 }

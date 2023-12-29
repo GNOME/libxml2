@@ -9,6 +9,34 @@
 
 #include <string.h>
 
+static int
+testUnsupportedEncoding(void) {
+    xmlDocPtr doc;
+    const xmlError *error;
+    int err = 0;
+
+    xmlResetLastError();
+
+    doc = xmlReadDoc(BAD_CAST "<doc/>", NULL, "#unsupported",
+                     XML_PARSE_NOWARNING);
+    if (doc == NULL) {
+        fprintf(stderr, "xmlReadDoc failed with unsupported encoding\n");
+        err = 1;
+    }
+    xmlFreeDoc(doc);
+
+    error = xmlGetLastError();
+    if (error->code != XML_ERR_UNSUPPORTED_ENCODING ||
+        error->level != XML_ERR_WARNING ||
+        strcmp(error->message, "Unsupported encoding: #unsupported\n") != 0)
+    {
+        fprintf(stderr, "xmlReadDoc failed to raise correct error\n");
+        err = 1;
+    }
+
+    return err;
+}
+
 #ifdef LIBXML_SAX1_ENABLED
 static int
 testBalancedChunk(void) {
@@ -179,6 +207,7 @@ int
 main(void) {
     int err = 0;
 
+    err |= testUnsupportedEncoding();
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();
 #endif

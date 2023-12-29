@@ -1161,6 +1161,9 @@ xmlErrString(xmlParserErrors code) {
         case XML_ERR_REDECL_PREDEF_ENTITY:
             errmsg = "Invalid redeclaration of predefined entity";
             break;
+        case XML_ERR_UNSUPPORTED_ENCODING:
+            errmsg = "Unsupported encoding";
+            break;
 
         case XML_IO_UNKNOWN:
             errmsg = "Unknown IO error"; break;

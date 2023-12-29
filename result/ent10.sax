@@ -15,7 +15,7 @@ SAX.startElement(rnode)
 SAX.characters(
    , 4)
 SAX.getEntity(f)
-SAX.ignorableWhitespace(
+SAX.characters(
    , 4)
 SAX.startElement(f)
 SAX.characters(

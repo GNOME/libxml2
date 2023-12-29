@@ -15,7 +15,7 @@ SAX.startElementNs(rnode, NULL, NULL, 0, 0, 0)
 SAX.characters(
    , 4)
 SAX.getEntity(f)
-SAX.ignorableWhitespace(
+SAX.characters(
    , 4)
 SAX.startElementNs(f, NULL, NULL, 0, 1, 1, att1='J...', 1)
 SAX.characters(

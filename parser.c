@@ -9643,7 +9643,9 @@ out:
 
 static void
 xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
-    int nameNr = ctxt->nameNr;
+    int oldNameNr = ctxt->nameNr;
+    int oldSpaceNr = ctxt->spaceNr;
+    int oldNodeNr = ctxt->nodeNr;
 
     GROW;
     while ((ctxt->input->cur < ctxt->input->end) &&
@@ -9678,7 +9680,7 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
 	 */
 	else if (*cur == '<') {
             if (NXT(1) == '/') {
-                if (ctxt->nameNr <= nameNr)
+                if (ctxt->nameNr <= oldNameNr)
                     break;
 	        xmlParseElementEnd(ctxt);
             } else {
@@ -9705,6 +9707,35 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
 	SHRINK;
 	GROW;
     }
+
+    if ((ctxt->nameNr > oldNameNr) &&
+        (ctxt->input->cur >= ctxt->input->end) &&
+        (ctxt->wellFormed)) {
+        const xmlChar *name = ctxt->nameTab[ctxt->nameNr - 1];
+        int line = ctxt->pushTab[ctxt->nameNr - 1].line;
+        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
+                "Premature end of data in tag %s line %d\n",
+                name, line, NULL);
+    }
+
+    /*
+     * Clean up in error case
+     */
+
+    while (ctxt->nodeNr > oldNodeNr)
+        nodePop(ctxt);
+
+    while (ctxt->nameNr > oldNameNr) {
+        xmlStartTag *tag = &ctxt->pushTab[ctxt->nameNr - 1];
+
+        if (tag->nsNr != 0)
+            xmlParserNsPop(ctxt, tag->nsNr);
+
+        namePop(ctxt);
+    }
+
+    while (ctxt->spaceNr > oldSpaceNr)
+        spacePop(ctxt);
 }
 
 /**
@@ -9718,18 +9749,7 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
 
 void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
-    int nameNr = ctxt->nameNr;
-
     xmlParseContentInternal(ctxt);
-
-    if ((ctxt->errNo == XML_ERR_OK) &&
-        (ctxt->nameNr > nameNr)) {
-        const xmlChar *name = ctxt->nameTab[ctxt->nameNr - 1];
-        int line = ctxt->pushTab[ctxt->nameNr - 1].line;
-        xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
-                "Premature end of data in tag %s line %d\n",
-		name, line, NULL);
-    }
 }
 
 /**
@@ -9756,7 +9776,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
     xmlParseContentInternal(ctxt);
 
     if (ctxt->input->cur >= ctxt->input->end) {
-        if (ctxt->errNo == XML_ERR_OK) {
+        if (ctxt->wellFormed) {
             const xmlChar *name = ctxt->nameTab[ctxt->nameNr - 1];
             int line = ctxt->pushTab[ctxt->nameNr - 1].line;
             xmlFatalErrMsgStrIntStr(ctxt, XML_ERR_TAG_NOT_FINISHED,
@@ -11916,40 +11936,37 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
 
 static xmlParserErrors
 xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
-                    int hasTextDecl, xmlNodePtr *list) {
+                    int hasTextDecl, xmlNodePtr *list, int buildTree) {
     xmlNodePtr root = NULL;
-    int oldNameNr, oldSpaceNr, oldNodeNr;
     int oldWellFormed;
-    int oldNodeLen, oldNodeMem;
     int ret = XML_ERR_NO_MEMORY;
+    xmlChar *rootName = BAD_CAST "#root";
 
     if (list != NULL)
         *list = NULL;
 
-    root = xmlNewDocNode(ctxt->myDoc, NULL, BAD_CAST "pseudoroot", NULL);
-    if (root == NULL) {
-        xmlErrMemory(ctxt);
-        goto error;
+    if (buildTree) {
+        root = xmlNewDocNode(ctxt->myDoc, NULL, rootName, NULL);
+        if (root == NULL) {
+            xmlErrMemory(ctxt);
+            goto error;
+        }
     }
 
     if (xmlPushInput(ctxt, input) < 0)
         goto error;
 
     oldWellFormed = ctxt->wellFormed;
-    oldNodeLen = ctxt->nodelen;
-    oldNodeMem = ctxt->nodemem;
-
-    oldNameNr = ctxt->nameNr;
-    oldSpaceNr = ctxt->spaceNr;
-    oldNodeNr = ctxt->nodeNr;
 
     ctxt->wellFormed = 1;
     ctxt->nodelen = 0;
     ctxt->nodemem = 0;
 
-    nameNsPush(ctxt, root->name, NULL, NULL, 0, 0);
+    nameNsPush(ctxt, rootName, NULL, NULL, 0, 0);
     spacePush(ctxt, -1);
-    nodePush(ctxt, root);
+
+    if (buildTree)
+        nodePush(ctxt, root);
 
     if (hasTextDecl) {
         xmlDetectEncoding(ctxt);
@@ -11976,13 +11993,15 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
     if ((RAW == '<') && (NXT(1) == '/')) {
 	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
-    } else if (RAW != 0) {
-	xmlFatalErr(ctxt, XML_ERR_EXTRA_CONTENT, NULL);
+    } else if ((ctxt->wellFormed) &&
+               (ctxt->input->cur < ctxt->input->end)) {
+        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
+                       "entity not fully processed\n");
     }
 
     if ((ctxt->wellFormed) ||
         ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
-        if (list != NULL) {
+        if ((root != NULL) && (list != NULL)) {
             xmlNodePtr cur;
 
             /*
@@ -12004,30 +12023,13 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         ret = ctxt->errNo;
     }
 
-    /*
-     * If the entity wasn't balanced, we have to pop items from
-     * several stacks.
-     */
-    while (ctxt->nameNr > oldNameNr) {
-        xmlStartTag *tag = &ctxt->pushTab[ctxt->nameNr - 1];
-
-        if (tag->nsNr != 0)
-            xmlParserNsPop(ctxt, tag->nsNr);
-
-        namePop(ctxt);
-    }
-
-    while (ctxt->spaceNr > oldSpaceNr) {
-        spacePop(ctxt);
-    }
-
-    while (ctxt->nodeNr > oldNodeNr) {
-        nodePop(ctxt);
-    }
-
     ctxt->wellFormed = oldWellFormed && ctxt->wellFormed;
-    ctxt->nodelen = oldNodeLen;
-    ctxt->nodemem = oldNodeMem;
+
+    if (buildTree)
+        nodePop(ctxt);
+
+    namePop(ctxt);
+    spacePop(ctxt);
 
     /* xmlPopInput would free the stream */
     inputPop(ctxt);
@@ -12094,7 +12096,8 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     ctxt->nsdb = nsdb;
     ent->flags |= XML_ENT_EXPANDING;
 
-    ret = xmlCtxtParseContent(ctxt, input, isExternal, &list);
+    ret = xmlCtxtParseContent(ctxt, input, isExternal, &list,
+                              (ctxt->node != NULL));
 
     ent->flags &= ~XML_ENT_EXPANDING;
     ctxt->nsdb = oldNsdb;
@@ -12166,7 +12169,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     if (input == NULL)
         return(ctxt->errNo);
 
-    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, list);
+    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, list, 1);
 
     xmlFreeInputStream(input);
     return(ret);
@@ -12502,7 +12505,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     if (input == NULL)
         return(ctxt->errNo);
 
-    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 0, list);
+    ret = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 0, list, 1);
 
     xmlFreeInputStream(input);
     xmlFreeParserCtxt(ctxt);

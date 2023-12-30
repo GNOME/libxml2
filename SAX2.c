@@ -970,10 +970,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
         (void) nsret;
 
         if (!ctxt->replaceEntities) {
-	    ctxt->depth++;
-	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
-		                          0,0,0);
-	    ctxt->depth--;
+            /* TODO: normalize if needed */
+	    val = xmlExpandEntitiesInAttValue(ctxt, value, /* normalize */ 0);
 	    if (val == NULL) {
 	        xmlSAX2ErrMemory(ctxt);
 		if (name != NULL)
@@ -1038,10 +1036,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
         (void) nsret;
 
         if (!ctxt->replaceEntities) {
-	    ctxt->depth++;
-	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
-		                          0,0,0);
-	    ctxt->depth--;
+            /* TODO: normalize if needed */
+	    val = xmlExpandEntitiesInAttValue(ctxt, value, /* normalize */ 0);
 	    if (val == NULL) {
 	        xmlSAX2ErrMemory(ctxt);
 	        xmlFree(ns);
@@ -1179,10 +1175,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
         if (!ctxt->replaceEntities) {
 	    xmlChar *val;
 
-	    ctxt->depth++;
-	    val = xmlStringDecodeEntities(ctxt, value, XML_SUBSTITUTE_REF,
-		                          0,0,0);
-	    ctxt->depth--;
+            /* TODO: normalize if needed */
+	    val = xmlExpandEntitiesInAttValue(ctxt, value, /* normalize */ 0);
 
 	    if (val == NULL)
 		ctxt->valid &= xmlValidateOneAttribute(&ctxt->vctxt,
@@ -1736,7 +1730,6 @@ static xmlChar *
 xmlSAX2DecodeAttrEntities(xmlParserCtxtPtr ctxt, const xmlChar *str,
                           const xmlChar *end) {
     const xmlChar *in;
-    xmlChar *ret;
 
     in = str;
     while (in < end)
@@ -1744,11 +1737,12 @@ xmlSAX2DecodeAttrEntities(xmlParserCtxtPtr ctxt, const xmlChar *str,
 	    goto decode;
     return(NULL);
 decode:
-    ctxt->depth++;
-    ret = xmlStringLenDecodeEntities(ctxt, str, end - str,
-				     XML_SUBSTITUTE_REF, 0,0,0);
-    ctxt->depth--;
-    return(ret);
+    /*
+     * If the value contains '&', we can be sure it was allocated and is
+     * zero-terminated.
+     */
+    /* TODO: normalize if needed */
+    return(xmlExpandEntitiesInAttValue(ctxt, str, /* normalize */ 0));
 }
 #endif /* LIBXML_VALID_ENABLED */
 

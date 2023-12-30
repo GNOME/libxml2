@@ -87,4 +87,8 @@ XML_HIDDEN xmlParserInputPtr
 xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
                 const char *chunk, int size, const char *encoding);
 
+XML_HIDDEN xmlChar *
+xmlExpandEntitiesInAttValue(xmlParserCtxtPtr ctxt, const xmlChar *str,
+                            int normalize);
+
 #endif /* XML_PARSER_H_PRIVATE__ */

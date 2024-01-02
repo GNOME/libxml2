@@ -2378,6 +2378,10 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 	    ((type != XML_TEXT_NODE) ||
              (lastChild->name == xmlStringText));
 	if ((coalesceText) && (ctxt->nodemem != 0)) {
+            int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                            XML_MAX_HUGE_LENGTH :
+                            XML_MAX_TEXT_LENGTH;
+
 	    /*
 	     * The whole point of maintaining nodelen and nodemem,
 	     * xmlTextConcat is too costly, i.e. compute length,
@@ -2396,12 +2400,7 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 		xmlSAX2ErrMemory(ctxt);
 		return;
  	    }
-	    if (ctxt->nodelen > INT_MAX - len) {
-                xmlSAX2ErrMemory(ctxt);
-                return;
-	    }
-            if ((ctxt->nodelen + len > XML_MAX_TEXT_LENGTH) &&
-                ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+            if ((len > maxLength) || (ctxt->nodelen > maxLength - len)) {
                 xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
                             "Text node too long, try XML_PARSE_HUGE");
                 xmlHaltParser(ctxt);

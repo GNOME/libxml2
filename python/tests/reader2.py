@@ -63,8 +63,7 @@ Entity: line 1:
       ^
 """.format(dir_prefix),
     't8':
-"""{0}/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
+"""{0}/t8.xml:6: parser error : Content error in the internal subset
 %defroot; %defmiddle; %deftest;
          ^
 Entity: line 1: 
@@ -72,8 +71,7 @@ Entity: line 1:
 ^
 """.format(dir_prefix),
     't8a':
-"""{0}/t8a.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
+"""{0}/t8a.xml:6: parser error : Content error in the internal subset
 %defroot;%defmiddle;%deftest;
          ^
 Entity: line 1: 

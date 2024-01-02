@@ -1,5 +1,4 @@
-./test/valid/t8.xml:6: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
+./test/valid/t8.xml:6: parser error : Content error in the internal subset
 %defroot; %defmiddle; %deftest;
          ^
 Entity: line 1: 

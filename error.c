@@ -1085,6 +1085,9 @@ xmlErrString(xmlParserErrors code) {
         case XML_ERR_CONDSEC_INVALID:
             errmsg = "XML conditional section '[' expected";
             break;
+        case XML_ERR_INT_SUBSET_NOT_FINISHED:
+            errmsg = "Content error in the internal subset";
+            break;
         case XML_ERR_EXT_SUBSET_NOT_FINISHED:
             errmsg = "Content error in the external subset";
             break;

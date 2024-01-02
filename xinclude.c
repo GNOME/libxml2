@@ -2193,7 +2193,7 @@ xmlXIncludeDoProcessRoot(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
 int
 xmlXIncludeGetLastError(xmlXIncludeCtxtPtr ctxt) {
     if (ctxt == NULL)
-        return(XML_ERR_INTERNAL_ERROR);
+        return(XML_ERR_ARGUMENT);
     return(ctxt->errNo);
 }
 

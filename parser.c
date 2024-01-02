@@ -7889,18 +7889,15 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
         ((entity->etype != XML_EXTERNAL_PARAMETER_ENTITY) &&
 	 (entity->etype != XML_EXTERNAL_GENERAL_PARSED_ENTITY)) ||
 	(entity->content != NULL)) {
-	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+	xmlFatalErr(ctxt, XML_ERR_ARGUMENT,
 	            "xmlLoadEntityContent parameter error");
         return(-1);
     }
 
     input = xmlLoadExternalEntity((char *) entity->URI,
            (char *) entity->ExternalID, ctxt);
-    if (input == NULL) {
-	xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-	            "xmlLoadEntityContent input error");
+    if (input == NULL)
         return(-1);
-    }
 
     oldinput = ctxt->input;
     oldinputNr = ctxt->inputNr;
@@ -8221,9 +8218,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
             } else if (RAW == '%') {
 	        xmlParsePEReference(ctxt);
             } else {
-		xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-                        "xmlParseInternalSubset: error detected in"
-                        " Markup declaration\n");
+		xmlFatalErr(ctxt, XML_ERR_INT_SUBSET_NOT_FINISHED, NULL);
                 xmlHaltParser(ctxt);
                 return;
             }
@@ -8404,11 +8399,8 @@ xmlParseStartTag(xmlParserCtxtPtr ctxt) {
 	   ((RAW != '/') || (NXT(1) != '>')) &&
 	   (IS_BYTE_CHAR(RAW))) && (PARSER_STOPPED(ctxt) == 0)) {
 	attname = xmlParseAttribute(ctxt, &attvalue);
-        if (attname == NULL) {
-	    xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
-			   "xmlParseStartTag: problem parsing attributes\n");
+        if (attname == NULL)
 	    break;
-	}
         if (attvalue != NULL) {
 	    /*
 	     * [ WFC: Unique Att Spec ]
@@ -8939,14 +8931,13 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
     const xmlChar **atts = ctxt->atts;
     unsigned attrHashSize = 0;
     int maxatts = ctxt->maxatts;
-    int nratts, nbatts, nbdef, inputid;
+    int nratts, nbatts, nbdef;
     int i, j, nbNs, nbTotalDef, attval, nsIndex, maxAtts;
     int alloc = 0;
 
     if (RAW != '<') return(NULL);
     NEXT1;
 
-    inputid = ctxt->input->id;
     nbatts = 0;
     nratts = 0;
     nbdef = 0;
@@ -9186,13 +9177,6 @@ next_attr:
 	    break;
 	}
         GROW;
-    }
-
-    if (ctxt->input->id != inputid) {
-        xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
-                    "Unexpected change of input\n");
-        localname = NULL;
-        goto done;
     }
 
     /*
@@ -12282,7 +12266,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
      * check all input parameters, grab the document
      */
     if ((lst == NULL) || (node == NULL) || (data == NULL) || (datalen < 0))
-        return(XML_ERR_INTERNAL_ERROR);
+        return(XML_ERR_ARGUMENT);
     switch (node->type) {
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:

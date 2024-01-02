@@ -1,5 +1,4 @@
-./test/errors/754946.xml:3: parser error : internal error: xmlParseInternalSubset: error detected in Markup declaration
-
+./test/errors/754946.xml:3: parser error : Content error in the internal subset
   %SYSTEM;
           ^
 Entity: line 1: 

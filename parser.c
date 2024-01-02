@@ -158,7 +158,7 @@ xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt, int inAttr);
  * boundary feature. It can be disabled with the XML_PARSE_HUGE
  * parser option.
  */
-unsigned int xmlParserMaxDepth = 256;
+const unsigned int xmlParserMaxDepth = 256;
 
 
 
@@ -1981,7 +1981,19 @@ inputPop(xmlParserCtxtPtr ctxt)
 int
 nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 {
-    if (ctxt == NULL) return(0);
+    int maxDepth;
+
+    if (ctxt == NULL)
+        return(0);
+
+    maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 2048 : 256;
+    if (ctxt->nodeNr > maxDepth) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_RESOURCE_LIMIT,
+                "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
+                ctxt->nodeNr);
+        xmlHaltParser(ctxt);
+        return(-1);
+    }
     if (ctxt->nodeNr >= ctxt->nodeMax) {
         xmlNodePtr *tmp;
 
@@ -1994,14 +2006,6 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
         }
         ctxt->nodeTab = tmp;
 	ctxt->nodeMax *= 2;
-    }
-    if ((((unsigned int) ctxt->nodeNr) > xmlParserMaxDepth) &&
-        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
-	xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
-		 "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
-			  xmlParserMaxDepth);
-	xmlHaltParser(ctxt);
-	return(-1);
     }
     ctxt->nodeTab[ctxt->nodeNr] = value;
     ctxt->node = value;
@@ -6452,15 +6456,15 @@ mem_error:
 static xmlElementContentPtr
 xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
                                        int depth) {
+    int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 2048 : 256;
     xmlElementContentPtr ret = NULL, cur = NULL, last = NULL, op = NULL;
     const xmlChar *elem;
     xmlChar type = 0;
 
-    if (((depth > 128) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-        (depth >  2048)) {
-        xmlFatalErrMsgInt(ctxt, XML_ERR_ELEMCONTENT_NOT_FINISHED,
-"xmlParseElementChildrenContentDecl : depth %d too deep, use XML_PARSE_HUGE\n",
-                          depth);
+    if (depth > maxDepth) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_RESOURCE_LIMIT,
+                "xmlParseElementChildrenContentDecl : depth %d too deep, "
+                "use XML_PARSE_HUGE\n", depth);
 	return(NULL);
     }
     SKIP_BLANKS_PE;
@@ -9809,6 +9813,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
  */
 static int
 xmlParseElementStart(xmlParserCtxtPtr ctxt) {
+    int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 2048 : 256;
     const xmlChar *name;
     const xmlChar *prefix = NULL;
     const xmlChar *URI = NULL;
@@ -9817,11 +9822,10 @@ xmlParseElementStart(xmlParserCtxtPtr ctxt) {
     xmlNodePtr cur;
     int nbNs = 0;
 
-    if (((unsigned int) ctxt->nameNr > xmlParserMaxDepth) &&
-        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
-	xmlFatalErrMsgInt(ctxt, XML_ERR_INTERNAL_ERROR,
-		 "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
-			  xmlParserMaxDepth);
+    if (ctxt->nameNr > maxDepth) {
+        xmlFatalErrMsgInt(ctxt, XML_ERR_RESOURCE_LIMIT,
+                "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
+                ctxt->nameNr);
 	xmlHaltParser(ctxt);
 	return(-1);
     }

@@ -25,11 +25,14 @@ extern "C" {
 /**
  * xmlParserMaxDepth:
  *
+ * DEPRECATED: has no effect
+ *
  * arbitrary depth limit for the XML documents that we allow to
  * process. This is not a limitation of the parser but a safety
  * boundary feature, use XML_PARSE_HUGE option to override it.
  */
-XMLPUBVAR unsigned int xmlParserMaxDepth;
+XML_DEPRECATED
+XMLPUBVAR const unsigned int xmlParserMaxDepth;
 
 /**
  * XML_MAX_TEXT_LENGTH:

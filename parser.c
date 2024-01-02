@@ -11497,6 +11497,8 @@ encoding_error:
 int
 xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
+    size_t curBase;
+    size_t maxLength;
     int end_in_lf = 0;
 
     if ((ctxt == NULL) || (size < 0))
@@ -11531,14 +11533,16 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 
     xmlParseTryOrFinish(ctxt, terminate);
 
-    if ((ctxt->input != NULL) &&
-         (((ctxt->input->end - ctxt->input->cur) > XML_MAX_LOOKUP_LIMIT) ||
-         ((ctxt->input->cur - ctxt->input->base) > XML_MAX_LOOKUP_LIMIT)) &&
-        ((ctxt->options & XML_PARSE_HUGE) == 0)) {
+    curBase = ctxt->input->cur - ctxt->input->base;
+    maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                XML_MAX_HUGE_LENGTH :
+                XML_MAX_LOOKUP_LIMIT;
+    if (curBase > maxLength) {
         xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
                     "Buffer size limit exceeded, try XML_PARSE_HUGE\n");
         xmlHaltParser(ctxt);
     }
+
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
 

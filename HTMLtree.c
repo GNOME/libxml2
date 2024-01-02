@@ -389,7 +389,7 @@ htmlFindOutputEncoder(const char *encoding) {
 
 	enc = xmlParseCharEncoding(encoding);
 	if (enc != XML_CHAR_ENCODING_UTF8) {
-	    handler = xmlFindCharEncodingHandler(encoding);
+	    xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
 	    if (handler == NULL)
 		htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
 	}
@@ -398,9 +398,9 @@ htmlFindOutputEncoder(const char *encoding) {
          * Fallback to HTML or ASCII when the encoding is unspecified
          */
         if (handler == NULL)
-            handler = xmlFindCharEncodingHandler("HTML");
+            xmlOpenCharEncodingHandler("HTML", /* output */ 1, &handler);
         if (handler == NULL)
-            handler = xmlFindCharEncodingHandler("ascii");
+            xmlOpenCharEncodingHandler("ascii", /* output */ 1, &handler);
     }
 
     return(handler);

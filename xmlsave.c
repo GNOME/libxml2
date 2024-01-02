@@ -321,9 +321,15 @@ xmlNewSaveCtxt(const char *encoding, int options)
     memset(ret, 0, sizeof(xmlSaveCtxt));
 
     if (encoding != NULL) {
-        ret->handler = xmlFindCharEncodingHandler(encoding);
+        int res;
+
+        res = xmlOpenCharEncodingHandler(encoding, /* output */ 1,
+                                         &ret->handler);
 	if (ret->handler == NULL) {
-	    xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
+            if (res < 0)
+                xmlSaveErrMemory();
+            else
+	        xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
             xmlFreeSaveCtxt(ret);
 	    return(NULL);
 	}
@@ -488,7 +494,7 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
         xmlCharEncodingHandler *handler;
         int res;
 
-	res = xmlOpenCharEncodingHandler(encoding, &handler);
+	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
         if (res != 0) {
             if (res < 0)
                 xmlSaveErrMemory();
@@ -2315,10 +2321,16 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     if (txt_encoding == NULL)
 	txt_encoding = (const char *) out_doc->encoding;
     if (txt_encoding != NULL) {
-	conv_hdlr = xmlFindCharEncodingHandler(txt_encoding);
-	if ( conv_hdlr == NULL ) {
-	    xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, (xmlNodePtr) out_doc,
-		       txt_encoding);
+        int res;
+
+	res = xmlOpenCharEncodingHandler(txt_encoding, /* output */ 1,
+                                         &conv_hdlr);
+	if (conv_hdlr == NULL) {
+            if (res < 0)
+                xmlSaveErrMemory();
+            else
+                xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, (xmlNodePtr) out_doc,
+                           txt_encoding);
 	    return;
 	}
     }
@@ -2442,7 +2454,7 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-	handler = xmlFindCharEncodingHandler(encoding);
+	xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
 	if (handler == NULL) {
 	    xmlFree((char *) cur->encoding);
 	    cur->encoding = NULL;
@@ -2579,10 +2591,9 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 	encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-
-	    handler = xmlFindCharEncodingHandler(encoding);
-	    if (handler == NULL)
-		return(-1);
+        xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
+        if (handler == NULL)
+            return(-1);
     }
 
 #ifdef LIBXML_ZLIB_ENABLED

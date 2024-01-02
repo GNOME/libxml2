@@ -999,7 +999,8 @@ xmlDetectEBCDIC(xmlParserInputPtr input, xmlCharEncodingHandlerPtr *hout) {
                 break;
             out[i] = 0;
             xmlCharEncCloseFunc(handler);
-            res = xmlOpenCharEncodingHandler((char *) out + start, &handler);
+            res = xmlOpenCharEncodingHandler((char *) out + start,
+                                             /* output */ 0, &handler);
             if (res != 0)
                 return(res);
             *hout = handler;
@@ -1089,7 +1090,7 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (encoding == NULL)
         return(-1);
 
-    res = xmlOpenCharEncodingHandler(encoding, &handler);
+    res = xmlOpenCharEncodingHandler(encoding, /* output */ 0, &handler);
     if (res != 0) {
         xmlFatalErr(ctxt, res, encoding);
         return(-1);

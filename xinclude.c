@@ -1609,7 +1609,8 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
 	encoding = xmlXIncludeGetProp(ctxt, ref->elem, XINCLUDE_PARSE_ENCODING);
     }
     if (encoding != NULL) {
-        res = xmlOpenCharEncodingHandler((const char *) encoding, &handler);
+        res = xmlOpenCharEncodingHandler((const char *) encoding,
+                                         /* output */ 0, &handler);
 
         if (res != 0) {
             if (res == XML_ERR_NO_MEMORY) {

@@ -2385,6 +2385,38 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     return(res);
 }
 
+static void
+xmlPopPE(xmlParserCtxtPtr ctxt) {
+    unsigned long consumed;
+    xmlEntityPtr ent;
+
+    ent = ctxt->input->entity;
+
+    ent->flags &= ~XML_ENT_EXPANDING;
+
+    if ((ent->flags & XML_ENT_CHECKED) == 0) {
+        consumed = ctxt->input->consumed;
+        xmlSaturatedAddSizeT(&consumed,
+                             ctxt->input->cur - ctxt->input->base);
+
+        xmlSaturatedAdd(&ent->expandedSize, consumed);
+
+        /*
+         * Add to sizeentities when parsing an external entity
+         * for the first time.
+         */
+        if (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
+            xmlSaturatedAdd(&ctxt->sizeentities, consumed);
+        }
+
+        ent->flags |= XML_ENT_CHECKED;
+    }
+
+    xmlPopInput(ctxt);
+
+    xmlParserEntityCheck(ctxt, ent->expandedSize);
+}
+
 /**
  * xmlSkipBlankCharsPE:
  * @ctxt:  the XML parser context
@@ -2425,37 +2457,10 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
             inParam = PARSER_IN_PE(ctxt);
             expandParam = PARSER_EXTERNAL(ctxt);
         } else if (CUR == 0) {
-            unsigned long consumed;
-            xmlEntityPtr ent;
-
             if (inParam == 0)
                 break;
 
-            ent = ctxt->input->entity;
-
-            ent->flags &= ~XML_ENT_EXPANDING;
-
-            if ((ent->flags & XML_ENT_CHECKED) == 0) {
-                consumed = ctxt->input->consumed;
-                xmlSaturatedAddSizeT(&consumed,
-                                     ctxt->input->cur - ctxt->input->base);
-
-                xmlSaturatedAdd(&ent->expandedSize, consumed);
-
-                /*
-                 * Add to sizeentities when parsing an external entity
-                 * for the first time.
-                 */
-                if (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
-                    xmlSaturatedAdd(&ctxt->sizeentities, consumed);
-                }
-
-                ent->flags |= XML_ENT_CHECKED;
-            }
-
-            xmlPopInput(ctxt);
-
-            xmlParserEntityCheck(ctxt, ent->expandedSize);
+            xmlPopPE(ctxt);
 
             inParam = PARSER_IN_PE(ctxt);
             expandParam = PARSER_EXTERNAL(ctxt);
@@ -7249,6 +7254,8 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 void
 xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
+    int oldInputNr;
+
     xmlCtxtInitializeLate(ctxt);
 
     xmlDetectEncoding(ctxt);
@@ -7270,9 +7277,11 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     }
 
     ctxt->inSubset = 2;
+    oldInputNr = ctxt->inputNr;
 
     SKIP_BLANKS_PE;
-    while ((PARSER_STOPPED(ctxt) == 0) && (RAW != 0)) {
+    while (((RAW != 0) || (ctxt->inputNr > oldInputNr)) &&
+           (!PARSER_STOPPED(ctxt))) {
 	GROW;
         if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
             xmlParseConditionalSections(ctxt);
@@ -7287,10 +7296,12 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
         SHRINK;
     }
 
+    while (ctxt->inputNr > oldInputNr)
+        xmlPopPE(ctxt);
+
     if (RAW != 0) {
 	xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
     }
-
 }
 
 /**
@@ -8210,6 +8221,8 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
      * Is there any DTD definition ?
      */
     if (RAW == '[') {
+        int oldInputNr = ctxt->inputNr;
+
         NEXT;
 	/*
 	 * Parse the succession of Markup declarations and
@@ -8217,7 +8230,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	 * Subsequence (markupdecl | PEReference | S)*
 	 */
 	SKIP_BLANKS;
-	while (((RAW != ']') || (PARSER_IN_PE(ctxt))) &&
+	while (((RAW != ']') || (ctxt->inputNr > oldInputNr)) &&
                (PARSER_STOPPED(ctxt) == 0)) {
 
             /*
@@ -8233,13 +8246,16 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	        xmlParsePEReference(ctxt);
             } else {
 		xmlFatalErr(ctxt, XML_ERR_INT_SUBSET_NOT_FINISHED, NULL);
-                xmlHaltParser(ctxt);
-                return;
+                break;
             }
 	    SKIP_BLANKS_PE;
             SHRINK;
             GROW;
 	}
+
+        while (ctxt->inputNr > oldInputNr)
+            xmlPopPE(ctxt);
+
 	if (RAW == ']') {
 	    NEXT;
 	    SKIP_BLANKS;
@@ -8249,7 +8265,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
     /*
      * We should be at the end of the DOCTYPE declaration.
      */
-    if (RAW != '>') {
+    if ((ctxt->wellFormed) && (RAW != '>')) {
 	xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, NULL);
 	return;
     }
@@ -10583,8 +10599,9 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
      */
     GROW;
     if (RAW != '<') {
-	xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
-		       "Start tag expected, '<' not found\n");
+        if (ctxt->wellFormed)
+            xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
+                           "Start tag expected, '<' not found\n");
     } else {
 	xmlParseElement(ctxt);
 
@@ -10594,7 +10611,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	xmlParseMisc(ctxt);
 
         if (ctxt->input->cur < ctxt->input->end) {
-            if (ctxt->errNo == XML_ERR_OK)
+            if (ctxt->wellFormed)
 	        xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
         } else if ((ctxt->input->buf != NULL) &&
                    (ctxt->input->buf->encoder != NULL) &&

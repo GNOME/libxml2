@@ -498,7 +498,7 @@ recursiveDetectTest(const char *filename,
      * base of the test, parse with the old API
      */
     doc = xmlCtxtReadFile(ctxt, filename, NULL, parserOptions);
-    if ((doc != NULL) || (ctxt->lastError.code != XML_ERR_ENTITY_LOOP)) {
+    if ((doc != NULL) || (ctxt->lastError.code != XML_ERR_RESOURCE_LIMIT)) {
         fprintf(stderr, "Failed to detect recursion in %s\n", filename);
 	xmlFreeParserCtxt(ctxt);
 	xmlFreeDoc(doc);

@@ -483,7 +483,7 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
     if ((*expandedSize > XML_PARSER_ALLOWED_EXPANSION) &&
         ((*expandedSize >= ULONG_MAX) ||
          (*expandedSize / ctxt->maxAmpl > consumed))) {
-        xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
+        xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity amplification factor exceeded, see "
                        "xmlCtxtSetMaxAmplification.\n");
         xmlHaltParser(ctxt);
@@ -2506,12 +2506,15 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
  */
 int
 xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
+    int maxDepth;
     int ret;
-    if (input == NULL) return(-1);
 
-    if (((ctxt->inputNr > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-        (ctxt->inputNr > 100)) {
-        xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
+    if ((ctxt == NULL) || (input == NULL))
+        return(-1);
+
+    maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
+    if (ctxt->inputNr > maxDepth) {
+        xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity nesting depth exceeded");
         xmlHaltParser(ctxt);
 	return(-1);
@@ -3695,6 +3698,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
 static void
 xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                           const xmlChar *str, int length, int depth) {
+    int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
     const xmlChar *end, *chunk;
     int c, l;
 
@@ -3702,9 +3706,8 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
         return;
 
     depth += 1;
-    if (((depth > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-	(depth > 100)) {
-	xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
+    if (depth > maxDepth) {
+	xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity nesting depth exceeded");
 	return;
     }
@@ -3928,14 +3931,14 @@ error:
  */
 static void
 xmlCheckEntityInAttValue(xmlParserCtxtPtr ctxt, xmlEntityPtr pent, int depth) {
+    int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
     const xmlChar *str;
     unsigned long expandedSize = pent->length;
     int c, flags;
 
     depth += 1;
-    if (((depth > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-	(depth > 100)) {
-	xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
+    if (depth > maxDepth) {
+	xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity nesting depth exceeded");
 	return;
     }
@@ -4029,15 +4032,15 @@ static void
 xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                           const xmlChar *str, xmlEntityPtr pent, int normalize,
                           int *inSpace, int depth, int check) {
+    int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
     int c, chunkSize;
 
     if (str == NULL)
         return;
 
     depth += 1;
-    if (((depth > 40) && ((ctxt->options & XML_PARSE_HUGE) == 0)) ||
-	(depth > 100)) {
-	xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_LOOP,
+    if (depth > maxDepth) {
+	xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity nesting depth exceeded");
 	return;
     }

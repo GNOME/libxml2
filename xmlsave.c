@@ -58,8 +58,10 @@ struct _xmlSaveCtxt {
  * Handle an out of memory condition
  */
 static void
-xmlSaveErrMemory(void)
+xmlSaveErrMemory(xmlOutputBufferPtr out)
 {
+    if (out != NULL)
+        out->error = XML_ERR_NO_MEMORY;
     xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_OUTPUT, NULL);
 }
 
@@ -72,10 +74,23 @@ xmlSaveErrMemory(void)
  * Handle an out of memory condition
  */
 static void
-xmlSaveErr(int code, xmlNodePtr node, const char *extra)
+xmlSaveErr(xmlOutputBufferPtr out, int code, xmlNodePtr node,
+           const char *extra)
 {
     const char *msg = NULL;
     int res;
+
+    /* Don't overwrite memory errors */
+    if ((out != NULL) && (out->error == XML_ERR_NO_MEMORY))
+        return;
+
+    if (code == XML_ERR_NO_MEMORY) {
+        xmlSaveErrMemory(out);
+        return;
+    }
+
+    if (out != NULL)
+        out->error = code;
 
     switch(code) {
         case XML_SAVE_NOT_UTF8:
@@ -99,7 +114,7 @@ xmlSaveErr(int code, xmlNodePtr node, const char *extra)
                           extra, NULL, NULL, 0, 0,
                           msg, extra);
     if (res < 0)
-        xmlSaveErrMemory();
+        xmlSaveErrMemory(out);
 }
 
 /************************************************************************
@@ -315,7 +330,7 @@ xmlNewSaveCtxt(const char *encoding, int options)
 
     ret = (xmlSaveCtxtPtr) xmlMalloc(sizeof(xmlSaveCtxt));
     if (ret == NULL) {
-	xmlSaveErrMemory();
+	xmlSaveErrMemory(NULL);
 	return ( NULL );
     }
     memset(ret, 0, sizeof(xmlSaveCtxt));
@@ -326,10 +341,7 @@ xmlNewSaveCtxt(const char *encoding, int options)
         res = xmlOpenCharEncodingHandler(encoding, /* output */ 1,
                                          &ret->handler);
 	if (ret->handler == NULL) {
-            if (res < 0)
-                xmlSaveErrMemory();
-            else
-	        xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
+	    xmlSaveErr(NULL, res, NULL, encoding);
             xmlFreeSaveCtxt(ret);
 	    return(NULL);
 	}
@@ -495,19 +507,14 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
         int res;
 
 	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-        if (res != 0) {
-            if (res < 0)
-                xmlSaveErrMemory();
-            else
-                xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
-            buf->error = res;
+        if (handler == NULL) {
+            xmlSaveErr(buf, res, NULL, encoding);
             return(-1);
         }
 	buf->conv = xmlBufCreate();
 	if (buf->conv == NULL) {
 	    xmlCharEncCloseFunc(handler);
-            xmlSaveErrMemory();
-            buf->error = XML_ERR_NO_MEMORY;
+            xmlSaveErrMemory(buf);
 	    return(-1);
 	}
         buf->encoder = handler;
@@ -2155,7 +2162,7 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (outbuf == NULL) {
-        xmlSaveErrMemory();
+        xmlSaveErrMemory(NULL);
         return (-1);
     }
     memset(outbuf, 0, (size_t) sizeof(xmlOutputBuffer));
@@ -2198,13 +2205,11 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
     outbuf = xmlOutputBufferCreateFile(f, NULL);
     if (outbuf == NULL)
         return;
-    if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
 #ifdef LIBXML_HTML_ENABLED
+    if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE))
         htmlNodeDumpOutput(outbuf, doc, cur, NULL);
-#else
-	xmlSaveErr(XML_ERR_INTERNAL_ERROR, cur, "HTML support not compiled in\n");
+    else
 #endif /* LIBXML_HTML_ENABLED */
-    } else
         xmlNodeDumpOutput(outbuf, doc, cur, 0, 1, NULL);
     xmlOutputBufferClose(outbuf);
 }
@@ -2326,17 +2331,13 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 	res = xmlOpenCharEncodingHandler(txt_encoding, /* output */ 1,
                                          &conv_hdlr);
 	if (conv_hdlr == NULL) {
-            if (res < 0)
-                xmlSaveErrMemory();
-            else
-                xmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, (xmlNodePtr) out_doc,
-                           txt_encoding);
+            xmlSaveErr(NULL, res, NULL, txt_encoding);
 	    return;
 	}
     }
 
     if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
-        xmlSaveErrMemory();
+        xmlSaveErrMemory(NULL);
         xmlCharEncCloseFunc(conv_hdlr);
         return;
     }
@@ -2370,7 +2371,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     return;
 
 error:
-    xmlSaveErrMemory();
+    xmlSaveErrMemory(NULL);
     xmlOutputBufferClose(out_buff);
     return;
 }

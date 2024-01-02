@@ -200,78 +200,52 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
 	    *out++ = ';';
 	    in++;
 	    continue;
+	} else if (*in == 0xD) {
+	    if (outend - out < 5) break;
+	    *out++ = '&';
+	    *out++ = '#';
+	    *out++ = 'x';
+	    *out++ = 'D';
+	    *out++ = ';';
+	    in++;
 	} else if (((*in >= 0x20) && (*in < 0x80)) ||
-	           (*in == '\n') || (*in == '\t')) {
+	           (*in == 0xA) || (*in == 0x9)) {
 	    /*
 	     * default case, just copy !
 	     */
 	    *out++ = *in++;
 	    continue;
-	} else if (*in >= 0x80) {
-	    /*
-	     * We assume we have UTF-8 input.
-	     */
+	} else if (*in < 0x80) {
+            /* invalid control char */
+	    if (outend - out < 8) break;
+	    out = xmlSerializeHexCharRef(out, 0xFFFD);
+	    in++;
+	} else {
+            int len;
+
 	    if (outend - out < 11) break;
 
-	    if (*in < 0xC0) {
-		xmlSaveErr(XML_SAVE_NOT_UTF8, NULL, NULL);
-		in++;
-		goto error;
-	    } else if (*in < 0xE0) {
-		if (inend - in < 2) break;
-		val = (in[0]) & 0x1F;
-		val <<= 6;
-		val |= (in[1]) & 0x3F;
-		in += 2;
-	    } else if (*in < 0xF0) {
-		if (inend - in < 3) break;
-		val = (in[0]) & 0x0F;
-		val <<= 6;
-		val |= (in[1]) & 0x3F;
-		val <<= 6;
-		val |= (in[2]) & 0x3F;
-		in += 3;
-	    } else if (*in < 0xF8) {
-		if (inend - in < 4) break;
-		val = (in[0]) & 0x07;
-		val <<= 6;
-		val |= (in[1]) & 0x3F;
-		val <<= 6;
-		val |= (in[2]) & 0x3F;
-		val <<= 6;
-		val |= (in[3]) & 0x3F;
-		in += 4;
-	    } else {
-		xmlSaveErr(XML_SAVE_CHAR_INVALID, NULL, NULL);
-		in++;
-		goto error;
-	    }
-	    if (!IS_CHAR(val)) {
-		xmlSaveErr(XML_SAVE_CHAR_INVALID, NULL, NULL);
-		in++;
-		goto error;
-	    }
+            len = inend - in;
+            val = xmlGetUTF8Char(in, &len);
+
+            if (val < 0) {
+                val = 0xFFFD;
+                in++;
+            } else {
+                if (!IS_CHAR(val))
+                    val = 0xFFFD;
+                in += len;
+            }
 
 	    /*
 	     * We could do multiple things here. Just save as a char ref
 	     */
 	    out = xmlSerializeHexCharRef(out, val);
-	} else if (IS_BYTE_CHAR(*in)) {
-	    if (outend - out < 6) break;
-	    out = xmlSerializeHexCharRef(out, *in++);
-	} else {
-	    xmlSaveErr(XML_SAVE_CHAR_INVALID, NULL, NULL);
-	    in++;
-	    goto error;
 	}
     }
     *outlen = out - outstart;
     *inlen = in - base;
     return(0);
-error:
-    *outlen = out - outstart;
-    *inlen = in - base;
-    return(-1);
 }
 
 /************************************************************************
@@ -1994,7 +1968,8 @@ xmlSaveSetAttrEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
  */
 void
 xmlBufAttrSerializeTxtContent(xmlBufPtr buf, xmlDocPtr doc,
-                              xmlAttrPtr attr, const xmlChar * string)
+                              xmlAttrPtr attr ATTRIBUTE_UNUSED,
+                              const xmlChar * string)
 {
     xmlChar *base, *cur;
 
@@ -2050,54 +2025,27 @@ xmlBufAttrSerializeTxtContent(xmlBufPtr buf, xmlDocPtr doc,
              * We assume we have UTF-8 content.
              */
             unsigned char tmp[12];
-            int val = 0, l = 1;
+            int val = 0, l = 4;
 
             if (base != cur)
                 xmlBufAdd(buf, base, cur - base);
-            if (*cur < 0xC0) {
-                xmlSaveErr(XML_SAVE_NOT_UTF8, (xmlNodePtr) attr, NULL);
-		xmlSerializeHexCharRef(tmp, *cur);
-                xmlBufAdd(buf, (xmlChar *) tmp, -1);
+
+            val = xmlGetUTF8Char(cur, &l);
+            if (val < 0) {
+                val = 0xFFFD;
                 cur++;
-                base = cur;
-                continue;
-            } else if (*cur < 0xE0) {
-                val = (cur[0]) & 0x1F;
-                val <<= 6;
-                val |= (cur[1]) & 0x3F;
-                l = 2;
-            } else if ((*cur < 0xF0) && (cur [2] != 0)) {
-                val = (cur[0]) & 0x0F;
-                val <<= 6;
-                val |= (cur[1]) & 0x3F;
-                val <<= 6;
-                val |= (cur[2]) & 0x3F;
-                l = 3;
-            } else if ((*cur < 0xF8) && (cur [2] != 0) && (cur[3] != 0)) {
-                val = (cur[0]) & 0x07;
-                val <<= 6;
-                val |= (cur[1]) & 0x3F;
-                val <<= 6;
-                val |= (cur[2]) & 0x3F;
-                val <<= 6;
-                val |= (cur[3]) & 0x3F;
-                l = 4;
+            } else {
+                if (!IS_CHAR(val))
+                    val = 0xFFFD;
+                cur += l;
             }
-            if ((l == 1) || (!IS_CHAR(val))) {
-                xmlSaveErr(XML_SAVE_CHAR_INVALID, (xmlNodePtr) attr, NULL);
-		xmlSerializeHexCharRef(tmp, *cur);
-                xmlBufAdd(buf, (xmlChar *) tmp, -1);
-                cur++;
-                base = cur;
-                continue;
-            }
+
             /*
              * We could do multiple things here. Just save
              * as a char ref
              */
 	    xmlSerializeHexCharRef(tmp, val);
             xmlBufAdd(buf, (xmlChar *) tmp, -1);
-            cur += l;
             base = cur;
         } else {
             cur++;

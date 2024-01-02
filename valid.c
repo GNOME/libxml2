@@ -1250,7 +1250,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
     switch (type) {
         case XML_ELEMENT_TYPE_EMPTY:
 	    if (content != NULL) {
-		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
+		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
 		        "xmlAddElementDecl: content != NULL for EMPTY\n",
 			NULL);
 		return(NULL);
@@ -1258,7 +1258,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
 	    break;
 	case XML_ELEMENT_TYPE_ANY:
 	    if (content != NULL) {
-		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
+		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
 		        "xmlAddElementDecl: content != NULL for ANY\n",
 			NULL);
 		return(NULL);
@@ -1266,7 +1266,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
 	    break;
 	case XML_ELEMENT_TYPE_MIXED:
 	    if (content == NULL) {
-		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
+		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
 		        "xmlAddElementDecl: content == NULL for MIXED\n",
 			NULL);
 		return(NULL);
@@ -1274,7 +1274,7 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
 	    break;
 	case XML_ELEMENT_TYPE_ELEMENT:
 	    if (content == NULL) {
-		xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
+		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
 		        "xmlAddElementDecl: content == NULL for ELEMENT\n",
 			NULL);
 		return(NULL);

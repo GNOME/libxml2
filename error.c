@@ -1175,6 +1175,9 @@ xmlErrString(xmlParserErrors code) {
         case XML_ERR_UNSUPPORTED_ENCODING:
             errmsg = "Unsupported encoding";
             break;
+        case XML_ERR_INVALID_CHAR:
+            errmsg = "Invalid character";
+            break;
 
         case XML_IO_UNKNOWN:
             errmsg = "Unknown IO error"; break;

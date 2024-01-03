@@ -903,9 +903,10 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
 	else if (val < 0x10000) { *out++= (val >> 12) | 0xE0;  bits=  6;}
 	else if (val < 0x110000)  { *out++= (val >> 18) | 0xF0;  bits=  12; }
 	else {
-	    xmlErrEncodingInt(NULL, XML_ERR_INVALID_CHAR,
-		    "Internal error, xmlCopyCharMultiByte 0x%X out of bound\n",
-			      val);
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+            fprintf(stderr, "xmlCopyCharMultiByte: codepoint out of range\n");
+            abort();
+#endif
 	    return(0);
 	}
 	for ( ; bits >= 0; bits-= 6)

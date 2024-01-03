@@ -122,7 +122,10 @@ static void
 xmlParseElementEnd(xmlParserCtxtPtr ctxt);
 
 static xmlEntityPtr
-xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt, int inAttr);
+xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr);
+
+static const xmlChar *
+xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt);
 
 /************************************************************************
  *									*
@@ -1424,8 +1427,8 @@ region_m49:
  *									*
  ************************************************************************/
 
-static xmlEntityPtr xmlParseStringEntityRef(xmlParserCtxtPtr ctxt,
-                                            const xmlChar ** str);
+static xmlChar *
+xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar **str);
 
 /**
  * xmlParserNsCreate:
@@ -3986,14 +3989,24 @@ xmlCheckEntityInAttValue(xmlParserCtxtPtr ctxt, xmlEntityPtr pent, int depth) {
             int val;
 
 	    val = xmlParseStringCharRef(ctxt, &str);
-	    if (val == 0)
+	    if (val == 0) {
+                pent->content[0] = 0;
                 break;
+            }
 	} else {
+            xmlChar *name;
             xmlEntityPtr ent;
 
-	    ent = xmlParseStringEntityRef(ctxt, &str);
+	    name = xmlParseStringEntityRef(ctxt, &str);
+	    if (name == NULL) {
+                pent->content[0] = 0;
+                break;
+            }
 
-	    if ((ent != NULL) &&
+            ent = xmlLookupGeneralEntity(ctxt, name, /* inAttr */ 1);
+            xmlFree(name);
+
+            if ((ent != NULL) &&
                 (ent->etype != XML_INTERNAL_PREDEFINED_ENTITY)) {
                 if ((ent->flags & flags) != flags) {
                     pent->flags |= XML_ENT_EXPANDING;
@@ -4117,8 +4130,11 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
             }
 
 	    val = xmlParseStringCharRef(ctxt, &str);
-	    if (val == 0)
+	    if (val == 0) {
+                if (pent != NULL)
+                    pent->content[0] = 0;
                 break;
+            }
 
             if (val == ' ') {
                 if ((!normalize) || (!*inSpace))
@@ -4129,6 +4145,7 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                 *inSpace = 0;
             }
 	} else {
+            xmlChar *name;
             xmlEntityPtr ent;
 
             if (chunkSize > 0) {
@@ -4136,7 +4153,15 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                 chunkSize = 0;
             }
 
-	    ent = xmlParseStringEntityRef(ctxt, &str);
+	    name = xmlParseStringEntityRef(ctxt, &str);
+            if (name == NULL) {
+                if (pent != NULL)
+                    pent->content[0] = 0;
+                break;
+            }
+
+            ent = xmlLookupGeneralEntity(ctxt, name, /* inAttr */ 1);
+            xmlFree(name);
 
 	    if ((ent != NULL) &&
 		(ent->etype == XML_INTERNAL_PREDEFINED_ENTITY)) {
@@ -4368,6 +4393,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
                 inSpace = 0;
             }
         } else {
+            const xmlChar *name;
             xmlEntityPtr ent;
 
             if (chunkSize > 0) {
@@ -4375,18 +4401,20 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
                 chunkSize = 0;
             }
 
-            ent = xmlParseEntityRefInternal(ctxt, /* isAttr */ 1);
-
-            if (ent == NULL) {
+            name = xmlParseEntityRefInternal(ctxt);
+            if (name == NULL) {
                 /*
                  * Probably a literal '&' which wasn't escaped.
-                 * Handle gracefully in recovery mode.
+                 * TODO: Handle gracefully in recovery mode.
                  */
-                if (ctxt->replaceEntities)
-                    xmlSBufAddCString(&buf, "&", 1);
-                else
-                    xmlSBufAddCString(&buf, "&#38;", 5);
-            } else if (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY) {
+                continue;
+            }
+
+            ent = xmlLookupGeneralEntity(ctxt, name, /* isAttr */ 1);
+            if (ent == NULL)
+                continue;
+
+            if (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY) {
                 if ((ent->content[0] == '&') && (!ctxt->replaceEntities))
                     xmlSBufAddCString(&buf, "&#38;", 5);
                 else
@@ -7269,7 +7297,8 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
  */
 void
 xmlParseReference(xmlParserCtxtPtr ctxt) {
-    xmlEntityPtr ent;
+    xmlEntityPtr ent = NULL;
+    const xmlChar *name;
     xmlChar *val;
 
     if (RAW != '&')
@@ -7300,7 +7329,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     /*
      * We are seeing an entity reference
      */
-    ent = xmlParseEntityRefInternal(ctxt, /* isAttr */ 0);
+    name = xmlParseEntityRefInternal(ctxt);
+    if (name != NULL)
+        ent = xmlLookupGeneralEntity(ctxt, name, /* isAttr */ 0);
     if (ent == NULL) return;
     if (!ctxt->wellFormed)
 	return;
@@ -7433,38 +7464,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     }
 }
 
-/**
- * xmlParseEntityRefInternal:
- * @ctxt:  an XML parser context
- * @inAttr:  whether we are in an attribute value
- *
- * Parse an entity reference. Always consumes '&'.
- *
- * [68] EntityRef ::= '&' Name ';'
- *
- * Returns the xmlEntityPtr if found, or NULL otherwise.
- */
 static xmlEntityPtr
-xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt, int inAttr) {
-    const xmlChar *name;
-    xmlEntityPtr ent = NULL;
-
-    GROW;
-
-    if (RAW != '&')
-        return(NULL);
-    NEXT;
-    name = xmlParseName(ctxt);
-    if (name == NULL) {
-	xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
-		       "xmlParseEntityRef: no name\n");
-        return(NULL);
-    }
-    if (RAW != ';') {
-	xmlFatalErr(ctxt, XML_ERR_ENTITYREF_SEMICOL_MISSING, NULL);
-	return(NULL);
-    }
-    NEXT;
+xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
+    xmlEntityPtr ent;
 
     /*
      * Predefined entities override any extra definition
@@ -7554,13 +7556,42 @@ xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt, int inAttr) {
         }
     }
 
-    /*
-     * [ WFC: No Recursion ]
-     * A parsed entity must not contain a recursive reference
-     * to itself, either directly or indirectly.
-     * Done somewhere else
-     */
     return(ent);
+}
+
+/**
+ * xmlParseEntityRefInternal:
+ * @ctxt:  an XML parser context
+ * @inAttr:  whether we are in an attribute value
+ *
+ * Parse an entity reference. Always consumes '&'.
+ *
+ * [68] EntityRef ::= '&' Name ';'
+ *
+ * Returns the name, or NULL in case of error.
+ */
+static const xmlChar *
+xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt) {
+    const xmlChar *name;
+
+    GROW;
+
+    if (RAW != '&')
+        return(NULL);
+    NEXT;
+    name = xmlParseName(ctxt);
+    if (name == NULL) {
+	xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
+		       "xmlParseEntityRef: no name\n");
+        return(NULL);
+    }
+    if (RAW != ';') {
+	xmlFatalErr(ctxt, XML_ERR_ENTITYREF_SEMICOL_MISSING, NULL);
+	return(NULL);
+    }
+    NEXT;
+
+    return(name);
 }
 
 /**
@@ -7573,7 +7604,16 @@ xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt, int inAttr) {
  */
 xmlEntityPtr
 xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
-    return(xmlParseEntityRefInternal(ctxt, 0));
+    const xmlChar *name;
+
+    if (ctxt == NULL)
+        return(NULL);
+
+    name = xmlParseEntityRefInternal(ctxt);
+    if (name == NULL)
+        return(NULL);
+
+    return(xmlLookupGeneralEntity(ctxt, name, /* inAttr */ 0));
 }
 
 /**
@@ -7607,12 +7647,11 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
  * Returns the xmlEntityPtr if found, or NULL otherwise. The str pointer
  * is updated to the current location in the string.
  */
-static xmlEntityPtr
+static xmlChar *
 xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
     xmlChar *name;
     const xmlChar *ptr;
     xmlChar cur;
-    xmlEntityPtr ent = NULL;
 
     if ((str == NULL) || (*str == NULL))
         return(NULL);
@@ -7637,100 +7676,8 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
     }
     ptr++;
 
-
-    /*
-     * Predefined entities override any extra definition
-     */
-    if ((ctxt->options & XML_PARSE_OLDSAX) == 0) {
-        ent = xmlGetPredefinedEntity(name);
-        if (ent != NULL) {
-            xmlFree(name);
-            *str = ptr;
-            return(ent);
-        }
-    }
-
-    /*
-     * Ask first SAX for entity resolution, otherwise try the
-     * entities which may have stored in the parser context.
-     */
-    if (ctxt->sax != NULL) {
-	if (ctxt->sax->getEntity != NULL)
-	    ent = ctxt->sax->getEntity(ctxt->userData, name);
-	if ((ent == NULL) && (ctxt->options & XML_PARSE_OLDSAX))
-	    ent = xmlGetPredefinedEntity(name);
-	if ((ent == NULL) && (ctxt->userData==ctxt)) {
-	    ent = xmlSAX2GetEntity(ctxt, name);
-	}
-    }
-
-    /*
-     * [ WFC: Entity Declared ]
-     * In a document without any DTD, a document with only an
-     * internal DTD subset which contains no parameter entity
-     * references, or a document with "standalone='yes'", the
-     * Name given in the entity reference must match that in an
-     * entity declaration, except that well-formed documents
-     * need not declare any of the following entities: amp, lt,
-     * gt, apos, quot.
-     * The declaration of a parameter entity must precede any
-     * reference to it.
-     * Similarly, the declaration of a general entity must
-     * precede any reference to it which appears in a default
-     * value in an attribute-list declaration. Note that if
-     * entities are declared in the external subset or in
-     * external parameter entities, a non-validating processor
-     * is not obligated to read and process their declarations;
-     * for such documents, the rule that an entity must be
-     * declared is a well-formedness constraint only if
-     * standalone='yes'.
-     */
-    if (ent == NULL) {
-	if ((ctxt->standalone == 1) ||
-	    ((ctxt->hasExternalSubset == 0) &&
-	     (ctxt->hasPErefs == 0))) {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
-		     "Entity '%s' not defined\n", name);
-	} else {
-	    xmlErrMsgStr(ctxt, XML_WAR_UNDECLARED_ENTITY,
-			  "Entity '%s' not defined\n",
-			  name);
-	}
-	/* TODO ? check regressions ctxt->valid = 0; */
-    }
-
-    /*
-     * [ WFC: Parsed Entity ]
-     * An entity reference must not contain the name of an
-     * unparsed entity
-     */
-    else if (ent->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
-	xmlFatalErrMsgStr(ctxt, XML_ERR_UNPARSED_ENTITY,
-		 "Entity reference to unparsed entity %s\n", name);
-        ent = NULL;
-    }
-
-    /*
-     * [ WFC: No External Entity References ]
-     * Attribute values cannot contain direct or indirect
-     * entity references to external entities.
-     */
-    else if (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) {
-	xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_IS_EXTERNAL,
-	        "Attribute references external entity '%s'\n", name);
-        ent = NULL;
-    }
-
-    /*
-     * [ WFC: No Recursion ]
-     * A parsed entity must not contain a recursive reference
-     * to itself, either directly or indirectly.
-     * Done somewhere else
-     */
-
-    xmlFree(name);
     *str = ptr;
-    return(ent);
+    return(name);
 }
 
 /**

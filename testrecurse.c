@@ -360,16 +360,10 @@ testExternalEntityLoader(const char *URL, const char *ID,
 }
 
 static void
-testStructuredErrorHandler(void *ctx ATTRIBUTE_UNUSED,
-                           const xmlError *err ATTRIBUTE_UNUSED) {
-}
-
-static void
 initializeLibxml2(void) {
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
     xmlInitParser();
     xmlSetExternalEntityLoader(testExternalEntityLoader);
-    xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
     /*
      * register the new I/O handlers
      */
@@ -485,7 +479,7 @@ recursiveDetectTest(const char *filename,
      * without XML_PARSE_NOENT. The validation result doesn't matter
      * anyway.
      */
-    int parserOptions = XML_PARSE_DTDVALID;
+    int parserOptions = XML_PARSE_DTDVALID | XML_PARSE_NOERROR;
 
     nb_tests++;
 

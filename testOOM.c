@@ -251,7 +251,6 @@ check_load_file_memory_func (void *data)
        goto out;
 
      xmlTextReaderSetStructuredErrorHandler (reader, error_func, NULL);
-     xmlSetStructuredErrorFunc(NULL, error_func);
 
      if (valid) {
        if (xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1) == -1)

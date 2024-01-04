@@ -390,16 +390,10 @@ testExternalEntityLoader(const char *URL, const char *ID,
 }
 
 static void
-testStructuredErrorHandler(void *ctx ATTRIBUTE_UNUSED,
-                           const xmlError *err ATTRIBUTE_UNUSED) {
-}
-
-static void
 initializeLibxml2(void) {
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
     xmlInitParser();
     xmlSetExternalEntityLoader(testExternalEntityLoader);
-    xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
     /*
      * register the new I/O handlers
      */
@@ -999,7 +993,7 @@ saxTest(const char *filename, size_t limit, int options, int fail) {
         fprintf(stderr, "Failed to create parser context\n");
 	return(1);
     }
-    doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+    doc = xmlCtxtReadFile(ctxt, filename, NULL, options | XML_PARSE_NOERROR);
 
     if (doc != NULL) {
         fprintf(stderr, "SAX parsing generated a document !\n");
@@ -1046,7 +1040,7 @@ readerTest(const char *filename, size_t limit, int options, int fail) {
     nb_tests++;
 
     maxlen = limit;
-    reader = xmlReaderForFile(filename , NULL, options);
+    reader = xmlReaderForFile(filename , NULL, options | XML_PARSE_NOERROR);
     if (reader == NULL) {
         fprintf(stderr, "Failed to open '%s' test\n", filename);
 	return(1);

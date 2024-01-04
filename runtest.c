@@ -1600,8 +1600,6 @@ oldParseTest(const char *filename, const char *result,
     char *temp;
     int res = 0;
 
-    xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
-
     nb_tests++;
     /*
      * base of the test, parse with the old API
@@ -1611,10 +1609,8 @@ oldParseTest(const char *filename, const char *result,
 #else
     doc = xmlReadFile(filename, NULL, 0);
 #endif
-    if (doc == NULL) {
-        res = 1;
-        goto done;
-    }
+    if (doc == NULL)
+        return(1);
     temp = resultFilename(filename, temp_directory, ".res");
     if (temp == NULL) {
         fprintf(stderr, "out of memory\n");
@@ -1634,10 +1630,8 @@ oldParseTest(const char *filename, const char *result,
 #else
     doc = xmlReadFile(temp, NULL, 0);
 #endif
-    if (doc == NULL) {
-        res = 1;
-        goto done;
-    }
+    if (doc == NULL)
+        return(1);
     xmlSaveFile(temp, doc);
     if (compareFiles(temp, result)) {
         res = 1;
@@ -1648,9 +1642,6 @@ oldParseTest(const char *filename, const char *result,
         unlink(temp);
         free(temp);
     }
-
-done:
-    xmlSetStructuredErrorFunc(NULL, NULL);
 
     return(res);
 }
@@ -4377,6 +4368,9 @@ regexpTest(const char *filename, const char *result, const char *err,
     char expression[5000];
     int len, ret, res = 0;
 
+    /*
+     * TODO: Custom error handler for regexp
+     */
     xmlSetStructuredErrorFunc(NULL, testStructuredErrorHandler);
 
     nb_tests++;

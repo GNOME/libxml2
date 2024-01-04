@@ -929,6 +929,10 @@ XMLPUBFUN void
     xmlParserPrintFileInfo	(struct _xmlParserInput *input);
 XMLPUBFUN void
     xmlParserPrintFileContext	(struct _xmlParserInput *input);
+XMLPUBFUN void
+xmlFormatError			(const xmlError *err,
+				 xmlGenericErrorFunc channel,
+				 void *data);
 
 /*
  * Extended error information routines

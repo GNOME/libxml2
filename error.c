@@ -296,6 +296,8 @@ xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
  * xmlParserPrintFileInfo:
  * @input:  an xmlParserInputPtr input
  *
+ * DEPRECATED: Use xmlFormatError.
+ *
  * Displays the associated file and line information for the current input
  */
 
@@ -387,6 +389,8 @@ xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
  * xmlParserPrintFileContext:
  * @input:  an xmlParserInputPtr input
  *
+ * DEPRECATED: Use xmlFormatError.
+ *
  * Displays current context within the input content for error tracking
  */
 void
@@ -396,19 +400,19 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
 }
 
 /**
- * xmlReportError:
- * @err: the error
- * @ctx: the parser context or NULL
- * @str: the formatted error message
+ * xmlFormatError:
+ * @err:  the error
+ * @channel:  callback
+ * @data:  user data for callback
  *
- * Report an error with its context, replace the 4 old error/warning
- * routines.
+ * Report a formatted error to a printf-like callback.
+ *
+ * This can result in a verbose multi-line report including additional
+ * information from the parser context.
  */
-static void
-xmlReportError(xmlParserCtxtPtr ctxt, const xmlError *err)
+void
+xmlFormatError(const xmlError *err, xmlGenericErrorFunc channel, void *data)
 {
-    xmlGenericErrorFunc channel;
-    void *data;
     const char *message;
     const char *file;
     int line;
@@ -417,17 +421,12 @@ xmlReportError(xmlParserCtxtPtr ctxt, const xmlError *err)
     const xmlChar *name = NULL;
     xmlNodePtr node;
     xmlErrorLevel level;
+    xmlParserCtxtPtr ctxt = NULL;
     xmlParserInputPtr input = NULL;
     xmlParserInputPtr cur = NULL;
 
-    if (err == NULL) {
-        if (ctxt == NULL)
-            return;
-        err = &ctxt->lastError;
-    }
-
-    channel = xmlGenericError;
-    data = xmlGenericErrorContext;
+    if ((err == NULL) || (channel == NULL))
+        return;
 
     message = err->message;
     file = err->file;
@@ -440,7 +439,14 @@ xmlReportError(xmlParserCtxtPtr ctxt, const xmlError *err)
     if (code == XML_ERR_OK)
         return;
 
-    if ((node != NULL) && (node->type == XML_ELEMENT_NODE))
+    if ((domain == XML_FROM_PARSER) || (domain == XML_FROM_HTML) ||
+        (domain == XML_FROM_DTD) || (domain == XML_FROM_NAMESPACE) ||
+	(domain == XML_FROM_IO) || (domain == XML_FROM_VALID)) {
+	ctxt = err->ctxt;
+    }
+
+    if ((node != NULL) && (node->type == XML_ELEMENT_NODE) &&
+        (domain != XML_FROM_SCHEMASV))
         name = node->name;
 
     /*
@@ -725,7 +731,7 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
         xmlStructuredError(xmlStructuredErrorContext, to);
     } else if (channel != NULL) {
         if ((ctxt == NULL) && (channel == xmlGenericErrorDefaultFunc))
-            xmlReportError(ctxt, to);
+            xmlFormatError(to, xmlGenericError, xmlGenericErrorContext);
         else
 	    channel(data, "%s", to->message);
     }
@@ -791,7 +797,9 @@ __xmlRaiseError(xmlStructuredErrorFunc schannel,
 void
 xmlParserError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 {
-    xmlReportError(ctx, NULL);
+    xmlParserCtxtPtr ctxt = ctx;
+
+    xmlFormatError(&ctxt->lastError, xmlGenericError, xmlGenericErrorContext);
 }
 
 /**
@@ -806,7 +814,9 @@ xmlParserError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 void
 xmlParserWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 {
-    xmlReportError(ctx, NULL);
+    xmlParserCtxtPtr ctxt = ctx;
+
+    xmlFormatError(&ctxt->lastError, xmlGenericError, xmlGenericErrorContext);
 }
 
 /**
@@ -821,7 +831,9 @@ xmlParserWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 void
 xmlParserValidityError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 {
-    xmlReportError(ctx, NULL);
+    xmlParserCtxtPtr ctxt = ctx;
+
+    xmlFormatError(&ctxt->lastError, xmlGenericError, xmlGenericErrorContext);
 }
 
 /**
@@ -836,7 +848,9 @@ xmlParserValidityError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 void
 xmlParserValidityWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 {
-    xmlReportError(ctx, NULL);
+    xmlParserCtxtPtr ctxt = ctx;
+
+    xmlFormatError(&ctxt->lastError, xmlGenericError, xmlGenericErrorContext);
 }
 
 

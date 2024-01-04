@@ -652,13 +652,18 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
 
                 l = 4;
                 val = xmlGetUTF8Char(cur, &l);
-                if ((val < 0) || (!IS_CHAR(val))) {
-		    snprintf(buf, sizeof(buf), "&#%d;", *cur);
-		    buf[sizeof(buf) - 1] = 0;
-		    ptr = buf;
-		    while (*ptr != 0) *out++ = *ptr++;
-		    cur++;
-		    continue;
+                if (val < 0) {
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+                    fprintf(stderr, "xmlEncodeEntitiesInternal: "
+                            "invalid UTF-8\n");
+                    abort();
+#endif
+                    val = 0xFFFD;
+                    cur++;
+                } else {
+                    if (!IS_CHAR(val))
+                        val = 0xFFFD;
+                    cur += l;
 		}
 		/*
 		 * We could do multiple things here. Just save as a char ref
@@ -667,7 +672,6 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
 		buf[sizeof(buf) - 1] = 0;
 		ptr = buf;
 		while (*ptr != 0) *out++ = *ptr++;
-		cur += l;
 		continue;
 	    }
 	} else if (IS_BYTE_CHAR(*cur)) {

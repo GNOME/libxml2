@@ -934,18 +934,25 @@ encoding_error:
  ************************************************************************/
 
 /**
- * xmlDetectSAX2:
+ * xmlCtxtInitializeLate:
  * @ctxt:  an XML parser context
  *
- * Do the SAX2 detection and specific initialization
+ * Final initialization of the parser context before starting to parse.
+ *
+ * This accounts for users modifying struct members of parser context
+ * directly.
  */
 static void
-xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
+xmlCtxtInitializeLate(xmlParserCtxtPtr ctxt) {
     xmlSAXHandlerPtr sax;
 
     /* Avoid unused variable warning if features are disabled. */
     (void) sax;
 
+    /*
+     * Changing the SAX struct directly is still widespread practice
+     * in internal and external code.
+     */
     if (ctxt == NULL) return;
     sax = ctxt->sax;
 #ifdef LIBXML_SAX1_ENABLED
@@ -964,6 +971,10 @@ xmlDetectSAX2(xmlParserCtxtPtr ctxt) {
     ctxt->sax2 = 1;
 #endif /* LIBXML_SAX1_ENABLED */
 
+    /*
+     * Some users replace the dictionary directly in the context struct.
+     * We really need an API function to do that cleanly.
+     */
     ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
     ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
     ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
@@ -7236,7 +7247,7 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
 void
 xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
                        const xmlChar *SystemID) {
-    xmlDetectSAX2(ctxt);
+    xmlCtxtInitializeLate(ctxt);
 
     xmlDetectEncoding(ctxt);
 
@@ -9695,14 +9706,21 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
  * xmlParseContent:
  * @ctxt:  an XML parser context
  *
- * Parse a content sequence. Stops at EOF or '</'.
- *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ * Parse XML element content. This is useful if you're only interested
+ * in custom SAX callbacks. If you want a node list, use
+ * xmlParseInNodeContext.
  */
-
 void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
+    if ((ctxt == NULL) || (ctxt->input == NULL))
+        return;
+
+    xmlCtxtInitializeLate(ctxt);
+
     xmlParseContentInternal(ctxt);
+
+    if (ctxt->input->cur < ctxt->input->end)
+	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
 }
 
 /**
@@ -10432,7 +10450,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
     /*
      * SAX: detecting the level.
      */
-    xmlDetectSAX2(ctxt);
+    xmlCtxtInitializeLate(ctxt);
 
     /*
      * Document locator is unused. Only for backward compatibility.
@@ -10560,7 +10578,7 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
     if ((ctxt == NULL) || (ctxt->input == NULL))
         return(-1);
 
-    xmlDetectSAX2(ctxt);
+    xmlCtxtInitializeLate(ctxt);
 
     /*
      * Document locator is unused. Only for backward compatibility.
@@ -10600,13 +10618,10 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
     ctxt->loadsubset = 0;
     ctxt->depth = 0;
 
-    xmlParseContent(ctxt);
+    xmlParseContentInternal(ctxt);
 
-    if ((RAW == '<') && (NXT(1) == '/')) {
+    if (ctxt->input->cur < ctxt->input->end)
 	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
-    } else if (RAW != 0) {
-	xmlFatalErr(ctxt, XML_ERR_EXTRA_CONTENT, NULL);
-    }
 
     /*
      * SAX: end of the document processing.
@@ -11463,7 +11478,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 
     ctxt->input->flags |= XML_INPUT_PROGRESSIVE;
     if (ctxt->instate == XML_PARSER_START)
-        xmlDetectSAX2(ctxt);
+        xmlCtxtInitializeLate(ctxt);
     if ((size > 0) && (chunk != NULL) && (!terminate) &&
         (chunk[size - 1] == '\r')) {
 	end_in_lf = 1;
@@ -11689,8 +11704,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
 
     /* We are loading a DTD */
     ctxt->options |= XML_PARSE_DTDLOAD;
-
-    xmlDetectSAX2(ctxt);
 
     /*
      * generate a parser input from the I/O handler
@@ -11939,9 +11952,9 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         }
     }
 
-    xmlParseContent(ctxt);
+    xmlParseContentInternal(ctxt);
 
-    if ((RAW == '<') && (NXT(1) == '/'))
+    if (ctxt->input->cur < ctxt->input->end)
 	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
 
     if ((ctxt->wellFormed) ||
@@ -12022,7 +12035,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      * This initiates a recursive call chain:
      *
      * - xmlCtxtParseContent
-     * - xmlParseContent
+     * - xmlParseContentInternal
      * - xmlParseReference
      * - xmlCtxtParseEntity
      *
@@ -12105,6 +12118,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     if (input == NULL)
         return(ctxt->errNo);
 
+    xmlCtxtInitializeLate(ctxt);
+
     list = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, 1);
     if (*listOut != NULL)
         *listOut = list;
@@ -12151,8 +12166,6 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
     ctxt = xmlNewSAXParserCtxt(sax, user_data);
     if (ctxt == NULL)
         return(XML_ERR_NO_MEMORY);
-
-    xmlDetectSAX2(ctxt);
 
     ctxt->depth = depth;
     ctxt->myDoc = doc;
@@ -12276,7 +12289,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
 
     /*
      * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
-     * We need a dictionary for xmlDetectSAX2, so if there's no doc dict
+     * We need a dictionary for xmlCtxtInitializeLate, so if there's no doc dict
      * we must wait until the last moment to free the original one.
      */
     if (doc->dict != NULL) {
@@ -12290,10 +12303,14 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
         xmlSwitchEncodingName(ctxt, (const char *) doc->encoding);
 
     xmlCtxtUseOptions(ctxt, options);
-    xmlDetectSAX2(ctxt);
+    xmlCtxtInitializeLate(ctxt);
     ctxt->myDoc = doc;
     /* parsing in context, i.e. as within existing content */
     ctxt->input_id = 2;
+
+    /*
+     * TODO: Use xmlCtxtParseContent
+     */
 
     fake = xmlNewDocComment(node->doc, NULL);
     if (fake == NULL) {
@@ -12335,18 +12352,12 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
         __htmlParseContent(ctxt);
     else
 #endif
-	xmlParseContent(ctxt);
+	xmlParseContentInternal(ctxt);
+
+    if (ctxt->input->cur < ctxt->input->end)
+	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
 
     xmlParserNsPop(ctxt, nsnr);
-    if ((RAW == '<') && (NXT(1) == '/')) {
-	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
-    } else if (RAW != 0) {
-	xmlFatalErr(ctxt, XML_ERR_EXTRA_CONTENT, NULL);
-    }
-    if ((ctxt->node != NULL) && (ctxt->node != node)) {
-	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
-	ctxt->wellFormed = 0;
-    }
 
     if ((ctxt->wellFormed) ||
         ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
@@ -12435,7 +12446,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     if (ctxt == NULL)
         return(XML_ERR_NO_MEMORY);
 
-    xmlDetectSAX2(ctxt);
+    xmlCtxtInitializeLate(ctxt);
 
     ctxt->depth = depth;
     ctxt->myDoc = doc;
@@ -12677,7 +12688,6 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
             memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
         }
     }
-    xmlDetectSAX2(ctxt);
     if (data!=NULL) {
 	ctxt->_private = data;
     }
@@ -12829,7 +12839,6 @@ xmlSAXUserParseFile(xmlSAXHandlerPtr sax, void *user_data,
         }
 	ctxt->userData = user_data;
     }
-    xmlDetectSAX2(ctxt);
 
     xmlParseDocument(ctxt);
 
@@ -12927,7 +12936,6 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
             memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
         }
     }
-    xmlDetectSAX2(ctxt);
     if (data!=NULL) {
 	ctxt->_private=data;
     }
@@ -13026,7 +13034,6 @@ int xmlSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
         }
 	ctxt->userData = user_data;
     }
-    xmlDetectSAX2(ctxt);
 
     xmlParseDocument(ctxt);
 
@@ -13108,7 +13115,6 @@ xmlSAXParseDoc(xmlSAXHandlerPtr sax, const xmlChar *cur, int recovery) {
         ctxt->sax = sax;
         ctxt->userData = NULL;
     }
-    xmlDetectSAX2(ctxt);
 
     xmlParseDocument(ctxt);
     if ((ctxt->wellFormed) || recovery) ret = ctxt->myDoc;

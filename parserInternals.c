@@ -2261,7 +2261,6 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->hasPErefs = 0;
     ctxt->html = 0;
     ctxt->instate = XML_PARSER_START;
-    ctxt->token = 0;
 
     /* Allocate the Node stack */
     if (ctxt->nodeTab == NULL) {

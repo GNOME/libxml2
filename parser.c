@@ -13211,7 +13211,6 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->hasPErefs = 0;
     ctxt->html = 0;
     ctxt->instate = XML_PARSER_START;
-    ctxt->token = 0;
 
     ctxt->wellFormed = 1;
     ctxt->nsWellFormed = 1;

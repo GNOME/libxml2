@@ -227,7 +227,7 @@ struct _xmlParserCtxt {
     xmlValidCtxt        vctxt;        /* The validity context */
 
     xmlParserInputState instate;      /* push parser state */
-    int                 token;        /* next char look-ahead */
+    int                 token;        /* unused */
 
     char           *directory;        /* unused */
 

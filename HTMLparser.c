@@ -273,14 +273,14 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 #define CUR (*ctxt->input->cur)
 #define NEXT xmlNextChar(ctxt)
 
-#define RAW (ctxt->token ? -1 : (*ctxt->input->cur))
+#define RAW (*ctxt->input->cur)
 
 
 #define NEXTL(l) do {							\
     if (*(ctxt->input->cur) == '\n') {					\
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
-    ctxt->token = 0; ctxt->input->cur += l;				\
+    ctxt->input->cur += l;						\
   } while (0)
 
 /************
@@ -369,11 +369,6 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     const unsigned char *cur;
     unsigned char c;
     unsigned int val;
-
-    if (ctxt->token != 0) {
-	*len = 0;
-	return(ctxt->token);
-    }
 
     if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)
         xmlParserGrow(ctxt);
@@ -3096,8 +3091,8 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
         buf[nbchar++] = readahead;
 
     cur = CUR_CHAR(l);
-    while (((cur != '<') || (ctxt->token == '<')) &&
-           ((cur != '&') || (ctxt->token == '&')) &&
+    while ((cur != '<') &&
+           (cur != '&') &&
 	   (cur != 0) &&
            (!PARSER_STOPPED(ctxt))) {
 	if (!(IS_CHAR(cur))) {
@@ -5547,14 +5542,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 /*
 		 * Handle preparsed entities and charRef
 		 */
-		if (ctxt->token != 0) {
-		    chr[0] = ctxt->token;
-		    htmlCheckParagraph(ctxt);
-		    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-			ctxt->sax->characters(ctxt->userData, chr, 1);
-		    ctxt->token = 0;
-		    ctxt->checkIndex = 0;
-		}
 		if ((avail == 1) && (terminate)) {
 		    cur = in->cur[0];
 		    if ((cur != '<') && (cur != '&')) {
@@ -5577,7 +5564,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 					    ctxt->userData, chr, 1);
 			    }
 			}
-			ctxt->token = 0;
 			ctxt->checkIndex = 0;
 			in->cur++;
 			break;
@@ -6204,7 +6190,6 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->hasPErefs = 0;
     ctxt->html = 1;
     ctxt->instate = XML_PARSER_START;
-    ctxt->token = 0;
 
     ctxt->wellFormed = 1;
     ctxt->nsWellFormed = 1;

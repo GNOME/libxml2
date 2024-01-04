@@ -18,6 +18,7 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
     xmlInitParser();
 #ifdef LIBXML_CATALOG_ENABLED
     xmlInitializeCatalog();
+    xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
     xmlSetExternalEntityLoader(xmlFuzzEntityLoader);

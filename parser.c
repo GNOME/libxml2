@@ -5382,6 +5382,12 @@ xmlParseCatalogPI(xmlParserCtxtPtr ctxt, const xmlChar *catalog) {
 	goto error;
 
     if (URL != NULL) {
+        /*
+         * Unfortunately, the catalog API doesn't report OOM errors.
+         * xmlGetLastError isn't very helpful since we don't know
+         * where the last error came from. We'd have to reset it
+         * before this call and restore it afterwards.
+         */
 	ctxt->catalogs = xmlCatalogAddLocal(ctxt->catalogs, URL);
 	xmlFree(URL);
     }

@@ -1427,7 +1427,7 @@ typedef enum {
     XML_WITH_MODULES = 27,
     XML_WITH_DEBUG = 28,
     XML_WITH_DEBUG_MEM = 29,
-    XML_WITH_DEBUG_RUN = 30,
+    XML_WITH_DEBUG_RUN = 30, /* unused */
     XML_WITH_ZLIB = 31,
     XML_WITH_ICU = 32,
     XML_WITH_LZMA = 33,

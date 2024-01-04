@@ -103,8 +103,6 @@ AC_ARG_WITH(reader,
 [  --with-reader           xmlReader parsing interface (on)])
 AC_ARG_WITH(regexps,
 [  --with-regexps          regular expressions support (on)])
-AC_ARG_WITH(run_debug,
-[  --with-run-debug        runtime debugging module (off)])
 AC_ARG_WITH(sax1,
 [  --with-sax1             older SAX1 interface (on)])
 AC_ARG_WITH(schemas,
@@ -241,7 +239,6 @@ if test "$with_minimum" = "yes"; then
     test "$with_reader" = "" && with_reader=no
     test "$with_readline" = "" && with_readline=no
     test "$with_regexps" = "" && with_regexps=no
-    test "$with_run_debug" = "" && with_run_debug=no
     test "$with_sax1" = "" && with_sax1=no
     test "$with_schemas" = "" && with_schemas=no
     test "$with_schematron" = "" && with_schematron=no

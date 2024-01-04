@@ -690,8 +690,6 @@ xmlHasFeature(xmlFeature feature)
 #else
             return(0);
 #endif
-        case XML_WITH_DEBUG_RUN:
-            return(0);
         case XML_WITH_ZLIB:
 #ifdef LIBXML_ZLIB_ENABLED
             return(1);

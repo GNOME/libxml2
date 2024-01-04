@@ -1490,8 +1490,8 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *
- * The returned input should be push onto the input stack with
- * xmlPushInput.
+ * The returned input can be passed to xmlCtxtParseDocument or
+ * htmlCtxtParseDocument.
  *
  * This function should not be invoked from user-defined resource
  * loaders to avoid infinite loops.
@@ -1707,6 +1707,8 @@ xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
     buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
         xmlCtxtErrMemory(ctxt);
+        if (ioClose != NULL)
+            ioClose(ioCtxt);
         return(NULL);
     }
 

@@ -2433,6 +2433,8 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
 
             ent = ctxt->input->entity;
 
+            ent->flags &= ~XML_ENT_EXPANDING;
+
             if ((ent->flags & XML_ENT_CHECKED) == 0) {
                 consumed = ctxt->input->consumed;
                 xmlSaturatedAddSizeT(&consumed,
@@ -2496,8 +2498,6 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
 
     if ((ctxt == NULL) || (ctxt->inputNr <= 1)) return(0);
     input = inputPop(ctxt);
-    if (input->entity != NULL)
-        input->entity->flags &= ~XML_ENT_EXPANDING;
     xmlFreeInputStream(input);
     if (*ctxt->input->cur == 0)
         xmlParserGrow(ctxt);
@@ -11656,8 +11656,6 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     input = xmlNewInputIO(ctxt, NULL, ioread, ioclose, ioctx, encoding, 0);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
-        if (ioclose != NULL)
-            ioclose(ioctx);
         return (NULL);
     }
     inputPush(ctxt, input);
@@ -12673,29 +12671,22 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
                         int recovery, void *data) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr input;
 
-    ctxt = xmlCreateFileParserCtxt(filename);
-    if (ctxt == NULL) {
+    ctxt = xmlNewSAXParserCtxt(sax, NULL);
+    if (ctxt == NULL)
 	return(NULL);
-    }
-    if (sax != NULL) {
-        if (sax->initialized == XML_SAX2_MAGIC) {
-            *ctxt->sax = *sax;
-        } else {
-            memset(ctxt->sax, 0, sizeof(*ctxt->sax));
-            memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
-        }
-    }
-    if (data!=NULL) {
+
+    if (data != NULL)
 	ctxt->_private = data;
-    }
 
     ctxt->recovery = recovery;
 
-    ret = xmlCtxtParseDocument(ctxt);
+    input = xmlNewInputURL(ctxt, filename, NULL, NULL, 0);
+
+    ret = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
-
     return(ret);
 }
 
@@ -12920,30 +12911,29 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
 
 xmlDocPtr
 xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
-	          int size, int recovery, void *data) {
+                          int size, int recovery, void *data) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
+    xmlParserInputPtr input;
 
-    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
-    if (ctxt == NULL) return(NULL);
-    if (sax != NULL) {
-        if (sax->initialized == XML_SAX2_MAGIC) {
-            *ctxt->sax = *sax;
-        } else {
-            memset(ctxt->sax, 0, sizeof(*ctxt->sax));
-            memcpy(ctxt->sax, sax, sizeof(xmlSAXHandlerV1));
-        }
-    }
-    if (data!=NULL) {
+    if (size < 0)
+        return(NULL);
+
+    ctxt = xmlNewSAXParserCtxt(sax, NULL);
+    if (ctxt == NULL)
+        return(NULL);
+
+    if (data != NULL)
 	ctxt->_private=data;
-    }
 
     ctxt->recovery = recovery;
 
-    ret = xmlCtxtParseDocument(ctxt);
+    input = xmlNewInputMemory(ctxt, NULL, buffer, size, NULL,
+                              XML_INPUT_BUF_STATIC);
+
+    ret = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
-
     return(ret);
 }
 
@@ -13593,15 +13583,29 @@ xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt, unsigned maxAmpl)
 /**
  * xmlCtxtParseDocument:
  * @ctxt:  an XML parser context
+ * @input:  parser input
  *
  * Parse an XML document and return the resulting document tree.
+ * Takes ownership of the input object.
  *
  * Returns the resulting document tree or NULL
  */
 xmlDocPtr
-xmlCtxtParseDocument(xmlParserCtxtPtr ctxt)
+xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 {
     xmlDocPtr ret = NULL;
+
+    if ((ctxt == NULL) || (input == NULL))
+        return(NULL);
+
+    /* assert(ctxt->inputNr == 0); */
+    while (ctxt->inputNr > 0)
+        xmlFreeInputStream(inputPop(ctxt));
+
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        return(NULL);
+    }
 
     xmlParseDocument(ctxt);
 
@@ -13616,6 +13620,10 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt)
 	xmlFreeDoc(ctxt->myDoc);
     }
     ctxt->myDoc = NULL;
+
+    /* assert(ctxt->inputNr == 1); */
+    while (ctxt->inputNr > 0)
+        xmlFreeInputStream(inputPop(ctxt));
 
     return(ret);
 }
@@ -13650,13 +13658,8 @@ xmlReadDoc(const xmlChar *cur, const char *URL, const char *encoding,
 
     input = xmlNewInputString(ctxt, URL, (const char *) cur, encoding,
                               XML_INPUT_BUF_STATIC);
-    if (input == NULL) {
-	xmlFreeParserCtxt(ctxt);
-        return(NULL);
-    }
-    inputPush(ctxt, input);
 
-    doc = xmlCtxtParseDocument(ctxt);
+    doc = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
     return(doc);
@@ -13689,13 +13692,8 @@ xmlReadFile(const char *filename, const char *encoding, int options)
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputURL(ctxt, filename, NULL, encoding, 0);
-    if (input == NULL) {
-	xmlFreeParserCtxt(ctxt);
-        return(NULL);
-    }
-    inputPush(ctxt, input);
 
-    doc = xmlCtxtParseDocument(ctxt);
+    doc = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
     return(doc);
@@ -13735,13 +13733,8 @@ xmlReadMemory(const char *buffer, int size, const char *url,
 
     input = xmlNewInputMemory(ctxt, url, buffer, size, encoding,
                               XML_INPUT_BUF_STATIC);
-    if (input == NULL) {
-	xmlFreeParserCtxt(ctxt);
-        return(NULL);
-    }
-    inputPush(ctxt, input);
 
-    doc = xmlCtxtParseDocument(ctxt);
+    doc = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
     return(doc);
@@ -13777,14 +13770,9 @@ xmlReadFd(int fd, const char *URL, const char *encoding, int options)
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputFd(ctxt, URL, fd, encoding, 0);
-    if (input == NULL) {
-	xmlFreeParserCtxt(ctxt);
-        return(NULL);
-    }
     input->buf->closecallback = NULL;
-    inputPush(ctxt, input);
 
-    doc = xmlCtxtParseDocument(ctxt);
+    doc = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
     return(doc);
@@ -13820,15 +13808,8 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputIO(ctxt, URL, ioread, ioclose, ioctx, encoding, 0);
-    if (input == NULL) {
-	xmlFreeParserCtxt(ctxt);
-        if (ioclose != NULL)
-            ioclose(ioctx);
-        return (NULL);
-    }
-    inputPush(ctxt, input);
 
-    doc = xmlCtxtParseDocument(ctxt);
+    doc = xmlCtxtParseDocument(ctxt, input);
 
     xmlFreeParserCtxt(ctxt);
     return(doc);
@@ -13865,11 +13846,8 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar *str,
 
     input = xmlNewInputString(ctxt, URL, (const char *) str, encoding,
                               XML_INPUT_BUF_STATIC);
-    if (input == NULL)
-	return(NULL);
-    inputPush(ctxt, input);
 
-    return(xmlCtxtParseDocument(ctxt));
+    return(xmlCtxtParseDocument(ctxt, input));
 }
 
 /**
@@ -13899,11 +13877,8 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputURL(ctxt, filename, NULL, encoding, 0);
-    if (input == NULL)
-        return(NULL);
-    inputPush(ctxt, input);
 
-    return(xmlCtxtParseDocument(ctxt));
+    return(xmlCtxtParseDocument(ctxt, input));
 }
 
 /**
@@ -13939,11 +13914,8 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
 
     input = xmlNewInputMemory(ctxt, URL, buffer, size, encoding,
                               XML_INPUT_BUF_STATIC);
-    if (input == NULL)
-	return(NULL);
-    inputPush(ctxt, input);
 
-    return(xmlCtxtParseDocument(ctxt));
+    return(xmlCtxtParseDocument(ctxt, input));
 }
 
 /**
@@ -13979,12 +13951,9 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputFd(ctxt, URL, fd, encoding, 0);
-    if (input == NULL)
-        return (NULL);
     input->buf->closecallback = NULL;
-    inputPush(ctxt, input);
 
-    return(xmlCtxtParseDocument(ctxt));
+    return(xmlCtxtParseDocument(ctxt, input));
 }
 
 /**
@@ -14022,13 +13991,7 @@ xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputIO(ctxt, URL, ioread, ioclose, ioctx, encoding, 0);
-    if (input == NULL) {
-        if (ioclose != NULL)
-            ioclose(ioctx);
-        return (NULL);
-    }
-    inputPush(ctxt, input);
 
-    return(xmlCtxtParseDocument(ctxt));
+    return(xmlCtxtParseDocument(ctxt, input));
 }
 

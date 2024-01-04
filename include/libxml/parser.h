@@ -1313,7 +1313,8 @@ XMLPUBFUN xmlDocPtr
 					 const char *encoding,
 					 int options);
 XMLPUBFUN xmlDocPtr
-		xmlCtxtParseDocument	(xmlParserCtxtPtr ctxt);
+		xmlCtxtParseDocument	(xmlParserCtxtPtr ctxt,
+					 xmlParserInputPtr input);
 XMLPUBFUN xmlDocPtr
 		xmlCtxtReadDoc		(xmlParserCtxtPtr ctxt,
 					 const xmlChar *cur,

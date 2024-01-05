@@ -3718,18 +3718,21 @@ xmlTextReaderSetParserProp(xmlTextReaderPtr reader, int prop, int value) {
 		if (ctxt->loadsubset == 0) {
 		    if (reader->mode != XML_TEXTREADER_MODE_INITIAL)
 			return(-1);
-		    ctxt->loadsubset = XML_DETECT_IDS;
+                    ctxt->options |= XML_PARSE_DTDLOAD;
+		    ctxt->loadsubset |= XML_DETECT_IDS;
 		}
 	    } else {
-		ctxt->loadsubset = 0;
+                ctxt->options &= ~XML_PARSE_DTDLOAD;
+		ctxt->loadsubset &= ~XML_DETECT_IDS;
 	    }
 	    return(0);
         case XML_PARSER_DEFAULTATTRS:
 	    if (value != 0) {
+                ctxt->options |= XML_PARSE_DTDATTR;
 		ctxt->loadsubset |= XML_COMPLETE_ATTRS;
 	    } else {
-		if (ctxt->loadsubset & XML_COMPLETE_ATTRS)
-		    ctxt->loadsubset -= XML_COMPLETE_ATTRS;
+                ctxt->options &= ~XML_PARSE_DTDATTR;
+		ctxt->loadsubset &= ~XML_COMPLETE_ATTRS;
 	    }
 	    return(0);
         case XML_PARSER_VALIDATE:

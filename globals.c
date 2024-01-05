@@ -295,7 +295,7 @@ static int xmlDoValidityCheckingDefaultValueThrDef = 0;
 /**
  * xmlGetWarningsDefaultValue:
  *
- * DEPRECATED: Don't use
+ * DEPRECATED: Use the modern options API with XML_PARSE_NOWARNING.
  *
  * Global setting, indicate that the DTD validation should provide warnings.
  * Activated by default.

@@ -2297,11 +2297,23 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->wellFormed = 1;
     ctxt->nsWellFormed = 1;
     ctxt->valid = 1;
+
+    ctxt->options = XML_PARSE_NODICT;
+
+    /*
+     * Initialize some parser options from deprecated global variables.
+     * Note that the "modern" API taking options arguments or
+     * xmlCtxtSetOptions will ignore these defaults. They're only
+     * relevant if old API functions like xmlParseFile are used.
+     */
     ctxt->loadsubset = xmlLoadExtDtdDefaultValue;
     if (ctxt->loadsubset) {
         ctxt->options |= XML_PARSE_DTDLOAD;
     }
     ctxt->validate = xmlDoValidityCheckingDefaultValue;
+    if (ctxt->validate) {
+        ctxt->options |= XML_PARSE_DTDVALID;
+    }
     ctxt->pedantic = xmlPedanticParserDefaultValue;
     if (ctxt->pedantic) {
         ctxt->options |= XML_PARSE_PEDANTIC;
@@ -2312,23 +2324,18 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
 	ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
 	ctxt->options |= XML_PARSE_NOBLANKS;
     }
+    ctxt->replaceEntities = xmlSubstituteEntitiesDefaultValue;
+    if (ctxt->replaceEntities) {
+        ctxt->options |= XML_PARSE_NOENT;
+    }
+    if (xmlGetWarningsDefaultValue == 0)
+        ctxt->options |= XML_PARSE_NOWARNING;
 
     ctxt->vctxt.flags = XML_VCTXT_USE_PCTXT;
     ctxt->vctxt.userData = ctxt;
     ctxt->vctxt.error = xmlParserValidityError;
     ctxt->vctxt.warning = xmlParserValidityWarning;
-    if (ctxt->validate) {
-	if (xmlGetWarningsDefaultValue == 0)
-	    ctxt->vctxt.warning = NULL;
-	else
-	    ctxt->vctxt.warning = xmlParserValidityWarning;
-	ctxt->vctxt.nodeMax = 0;
-        ctxt->options |= XML_PARSE_DTDVALID;
-    }
-    ctxt->replaceEntities = xmlSubstituteEntitiesDefaultValue;
-    if (ctxt->replaceEntities) {
-        ctxt->options |= XML_PARSE_NOENT;
-    }
+
     ctxt->record_info = 0;
     ctxt->checkIndex = 0;
     ctxt->inSubset = 0;

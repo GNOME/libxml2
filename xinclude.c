@@ -330,15 +330,13 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 	xmlDictReference(pctxt->dict);
     }
 
-    xmlCtxtUseOptions(pctxt, ctxt->parseFlags | XML_PARSE_DTDLOAD);
+    xmlCtxtUseOptions(pctxt, ctxt->parseFlags);
 
     inputStream = xmlLoadExternalEntity(URL, NULL, pctxt);
     if (inputStream == NULL)
         goto error;
 
     inputPush(pctxt, inputStream);
-
-    pctxt->loadsubset |= XML_DETECT_IDS;
 
     xmlParseDocument(pctxt);
 

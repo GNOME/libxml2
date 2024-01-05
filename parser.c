@@ -3796,9 +3796,8 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                  * complete external PEReferences coming from the
                  * internal subset
                  */
-                if (((ctxt->options & XML_PARSE_NOENT) != 0) ||
-                    ((ctxt->options & XML_PARSE_DTDVALID) != 0) ||
-                    (ctxt->validate != 0)) {
+                if ((ctxt->replaceEntities) ||
+                    (ctxt->validate)) {
                     xmlLoadEntityContent(ctxt, ent);
                 } else {
                     xmlWarningMsg(ctxt, XML_ERR_ENTITY_PROCESSING,
@@ -10612,8 +10611,8 @@ xmlParseExtParsedEnt(xmlParserCtxtPtr ctxt) {
     /*
      * Doing validity checking on chunk doesn't make sense
      */
+    ctxt->options &= ~XML_PARSE_DTDVALID;
     ctxt->validate = 0;
-    ctxt->loadsubset = 0;
     ctxt->depth = 0;
 
     xmlParseContentInternal(ctxt);
@@ -11595,6 +11594,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     if (ctxt == NULL)
 	return(NULL);
 
+    ctxt->options &= ~XML_PARSE_NODICT;
     ctxt->dictNames = 1;
 
     input = xmlNewInputPush(ctxt, filename, chunk, size, NULL);
@@ -11698,9 +11698,6 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
 	return(NULL);
     }
 
-    /* We are loading a DTD */
-    ctxt->options |= XML_PARSE_DTDLOAD;
-
     /*
      * generate a parser input from the I/O handler
      */
@@ -11789,9 +11786,6 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     if (ctxt == NULL) {
 	return(NULL);
     }
-
-    /* We are loading a DTD */
-    ctxt->options |= XML_PARSE_DTDLOAD;
 
     /*
      * Canonicalise the system ID
@@ -12292,8 +12286,10 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
         if (ctxt->dict != NULL)
 	    xmlDictFree(ctxt->dict);
 	ctxt->dict = doc->dict;
-    } else
+    } else {
         options |= XML_PARSE_NODICT;
+        ctxt->dictNames = 0;
+    }
 
     if (doc->encoding != NULL)
         xmlSwitchEncodingName(ctxt, (const char *) doc->encoding);
@@ -12446,8 +12442,10 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 
     ctxt->depth = depth;
     ctxt->myDoc = doc;
-    if (recover)
+    if (recover) {
+        ctxt->options |= XML_PARSE_RECOVER;
         ctxt->recovery = 1;
+    }
 
     input = xmlNewStringInputStream(ctxt, string);
     if (input == NULL)
@@ -12680,7 +12678,10 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
     if (data != NULL)
 	ctxt->_private = data;
 
-    ctxt->recovery = recovery;
+    if (recovery) {
+        ctxt->options |= XML_PARSE_RECOVER;
+        ctxt->recovery = 1;
+    }
 
     input = xmlNewInputURL(ctxt, filename, NULL, NULL, 0);
 
@@ -12926,7 +12927,10 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
     if (data != NULL)
 	ctxt->_private=data;
 
-    ctxt->recovery = recovery;
+    if (recovery) {
+        ctxt->options |= XML_PARSE_RECOVER;
+        ctxt->recovery = 1;
+    }
 
     input = xmlNewInputMemory(ctxt, NULL, buffer, size, NULL,
                               XML_INPUT_BUF_STATIC);
@@ -13332,6 +13336,9 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
      * Once public access to struct members and the globals are
      * disabled, we can use the options bitmask as source of
      * truth, making all these struct members obsolete.
+     *
+     * The XML_DETECT_IDS flags is misnamed. It simply enables
+     * loading of the external subset.
      */
     ctxt->recovery = (options & XML_PARSE_RECOVER) ? 1 : 0;
     ctxt->replaceEntities = (options & XML_PARSE_NOENT) ? 1 : 0;
@@ -13382,14 +13389,11 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Despite the confusing name, this option enables substitution
  * of entities. The resulting tree won't contain any entity
- * reference nodes. This option also enables loading of
- * external entities which is dangerous. If you process
- * untrusted data, it's recommended to set up an external entity
- * loader that validates the files or URIs being loaded.
- *
- * This option also enables the loading and substitution of
- * external parameter entities. Internal parameter entities are
- * always expanded.
+ * reference nodes. This option also enables loading of external
+ * entities (both general and parameter entities) which is
+ * dangerous. If you process untrusted data, it's recommended to
+ * set up an external entity loader that validates the files or
+ * URIs being loaded.
  *
  * XML_PARSE_DTDLOAD
  *
@@ -13404,9 +13408,9 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * XML_PARSE_DTDVALID
  *
- * This option enables DTD validation.
- *
- * Implies XML_PARSE_DTDLOAD.
+ * This option enables DTD validation which requires to load
+ * external DTDs and external entities (both general and
+ * parameter entities).
  *
  * XML_PARSE_NOERROR
  *

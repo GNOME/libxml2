@@ -9249,6 +9249,12 @@ next_attr:
             nameHashValue = ctxt->attallocs[j] | 0x80000000;
 
             if (nsIndex == NS_INDEX_EMPTY) {
+                /*
+                 * Prefix with empty namespace means an undeclared
+                 * prefix which was already reported above.
+                 */
+                if (aprefix != NULL)
+                    continue;
                 nsuri = NULL;
                 uriHashValue = URI_HASH_EMPTY;
             } else if (nsIndex == NS_INDEX_XML) {

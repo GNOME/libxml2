@@ -4237,6 +4237,35 @@ xmlTextWriterFlush(xmlTextWriterPtr writer)
 }
 
 /**
+ * xmlTextWriterClose:
+ * @writer:  the xmlTextWriterPtr
+ *
+ * Flushes and closes the output buffer.
+ *
+ * Available since 2.13.0.
+ *
+ * Returns an xmlParserErrors code.
+ */
+int
+xmlTextWriterClose(xmlTextWriterPtr writer)
+{
+    int result;
+
+    if ((writer == NULL) || (writer->out == NULL))
+        return XML_ERR_ARGUMENT;
+
+    result = xmlOutputBufferClose(writer->out);
+    writer->out = NULL;
+
+    if (result >= 0)
+        result = XML_ERR_OK;
+    else
+        result = -result;
+
+    return result;
+}
+
+/**
  * misc
  */
 

@@ -3796,8 +3796,9 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                  * complete external PEReferences coming from the
                  * internal subset
                  */
-                if ((ctxt->replaceEntities) ||
-                    (ctxt->validate)) {
+                if (((ctxt->options & XML_PARSE_NO_XXE) == 0) &&
+                    ((ctxt->replaceEntities) ||
+                     (ctxt->validate))) {
                     xmlLoadEntityContent(ctxt, ent);
                 } else {
                     xmlWarningMsg(ctxt, XML_ERR_ENTITY_PROCESSING,
@@ -3805,6 +3806,10 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                                   "PE entity %s\n", ent->name, NULL);
                 }
             }
+
+            /*
+             * TODO: Skip if ent->content is still NULL.
+             */
 
             if (xmlParserEntityCheck(ctxt, ent->length))
                 return;
@@ -7399,8 +7404,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
      * External entity content should be cached in this case.
      */
     if ((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
-        (ctxt->replaceEntities) ||
-        (ctxt->validate)) {
+        (((ctxt->options & XML_PARSE_NO_XXE) == 0) &&
+         ((ctxt->replaceEntities) ||
+          (ctxt->validate)))) {
         if ((ent->flags & XML_ENT_PARSED) == 0) {
             xmlCtxtParseEntity(ctxt, ent);
         } else if (ent->children == NULL) {
@@ -7792,9 +7798,10 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 			  name, NULL);
 	} else {
 	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
-		(ctxt->loadsubset == 0) &&
-		(ctxt->replaceEntities == 0) &&
-		(ctxt->validate == 0))
+                ((ctxt->options & XML_PARSE_NO_XXE) ||
+		 ((ctxt->loadsubset == 0) &&
+		  (ctxt->replaceEntities == 0) &&
+		  (ctxt->validate == 0))))
 		return;
 
             if (entity->flags & XML_ENT_EXPANDING) {
@@ -13322,7 +13329,8 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
               XML_PARSE_HUGE |
               XML_PARSE_OLDSAX |
               XML_PARSE_IGNORE_ENC |
-              XML_PARSE_BIG_LINES;
+              XML_PARSE_BIG_LINES |
+              XML_PARSE_NO_XXE;
 
     ctxt->options = (ctxt->options & keepMask) | (options & allMask);
 
@@ -13389,28 +13397,36 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Despite the confusing name, this option enables substitution
  * of entities. The resulting tree won't contain any entity
- * reference nodes. This option also enables loading of external
- * entities (both general and parameter entities) which is
- * dangerous. If you process untrusted data, it's recommended to
- * set up an external entity loader that validates the files or
- * URIs being loaded.
+ * reference nodes.
+ *
+ * This option also enables loading of external entities (both
+ * general and parameter entities) which is dangerous. If you
+ * process untrusted data, it's recommended to set the
+ * XML_PARSE_NO_XXE option to disable loading of external
+ * entities.
  *
  * XML_PARSE_DTDLOAD
  *
  * Enables loading of an external DTD and the loading and
- * substitution of external parameter entities.
+ * substitution of external parameter entities. Has no effect
+ * if XML_PARSE_NO_XXE is set.
  *
  * XML_PARSE_DTDATTR
  *
  * Adds default attributes from the DTD to the result document.
  *
- * Implies XML_PARSE_DTDLOAD.
+ * Implies XML_PARSE_DTDLOAD, but loading of external content
+ * can be disabled with XML_PARSE_NO_XXE.
  *
  * XML_PARSE_DTDVALID
  *
  * This option enables DTD validation which requires to load
  * external DTDs and external entities (both general and
- * parameter entities).
+ * parameter entities) unless XML_PARSE_NO_XXE was set.
+ *
+ * XML_PARSE_NO_XXE
+ *
+ * Disables loading of external DTDs or entities.
  *
  * XML_PARSE_NOERROR
  *

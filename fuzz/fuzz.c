@@ -304,16 +304,21 @@ xmlFuzzReadEntities(void) {
 
     while (1) {
         const char *url, *entity;
-        size_t entitySize;
+        size_t urlSize, entitySize;
         xmlFuzzEntityInfo *entityInfo;
 
-        url = xmlFuzzReadString(NULL);
+        url = xmlFuzzReadString(&urlSize);
         if (url == NULL) break;
 
         entity = xmlFuzzReadString(&entitySize);
         if (entity == NULL) break;
 
-        if (xmlHashLookup(fuzzData.entities, (xmlChar *)url) == NULL) {
+        /*
+         * Cap URL size to avoid quadratic behavior when generating
+         * error messages or looking up entities.
+         */
+        if (urlSize < 50 &&
+            xmlHashLookup(fuzzData.entities, (xmlChar *)url) == NULL) {
             entityInfo = xmlMalloc(sizeof(xmlFuzzEntityInfo));
             if (entityInfo == NULL)
                 break;

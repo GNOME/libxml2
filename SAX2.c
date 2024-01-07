@@ -31,6 +31,8 @@
 #include "private/parser.h"
 #include "private/tree.h"
 
+#define XML_MAX_URI_LENGTH 2000
+
 /*
  * xmlSAX2ErrMemory:
  * @ctxt:  an XML validation parser context
@@ -401,7 +403,7 @@ xmlParserInputPtr
 xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr ret;
+    xmlParserInputPtr ret = NULL;
     xmlChar *URI;
     const char *base = NULL;
 
@@ -409,13 +411,18 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId
     if (ctxt->input != NULL)
 	base = ctxt->input->filename;
 
-    if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0)
+    if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
         xmlSAX2ErrMemory(ctxt);
+        return(NULL);
+    }
+    if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
+        xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
+    } else {
+        ret = xmlLoadExternalEntity((const char *) URI,
+                                    (const char *) publicId, ctxt);
+    }
 
-    ret = xmlLoadExternalEntity((const char *) URI,
-				(const char *) publicId, ctxt);
-    if (URI != NULL)
-	xmlFree(URI);
+    xmlFree(URI);
     return(ret);
 }
 
@@ -552,10 +559,16 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
             base = ctxt->input->filename;
 
         if (base != NULL) {
-            if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0)
+            if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
                 xmlSAX2ErrMemory(ctxt);
-            else
+                return;
+            }
+            if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
+                xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
+                xmlFree(URI);
+            } else {
                 ent->URI = URI;
+            }
         }
     }
 }

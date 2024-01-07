@@ -4,6 +4,7 @@
  * See Copyright for the status of this software.
  */
 
+#include <libxml/catalog.h>
 #include <libxml/parser.h>
 #include <libxml/xpointer.h>
 #include "fuzz.h"

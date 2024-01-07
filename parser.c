@@ -7430,12 +7430,14 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     if (xmlParserEntityCheck(ctxt, ent->expandedSize))
         return;
 
+    if ((ctxt->sax == NULL) || (ctxt->disableSAX))
+        return;
+
     if (ctxt->replaceEntities == 0) {
 	/*
 	 * Create a reference
 	 */
-        if ((ctxt->sax != NULL) && (ctxt->sax->reference != NULL) &&
-	    (!ctxt->disableSAX))
+        if (ctxt->sax->reference != NULL)
 	    ctxt->sax->reference(ctxt->userData, ent->name);
     } else if ((ent->children != NULL) && (ctxt->node != NULL)) {
         xmlNodePtr copy, cur;
@@ -7444,7 +7446,53 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
          * Seems we are generating the DOM content, copy the tree
 	 */
         cur = ent->children;
+
+        /*
+         * Handle first text node with SAX to coalesce text efficiently
+         */
+        if ((cur->type == XML_TEXT_NODE) ||
+            (cur->type == XML_CDATA_SECTION_NODE)) {
+            int len = xmlStrlen(cur->content);
+
+            if (cur->type == XML_TEXT_NODE) {
+                if (ctxt->sax->characters != NULL)
+                    ctxt->sax->characters(ctxt, cur->content, len);
+            } else {
+                if (ctxt->sax->cdataBlock != NULL)
+                    ctxt->sax->cdataBlock(ctxt, cur->content, len);
+            }
+
+            cur = cur->next;
+        }
+
         while (cur != NULL) {
+            xmlNodePtr last;
+
+            /*
+             * Handle last text node with SAX to coalesce text efficiently
+             */
+            if ((cur->next == NULL) &&
+                ((cur->type == XML_TEXT_NODE) ||
+                 (cur->type == XML_CDATA_SECTION_NODE))) {
+                int len = xmlStrlen(cur->content);
+
+                if (cur->type == XML_TEXT_NODE) {
+                    if (ctxt->sax->characters != NULL)
+                        ctxt->sax->characters(ctxt, cur->content, len);
+                } else {
+                    if (ctxt->sax->cdataBlock != NULL)
+                        ctxt->sax->cdataBlock(ctxt, cur->content, len);
+                }
+
+                break;
+            }
+
+            /*
+             * Reset coalesce buffer stats only for non-text nodes.
+             */
+            ctxt->nodemem = 0;
+            ctxt->nodelen = 0;
+
             copy = xmlDocCopyNode(cur, ctxt->myDoc, 1);
 
             if (copy == NULL) {
@@ -7459,22 +7507,18 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
                 copy->_private = cur->_private;
             }
 
-            /*
-             * We have to call xmlAddChild to coalesce text nodes
-             */
-            copy = xmlAddChild(ctxt->node, copy);
-            if (copy == NULL)
-                xmlErrMemory(ctxt);
+            copy->parent = ctxt->node;
+            last = ctxt->node->last;
+            if (last == NULL) {
+                ctxt->node->children = copy;
+            } else {
+                last->next = copy;
+                copy->prev = last;
+            }
+            ctxt->node->last = copy;
 
             cur = cur->next;
         }
-
-        /*
-         * This is to avoid a nasty side effect, see
-         * characters() in SAX.c
-         */
-        ctxt->nodemem = 0;
-        ctxt->nodelen = 0;
     }
 }
 
@@ -11925,9 +11969,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (xmlPushInput(ctxt, input) < 0)
         goto error;
 
-    ctxt->nodelen = 0;
-    ctxt->nodemem = 0;
-
     nameNsPush(ctxt, rootName, NULL, NULL, 0, 0);
     spacePush(ctxt, -1);
 
@@ -12003,6 +12044,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     int isExternal;
     int buildTree;
     int oldMinNsIndex;
+    int oldNodelen, oldNodemem;
 
     isExternal = (ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY);
     buildTree = (ctxt->node != NULL);
@@ -12032,6 +12074,11 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     if (buildTree)
         ctxt->nsdb->minNsIndex = ctxt->nsNr;
 
+    oldNodelen = ctxt->nodelen;
+    oldNodemem = ctxt->nodemem;
+    ctxt->nodelen = 0;
+    ctxt->nodemem = 0;
+
     /*
      * Parse content
      *
@@ -12056,6 +12103,8 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
     ent->flags &= ~XML_ENT_EXPANDING;
 
     ctxt->nsdb->minNsIndex = oldMinNsIndex;
+    ctxt->nodelen = oldNodelen;
+    ctxt->nodemem = oldNodemem;
 
     /*
      * Entity size accounting

@@ -2395,9 +2395,21 @@ xmlPopPE(xmlParserCtxtPtr ctxt) {
     ent->flags &= ~XML_ENT_EXPANDING;
 
     if ((ent->flags & XML_ENT_CHECKED) == 0) {
+        int result;
+
+        /*
+         * Read the rest of the stream in case of errors. We want
+         * to account for the whole entity size.
+         */
+        do {
+            ctxt->input->cur = ctxt->input->end;
+            xmlParserShrink(ctxt);
+            result = xmlParserGrow(ctxt);
+        } while (result > 0);
+
         consumed = ctxt->input->consumed;
         xmlSaturatedAddSizeT(&consumed,
-                             ctxt->input->cur - ctxt->input->base);
+                             ctxt->input->end - ctxt->input->base);
 
         xmlSaturatedAdd(&ent->expandedSize, consumed);
 
@@ -11976,6 +11988,7 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     xmlNodePtr root = NULL;
     xmlNodePtr list = NULL;
     xmlChar *rootName = BAD_CAST "#root";
+    int result;
 
     if (buildTree) {
         root = xmlNewDocNode(ctxt->myDoc, NULL, rootName, NULL);
@@ -12039,6 +12052,16 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
             root->last = NULL;
         }
     }
+
+    /*
+     * Read the rest of the stream in case of errors. We want
+     * to account for the whole entity size.
+     */
+    do {
+        ctxt->input->cur = ctxt->input->end;
+        xmlParserShrink(ctxt);
+        result = xmlParserGrow(ctxt);
+    } while (result > 0);
 
     if (buildTree)
         nodePop(ctxt);
@@ -12129,7 +12152,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      * Entity size accounting
      */
     consumed = input->consumed;
-    xmlSaturatedAddSizeT(&consumed, input->cur - input->base);
+    xmlSaturatedAddSizeT(&consumed, input->end - input->base);
 
     if ((ent->flags & XML_ENT_CHECKED) == 0)
         xmlSaturatedAdd(&ent->expandedSize, consumed);

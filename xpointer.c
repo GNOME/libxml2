@@ -1059,7 +1059,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	NEXT;
 	SKIP_BLANKS;
 
-	xmlXPathRegisterNs(ctxt->context, prefix, ctxt->cur);
+	if (xmlXPathRegisterNs(ctxt->context, prefix, ctxt->cur) < 0)
+            xmlXPathPErrMemory(ctxt);
         ctxt->base = oldBase;
         ctxt->cur = oldCur;
 	xmlFree(prefix);

@@ -183,10 +183,6 @@ runxmlconf_SOURCES=runxmlconf.c
 runxmlconf_DEPENDENCIES = $(DEPS)
 runxmlconf_LDADD= $(LDADDS)
 
-#testOOM_SOURCES=testOOM.c testOOMlib.h testOOMlib.c
-#testOOM_DEPENDENCIES = $(DEPS)
-#testOOM_LDADD= $(LDADDS)
-
 check-local:
 	[ -d test   ] || $(LN_S) $(srcdir)/test   .
 	[ -d result ] || $(LN_S) $(srcdir)/result .

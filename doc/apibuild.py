@@ -21,9 +21,6 @@ debugsym=None
 ignored_files = {
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
-  "testOOM.c": "out of memory tester",
-  "testOOMlib.h": "out of memory tester",
-  "testOOMlib.c": "out of memory tester",
   "rngparser.c": "not yet integrated",
   "testModule.c": "test tool",
   "testThreads.c": "test tool",

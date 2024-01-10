@@ -125,6 +125,8 @@ AC_ARG_WITH(xpath,
 [  --with-xpath            XPath 1.0 support (on)])
 AC_ARG_WITH(xptr,
 [  --with-xptr             XPointer support (on)])
+AC_ARG_WITH(xptr-locs,
+[  --with-xptr-locs        XPointer ranges and points (off)])
 AC_ARG_WITH(zlib,
 [  --with-zlib[[=DIR]]       use libz in DIR (on)])
 

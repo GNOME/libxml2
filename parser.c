@@ -7454,7 +7454,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
             (cur->type == XML_CDATA_SECTION_NODE)) {
             int len = xmlStrlen(cur->content);
 
-            if (cur->type == XML_TEXT_NODE) {
+            if ((cur->type == XML_TEXT_NODE) ||
+                (ctxt->sax->cdataBlock == NULL)) {
                 if (ctxt->sax->characters != NULL)
                     ctxt->sax->characters(ctxt, cur->content, len);
             } else {
@@ -7476,7 +7477,8 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
                  (cur->type == XML_CDATA_SECTION_NODE))) {
                 int len = xmlStrlen(cur->content);
 
-                if (cur->type == XML_TEXT_NODE) {
+                if ((cur->type == XML_TEXT_NODE) ||
+                    (ctxt->sax->cdataBlock == NULL)) {
                     if (ctxt->sax->characters != NULL)
                         ctxt->sax->characters(ctxt, cur->content, len);
                 } else {

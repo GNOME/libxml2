@@ -1,5 +1,16 @@
 NEWS file for libxml2
 
+v2.12.4: Jan 15 2024
+
+### Regressions
+
+- parser: Fix regression parsing standalone declarations
+- autotools: Readd --with-xptr-locs configuration option
+- parser: Fix build --without-output
+- parser: Don't grow or shrink pull parser memory buffers
+- io: Fix memory lifetime issue with input buffers
+
+
 v2.12.3: Dec 12 2023
 
 ### Regressions

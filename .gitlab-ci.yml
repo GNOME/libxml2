@@ -74,6 +74,8 @@ clang:msan:
     - win32-ps
   variables:
     BASE_CONFIG: "--with-ftp --with-legacy --with-xptr-locs"
+    # Disabled for now, see #658
+    CONFIG: "--without-python"
     CHERE_INVOKING: "yes"
   before_script:
     - $Env:Path="C:\msys64\usr\bin;$Env:Path"

@@ -11,6 +11,26 @@
 #include <string.h>
 
 static int
+testStandaloneWithEncoding(void) {
+    xmlDocPtr doc;
+    const char *str =
+        "<?xml version=\"1.0\" standalone=\"yes\"?>\n"
+        "<doc></doc>\n";
+    int err = 0;
+
+    xmlResetLastError();
+
+    doc = xmlReadDoc(BAD_CAST str, NULL, "UTF-8", 0);
+    if (doc == NULL) {
+        fprintf(stderr, "xmlReadDoc failed\n");
+        err = 1;
+    }
+    xmlFreeDoc(doc);
+
+    return err;
+}
+
+static int
 testUnsupportedEncoding(void) {
     xmlDocPtr doc;
     const xmlError *error;
@@ -251,6 +271,7 @@ int
 main(void) {
     int err = 0;
 
+    err |= testStandaloneWithEncoding();
     err |= testUnsupportedEncoding();
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();

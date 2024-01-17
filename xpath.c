@@ -10953,8 +10953,7 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
     }
     contextSeq = obj->nodesetval;
     if ((contextSeq == NULL) || (contextSeq->nodeNr <= 0)) {
-	xmlXPathReleaseObject(xpctxt, obj);
-        valuePush(ctxt, xmlXPathCacheWrapNodeSet(ctxt, NULL));
+        valuePush(ctxt, obj);
         return(0);
     }
     /*

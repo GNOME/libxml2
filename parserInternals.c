@@ -175,9 +175,15 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
     if (ctxt == NULL)
         return;
 
-    if ((code == XML_IO_ENOENT) ||
-        (code == XML_IO_NETWORK_ATTEMPT) ||
-        (code == XML_IO_UNKNOWN)) {
+    /*
+     * Don't report a well-formedness error if an external entity could
+     * not be found. We assume that inputNr is zero for the document
+     * entity which is somewhat fragile.
+     */
+    if ((ctxt->inputNr > 0) &&
+        ((code == XML_IO_ENOENT) ||
+         (code == XML_IO_NETWORK_ATTEMPT) ||
+         (code == XML_IO_UNKNOWN))) {
         if (ctxt->validate == 0)
             level = XML_ERR_WARNING;
         else

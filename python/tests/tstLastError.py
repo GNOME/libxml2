@@ -60,7 +60,7 @@ class TestCase(unittest.TestCase):
                         domain=libxml2.XML_FROM_IO,
                         code=libxml2.XML_IO_ENOENT,
                         message='failed to load "dummy.xml": No such file or directory\n',
-                        level=libxml2.XML_ERR_WARNING,
+                        level=libxml2.XML_ERR_FATAL,
                         file=None,
                         line=0)
 

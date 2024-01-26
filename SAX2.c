@@ -1129,11 +1129,11 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
                     if ((xmlStrEqual(name, prop->name)) &&
                         ((namespace == prop->ns) ||
                          (xmlStrEqual(namespace->href, prop->ns->href)))) {
-                            xmlNsErrMsg(ctxt, XML_ERR_ATTRIBUTE_REDEFINED,
-                                    "Attribute %s in %s redefined\n",
-                                             name, namespace->href);
-                        ctxt->wellFormed = 0;
-                        if (ctxt->recovery == 0) ctxt->disableSAX = 1;
+                        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER,
+                                   XML_ERR_ATTRIBUTE_REDEFINED, XML_ERR_FATAL,
+                                   name, NULL, NULL, 0,
+                                   "Attribute %s in %s redefined\n",
+                                   name, namespace->href);
                         if (name != NULL)
                             xmlFree(name);
                         goto error;

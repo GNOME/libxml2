@@ -13251,8 +13251,10 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
     }
     xmlAddChild(node, fake);
 
-    if (node->type == XML_ELEMENT_NODE) {
+    if (node->type == XML_ELEMENT_NODE)
 	nodePush(ctxt, node);
+
+    if ((ctxt->html == 0) && (node->type == XML_ELEMENT_NODE)) {
 	/*
 	 * initialize the SAX2 namespaces stack
 	 */

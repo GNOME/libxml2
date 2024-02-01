@@ -1409,6 +1409,8 @@ xmlCopyElementTable(xmlElementTablePtr table) {
  * @buf:  the XML buffer output
  * @elem:  An element table
  *
+ * DEPRECATED: Use xmlSaveTree.
+ *
  * This will dump the content of the element declaration as an XML
  * DTD definition
  */
@@ -1442,6 +1444,8 @@ xmlDumpElementDeclScan(void *elem, void *buf,
  * xmlDumpElementTable:
  * @buf:  the XML buffer output
  * @table:  An element table
+ *
+ * DEPRECATED: Don't use.
  *
  * This will dump the content of the element table as an XML DTD definition
  */
@@ -1948,6 +1952,8 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
  * @buf:  the XML buffer output
  * @attr:  An attribute declaration
  *
+ * DEPRECATED: Use xmlSaveTree.
+ *
  * This will dump the content of the attribute declaration as an XML
  * DTD definition
  */
@@ -1980,6 +1986,8 @@ xmlDumpAttributeDeclScan(void *attr, void *buf,
  * xmlDumpAttributeTable:
  * @buf:  the XML buffer output
  * @table:  An attribute table
+ *
+ * DEPRECATED: Don't use.
  *
  * This will dump the content of the attribute table as an XML DTD definition
  */
@@ -2181,6 +2189,8 @@ xmlCopyNotationTable(xmlNotationTablePtr table) {
  * @buf:  the XML buffer output
  * @nota:  A notation declaration
  *
+ * DEPRECATED: Don't use.
+ *
  * This will dump the content the notation declaration as an XML DTD definition
  */
 void
@@ -2199,6 +2209,8 @@ xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
  * xmlDumpNotationTable:
  * @buf:  the XML buffer output
  * @table:  A notation table
+ *
+ * DEPRECATED: Don't use.
  *
  * This will dump the content of the notation table as an XML DTD definition
  */

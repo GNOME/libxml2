@@ -413,6 +413,46 @@ xmlAttrSerializeContent(xmlOutputBufferPtr buf, xmlAttrPtr attr)
 }
 
 /**
+ * xmlBufDumpNotationDecl:
+ * @buf:  the XML buffer output
+ * @nota:  A notation declaration
+ *
+ * This will dump the content the notation declaration as an XML DTD definition
+ */
+static void
+xmlBufDumpNotationDecl(xmlOutputBufferPtr buf, xmlNotationPtr nota) {
+    xmlOutputBufferWrite(buf, 11, "<!NOTATION ");
+    xmlOutputBufferWriteString(buf, (const char *) nota->name);
+
+    if (nota->PublicID != NULL) {
+	xmlOutputBufferWrite(buf, 8, " PUBLIC ");
+	xmlBufWriteQuotedString(buf->buffer, nota->PublicID);
+	if (nota->SystemID != NULL) {
+	    xmlOutputBufferWrite(buf, 1, " ");
+	    xmlBufWriteQuotedString(buf->buffer, nota->SystemID);
+	}
+    } else {
+	xmlOutputBufferWrite(buf, 8, " SYSTEM ");
+	xmlBufWriteQuotedString(buf->buffer, nota->SystemID);
+    }
+
+    xmlOutputBufferWrite(buf, 3, " >\n");
+}
+
+/**
+ * xmlBufDumpNotationDeclScan:
+ * @nota:  A notation declaration
+ * @buf:  the XML buffer output
+ *
+ * This is called with the hash scan function, and just reverses args
+ */
+static void
+xmlBufDumpNotationDeclScan(void *nota, void *buf,
+                           const xmlChar *name ATTRIBUTE_UNUSED) {
+    xmlBufDumpNotationDecl((xmlOutputBufferPtr) buf, (xmlNotationPtr) nota);
+}
+
+/**
  * xmlBufDumpNotationTable:
  * @buf:  an xmlBufPtr output
  * @table:  A notation table
@@ -420,17 +460,105 @@ xmlAttrSerializeContent(xmlOutputBufferPtr buf, xmlAttrPtr attr)
  * This will dump the content of the notation table as an XML DTD definition
  */
 static void
-xmlBufDumpNotationTable(xmlOutputBufferPtr stream, xmlNotationTablePtr table) {
-    xmlBufferPtr buffer;
+xmlBufDumpNotationTable(xmlOutputBufferPtr buf, xmlNotationTablePtr table) {
+    xmlHashScan(table, xmlBufDumpNotationDeclScan, buf);
+}
 
-    buffer = xmlBufferCreate();
-    if (buffer == NULL) {
-        stream->error = XML_ERR_NO_MEMORY;
-        return;
+/**
+ * xmlBufDumpElementOccur:
+ * @buf:  output buffer
+ * @cur:  element table
+ *
+ * Dump the occurrence operator of an element.
+ */
+static void
+xmlBufDumpElementOccur(xmlOutputBufferPtr buf, xmlElementContentPtr cur) {
+    switch (cur->ocur) {
+        case XML_ELEMENT_CONTENT_ONCE:
+            break;
+        case XML_ELEMENT_CONTENT_OPT:
+            xmlOutputBufferWrite(buf, 1, "?");
+            break;
+        case XML_ELEMENT_CONTENT_MULT:
+            xmlOutputBufferWrite(buf, 1, "*");
+            break;
+        case XML_ELEMENT_CONTENT_PLUS:
+            xmlOutputBufferWrite(buf, 1, "+");
+            break;
     }
-    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_DOUBLEIT);
-    xmlDumpNotationTable(buffer, table);
-    xmlBufMergeBuffer(stream->buffer, buffer);
+}
+
+/**
+ * xmlBufDumpElementContent:
+ * @buf:  output buffer
+ * @content:  element table
+ *
+ * This will dump the content of the element table as an XML DTD definition
+ */
+static void
+xmlBufDumpElementContent(xmlOutputBufferPtr buf,
+                         xmlElementContentPtr content) {
+    xmlElementContentPtr cur;
+
+    if (content == NULL) return;
+
+    xmlOutputBufferWrite(buf, 1, "(");
+    cur = content;
+
+    do {
+        if (cur == NULL) return;
+
+        switch (cur->type) {
+            case XML_ELEMENT_CONTENT_PCDATA:
+                xmlOutputBufferWrite(buf, 7, "#PCDATA");
+                break;
+            case XML_ELEMENT_CONTENT_ELEMENT:
+                if (cur->prefix != NULL) {
+                    xmlOutputBufferWriteString(buf,
+                            (const char *) cur->prefix);
+                    xmlOutputBufferWrite(buf, 1, ":");
+                }
+                xmlOutputBufferWriteString(buf, (const char *) cur->name);
+                break;
+            case XML_ELEMENT_CONTENT_SEQ:
+            case XML_ELEMENT_CONTENT_OR:
+                if ((cur != content) &&
+                    (cur->parent != NULL) &&
+                    ((cur->type != cur->parent->type) ||
+                     (cur->ocur != XML_ELEMENT_CONTENT_ONCE)))
+                    xmlOutputBufferWrite(buf, 1, "(");
+                cur = cur->c1;
+                continue;
+        }
+
+        while (cur != content) {
+            xmlElementContentPtr parent = cur->parent;
+
+            if (parent == NULL) return;
+
+            if (((cur->type == XML_ELEMENT_CONTENT_OR) ||
+                 (cur->type == XML_ELEMENT_CONTENT_SEQ)) &&
+                ((cur->type != parent->type) ||
+                 (cur->ocur != XML_ELEMENT_CONTENT_ONCE)))
+                xmlOutputBufferWrite(buf, 1, ")");
+            xmlBufDumpElementOccur(buf, cur);
+
+            if (cur == parent->c1) {
+                if (parent->type == XML_ELEMENT_CONTENT_SEQ)
+                    xmlOutputBufferWrite(buf, 3, " , ");
+                else if (parent->type == XML_ELEMENT_CONTENT_OR)
+                    xmlOutputBufferWrite(buf, 3, " | ");
+
+                cur = parent->c2;
+                break;
+            }
+
+            cur = parent;
+        }
+    } while (cur != content);
+
+    xmlOutputBufferWrite(buf, 1, ")");
+    xmlBufDumpElementOccur(buf, content);
 }
 
 /**
@@ -442,39 +570,173 @@ xmlBufDumpNotationTable(xmlOutputBufferPtr stream, xmlNotationTablePtr table) {
  * DTD definition
  */
 static void
-xmlBufDumpElementDecl(xmlOutputBufferPtr stream, xmlElementPtr elem) {
-    xmlBufferPtr buffer;
-
-    buffer = xmlBufferCreate();
-    if (buffer == NULL) {
-        stream->error = XML_ERR_NO_MEMORY;
-        return;
+xmlBufDumpElementDecl(xmlOutputBufferPtr buf, xmlElementPtr elem) {
+    xmlOutputBufferWrite(buf, 10, "<!ELEMENT ");
+    if (elem->prefix != NULL) {
+        xmlOutputBufferWriteString(buf, (const char *) elem->prefix);
+        xmlOutputBufferWrite(buf, 1, ":");
     }
-    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_DOUBLEIT);
-    xmlDumpElementDecl(buffer, elem);
-    xmlBufMergeBuffer(stream->buffer, buffer);
+    xmlOutputBufferWriteString(buf, (const char *) elem->name);
+    xmlOutputBufferWrite(buf, 1, " ");
+
+    switch (elem->etype) {
+	case XML_ELEMENT_TYPE_EMPTY:
+	    xmlOutputBufferWrite(buf, 5, "EMPTY");
+	    break;
+	case XML_ELEMENT_TYPE_ANY:
+	    xmlOutputBufferWrite(buf, 3, "ANY");
+	    break;
+	case XML_ELEMENT_TYPE_MIXED:
+	case XML_ELEMENT_TYPE_ELEMENT:
+	    xmlBufDumpElementContent(buf, elem->content);
+	    break;
+        default:
+            /* assert(0); */
+            break;
+    }
+
+    xmlOutputBufferWrite(buf, 2, ">\n");
 }
 
 /**
+ * xmlBufDumpEnumeration:
+ * @buf:  output buffer
+ * @enum:  An enumeration
+ *
+ * This will dump the content of the enumeration
+ */
+static void
+xmlBufDumpEnumeration(xmlOutputBufferPtr buf, xmlEnumerationPtr cur) {
+    while (cur != NULL) {
+        xmlOutputBufferWriteString(buf, (const char *) cur->name);
+        if (cur->next != NULL)
+            xmlOutputBufferWrite(buf, 3, " | ");
+
+        cur = cur->next;
+    }
+
+    xmlOutputBufferWrite(buf, 1, ")");
+}
+/**
  * xmlBufDumpAttributeDecl:
- * @buf:  an xmlBufPtr output
+ * @buf:  output buffer
  * @attr:  An attribute declaration
  *
  * This will dump the content of the attribute declaration as an XML
  * DTD definition
  */
 static void
-xmlBufDumpAttributeDecl(xmlOutputBufferPtr stream, xmlAttributePtr attr) {
-    xmlBufferPtr buffer;
-
-    buffer = xmlBufferCreate();
-    if (buffer == NULL) {
-        stream->error = XML_ERR_NO_MEMORY;
-        return;
+xmlBufDumpAttributeDecl(xmlOutputBufferPtr buf, xmlAttributePtr attr) {
+    xmlOutputBufferWrite(buf, 10, "<!ATTLIST ");
+    xmlOutputBufferWriteString(buf, (const char *) attr->elem);
+    xmlOutputBufferWrite(buf, 1, " ");
+    if (attr->prefix != NULL) {
+	xmlOutputBufferWriteString(buf, (const char *) attr->prefix);
+	xmlOutputBufferWrite(buf, 1, ":");
     }
-    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_DOUBLEIT);
-    xmlDumpAttributeDecl(buffer, attr);
-    xmlBufMergeBuffer(stream->buffer, buffer);
+    xmlOutputBufferWriteString(buf, (const char *) attr->name);
+
+    switch (attr->atype) {
+	case XML_ATTRIBUTE_CDATA:
+	    xmlOutputBufferWrite(buf, 6, " CDATA");
+	    break;
+	case XML_ATTRIBUTE_ID:
+	    xmlOutputBufferWrite(buf, 3, " ID");
+	    break;
+	case XML_ATTRIBUTE_IDREF:
+	    xmlOutputBufferWrite(buf, 6, " IDREF");
+	    break;
+	case XML_ATTRIBUTE_IDREFS:
+	    xmlOutputBufferWrite(buf, 7, " IDREFS");
+	    break;
+	case XML_ATTRIBUTE_ENTITY:
+	    xmlOutputBufferWrite(buf, 7, " ENTITY");
+	    break;
+	case XML_ATTRIBUTE_ENTITIES:
+	    xmlOutputBufferWrite(buf, 9, " ENTITIES");
+	    break;
+	case XML_ATTRIBUTE_NMTOKEN:
+	    xmlOutputBufferWrite(buf, 8, " NMTOKEN");
+	    break;
+	case XML_ATTRIBUTE_NMTOKENS:
+	    xmlOutputBufferWrite(buf, 9, " NMTOKENS");
+	    break;
+	case XML_ATTRIBUTE_ENUMERATION:
+	    xmlOutputBufferWrite(buf, 2, " (");
+	    xmlBufDumpEnumeration(buf, attr->tree);
+	    break;
+	case XML_ATTRIBUTE_NOTATION:
+	    xmlOutputBufferWrite(buf, 11, " NOTATION (");
+	    xmlBufDumpEnumeration(buf, attr->tree);
+	    break;
+	default:
+            /* assert(0); */
+            break;
+    }
+
+    switch (attr->def) {
+	case XML_ATTRIBUTE_NONE:
+	    break;
+	case XML_ATTRIBUTE_REQUIRED:
+	    xmlOutputBufferWrite(buf, 10, " #REQUIRED");
+	    break;
+	case XML_ATTRIBUTE_IMPLIED:
+	    xmlOutputBufferWrite(buf, 9, " #IMPLIED");
+	    break;
+	case XML_ATTRIBUTE_FIXED:
+	    xmlOutputBufferWrite(buf, 7, " #FIXED");
+	    break;
+	default:
+            /* assert(0); */
+            break;
+    }
+
+    if (attr->defaultValue != NULL) {
+	xmlOutputBufferWrite(buf, 1, " ");
+	xmlBufWriteQuotedString(buf->buffer, attr->defaultValue);
+    }
+
+    xmlOutputBufferWrite(buf, 2, ">\n");
+}
+
+/**
+ * xmlBufDumpEntityContent:
+ * @buf:  output buffer
+ * @content:  entity content.
+ *
+ * This will dump the quoted string value, taking care of the special
+ * treatment required by %
+ */
+static void
+xmlBufDumpEntityContent(xmlOutputBufferPtr buf, const xmlChar *content) {
+    if (xmlStrchr(content, '%')) {
+        const char * base, *cur;
+
+	xmlOutputBufferWrite(buf, 1, "\"");
+	base = cur = (const char *) content;
+	while (*cur != 0) {
+	    if (*cur == '"') {
+		if (base != cur)
+		    xmlOutputBufferWrite(buf, cur - base, base);
+		xmlOutputBufferWrite(buf, 6, "&quot;");
+		cur++;
+		base = cur;
+	    } else if (*cur == '%') {
+		if (base != cur)
+		    xmlOutputBufferWrite(buf, cur - base, base);
+		xmlOutputBufferWrite(buf, 6, "&#x25;");
+		cur++;
+		base = cur;
+	    } else {
+		cur++;
+	    }
+	}
+	if (base != cur)
+	    xmlOutputBufferWrite(buf, cur - base, base);
+	xmlOutputBufferWrite(buf, 1, "\"");
+    } else {
+        xmlBufWriteQuotedString(buf->buffer, content);
+    }
 }
 
 /**
@@ -485,17 +747,47 @@ xmlBufDumpAttributeDecl(xmlOutputBufferPtr stream, xmlAttributePtr attr) {
  * This will dump the content of the entity table as an XML DTD definition
  */
 static void
-xmlBufDumpEntityDecl(xmlOutputBufferPtr stream, xmlEntityPtr ent) {
-    xmlBufferPtr buffer;
+xmlBufDumpEntityDecl(xmlOutputBufferPtr buf, xmlEntityPtr ent) {
+    if ((ent->etype == XML_INTERNAL_PARAMETER_ENTITY) ||
+        (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY))
+        xmlOutputBufferWrite(buf, 11, "<!ENTITY % ");
+    else
+        xmlOutputBufferWrite(buf, 9, "<!ENTITY ");
+    xmlOutputBufferWriteString(buf, (const char *) ent->name);
+    xmlOutputBufferWrite(buf, 1, " ");
 
-    buffer = xmlBufferCreate();
-    if (buffer == NULL) {
-        stream->error = XML_ERR_NO_MEMORY;
-        return;
+    if ((ent->etype == XML_EXTERNAL_GENERAL_PARSED_ENTITY) ||
+        (ent->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) ||
+        (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY)) {
+        if (ent->ExternalID != NULL) {
+             xmlOutputBufferWrite(buf, 7, "PUBLIC ");
+             xmlBufWriteQuotedString(buf->buffer, ent->ExternalID);
+             xmlOutputBufferWrite(buf, 1, " ");
+        } else {
+             xmlOutputBufferWrite(buf, 7, "SYSTEM ");
+        }
+        xmlBufWriteQuotedString(buf->buffer, ent->SystemID);
     }
-    xmlBufferSetAllocationScheme(buffer, XML_BUFFER_ALLOC_DOUBLEIT);
-    xmlDumpEntityDecl(buffer, ent);
-    xmlBufMergeBuffer(stream->buffer, buffer);
+
+    if (ent->etype == XML_EXTERNAL_GENERAL_UNPARSED_ENTITY) {
+        if (ent->content != NULL) { /* Should be true ! */
+            xmlOutputBufferWrite(buf, 7, " NDATA ");
+            if (ent->orig != NULL)
+                xmlOutputBufferWriteString(buf, (const char *) ent->orig);
+            else
+                xmlOutputBufferWriteString(buf, (const char *) ent->content);
+        }
+    }
+
+    if ((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
+        (ent->etype == XML_INTERNAL_PARAMETER_ENTITY)) {
+        if (ent->orig != NULL)
+            xmlBufWriteQuotedString(buf->buffer, ent->orig);
+        else
+            xmlBufDumpEntityContent(buf, ent->content);
+    }
+
+    xmlOutputBufferWrite(buf, 2, ">\n");
 }
 
 /************************************************************************
@@ -1874,6 +2166,18 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr cur)
 #endif
     xmlNodeDumpOutputInternal(ctxt, cur);
     return(ret);
+}
+
+int
+xmlSaveNotationDecl(xmlSaveCtxtPtr ctxt, xmlNotationPtr cur) {
+    xmlBufDumpNotationDecl(ctxt->buf, cur);
+    return(0);
+}
+
+int
+xmlSaveNotationTable(xmlSaveCtxtPtr ctxt, xmlNotationTablePtr cur) {
+    xmlBufDumpNotationTable(ctxt->buf, cur);
+    return(0);
 }
 
 /**

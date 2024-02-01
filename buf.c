@@ -972,32 +972,6 @@ xmlBufBackToBuffer(xmlBufPtr buf) {
 }
 
 /**
- * xmlBufMergeBuffer:
- * @buf: an xmlBufPtr
- * @buffer: the buffer to consume into @buf
- *
- * The content of @buffer is appended to @buf and @buffer is freed
- *
- * Returns -1 in case of error, 0 otherwise, in any case @buffer is freed
- */
-int
-xmlBufMergeBuffer(xmlBufPtr buf, xmlBufferPtr buffer) {
-    int ret = 0;
-
-    if ((buf == NULL) || (buf->error)) {
-	xmlBufferFree(buffer);
-        return(-1);
-    }
-    CHECK_COMPAT(buf)
-    if ((buffer != NULL) && (buffer->content != NULL) &&
-             (buffer->use > 0)) {
-        ret = xmlBufAdd(buf, buffer->content, buffer->use);
-    }
-    xmlBufferFree(buffer);
-    return(ret);
-}
-
-/**
  * xmlBufResetInput:
  * @buf: an xmlBufPtr
  * @input: an xmlParserInputPtr

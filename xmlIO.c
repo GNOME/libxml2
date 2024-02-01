@@ -2431,8 +2431,10 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
                 }
 	    }
 	    ret = xmlBufAdd(out->buffer, (const xmlChar *) buf, chunk);
-	    if (ret != 0)
+	    if (ret != 0) {
+                out->error = XML_ERR_NO_MEMORY;
 	        return(-1);
+            }
 
 	    if ((xmlBufUse(out->buffer) < MINLEN) && (chunk == len))
 		goto done;

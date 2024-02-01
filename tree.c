@@ -1713,7 +1713,7 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
                         if (ret == NULL)
                             goto error;
                     }
-                } else {
+                } else if (node->content != NULL) {
                     ret = xmlStrcat(ret, node->content);
                     if (ret == NULL)
                         goto error;

@@ -58,6 +58,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     if (ctxt != NULL) {
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
         xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
+                                  doc == NULL &&
                                   ctxt->errNo == XML_ERR_NO_MEMORY);
 
         if (doc != NULL) {
@@ -66,29 +67,15 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             xmlSaveCtxtPtr save;
 
             /* Also test the serializer. */
-            xmlFuzzResetMallocFailed();
             buffer = xmlBufferCreate();
             save = xmlSaveToBuffer(buffer, NULL, 0);
             if (save != NULL) {
-#if 0
                 int errNo;
 
-                /*
-                 * DTD serialization doesn't report malloc failures:
-                 *
-                 * - xmlBufDumpNotationTable
-                 * - xmlBufDumpElementDecl
-                 * - xmlBufDumpAttributeDecl
-                 * - xmlBufDumpEntityDecl
-                 */
                 xmlSaveDoc(save, doc);
                 errNo = xmlSaveFinish(save);
                 xmlFuzzCheckMallocFailure("xmlSaveDoc",
                                           errNo == XML_ERR_NO_MEMORY);
-#else
-                xmlSaveDoc(save, doc);
-                xmlSaveFinish(save);
-#endif
             }
             xmlBufferFree(buffer);
 #endif

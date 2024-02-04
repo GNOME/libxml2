@@ -1,5 +1,16 @@
 NEWS file for libxml2
 
+v2.12.5: Feb 4 2024
+
+### Security
+
+- [CVE-2024-25062] xmlreader: Don't expand XIncludes when backtracking
+
+### Regressions
+
+- parser: Fix crash in xmlParseInNodeContext with HTML documents
+
+
 v2.12.4: Jan 15 2024
 
 ### Regressions

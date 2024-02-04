@@ -2373,7 +2373,8 @@ xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
     }
 
     attr->atype = XML_ATTRIBUTE_ID;
-    attr->id = ret;
+    if (!streaming)
+        attr->id = ret;
 
     if (id != NULL)
         *id = ret;

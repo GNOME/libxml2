@@ -8305,7 +8305,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     int offset, max;
     int ch;
     const xmlChar *point;
-    xmlChar *cptr;
+    xmlChar *cptr, *content;
 
     CHECK_ARITY(3);
 
@@ -8355,7 +8355,11 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
         }
     }
 
-    valuePush(ctxt, xmlXPathCacheNewString(ctxt, xmlBufContent(target)));
+    content = xmlBufDetach(target);
+    if (content == NULL)
+        xmlXPathPErrMemory(ctxt);
+    else
+        valuePush(ctxt, xmlXPathCacheWrapString(ctxt, content));
     xmlBufFree(target);
 error:
     xmlXPathReleaseObject(ctxt->context, str);

@@ -2324,12 +2324,14 @@ xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
             /*
              * Update the attribute to make entities work.
              */
-            if (ret->attr != NULL) {
-                ret->attr->id = NULL;
-                ret->attr = attr;
+            if (!streaming) {
+                if (ret->attr != NULL) {
+                    ret->attr->id = NULL;
+                    ret->attr = attr;
+                }
+                attr->id = ret;
             }
 	    attr->atype = XML_ATTRIBUTE_ID;
-            attr->id = ret;
             return(0);
         }
     }

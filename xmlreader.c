@@ -1004,7 +1004,7 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
  * entity substitution is not activated. As a result the parser interface
  * must walk through the entity and do the validation calls
  */
-static void
+static int
 xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
     xmlNodePtr oldnode = reader->node;
     xmlNodePtr node = reader->node;
@@ -1033,7 +1033,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	} else if (node->type == XML_ELEMENT_NODE) {
 	    reader->node = node;
 	    if (xmlTextReaderValidatePush(reader) < 0)
-                return;
+                return(-1);
 	} else if ((node->type == XML_TEXT_NODE) ||
 		   (node->type == XML_CDATA_SECTION_NODE)) {
             xmlTextReaderValidateCData(reader, node->content,
@@ -1049,7 +1049,7 @@ xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
 	    continue;
 	} else if (node->type == XML_ELEMENT_NODE) {
 	    if (xmlTextReaderValidatePop(reader) < 0)
-                return;
+                return(-1);
 	}
 skip_children:
 	if (node->next != NULL) {
@@ -1071,7 +1071,7 @@ skip_children:
 		}
 		reader->node = node;
 		if (xmlTextReaderValidatePop(reader) < 0)
-                    return;
+                    return(-1);
 	    }
 	    if ((node->type == XML_ENTITY_DECL) &&
 		(reader->ent != NULL) && (reader->ent->children == node)) {
@@ -1086,6 +1086,8 @@ skip_children:
 	} while ((node != NULL) && (node != oldnode));
     } while ((node != NULL) && (node != oldnode));
     reader->node = oldnode;
+
+    return(0);
 }
 #endif /* LIBXML_REGEXP_ENABLED */
 
@@ -1486,7 +1488,8 @@ node_found:
     } else if ((reader->node != NULL) &&
 	       (reader->node->type == XML_ENTITY_REF_NODE) &&
 	       (reader->ctxt != NULL) && (reader->validate)) {
-	xmlTextReaderValidateEntity(reader);
+	if (xmlTextReaderValidateEntity(reader) < 0)
+            return(-1);
 #endif /* LIBXML_REGEXP_ENABLED */
     }
     if ((reader->node != NULL) &&

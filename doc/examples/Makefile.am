@@ -98,5 +98,6 @@ check-local:
 	@$(CHECKER) ./testWriter
 	@$(CHECKER) ./tree1 test2.xml >/dev/null
 	@$(CHECKER) ./tree2 >/dev/null
+	@$(CHECKER) ./xpath1 test3.xml '//child2' >/dev/null
 	@$(CHECKER) ./xpath2 test3.xml '//discarded' discarded >/dev/null
 	@rm -f *.tmp

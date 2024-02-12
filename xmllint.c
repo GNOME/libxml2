@@ -86,17 +86,18 @@
 #endif
 
 typedef enum {
-    XMLLINT_RETURN_OK = 0,	/* No error */
-    XMLLINT_ERR_UNCLASS = 1,	/* Unclassified */
-    XMLLINT_ERR_DTD = 2,	/* Error in DTD */
-    XMLLINT_ERR_VALID = 3,	/* Validation error */
-    XMLLINT_ERR_RDFILE = 4,	/* CtxtReadFile error */
-    XMLLINT_ERR_SCHEMACOMP = 5,	/* Schema compilation */
-    XMLLINT_ERR_OUT = 6,	/* Error writing output */
-    XMLLINT_ERR_SCHEMAPAT = 7,	/* Error in schema pattern */
-    XMLLINT_ERR_RDREGIS = 8,	/* Error in Reader registration */
-    XMLLINT_ERR_MEM = 9,	/* Out of memory error */
-    XMLLINT_ERR_XPATH = 10	/* XPath evaluation error */
+    XMLLINT_RETURN_OK = 0,	    /* No error */
+    XMLLINT_ERR_UNCLASS = 1,	    /* Unclassified */
+    XMLLINT_ERR_DTD = 2,	    /* Error in DTD */
+    XMLLINT_ERR_VALID = 3,	    /* Validation error */
+    XMLLINT_ERR_RDFILE = 4,	    /* CtxtReadFile error */
+    XMLLINT_ERR_SCHEMACOMP = 5,	    /* Schema compilation */
+    XMLLINT_ERR_OUT = 6,	    /* Error writing output */
+    XMLLINT_ERR_SCHEMAPAT = 7,	    /* Error in schema pattern */
+    XMLLINT_ERR_RDREGIS = 8,	    /* Error in Reader registration */
+    XMLLINT_ERR_MEM = 9,	    /* Out of memory error */
+    XMLLINT_ERR_XPATH = 10,	    /* XPath evaluation error */
+    XMLLINT_ERR_XPATH_EMPTY = 11    /* XPath result is empty */
 } xmllintReturnCode;
 #ifdef LIBXML_DEBUG_ENABLED
 static int shell = 0;
@@ -2019,6 +2020,7 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
             xmlOutputBufferPtr buf;
 
             if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
+                progresult = XMLLINT_ERR_XPATH_EMPTY;
                 if (!quiet) {
                     fprintf(stderr, "XPath set is empty\n");
                 }

@@ -575,7 +575,9 @@
                     result. In case of a nodeset result, each node in the
                     node set is serialized in full in the output. In case
                     of an empty node set the "XPath set is empty" result
-                    will be shown and an error exit code will be returned.
+                    will be shown and exit code 11 will be returned..
+                    This feature is EXPERIMENTAL. Implementation details can
+                    change without futher notice.
                 </para>
             </listitem>
         </varlistentry>
@@ -942,6 +944,13 @@
             <term><errorcode>10</errorcode></term>
             <listitem>
                 <para>XPath evaluation error</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><errorcode>11</errorcode></term>
+            <listitem>
+                <para>XPath result is empty</para>
             </listitem>
         </varlistentry>
 

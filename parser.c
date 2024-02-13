@@ -4305,7 +4305,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
 	xmlFatalErr(ctxt, XML_ERR_ATTRIBUTE_NOT_STARTED, NULL);
 	return(NULL);
     }
-    CUR_PTR++;
+    NEXTL(1);
 
     if (ctxt->inSubset == 0)
         flags = XML_ENT_CHECKED | XML_ENT_VALIDATED;

@@ -21,7 +21,7 @@ LIBXML_VERSION_INFO=`expr $LIBXML_MAJOR_VERSION + $LIBXML_MINOR_VERSION`:$LIBXML
 LIBXML_VERSION_NUMBER=`expr $LIBXML_MAJOR_VERSION \* 10000 + $LIBXML_MINOR_VERSION \* 100 + $LIBXML_MICRO_VERSION`
 
 if test -d .git ; then
-  extra=`git describe 2>/dev/null | sed 's+LIBXML[[0-9.]]*-++'`
+  extra=`git describe 2>/dev/null`
   echo extra=$extra
   if test "$extra" != ""
   then

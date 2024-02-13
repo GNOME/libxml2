@@ -223,13 +223,13 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
     int col = 0;
     int res;
 
-    if (PARSER_STOPPED(ctxt))
-	return;
-
     if (code == XML_ERR_NO_MEMORY) {
         xmlCtxtErrMemory(ctxt);
         return;
     }
+
+    if (PARSER_STOPPED(ctxt))
+	return;
 
     if (level == XML_ERR_WARNING) {
         if (ctxt->nbWarnings >= XML_MAX_ERRORS)

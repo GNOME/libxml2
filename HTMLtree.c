@@ -623,15 +623,15 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if (cur->ExternalID != NULL) {
 	xmlOutputBufferWriteString(buf, " PUBLIC ");
-	xmlBufWriteQuotedString(buf->buffer, cur->ExternalID);
+	xmlOutputBufferWriteQuotedString(buf, cur->ExternalID);
 	if (cur->SystemID != NULL) {
 	    xmlOutputBufferWriteString(buf, " ");
-	    xmlBufWriteQuotedString(buf->buffer, cur->SystemID);
+	    xmlOutputBufferWriteQuotedString(buf, cur->SystemID);
 	}
     } else if (cur->SystemID != NULL &&
 	       xmlStrcmp(cur->SystemID, BAD_CAST "about:legacy-compat")) {
 	xmlOutputBufferWriteString(buf, " SYSTEM ");
-	xmlBufWriteQuotedString(buf->buffer, cur->SystemID);
+	xmlOutputBufferWriteQuotedString(buf, cur->SystemID);
     }
     xmlOutputBufferWriteString(buf, ">\n");
 }
@@ -691,13 +691,13 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
 		escaped = xmlURIEscapeStr(tmp,
                         BAD_CAST "\"#$%&+,/:;<=>?@[\\]^`{|}");
 		if (escaped != NULL) {
-		    xmlBufWriteQuotedString(buf->buffer, escaped);
+		    xmlOutputBufferWriteQuotedString(buf, escaped);
 		    xmlFree(escaped);
 		} else {
                     buf->error = XML_ERR_NO_MEMORY;
 		}
 	    } else {
-		xmlBufWriteQuotedString(buf->buffer, value);
+		xmlOutputBufferWriteQuotedString(buf, value);
 	    }
 	    xmlFree(value);
 	} else  {

@@ -2720,6 +2720,56 @@ xmlOutputBufferWriteString(xmlOutputBufferPtr out, const char *str) {
 }
 
 /**
+ * xmlOutputBufferWriteQuotedString:
+ * @buf:  output buffer
+ * @string:  the string to add
+ *
+ * routine which manage and grows an output buffer. This one writes
+ * a quoted or double quoted #xmlChar string, checking first if it holds
+ * quote or double-quotes internally
+ */
+void
+xmlOutputBufferWriteQuotedString(xmlOutputBufferPtr buf,
+                                 const xmlChar *string) {
+    const xmlChar *cur, *base;
+
+    if ((buf == NULL) || (buf->error))
+        return;
+
+    if (xmlStrchr(string, '\"')) {
+        if (xmlStrchr(string, '\'')) {
+	    xmlOutputBufferWrite(buf, 1, "\"");
+            base = cur = string;
+            while(*cur != 0){
+                if(*cur == '"'){
+                    if (base != cur)
+                        xmlOutputBufferWrite(buf, cur - base,
+                                             (const char *) base);
+                    xmlOutputBufferWrite(buf, 6, "&quot;");
+                    cur++;
+                    base = cur;
+                }
+                else {
+                    cur++;
+                }
+            }
+            if (base != cur)
+                xmlOutputBufferWrite(buf, cur - base, (const char *) base);
+	    xmlOutputBufferWrite(buf, 1, "\"");
+	}
+        else{
+	    xmlOutputBufferWrite(buf, 1, "'");
+            xmlOutputBufferWriteString(buf, (const char *) string);
+	    xmlOutputBufferWrite(buf, 1, "'");
+        }
+    } else {
+        xmlOutputBufferWrite(buf, 1, "\"");
+        xmlOutputBufferWriteString(buf, (const char *) string);
+        xmlOutputBufferWrite(buf, 1, "\"");
+    }
+}
+
+/**
  * xmlOutputBufferFlush:
  * @out:  a buffered output
  *

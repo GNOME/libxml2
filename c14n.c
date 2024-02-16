@@ -23,8 +23,8 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/c14n.h>
 
-#include "private/buf.h"
 #include "private/error.h"
+#include "private/io.h"
 
 /************************************************************************
  *									*
@@ -537,7 +537,7 @@ xmlC14NPrintNamespaces(const xmlNs *ns, xmlC14NCtxPtr ctx)
         xmlOutputBufferWriteString(ctx->buf, " xmlns=");
     }
     if(ns->href != NULL) {
-	xmlBufWriteQuotedString(ctx->buf->buffer, ns->href);
+	xmlOutputBufferWriteQuotedString(ctx->buf, ns->href);
     } else {
     	xmlOutputBufferWriteString(ctx->buf, "\"\"");
     }

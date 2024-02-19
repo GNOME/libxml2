@@ -140,7 +140,7 @@ __xmlIOErr(int domain, int code, const char *extra)
     xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
-    const char *fmt, *arg;
+    const char *fmt, *arg1, *arg2;
     int res;
 
     if (code == 0) {
@@ -309,18 +309,19 @@ __xmlIOErr(int domain, int code, const char *extra)
         data = xmlGenericErrorContext;
     }
 
-    if (code == XML_IO_NETWORK_ATTEMPT) {
-        fmt = "Attempt to load network entity %s";
-        arg = extra;
+    if (extra != NULL) {
+        fmt = "%s: %s";
     } else {
         fmt = "%s";
-        arg = xmlErrString(code);
     }
+
+    arg1 = xmlErrString(code);
+    arg2 = extra;
 
     res = __xmlRaiseError(schannel, channel, data, NULL, NULL,
                           domain, code, XML_ERR_ERROR, NULL, 0,
                           extra, NULL, NULL, 0, 0,
-                          fmt, arg);
+                          fmt, arg1, arg2);
     if (res < 0) {
         xmlIOErrMemory();
         return(XML_ERR_NO_MEMORY);

@@ -100,7 +100,7 @@ run_test(desc="Loading entity with custom callback",
         docpath=startURL, catalog=None,
         exp_status="loaded", exp_err=[
             (  3, 'failed to load "http://example.com/dtds/sample.dtd": Attempt to load network entity\n'),
-            ( -1, "Attempt to load network entity http://example.com/dtds/sample.dtd"),
+            ( -1, "Attempt to load network entity: http://example.com/dtds/sample.dtd"),
             (  4, "Entity 'sample.entity' not defined\n")
             ])
 

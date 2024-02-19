@@ -1307,6 +1307,8 @@ xmlErrString(xmlParserErrors code) {
             errmsg = "already in use"; break;
         case XML_IO_EAFNOSUPPORT:
             errmsg = "unknown address family"; break;
+        case XML_IO_UNSUPPORTED_PROTOCOL:
+            errmsg = "unsupported protocol"; break;
 
         default:
             errmsg = "Unregistered error message";

@@ -1304,8 +1304,10 @@ process_external_subset:
 
 		    if (attr->prefix != NULL) {
 			fulln = xmlStrdup(attr->prefix);
-			fulln = xmlStrcat(fulln, BAD_CAST ":");
-			fulln = xmlStrcat(fulln, attr->name);
+                        if (fulln != NULL)
+			    fulln = xmlStrcat(fulln, BAD_CAST ":");
+                        if (fulln != NULL)
+			    fulln = xmlStrcat(fulln, attr->name);
 		    } else {
 			fulln = xmlStrdup(attr->name);
 		    }

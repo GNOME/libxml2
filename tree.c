@@ -1210,16 +1210,6 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
     xmlEntityPtr ent;
     xmlBufPtr buf;
 
-    /*
-     * This function should only receive valid attribute values that
-     * were checked by the parser, typically by xmlParseAttValueComplex
-     * calling xmlStringDecodeEntities.
-     *
-     * In recovery mode, the parser can produce invalid attribute
-     * values. For now, we ignore any errors silently. If this is fixed,
-     * we could add assertions here to catch parser issues.
-     */
-
     if (value == NULL) return(NULL);
     cur = value;
     end = cur + len;
@@ -1259,6 +1249,8 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 			charval = 0;
 			break;
 		    }
+                    if (charval > 0x110000)
+                        charval = 0x110000;
 		    cur++;
 		    if (cur < end)
 			tmp = *cur;
@@ -1275,13 +1267,14 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 		else
 		    tmp = 0;
 		while (tmp != ';') { /* Non input consuming loops */
-                    /* Don't check for integer overflow, see above. */
 		    if ((tmp >= '0') && (tmp <= '9'))
 			charval = charval * 10 + (tmp - '0');
 		    else {
 			charval = 0;
 			break;
 		    }
+                    if (charval > 0x110000)
+                        charval = 0x110000;
 		    cur++;
 		    if (cur < end)
 			tmp = *cur;
@@ -1377,12 +1370,14 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 		xmlChar buffer[10];
 		int l;
 
+                if (charval >= 0x110000)
+                    charval = 0xFFFD; /* replacement character */
+
 		l = xmlCopyCharMultiByte(buffer, charval);
 		buffer[l] = 0;
 
 		if (xmlBufCat(buf, buffer))
 		    goto out;
-		charval = 0;
 	    }
 	} else
 	    cur++;
@@ -1442,16 +1437,6 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
     xmlEntityPtr ent;
     xmlBufPtr buf;
 
-    /*
-     * This function should only receive valid attribute values that
-     * were checked by the parser, typically by xmlParseAttValueComplex
-     * calling xmlStringDecodeEntities.
-     *
-     * In recovery mode, the parser can produce invalid attribute
-     * values. For now, we ignore any errors silently. If this is fixed,
-     * we could add assertions here to catch parser issues.
-     */
-
     if (value == NULL) return(NULL);
 
     buf = xmlBufCreateSize(0);
@@ -1486,6 +1471,8 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 			charval = 0;
 			break;
 		    }
+                    if (charval > 0x110000)
+                        charval = 0x110000;
 		    cur++;
 		    tmp = *cur;
 		}
@@ -1496,13 +1483,14 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 		cur += 2;
 		tmp = *cur;
 		while (tmp != ';') { /* Non input consuming loops */
-                    /* Don't check for integer overflow, see above. */
 		    if ((tmp >= '0') && (tmp <= '9'))
 			charval = charval * 10 + (tmp - '0');
 		    else {
 			charval = 0;
 			break;
 		    }
+                    if (charval > 0x110000)
+                        charval = 0x110000;
 		    cur++;
 		    tmp = *cur;
 		}
@@ -1598,12 +1586,14 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 		xmlChar buffer[10];
 		int len;
 
+                if (charval >= 0x110000)
+                    charval = 0xFFFD; /* replacement character */
+
 		len = xmlCopyCharMultiByte(buffer, charval);
 		buffer[len] = 0;
 
 		if (xmlBufCat(buf, buffer))
 		    goto out;
-		charval = 0;
 	    }
 	} else
 	    cur++;

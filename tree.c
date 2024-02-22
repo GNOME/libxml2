@@ -6488,6 +6488,12 @@ xmlNewReconciledNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
 }
 
 #ifdef LIBXML_TREE_ENABLED
+
+typedef struct {
+    xmlNsPtr oldNs;
+    xmlNsPtr newNs;
+} xmlNsCache;
+
 /**
  * xmlReconciliateNs:
  * @doc:  the document
@@ -6500,12 +6506,12 @@ xmlNewReconciledNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
  * as possible the function try to reuse the existing namespaces found in
  * the new environment. If not possible the new namespaces are redeclared
  * on @tree at the top of the given subtree.
- * Returns the number of namespace declarations created or -1 in case of error.
+ *
+ * Returns 0 on success or -1 in case of error.
  */
 int
 xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
-    xmlNsPtr *oldNs = NULL;
-    xmlNsPtr *newNs = NULL;
+    xmlNsCache *cache = NULL;
     int sizeCache = 0;
     int nbCache = 0;
 
@@ -6515,32 +6521,15 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
     int ret = 0, i;
 
     if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) return(-1);
-    if ((doc == NULL) || (doc->type != XML_DOCUMENT_NODE)) return(-1);
     if (node->doc != doc) return(-1);
     while (node != NULL) {
         /*
 	 * Reconciliate the node namespace
 	 */
 	if (node->ns != NULL) {
-	    /*
-	     * initialize the cache if needed
-	     */
-	    if (sizeCache == 0) {
-		sizeCache = 10;
-		oldNs = (xmlNsPtr *) xmlMalloc(sizeCache *
-					       sizeof(xmlNsPtr));
-		if (oldNs == NULL)
-		    return(-1);
-		newNs = (xmlNsPtr *) xmlMalloc(sizeCache *
-					       sizeof(xmlNsPtr));
-		if (newNs == NULL) {
-		    xmlFree(oldNs);
-		    return(-1);
-		}
-	    }
-	    for (i = 0;i < nbCache;i++) {
-	        if (oldNs[i] == node->ns) {
-		    node->ns = newNs[i];
+	    for (i = 0; i < nbCache; i++) {
+	        if (cache[i].oldNs == node->ns) {
+		    node->ns = cache[i].newNs;
 		    break;
 		}
 	    }
@@ -6549,29 +6538,30 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 		 * OK we need to recreate a new namespace definition
 		 */
 		n = xmlNewReconciledNs(doc, tree, node->ns);
-		if (n != NULL) { /* :-( what if else ??? */
+		if (n == NULL) {
+                    ret = -1;
+                } else {
 		    /*
 		     * check if we need to grow the cache buffers.
 		     */
 		    if (sizeCache <= nbCache) {
-		        sizeCache *= 2;
-			oldNs = (xmlNsPtr *) xmlRealloc(oldNs, sizeCache *
-			                               sizeof(xmlNsPtr));
-		        if (oldNs == NULL) {
-			    xmlFree(newNs);
-			    return(-1);
-			}
-			newNs = (xmlNsPtr *) xmlRealloc(newNs, sizeCache *
-			                               sizeof(xmlNsPtr));
-		        if (newNs == NULL) {
-			    xmlFree(oldNs);
-			    return(-1);
-			}
+                        xmlNsCache *tmp;
+                        size_t newSize = sizeCache ? sizeCache * 2 : 10;
+
+			tmp = xmlRealloc(cache, newSize * sizeof(tmp[0]));
+		        if (tmp == NULL) {
+                            ret = -1;
+			} else {
+                            cache = tmp;
+                            sizeCache = newSize;
+                        }
 		    }
-		    newNs[nbCache] = n;
-		    oldNs[nbCache++] = node->ns;
-		    node->ns = n;
+		    if (nbCache < sizeCache) {
+                        cache[nbCache].newNs = n;
+                        cache[nbCache++].oldNs = node->ns;
+                    }
                 }
+		node->ns = n;
 	    }
 	}
 	/*
@@ -6581,25 +6571,9 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	    attr = node->properties;
 	    while (attr != NULL) {
 		if (attr->ns != NULL) {
-		    /*
-		     * initialize the cache if needed
-		     */
-		    if (sizeCache == 0) {
-			sizeCache = 10;
-			oldNs = (xmlNsPtr *) xmlMalloc(sizeCache *
-						       sizeof(xmlNsPtr));
-			if (oldNs == NULL)
-			    return(-1);
-			newNs = (xmlNsPtr *) xmlMalloc(sizeCache *
-						       sizeof(xmlNsPtr));
-			if (newNs == NULL) {
-			    xmlFree(oldNs);
-			    return(-1);
-			}
-		    }
-		    for (i = 0;i < nbCache;i++) {
-			if (oldNs[i] == attr->ns) {
-			    attr->ns = newNs[i];
+		    for (i = 0; i < nbCache; i++) {
+			if (cache[i].oldNs == attr->ns) {
+			    attr->ns = cache[i].newNs;
 			    break;
 			}
 		    }
@@ -6608,29 +6582,32 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 			 * OK we need to recreate a new namespace definition
 			 */
 			n = xmlNewReconciledNs(doc, tree, attr->ns);
-			if (n != NULL) { /* :-( what if else ??? */
+			if (n == NULL) {
+                            ret = -1;
+                        } else {
 			    /*
 			     * check if we need to grow the cache buffers.
 			     */
 			    if (sizeCache <= nbCache) {
-				sizeCache *= 2;
-				oldNs = (xmlNsPtr *) xmlRealloc(oldNs,
-				           sizeCache * sizeof(xmlNsPtr));
-				if (oldNs == NULL) {
-				    xmlFree(newNs);
-				    return(-1);
-				}
-				newNs = (xmlNsPtr *) xmlRealloc(newNs,
-				           sizeCache * sizeof(xmlNsPtr));
-				if (newNs == NULL) {
-				    xmlFree(oldNs);
-				    return(-1);
-				}
+                                xmlNsCache *tmp;
+                                size_t newSize = sizeCache ?
+                                        sizeCache * 2 : 10;
+
+                                tmp = xmlRealloc(cache,
+                                        newSize * sizeof(tmp[0]));
+                                if (tmp == NULL) {
+                                    ret = -1;
+                                } else {
+                                    cache = tmp;
+                                    sizeCache = newSize;
+                                }
 			    }
-			    newNs[nbCache] = n;
-			    oldNs[nbCache++] = attr->ns;
-			    attr->ns = n;
+			    if (nbCache < sizeCache) {
+                                cache[nbCache].newNs = n;
+                                cache[nbCache++].oldNs = attr->ns;
+			    }
 			}
+			attr->ns = n;
 		    }
 		}
 		attr = attr->next;
@@ -6666,10 +6643,8 @@ xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
 	} else
 	    break;
     }
-    if (oldNs != NULL)
-	xmlFree(oldNs);
-    if (newNs != NULL)
-	xmlFree(newNs);
+    if (cache != NULL)
+	xmlFree(cache);
     return(ret);
 }
 #endif /* LIBXML_TREE_ENABLED */

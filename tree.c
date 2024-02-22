@@ -5060,7 +5060,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     xmlNodePtr old = NULL;
 
     if (doc == NULL) return(NULL);
-    if ((root == NULL) || (root->type == XML_NAMESPACE_DECL))
+    if ((root == NULL) || (root->type != XML_ELEMENT_NODE))
 	return(NULL);
     xmlUnlinkNode(root);
     xmlSetTreeDoc(root, doc);

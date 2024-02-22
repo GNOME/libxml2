@@ -224,7 +224,7 @@ extra_post_call = {
    "xmlAddPrevSibling": 
        "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
    "xmlDocSetRootElement": 
-       "if (doc == NULL) { xmlFreeNode(root) ; root = NULL ; }",
+       "if (ret_val == NULL) { xmlFreeNode(root) ; root = NULL ; }",
    "xmlReplaceNode": 
        """if (cur != NULL) {
               xmlUnlinkNode(cur);

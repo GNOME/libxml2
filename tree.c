@@ -5823,7 +5823,6 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         }
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE: {
@@ -5847,27 +5846,8 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
             cur->content = copy;
 	    break;
         }
-        case XML_DOCUMENT_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    break;
-        case XML_NOTATION_NODE:
-	    break;
-        case XML_DTD_NODE:
-	    break;
-	case XML_NAMESPACE_DECL:
-	    break;
-        case XML_ELEMENT_DECL:
-	    /* TODO !!! */
-	    break;
-        case XML_ATTRIBUTE_DECL:
-	    /* TODO !!! */
-	    break;
-        case XML_ENTITY_DECL:
-	    /* TODO !!! */
-	    break;
+        default:
+            break;
     }
 
     return(0);
@@ -5912,7 +5892,6 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         }
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
@@ -5938,23 +5917,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    cur->properties = NULL;
 	    break;
         }
-        case XML_DOCUMENT_NODE:
-        case XML_DTD_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-	case XML_NAMESPACE_DECL:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    break;
-        case XML_ELEMENT_DECL:
-	    /* TODO !!! */
-	    break;
-        case XML_ATTRIBUTE_DECL:
-	    /* TODO !!! */
-	    break;
-        case XML_ENTITY_DECL:
-	    /* TODO !!! */
-	    break;
+        default:
+            break;
     }
 
     return(0);
@@ -5998,7 +5962,6 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    break;
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
@@ -6021,18 +5984,8 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
             cur->content = newContent;
 	    break;
         }
-        case XML_DOCUMENT_NODE:
-        case XML_DTD_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-	case XML_NAMESPACE_DECL:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    break;
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
-	    break;
+        default:
+            break;
     }
 
     return(0);

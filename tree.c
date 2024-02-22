@@ -4365,6 +4365,18 @@ error:
     return(NULL);
 }
 
+/**
+ * xmlStaticCopyNodeList:
+ * @node:  node to copy
+ * @doc:  target document
+ * @parent:  target node (optional)
+ *
+ * Copy a node list. If @parent is provided, sets the parent pointer
+ * of the copied nodes, but doesn't update the children and last
+ * pointer of @parent.
+ *
+ * Returns a the copy or NULL in case of error.
+ */
 xmlNodePtr
 xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
     xmlNodePtr ret = NULL;
@@ -4373,23 +4385,43 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
     int linkedSubset = 0;
 
     while (node != NULL) {
+        xmlNodePtr next = node->next;
+
 #ifdef LIBXML_TREE_ENABLED
 	if (node->type == XML_DTD_NODE ) {
 	    if (doc == NULL) {
-		node = node->next;
+		node = next;
 		continue;
 	    }
 	    if ((doc->intSubset == NULL) && (newSubset == NULL)) {
 		q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
 		if (q == NULL) goto error;
-		q->doc = doc;
+		xmlSetTreeDoc(q, doc);
 		q->parent = parent;
 		newSubset = (xmlDtdPtr) q;
-		xmlAddChild(parent, q);
 	    } else {
+                /*
+                 * We don't allow multiple internal subsets in a document,
+                 * so we move the DTD instead of creating a copy.
+                 */
                 linkedSubset = 1;
 		q = (xmlNodePtr) doc->intSubset;
-		xmlAddChild(parent, q);
+                /* Unlink */
+                if (q->prev == NULL) {
+                    if (q->parent != NULL)
+                        q->parent->children = q->next;
+                } else {
+                    q->prev->next = q->next;
+                }
+                if (q->next == NULL) {
+                    if (q->parent != NULL)
+                        q->parent->last = q->prev;
+                } else {
+                    q->next->prev = q->prev;
+                }
+                q->parent = parent;
+                q->next = NULL;
+                q->prev = NULL;
 	    }
 	} else
 #endif /* LIBXML_TREE_ENABLED */
@@ -4404,13 +4436,15 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 	    q->prev = p;
 	    p = q;
 	}
-	node = node->next;
+	node = next;
     }
     if ((doc != NULL) && (newSubset != NULL))
         doc->intSubset = newSubset;
     return(ret);
 error:
     xmlFreeNodeList(ret);
+    if (newSubset != NULL)
+        xmlFreeDtd(newSubset);
     if (linkedSubset != 0) {
         doc->intSubset->next = NULL;
         doc->intSubset->prev = NULL;
@@ -4640,7 +4674,6 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
 	if (ret->intSubset == NULL)
             goto error;
 	xmlSetTreeDoc((xmlNodePtr)ret->intSubset, ret);
-	ret->intSubset->parent = ret;
     }
 #endif
     if (doc->oldNs != NULL) {

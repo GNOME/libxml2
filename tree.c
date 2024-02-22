@@ -3659,8 +3659,14 @@ xmlFreeNodeList(xmlNodePtr cur) {
 	if ((cur->type == XML_DOCUMENT_NODE) ||
             (cur->type == XML_HTML_DOCUMENT_NODE)) {
             xmlFreeDoc((xmlDocPtr) cur);
-        } else if (cur->type != XML_DTD_NODE) {
-
+        } else if (cur->type == XML_DTD_NODE) {
+            /*
+             * TODO: We should consider freeing the DTD if it isn't
+             * referenced from doc->intSubset or doc->extSubset.
+             */
+            cur->prev = NULL;
+            cur->next = NULL;
+        } else {
 	    if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 		xmlDeregisterNodeDefaultValue(cur);
 

@@ -5062,15 +5062,17 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     if (doc == NULL) return(NULL);
     if ((root == NULL) || (root->type != XML_ELEMENT_NODE))
 	return(NULL);
-    xmlUnlinkNode(root);
-    xmlSetTreeDoc(root, doc);
-    root->parent = (xmlNodePtr) doc;
     old = doc->children;
     while (old != NULL) {
 	if (old->type == XML_ELEMENT_NODE)
 	    break;
         old = old->next;
     }
+    if (old == root)
+        return(old);
+    xmlUnlinkNode(root);
+    xmlSetTreeDoc(root, doc);
+    root->parent = (xmlNodePtr) doc;
     if (old == NULL) {
 	if (doc->children == NULL) {
 	    doc->children = root;

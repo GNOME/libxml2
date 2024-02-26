@@ -5987,7 +5987,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 
     xmlInitParser();
 
-    buf = xmlAllocParserInputBuffer(enc);
+    buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (buf == NULL) return(NULL);
 
     ctxt = htmlNewSAXParserCtxt(sax, user_data);
@@ -6017,6 +6017,9 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
     xmlBufResetInput(buf->buffer, inputStream);
 
     inputPush(ctxt, inputStream);
+
+    if (enc != XML_CHAR_ENCODING_NONE)
+        xmlSwitchEncoding(ctxt, enc);
 
     if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
         (ctxt->input->buf != NULL))  {

@@ -5,6 +5,7 @@
  */
 
 #include <libxml/parser.h>
+#include <libxml/HTMLparser.h>
 
 static int
 testStandaloneWithEncoding(void) {
@@ -86,6 +87,36 @@ testHugeEncodedChunk(void) {
 }
 #endif
 
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_PUSH_ENABLED)
+static int
+testHtmlPushWithEncoding(void) {
+    htmlParserCtxtPtr ctxt;
+    htmlDocPtr doc;
+    htmlNodePtr node;
+    int err = 0;
+
+    ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
+                                    XML_CHAR_ENCODING_UTF8);
+    htmlParseChunk(ctxt, "-\xC3\xA4-", 4, 1);
+
+    doc = ctxt->myDoc;
+    if (!xmlStrEqual(doc->encoding, BAD_CAST "UTF-8")) {
+        fprintf(stderr, "testHtmlPushWithEncoding failed\n");
+        err = 1;
+    }
+
+    node = xmlDocGetRootElement(doc)->children->children->children;
+    if (!xmlStrEqual(node->content, BAD_CAST "-\xC3\xA4-")) {
+        fprintf(stderr, "testHtmlPushWithEncoding failed\n");
+        err = 1;
+    }
+
+    xmlFreeDoc(doc);
+    htmlFreeParserCtxt(ctxt);
+    return err;
+}
+#endif
+
 int
 main(void) {
     int err = 0;
@@ -94,6 +125,9 @@ main(void) {
 #ifdef LIBXML_PUSH_ENABLED
     err |= testHugePush();
     err |= testHugeEncodedChunk();
+#endif
+#if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_PUSH_ENABLED)
+    err |= testHtmlPushWithEncoding();
 #endif
 
     return err;

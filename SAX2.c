@@ -955,17 +955,7 @@ xmlSAX2EndDocument(void *ctx)
 
     doc = ctxt->myDoc;
     if ((doc != NULL) && (doc->encoding == NULL)) {
-        const xmlChar *encoding = NULL;
-
-        if ((ctxt->input->flags & XML_INPUT_USES_ENC_DECL) ||
-            (ctxt->input->flags & XML_INPUT_AUTO_ENCODING)) {
-            /* Preserve encoding exactly */
-            encoding = ctxt->encoding;
-        } else if ((ctxt->input->buf) && (ctxt->input->buf->encoder)) {
-            encoding = BAD_CAST ctxt->input->buf->encoder->name;
-        } else if (ctxt->input->flags & XML_INPUT_HAS_ENCODING) {
-            encoding = BAD_CAST "UTF-8";
-        }
+        const xmlChar *encoding = xmlGetActualEncoding(ctxt);
 
         if (encoding != NULL) {
             doc->encoding = xmlStrdup(encoding);

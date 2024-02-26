@@ -176,7 +176,40 @@ testHtmlPushWithEncoding(void) {
 #endif
 #endif
 
-#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_XINCLUDE_ENABLED)
+#ifdef LIBXML_READER_ENABLED
+static int
+testReaderEncoding(void) {
+    xmlBuffer *buf;
+    xmlTextReader *reader;
+    xmlChar *xml;
+    const xmlChar *encoding;
+    int err = 0;
+    int i;
+
+    buf = xmlBufferCreate();
+    xmlBufferCCat(buf, "<?xml version='1.0' encoding='ISO-8859-1'?>\n");
+    xmlBufferCCat(buf, "<doc>");
+    for (i = 0; i < 8192; i++)
+        xmlBufferCCat(buf, "x");
+    xmlBufferCCat(buf, "</doc>");
+    xml = xmlBufferDetach(buf);
+    xmlBufferFree(buf);
+
+    reader = xmlReaderForDoc(BAD_CAST xml, NULL, NULL, 0);
+    xmlTextReaderRead(reader);
+    encoding = xmlTextReaderConstEncoding(reader);
+
+    if (!xmlStrEqual(encoding, BAD_CAST "ISO-8859-1")) {
+        fprintf(stderr, "testReaderEncoding failed\n");
+        err = 1;
+    }
+
+    xmlFreeTextReader(reader);
+    xmlFree(xml);
+    return err;
+}
+
+#ifdef LIBXML_XINCLUDE_ENABLED
 typedef struct {
     char *message;
     int code;
@@ -254,6 +287,7 @@ testReaderXIncludeError(void) {
     return err;
 }
 #endif
+#endif
 
 #ifdef LIBXML_WRITER_ENABLED
 static int
@@ -314,8 +348,11 @@ main(void) {
     err |= testHtmlPushWithEncoding();
 #endif
 #endif
-#if defined(LIBXML_READER_ENABLED) && defined(LIBXML_XINCLUDE_ENABLED)
+#ifdef LIBXML_READER_ENABLED
+    err |= testReaderEncoding();
+#ifdef LIBXML_XINCLUDE_ENABLED
     err |= testReaderXIncludeError();
+#endif
 #endif
 #ifdef LIBXML_WRITER_ENABLED
     err |= testWriterClose();

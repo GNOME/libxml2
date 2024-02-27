@@ -2965,40 +2965,40 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
  */
 static xmlNodePtr
 xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
-	xmlAttrPtr attr;
+    xmlAttrPtr attr;
 
-	if ((cur == NULL) || (cur->type != XML_ATTRIBUTE_NODE) ||
-	    (prop == NULL) || (prop->type != XML_ATTRIBUTE_NODE) ||
-	    ((prev != NULL) && (prev->type != XML_ATTRIBUTE_NODE)))
-		return(NULL);
+    if ((cur == NULL) || (cur->type != XML_ATTRIBUTE_NODE) ||
+        (prop == NULL) || (prop->type != XML_ATTRIBUTE_NODE) ||
+        ((prev != NULL) && (prev->type != XML_ATTRIBUTE_NODE)))
+        return(NULL);
 
-	/* check if an attribute with the same name exists */
-	if (prop->ns == NULL)
-		attr = xmlHasNsProp(cur->parent, prop->name, NULL);
-	else
-		attr = xmlHasNsProp(cur->parent, prop->name, prop->ns->href);
+    /* check if an attribute with the same name exists */
+    if (prop->ns == NULL)
+        attr = xmlHasNsProp(cur->parent, prop->name, NULL);
+    else
+        attr = xmlHasNsProp(cur->parent, prop->name, prop->ns->href);
 
-	if (prop->doc != cur->doc) {
-		xmlSetTreeDoc(prop, cur->doc);
-	}
-	prop->parent = cur->parent;
-	prop->prev = prev;
-	if (prev != NULL) {
-		prop->next = prev->next;
-		prev->next = prop;
-		if (prop->next)
-			prop->next->prev = prop;
-	} else {
-		prop->next = cur;
-		cur->prev = prop;
-	}
-	if (prop->prev == NULL && prop->parent != NULL)
-		prop->parent->properties = (xmlAttrPtr) prop;
-	if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
-		/* different instance, destroy it (attributes must be unique) */
-		xmlRemoveProp((xmlAttrPtr) attr);
-	}
-	return prop;
+    if (prop->doc != cur->doc) {
+        xmlSetTreeDoc(prop, cur->doc);
+    }
+    prop->parent = cur->parent;
+    prop->prev = prev;
+    if (prev != NULL) {
+        prop->next = prev->next;
+        prev->next = prop;
+        if (prop->next)
+            prop->next->prev = prop;
+    } else {
+        prop->next = cur;
+        cur->prev = prop;
+    }
+    if (prop->prev == NULL && prop->parent != NULL)
+        prop->parent->properties = (xmlAttrPtr) prop;
+    if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
+        /* different instance, destroy it (attributes must be unique) */
+        xmlRemoveProp((xmlAttrPtr) attr);
+    }
+    return prop;
 }
 
 /**

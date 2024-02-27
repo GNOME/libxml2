@@ -3302,6 +3302,9 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  * If the new node is ATTRIBUTE, it is added into properties instead of children.
  * If there is an attribute with equal name, it is first destroyed.
  *
+ * This function assumes that @cur has no siblings. If @cur has a parent,
+ * it must equal @parent.
+ *
  * All tree manipulation functions can safely move nodes within a document.
  * But when moving nodes from one document to another, references to
  * namespaces in element or attribute nodes are NOT fixed. In this case,
@@ -3318,7 +3321,9 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
-    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
+    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
+        (cur->next != NULL) || (cur->prev != NULL) ||
+        ((cur->parent != NULL && cur->parent != parent))) {
 	return(NULL);
     }
 

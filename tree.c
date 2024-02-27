@@ -3330,21 +3330,24 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (parent == cur) {
 	return(NULL);
     }
+
+    /*
+     * Handle text parent
+     */
+    if (parent->type == XML_TEXT_NODE) {
+        if (xmlNodeAddContent(parent, cur->content) != 0) {
+            xmlFreeNode(cur);
+            return(NULL);
+        }
+        xmlFreeNode(cur);
+        return(parent);
+    }
+
     /*
      * If cur is a TEXT node, merge its content with adjacent TEXT nodes
      * cur is then freed.
      */
     if (cur->type == XML_TEXT_NODE) {
-	if ((parent->type == XML_TEXT_NODE) &&
-	    (parent->content != NULL) &&
-	    (parent->name == cur->name)) {
-	    if (xmlNodeAddContent(parent, cur->content) != 0) {
-                xmlFreeNode(cur);
-                return(NULL);
-            }
-	    xmlFreeNode(cur);
-	    return(parent);
-	}
 	if ((parent->last != NULL) && (parent->last->type == XML_TEXT_NODE) &&
 	    (parent->last->name == cur->name) &&
 	    (parent->last != cur)) {
@@ -3374,19 +3377,6 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (prev == parent)
 	return(cur);
 
-    /*
-     * Coalescing
-     */
-    if ((parent->type == XML_TEXT_NODE) &&
-	(parent->content != NULL) &&
-	(parent != cur)) {
-	if (xmlNodeAddContent(parent, cur->content) != 0) {
-            xmlFreeNode(cur);
-            return(NULL);
-        }
-	xmlFreeNode(cur);
-	return(parent);
-    }
     if (cur->type == XML_ATTRIBUTE_NODE) {
 	if (parent->properties != NULL) {
 	    /* check if an attribute with the same name exists */

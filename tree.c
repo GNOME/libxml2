@@ -2978,6 +2978,7 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
     else
         attr = xmlHasNsProp(cur->parent, prop->name, prop->ns->href);
 
+    xmlUnlinkNode(prop);
     if (prop->doc != cur->doc) {
         xmlSetTreeDoc(prop, cur->doc);
     }
@@ -2994,7 +2995,8 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
     }
     if (prop->prev == NULL && prop->parent != NULL)
         prop->parent->properties = (xmlAttrPtr) prop;
-    if ((attr != NULL) && (attr->type != XML_ATTRIBUTE_DECL)) {
+    if ((attr != NULL) && (attr != (xmlAttrPtr) prop) &&
+        (attr->type != XML_ATTRIBUTE_DECL)) {
         /* different instance, destroy it (attributes must be unique) */
         xmlRemoveProp((xmlAttrPtr) attr);
     }
@@ -3030,6 +3032,9 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
+    if (elem->type == XML_ATTRIBUTE_NODE)
+	return xmlAddPropSibling(cur, cur, elem);
+
     xmlUnlinkNode(elem);
 
     if (elem->type == XML_TEXT_NODE) {
@@ -3050,8 +3055,6 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlFreeNode(elem);
 	    return(cur->next);
 	}
-    } else if (elem->type == XML_ATTRIBUTE_NODE) {
-		return xmlAddPropSibling(cur, cur, elem);
     }
 
     if (elem->doc != cur->doc) {
@@ -3099,6 +3102,12 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	return(NULL);
     }
 
+    if (cur->prev == elem)
+        return(elem);
+
+    if (elem->type == XML_ATTRIBUTE_NODE)
+	return xmlAddPropSibling(cur->prev, cur, elem);
+
     xmlUnlinkNode(elem);
 
     if (elem->type == XML_TEXT_NODE) {
@@ -3119,8 +3128,6 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	    xmlFreeNode(elem);
 	    return(cur->prev);
 	}
-    } else if (elem->type == XML_ATTRIBUTE_NODE) {
-		return xmlAddPropSibling(cur->prev, cur, elem);
     }
 
     if (elem->doc != cur->doc) {
@@ -3185,6 +3192,9 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
     if (cur == elem)
         return(NULL);
 
+    if (elem->type == XML_ATTRIBUTE_NODE)
+	return xmlAddPropSibling(cur, cur, elem);
+
     xmlUnlinkNode(elem);
 
     if ((cur->type == XML_TEXT_NODE) && (elem->type == XML_TEXT_NODE) &&
@@ -3192,8 +3202,6 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	xmlNodeAddContent(cur, elem->content);
 	xmlFreeNode(elem);
 	return(cur);
-    } else if (elem->type == XML_ATTRIBUTE_NODE) {
-		return xmlAddPropSibling(cur, cur, elem);
     }
 
     if (elem->doc != cur->doc) {

@@ -3339,6 +3339,9 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    xmlFreeNode(cur);
 	    return(parent->last);
 	}
+    } else if (cur->type == XML_ATTRIBUTE_NODE) {
+        if (parent->type != XML_ELEMENT_NODE)
+            return(NULL);
     }
 
     /*
@@ -3369,8 +3372,6 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	return(parent);
     }
     if (cur->type == XML_ATTRIBUTE_NODE) {
-		if (parent->type != XML_ELEMENT_NODE)
-			return(NULL);
 	if (parent->properties != NULL) {
 	    /* check if an attribute with the same name exists */
 	    xmlAttrPtr lastattr;

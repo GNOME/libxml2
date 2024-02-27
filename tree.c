@@ -3182,6 +3182,9 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	while (cur->next != NULL) cur = cur->next;
     }
 
+    if (cur == elem)
+        return(NULL);
+
     xmlUnlinkNode(elem);
 
     if ((cur->type == XML_TEXT_NODE) && (elem->type == XML_TEXT_NODE) &&

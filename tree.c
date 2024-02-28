@@ -5263,52 +5263,40 @@ void
 xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
     xmlDocPtr doc;
     xmlDictPtr dict;
-    const xmlChar *freeme = NULL;
+    const xmlChar *copy;
+    const xmlChar *oldName;
 
     if (cur == NULL) return;
     if (name == NULL) return;
     switch(cur->type) {
-        case XML_TEXT_NODE:
-        case XML_CDATA_SECTION_NODE:
-        case XML_COMMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_DOCUMENT_FRAG_NODE:
-        case XML_NOTATION_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-	case XML_NAMESPACE_DECL:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    return;
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
         case XML_PI_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_ENTITY_NODE:
-        case XML_DTD_NODE:
-        case XML_DOCUMENT_NODE:
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
 	    break;
+        default:
+            return;
     }
+
     doc = cur->doc;
     if (doc != NULL)
 	dict = doc->dict;
     else
         dict = NULL;
-    /* TODO: malloc check */
-    if (dict != NULL) {
-        if ((cur->name != NULL) && (!xmlDictOwns(dict, cur->name)))
-	    freeme = cur->name;
-	cur->name = xmlDictLookup(dict, name, -1);
-    } else {
-	if (cur->name != NULL)
-	    freeme = cur->name;
-	cur->name = xmlStrdup(name);
-    }
 
-    if (freeme)
-        xmlFree((xmlChar *) freeme);
+    if (dict != NULL)
+        copy = xmlDictLookup(dict, name, -1);
+    else
+        copy = xmlStrdup(name);
+    if (copy == NULL)
+        return;
+
+    oldName = cur->name;
+    cur->name = copy;
+    if ((oldName != NULL) &&
+        ((dict == NULL) || (!xmlDictOwns(dict, oldName))))
+        xmlFree((xmlChar *) oldName);
 }
 #endif
 

@@ -3479,8 +3479,6 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 const xmlChar *cur = value;
                 unsigned long lo, mi, hi;
 
-                if (cur == NULL)
-                    goto return1;
 		if (normOnTheFly)
 		    while IS_WSP_BLANK_CH(*cur) cur++;
                 ret = xmlSchemaParseUInt(&cur, &lo, &mi, &hi);

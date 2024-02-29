@@ -1184,9 +1184,8 @@ xmlAddElementDecl(xmlValidCtxtPtr ctxt,
 	    }
 	    break;
 	default:
-	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
-		    "Internal: ELEMENT decl corrupted invalid type\n",
-		    NULL);
+	    xmlErrValid(ctxt, XML_ERR_ARGUMENT,
+		    "xmlAddElementDecl: invalid type\n", NULL);
 	    return(NULL);
     }
 
@@ -1686,9 +1685,8 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
         case XML_ATTRIBUTE_NOTATION:
 	    break;
 	default:
-	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
-		    "Internal: ATTRIBUTE struct corrupted invalid type\n",
-		    NULL);
+	    xmlErrValid(ctxt, XML_ERR_ARGUMENT,
+		    "xmlAddAttributeDecl: invalid type\n", NULL);
 	    xmlFreeEnumeration(tree);
 	    return(NULL);
     }

@@ -2448,29 +2448,36 @@ xmlFreeIDTable(xmlIDTablePtr table) {
  */
 int
 xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
-    if ((attr == NULL) || (attr->name == NULL)) return(0);
-    if ((attr->ns != NULL) && (attr->ns->prefix != NULL) &&
-        (!strcmp((char *) attr->name, "id")) &&
-        (!strcmp((char *) attr->ns->prefix, "xml")))
-	return(1);
-    if (doc == NULL) return(0);
-    if ((doc->intSubset == NULL) && (doc->extSubset == NULL) &&
-        (doc->type != XML_HTML_DOCUMENT_NODE)) {
-	return(0);
-    } else if (doc->type == XML_HTML_DOCUMENT_NODE) {
-        if ((xmlStrEqual(BAD_CAST "id", attr->name)) ||
-	    ((xmlStrEqual(BAD_CAST "name", attr->name)) &&
-	    ((elem == NULL) || (xmlStrEqual(elem->name, BAD_CAST "a")))))
+    if ((attr == NULL) || (attr->name == NULL))
+        return(0);
+
+    if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE)) {
+        if (xmlStrEqual(BAD_CAST "id", attr->name))
+            return(1);
+
+        if ((elem == NULL) || (elem->type != XML_ELEMENT_NODE))
+            return(0);
+
+        if ((xmlStrEqual(BAD_CAST "name", attr->name)) &&
+	    (xmlStrEqual(elem->name, BAD_CAST "a")))
 	    return(1);
-	return(0);
-    } else if (elem == NULL) {
-	return(0);
     } else {
 	xmlAttributePtr attrDecl = NULL;
-
 	xmlChar felem[50];
 	xmlChar *fullelemname;
         const xmlChar *aprefix;
+
+        if ((attr->ns != NULL) && (attr->ns->prefix != NULL) &&
+            (!strcmp((char *) attr->name, "id")) &&
+            (!strcmp((char *) attr->ns->prefix, "xml")))
+            return(1);
+
+        if ((doc == NULL) ||
+            ((doc->intSubset == NULL) && (doc->extSubset == NULL)))
+            return(0);
+
+        if ((elem == NULL) || (elem->type != XML_ELEMENT_NODE))
+            return(0);
 
 	fullelemname = (elem->ns != NULL && elem->ns->prefix != NULL) ?
 	    xmlBuildQName(elem->name, elem->ns->prefix, felem, 50) :
@@ -2494,6 +2501,7 @@ xmlIsID(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
         if ((attrDecl != NULL) && (attrDecl->atype == XML_ATTRIBUTE_ID))
 	    return(1);
     }
+
     return(0);
 }
 

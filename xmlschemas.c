@@ -5898,8 +5898,8 @@ xmlSchemaPValAttrNodeID(xmlSchemaParserCtxtPtr ctxt, xmlAttrPtr attr)
 	* NOTE: the IDness might have already be declared in the DTD
 	*/
 	if (attr->atype != XML_ATTRIBUTE_ID) {
-	    xmlIDPtr res;
 	    xmlChar *strip;
+            int res;
 
 	    /*
 	    * TODO: Use xmlSchemaStrip here; it's not exported at this
@@ -5910,8 +5910,10 @@ xmlSchemaPValAttrNodeID(xmlSchemaParserCtxtPtr ctxt, xmlAttrPtr attr)
 		xmlFree((xmlChar *) value);
 		value = strip;
 	    }
-	    res = xmlAddID(NULL, attr->doc, value, attr);
-	    if (res == NULL) {
+	    res = xmlAddIDSafe(attr, value);
+            if (res < 0) {
+                xmlSchemaPErrMemory(ctxt);
+	    } else if (res == 0) {
 		ret = XML_SCHEMAP_S4S_ATTR_INVALID_VALUE;
 		xmlSchemaPSimpleTypeErr(ctxt,
 		    XML_SCHEMAP_S4S_ATTR_INVALID_VALUE,
@@ -5919,8 +5921,7 @@ xmlSchemaPValAttrNodeID(xmlSchemaParserCtxtPtr ctxt, xmlAttrPtr attr)
 		    xmlSchemaGetBuiltInType(XML_SCHEMAS_ID),
 		    NULL, NULL, "Duplicate value '%s' of simple "
 		    "type 'xs:ID'", value, NULL);
-	    } else
-		attr->atype = XML_ATTRIBUTE_ID;
+	    }
 	}
     } else if (ret > 0) {
 	ret = XML_SCHEMAP_S4S_ATTR_INVALID_VALUE;

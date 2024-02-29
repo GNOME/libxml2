@@ -222,7 +222,17 @@ xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
     if (cur->children != NULL)
         xmlTextReaderFreeNodeList(reader, cur->children);
 
-    DICT_FREE(cur->name);
+    if (cur->id != NULL) {
+        /*
+         * Operating in streaming mode, attr is gonna disappear
+         */
+        cur->id->attr = NULL;
+        cur->id->name = cur->name;
+        cur->name = NULL;
+    } else {
+        DICT_FREE(cur->name);
+    }
+
     if ((reader != NULL) && (reader->ctxt != NULL) &&
         (reader->ctxt->freeAttrsNr < MAX_FREE_NODES)) {
         cur->next = reader->ctxt->freeAttrs;

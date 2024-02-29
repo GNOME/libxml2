@@ -2964,19 +2964,19 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                  * NOTE: the IDness might have already be declared in the DTD
                  */
                 if (attr->atype != XML_ATTRIBUTE_ID) {
-                    xmlIDPtr res;
                     xmlChar *strip;
+                    int res;
 
                     strip = xmlSchemaStrip(value);
                     if (strip != NULL) {
-                        res = xmlAddID(NULL, node->doc, strip, attr);
+                        res = xmlAddIDSafe(attr, strip);
                         xmlFree(strip);
                     } else
-                        res = xmlAddID(NULL, node->doc, value, attr);
-                    if (res == NULL) {
+                        res = xmlAddIDSafe(attr, value);
+                    if (res < 0) {
+                        goto error;
+                    } else if (res == 0) {
                         ret = 2;
-                    } else {
-                        attr->atype = XML_ATTRIBUTE_ID;
                     }
                 }
             }

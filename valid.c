@@ -2280,35 +2280,36 @@ xmlFreeID(xmlIDPtr id) {
 
 
 /**
- * xmlAddIDSafe:
- * @doc:  pointer to the document
- * @value:  the value name
+ * xmlAddIDInternal:
  * @attr:  the attribute holding the ID
- * @id:  pointer to new xmlIdPtr (optional)
+ * @value:  the attribute (ID) value
+ * @idPtr:  pointer to resulting ID
  *
  * Register a new id declaration
  *
  * Returns 1 on success, 0 if the ID already exists, -1 if a memory
  * allocation fails.
  */
-int
-xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
-             int streaming, xmlIDPtr *id) {
-    xmlIDPtr ret;
+static int
+xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
+    xmlDocPtr doc;
+    xmlIDPtr id;
     xmlIDTablePtr table;
+    int ret;
 
-    if (id != NULL)
-        *id = NULL;
-
-    if (doc == NULL) {
-	return(-1);
-    }
-    if ((value == NULL) || (value[0] == 0)) {
+    if (idPtr != NULL)
+        *idPtr = NULL;
+    if ((value == NULL) || (value[0] == 0))
 	return(0);
-    }
-    if (attr == NULL) {
-	return(-1);
-    }
+    if (attr == NULL)
+	return(0);
+
+    doc = attr->doc;
+    if (doc == NULL)
+        return(0);
+
+    if (attr->id != NULL)
+        xmlRemoveID(doc, attr);
 
     /*
      * Create the ID table if needed.
@@ -2319,69 +2320,63 @@ xmlAddIDSafe(xmlDocPtr doc, const xmlChar *value, xmlAttrPtr attr,
         if (table == NULL)
             return(-1);
     } else {
-        ret = xmlHashLookup(table, value);
-        if (ret != NULL) {
-            /*
-             * Update the attribute unless we are parsing in streaming
-             * mode. If the attribute is copied from an entity we want
-             * the ID reference the copy.
-             */
-            if (ret->attr != NULL) {
-                ret->attr->id = NULL;
-                ret->attr = attr;
-                attr->id = ret;
+        id = xmlHashLookup(table, value);
+        if (id != NULL) {
+            if (id->attr != NULL) {
+                id->attr->id = NULL;
+                id->attr->atype = 0;
             }
-            ret->lineno = xmlGetLineNo(attr->parent);
-	    attr->atype = XML_ATTRIBUTE_ID;
-            return(0);
+            ret = 0;
+            goto done;
         }
     }
 
-    ret = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
-    if (ret == NULL)
+    id = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
+    if (id == NULL)
 	return(-1);
-    memset(ret, 0, sizeof(*ret));
+    memset(id, 0, sizeof(*id));
 
     /*
      * fill the structure.
      */
-    ret->doc = doc;
-    ret->value = xmlStrdup(value);
-    if (ret->value == NULL) {
-        xmlFreeID(ret);
+    id->doc = doc;
+    id->value = xmlStrdup(value);
+    if (id->value == NULL) {
+        xmlFreeID(id);
         return(-1);
     }
-    if (streaming) {
-	/*
-	 * Operating in streaming mode, attr is gonna disappear
-	 */
-	if (doc->dict != NULL)
-	    ret->name = xmlDictLookup(doc->dict, attr->name, -1);
-	else
-	    ret->name = xmlStrdup(attr->name);
-        if (ret->name == NULL) {
-            xmlFreeID(ret);
-            return(-1);
-        }
-	ret->attr = NULL;
-    } else {
-	ret->attr = attr;
-	ret->name = NULL;
-    }
-    ret->lineno = xmlGetLineNo(attr->parent);
 
-    if (xmlHashAddEntry(table, value, ret) < 0) {
-	xmlFreeID(ret);
+    if (xmlHashAddEntry(table, value, id) < 0) {
+	xmlFreeID(id);
 	return(-1);
     }
 
-    attr->atype = XML_ATTRIBUTE_ID;
-    if (!streaming)
-        attr->id = ret;
+    ret = 1;
+    if (idPtr != NULL)
+        *idPtr = id;
 
-    if (id != NULL)
-        *id = ret;
-    return(1);
+done:
+    id->attr = attr;
+    id->lineno = xmlGetLineNo(attr->parent);
+    attr->atype = XML_ATTRIBUTE_ID;
+    attr->id = id;
+
+    return(ret);
+}
+
+/**
+ * xmlAddIDSafe:
+ * @attr:  the attribute holding the ID
+ * @value:  the attribute (ID) value
+ *
+ * Register a new id declaration
+ *
+ * Returns 1 on success, 0 if the ID already exists, -1 if a memory
+ * allocation fails.
+ */
+int
+xmlAddIDSafe(xmlAttrPtr attr, const xmlChar *value) {
+    return(xmlAddIDInternal(attr, value, NULL));
 }
 
 /**
@@ -2401,7 +2396,10 @@ xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
     xmlIDPtr id;
     int res;
 
-    res = xmlAddIDSafe(doc, value, attr, xmlIsStreaming(ctxt), &id);
+    if ((attr == NULL) || (doc != attr->doc))
+        return(NULL);
+
+    res = xmlAddIDInternal(attr, value, &id);
     if (res < 0) {
         xmlVErrMemory(ctxt);
     }

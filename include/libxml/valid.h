@@ -255,11 +255,8 @@ XMLPUBFUN void
 
 /* IDs */
 XMLPUBFUN int
-		xmlAddIDSafe	       (xmlDocPtr doc,
-					const xmlChar *value,
-					xmlAttrPtr attr,
-					int streaming,
-					xmlIDPtr *id);
+		xmlAddIDSafe	       (xmlAttrPtr attr,
+					const xmlChar *value);
 XMLPUBFUN xmlIDPtr
 		xmlAddID	       (xmlValidCtxtPtr ctxt,
 					xmlDocPtr doc,

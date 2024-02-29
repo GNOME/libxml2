@@ -1817,7 +1817,7 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
 
     if ((value != NULL) && (node != NULL) &&
         (xmlIsID(node->doc, node, cur) == 1) &&
-        (xmlAddIDSafe(node->doc, value, cur, 0, NULL) < 0))
+        (xmlAddIDSafe(cur, value) < 0))
         goto error;
 
     /*
@@ -4018,7 +4018,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
 	    id = xmlNodeListGetString(cur->doc, cur->children, 1);
 	    if (id == NULL)
                 goto error;
-            res = xmlAddIDSafe(target->doc, id, ret, 0, NULL);
+            res = xmlAddIDSafe(ret, id);
 	    xmlFree(id);
             if (res < 0)
                 goto error;
@@ -6911,7 +6911,7 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 	    }
 	}
 	if ((prop->atype == XML_ATTRIBUTE_ID) &&
-	    (xmlAddIDSafe(node->doc, value, prop, 0, NULL) < 0)) {
+	    (xmlAddIDSafe(prop, value) < 0)) {
             return(NULL);
         }
 	return(prop);
@@ -9633,8 +9633,7 @@ end_ns_reference:
 
 		idVal = xmlNodeListGetString(cur->doc, cur->children, 1);
 		if (idVal != NULL) {
-		    if (xmlAddIDSafe(destDoc, idVal, (xmlAttrPtr) cur, 0,
-                                     NULL) < 0) {
+		    if (xmlAddIDSafe((xmlAttrPtr) cur, idVal) < 0) {
 			/* TODO: error message. */
 			xmlFree(idVal);
 			goto internal_error;

@@ -62,16 +62,14 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
              * own buffer to avoid encoding the output. The HTML encoding is
              * excruciatingly slow (see htmlEntityValueLookup).
              */
-            xmlFuzzResetMallocFailed();
             out = xmlAllocOutputBuffer(NULL);
             htmlDocContentDumpOutput(out, doc, NULL);
             content = xmlOutputBufferGetContent(out);
+            xmlOutputBufferClose(out);
             xmlFuzzCheckMallocFailure("htmlDocContentDumpOutput",
                                       content == NULL);
-            xmlOutputBufferClose(out);
 #endif
 
-            xmlFuzzResetMallocFailed();
             copy = xmlCopyDoc(doc, 1);
             xmlFuzzCheckMallocFailure("xmlCopyNode", copy == NULL);
             xmlFreeDoc(copy);

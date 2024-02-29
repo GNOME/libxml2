@@ -77,6 +77,9 @@ xmlFuzzWriteInt(FILE *out, size_t v, int size);
 size_t
 xmlFuzzReadInt(int size);
 
+size_t
+xmlFuzzBytesRemaining(void);
+
 const char *
 xmlFuzzReadRemaining(size_t *size);
 

@@ -119,12 +119,13 @@ xmlFuzzResetMallocFailed(void) {
 }
 
 void
-xmlFuzzCheckMallocFailure(const char *func, int expect) {
-    if (fuzzAllocFailed != expect) {
+xmlFuzzCheckMallocFailure(const char *func, int error) {
+    if (error >= 0 && fuzzAllocFailed != error) {
         fprintf(stderr, "%s: malloc failure %s reported\n",
                 func, fuzzAllocFailed ? "not" : "erroneously");
         abort();
     }
+    fuzzAllocFailed = 0;
 }
 
 /**
@@ -200,6 +201,16 @@ xmlFuzzReadInt(int size) {
     }
 
     return ret;
+}
+
+/**
+ * xmlFuzzBytesRemaining:
+ *
+ * Return number of remaining bytes in fuzz data.
+ */
+size_t
+xmlFuzzBytesRemaining(void) {
+    return(fuzzData.remaining);
 }
 
 /**

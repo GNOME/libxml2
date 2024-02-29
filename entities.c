@@ -656,11 +656,6 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input, int attr) {
                 l = 4;
                 val = xmlGetUTF8Char(cur, &l);
                 if (val < 0) {
-#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-                    fprintf(stderr, "xmlEncodeEntitiesInternal: "
-                            "invalid UTF-8\n");
-                    abort();
-#endif
                     val = 0xFFFD;
                     cur++;
                 } else {

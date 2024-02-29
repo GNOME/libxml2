@@ -247,10 +247,6 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
             val = xmlGetUTF8Char(in, &len);
 
             if (val < 0) {
-#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-                fprintf(stderr, "xmlEscapeEntities: invalid UTF-8\n");
-                abort();
-#endif
                 val = 0xFFFD;
                 in++;
             } else {
@@ -2358,10 +2354,6 @@ xmlBufAttrSerializeTxtContent(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
             val = xmlGetUTF8Char(cur, &l);
             if (val < 0) {
-#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-                fprintf(stderr, "xmlEscapeEntities: invalid UTF-8\n");
-                abort();
-#endif
                 val = 0xFFFD;
                 cur++;
             } else {

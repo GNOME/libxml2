@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = -Wno-syntax
-EXTRA_PROGRAMS = genSeed html regexp schema uri valid xinclude xml xpath
+EXTRA_PROGRAMS = api genSeed html regexp schema uri valid xinclude xml xpath
 check_PROGRAMS = testFuzzer
 EXTRA_DIST = html.dict regexp.dict schema.dict xml.dict xpath.dict \
 	     static_seed/uri static_seed/regexp fuzz.h
@@ -122,6 +122,20 @@ fuzz-html: html$(EXEEXT) seed/html.stamp
 	    -rss_limit_mb=4096 \
 	    -use_value_profile=1 \
 	    corpus/html seed/html
+
+# API fuzzer
+
+api_SOURCES = api.c fuzz.c
+api_LDFLAGS = -fsanitize=fuzzer
+
+fuzz-api: api$(EXEEXT)
+	@mkdir -p corpus/api
+	./api$(EXEEXT) \
+	    -max_len=100 \
+	    -timeout=20 \
+	    -use_value_profile=1 \
+	    -jobs=4 -workers=4 \
+	    corpus/api
 
 # Regexp fuzzer
 

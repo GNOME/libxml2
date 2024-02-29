@@ -58,7 +58,6 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
                                   ctxt->errNo == XML_ERR_NO_MEMORY);
 
-        xmlFuzzResetMallocFailed();
         xinc = xmlXIncludeNewContext(doc);
         xmlXIncludeSetFlags(xinc, opts);
         xmlXIncludeProcessNode(xinc, (xmlNodePtr) doc);

@@ -5768,61 +5768,19 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     if (elem == NULL) return(0);
     switch (elem->type) {
-        case XML_ATTRIBUTE_NODE:
-	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		   "Attribute element not expected\n", NULL, NULL ,NULL);
-	    return(0);
         case XML_TEXT_NODE:
-	    if (elem->children != NULL) {
-		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		                "Text element has children !\n",
-				NULL,NULL,NULL);
-		return(0);
-	    }
-	    if (elem->ns != NULL) {
-		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		                "Text element has namespace !\n",
-				NULL,NULL,NULL);
-		return(0);
-	    }
-	    if (elem->content == NULL) {
-		xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		                "Text element has no content !\n",
-				NULL,NULL,NULL);
-		return(0);
-	    }
-	    return(1);
-        case XML_XINCLUDE_START:
-        case XML_XINCLUDE_END:
-            return(1);
         case XML_CDATA_SECTION_NODE:
         case XML_ENTITY_REF_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
+        case XML_XINCLUDE_START:
+        case XML_XINCLUDE_END:
 	    return(1);
-        case XML_ENTITY_NODE:
-	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		   "Entity element not expected\n", NULL, NULL ,NULL);
-	    return(0);
-        case XML_NOTATION_NODE:
-	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		   "Notation element not expected\n", NULL, NULL ,NULL);
-	    return(0);
-        case XML_DOCUMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_DOCUMENT_FRAG_NODE:
-	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		   "Document element not expected\n", NULL, NULL ,NULL);
-	    return(0);
-        case XML_HTML_DOCUMENT_NODE:
-	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		   "HTML Document not expected\n", NULL, NULL ,NULL);
-	    return(0);
         case XML_ELEMENT_NODE:
 	    break;
 	default:
 	    xmlErrValidNode(ctxt, elem, XML_ERR_INTERNAL_ERROR,
-		   "unknown element type\n", NULL, NULL ,NULL);
+		   "unexpected element type\n", NULL, NULL ,NULL);
 	    return(0);
     }
 

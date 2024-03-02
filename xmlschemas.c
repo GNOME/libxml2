@@ -25495,7 +25495,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 		    ns = xmlSearchNsByHref(defAttrOwnerElem->doc,
 			defAttrOwnerElem, iattr->nsName);
 		    if (ns == NULL) {
-			xmlChar prefix[12];
+			xmlChar prefix[13];
 			int counter = 0;
 
 			/*
@@ -25503,7 +25503,7 @@ xmlSchemaVAttributesComplex(xmlSchemaValidCtxtPtr vctxt)
 			* root node if no namespace declaration is in scope.
 			*/
 			do {
-			    snprintf((char *) prefix, 12, "p%d", counter++);
+			    snprintf((char *) prefix, 13, "p%d", counter++);
 			    ns = xmlSearchNs(defAttrOwnerElem->doc,
 				defAttrOwnerElem, BAD_CAST prefix);
 			    if (counter > 1000) {

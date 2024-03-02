@@ -2273,6 +2273,11 @@ xmlFreeID(xmlIDPtr id) {
 	DICT_FREE(id->value)
     if (id->name != NULL)
 	DICT_FREE(id->name)
+    if (id->attr != NULL) {
+        id->attr->id = NULL;
+        id->attr->atype = 0;
+    }
+
     xmlFree(id);
 }
 
@@ -2527,9 +2532,6 @@ xmlRemoveID(xmlDocPtr doc, xmlAttrPtr attr) {
 
     if (xmlHashRemoveEntry(table, attr->id->value, xmlFreeIDTableEntry) < 0)
         return(-1);
-
-    attr->atype = 0;
-    attr->id = NULL;
 
     return(0);
 }

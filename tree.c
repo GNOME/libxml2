@@ -2730,18 +2730,88 @@ xmlNewDocComment(xmlDocPtr doc, const xmlChar *content) {
     return(cur);
 }
 
-static const xmlChar *_copyStringForNewDictIfNeeded(xmlDictPtr oldDict, xmlDictPtr newDict, const xmlChar *oldValue) {
-    const xmlChar *newValue = oldValue;
-    if (oldValue) {
-        int oldDictOwnsOldValue = oldDict && (xmlDictOwns(oldDict, oldValue) == 1);
-        if (oldDictOwnsOldValue) {
+static int
+xmlNodeSetDoc(xmlNodePtr node, xmlDocPtr doc) {
+    xmlDocPtr oldDoc;
+    xmlDictPtr oldDict, newDict;
+    int ret = 0;
+
+    /*
+     * Remove name and content from old dictionary
+     */
+
+    oldDoc = node->doc;
+    oldDict = oldDoc ? oldDoc->dict : NULL;
+    newDict = doc ? doc->dict : NULL;
+
+    if ((oldDict != NULL) && (oldDict != newDict)) {
+        if ((node->name != NULL) &&
+            ((node->type == XML_ELEMENT_NODE) ||
+             (node->type == XML_ATTRIBUTE_NODE) ||
+             (node->type == XML_PI_NODE) ||
+             (node->type == XML_ENTITY_REF_NODE)) &&
+            (xmlDictOwns(oldDict, node->name))) {
             if (newDict)
-                newValue = xmlDictLookup(newDict, oldValue, -1);
+                node->name = xmlDictLookup(newDict, node->name, -1);
             else
-                newValue = xmlStrdup(oldValue);
+                node->name = xmlStrdup(node->name);
+            if (node->name == NULL)
+                ret = -1;
+        }
+
+        if ((node->content != NULL) &&
+            ((node->type == XML_TEXT_NODE) ||
+             (node->type == XML_CDATA_SECTION_NODE)) &&
+            (xmlDictOwns(oldDict, node->content))) {
+            node->content = xmlStrdup(node->content);
+            if (node->content == NULL)
+                ret = -1;
         }
     }
-    return newValue;
+
+    /*
+     * Handle IDs
+     *
+     * TODO: ID attributes should also be added to the new
+     * document, but it's not clear how to handle clashes.
+     */
+    if (node->type == XML_ATTRIBUTE_NODE) {
+        xmlAttrPtr attr = (xmlAttrPtr) node;
+
+        if (attr->atype == XML_ATTRIBUTE_ID)
+            xmlRemoveID(oldDoc, attr);
+    }
+
+    /*
+     * Handle entity references
+     */
+    if (node->type == XML_ENTITY_REF_NODE) {
+        node->children = NULL;
+        node->last = NULL;
+        node->content = NULL;
+
+        if ((doc != NULL) &&
+            ((doc->intSubset != NULL) || (doc->extSubset != NULL))) {
+            xmlEntityPtr ent;
+
+            /*
+            * Assign new entity node if available
+            */
+            ent = xmlGetDocEntity(doc, node->name);
+            if (ent != NULL) {
+                node->children = (xmlNodePtr) ent;
+                node->last = (xmlNodePtr) ent;
+                node->content = ent->content;
+            }
+        }
+    }
+
+    /*
+     * Set new document
+     */
+    node->doc = doc;
+
+    return(ret);
 }
 
 /**
@@ -2749,66 +2819,48 @@ static const xmlChar *_copyStringForNewDictIfNeeded(xmlDictPtr oldDict, xmlDictP
  * @tree:  the top element
  * @doc:  the document
  *
- * update all nodes under the tree to point to the right document
+ * Update all nodes under the tree to point to the new document.
+ * Also copy strings from the old document's dictionary.
+ *
+ * Returns 0 on success. If a memory allocation fails, returns -1.
+ * The whole tree will be updated on failure but some strings
+ * may be lost.
  */
-void
+int
 xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
-    xmlAttrPtr prop;
+    int ret = 0;
 
     if ((tree == NULL) || (tree->type == XML_NAMESPACE_DECL))
-	return;
-    if (tree->doc != doc) {
-        xmlDictPtr oldTreeDict = tree->doc ? tree->doc->dict : NULL;
-        xmlDictPtr newDict = doc ? doc->dict : NULL;
+	return(0);
+    if (tree->doc == doc)
+        return(0);
 
-	if(tree->type == XML_ELEMENT_NODE) {
-	    prop = tree->properties;
-	    while (prop != NULL) {
-                if (prop->atype == XML_ATTRIBUTE_ID) {
-                    xmlRemoveID(tree->doc, prop);
-                }
+    if (tree->type == XML_ELEMENT_NODE) {
+        xmlAttrPtr prop = tree->properties;
 
-                if (prop->doc != doc) {
-                    xmlDictPtr oldPropDict = prop->doc ? prop->doc->dict : NULL;
-                    /* TODO: malloc check */
-                    prop->name = _copyStringForNewDictIfNeeded(oldPropDict, newDict, prop->name);
-                    prop->doc = doc;
-                }
-		xmlSetListDoc(prop->children, doc);
+        while (prop != NULL) {
+            if (prop->children != NULL) {
+                if (xmlSetListDoc(prop->children, doc) < 0)
+                    ret = -1;
+            }
 
-                /*
-                 * TODO: ID attributes should be also added to the new
-                 * document, but this breaks things like xmlReplaceNode.
-                 * The underlying problem is that xmlRemoveID is only called
-                 * if a node is destroyed, not if it's unlinked.
-                 */
-#if 0
-                if (xmlIsID(doc, tree, prop)) {
-                    xmlChar *idVal = xmlNodeListGetString(doc, prop->children,
-                                                          1);
-                    xmlAddID(NULL, doc, idVal, prop);
-                }
-#endif
+            if (xmlNodeSetDoc((xmlNodePtr) prop, doc) < 0)
+                ret = -1;
 
-		prop = prop->next;
-	    }
-	}
-        if (tree->type == XML_ENTITY_REF_NODE) {
-            /*
-             * Clear 'children' which points to the entity declaration
-             * from the original document.
-             */
-            tree->children = NULL;
-        } else if (tree->children != NULL) {
-	    xmlSetListDoc(tree->children, doc);
+            prop = prop->next;
         }
-
-        /* TODO: malloc check */
-        tree->name = _copyStringForNewDictIfNeeded(oldTreeDict, newDict, tree->name);
-        tree->content = (xmlChar *)_copyStringForNewDictIfNeeded(oldTreeDict, NULL, tree->content);
-        /* FIXME: tree->ns should be updated as in xmlStaticCopyNode(). */
-	tree->doc = doc;
     }
+
+    if ((tree->children != NULL) &&
+        (tree->type != XML_ENTITY_REF_NODE)) {
+        if (xmlSetListDoc(tree->children, doc) < 0)
+            ret = -1;
+    }
+
+    if (xmlNodeSetDoc(tree, doc) < 0)
+        ret = -1;
+
+    return(ret);
 }
 
 /**
@@ -2816,20 +2868,31 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
  * @list:  the first element
  * @doc:  the document
  *
- * update all nodes in the list to point to the right document
+ * Update all subtrees in @list to point to the new document.
+ * Also copy strings from the old document's dictionary.
+ *
+ * Returns 0 on success. If a memory allocation fails, returns -1.
+ * All subtrees will be updated on failure but some strings
+ * may be lost.
  */
-void
+int
 xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
     xmlNodePtr cur;
+    int ret = 0;
 
     if ((list == NULL) || (list->type == XML_NAMESPACE_DECL))
-	return;
+	return(0);
+
     cur = list;
     while (cur != NULL) {
-	if (cur->doc != doc)
-	    xmlSetTreeDoc(cur, doc);
+	if (cur->doc != doc) {
+	    if (xmlSetTreeDoc(cur, doc) < 0)
+                ret = -1;
+        }
 	cur = cur->next;
     }
+
+    return(ret);
 }
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
@@ -2936,7 +2999,8 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
 
     xmlUnlinkNode(prop);
     if (prop->doc != cur->doc) {
-        xmlSetTreeDoc(prop, cur->doc);
+        if (xmlSetTreeDoc(prop, cur->doc) < 0)
+            return(NULL);
     }
     prop->parent = cur->parent;
     prop->prev = prev;
@@ -3014,7 +3078,8 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     }
 
     if (elem->doc != cur->doc) {
-	xmlSetTreeDoc(elem, cur->doc);
+	if (xmlSetTreeDoc(elem, cur->doc) < 0)
+            return(NULL);
     }
     elem->parent = cur->parent;
     elem->prev = cur;
@@ -3087,7 +3152,8 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
     }
 
     if (elem->doc != cur->doc) {
-	xmlSetTreeDoc(elem, cur->doc);
+	if (xmlSetTreeDoc(elem, cur->doc)< 0)
+            return(NULL);
     }
     elem->parent = cur->parent;
     elem->next = cur;
@@ -3146,7 +3212,7 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
     }
 
     if (cur == elem)
-        return(NULL);
+        return(elem);
 
     if (elem->type == XML_ATTRIBUTE_NODE)
 	return xmlAddPropSibling(cur, cur, elem);
@@ -3161,7 +3227,8 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
     }
 
     if (elem->doc != cur->doc) {
-	xmlSetTreeDoc(elem, cur->doc);
+	if (xmlSetTreeDoc(elem, cur->doc) < 0)
+            return(NULL);
     }
     parent = cur->parent;
     elem->prev = cur;
@@ -3188,7 +3255,9 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
  */
 xmlNodePtr
 xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
+    xmlNodePtr iter;
     xmlNodePtr prev;
+    int oom;
 
     if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL)) {
 	return(NULL);
@@ -3198,9 +3267,15 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
 	return(NULL);
     }
 
-    if ((cur->doc != NULL) && (parent->doc != NULL) &&
-        (cur->doc != parent->doc)) {
+    oom = 0;
+    for (iter = cur; iter != NULL; iter = iter->next) {
+	if (iter->doc != parent->doc) {
+	    if (xmlSetTreeDoc(iter, parent->doc) < 0)
+                oom = 1;
+	}
     }
+    if (oom)
+        return(NULL);
 
     /*
      * add the first element at the end of the children list.
@@ -3233,16 +3308,9 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     }
     while (cur->next != NULL) {
 	cur->parent = parent;
-	if (cur->doc != parent->doc) {
-	    xmlSetTreeDoc(cur, parent->doc);
-	}
         cur = cur->next;
     }
     cur->parent = parent;
-    /* the parent may not be linked to a doc ! */
-    if (cur->doc != parent->doc) {
-        xmlSetTreeDoc(cur, parent->doc);
-    }
     parent->last = cur;
 
     return(cur);
@@ -3323,10 +3391,11 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
      * add the new element at the end of the children list.
      */
     prev = cur->parent;
-    cur->parent = parent;
     if (cur->doc != parent->doc) {
-	xmlSetTreeDoc(cur, parent->doc);
+	if (xmlSetTreeDoc(cur, parent->doc) < 0)
+            return(NULL);
     }
+    cur->parent = parent;
     /* this check prevents a loop on tree-traversions if a developer
      * tries to add a node to its parent multiple times
      */
@@ -3846,7 +3915,8 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
 	return(old);
     }
     xmlUnlinkNode(cur);
-    xmlSetTreeDoc(cur, old->doc);
+    if (xmlSetTreeDoc(cur, old->doc) < 0)
+        return(NULL);
     cur->parent = old->parent;
     cur->next = old->next;
     if (cur->next != NULL)
@@ -4351,6 +4421,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent) {
 	    if ((doc->intSubset == NULL) && (newSubset == NULL)) {
 		q = (xmlNodePtr) xmlCopyDtd( (xmlDtdPtr) node );
 		if (q == NULL) goto error;
+                /* Can't fail on DTD */
 		xmlSetTreeDoc(q, doc);
 		q->parent = parent;
 		newSubset = (xmlDtdPtr) q;
@@ -4628,6 +4699,7 @@ xmlCopyDoc(xmlDocPtr doc, int recursive) {
         ret->intSubset = xmlCopyDtd(doc->intSubset);
 	if (ret->intSubset == NULL)
             goto error;
+        /* Can't fail on DTD */
 	xmlSetTreeDoc((xmlNodePtr)ret->intSubset, ret);
     }
 #endif
@@ -5008,7 +5080,7 @@ xmlDocGetRootElement(const xmlDoc *doc) {
  * Set the root element of the document (doc->children is a list
  * containing possibly comments, PIs, etc ...).
  *
- * Returns the old root element if any was found, NULL if root was NULL
+ * Returns the old root element if any was found, NULL on error.
  */
 xmlNodePtr
 xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
@@ -5026,7 +5098,8 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     if (old == root)
         return(old);
     xmlUnlinkNode(root);
-    xmlSetTreeDoc(root, doc);
+    if (xmlSetTreeDoc(root, doc) < 0)
+        return(NULL);
     root->parent = (xmlNodePtr) doc;
     if (old == NULL) {
 	if (doc->children == NULL) {

@@ -1003,10 +1003,10 @@ XMLPUBFUN void
 		xmlFreeNodeList		(xmlNodePtr cur);
 XMLPUBFUN void
 		xmlFreeNode		(xmlNodePtr cur);
-XMLPUBFUN void
+XMLPUBFUN int
 		xmlSetTreeDoc		(xmlNodePtr tree,
 					 xmlDocPtr doc);
-XMLPUBFUN void
+XMLPUBFUN int
 		xmlSetListDoc		(xmlNodePtr list,
 					 xmlDocPtr doc);
 /*

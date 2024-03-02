@@ -4244,6 +4244,8 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	       attr->name, elem->name, NULL);
 	return(0);
     }
+    if (attr->atype == XML_ATTRIBUTE_ID)
+        xmlRemoveID(doc, attr);
     attr->atype = attrDecl->atype;
 
     val = xmlValidateAttributeValueInternal(doc, attrDecl->atype, value);

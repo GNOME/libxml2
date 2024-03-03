@@ -9,6 +9,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
@@ -2428,6 +2429,10 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
 
     if ((buf == NULL) || (cur == NULL))
         return(-1);
+    if (level < 0)
+        level = 0;
+    else if (level > 100)
+        level = 100;
     buffer = xmlBufFromBuffer(buf);
     if (buffer == NULL)
         return(-1);
@@ -2559,6 +2564,11 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     xmlInitParser();
 
     if ((buf == NULL) || (cur == NULL)) return;
+
+    if (level < 0)
+        level = 0;
+    else if (level > 100)
+        level = 100;
 
     if (encoding == NULL)
         encoding = "UTF-8";

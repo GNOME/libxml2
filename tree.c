@@ -3382,10 +3382,8 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	if ((parent->last != NULL) && (parent->last->type == XML_TEXT_NODE) &&
 	    (parent->last->name == cur->name) &&
 	    (parent->last != cur)) {
-	    if (xmlNodeAddContent(parent->last, cur->content) != 0) {
-                xmlFreeNode(cur);
+	    if (xmlNodeAddContent(parent->last, cur->content) != 0)
                 return(NULL);
-            }
 	    xmlFreeNode(cur);
 	    return(parent->last);
 	}
@@ -4276,6 +4274,8 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
          */
         tmp = xmlAddChild(parent, ret);
 	/* node could have coalesced */
+        if (tmp == NULL)
+            goto error;
 	if (tmp != ret)
 	    return(tmp);
     }
@@ -5894,8 +5894,10 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    if (newNode == NULL)
                 return(-1);
             tmp = xmlAddChild(cur, newNode);
-            if (tmp == NULL)
+            if (tmp == NULL) {
+                xmlFreeNode(newNode);
                 return(-1);
+            }
 	    break;
 	}
         case XML_ATTRIBUTE_NODE:

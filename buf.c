@@ -863,12 +863,19 @@ xmlBufBackToBuffer(xmlBufPtr buf) {
     if (buf == NULL)
         return(NULL);
     CHECK_COMPAT(buf)
-    if ((buf->error) || (buf->buffer == NULL)) {
+    ret = buf->buffer;
+
+    if ((buf->error) || (ret == NULL)) {
         xmlBufFree(buf);
+        if (ret != NULL) {
+            ret->content = NULL;
+            ret->contentIO = NULL;
+            ret->use = 0;
+            ret->size = 0;
+        }
         return(NULL);
     }
 
-    ret = buf->buffer;
     /*
      * What to do in case of error in the buffer ???
      */

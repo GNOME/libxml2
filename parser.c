@@ -2980,13 +2980,6 @@ xmlSplitQName(xmlParserCtxtPtr ctxt, const xmlChar *name, xmlChar **prefixOut) {
 
     if (cur == NULL) return(NULL);
 
-#ifndef XML_XML_NAMESPACE
-    /* xml: prefix is not really a namespace */
-    if ((cur[0] == 'x') && (cur[1] == 'm') &&
-        (cur[2] == 'l') && (cur[3] == ':'))
-	return(xmlStrdup(name));
-#endif
-
     /* nasty but well=formed */
     if (cur[0] == ':')
 	return(xmlStrdup(name));

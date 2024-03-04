@@ -2171,12 +2171,16 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr cur)
 
 int
 xmlSaveNotationDecl(xmlSaveCtxtPtr ctxt, xmlNotationPtr cur) {
+    if (ctxt == NULL)
+        return(-1);
     xmlBufDumpNotationDecl(ctxt->buf, cur);
     return(0);
 }
 
 int
 xmlSaveNotationTable(xmlSaveCtxtPtr ctxt, xmlNotationTablePtr cur) {
+    if (ctxt == NULL)
+        return(-1);
     xmlBufDumpNotationTable(ctxt->buf, cur);
     return(0);
 }

@@ -425,14 +425,14 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     xmlOutputBufferPtr outbuf;
 
     if (cur == NULL) {
-	return (-1);
+	return ((size_t) -1);
     }
     if (buf == NULL) {
-	return (-1);
+	return ((size_t) -1);
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (outbuf == NULL)
-	return (-1);
+	return ((size_t) -1);
     memset(outbuf, 0, sizeof(xmlOutputBuffer));
     outbuf->buffer = buf;
     outbuf->encoder = NULL;

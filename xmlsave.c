@@ -2471,15 +2471,15 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     xmlInitParser();
 
     if (cur == NULL) {
-        return (-1);
+        return ((size_t) -1);
     }
     if (buf == NULL) {
-        return (-1);
+        return ((size_t) -1);
     }
     outbuf = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (outbuf == NULL) {
         xmlSaveErrMemory(NULL);
-        return (-1);
+        return ((size_t) -1);
     }
     memset(outbuf, 0, (size_t) sizeof(xmlOutputBuffer));
     outbuf->buffer = buf;

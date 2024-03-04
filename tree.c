@@ -1813,12 +1813,16 @@ xmlNewPropInternal(xmlNodePtr node, xmlNsPtr ns,
                 cur->last = tmp;
             tmp = tmp->next;
         }
-    }
 
-    if ((value != NULL) && (node != NULL) &&
-        (xmlIsID(node->doc, node, cur) == 1) &&
-        (xmlAddIDSafe(cur, value) < 0))
-        goto error;
+        if (doc != NULL) {
+            int res = xmlIsID(doc, node, cur);
+
+            if (res < 0)
+                goto error;
+            if ((res == 1) && (xmlAddIDSafe(cur, value) < 0))
+                goto error;
+        }
+    }
 
     /*
      * Add it at the end to preserve parsing order ...

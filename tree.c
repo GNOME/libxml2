@@ -64,6 +64,9 @@ xmlGetPropNodeInternal(const xmlNode *node, const xmlChar *name,
 
 static xmlChar* xmlGetPropNodeValueInternal(const xmlAttr *prop);
 
+static void
+xmlBufGetChildContent(xmlBufPtr buf, const xmlNode *tree);
+
 /************************************************************************
  *									*
  *		A few static variables and macros			*
@@ -1694,6 +1697,18 @@ static xmlChar *
 xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
     xmlBufPtr buf;
     xmlChar *ret;
+
+    if (node == NULL)
+        return(xmlStrdup(BAD_CAST ""));
+
+    if ((escMode == 0) &&
+        ((node->type == XML_TEXT_NODE) ||
+         (node->type == XML_CDATA_SECTION_NODE)) &&
+        (node->next == NULL)) {
+        if (node->content == NULL)
+            return(xmlStrdup(BAD_CAST ""));
+        return(xmlStrdup(node->content));
+    }
 
     buf = xmlBufCreateSize(64);
     if (buf == NULL)
@@ -4261,7 +4276,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
 	if (res != 0) {
 	    xmlChar *id;
 
-	    id = xmlNodeListGetString(cur->doc, cur->children, 1);
+	    id = xmlNodeGetContent((xmlNodePtr) cur);
 	    if (id == NULL)
                 goto error;
             res = xmlAddIDSafe(ret, id);
@@ -5671,6 +5686,59 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, const xmlNode *cur)
     return(0);
 }
 
+static void
+xmlBufGetEntityRefContent(xmlBufPtr buf, const xmlNode *ref) {
+    xmlEntityPtr ent;
+
+    if (ref->children != NULL) {
+        ent = (xmlEntityPtr) ref->children;
+    } else {
+        /* lookup entity declaration */
+        ent = xmlGetDocEntity(ref->doc, ref->name);
+        if (ent == NULL)
+            return;
+    }
+
+    if (ent->flags & XML_ENT_EXPANDING)
+        return;
+
+    ent->flags |= XML_ENT_EXPANDING;
+    xmlBufGetChildContent(buf, (xmlNodePtr) ent);
+    ent->flags &= ~XML_ENT_EXPANDING;
+}
+
+static void
+xmlBufGetChildContent(xmlBufPtr buf, const xmlNode *tree) {
+    const xmlNode *cur = tree->children;
+
+    while (cur != NULL) {
+        switch (cur->type) {
+            case XML_TEXT_NODE:
+            case XML_CDATA_SECTION_NODE:
+                xmlBufCat(buf, cur->content);
+                break;
+
+            case XML_ENTITY_REF_NODE:
+                xmlBufGetEntityRefContent(buf, cur);
+                break;
+
+            default:
+                if (cur->children != NULL) {
+                    cur = cur->children;
+                    continue;
+                }
+                break;
+        }
+
+        while (cur->next == NULL) {
+            cur = cur->parent;
+            if (cur == tree)
+                return;
+        }
+        cur = cur->next;
+    }
+}
+
 /**
  * xmlBufGetNodeContent:
  * @buf:  a buffer xmlBufPtr
@@ -5687,118 +5755,38 @@ xmlNodeBufGetContent(xmlBufferPtr buffer, const xmlNode *cur)
 int
 xmlBufGetNodeContent(xmlBufPtr buf, const xmlNode *cur)
 {
-    if ((cur == NULL) || (buf == NULL)) return(-1);
+    if ((cur == NULL) || (buf == NULL))
+        return(-1);
+
     switch (cur->type) {
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE:
+        case XML_ENTITY_DECL:
+            xmlBufGetChildContent(buf, cur);
+            break;
+
         case XML_CDATA_SECTION_NODE:
         case XML_TEXT_NODE:
-	    xmlBufCat(buf, cur->content);
-            break;
-        case XML_DOCUMENT_FRAG_NODE:
-        case XML_ELEMENT_NODE:{
-                const xmlNode *tmp = cur;
-
-                while (tmp != NULL) {
-                    switch (tmp->type) {
-                        case XML_CDATA_SECTION_NODE:
-                        case XML_TEXT_NODE:
-                            if (tmp->content != NULL)
-                                xmlBufCat(buf, tmp->content);
-                            break;
-                        case XML_ENTITY_REF_NODE:
-                            xmlBufGetNodeContent(buf, tmp);
-                            break;
-                        default:
-                            break;
-                    }
-                    /*
-                     * Skip to next node
-                     */
-                    if (tmp->children != NULL) {
-                        if (tmp->children->type != XML_ENTITY_DECL) {
-                            tmp = tmp->children;
-                            continue;
-                        }
-                    }
-                    if (tmp == cur)
-                        break;
-
-                    if (tmp->next != NULL) {
-                        tmp = tmp->next;
-                        continue;
-                    }
-
-                    do {
-                        tmp = tmp->parent;
-                        if (tmp == NULL)
-                            break;
-                        if (tmp == cur) {
-                            tmp = NULL;
-                            break;
-                        }
-                        if (tmp->next != NULL) {
-                            tmp = tmp->next;
-                            break;
-                        }
-                    } while (tmp != NULL);
-                }
-		break;
-            }
-        case XML_ATTRIBUTE_NODE:{
-                xmlAttrPtr attr = (xmlAttrPtr) cur;
-		xmlNodePtr tmp = attr->children;
-
-		while (tmp != NULL) {
-		    if (tmp->type == XML_TEXT_NODE)
-		        xmlBufCat(buf, tmp->content);
-		    else
-		        xmlBufGetNodeContent(buf, tmp);
-		    tmp = tmp->next;
-		}
-                break;
-            }
         case XML_COMMENT_NODE:
         case XML_PI_NODE:
 	    xmlBufCat(buf, cur->content);
             break;
-        case XML_ENTITY_REF_NODE:{
-                xmlEntityPtr ent;
-                xmlNodePtr tmp;
 
-                /* lookup entity declaration */
-                ent = xmlGetDocEntity(cur->doc, cur->name);
-                if (ent == NULL)
-                    return(-1);
+        case XML_ENTITY_REF_NODE:
+            xmlBufGetEntityRefContent(buf, cur);
+            break;
 
-                /* an entity content can be any "well balanced chunk",
-                 * i.e. the result of the content [43] production:
-                 * http://www.w3.org/TR/REC-xml#NT-content
-                 * -> we iterate through child nodes and recursive call
-                 * xmlNodeGetContent() which handles all possible node types */
-                tmp = ent->children;
-                while (tmp) {
-		    xmlBufGetNodeContent(buf, tmp);
-                    tmp = tmp->next;
-                }
-		break;
-            }
-        case XML_DOCUMENT_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-	    cur = cur->children;
-	    while (cur!= NULL) {
-		if ((cur->type == XML_ELEMENT_NODE) ||
-		    (cur->type == XML_TEXT_NODE) ||
-		    (cur->type == XML_CDATA_SECTION_NODE)) {
-		    xmlBufGetNodeContent(buf, cur);
-		}
-		cur = cur->next;
-	    }
-	    break;
         case XML_NAMESPACE_DECL:
 	    xmlBufCat(buf, ((xmlNsPtr) cur)->href);
 	    break;
+
         default:
             break;
     }
+
     return(0);
 }
 
@@ -5816,84 +5804,64 @@ xmlBufGetNodeContent(xmlBufPtr buf, const xmlNode *cur)
 xmlChar *
 xmlNodeGetContent(const xmlNode *cur)
 {
+    xmlBufPtr buf;
+    xmlChar *ret;
+
     if (cur == NULL)
         return (NULL);
-    switch (cur->type) {
-        case XML_DOCUMENT_FRAG_NODE:
-        case XML_ELEMENT_NODE:{
-                xmlBufPtr buf;
-                xmlChar *ret;
 
-                buf = xmlBufCreateSize(64);
-                if (buf == NULL)
-                    return (NULL);
-                xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
-		xmlBufGetNodeContent(buf, cur);
-                ret = xmlBufDetach(buf);
-                xmlBufFree(buf);
-                return (ret);
-            }
+    switch (cur->type) {
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+        case XML_ENTITY_REF_NODE:
+            break;
+
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
-	    return(xmlGetPropNodeValueInternal((xmlAttrPtr) cur));
+        case XML_ENTITY_DECL: {
+            xmlNodePtr children = cur->children;
+
+            if (children == NULL)
+                return(xmlStrdup(BAD_CAST ""));
+
+            /* Optimization for single text children */
+            if (((children->type == XML_TEXT_NODE) ||
+                 (children->type == XML_CDATA_SECTION_NODE)) &&
+                (children->next == NULL)) {
+                if (children->content == NULL)
+                    return(xmlStrdup(BAD_CAST ""));
+                return(xmlStrdup(children->content));
+            }
+
+            break;
+        }
+
+        case XML_CDATA_SECTION_NODE:
+        case XML_TEXT_NODE:
         case XML_COMMENT_NODE:
         case XML_PI_NODE:
             if (cur->content != NULL)
-                return (xmlStrdup(cur->content));
+                return(xmlStrdup(cur->content));
             else
-                return (xmlStrdup(BAD_CAST ""));
-            return (NULL);
-        case XML_ENTITY_REF_NODE:{
-                xmlEntityPtr ent;
-                xmlBufPtr buf;
-                xmlChar *ret;
+                return(xmlStrdup(BAD_CAST ""));
 
-                /* lookup entity declaration */
-                ent = xmlGetDocEntity(cur->doc, cur->name);
-                if (ent == NULL)
-                    return (NULL);
+        case XML_NAMESPACE_DECL:
+	    return(xmlStrdup(((xmlNsPtr) cur)->href));
 
-                buf = xmlBufCreateSize(64);
-                if (buf == NULL)
-                    return (NULL);
-                xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
-
-                xmlBufGetNodeContent(buf, cur);
-
-                ret = xmlBufDetach(buf);
-                xmlBufFree(buf);
-                return (ret);
-            }
-        case XML_DOCUMENT_NODE:
-        case XML_HTML_DOCUMENT_NODE: {
-	    xmlBufPtr buf;
-	    xmlChar *ret;
-
-	    buf = xmlBufCreateSize(64);
-	    if (buf == NULL)
-		return (NULL);
-            xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
-
-	    xmlBufGetNodeContent(buf, (xmlNodePtr) cur);
-
-	    ret = xmlBufDetach(buf);
-	    xmlBufFree(buf);
-	    return (ret);
-	}
-        case XML_NAMESPACE_DECL: {
-	    xmlChar *tmp;
-
-	    tmp = xmlStrdup(((xmlNsPtr) cur)->href);
-            return (tmp);
-	}
-        case XML_CDATA_SECTION_NODE:
-        case XML_TEXT_NODE:
-            if (cur->content != NULL)
-                return (xmlStrdup(cur->content));
-            return (NULL);
         default:
-            return (NULL);
+            return(NULL);
     }
-    return (NULL);
+
+    buf = xmlBufCreateSize(64);
+    if (buf == NULL)
+        return (NULL);
+    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
+    xmlBufGetNodeContent(buf, cur);
+    ret = xmlBufDetach(buf);
+    xmlBufFree(buf);
+
+    return(ret);
 }
 
 /**
@@ -6736,24 +6704,7 @@ xmlGetPropNodeValueInternal(const xmlAttr *prop)
     if (prop == NULL)
 	return(NULL);
     if (prop->type == XML_ATTRIBUTE_NODE) {
-	/*
-	* Note that we return at least the empty string.
-	*/
-	if (prop->children != NULL) {
-	    if ((prop->children->next == NULL) &&
-		((prop->children->type == XML_TEXT_NODE) ||
-		(prop->children->type == XML_CDATA_SECTION_NODE)))
-	    {
-		/*
-		* Optimization for the common case: only 1 text node.
-		*/
-                if (prop->children->content != NULL)
-		    return(xmlStrdup(prop->children->content));
-	    } else {
-		return(xmlNodeListGetString(prop->doc, prop->children, 1));
-	    }
-	}
-	return(xmlStrdup((xmlChar *)""));
+	return(xmlNodeGetContent((xmlNodePtr) prop));
     } else if (prop->type == XML_ATTRIBUTE_DECL) {
 	return(xmlStrdup(((xmlAttributePtr)prop)->defaultValue));
     }
@@ -9809,7 +9760,7 @@ end_ns_reference:
 
 		xmlChar *idVal;
 
-		idVal = xmlNodeListGetString(cur->doc, cur->children, 1);
+		idVal = xmlNodeGetContent(cur);
 		if (idVal != NULL) {
 		    if (xmlAddIDSafe((xmlAttrPtr) cur, idVal) < 0) {
 			/* TODO: error message. */

@@ -1424,7 +1424,8 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
 
     save = xmlSaveToBuffer(buf, NULL, 0);
     xmlSaveTree(save, (xmlNodePtr) elem);
-    xmlSaveClose(save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 
 /**
@@ -1436,9 +1437,9 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
  * the arguments.
  */
 static void
-xmlDumpElementDeclScan(void *elem, void *buf,
+xmlDumpElementDeclScan(void *elem, void *save,
                        const xmlChar *name ATTRIBUTE_UNUSED) {
-    xmlDumpElementDecl((xmlBufferPtr) buf, (xmlElementPtr) elem);
+    xmlSaveTree(save, elem);
 }
 
 /**
@@ -1452,9 +1453,15 @@ xmlDumpElementDeclScan(void *elem, void *buf,
  */
 void
 xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
+    xmlSaveCtxtPtr save;
+
     if ((buf == NULL) || (table == NULL))
         return;
-    xmlHashScan(table, xmlDumpElementDeclScan, buf);
+
+    save = xmlSaveToBuffer(buf, NULL, 0);
+    xmlHashScan(table, xmlDumpElementDeclScan, save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -1966,7 +1973,8 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 
     save = xmlSaveToBuffer(buf, NULL, 0);
     xmlSaveTree(save, (xmlNodePtr) attr);
-    xmlSaveClose(save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 
 /**
@@ -1977,9 +1985,9 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
  * This is used with the hash scan function - just reverses arguments
  */
 static void
-xmlDumpAttributeDeclScan(void *attr, void *buf,
+xmlDumpAttributeDeclScan(void *attr, void *save,
                          const xmlChar *name ATTRIBUTE_UNUSED) {
-    xmlDumpAttributeDecl((xmlBufferPtr) buf, (xmlAttributePtr) attr);
+    xmlSaveTree(save, attr);
 }
 
 /**
@@ -1993,9 +2001,15 @@ xmlDumpAttributeDeclScan(void *attr, void *buf,
  */
 void
 xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
+    xmlSaveCtxtPtr save;
+
     if ((buf == NULL) || (table == NULL))
         return;
-    xmlHashScan(table, xmlDumpAttributeDeclScan, buf);
+
+    save = xmlSaveToBuffer(buf, NULL, 0);
+    xmlHashScan(table, xmlDumpAttributeDeclScan, save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -2202,7 +2216,8 @@ xmlDumpNotationDecl(xmlBufferPtr buf, xmlNotationPtr nota) {
 
     save = xmlSaveToBuffer(buf, NULL, 0);
     xmlSaveNotationDecl(save, nota);
-    xmlSaveClose(save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 
 /**
@@ -2223,7 +2238,8 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
 
     save = xmlSaveToBuffer(buf, NULL, 0);
     xmlSaveNotationTable(save, table);
-    xmlSaveClose(save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

@@ -937,7 +937,8 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 
     save = xmlSaveToBuffer(buf, NULL, 0);
     xmlSaveTree(save, (xmlNodePtr) ent);
-    xmlSaveClose(save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 
 /**
@@ -948,9 +949,9 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
  * When using the hash table scan function, arguments need to be reversed
  */
 static void
-xmlDumpEntityDeclScan(void *ent, void *buf,
+xmlDumpEntityDeclScan(void *ent, void *save,
                       const xmlChar *name ATTRIBUTE_UNUSED) {
-    xmlDumpEntityDecl((xmlBufferPtr) buf, (xmlEntityPtr) ent);
+    xmlSaveTree(save, ent);
 }
 
 /**
@@ -962,6 +963,14 @@ xmlDumpEntityDeclScan(void *ent, void *buf,
  */
 void
 xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
-    xmlHashScan(table, xmlDumpEntityDeclScan, buf);
+    xmlSaveCtxtPtr save;
+
+    if ((buf == NULL) || (table == NULL))
+        return;
+
+    save = xmlSaveToBuffer(buf, NULL, 0);
+    xmlHashScan(table, xmlDumpEntityDeclScan, save);
+    if (xmlSaveFinish(save) != XML_ERR_OK)
+        xmlFree(xmlBufferDetach(buf));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */

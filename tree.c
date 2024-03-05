@@ -6892,6 +6892,8 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 
     if (ns && (ns->href == NULL))
 	return(NULL);
+    if (name == NULL)
+        return(NULL);
     prop = xmlGetPropNodeInternal(node, name,
                                   (ns != NULL) ? ns->href : NULL, 0);
     if (prop != NULL) {

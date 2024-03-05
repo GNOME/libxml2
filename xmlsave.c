@@ -2401,6 +2401,8 @@ xmlAttrSerializeTxtContent(xmlBufferPtr buf, xmlDocPtr doc,
         return;
     out = xmlOutputBufferCreateBuffer(buf, NULL);
     xmlBufAttrSerializeTxtContent(out, doc, string);
+    if ((out == NULL) || (out->error))
+        xmlFree(xmlBufferDetach(buf));
     xmlOutputBufferClose(out);
 }
 

@@ -6980,6 +6980,8 @@ xmlIsBlankNode(const xmlNode *node) {
 int
 xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
     if (node == NULL) return(-1);
+    if ((content == NULL) || (len <= 0))
+        return(0);
 
     if ((node->type != XML_TEXT_NODE) &&
         (node->type != XML_CDATA_SECTION_NODE) &&

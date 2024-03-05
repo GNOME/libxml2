@@ -5406,6 +5406,8 @@ xmlNodeGetBaseSafe(const xmlDoc *doc, const xmlNode *cur, xmlChar **baseOut) {
 	if (cur->type == XML_ENTITY_DECL) {
 	    xmlEntityPtr ent = (xmlEntityPtr) cur;
 
+            if (ent->URI == NULL)
+                break;
             xmlFree(ret);
 	    ret = xmlStrdup(ent->URI);
             if (ret == NULL)

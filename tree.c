@@ -5753,7 +5753,6 @@ xmlNodeSetContent(xmlNodePtr cur, const xmlChar *content) {
         }
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE: {
             xmlChar *copy = NULL;
@@ -5822,10 +5821,8 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         }
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_NODE:
         case XML_PI_NODE:
-        case XML_COMMENT_NODE:
-        case XML_NOTATION_NODE: {
+        case XML_COMMENT_NODE: {
             xmlChar *copy = NULL;
 
 	    if (content != NULL) {
@@ -5892,10 +5889,8 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 	    break;
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_NODE:
         case XML_PI_NODE:
-        case XML_COMMENT_NODE:
-        case XML_NOTATION_NODE: {
+        case XML_COMMENT_NODE: {
             xmlChar *newContent = NULL;
 
             if ((cur->content == (xmlChar *) &(cur->properties)) ||

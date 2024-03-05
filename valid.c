@@ -74,7 +74,9 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
     xmlParserCtxtPtr pctxt = NULL;
     va_list ap;
 
-    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_USE_PCTXT))
+    if (ctxt == NULL)
+        return;
+    if (ctxt->flags & XML_VCTXT_USE_PCTXT)
         pctxt = ctxt->userData;
 
     va_start(ap, msg);

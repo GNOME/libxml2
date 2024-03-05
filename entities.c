@@ -395,6 +395,8 @@ xmlNewEntity(xmlDocPtr doc, const xmlChar *name, int type,
     if ((doc != NULL) && (doc->intSubset != NULL)) {
 	return(xmlAddDocEntity(doc, name, type, ExternalID, SystemID, content));
     }
+    if (name == NULL)
+        return(NULL);
     return(xmlCreateEntity(doc, name, type, ExternalID, SystemID, content));
 }
 

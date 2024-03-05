@@ -1063,8 +1063,7 @@ xmlFreeDtd(xmlDtdPtr cur) {
 	 */
         while (c != NULL) {
 	    next = c->next;
-	    if ((c->type != XML_NOTATION_NODE) &&
-	        (c->type != XML_ELEMENT_DECL) &&
+	    if ((c->type != XML_ELEMENT_DECL) &&
 		(c->type != XML_ATTRIBUTE_DECL) &&
 		(c->type != XML_ENTITY_DECL)) {
 		xmlUnlinkNode(c);
@@ -3418,10 +3417,10 @@ xmlChildElementCount(xmlNodePtr parent) {
         return(0);
     switch (parent->type) {
         case XML_ELEMENT_NODE:
-        case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_FRAG_NODE:
         case XML_HTML_DOCUMENT_NODE:
+        case XML_ENTITY_DECL:
             cur = parent->children;
             break;
         default:
@@ -3454,10 +3453,10 @@ xmlFirstElementChild(xmlNodePtr parent) {
         return(NULL);
     switch (parent->type) {
         case XML_ELEMENT_NODE:
-        case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_FRAG_NODE:
         case XML_HTML_DOCUMENT_NODE:
+        case XML_ENTITY_DECL:
             cur = parent->children;
             break;
         default:
@@ -3490,10 +3489,10 @@ xmlLastElementChild(xmlNodePtr parent) {
         return(NULL);
     switch (parent->type) {
         case XML_ELEMENT_NODE:
-        case XML_ENTITY_NODE:
         case XML_DOCUMENT_NODE:
         case XML_DOCUMENT_FRAG_NODE:
         case XML_HTML_DOCUMENT_NODE:
+        case XML_ENTITY_DECL:
             cur = parent->last;
             break;
         default:
@@ -3528,7 +3527,6 @@ xmlPreviousElementSibling(xmlNodePtr node) {
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
         case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_XINCLUDE_START:
@@ -3567,7 +3565,6 @@ xmlNextElementSibling(xmlNodePtr node) {
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
         case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_DTD_NODE:
@@ -4128,7 +4125,6 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
         case XML_ELEMENT_NODE:
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
         case XML_XINCLUDE_START:
@@ -4144,12 +4140,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
 #ifdef LIBXML_TREE_ENABLED
 	    return((xmlNodePtr) xmlCopyDoc((xmlDocPtr) node, extended));
 #endif /* LIBXML_TREE_ENABLED */
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_NOTATION_NODE:
-        case XML_DTD_NODE:
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
+        default:
             return(NULL);
     }
 
@@ -5066,28 +5057,11 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
 
     if (cur == NULL) return;
     switch(cur->type) {
-        case XML_TEXT_NODE:
-        case XML_CDATA_SECTION_NODE:
-        case XML_COMMENT_NODE:
-        case XML_DOCUMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_DOCUMENT_FRAG_NODE:
-        case XML_NOTATION_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-        case XML_DTD_NODE:
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
-        case XML_PI_NODE:
-        case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
-	case XML_NAMESPACE_DECL:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    return;
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
 	    break;
+        default:
+	    return;
     }
     ns = xmlXmlNamespace;
     xmlSetNsProp(cur, ns, BAD_CAST "lang", lang);
@@ -5135,28 +5109,11 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
 
     if (cur == NULL) return;
     switch(cur->type) {
-        case XML_TEXT_NODE:
-        case XML_CDATA_SECTION_NODE:
-        case XML_COMMENT_NODE:
-        case XML_DOCUMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_DOCUMENT_FRAG_NODE:
-        case XML_NOTATION_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-        case XML_DTD_NODE:
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
-        case XML_PI_NODE:
-        case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
-	case XML_NAMESPACE_DECL:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    return;
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
 	    break;
+        default:
+            return;
     }
     ns = xmlXmlNamespace;
     switch (val) {
@@ -5226,7 +5183,6 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
         case XML_ATTRIBUTE_NODE:
         case XML_PI_NODE:
         case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
 	    break;
         default:
             return;
@@ -5272,23 +5228,6 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
     if (cur == NULL)
         return(-1);
     switch(cur->type) {
-        case XML_TEXT_NODE:
-        case XML_CDATA_SECTION_NODE:
-        case XML_COMMENT_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_DOCUMENT_FRAG_NODE:
-        case XML_NOTATION_NODE:
-        case XML_DTD_NODE:
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
-        case XML_PI_NODE:
-        case XML_ENTITY_REF_NODE:
-        case XML_ENTITY_NODE:
-	case XML_NAMESPACE_DECL:
-	case XML_XINCLUDE_START:
-	case XML_XINCLUDE_END:
-	    return(-1);
         case XML_ELEMENT_NODE:
         case XML_ATTRIBUTE_NODE:
 	    break;
@@ -5307,6 +5246,8 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
             }
 	    return(0);
 	}
+        default:
+	    return(-1);
     }
 
     ns = xmlXmlNamespace;
@@ -5596,13 +5537,6 @@ xmlBufGetNodeContent(xmlBufPtr buf, const xmlNode *cur)
                 }
 		break;
             }
-        case XML_ENTITY_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_NOTATION_NODE:
-        case XML_DTD_NODE:
-        case XML_XINCLUDE_START:
-        case XML_XINCLUDE_END:
-            break;
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
 	    cur = cur->children;
@@ -5618,9 +5552,7 @@ xmlBufGetNodeContent(xmlBufPtr buf, const xmlNode *cur)
         case XML_NAMESPACE_DECL:
 	    xmlBufCat(buf, ((xmlNsPtr) cur)->href);
 	    break;
-        case XML_ELEMENT_DECL:
-        case XML_ATTRIBUTE_DECL:
-        case XML_ENTITY_DECL:
+        default:
             break;
     }
     return(0);
@@ -5687,13 +5619,6 @@ xmlNodeGetContent(const xmlNode *cur)
                 xmlBufFree(buf);
                 return (ret);
             }
-        case XML_ENTITY_NODE:
-        case XML_DOCUMENT_TYPE_NODE:
-        case XML_NOTATION_NODE:
-        case XML_DTD_NODE:
-        case XML_XINCLUDE_START:
-        case XML_XINCLUDE_END:
-            return (NULL);
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE: {
 	    xmlBufPtr buf;
@@ -5716,19 +5641,12 @@ xmlNodeGetContent(const xmlNode *cur)
 	    tmp = xmlStrdup(((xmlNsPtr) cur)->href);
             return (tmp);
 	}
-        case XML_ELEMENT_DECL:
-            /* TODO !!! */
-            return (NULL);
-        case XML_ATTRIBUTE_DECL:
-            /* TODO !!! */
-            return (NULL);
-        case XML_ENTITY_DECL:
-            /* TODO !!! */
-            return (NULL);
         case XML_CDATA_SECTION_NODE:
         case XML_TEXT_NODE:
             if (cur->content != NULL)
                 return (xmlStrdup(cur->content));
+            return (NULL);
+        default:
             return (NULL);
     }
     return (NULL);
@@ -6094,7 +6012,6 @@ xmlSearchNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
 
     while (node != NULL) {
 	if ((node->type == XML_ENTITY_REF_NODE) ||
-	    (node->type == XML_ENTITY_NODE) ||
 	    (node->type == XML_ENTITY_DECL))
 	    return(NULL);
 	if (node->type == XML_ELEMENT_NODE) {
@@ -6136,7 +6053,6 @@ xmlNsInScope(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
 
     while ((node != NULL) && (node != ancestor)) {
         if ((node->type == XML_ENTITY_REF_NODE) ||
-            (node->type == XML_ENTITY_NODE) ||
             (node->type == XML_ENTITY_DECL))
             return (-1);
         if (node->type == XML_ELEMENT_NODE) {
@@ -6186,7 +6102,6 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
     is_attr = (node->type == XML_ATTRIBUTE_NODE);
     while (node != NULL) {
         if ((node->type == XML_ENTITY_REF_NODE) ||
-            (node->type == XML_ENTITY_NODE) ||
             (node->type == XML_ENTITY_DECL))
             return (NULL);
         if (node->type == XML_ELEMENT_NODE) {
@@ -8342,8 +8257,7 @@ xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
 		out = prev;
 		prev = cur;
 	    }
-	} else if ((cur->type == XML_ENTITY_NODE) ||
-            (cur->type == XML_ENTITY_DECL))
+	} else if (cur->type == XML_ENTITY_DECL)
 	    return (0);
 	cur = cur->parent;
     } while ((cur != NULL) && (cur->doc != (xmlDocPtr) cur));
@@ -8403,8 +8317,7 @@ xmlSearchNsByPrefixStrict(xmlDocPtr doc, xmlNodePtr node,
 		    ns = ns->next;
 		} while (ns != NULL);
 	    }
-	} else if ((cur->type == XML_ENTITY_NODE) ||
-            (cur->type == XML_ENTITY_DECL))
+	} else if (cur->type == XML_ENTITY_DECL)
 	    return (0);
 	cur = cur->parent;
     } while ((cur != NULL) && (cur->doc != (xmlDocPtr) cur));
@@ -9367,7 +9280,6 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	    case XML_PI_NODE:
 	    case XML_DOCUMENT_FRAG_NODE:
 	    case XML_ENTITY_REF_NODE:
-	    case XML_ENTITY_NODE:
 		/*
 		* Nodes of xmlNode structure.
 		*/
@@ -9534,9 +9446,6 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		* Note that this will also cover the values of attributes.
 		*/
 		DICT_COPY(cur->content, clone->content);
-		goto leave_node;
-	    case XML_ENTITY_NODE:
-		/* TODO: What to do here? */
 		goto leave_node;
 	    case XML_ENTITY_REF_NODE:
 		if (sourceDoc != destDoc) {

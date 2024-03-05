@@ -2951,19 +2951,23 @@ xmlElementPtr
 xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
     xmlElementTablePtr table;
     xmlElementPtr cur;
-    xmlChar *uqname = NULL, *prefix = NULL;
+    const xmlChar *localname;
+    xmlChar *prefix;
 
-    if ((dtd == NULL) || (name == NULL)) return(NULL);
-    if (dtd->elements == NULL)
-	return(NULL);
+    if ((dtd == NULL) || (dtd->elements == NULL) ||
+        (name == NULL))
+        return(NULL);
+
     table = (xmlElementTablePtr) dtd->elements;
+    if (table == NULL)
+	return(NULL);
 
-    uqname = xmlSplitQName2(name, &prefix);
-    if (uqname != NULL)
-        name = uqname;
-    cur = xmlHashLookup2(table, name, prefix);
-    if (prefix != NULL) xmlFree(prefix);
-    if (uqname != NULL) xmlFree(uqname);
+    localname = xmlSplitQName4(name, &prefix);
+    if (localname == NULL)
+        return(NULL);
+    cur = xmlHashLookup2(table, localname, prefix);
+    if (prefix != NULL)
+        xmlFree(prefix);
     return(cur);
 }
 
@@ -3077,23 +3081,23 @@ xmlAttributePtr
 xmlGetDtdAttrDesc(xmlDtdPtr dtd, const xmlChar *elem, const xmlChar *name) {
     xmlAttributeTablePtr table;
     xmlAttributePtr cur;
-    xmlChar *uqname = NULL, *prefix = NULL;
+    const xmlChar *localname;
+    xmlChar *prefix = NULL;
 
-    if (dtd == NULL) return(NULL);
-    if (dtd->attributes == NULL) return(NULL);
+    if ((dtd == NULL) || (dtd->attributes == NULL) ||
+        (elem == NULL) || (name == NULL))
+        return(NULL);
 
     table = (xmlAttributeTablePtr) dtd->attributes;
     if (table == NULL)
 	return(NULL);
 
-    uqname = xmlSplitQName2(name, &prefix);
-
-    if (uqname != NULL) {
-	cur = xmlHashLookup3(table, uqname, prefix, elem);
-	if (prefix != NULL) xmlFree(prefix);
-	if (uqname != NULL) xmlFree(uqname);
-    } else
-	cur = xmlHashLookup3(table, name, NULL, elem);
+    localname = xmlSplitQName4(name, &prefix);
+    if (localname == NULL)
+        return(NULL);
+    cur = xmlHashLookup3(table, localname, prefix, elem);
+    if (prefix != NULL)
+        xmlFree(prefix);
     return(cur);
 }
 

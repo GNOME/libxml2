@@ -1777,8 +1777,12 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
 	else
 	    ret->defaultValue = xmlStrdup(defaultValue);
         if (ret->defaultValue == NULL)
-            xmlVErrMemory(ctxt);
+            goto mem_error;
     }
+
+    elemDef = xmlGetDtdElementDesc2(ctxt, dtd, elem);
+    if (elemDef == NULL)
+        goto mem_error;
 
     /*
      * Validity Check:
@@ -1805,48 +1809,44 @@ xmlAddAttributeDecl(xmlValidCtxtPtr ctxt,
      * Validity Check:
      * Multiple ID per element
      */
-    elemDef = xmlGetDtdElementDesc2(ctxt, dtd, elem);
-    if (elemDef != NULL) {
-
 #ifdef LIBXML_VALID_ENABLED
-        if ((type == XML_ATTRIBUTE_ID) &&
-	    (xmlScanIDAttributeDecl(ctxt, elemDef, 1) != 0)) {
-	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
-	   "Element %s has too may ID attributes defined : %s\n",
-		   elem, name, NULL);
-	    if (ctxt != NULL)
-		ctxt->valid = 0;
-	}
+    if ((type == XML_ATTRIBUTE_ID) &&
+        (xmlScanIDAttributeDecl(ctxt, elemDef, 1) != 0)) {
+        xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
+       "Element %s has too may ID attributes defined : %s\n",
+               elem, name, NULL);
+        if (ctxt != NULL)
+            ctxt->valid = 0;
+    }
 #endif /* LIBXML_VALID_ENABLED */
 
-	/*
-	 * Insert namespace default def first they need to be
-	 * processed first.
-	 */
-	if ((xmlStrEqual(ret->name, BAD_CAST "xmlns")) ||
-	    ((ret->prefix != NULL &&
-	     (xmlStrEqual(ret->prefix, BAD_CAST "xmlns"))))) {
-	    ret->nexth = elemDef->attributes;
-	    elemDef->attributes = ret;
-	} else {
-	    xmlAttributePtr tmp = elemDef->attributes;
+    /*
+     * Insert namespace default def first they need to be
+     * processed first.
+     */
+    if ((xmlStrEqual(ret->name, BAD_CAST "xmlns")) ||
+        ((ret->prefix != NULL &&
+         (xmlStrEqual(ret->prefix, BAD_CAST "xmlns"))))) {
+        ret->nexth = elemDef->attributes;
+        elemDef->attributes = ret;
+    } else {
+        xmlAttributePtr tmp = elemDef->attributes;
 
-	    while ((tmp != NULL) &&
-		   ((xmlStrEqual(tmp->name, BAD_CAST "xmlns")) ||
-		    ((ret->prefix != NULL &&
-		     (xmlStrEqual(ret->prefix, BAD_CAST "xmlns")))))) {
-		if (tmp->nexth == NULL)
-		    break;
-		tmp = tmp->nexth;
-	    }
-	    if (tmp != NULL) {
-		ret->nexth = tmp->nexth;
-	        tmp->nexth = ret;
-	    } else {
-		ret->nexth = elemDef->attributes;
-		elemDef->attributes = ret;
-	    }
-	}
+        while ((tmp != NULL) &&
+               ((xmlStrEqual(tmp->name, BAD_CAST "xmlns")) ||
+                ((ret->prefix != NULL &&
+                 (xmlStrEqual(ret->prefix, BAD_CAST "xmlns")))))) {
+            if (tmp->nexth == NULL)
+                break;
+            tmp = tmp->nexth;
+        }
+        if (tmp != NULL) {
+            ret->nexth = tmp->nexth;
+            tmp->nexth = ret;
+        } else {
+            ret->nexth = elemDef->attributes;
+            elemDef->attributes = ret;
+        }
     }
 
     /*

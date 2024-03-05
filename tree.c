@@ -1635,6 +1635,71 @@ out:
 }
 
 /**
+ * xmlNodeListGetStringInternal:
+ * @doc:  the document
+ * @list:  a Node list
+ * @escMode: escape mode (0 = no, 1 = elem, 2 = attr, 3 = raw)
+ *
+ * Build the string equivalent to the text contained in the Node list
+ * made of TEXTs and ENTITY_REFs
+ *
+ * Returns a pointer to the string copy.
+ */
+static xmlChar *
+xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
+    xmlBufPtr buf;
+    xmlChar *ret;
+
+    buf = xmlBufCreate();
+    if (buf == NULL)
+        return(NULL);
+
+    while (node != NULL) {
+        if ((node->type == XML_TEXT_NODE) ||
+            (node->type == XML_CDATA_SECTION_NODE)) {
+            if (node->content != NULL) {
+                if (escMode == 0) {
+                    xmlBufCat(buf, node->content);
+                } else {
+                    xmlChar *encoded;
+
+                    if (escMode == 1)
+                        encoded = xmlEncodeEntitiesReentrant(doc,
+                                                             node->content);
+                    else if (escMode == 2)
+                        encoded = xmlEncodeAttributeEntities(doc,
+                                                             node->content);
+                    else
+                        encoded = xmlEncodeSpecialChars(doc, node->content);
+                    if (encoded == NULL)
+                        goto error;
+                    xmlBufCat(buf, encoded);
+                    xmlFree(encoded);
+                }
+            }
+        } else if (node->type == XML_ENTITY_REF_NODE) {
+            if (escMode == 0) {
+                xmlBufGetNodeContent(buf, node);
+            } else {
+                xmlBufAdd(buf, BAD_CAST "&", 1);
+                xmlBufCat(buf, node->name);
+                xmlBufAdd(buf, BAD_CAST ";", 1);
+            }
+        }
+
+        node = node->next;
+    }
+
+    ret = xmlBufDetach(buf);
+    xmlBufFree(buf);
+    return(ret);
+
+error:
+    xmlBufFree(buf);
+    return(NULL);
+}
+
+/**
  * xmlNodeListGetString:
  * @doc:  the document
  * @list:  a Node list
@@ -1648,89 +1713,20 @@ out:
 xmlChar *
 xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
 {
-    const xmlNode *node = list;
-    xmlChar *ret = NULL;
-    xmlEntityPtr ent;
-    int attr;
+    int escMode;
 
-    if (list == NULL)
-        return xmlStrdup(BAD_CAST "");
-    if ((list->parent != NULL) && (list->parent->type == XML_ATTRIBUTE_NODE))
-        attr = 1;
-    else
-        attr = 0;
-
-    while (node != NULL) {
-        if ((node->type == XML_TEXT_NODE) ||
-            (node->type == XML_CDATA_SECTION_NODE)) {
-            if (inLine) {
-                ret = xmlStrcat(ret, node->content);
-                if (ret == NULL)
-                    goto error;
-            } else {
-                xmlChar *buffer;
-
-		if (attr)
-		    buffer = xmlEncodeAttributeEntities(doc, node->content);
-		else
-		    buffer = xmlEncodeEntitiesReentrant(doc, node->content);
-                if (buffer == NULL)
-                    goto error;
-                ret = xmlStrcat(ret, buffer);
-                xmlFree(buffer);
-                if (ret == NULL)
-                    goto error;
-            }
-        } else if (node->type == XML_ENTITY_REF_NODE) {
-            if (inLine) {
-                ent = xmlGetDocEntity(doc, node->name);
-                if (ent != NULL) {
-                    if (ent->children != NULL) {
-                        xmlChar *buffer;
-
-                        /* an entity content can be any "well balanced chunk",
-                         * i.e. the result of the content [43] production:
-                         * http://www.w3.org/TR/REC-xml#NT-content.
-                         * So it can contain text, CDATA section or nested
-                         * entity reference nodes (among others).
-                         * -> we recursive  call xmlNodeListGetString()
-                         * which handles these types */
-                        buffer = xmlNodeListGetString(doc, ent->children, 1);
-                        if (buffer == NULL)
-                            goto error;
-                        ret = xmlStrcat(ret, buffer);
-                        xmlFree(buffer);
-                        if (ret == NULL)
-                            goto error;
-                    }
-                } else if (node->content != NULL) {
-                    ret = xmlStrcat(ret, node->content);
-                    if (ret == NULL)
-                        goto error;
-                }
-            } else {
-                xmlChar buf[2];
-
-                buf[0] = '&';
-                buf[1] = 0;
-                ret = xmlStrncat(ret, buf, 1);
-                ret = xmlStrcat(ret, node->name);
-                buf[0] = ';';
-                buf[1] = 0;
-                ret = xmlStrncat(ret, buf, 1);
-                if (ret == NULL)
-                    goto error;
-            }
-        }
-        node = node->next;
+    if (inLine) {
+        escMode = 0;
+    } else {
+        if ((list != NULL) &&
+            (list->parent != NULL) &&
+            (list->parent->type == XML_ATTRIBUTE_NODE))
+            escMode = 2;
+        else
+            escMode = 1;
     }
-    if (ret == NULL)
-        ret = xmlStrdup(BAD_CAST "");
-    return (ret);
 
-error:
-    xmlFree(ret);
-    return(NULL);
+    return(xmlNodeListGetStringInternal(doc, list, escMode));
 }
 
 #ifdef LIBXML_TREE_ENABLED
@@ -1749,66 +1745,8 @@ error:
 xmlChar *
 xmlNodeListGetRawString(const xmlDoc *doc, const xmlNode *list, int inLine)
 {
-    const xmlNode *node = list;
-    xmlChar *ret = NULL;
-    xmlEntityPtr ent;
-
-    if (list == NULL)
-        return xmlStrdup(BAD_CAST "");
-
-    while (node != NULL) {
-        if ((node->type == XML_TEXT_NODE) ||
-            (node->type == XML_CDATA_SECTION_NODE)) {
-            if (inLine) {
-                ret = xmlStrcat(ret, node->content);
-            } else {
-                xmlChar *buffer;
-
-                buffer = xmlEncodeSpecialChars(doc, node->content);
-                if (buffer != NULL) {
-                    ret = xmlStrcat(ret, buffer);
-                    xmlFree(buffer);
-                }
-            }
-        } else if (node->type == XML_ENTITY_REF_NODE) {
-            if (inLine) {
-                ent = xmlGetDocEntity(doc, node->name);
-                if (ent != NULL) {
-                    xmlChar *buffer;
-
-                    /* an entity content can be any "well balanced chunk",
-                     * i.e. the result of the content [43] production:
-                     * http://www.w3.org/TR/REC-xml#NT-content.
-                     * So it can contain text, CDATA section or nested
-                     * entity reference nodes (among others).
-                     * -> we recursive  call xmlNodeListGetRawString()
-                     * which handles these types */
-                    buffer =
-                        xmlNodeListGetRawString(doc, ent->children, 1);
-                    if (buffer != NULL) {
-                        ret = xmlStrcat(ret, buffer);
-                        xmlFree(buffer);
-                    }
-                } else {
-                    ret = xmlStrcat(ret, node->content);
-                }
-            } else {
-                xmlChar buf[2];
-
-                buf[0] = '&';
-                buf[1] = 0;
-                ret = xmlStrncat(ret, buf, 1);
-                ret = xmlStrcat(ret, node->name);
-                buf[0] = ';';
-                buf[1] = 0;
-                ret = xmlStrncat(ret, buf, 1);
-            }
-        }
-        node = node->next;
-    }
-    if (ret == NULL)
-        ret = xmlStrdup(BAD_CAST "");
-    return (ret);
+    int escMode = inLine ? 0 : 3;
+    return(xmlNodeListGetStringInternal((xmlDocPtr) doc, list, escMode));
 }
 #endif /* LIBXML_TREE_ENABLED */
 

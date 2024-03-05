@@ -2876,7 +2876,7 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
 
     /*If the list is empty then remove the list entry in the hash */
     if (xmlListEmpty(ref_list))
-        xmlHashUpdateEntry(table, ID, NULL, xmlFreeRefTableEntry);
+        xmlHashRemoveEntry(table, ID, xmlFreeRefTableEntry);
     xmlFree(ID);
     return(0);
 }

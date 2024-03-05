@@ -745,13 +745,11 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 	} else {
 	    xmlNsPtr prev = node->nsDef;
 
-	    if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
-		(xmlStrEqual(prev->prefix, cur->prefix)))
+	    if (xmlStrEqual(prev->prefix, cur->prefix))
                 goto error;
 	    while (prev->next != NULL) {
 	        prev = prev->next;
-		if (((prev->prefix == NULL) && (cur->prefix == NULL)) ||
-		    (xmlStrEqual(prev->prefix, cur->prefix)))
+		if (xmlStrEqual(prev->prefix, cur->prefix))
                     goto error;
 	    }
 	    prev->next = cur;
@@ -6089,26 +6087,15 @@ xmlSearchNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
 	if (node->type == XML_ELEMENT_NODE) {
 	    cur = node->nsDef;
 	    while (cur != NULL) {
-		if ((cur->prefix == NULL) && (nameSpace == NULL) &&
-		    (cur->href != NULL))
-		    return(cur);
-		if ((cur->prefix != NULL) && (nameSpace != NULL) &&
-		    (cur->href != NULL) &&
-		    (xmlStrEqual(cur->prefix, nameSpace)))
+		if (xmlStrEqual(cur->prefix, nameSpace))
 		    return(cur);
 		cur = cur->next;
 	    }
 	    if (orig != node) {
 	        cur = node->ns;
-	        if (cur != NULL) {
-		    if ((cur->prefix == NULL) && (nameSpace == NULL) &&
-		        (cur->href != NULL))
-		        return(cur);
-		    if ((cur->prefix != NULL) && (nameSpace != NULL) &&
-		        (cur->href != NULL) &&
-		        (xmlStrEqual(cur->prefix, nameSpace)))
-		        return(cur);
-	        }
+	        if ((cur != NULL) &&
+                    (xmlStrEqual(cur->prefix, nameSpace)))
+		    return(cur);
 	    }
 	}
 	node = node->parent;
@@ -6177,7 +6164,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
     xmlNodePtr orig = node;
     int is_attr;
 
-    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) || (href == NULL))
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
         return (NULL);
 
     if (xmlStrEqual(href, XML_XML_NAMESPACE))
@@ -6192,8 +6179,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
         if (node->type == XML_ELEMENT_NODE) {
             cur = node->nsDef;
             while (cur != NULL) {
-                if ((cur->href != NULL) && (href != NULL) &&
-                    (xmlStrEqual(cur->href, href))) {
+                if (xmlStrEqual(cur->href, href)) {
 		    if (((!is_attr) || (cur->prefix != NULL)) &&
 		        (xmlNsInScope(NULL, orig, node, cur->prefix) == 1))
 			return (cur);
@@ -6203,8 +6189,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
             if (orig != node) {
                 cur = node->ns;
                 if (cur != NULL) {
-                    if ((cur->href != NULL) && (href != NULL) &&
-                        (xmlStrEqual(cur->href, href))) {
+                    if (xmlStrEqual(cur->href, href)) {
 			if (((!is_attr) || (cur->prefix != NULL)) &&
 		            (xmlNsInScope(NULL, orig, node, cur->prefix) == 1))
 			    return (cur);

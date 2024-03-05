@@ -253,7 +253,7 @@ xmlAddEntity(xmlDocPtr doc, int extSubset, const xmlChar *name, int type,
             }
 	    table = dtd->pentities;
 	    break;
-        case XML_INTERNAL_PREDEFINED_ENTITY:
+        default:
 	    return(XML_ERR_ARGUMENT);
     }
     ret = xmlCreateEntity(dtd->doc, name, type, ExternalID, SystemID, content);

@@ -421,7 +421,7 @@ static size_t
 htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 	           int format) {
     size_t use;
-    int ret;
+    size_t ret;
     xmlOutputBufferPtr outbuf;
 
     if (cur == NULL) {
@@ -443,8 +443,11 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 
     use = xmlBufUse(buf);
     htmlNodeDumpFormatOutput(outbuf, doc, cur, NULL, format);
+    if (outbuf->error)
+        ret = (size_t) -1;
+    else
+        ret = xmlBufUse(buf) - use;
     xmlFree(outbuf);
-    ret = xmlBufUse(buf) - use;
     return (ret);
 }
 
@@ -551,32 +554,32 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
 
     if ((mem == NULL) || (size == NULL))
         return;
-    if (cur == NULL) {
-	*mem = NULL;
-	*size = 0;
+    *mem = NULL;
+    *size = 0;
+    if (cur == NULL)
 	return;
-    }
 
     encoding = (const char *) htmlGetMetaEncoding(cur);
     handler = htmlFindOutputEncoder(encoding);
     buf = xmlAllocOutputBufferInternal(handler);
-    if (buf == NULL) {
-	*mem = NULL;
-	*size = 0;
+    if (buf == NULL)
 	return;
-    }
 
     htmlDocContentDumpFormatOutput(buf, cur, NULL, format);
 
     xmlOutputBufferFlush(buf);
-    if (buf->conv != NULL) {
-	*size = xmlBufUse(buf->conv);
-	*mem = xmlStrndup(xmlBufContent(buf->conv), *size);
-    } else {
-	*size = xmlBufUse(buf->buffer);
-	*mem = xmlStrndup(xmlBufContent(buf->buffer), *size);
+
+    if (!buf->error) {
+        if (buf->conv != NULL) {
+            *size = xmlBufUse(buf->conv);
+            *mem = xmlStrndup(xmlBufContent(buf->conv), *size);
+        } else {
+            *size = xmlBufUse(buf->buffer);
+            *mem = xmlStrndup(xmlBufContent(buf->buffer), *size);
+        }
     }
-    (void)xmlOutputBufferClose(buf);
+
+    xmlOutputBufferClose(buf);
 }
 
 /**

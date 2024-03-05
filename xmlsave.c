@@ -2464,7 +2464,7 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
             int format)
 {
     size_t use;
-    int ret;
+    size_t ret;
     xmlOutputBufferPtr outbuf;
     int oldalloc;
 
@@ -2494,8 +2494,11 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
     xmlNodeDumpOutput(outbuf, doc, cur, level, format, NULL);
     xmlBufSetAllocationScheme(buf, oldalloc);
+    if (outbuf->error)
+        ret = (size_t) -1;
+    else
+        ret = xmlBufUse(buf) - use;
     xmlFree(outbuf);
-    ret = xmlBufUse(buf) - use;
     return (ret);
 }
 
@@ -2619,8 +2622,6 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     int                         dummy = 0;
     xmlOutputBufferPtr          out_buff = NULL;
     xmlCharEncodingHandlerPtr   conv_hdlr = NULL;
-    xmlChar *content;
-    int len;
 
     if (doc_txt_len == NULL) {
         doc_txt_len = &dummy;   /*  Continue, caller just won't get length */
@@ -2672,29 +2673,18 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     ctxt.options |= XML_SAVE_AS_XML;
     xmlDocContentDumpOutput(&ctxt, out_doc);
     xmlOutputBufferFlush(out_buff);
-    if (out_buff->conv != NULL) {
-        if (xmlBufContent(out_buff->buffer) == NULL)
-            goto error;
-        content = xmlBufContent(out_buff->conv);
-        len = xmlBufUse(out_buff->conv);
-    } else {
-        content = xmlBufContent(out_buff->buffer);
-        len = xmlBufUse(out_buff->buffer);
+
+    if (!out_buff->error) {
+        if (out_buff->conv != NULL) {
+            *doc_txt_len = xmlBufUse(out_buff->conv);
+            *doc_txt_ptr = xmlBufDetach(out_buff->conv);
+        } else {
+            *doc_txt_len = xmlBufUse(out_buff->buffer);
+            *doc_txt_ptr = xmlBufDetach(out_buff->buffer);
+        }
     }
-    if (content == NULL)
-        goto error;
-    *doc_txt_ptr = xmlStrndup(content, len);
-    if (*doc_txt_ptr == NULL)
-        goto error;
-    *doc_txt_len = len;
-    xmlOutputBufferClose(out_buff);
 
-    return;
-
-error:
-    xmlSaveErrMemory(NULL);
     xmlOutputBufferClose(out_buff);
-    return;
 }
 
 /**

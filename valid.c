@@ -3244,41 +3244,6 @@ xmlValidNormalizeString(xmlChar *str) {
     *dst = 0;
 }
 
-/**
- * xmlCtxtGetDtdElementDesc:
- * @ctxt:  validation context
- * @dtd:  a pointer to the DtD to search
- * @name:  the element name
- *
- * Search the DTD for the description of this element
- *
- * returns the xmlElementPtr if found or NULL
- */
-
-static xmlElementPtr
-xmlCtxtGetDtdElementDesc(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd,
-                         const xmlChar *name) {
-    xmlElementTablePtr table;
-    xmlElementPtr cur;
-    const xmlChar *localName;
-    xmlChar *prefix;
-
-    if ((dtd == NULL) || (name == NULL)) return(NULL);
-    if (dtd->elements == NULL)
-	return(NULL);
-    table = (xmlElementTablePtr) dtd->elements;
-
-    localName = xmlSplitQName4(name, &prefix);
-    if (localName == NULL) {
-        xmlVErrMemory(ctxt);
-        return(NULL);
-    }
-    cur = xmlHashLookup2(table, localName, prefix);
-    if (prefix != NULL)
-        xmlFree(prefix);
-    return(cur);
-}
-
 static int
 xmlIsDocNameStartChar(xmlDocPtr doc, int c) {
     if ((doc == NULL) || (doc->properties & XML_DOC_OLD10) == 0) {
@@ -4014,11 +3979,21 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     /* One ID per Element Type */
     if (attr->atype == XML_ATTRIBUTE_ID) {
+        xmlElementPtr elem = NULL;
+        const xmlChar *elemLocalName;
+        xmlChar *elemPrefix;
         int nbId;
 
+        elemLocalName = xmlSplitQName4(attr->elem, &elemPrefix);
+        if (elemLocalName == NULL) {
+            xmlVErrMemory(ctxt);
+            return(0);
+        }
+
 	/* the trick is that we parse DtD as their own internal subset */
-        xmlElementPtr elem = xmlCtxtGetDtdElementDesc(ctxt, doc->intSubset,
-	                                              attr->elem);
+        if (doc->intSubset != NULL)
+            elem = xmlHashLookup2(doc->intSubset->elements,
+                                  elemLocalName, elemPrefix);
 	if (elem != NULL) {
 	    nbId = xmlScanIDAttributeDecl(ctxt, elem, 0);
 	} else {
@@ -4042,7 +4017,8 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		   attr->elem, nbId, attr->name);
 	} else if (doc->extSubset != NULL) {
 	    int extId = 0;
-	    elem = xmlCtxtGetDtdElementDesc(ctxt, doc->extSubset, attr->elem);
+	    elem = xmlHashLookup2(doc->extSubset->elements,
+                                  elemLocalName, elemPrefix);
 	    if (elem != NULL) {
 		extId = xmlScanIDAttributeDecl(ctxt, elem, 0);
 	    }
@@ -4056,6 +4032,8 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		       attr->elem, attr->name, NULL);
 	    }
 	}
+
+        xmlFree(elemPrefix);
     }
 
     /* Validity Constraint: Enumeration */
@@ -4097,6 +4075,8 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
                        xmlElementPtr elem) {
     int ret = 1;
     xmlElementPtr tst;
+    const xmlChar *localName;
+    xmlChar *prefix;
 
     CHECK_DTD;
 
@@ -4160,32 +4140,47 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	}
     }
 
+    localName = xmlSplitQName4(elem->name, &prefix);
+    if (localName == NULL) {
+        xmlVErrMemory(ctxt);
+        return(0);
+    }
+
     /* VC: Unique Element Type Declaration */
-    tst = xmlCtxtGetDtdElementDesc(ctxt, doc->intSubset, elem->name);
-    if ((tst != NULL ) && (tst != elem) &&
-	((tst->prefix == elem->prefix) ||
-	 (xmlStrEqual(tst->prefix, elem->prefix))) &&
-	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
-	xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_ELEM_REDEFINED,
-	                "Redefinition of element %s\n",
-		       elem->name, NULL, NULL);
-	ret = 0;
+    if (doc->intSubset != NULL) {
+        tst = xmlHashLookup2(doc->intSubset->elements, localName, prefix);
+
+        if ((tst != NULL ) && (tst != elem) &&
+            ((tst->prefix == elem->prefix) ||
+             (xmlStrEqual(tst->prefix, elem->prefix))) &&
+            (tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
+            xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_ELEM_REDEFINED,
+                            "Redefinition of element %s\n",
+                           elem->name, NULL, NULL);
+            ret = 0;
+        }
     }
-    tst = xmlCtxtGetDtdElementDesc(ctxt, doc->extSubset, elem->name);
-    if ((tst != NULL ) && (tst != elem) &&
-	((tst->prefix == elem->prefix) ||
-	 (xmlStrEqual(tst->prefix, elem->prefix))) &&
-	(tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
-	xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_ELEM_REDEFINED,
-	                "Redefinition of element %s\n",
-		       elem->name, NULL, NULL);
-	ret = 0;
+    if (doc->extSubset != NULL) {
+        tst = xmlHashLookup2(doc->extSubset->elements, localName, prefix);
+
+        if ((tst != NULL ) && (tst != elem) &&
+            ((tst->prefix == elem->prefix) ||
+             (xmlStrEqual(tst->prefix, elem->prefix))) &&
+            (tst->etype != XML_ELEMENT_TYPE_UNDEFINED)) {
+            xmlErrValidNode(ctxt, (xmlNodePtr) elem, XML_DTD_ELEM_REDEFINED,
+                            "Redefinition of element %s\n",
+                           elem->name, NULL, NULL);
+            ret = 0;
+        }
     }
+
     /* One ID per Element Type
      * already done when registering the attribute
     if (xmlScanIDAttributeDecl(ctxt, elem) > 1) {
 	ret = 0;
     } */
+
+    xmlFree(prefix);
     return(ret);
 }
 
@@ -6525,6 +6520,9 @@ xmlValidateAttributeCallback(void *payload, void *data,
 	    }
     }
     if (cur->atype == XML_ATTRIBUTE_NOTATION) {
+        const xmlChar *elemLocalName;
+        xmlChar *elemPrefix;
+
 	doc = cur->doc;
 	if (cur->elem == NULL) {
 	    xmlErrValid(ctxt, XML_ERR_INTERNAL_ERROR,
@@ -6533,14 +6531,25 @@ xmlValidateAttributeCallback(void *payload, void *data,
 	    return;
 	}
 
-	if (doc != NULL)
-	    elem = xmlCtxtGetDtdElementDesc(ctxt, doc->intSubset, cur->elem);
-	if ((elem == NULL) && (doc != NULL))
-	    elem = xmlCtxtGetDtdElementDesc(ctxt, doc->extSubset, cur->elem);
+        elemLocalName = xmlSplitQName4(cur->elem, &elemPrefix);
+        if (elemLocalName == NULL) {
+            xmlVErrMemory(ctxt);
+            return;
+        }
+
+	if ((doc != NULL) && (doc->intSubset != NULL))
+	    elem = xmlHashLookup2(doc->intSubset->elements,
+                                  elemLocalName, elemPrefix);
+	if ((elem == NULL) && (doc != NULL) && (doc->extSubset != NULL))
+	    elem = xmlHashLookup2(doc->extSubset->elements,
+                                  elemLocalName, elemPrefix);
 	if ((elem == NULL) && (cur->parent != NULL) &&
 	    (cur->parent->type == XML_DTD_NODE))
-	    elem = xmlCtxtGetDtdElementDesc(ctxt, (xmlDtdPtr) cur->parent,
-                                            cur->elem);
+	    elem = xmlHashLookup2(((xmlDtdPtr) cur->parent)->elements,
+                                  elemLocalName, elemPrefix);
+
+        xmlFree(elemPrefix);
+
 	if (elem == NULL) {
 	    xmlErrValidNode(ctxt, NULL, XML_DTD_UNKNOWN_ELEM,
 		   "attribute %s: could not find decl for element %s\n",

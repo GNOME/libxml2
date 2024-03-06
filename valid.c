@@ -4015,6 +4015,7 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 	    xmlErrValidNodeNr(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,
        "Element %s has %d ID attribute defined in the internal subset : %s\n",
 		   attr->elem, nbId, attr->name);
+            ret = 0;
 	} else if (doc->extSubset != NULL) {
 	    int extId = 0;
 	    elem = xmlHashLookup2(doc->extSubset->elements,
@@ -4026,10 +4027,12 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		xmlErrValidNodeNr(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,
        "Element %s has %d ID attribute defined in the external subset : %s\n",
 		       attr->elem, extId, attr->name);
+                ret = 0;
 	    } else if (extId + nbId > 1) {
 		xmlErrValidNode(ctxt, (xmlNodePtr) attr, XML_DTD_ID_SUBSET,
 "Element %s has ID attributes defined in the internal and external subset : %s\n",
 		       attr->elem, attr->name, NULL);
+                ret = 0;
 	    }
 	}
 
@@ -5941,7 +5944,7 @@ child_ok:
 	    cont = elemDecl->content;
 	    tmp = xmlValidateElementContent(ctxt, child, elemDecl, 1, elem);
 	    if (tmp <= 0)
-		ret = tmp;
+		ret = 0;
 	    break;
     }
     } /* not continuous */
@@ -6176,11 +6179,13 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr root) {
             attr = elem->properties;
             while (attr != NULL) {
                 value = xmlNodeListGetString(doc, attr->children, 0);
-                if (value == NULL)
+                if (value == NULL) {
                     xmlVErrMemory(ctxt);
-                ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
-                if (value != NULL)
+                    ret = 0;
+                } else {
+                    ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
                     xmlFree((char *)value);
+                }
                 attr= attr->next;
             }
 

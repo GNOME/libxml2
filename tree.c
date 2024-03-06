@@ -3067,11 +3067,14 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
             (cur->name == cur->next->name)) {
 	    xmlChar *tmp;
 
-            /* TODO: malloc check */
-	    tmp = xmlStrdup(elem->content);
-	    tmp = xmlStrcat(tmp, cur->next->content);
-	    xmlNodeSetContent(cur->next, tmp);
-	    xmlFree(tmp);
+            if (elem->content != NULL) {
+                tmp = xmlStrncatNew(elem->content, cur->next->content, -1);
+                if (tmp == NULL)
+                    return(NULL);
+                xmlNodeSetContent(cur->next, NULL);
+                cur->next->content = tmp;
+            }
+
 	    xmlFreeNode(elem);
 	    return(cur->next);
 	}
@@ -3135,11 +3138,14 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	if (cur->type == XML_TEXT_NODE) {
 	    xmlChar *tmp;
 
-            /* TODO: malloc check */
-	    tmp = xmlStrdup(elem->content);
-	    tmp = xmlStrcat(tmp, cur->content);
-	    xmlNodeSetContent(cur, tmp);
-	    xmlFree(tmp);
+            if (elem->content != NULL) {
+                tmp = xmlStrncatNew(elem->content, cur->content, -1);
+                if (tmp == NULL)
+                    return(NULL);
+                xmlNodeSetContent(cur, NULL);
+                cur->content = tmp;
+            }
+
 	    xmlFreeNode(elem);
 	    return(cur);
 	}

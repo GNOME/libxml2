@@ -475,6 +475,7 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (buffer == NULL)
         return(-1);
 
+    xmlBufSetAllocationScheme(buffer, XML_BUFFER_ALLOC_DOUBLEIT);
     ret = htmlBufNodeDumpFormat(buffer, doc, cur, 1);
 
     xmlBufBackToBuffer(buffer);

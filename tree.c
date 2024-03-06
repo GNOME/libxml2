@@ -1955,6 +1955,8 @@ xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
 	xmlNodePtr tmp;
 
 	cur->children = xmlStringGetNodeList(doc, value);
+        if (cur->children == NULL)
+            goto error;
 	cur->last = NULL;
 
 	tmp = cur->children;
@@ -2231,6 +2233,10 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
         cur->doc = doc;
 	if (content != NULL) {
 	    cur->children = xmlStringGetNodeList(doc, content);
+            if (cur->children == NULL) {
+                xmlFreeNode(cur);
+                return(NULL);
+            }
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	}
     }
@@ -2303,6 +2309,10 @@ xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
         cur->doc = doc;
 	if (content != NULL) {
 	    cur->children = xmlNewDocText(doc, content);
+            if (cur->children == NULL) {
+                xmlFreeNode(cur);
+                return(NULL);
+            }
 	    UPDATE_LAST_CHILD_AND_PARENT(cur)
 	}
     }
@@ -2600,6 +2610,10 @@ xmlNewTextLen(const xmlChar *content, int len) {
     cur->name = xmlStringText;
     if (content != NULL) {
 	cur->content = xmlStrndup(content, len);
+        if (cur->content == NULL) {
+            xmlFreeNode(cur);
+            return(NULL);
+        }
     }
 
     if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
@@ -6481,7 +6495,11 @@ xmlGetPropNodeInternal(const xmlNode *node, const xmlChar *name,
 	*/
 	if ((node->ns != NULL) && (node->ns->prefix != NULL)) {
 	    tmpstr = xmlStrdup(node->ns->prefix);
+	    if (tmpstr == NULL)
+		return(NULL);
 	    tmpstr = xmlStrcat(tmpstr, BAD_CAST ":");
+	    if (tmpstr == NULL)
+		return(NULL);
 	    tmpstr = xmlStrcat(tmpstr, node->name);
 	    if (tmpstr == NULL)
 		return(NULL);

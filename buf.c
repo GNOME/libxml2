@@ -743,8 +743,7 @@ xmlBufResize(xmlBufPtr buf, size_t size)
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
  *
- * Returns 0 successful, a positive error code number otherwise
- *         and -1 in case of internal or API error.
+ * Returns 0 if successful, -1 in case of error.
  */
 int
 xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
@@ -781,10 +780,8 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, int len) {
 		return(-1);
 	    }
 	}
-        if (!xmlBufResize(buf, needSize)){
-	    xmlBufMemoryError(buf);
-            return XML_ERR_NO_MEMORY;
-        }
+        if (!xmlBufResize(buf, needSize))
+            return(-1);
     }
 
     memmove(&buf->content[buf->use], str, len);

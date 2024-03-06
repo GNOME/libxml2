@@ -2452,8 +2452,10 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
                 nbchars = ret >= 0 ? ret : 0;
 	} else {
 	    ret = xmlBufAdd(out->buffer, (const xmlChar *) buf, chunk);
-	    if (ret != 0)
+	    if (ret != 0) {
+                out->error = XML_ERR_NO_MEMORY;
 	        return(-1);
+            }
             if (out->writecallback)
 	        nbchars = xmlBufUse(out->buffer);
             else
@@ -2607,8 +2609,10 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	 * not the case force a flush, but make sure we stay in the loop
 	 */
 	if (chunk < 40) {
-	    if (xmlBufGrow(out->buffer, 100) < 0)
+	    if (xmlBufGrow(out->buffer, 100) < 0) {
+                out->error = XML_ERR_NO_MEMORY;
 	        return(-1);
+            }
             oldwritten = -1;
 	    continue;
 	}
@@ -2622,11 +2626,17 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 	     */
 	    if (out->conv == NULL) {
 		out->conv = xmlBufCreate();
+                if (out->conv == NULL) {
+                    out->error = XML_ERR_NO_MEMORY;
+                    return(-1);
+                }
 	    }
 	    ret = escaping(xmlBufEnd(out->buffer) ,
 	                   &chunk, str, &cons);
-	    if ((ret < 0) || (chunk == 0)) /* chunk==0 => nothing done */
-	        return(-1);
+            if (ret < 0) {
+                out->error = XML_ERR_NO_MEMORY;
+                return(-1);
+            }
             xmlBufAddLen(out->buffer, chunk);
 
 	    if ((xmlBufUse(out->buffer) < MINLEN) && (cons == len))
@@ -2644,8 +2654,10 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
                 nbchars = ret >= 0 ? ret : 0;
 	} else {
 	    ret = escaping(xmlBufEnd(out->buffer), &chunk, str, &cons);
-	    if ((ret < 0) || (chunk == 0)) /* chunk==0 => nothing done */
-	        return(-1);
+            if (ret < 0) {
+                out->error = XML_ERR_NO_MEMORY;
+                return(-1);
+            }
             xmlBufAddLen(out->buffer, chunk);
             if (out->writecallback)
 	        nbchars = xmlBufUse(out->buffer);
@@ -2677,14 +2689,17 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
                 int errNo = (ret == -1) ? XML_IO_WRITE : -ret;
 		xmlIOErr(errNo, NULL);
 		out->error = errNo;
-		return(ret);
+		return(-1);
 	    }
             if (out->written > INT_MAX - ret)
                 out->written = INT_MAX;
             else
                 out->written += ret;
 	} else if (xmlBufAvail(out->buffer) < MINLEN) {
-	    xmlBufGrow(out->buffer, MINLEN);
+            if (xmlBufGrow(out->buffer, MINLEN) < 0) {
+                out->error = XML_ERR_NO_MEMORY;
+                return(-1);
+            }
 	}
 	written += nbchars;
     } while ((len > 0) && (oldwritten != written));

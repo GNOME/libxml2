@@ -299,6 +299,18 @@ xmlSplitQName3(const xmlChar *name, int *len) {
     return(&name[l+1]);
 }
 
+/**
+ * xmlSplitQName4:
+ * @name:  the full QName
+ * @prefixPtr:  pointer to resulting prefix
+ *
+ * Parse a QName. The return value points to the start of the local
+ * name in the input string. If the QName has a prefix, it will be
+ * allocated and stored in @prefixPtr. This string must be freed by
+ * the caller. If there's no prefix, @prefixPtr is set to NULL.
+ *
+ * Returns the local name or NULL if a memory allocation failed.
+ */
 const xmlChar *
 xmlSplitQName4(const xmlChar *name, xmlChar **prefixPtr) {
     xmlChar *prefix;
@@ -698,19 +710,21 @@ xmlGetBufferAllocationScheme(void) {
 
 /**
  * xmlNewNs:
- * @node:  the element carrying the namespace
+ * @node:  the element carrying the namespace (optional)
  * @href:  the URI associated
- * @prefix:  the prefix for the namespace
+ * @prefix:  the prefix for the namespace (optional)
  *
- * Creation of a new Namespace. This function will refuse to create
- * a namespace with a similar prefix than an existing one present on this
- * node.
- * Note that for a default namespace, @prefix should be NULL.
+ * Create a new namespace. For a default namespace, @prefix should be
+ * NULL. The namespace URI in @href is not checked. You should make sure
+ * to pass a valid URI.
  *
- * We use href==NULL in the case of an element creation where the namespace
- * was not defined.
+ * If @node is provided, it must be an element node. The namespace will
+ * be appended to the node's namespace declarations. It is an error if
+ * the node already has a definition for the prefix or default
+ * namespace.
  *
- * Returns a new namespace pointer or NULL
+ * Returns a new namespace pointer or NULL if arguments are invalid,
+ * the prefix is already in use or a memory allocation failed.
  */
 xmlNsPtr
 xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
@@ -769,9 +783,10 @@ error:
 /**
  * xmlSetNs:
  * @node:  a node in the document
- * @ns:  a namespace pointer
+ * @ns:  a namespace pointer (optional)
  *
- * Associate a namespace to a node, a posteriori.
+ * Set the namespace of an element or attribute node. Passing a NULL
+ * namespace unsets the namespace.
  */
 void
 xmlSetNs(xmlNodePtr node, xmlNsPtr ns) {
@@ -787,7 +802,7 @@ xmlSetNs(xmlNodePtr node, xmlNsPtr ns) {
  * xmlFreeNs:
  * @cur:  the namespace pointer
  *
- * Free up the structures associated to a namespace
+ * Free an xmlNs object.
  */
 void
 xmlFreeNs(xmlNsPtr cur) {
@@ -803,7 +818,7 @@ xmlFreeNs(xmlNsPtr cur) {
  * xmlFreeNsList:
  * @cur:  the first namespace pointer
  *
- * Free up all the structures associated to the chained namespaces.
+ * Free a list of xmlNs objects.
  */
 void
 xmlFreeNsList(xmlNsPtr cur) {
@@ -820,15 +835,21 @@ xmlFreeNsList(xmlNsPtr cur) {
 
 /**
  * xmlNewDtd:
- * @doc:  the document pointer
- * @name:  the DTD name
- * @ExternalID:  the external ID
- * @SystemID:  the system ID
+ * @doc:  the document pointer (optional)
+ * @name:  the DTD name (optional)
+ * @ExternalID:  the external ID (optional)
+ * @SystemID:  the system ID (optional)
  *
- * Creation of a new DTD for the external subset. To create an
- * internal subset, use xmlCreateIntSubset().
+ * Create a DTD node.
  *
- * Returns a pointer to the new DTD structure
+ * If a document is provided, it is an error if it already has an
+ * external subset. If the document has no external subset, it
+ * will be set to the created DTD.
+ *
+ * To create an internal subset, use xmlCreateIntSubset().
+ *
+ * Returns a pointer to the new DTD object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlDtdPtr
 xmlNewDtd(xmlDocPtr doc, const xmlChar *name,
@@ -880,10 +901,10 @@ error:
  * xmlGetIntSubset:
  * @doc:  the document pointer
  *
- * Get the internal subset of a document
- * Returns a pointer to the DTD structure or NULL if not found
+ * Get the internal subset of a document.
+ *
+ * Returns a pointer to the DTD object or NULL if not found.
  */
-
 xmlDtdPtr
 xmlGetIntSubset(const xmlDoc *doc) {
     xmlNodePtr cur;
@@ -901,13 +922,20 @@ xmlGetIntSubset(const xmlDoc *doc) {
 
 /**
  * xmlCreateIntSubset:
- * @doc:  the document pointer
- * @name:  the DTD name
- * @ExternalID:  the external (PUBLIC) ID
- * @SystemID:  the system ID
+ * @doc:  the document pointer (optional)
+ * @name:  the DTD name (optional)
+ * @ExternalID:  the external (PUBLIC) ID (optional)
+ * @SystemID:  the system ID (optional)
  *
- * Create the internal subset of a document
- * Returns a pointer to the new DTD structure
+ * Create a DTD node.
+ *
+ * If a document is provided and it already has an internal subset,
+ * the existing DTD object is returned without creating a new object.
+ * If the document has no internal subset, it will be set to the
+ * created DTD.
+ *
+ * Returns a pointer to the new or existing DTD object or NULL if
+ * arguments are invalid or a memory allocation failed.
  */
 xmlDtdPtr
 xmlCreateIntSubset(xmlDocPtr doc, const xmlChar *name,
@@ -1097,11 +1125,11 @@ xmlFreeDtd(xmlDtdPtr cur) {
 
 /**
  * xmlNewDoc:
- * @version:  xmlChar string giving the version of XML "1.0"
+ * @version:  XML version string like "1.0" (optional)
  *
- * Creates a new XML document
+ * Creates a new XML document. If version is NULL, "1.0" is used.
  *
- * Returns a new document
+ * Returns a new document or NULL if a memory allocation failed.
  */
 xmlDocPtr
 xmlNewDoc(const xmlChar *version) {
@@ -1145,7 +1173,7 @@ xmlNewDoc(const xmlChar *version) {
  * xmlFreeDoc:
  * @cur:  pointer to the document
  *
- * Free up all the structures used by a document, tree included.
+ * Free a document including all children and associated DTDs.
  */
 void
 xmlFreeDoc(xmlDocPtr cur) {
@@ -1196,13 +1224,21 @@ xmlFreeDoc(xmlDocPtr cur) {
 
 /**
  * xmlStringLenGetNodeList:
- * @doc:  the document
- * @value:  the value of the text
- * @len:  the length of the string value
+ * @doc:  a document (optional)
+ * @value:  an attribute value
+ * @len:  length of the attribute value
  *
- * Parse the value string and build the node list associated. Should
- * produce a flat tree with only TEXTs and ENTITY_REFs.
- * Returns a pointer to the first child
+ * Parse an attribute value and build a node list containing only
+ * text and entity reference nodes. The resulting nodes will be
+ * associated with the document if provided. The document is also
+ * used to look up entities.
+ *
+ * The input is not validated. Syntax errors or references to
+ * undeclared entities will be ignored silently with unspecified
+ * results.
+ *
+ * Returns a pointer to the first child or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
@@ -1424,12 +1460,20 @@ out:
 
 /**
  * xmlStringGetNodeList:
- * @doc:  the document
- * @value:  the value of the attribute
+ * @doc:  a document (optional)
+ * @value:  an attribute value
  *
- * Parse the value string and build the node list associated. Should
- * produce a flat tree with only TEXTs and ENTITY_REFs.
- * Returns a pointer to the first child
+ * Parse an attribute value and build a node list containing only
+ * text and entity reference nodes. The resulting nodes will be
+ * associated with the document if provided. The document is also
+ * used to look up entities.
+ *
+ * The input is not validated. Syntax errors or references to
+ * undeclared entities will be ignored silently with unspecified
+ * results.
+ *
+ * Returns a pointer to the first child or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
@@ -1640,14 +1684,11 @@ out:
 
 /**
  * xmlNodeListGetStringInternal:
- * @doc:  the document
- * @list:  a Node list
+ * @doc:  a document (optional)
+ * @node:  a node list
  * @escMode: escape mode (0 = no, 1 = elem, 2 = attr, 3 = raw)
  *
- * Build the string equivalent to the text contained in the Node list
- * made of TEXTs and ENTITY_REFs
- *
- * Returns a pointer to the string copy.
+ * Returns a pointer to the string.
  */
 static xmlChar *
 xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
@@ -1705,14 +1746,19 @@ error:
 
 /**
  * xmlNodeListGetString:
- * @doc:  the document
- * @list:  a Node list
- * @inLine:  should we replace entity contents or show their external form
+ * @doc:  a document (optional)
+ * @list:  a node list of attribute children (optional)
+ * @inLine:  whether entity references are substituted
  *
- * Build the string equivalent to the text contained in the Node list
- * made of TEXTs and ENTITY_REFs
+ * Serializes attribute children (text and entity reference nodes)
+ * into a string. An empty list produces an empty string.
  *
- * Returns a pointer to the string copy, the caller must free it with xmlFree().
+ * If @inLine is true, entity references will be substituted.
+ * Otherwise, entity references will be kept and special characters
+ * like '&' as well as non-ASCII chars will be escaped. See
+ * xmlNodeListGetRawString for an alternative option.
+ *
+ * Returns a string or NULL if a memory allocation failed.
  */
 xmlChar *
 xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
@@ -1736,15 +1782,18 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
 #ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNodeListGetRawString:
- * @doc:  the document
- * @list:  a Node list
- * @inLine:  should we replace entity contents or show their external form
+ * @doc:  a document (optional)
+ * @list:  a node list of attribute children (optional)
+ * @inLine:  whether entity references are substituted
  *
- * Builds the string equivalent to the text contained in the Node list
- * made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString()
- * this function doesn't do any character encoding handling.
+ * Serializes attribute children (text and entity reference nodes)
+ * into a string. An empty list produces an empty string.
  *
- * Returns a pointer to the string copy, the caller must free it with xmlFree().
+ * If @inLine is true, entity references will be substituted.
+ * Otherwise, entity references will be kept and special characters
+ * like '&' will be escaped.
+ *
+ * Returns a string or NULL if a memory allocation failed.
  */
 xmlChar *
 xmlNodeListGetRawString(const xmlDoc *doc, const xmlNode *list, int inLine)
@@ -1856,12 +1905,20 @@ error:
     defined(LIBXML_SCHEMAS_ENABLED)
 /**
  * xmlNewProp:
- * @node:  the holding node
+ * @node:  the parent node (optional)
  * @name:  the name of the attribute
- * @value:  the value of the attribute
+ * @value:  the value of the attribute (optional)
  *
- * Create a new property carried by a node.
- * Returns a pointer to the attribute
+ * Create an attribute node.
+ *
+ * If provided, @value should be a raw, unescaped string.
+ *
+ * If @node is provided, the created attribute will be appended without
+ * checking for duplicate names. It is an error if @node is not an
+ * element.
+ *
+ * Returns a pointer to the attribute or NULL if arguments are invalid
+ * or a memory allocation failed.
  */
 xmlAttrPtr
 xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
@@ -1876,13 +1933,21 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 
 /**
  * xmlNewNsProp:
- * @node:  the holding node
- * @ns:  the namespace
- * @name:  the name of the attribute
- * @value:  the value of the attribute
+ * @node:  the parent node (optional)
+ * @ns:  the namespace (optional)
+ * @name:  the local name of the attribute
+ * @value:  the value of the attribute (optional)
  *
- * Create a new property tagged with a namespace and carried by a node.
- * Returns a pointer to the attribute
+ * Create an attribute object.
+ *
+ * If provided, @value should be a raw, unescaped string.
+ *
+ * If @node is provided, the created attribute will be appended without
+ * checking for duplicate names. It is an error if @node is not an
+ * element.
+ *
+ * Returns a pointer to the attribute or NULL if arguments are invalid
+ * or a memory allocation failed.
  */
 xmlAttrPtr
 xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
@@ -1897,13 +1962,17 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 
 /**
  * xmlNewNsPropEatName:
- * @node:  the holding node
- * @ns:  the namespace
- * @name:  the name of the attribute
- * @value:  the value of the attribute
+ * @node:  the parent node (optional)
+ * @ns:  the namespace (optional)
+ * @name:  the local name of the attribute
+ * @value:  the value of the attribute (optional)
  *
- * Create a new property tagged with a namespace and carried by a node.
- * Returns a pointer to the attribute
+ * Like xmlNewNsProp, but the @name string will be used directly
+ * without making a copy. Takes ownership of @name which will also
+ * be freed on error.
+ *
+ * Returns a pointer to the attribute or NULL if arguments are invalid
+ * or a memory allocation failed.
  */
 xmlAttrPtr
 xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
@@ -1918,17 +1987,19 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
 
 /**
  * xmlNewDocProp:
- * @doc:  the document
+ * @doc:  the target document (optional)
  * @name:  the name of the attribute
- * @value:  the value of the attribute
+ * @value:  attribute value with XML references (optional)
  *
- * Create a new property carried by a document.
- * NOTE: @value is supposed to be a piece of XML CDATA, so it allows entity
- *       references, but XML special chars need to be escaped first by using
- *       xmlEncodeEntitiesReentrant(). Use xmlNewProp() if you don't need
- *       entities support.
+ * Create an attribute object.
  *
- * Returns a pointer to the attribute
+ * If provided, @value is expected to be a valid XML attribute value
+ * possibly containing character and entity references. Syntax errors
+ * and references to undeclared entities are ignored silently.
+ * If you want to pass a raw string, see xmlNewProp.
+ *
+ * Returns a pointer to the attribute or NULL if arguments are invalid
+ * or a memory allocation failed.
  */
 xmlAttrPtr
 xmlNewDocProp(xmlDocPtr doc, const xmlChar *name, const xmlChar *value) {
@@ -1982,9 +2053,9 @@ error:
 
 /**
  * xmlFreePropList:
- * @cur:  the first property in the list
+ * @cur:  the first attribute in the list
  *
- * Free a property and all its siblings, all the children are freed too.
+ * Free an attribute list including all children.
  */
 void
 xmlFreePropList(xmlAttrPtr cur) {
@@ -2001,7 +2072,7 @@ xmlFreePropList(xmlAttrPtr cur) {
  * xmlFreeProp:
  * @cur:  an attribute
  *
- * Free one attribute, all the content is freed too
+ * Free an attribute including all children.
  */
 void
 xmlFreeProp(xmlAttrPtr cur) {
@@ -2026,10 +2097,14 @@ xmlFreeProp(xmlAttrPtr cur) {
  * xmlRemoveProp:
  * @cur:  an attribute
  *
- * Unlink and free one attribute, all the content is freed too
- * Note this doesn't work for namespace definition attributes
+ * Unlink and free an attribute including all children.
  *
- * Returns 0 if success and -1 in case of error.
+ * Note this doesn't work for namespace declarations.
+ *
+ * The attribute must have a non-NULL parent pointer.
+ *
+ * Returns 0 on success or -1 if the attribute was not found or
+ * arguments are invalid.
  */
 int
 xmlRemoveProp(xmlAttrPtr cur) {
@@ -2063,12 +2138,14 @@ xmlRemoveProp(xmlAttrPtr cur) {
 
 /**
  * xmlNewDocPI:
- * @doc:  the target document
- * @name:  the processing instruction name
- * @content:  the PI content
+ * @doc:  the target document (optional)
+ * @name:  the processing instruction target
+ * @content:  the PI content (optional)
  *
- * Creation of a processing instruction element.
- * Returns a pointer to the new node object.
+ * Create a processing instruction object.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewDocPI(xmlDocPtr doc, const xmlChar *name, const xmlChar *content) {
@@ -2111,14 +2188,15 @@ error:
 
 /**
  * xmlNewPI:
- * @name:  the processing instruction name
- * @content:  the PI content
+ * @name:  the processing instruction target
+ * @content:  the PI content (optional)
  *
- * Creation of a processing instruction element.
+ * Create a processing instruction node.
  *
  * Use of this function is DISCOURAGED in favor of xmlNewDocPI.
  *
- * Returns a pointer to the new node object.
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewPI(const xmlChar *name, const xmlChar *content) {
@@ -2127,15 +2205,15 @@ xmlNewPI(const xmlChar *name, const xmlChar *content) {
 
 /**
  * xmlNewNode:
- * @ns:  namespace if any
+ * @ns:  namespace (optional)
  * @name:  the node name
  *
- * Creation of a new node element. @ns is optional (NULL).
+ * Create an element node.
  *
  * Use of this function is DISCOURAGED in favor of xmlNewDocNode.
  *
- * Returns a pointer to the new node object. Uses xmlStrdup() to make
- * copy of @name.
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewNode(xmlNsPtr ns, const xmlChar *name) {
@@ -2170,16 +2248,19 @@ error:
 
 /**
  * xmlNewNodeEatName:
- * @ns:  namespace if any
+ * @ns:  namespace (optional)
  * @name:  the node name
  *
- * Creation of a new node element. @ns is optional (NULL).
+ * Create an element node.
  *
  * Use of this function is DISCOURAGED in favor of xmlNewDocNodeEatName.
  *
- * Returns a pointer to the new node object, with pointer @name as
- * new node's name. Use xmlNewNode() if a copy of @name string is
- * is needed as new node's name.
+ * Like xmlNewNode, but the @name string will be used directly
+ * without making a copy. Takes ownership of @name which will also
+ * be freed on error.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
@@ -2188,19 +2269,29 @@ xmlNewNodeEatName(xmlNsPtr ns, xmlChar *name) {
 
 /**
  * xmlNewDocNode:
- * @doc:  the document
- * @ns:  namespace if any
+ * @doc:  the target document
+ * @ns:  namespace (optional)
  * @name:  the node name
- * @content:  the XML text content if any
+ * @content:  text content with XML references (optional)
  *
- * Creation of a new node element within a document. @ns and @content
- * are optional (NULL).
- * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
- *       references, but XML special chars need to be escaped first by using
- *       xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't
- *       need entities support.
+ * Create an element node.
  *
- * Returns a pointer to the new node object.
+ * If provided, @content is expected to be a valid XML attribute value
+ * possibly containing character and entity references. Syntax errors
+ * and references to undeclared entities are ignored silently.
+ * Only references are handled, nested elements, comments or PIs are
+ * not. See xmlNewDocRawNode for an alternative.
+ *
+ * General notes on object creation:
+ *
+ * Each node and all its children are associated with the same
+ * document. The document should be provided when creating nodes to
+ * avoid a performance penalty when adding the node to a document
+ * tree. Note that a document only owns nodes reachable from the root
+ * node. Unlinked subtrees must be freed manually.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
@@ -2231,19 +2322,20 @@ xmlNewDocNode(xmlDocPtr doc, xmlNsPtr ns,
 
 /**
  * xmlNewDocNodeEatName:
- * @doc:  the document
- * @ns:  namespace if any
+ * xmlNewDocNode:
+ * @doc:  the target document
+ * @ns:  namespace (optional)
  * @name:  the node name
- * @content:  the XML text content if any
+ * @content:  text content with XML references (optional)
  *
- * Creation of a new node element within a document. @ns and @content
- * are optional (NULL).
- * NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities
- *       references, but XML special chars need to be escaped first by using
- *       xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't
- *       need entities support.
+ * Create an element node.
  *
- * Returns a pointer to the new node object.
+ * Like xmlNewDocNode, but the @name string will be used directly
+ * without making a copy. Takes ownership of @name which will also
+ * be freed on error.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewDocNodeEatName(xmlDocPtr doc, xmlNsPtr ns,
@@ -2290,15 +2382,17 @@ xmlNewDocNodeEatName(xmlDocPtr doc, xmlNsPtr ns,
 #ifdef LIBXML_TREE_ENABLED
 /**
  * xmlNewDocRawNode:
- * @doc:  the document
- * @ns:  namespace if any
+ * @doc:  the target document
+ * @ns:  namespace (optional)
  * @name:  the node name
- * @content:  the text content if any
+ * @content:  raw text content (optional)
  *
- * Creation of a new node element within a document. @ns and @content
- * are optional (NULL).
+ * Create an element node.
  *
- * Returns a pointer to the new node object.
+ * If provided, @value should be a raw, unescaped string.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
@@ -2322,10 +2416,12 @@ xmlNewDocRawNode(xmlDocPtr doc, xmlNsPtr ns,
 
 /**
  * xmlNewDocFragment:
- * @doc:  the document owning the fragment
+ * @doc:  the target document (optional)
  *
- * Creation of a new Fragment node.
- * Returns a pointer to the new node object.
+ * Create a document fragment node.
+ *
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewDocFragment(xmlDocPtr doc) {
@@ -2350,13 +2446,14 @@ xmlNewDocFragment(xmlDocPtr doc) {
 
 /**
  * xmlNewText:
- * @content:  the text content
+ * @content:  raw text content (optional)
  *
- * Creation of a new text node.
+ * Create a text node.
  *
  * Use of this function is DISCOURAGED in favor of xmlNewDocText.
  *
- * Returns a pointer to the new node object.
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewText(const xmlChar *content) {
@@ -2391,21 +2488,20 @@ error:
 /**
  * xmlNewTextChild:
  * @parent:  the parent node
- * @ns:  a namespace if any
+ * @ns:  a namespace (optional)
  * @name:  the name of the child
- * @content:  the text content of the child if any.
+ * @content:  raw text content of the child (optional)
  *
- * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optional (NULL). If @ns is NULL, the newly
- * created element inherits the namespace of @parent. If @content is non NULL,
- * a child TEXT node will be created containing the string @content.
- * NOTE: Use xmlNewChild() if @content will contain entities that need to be
- * preserved. Use this function, xmlNewTextChild(), if you need to ensure that
- * reserved XML chars that might appear in @content, such as the ampersand,
- * greater-than or less-than signs, are automatically replaced by their XML
- * escaped entity representations.
+ * Create a new child element and append it to a parent element.
  *
- * Returns a pointer to the new node object.
+ * If @ns is NULL, the newly created element inherits the namespace
+ * of the parent.
+ *
+ * If @content is provided, a text node will be added to the child
+ * element, see xmlNewDocRawNode.
+ *
+ * Returns a pointer to the new node object or NULL if arguments
+ * are invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewTextChild(xmlNodePtr parent, xmlNsPtr ns,
@@ -2463,11 +2559,19 @@ xmlNewTextChild(xmlNodePtr parent, xmlNsPtr ns,
 
 /**
  * xmlNewCharRef:
- * @doc: the document
- * @name:  the char ref string, starting with # or "&# ... ;"
+ * @doc: the target document (optional)
+ * @name:  the entity name
  *
- * Creation of a new character reference node.
- * Returns a pointer to the new node object.
+ * This function is MISNAMED. It doesn't create a character reference
+ * but an entity reference.
+ *
+ * Create an empty entity reference node. This function doesn't attempt
+ * to look up the entity in @doc.
+ *
+ * Entity names like '&entity;' are handled as well.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewCharRef(xmlDocPtr doc, const xmlChar *name) {
@@ -2510,11 +2614,16 @@ error:
 
 /**
  * xmlNewReference:
- * @doc: the document
- * @name:  the reference name, or the reference string with & and ;
+ * @doc: the target document (optional)
+ * @name:  the entity name
  *
- * Creation of a new reference node.
- * Returns a pointer to the new node object.
+ * Create a new entity reference node, linking the result with the
+ * entity in @doc if found.
+ *
+ * Entity names like '&entity;' are handled as well.
+ *
+ * Returns a pointer to the new node object or NULL if arguments are
+ * invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewReference(const xmlDoc *doc, const xmlChar *name) {
@@ -2570,11 +2679,13 @@ error:
 
 /**
  * xmlNewDocText:
- * @doc: the document
- * @content:  the text content
+ * @doc:  the target document
+ * @content:  raw text content (optional)
  *
- * Creation of a new text node within a document.
- * Returns a pointer to the new node object.
+ * Create a new text node.
+ *
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewDocText(const xmlDoc *doc, const xmlChar *content) {
@@ -2587,13 +2698,13 @@ xmlNewDocText(const xmlDoc *doc, const xmlChar *content) {
 
 /**
  * xmlNewTextLen:
- * @content:  the text content
- * @len:  the text len.
+ * @content:  raw text content (optional)
+ * @len:  size of text content
  *
  * Use of this function is DISCOURAGED in favor of xmlNewDocTextLen.
  *
- * Creation of a new text node with an extra parameter for the content's length
- * Returns a pointer to the new node object.
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewTextLen(const xmlChar *content, int len) {
@@ -2624,13 +2735,14 @@ xmlNewTextLen(const xmlChar *content, int len) {
 
 /**
  * xmlNewDocTextLen:
- * @doc: the document
- * @content:  the text content
- * @len:  the text len.
+ * @doc:  the target document
+ * @content:  raw text content (optional)
+ * @len:  size of text content
  *
- * Creation of a new text node with an extra content length parameter. The
- * text node pertain to a given document.
- * Returns a pointer to the new node object.
+ * Create a new text node.
+ *
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewDocTextLen(xmlDocPtr doc, const xmlChar *content, int len) {
@@ -2643,12 +2755,14 @@ xmlNewDocTextLen(xmlDocPtr doc, const xmlChar *content, int len) {
 
 /**
  * xmlNewComment:
- * @content:  the comment content
+ * @content:  the comment content (optional)
  *
  * Use of this function is DISCOURAGED in favor of xmlNewDocComment.
  *
- * Creation of a new node containing a comment.
- * Returns a pointer to the new node object.
+ * Create a comment node.
+ *
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewComment(const xmlChar *content) {
@@ -2681,12 +2795,14 @@ error:
 
 /**
  * xmlNewCDataBlock:
- * @doc:  the document
- * @content:  the CDATA block content content
- * @len:  the length of the block
+ * @doc:  the target document (optional)
+ * @content:  raw text content (optional)
+ * @len:  size of text content
  *
- * Creation of a new node containing a CDATA block.
- * Returns a pointer to the new node object.
+ * Create a CDATA section node.
+ *
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
@@ -2818,11 +2934,18 @@ xmlNodeSetDoc(xmlNodePtr node, xmlDocPtr doc) {
 
 /**
  * xmlSetTreeDoc:
- * @tree:  the top element
- * @doc:  the document
+ * @tree:  root of a subtree
+ * @doc:  new document
  *
- * Update all nodes under the tree to point to the new document.
- * Also copy strings from the old document's dictionary.
+ * This is an internal function which shouldn't be used. It is
+ * invoked by functions like xmlAddChild, xmlAddSibling or
+ * xmlReplaceNode. @tree must be the root node of an unlinked
+ * subtree.
+ *
+ * Associate all nodes in a tree with a new document.
+ *
+ * Also copy strings from the old document's dictionary and
+ * remove ID attributes from the old ID table.
  *
  * Returns 0 on success. If a memory allocation fails, returns -1.
  * The whole tree will be updated on failure but some strings
@@ -2867,11 +2990,12 @@ xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc) {
 
 /**
  * xmlSetListDoc:
- * @list:  the first element
- * @doc:  the document
+ * @list:  a node list
+ * @doc:  new document
  *
- * Update all subtrees in @list to point to the new document.
- * Also copy strings from the old document's dictionary.
+ * Associate all subtrees in @list with a new document.
+ *
+ * Internal function, see xmlSetTreeDoc.
  *
  * Returns 0 on success. If a memory allocation fails, returns -1.
  * All subtrees will be updated on failure but some strings
@@ -2901,19 +3025,22 @@ xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc) {
 /**
  * xmlNewChild:
  * @parent:  the parent node
- * @ns:  a namespace if any
+ * @ns:  a namespace (optional)
  * @name:  the name of the child
- * @content:  the XML content of the child if any.
+ * @content:  text content with XML references (optional)
  *
- * Creation of a new child element, added at the end of @parent children list.
- * @ns and @content parameters are optional (NULL). If @ns is NULL, the newly
- * created element inherits the namespace of @parent. If @content is non NULL,
- * a child list containing the TEXTs and ENTITY_REFs node will be created.
- * NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity
- *       references. XML special chars must be escaped first by using
- *       xmlEncodeEntitiesReentrant(), or xmlNewTextChild() should be used.
+ * Create a new child element and append it to a parent element.
  *
- * Returns a pointer to the new node object.
+ * If @ns is NULL, the newly created element inherits the namespace
+ * of the parent.
+ *
+ * If provided, @content is expected to be a valid XML attribute
+ * value possibly containing character and entity references. Text
+ * and entity reference node will be added to the child element,
+ * see xmlNewDocNode.
+ *
+ * Returns a pointer to the new node object or NULL if arguments
+ * are invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
@@ -3024,19 +3151,23 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
 
 /**
  * xmlAddNextSibling:
- * @cur:  the child node
+ * @cur:  the target node
  * @elem:  the new node
  *
- * Add a new node @elem as the next sibling of @cur
- * If the new node was already inserted in a document it is
- * first unlinked from its existing context.
- * As a result of text merging @elem may be freed.
- * If the new node is ATTRIBUTE, it is added into properties instead of children.
- * If there is an attribute with equal name, it is first destroyed.
+ * Unlinks @elem and inserts it as next sibling after @cur.
  *
- * See the note regarding namespaces in xmlAddChild.
+ * If @elem is a text node, it may be merged with an adjacent text
+ * node and freed. In this case the text node containing the merged
+ * content is returned.
  *
- * Returns the new node or NULL in case of error.
+ * If @elem is an attribute node, it is inserted after attribute
+ * @cur. If the attribute list contains an attribute with a name
+ * matching @elem, the old attribute is destroyed.
+ *
+ * See the notes in xmlAddChild.
+ *
+ * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
@@ -3099,19 +3230,23 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
     defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
 /**
  * xmlAddPrevSibling:
- * @cur:  the child node
+ * @cur:  the target node
  * @elem:  the new node
  *
- * Add a new node @elem as the previous sibling of @cur
- * merging adjacent TEXT nodes (@elem may be freed)
- * If the new node was already inserted in a document it is
- * first unlinked from its existing context.
- * If the new node is ATTRIBUTE, it is added into properties instead of children.
- * If there is an attribute with equal name, it is first destroyed.
+ * Unlinks @elem and inserts it as previous sibling before @cur.
  *
- * See the note regarding namespaces in xmlAddChild.
+ * If @elem is a text node, it may be merged with an adjacent text
+ * node and freed. In this case the text node containing the merged
+ * content is returned.
  *
- * Returns the new node or NULL in case of error.
+ * If @elem is an attribute node, it is inserted before attribute
+ * @cur. If the attribute list contains an attribute with a name
+ * matching @elem, the old attribute is destroyed.
+ *
+ * See the notes in xmlAddChild.
+ *
+ * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
@@ -3177,17 +3312,23 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 
 /**
  * xmlAddSibling:
- * @cur:  the child node
+ * @cur:  the target node
  * @elem:  the new node
  *
- * Add a new element @elem to the list of siblings of @cur
- * merging adjacent TEXT nodes (@elem may be freed)
- * If the new element was already inserted in a document it is
- * first unlinked from its existing context.
+ * Unlinks @elem and inserts it as last sibling of @cur.
  *
- * See the note regarding namespaces in xmlAddChild.
+ * If @elem is a text node, it may be merged with an adjacent text
+ * node and freed. In this case the text node containing the merged
+ * content is returned.
  *
- * Returns the new element or NULL in case of error.
+ * If @elem is an attribute node, it is appended to the attribute
+ * list containing @cur. If the attribute list contains an attribute
+ * with a name matching @elem, the old attribute is destroyed.
+ *
+ * See the notes in xmlAddChild.
+ *
+ * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
@@ -3254,10 +3395,9 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
  * @parent:  the parent node
  * @cur:  the first node in the list
  *
- * Add a list of node at the end of the child list of the parent
- * merging adjacent TEXT nodes (@cur may be freed)
+ * Append a node list to another node.
  *
- * See the note regarding namespaces in xmlAddChild.
+ * See xmlAddChild.
  *
  * Returns the last child or NULL in case of error.
  */
@@ -3330,21 +3470,41 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  * @parent:  the parent node
  * @cur:  the child node
  *
- * Add a new node to @parent, at the end of the child (or property) list
- * merging adjacent TEXT nodes (in which case @cur is freed)
- * If the new node is ATTRIBUTE, it is added into properties instead of children.
- * If there is an attribute with equal name, it is first destroyed.
+ * Append @cur to the children of @parent.
  *
- * This function assumes that @cur has no siblings. If @cur has a parent,
- * it must equal @parent.
+ * Unlike functions like xmlAddSibling, this function doesn't unlink
+ * @cur before appending. It is an error if @cur has siblings or a
+ * parent. This behavior might change in future releases.
  *
- * All tree manipulation functions can safely move nodes within a document.
- * But when moving nodes from one document to another, references to
- * namespaces in element or attribute nodes are NOT fixed. In this case,
- * you MUST call xmlReconciliateNs after the move operation to avoid
- * memory errors.
+ * If @cur is a text node, it may be merged with an adjacent text
+ * node and freed. In this case the text node containing the merged
+ * content is returned.
  *
- * Returns the child or NULL in case of error.
+ * If @cur is an attribute node, it is appended to the attributes of
+ * @parent. If the attribute list contains an attribute with a name
+ * matching @elem, the old attribute is destroyed.
+ *
+ * General notes:
+ *
+ * Move operations like xmlAddChild can cause element or attribute
+ * nodes to reference namespaces that aren't declared in one of
+ * their ancestors. This can lead to use-after-free errors if the
+ * elements containing the declarations are freed later, especially
+ * when moving nodes from one document to another. You should
+ * consider calling xmlReconciliateNs after a move operation to
+ * normalize namespaces. Another option is to call
+ * xmlDOMWrapAdoptNode with the target parent before moving a node.
+ *
+ * For the most part, move operations don't check whether the
+ * resulting tree structure is valid. Users must make sure that
+ * parent nodes only receive children of valid types. Inserted
+ * child nodes must never be an ancestor of the parent node to
+ * avoid cycles in the tree structure. In general, only
+ * document, document fragments, elements and attributes
+ * should be used as parent nodes.
+ *
+ * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
 xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
@@ -3451,8 +3611,9 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
  * xmlGetLastChild:
  * @parent:  the parent node
  *
- * Search the last child of a node.
- * Returns the last child or NULL if none.
+ * Find the last child of a node.
+ *
+ * Returns the last child or NULL if parent has no children.
  */
 xmlNodePtr
 xmlGetLastChild(const xmlNode *parent) {
@@ -3471,13 +3632,12 @@ xmlGetLastChild(const xmlNode *parent) {
  * xmlChildElementCount:
  * @parent: the parent node
  *
- * Finds the current number of child nodes of that element which are
- * element nodes.
- * Note the handling of entities references is different than in
- * the W3C DOM element traversal spec since we don't have back reference
- * from entities content to entities references.
+ * Count the number of child nodes which are elements.
  *
- * Returns the count of element child or 0 if not available
+ * Note that entity references are not expanded.
+ *
+ * Returns the number of element children or 0 if arguments are
+ * invalid.
  */
 unsigned long
 xmlChildElementCount(xmlNodePtr parent) {
@@ -3509,12 +3669,11 @@ xmlChildElementCount(xmlNodePtr parent) {
  * xmlFirstElementChild:
  * @parent: the parent node
  *
- * Finds the first child node of that element which is a Element node
- * Note the handling of entities references is different than in
- * the W3C DOM element traversal spec since we don't have back reference
- * from entities content to entities references.
+ * Find the first child node which is an element.
  *
- * Returns the first element child or NULL if not available
+ * Note that entity references are not expanded.
+ *
+ * Returns the first element or NULL if parent has no children.
  */
 xmlNodePtr
 xmlFirstElementChild(xmlNodePtr parent) {
@@ -3545,12 +3704,11 @@ xmlFirstElementChild(xmlNodePtr parent) {
  * xmlLastElementChild:
  * @parent: the parent node
  *
- * Finds the last child node of that element which is a Element node
- * Note the handling of entities references is different than in
- * the W3C DOM element traversal spec since we don't have back reference
- * from entities content to entities references.
+ * Find the last child node which is an element.
  *
- * Returns the last element child or NULL if not available
+ * Note that entity references are not expanded.
+ *
+ * Returns the last element or NULL if parent has no children.
  */
 xmlNodePtr
 xmlLastElementChild(xmlNodePtr parent) {
@@ -3581,13 +3739,11 @@ xmlLastElementChild(xmlNodePtr parent) {
  * xmlPreviousElementSibling:
  * @node: the current node
  *
- * Finds the first closest previous sibling of the node which is an
- * element node.
- * Note the handling of entities references is different than in
- * the W3C DOM element traversal spec since we don't have back reference
- * from entities content to entities references.
+ * Find the closest preceding sibling which is a element.
  *
- * Returns the previous element sibling or NULL if not available
+ * Note that entity references are not expanded.
+ *
+ * Returns the sibling or NULL if no sibling was found.
  */
 xmlNodePtr
 xmlPreviousElementSibling(xmlNodePtr node) {
@@ -3619,13 +3775,11 @@ xmlPreviousElementSibling(xmlNodePtr node) {
  * xmlNextElementSibling:
  * @node: the current node
  *
- * Finds the first closest next sibling of the node which is an
- * element node.
- * Note the handling of entities references is different than in
- * the W3C DOM element traversal spec since we don't have back reference
- * from entities content to entities references.
+ * Find the closest following sibling which is a element.
  *
- * Returns the next element sibling or NULL if not available
+ * Note that entity references are not expanded.
+ *
+ * Returns the sibling or NULL if no sibling was found.
  */
 xmlNodePtr
 xmlNextElementSibling(xmlNodePtr node) {
@@ -3660,8 +3814,7 @@ xmlNextElementSibling(xmlNodePtr node) {
  * xmlFreeNodeList:
  * @cur:  the first node in the list
  *
- * Free a node and all its siblings, this is a recursive behaviour, all
- * the children are freed too.
+ * Free a node list including all children.
  */
 void
 xmlFreeNodeList(xmlNodePtr cur) {
@@ -3749,8 +3902,10 @@ xmlFreeNodeList(xmlNodePtr cur) {
  * xmlFreeNode:
  * @cur:  the node
  *
- * Free a node, this is a recursive behaviour, all the children are freed too.
- * This doesn't unlink the child from the list, use xmlUnlinkNode() first.
+ * Free a node including all the children.
+ *
+ * This doesn't unlink the node from the tree. Call xmlUnlinkNode first
+ * unless @cur is a root node.
  */
 void
 xmlFreeNode(xmlNodePtr cur) {
@@ -3816,11 +3971,10 @@ xmlFreeNode(xmlNodePtr cur) {
  * xmlUnlinkNode:
  * @cur:  the node
  *
- * Unlink a node from it's current context, the node is not freed
- * If one need to free the node, use xmlFreeNode() routine after the
- * unlink to discard it.
- * Note that namespace nodes can't be unlinked as they do not have
- * pointer to their parent.
+ * Unlink a node from its tree.
+ *
+ * The node is not freed. Unless it is reinserted, it must be managed
+ * manually and freed eventually by calling xmlFreeNode.
  */
 void
 xmlUnlinkNode(xmlNodePtr cur) {
@@ -3886,15 +4040,20 @@ xmlUnlinkNode(xmlNodePtr cur) {
 /**
  * xmlReplaceNode:
  * @old:  the old node
- * @cur:  the node
+ * @cur:  the node (optional)
  *
- * Unlink the old node from its current context, prune the new one
- * at the same place. If @cur was already inserted in a document it is
- * first unlinked from its existing context.
+ * Unlink the old node. If @cur is provided, it is unlinked and
+ * inserted in place of @old.
  *
- * See the note regarding namespaces in xmlAddChild.
+ * It is an error if @old has no parent.
  *
- * Returns the @old node
+ * Unlike xmlAddChild, this function doesn't merge text nodes or
+ * delete duplicate attributes.
+ *
+ * See the notes in xmlAddChild.
+ *
+ * Returns @old or NULL if arguments are invalid or a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
@@ -4123,7 +4282,11 @@ error:
  * @target:  the element where the attribute will be grafted
  * @cur:  the attribute
  *
- * Do a copy of the attribute.
+ * Create a copy of the attribute. This function sets the parent
+ * pointer of the copy to @target but doesn't set the attribute on
+ * the target element. Users should consider to set the attribute
+ * by calling xmlAddChild afterwards or reset the parent pointer to
+ * NULL.
  *
  * Returns: a new #xmlAttrPtr, or NULL in case of error.
  */
@@ -4137,7 +4300,9 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
  * @target:  the element where the attributes will be grafted
  * @cur:  the first attribute
  *
- * Do a copy of an attribute list.
+ * Create a copy of an attribute list. This function sets the
+ * parent pointers of the copied attributes to @target but doesn't
+ * set the attributes on the target element.
  *
  * Returns: a new #xmlAttrPtr, or NULL in case of error.
  */
@@ -5978,7 +6143,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
 /**
- * xmlGetNsList:
+ * xmlGetNsListSafe:
  * @doc:  the document
  * @node:  the current node
  * @out:  the returned namespace array

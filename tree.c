@@ -58,6 +58,10 @@ int __xmlRegisterCallbacks = 0;
 static xmlNsPtr
 xmlNewReconciledNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns);
 
+static xmlAttrPtr
+xmlGetPropNodeInternal(const xmlNode *node, const xmlChar *name,
+		       const xmlChar *nsName, int useDTD);
+
 static xmlChar* xmlGetPropNodeValueInternal(const xmlAttr *prop);
 
 /************************************************************************
@@ -2992,10 +2996,8 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
         return(NULL);
 
     /* check if an attribute with the same name exists */
-    if (prop->ns == NULL)
-        attr = xmlHasNsProp(cur->parent, prop->name, NULL);
-    else
-        attr = xmlHasNsProp(cur->parent, prop->name, prop->ns->href);
+    attr = xmlGetPropNodeInternal(cur->parent, prop->name,
+                                  prop->ns ? prop->ns->href : NULL, 0);
 
     xmlUnlinkNode(prop);
     if (prop->doc != cur->doc) {
@@ -3015,8 +3017,7 @@ xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
     }
     if (prop->prev == NULL && prop->parent != NULL)
         prop->parent->properties = (xmlAttrPtr) prop;
-    if ((attr != NULL) && (attr != (xmlAttrPtr) prop) &&
-        (attr->type != XML_ATTRIBUTE_DECL)) {
+    if ((attr != NULL) && (attr != (xmlAttrPtr) prop)) {
         /* different instance, destroy it (attributes must be unique) */
         xmlRemoveProp((xmlAttrPtr) attr);
     }
@@ -3413,18 +3414,15 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
 	    /* check if an attribute with the same name exists */
 	    xmlAttrPtr lastattr;
 
-	    if (cur->ns == NULL)
-		lastattr = xmlHasNsProp(parent, cur->name, NULL);
-	    else
-		lastattr = xmlHasNsProp(parent, cur->name, cur->ns->href);
-	    if ((lastattr != NULL) && (lastattr != (xmlAttrPtr) cur) && (lastattr->type != XML_ATTRIBUTE_DECL)) {
+            lastattr = xmlGetPropNodeInternal(parent, cur->name,
+                    cur->ns ? cur->ns->href : NULL, 0);
+	    if (lastattr != NULL) {
+                if (lastattr == (xmlAttrPtr) cur)
+                    return(cur);
 		/* different instance, destroy it (attributes must be unique) */
-			xmlUnlinkNode((xmlNodePtr) lastattr);
+                xmlUnlinkNode((xmlNodePtr) lastattr);
 		xmlFreeProp(lastattr);
 	    }
-		if (lastattr == (xmlAttrPtr) cur)
-			return(cur);
-
 	}
 	if (parent->properties == NULL) {
 	    parent->properties = (xmlAttrPtr) cur;

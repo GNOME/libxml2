@@ -6578,7 +6578,8 @@ xmlGetPropNodeValueInternal(const xmlAttr *prop)
 		/*
 		* Optimization for the common case: only 1 text node.
 		*/
-		return(xmlStrdup(prop->children->content));
+                if (prop->children->content != NULL)
+		    return(xmlStrdup(prop->children->content));
 	    } else {
 		return(xmlNodeListGetString(prop->doc, prop->children, 1));
 	    }

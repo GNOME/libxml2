@@ -3016,6 +3016,7 @@ xmlGetDtdElementDesc2(xmlValidCtxtPtr ctxt, xmlDtdPtr dtd, const xmlChar *name) 
             goto mem_error;
 	memset(cur, 0, sizeof(xmlElement));
 	cur->type = XML_ELEMENT_DECL;
+        cur->doc = dtd->doc;
 
 	/*
 	 * fill the structure.

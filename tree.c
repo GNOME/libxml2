@@ -3060,7 +3060,8 @@ xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
 
     if (elem->type == XML_TEXT_NODE) {
 	if (cur->type == XML_TEXT_NODE) {
-	    xmlNodeAddContent(cur, elem->content);
+	    if (xmlNodeAddContent(cur, elem->content) != 0)
+                return(NULL);
 	    xmlFreeNode(elem);
 	    return(cur);
 	}
@@ -3152,7 +3153,8 @@ xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
 	}
 	if ((cur->prev != NULL) && (cur->prev->type == XML_TEXT_NODE) &&
             (cur->name == cur->prev->name)) {
-	    xmlNodeAddContent(cur->prev, elem->content);
+	    if (xmlNodeAddContent(cur->prev, elem->content) != 0)
+                return(NULL);
 	    xmlFreeNode(elem);
 	    return(cur->prev);
 	}
@@ -3228,7 +3230,8 @@ xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
 
     if ((cur->type == XML_TEXT_NODE) && (elem->type == XML_TEXT_NODE) &&
         (cur->name == elem->name)) {
-	xmlNodeAddContent(cur, elem->content);
+	if (xmlNodeAddContent(cur, elem->content) != 0)
+            return(NULL);
 	xmlFreeNode(elem);
 	return(cur);
     }
@@ -3297,7 +3300,8 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
 	if ((cur->type == XML_TEXT_NODE) &&
 	    (parent->last->type == XML_TEXT_NODE) &&
 	    (cur->name == parent->last->name)) {
-	    xmlNodeAddContent(parent->last, cur->content);
+	    if (xmlNodeAddContent(parent->last, cur->content) != 0)
+                return(NULL);
 	    /*
 	     * if it's the only child, nothing more to be done.
 	     */
@@ -3366,10 +3370,8 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
      * Handle text parent
      */
     if (parent->type == XML_TEXT_NODE) {
-        if (xmlNodeAddContent(parent, cur->content) != 0) {
-            xmlFreeNode(cur);
+        if (xmlNodeAddContent(parent, cur->content) != 0)
             return(NULL);
-        }
         xmlFreeNode(cur);
         return(parent);
     }

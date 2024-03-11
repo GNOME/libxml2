@@ -2934,298 +2934,229 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 }
 #endif /* LIBXML_TREE_ENABLED */
 
-/**
- * xmlAddPropSibling:
- * @prev:  the attribute to which @prop is added after
- * @cur:   the base attribute passed to calling function
- * @prop:  the new attribute
- *
- * Add a new attribute after @prev using @cur as base attribute.
- * When inserting before @cur, @prev is passed as @cur->prev.
- * When inserting after @cur, @prev is passed as @cur.
- * If an existing attribute is found it is destroyed prior to adding @prop.
- *
- * See the note regarding namespaces in xmlAddChild.
- *
- * Returns the attribute being inserted or NULL in case of error.
- */
 static xmlNodePtr
-xmlAddPropSibling(xmlNodePtr prev, xmlNodePtr cur, xmlNodePtr prop) {
+xmlInsertProp(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
+              xmlNodePtr prev, xmlNodePtr next) {
     xmlAttrPtr attr;
 
-    if ((cur == NULL) || (cur->type != XML_ATTRIBUTE_NODE) ||
-        (prop == NULL) || (prop->type != XML_ATTRIBUTE_NODE) ||
-        ((prev != NULL) && (prev->type != XML_ATTRIBUTE_NODE)))
+    if (((prev != NULL) && (prev->type != XML_ATTRIBUTE_NODE)) ||
+        ((next != NULL) && (next->type != XML_ATTRIBUTE_NODE)))
         return(NULL);
 
     /* check if an attribute with the same name exists */
-    attr = xmlGetPropNodeInternal(cur->parent, prop->name,
-                                  prop->ns ? prop->ns->href : NULL, 0);
+    attr = xmlGetPropNodeInternal(parent, cur->name,
+                                  cur->ns ? cur->ns->href : NULL, 0);
 
-    xmlUnlinkNode(prop);
-    if (prop->doc != cur->doc) {
-        if (xmlSetTreeDoc(prop, cur->doc) < 0)
+    xmlUnlinkNode(cur);
+
+    if (cur->doc != doc) {
+        if (xmlSetTreeDoc(cur, doc) < 0)
             return(NULL);
     }
-    prop->parent = cur->parent;
-    prop->prev = prev;
-    if (prev != NULL) {
-        prop->next = prev->next;
-        prev->next = prop;
-        if (prop->next)
-            prop->next->prev = prop;
+
+    cur->parent = parent;
+    cur->prev = prev;
+    cur->next = next;
+
+    if (prev == NULL) {
+        if (parent != NULL)
+            parent->properties = (xmlAttrPtr) cur;
     } else {
-        prop->next = cur;
-        cur->prev = prop;
+        prev->next = cur;
     }
-    if (prop->prev == NULL && prop->parent != NULL)
-        prop->parent->properties = (xmlAttrPtr) prop;
-    if ((attr != NULL) && (attr != (xmlAttrPtr) prop)) {
+    if (next != NULL) {
+        next->prev = cur;
+    }
+
+    if ((attr != NULL) && (attr != (xmlAttrPtr) cur)) {
         /* different instance, destroy it (attributes must be unique) */
         xmlRemoveProp((xmlAttrPtr) attr);
     }
-    return prop;
+
+    return cur;
+}
+
+static xmlNodePtr
+xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
+              xmlNodePtr prev, xmlNodePtr next) {
+    if (cur->type == XML_ATTRIBUTE_NODE)
+	return xmlInsertProp(doc, cur, parent, prev, next);
+
+    xmlUnlinkNode(cur);
+
+    /*
+     * Coalesce text nodes
+     */
+    if (cur->type == XML_TEXT_NODE) {
+	if ((prev != NULL) && (prev->type == XML_TEXT_NODE) &&
+            (prev->name == cur->name)) {
+            if (cur->content != NULL) {
+	        xmlChar *tmp;
+
+                tmp = xmlStrncatNew(prev->content, cur->content, -1);
+                if (tmp == NULL)
+                    return(NULL);
+                xmlNodeSetContent(prev, NULL);
+                prev->content = tmp;
+            }
+
+	    xmlFreeNode(cur);
+	    return(prev);
+	}
+	if ((next != NULL) && (next->type == XML_TEXT_NODE) &&
+            (next->name == cur->name)) {
+            if (cur->content != NULL) {
+	        xmlChar *tmp;
+
+                tmp = xmlStrncatNew(cur->content, next->content, -1);
+                if (tmp == NULL)
+                    return(NULL);
+                xmlNodeSetContent(next, NULL);
+                next->content = tmp;
+            }
+
+	    xmlFreeNode(cur);
+	    return(next);
+	}
+    }
+
+    if (cur->doc != doc) {
+	if (xmlSetTreeDoc(cur, doc) < 0)
+            return(NULL);
+    }
+
+    cur->parent = parent;
+    cur->prev = prev;
+    cur->next = next;
+
+    if (prev == NULL) {
+        if (parent != NULL)
+            parent->children = cur;
+    } else {
+        prev->next = cur;
+    }
+    if (next == NULL) {
+        if (parent != NULL)
+            parent->last = cur;
+    } else {
+        next->prev = cur;
+    }
+
+    return(cur);
 }
 
 /**
  * xmlAddNextSibling:
- * @cur:  the target node
- * @elem:  the new node
+ * @prev:  the target node
+ * @cur:  the new node
  *
- * Unlinks @elem and inserts it as next sibling after @cur.
+ * Unlinks @cur and inserts it as next sibling after @prev.
  *
- * If @elem is a text node, it may be merged with an adjacent text
+ * If @cur is a text node, it may be merged with an adjacent text
  * node and freed. In this case the text node containing the merged
  * content is returned.
  *
- * If @elem is an attribute node, it is inserted after attribute
- * @cur. If the attribute list contains an attribute with a name
- * matching @elem, the old attribute is destroyed.
+ * If @cur is an attribute node, it is inserted after attribute
+ * @prev. If the attribute list contains an attribute with a name
+ * matching @cur, the old attribute is destroyed.
  *
  * See the notes in xmlAddChild.
  *
- * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * Returns @cur or a sibling if @cur was merged. Returns NULL
  * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
-xmlAddNextSibling(xmlNodePtr cur, xmlNodePtr elem) {
-    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
+xmlAddNextSibling(xmlNodePtr prev, xmlNodePtr cur) {
+    if ((prev == NULL) || (prev->type == XML_NAMESPACE_DECL) ||
+        (cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
+        (cur == prev))
 	return(NULL);
-    }
-    if ((elem == NULL) || (elem->type == XML_NAMESPACE_DECL)) {
-	return(NULL);
-    }
 
-    if (cur == elem) {
-	return(NULL);
-    }
+    if (cur == prev->next)
+        return(cur);
 
-    if (elem->type == XML_ATTRIBUTE_NODE)
-	return xmlAddPropSibling(cur, cur, elem);
-
-    xmlUnlinkNode(elem);
-
-    if (elem->type == XML_TEXT_NODE) {
-	if (cur->type == XML_TEXT_NODE) {
-	    if (xmlNodeAddContent(cur, elem->content) != 0)
-                return(NULL);
-	    xmlFreeNode(elem);
-	    return(cur);
-	}
-	if ((cur->next != NULL) && (cur->next->type == XML_TEXT_NODE) &&
-            (cur->name == cur->next->name)) {
-	    xmlChar *tmp;
-
-            if (elem->content != NULL) {
-                tmp = xmlStrncatNew(elem->content, cur->next->content, -1);
-                if (tmp == NULL)
-                    return(NULL);
-                xmlNodeSetContent(cur->next, NULL);
-                cur->next->content = tmp;
-            }
-
-	    xmlFreeNode(elem);
-	    return(cur->next);
-	}
-    }
-
-    if (elem->doc != cur->doc) {
-	if (xmlSetTreeDoc(elem, cur->doc) < 0)
-            return(NULL);
-    }
-    elem->parent = cur->parent;
-    elem->prev = cur;
-    elem->next = cur->next;
-    cur->next = elem;
-    if (elem->next != NULL)
-	elem->next->prev = elem;
-    if ((elem->parent != NULL) && (elem->parent->last == cur))
-	elem->parent->last = elem;
-    return(elem);
+    return(xmlInsertNode(prev->doc, cur, prev->parent, prev, prev->next));
 }
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
     defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
 /**
  * xmlAddPrevSibling:
- * @cur:  the target node
- * @elem:  the new node
+ * @next:  the target node
+ * @cur:  the new node
  *
- * Unlinks @elem and inserts it as previous sibling before @cur.
+ * Unlinks @cur and inserts it as previous sibling before @next.
  *
- * If @elem is a text node, it may be merged with an adjacent text
+ * If @cur is a text node, it may be merged with an adjacent text
  * node and freed. In this case the text node containing the merged
  * content is returned.
  *
- * If @elem is an attribute node, it is inserted before attribute
- * @cur. If the attribute list contains an attribute with a name
- * matching @elem, the old attribute is destroyed.
+ * If @cur is an attribute node, it is inserted before attribute
+ * @next. If the attribute list contains an attribute with a name
+ * matching @cur, the old attribute is destroyed.
  *
  * See the notes in xmlAddChild.
  *
- * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * Returns @cur or a sibling if @cur was merged. Returns NULL
  * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
-xmlAddPrevSibling(xmlNodePtr cur, xmlNodePtr elem) {
-    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
+xmlAddPrevSibling(xmlNodePtr next, xmlNodePtr cur) {
+    if ((next == NULL) || (next->type == XML_NAMESPACE_DECL) ||
+        (cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
+        (cur == next))
 	return(NULL);
-    }
-    if ((elem == NULL) || (elem->type == XML_NAMESPACE_DECL)) {
-	return(NULL);
-    }
 
-    if (cur == elem) {
-	return(NULL);
-    }
+    if (cur == next->prev)
+        return(cur);
 
-    if (cur->prev == elem)
-        return(elem);
-
-    if (elem->type == XML_ATTRIBUTE_NODE)
-	return xmlAddPropSibling(cur->prev, cur, elem);
-
-    xmlUnlinkNode(elem);
-
-    if (elem->type == XML_TEXT_NODE) {
-	if (cur->type == XML_TEXT_NODE) {
-	    xmlChar *tmp;
-
-            if (elem->content != NULL) {
-                tmp = xmlStrncatNew(elem->content, cur->content, -1);
-                if (tmp == NULL)
-                    return(NULL);
-                xmlNodeSetContent(cur, NULL);
-                cur->content = tmp;
-            }
-
-	    xmlFreeNode(elem);
-	    return(cur);
-	}
-	if ((cur->prev != NULL) && (cur->prev->type == XML_TEXT_NODE) &&
-            (cur->name == cur->prev->name)) {
-	    if (xmlNodeAddContent(cur->prev, elem->content) != 0)
-                return(NULL);
-	    xmlFreeNode(elem);
-	    return(cur->prev);
-	}
-    }
-
-    if (elem->doc != cur->doc) {
-	if (xmlSetTreeDoc(elem, cur->doc)< 0)
-            return(NULL);
-    }
-    elem->parent = cur->parent;
-    elem->next = cur;
-    elem->prev = cur->prev;
-    cur->prev = elem;
-    if (elem->prev != NULL)
-	elem->prev->next = elem;
-    if ((elem->parent != NULL) && (elem->parent->children == cur)) {
-		elem->parent->children = elem;
-    }
-    return(elem);
+    return(xmlInsertNode(next->doc, cur, next->parent, next->prev, next));
 }
 #endif /* LIBXML_TREE_ENABLED */
 
 /**
  * xmlAddSibling:
- * @cur:  the target node
- * @elem:  the new node
+ * @node:  the target node
+ * @cur:  the new node
  *
- * Unlinks @elem and inserts it as last sibling of @cur.
+ * Unlinks @cur and inserts it as last sibling of @node.
  *
- * If @elem is a text node, it may be merged with an adjacent text
+ * If @cur is a text node, it may be merged with an adjacent text
  * node and freed. In this case the text node containing the merged
  * content is returned.
  *
- * If @elem is an attribute node, it is appended to the attribute
- * list containing @cur. If the attribute list contains an attribute
- * with a name matching @elem, the old attribute is destroyed.
+ * If @cur is an attribute node, it is appended to the attribute
+ * list containing @node. If the attribute list contains an attribute
+ * with a name matching @cur, the old attribute is destroyed.
  *
  * See the notes in xmlAddChild.
  *
- * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * Returns @cur or a sibling if @cur was merged. Returns NULL
  * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr
-xmlAddSibling(xmlNodePtr cur, xmlNodePtr elem) {
-    xmlNodePtr parent;
-
-    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL)) {
+xmlAddSibling(xmlNodePtr node, xmlNodePtr cur) {
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||
+        (cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
+        (cur == node))
 	return(NULL);
-    }
-
-    if ((elem == NULL) || (elem->type == XML_NAMESPACE_DECL)) {
-	return(NULL);
-    }
-
-    if (cur == elem) {
-	return(NULL);
-    }
 
     /*
      * Constant time is we can rely on the ->parent->last to find
      * the last sibling.
      */
-    if ((cur->type != XML_ATTRIBUTE_NODE) && (cur->parent != NULL) &&
-	(cur->parent->children != NULL) &&
-	(cur->parent->last != NULL) &&
-	(cur->parent->last->next == NULL)) {
-	cur = cur->parent->last;
+    if ((node->type != XML_ATTRIBUTE_NODE) && (node->parent != NULL)) {
+        if (node->parent->last != NULL)
+	    node = node->parent->last;
     } else {
-	while (cur->next != NULL) cur = cur->next;
+	while (node->next != NULL)
+            node = node->next;
     }
 
-    if (cur == elem)
-        return(elem);
+    if (cur == node)
+        return(cur);
 
-    if (elem->type == XML_ATTRIBUTE_NODE)
-	return xmlAddPropSibling(cur, cur, elem);
-
-    xmlUnlinkNode(elem);
-
-    if ((cur->type == XML_TEXT_NODE) && (elem->type == XML_TEXT_NODE) &&
-        (cur->name == elem->name)) {
-	if (xmlNodeAddContent(cur, elem->content) != 0)
-            return(NULL);
-	xmlFreeNode(elem);
-	return(cur);
-    }
-
-    if (elem->doc != cur->doc) {
-	if (xmlSetTreeDoc(elem, cur->doc) < 0)
-            return(NULL);
-    }
-    parent = cur->parent;
-    elem->prev = cur;
-    elem->next = NULL;
-    elem->parent = parent;
-    cur->next = elem;
-    if (parent != NULL)
-	parent->last = elem;
-
-    return(elem);
+    return(xmlInsertNode(node->doc, cur, node->parent, node, NULL));
 }
 
 /**

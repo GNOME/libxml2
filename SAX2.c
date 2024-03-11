@@ -1140,20 +1140,8 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
     }
 
     if ((ctxt->replaceEntities == 0) && (!ctxt->html)) {
-        xmlNodePtr tmp;
-
-        if ((value != NULL) && (value[0] != 0)) {
-            ret->children = xmlStringGetNodeList(ctxt->myDoc, value);
-            if (ret->children == NULL)
-                xmlSAX2ErrMemory(ctxt);
-        }
-        tmp = ret->children;
-        while (tmp != NULL) {
-            tmp->parent = (xmlNodePtr) ret;
-            if (tmp->next == NULL)
-                ret->last = tmp;
-            tmp = tmp->next;
-        }
+        if (xmlNodeParseContent((xmlNodePtr) ret, value, INT_MAX) < 0)
+            xmlSAX2ErrMemory(ctxt);
     } else if (value != NULL) {
         ret->children = xmlNewDocText(ctxt->myDoc, value);
         if (ret->children == NULL) {
@@ -1844,18 +1832,9 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 		tmp->parent = (xmlNodePtr) ret;
 	    }
 	} else if (valueend > value) {
-	    ret->children = xmlStringLenGetNodeList(ctxt->myDoc, value,
-						    valueend - value);
-            if (ret->children == NULL)
+            if (xmlNodeParseContent((xmlNodePtr) ret, value,
+                                    valueend - value) < 0)
                 xmlSAX2ErrMemory(ctxt);
-	    tmp = ret->children;
-	    while (tmp != NULL) {
-	        tmp->doc = ret->doc;
-		tmp->parent = (xmlNodePtr) ret;
-		if (tmp->next == NULL)
-		    ret->last = tmp;
-		tmp = tmp->next;
-	    }
 	}
     } else if (value != NULL) {
 	xmlNodePtr tmp;

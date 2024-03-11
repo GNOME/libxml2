@@ -2934,6 +2934,37 @@ xmlNewChild(xmlNodePtr parent, xmlNsPtr ns,
 }
 #endif /* LIBXML_TREE_ENABLED */
 
+static void
+xmlTextSetContent(xmlNodePtr text, xmlChar *content) {
+    if ((text->content != NULL) &&
+        (text->content != (xmlChar *) &text->properties)) {
+        xmlDocPtr doc = text->doc;
+
+        if ((doc == NULL) ||
+            (doc->dict == NULL) ||
+            (!xmlDictOwns(doc->dict, text->content)))
+            xmlFree(text->content);
+    }
+
+    text->content = content;
+    text->properties = NULL;
+}
+
+static int
+xmlTextAddContent(xmlNodePtr text, const xmlChar *content, int len) {
+    xmlChar *merged;
+
+    if (content == NULL)
+        return(0);
+
+    merged = xmlStrncatNew(text->content, content, len);
+    if (merged == NULL)
+        return(-1);
+
+    xmlTextSetContent(text, merged);
+    return(0);
+}
+
 static xmlNodePtr
 xmlInsertProp(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
               xmlNodePtr prev, xmlNodePtr next) {
@@ -2990,29 +3021,21 @@ xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
     if (cur->type == XML_TEXT_NODE) {
 	if ((prev != NULL) && (prev->type == XML_TEXT_NODE) &&
             (prev->name == cur->name)) {
-            if (cur->content != NULL) {
-	        xmlChar *tmp;
-
-                tmp = xmlStrncatNew(prev->content, cur->content, -1);
-                if (tmp == NULL)
-                    return(NULL);
-                xmlNodeSetContent(prev, NULL);
-                prev->content = tmp;
-            }
-
+            if (xmlTextAddContent(prev, cur->content, -1) < 0)
+                return(NULL);
 	    xmlFreeNode(cur);
 	    return(prev);
 	}
+
 	if ((next != NULL) && (next->type == XML_TEXT_NODE) &&
             (next->name == cur->name)) {
             if (cur->content != NULL) {
-	        xmlChar *tmp;
+	        xmlChar *merged;
 
-                tmp = xmlStrncatNew(cur->content, next->content, -1);
-                if (tmp == NULL)
+                merged = xmlStrncatNew(cur->content, next->content, -1);
+                if (merged == NULL)
                     return(NULL);
-                xmlNodeSetContent(next, NULL);
-                next->content = tmp;
+                xmlTextSetContent(next, merged);
             }
 
 	    xmlFreeNode(cur);
@@ -3201,26 +3224,28 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
     if (parent->children == NULL) {
         parent->children = cur;
     } else {
+        prev = parent->last;
+
 	/*
 	 * If cur and parent->last both are TEXT nodes, then merge them.
 	 */
 	if ((cur->type == XML_TEXT_NODE) &&
-	    (parent->last->type == XML_TEXT_NODE) &&
-	    (cur->name == parent->last->name)) {
-	    if (xmlNodeAddContent(parent->last, cur->content) != 0)
+	    (prev->type == XML_TEXT_NODE) &&
+	    (cur->name == prev->name)) {
+            xmlNodePtr next;
+
+            if (xmlTextAddContent(prev, cur->content, -1) < 0)
                 return(NULL);
+            next = cur->next;
+	    xmlFreeNode(cur);
 	    /*
 	     * if it's the only child, nothing more to be done.
 	     */
-	    if (cur->next == NULL) {
-		xmlFreeNode(cur);
-		return(parent->last);
-	    }
-	    prev = cur;
-	    cur = cur->next;
-	    xmlFreeNode(prev);
+	    if (next == NULL)
+		return(prev);
+	    cur = next;
 	}
-        prev = parent->last;
+
 	prev->next = cur;
 	cur->prev = prev;
     }
@@ -3297,7 +3322,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
      * Handle text parent
      */
     if (parent->type == XML_TEXT_NODE) {
-        if (xmlNodeAddContent(parent, cur->content) != 0)
+        if (xmlTextAddContent(parent, cur->content, -1) < 0)
             return(NULL);
         xmlFreeNode(cur);
         return(parent);
@@ -3308,13 +3333,15 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
      * cur is then freed.
      */
     if (cur->type == XML_TEXT_NODE) {
-	if ((parent->last != NULL) && (parent->last->type == XML_TEXT_NODE) &&
-	    (parent->last->name == cur->name) &&
-	    (parent->last != cur)) {
-	    if (xmlNodeAddContent(parent->last, cur->content) != 0)
+        xmlNodePtr last = parent->last;
+
+	if ((last != NULL) && (last->type == XML_TEXT_NODE) &&
+	    (last->name == cur->name) &&
+            (last != cur)) {
+            if (xmlTextAddContent(last, cur->content, -1) < 0)
                 return(NULL);
 	    xmlFreeNode(cur);
-	    return(parent->last);
+	    return(last);
 	}
     } else if (cur->type == XML_ATTRIBUTE_NODE) {
         if (parent->type != XML_ELEMENT_NODE)
@@ -5646,19 +5673,10 @@ xmlNodeSetContentInternal(xmlNodePtr cur, const xmlChar *content, int len) {
                     return(-1);
 	    }
 
-	    if ((cur->content != NULL) &&
-	        (cur->content != (xmlChar *) &(cur->properties))) {
-	        if (!((cur->doc != NULL) && (cur->doc->dict != NULL) &&
-		    (xmlDictOwns(cur->doc->dict, cur->content))))
-		    xmlFree(cur->content);
-	    }
-	    if (cur->children != NULL)
-                xmlFreeNodeList(cur->children);
-	    cur->children = cur->last = NULL;
-	    cur->content = copy;
-	    cur->properties = NULL;
+            xmlTextSetContent(cur, copy);
 	    break;
         }
+
         default:
             break;
     }
@@ -5751,25 +5769,8 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
         case XML_PI_NODE:
-        case XML_COMMENT_NODE: {
-            xmlChar *newContent = NULL;
-
-            if ((cur->content == (xmlChar *) &(cur->properties)) ||
-                ((cur->doc != NULL) && (cur->doc->dict != NULL) &&
-                        xmlDictOwns(cur->doc->dict, cur->content))) {
-                newContent = xmlStrncatNew(cur->content, content, len);
-                if (newContent == NULL)
-                    return(-1);
-                cur->properties = NULL;
-            } else {
-                newContent = xmlStrncatNew(cur->content, content, len);
-                if (newContent == NULL)
-                    return(-1);
-                xmlFree(cur->content);
-            }
-            cur->content = newContent;
-	    break;
-        }
+        case XML_COMMENT_NODE:
+            return(xmlTextAddContent(cur, content, len));
         default:
             break;
     }
@@ -5812,7 +5813,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
         (first->name != second->name))
 	return(NULL);
 
-    if (xmlNodeAddContent(first, second->content) != 0)
+    if (xmlTextAddContent(first, second->content, -1) < 0)
         return(NULL);
 
     xmlUnlinkNode(second);
@@ -6818,35 +6819,25 @@ xmlIsBlankNode(const xmlNode *node) {
  * @content:  the content
  * @len:  @content length
  *
- * Concat the given string at the end of the existing node content
+ * Concat the given string at the end of the existing node content.
+ *
+ * If @len is -1, the string length will be calculated.
  *
  * Returns -1 in case of error, 0 otherwise
  */
 
 int
 xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
-    if (node == NULL) return(-1);
-    if ((content == NULL) || (len <= 0))
-        return(0);
+    if (node == NULL)
+        return(-1);
 
     if ((node->type != XML_TEXT_NODE) &&
         (node->type != XML_CDATA_SECTION_NODE) &&
 	(node->type != XML_COMMENT_NODE) &&
-	(node->type != XML_PI_NODE)) {
+	(node->type != XML_PI_NODE))
         return(-1);
-    }
-    /* need to check if content is currently in the dictionary */
-    if ((node->content == (xmlChar *) &(node->properties)) ||
-        ((node->doc != NULL) && (node->doc->dict != NULL) &&
-		xmlDictOwns(node->doc->dict, node->content))) {
-	node->content = xmlStrncatNew(node->content, content, len);
-    } else {
-        node->content = xmlStrncat(node->content, content, len);
-    }
-    node->properties = NULL;
-    if (node->content == NULL)
-        return(-1);
-    return(0);
+
+    return(xmlTextAddContent(node, content, len));
 }
 
 /************************************************************************

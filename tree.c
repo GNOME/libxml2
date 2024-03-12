@@ -1022,42 +1022,6 @@ error:
 	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
 	    xmlFree((char *)(str));
 
-
-/**
- * DICT_COPY:
- * @str:  a string
- *
- * Copy a string using a "dict" dictionary in the current scope,
- * if available.
- */
-#define DICT_COPY(str, cpy) \
-    if (str) { \
-	if (dict) { \
-	    if (xmlDictOwns(dict, (const xmlChar *)(str))) \
-		cpy = (xmlChar *) (str); \
-	    else \
-		cpy = (xmlChar *) xmlDictLookup((dict), (const xmlChar *)(str), -1); \
-	} else \
-	    cpy = xmlStrdup((const xmlChar *)(str)); }
-
-/**
- * DICT_CONST_COPY:
- * @str:  a string
- *
- * Copy a string using a "dict" dictionary in the current scope,
- * if available.
- */
-#define DICT_CONST_COPY(str, cpy) \
-    if (str) { \
-	if (dict) { \
-	    if (xmlDictOwns(dict, (const xmlChar *)(str))) \
-		cpy = (const xmlChar *) (str); \
-	    else \
-		cpy = xmlDictLookup((dict), (const xmlChar *)(str), -1); \
-	} else \
-	    cpy = (const xmlChar *) xmlStrdup((const xmlChar *)(str)); }
-
-
 /**
  * xmlFreeDtd:
  * @cur:  the DTD structure to free up
@@ -9249,7 +9213,12 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	else if (cur->name == xmlStringComment)
 	    clone->name = xmlStringComment;
 	else if (cur->name != NULL) {
-	    DICT_CONST_COPY(cur->name, clone->name);
+            if (dict != NULL)
+                clone->name = xmlDictLookup(dict, cur->name, -1);
+            else
+                clone->name = xmlStrdup(cur->name);
+            if (clone->name == NULL)
+                goto internal_error;
 	}
 
 	switch (cur->type) {
@@ -9287,14 +9256,24 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 			*/
 			cloneNs = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
 			if (cloneNs == NULL)
-			    return(-1);
+			    goto internal_error;
 			memset(cloneNs, 0, sizeof(xmlNs));
 			cloneNs->type = XML_LOCAL_NAMESPACE;
 
-			if (ns->href != NULL)
+			if (ns->href != NULL) {
 			    cloneNs->href = xmlStrdup(ns->href);
-			if (ns->prefix != NULL)
+                            if (cloneNs->href == NULL) {
+                                xmlFreeNs(cloneNs);
+                                goto internal_error;
+                            }
+                        }
+			if (ns->prefix != NULL) {
 			    cloneNs->prefix = xmlStrdup(ns->prefix);
+                            if (cloneNs->prefix == NULL) {
+                                xmlFreeNs(cloneNs);
+                                goto internal_error;
+                            }
+                        }
 
 			*cloneNsDefSlot = cloneNs;
 			cloneNsDefSlot = &(cloneNs->next);
@@ -9340,12 +9319,18 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		/* IDs will be processed further down. */
 		/* cur->ns will be processed further down. */
 		break;
+	    case XML_PI_NODE:
+	    case XML_COMMENT_NODE:
 	    case XML_TEXT_NODE:
 	    case XML_CDATA_SECTION_NODE:
 		/*
 		* Note that this will also cover the values of attributes.
 		*/
-		DICT_COPY(cur->content, clone->content);
+                if (cur->content != NULL) {
+                    clone->content = xmlStrdup(cur->content);
+                    if (clone->content == NULL)
+                        goto internal_error;
+                }
 		goto leave_node;
 	    case XML_ENTITY_REF_NODE:
 		if (sourceDoc != destDoc) {
@@ -9370,12 +9355,6 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		    clone->children = cur->children;
 		    clone->last = cur->last;
 		}
-		goto leave_node;
-	    case XML_PI_NODE:
-		DICT_COPY(cur->content, clone->content);
-		goto leave_node;
-	    case XML_COMMENT_NODE:
-		DICT_COPY(cur->content, clone->content);
 		goto leave_node;
 	    default:
 		goto internal_error;
@@ -9458,19 +9437,22 @@ end_ns_reference:
 	if ((clone->type == XML_ATTRIBUTE_NODE) &&
 	    (clone->parent != NULL))
 	{
-	    if (xmlIsID(destDoc, clone->parent, (xmlAttrPtr) clone)) {
+            int res;
 
+	    res = xmlIsID(destDoc, clone->parent, (xmlAttrPtr) clone);
+            if (res < 0)
+                goto internal_error;
+            if (res == 1) {
 		xmlChar *idVal;
 
 		idVal = xmlNodeGetContent(cur);
-		if (idVal != NULL) {
-		    if (xmlAddIDSafe((xmlAttrPtr) cur, idVal) < 0) {
-			/* TODO: error message. */
-			xmlFree(idVal);
-			goto internal_error;
-		    }
-		    xmlFree(idVal);
-		}
+                if (idVal == NULL)
+                    goto internal_error;
+                if (xmlAddIDSafe((xmlAttrPtr) cur, idVal) < 0) {
+                    xmlFree(idVal);
+                    goto internal_error;
+                }
+                xmlFree(idVal);
 	    }
 	}
 	/*

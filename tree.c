@@ -9062,7 +9062,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		      int options ATTRIBUTE_UNUSED)
 {
     int ret = 0;
-    xmlNodePtr cur, curElem = NULL;
+    xmlNodePtr cur, cloneElem = NULL;
     xmlNsMapPtr nsMap = NULL;
     xmlNsMapItemPtr mi;
     xmlNsPtr ns;
@@ -9227,7 +9227,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		*/
 		return (-1);
 	    case XML_ELEMENT_NODE:
-		curElem = cur;
+		cloneElem = clone;
 		depth++;
 		/*
 		* Namespace declarations.
@@ -9413,8 +9413,8 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 	    * Acquire a normalized ns-decl and add it to the map.
 	    */
 	    if (xmlDOMWrapNSNormAcquireNormalizedNs(destDoc,
-		/* ns-decls on curElem or on destDoc->oldNs */
-		destParent ? curElem : NULL,
+		/* ns-decls on cloneElem or on destDoc->oldNs */
+		destParent ? cloneElem : NULL,
 		cur->ns, &ns,
 		&nsMap, depth,
 		/* if we need to search only in the ancestor-axis */

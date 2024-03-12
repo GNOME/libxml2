@@ -9424,7 +9424,7 @@ xmlAttrHashInsert(xmlParserCtxtPtr ctxt, unsigned size, const xmlChar *name,
             int nsIndex = (int) (ptrdiff_t) atts[2];
 
             if ((nsIndex == NS_INDEX_EMPTY) ? (uri == NULL) :
-                (nsIndex == NS_INDEX_XML) ? (uri == ctxt->str_xml) :
+                (nsIndex == NS_INDEX_XML) ? (uri == ctxt->str_xml_ns) :
                 (uri == ctxt->nsTab[nsIndex * 2 + 1]))
                 return(bucket->index);
         }

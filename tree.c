@@ -7873,19 +7873,18 @@ static int
 xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
 			xmlNsPtr oldNs, xmlNsPtr newNs)
 {
-    if (*list == NULL) {
-	*list = (xmlNsPtr *) xmlMalloc(6 * sizeof(xmlNsPtr));
-	if (*list == NULL)
-	    return(-1);
-	*size = 3;
-	*number = 0;
-    } else if ((*number) >= (*size)) {
-	*size *= 2;
-	*list = (xmlNsPtr *) xmlRealloc(*list,
-	    (*size) * 2 * sizeof(xmlNsPtr));
-	if (*list == NULL)
-	    return(-1);
+    if (*number >= *size) {
+        xmlNsPtr *tmp;
+        size_t newSize;
+
+        newSize = *size ? *size * 2 : 3;
+        tmp = xmlRealloc(*list, newSize * 2 * sizeof(tmp[0]));
+        if (tmp == NULL)
+            return(-1);
+        *list = tmp;
+        *size = newSize;
     }
+
     (*list)[2 * (*number)] = oldNs;
     (*list)[2 * (*number) +1] = newNs;
     (*number)++;
@@ -7914,7 +7913,7 @@ xmlDOMWrapRemoveNode(xmlDOMWrapCtxtPtr ctxt, xmlDocPtr doc,
 		     xmlNodePtr node, int options ATTRIBUTE_UNUSED)
 {
     xmlNsPtr *list = NULL;
-    int sizeList, nbList, i, j;
+    int sizeList = 0, nbList = 0, i, j;
     xmlNsPtr ns;
 
     if ((node == NULL) || (doc == NULL) || (node->doc != doc))

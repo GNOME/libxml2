@@ -9159,6 +9159,7 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 			clone->prev = prevClone;
 		    } else
 			parentClone->children = clone;
+                    parentClone->last = clone;
 		} else
 		    resultClone = clone;
 
@@ -9515,11 +9516,6 @@ leave_node:
 	    prevClone = clone;
 	    cur = cur->next;
 	} else if (cur->type != XML_ATTRIBUTE_NODE) {
-	    /*
-	    * Set clone->last.
-	    */
-	    if (clone->parent != NULL)
-		clone->parent->last = clone;
 	    clone = clone->parent;
 	    if (clone != NULL)
 		parentClone = clone->parent;

@@ -8363,7 +8363,6 @@ xmlDOMWrapNSNormAcquireNormalizedNs(xmlDocPtr doc,
 	*/
 	if (xmlDOMWrapNsMapAddItem(nsMap, -1, ns,
 		tmpns, XML_TREE_NSMAP_DOC) == NULL) {
-	    xmlFreeNs(tmpns);
 	    return (-1);
 	}
 	*retNs = tmpns;
@@ -8393,7 +8392,6 @@ xmlDOMWrapNSNormAcquireNormalizedNs(xmlDocPtr doc,
 	    }
 	}
 	if (xmlDOMWrapNsMapAddItem(nsMap, -1, ns, tmpns, depth) == NULL) {
-	    xmlFreeNs(tmpns);
 	    return (-1);
 	}
 	*retNs = tmpns;

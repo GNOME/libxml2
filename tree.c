@@ -8012,8 +8012,16 @@ next_sibling:
 	if (node->next != NULL)
 	    node = node->next;
 	else {
+            int type = node->type;
+
 	    node = node->parent;
-	    goto next_sibling;
+            if ((type == XML_ATTRIBUTE_NODE) &&
+                (node != NULL) &&
+                (node->children != NULL)) {
+                node = node->children;
+            } else {
+	        goto next_sibling;
+            }
 	}
     } while (node != NULL);
 

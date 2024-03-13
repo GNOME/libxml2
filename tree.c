@@ -7830,39 +7830,6 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapPtr *map,
 }
 
 /*
-* XML_TREE_ADOPT_STR: If we have a dest-dict, put @str in the dict;
-* otherwise copy it, when it was in the source-dict.
-*/
-#define XML_TREE_ADOPT_STR(str) \
-    if (adoptStr && (str != NULL)) { \
-	if (destDoc->dict) { \
-	    const xmlChar *old = str;	\
-	    str = xmlDictLookup(destDoc->dict, str, -1); \
-	    if ((sourceDoc == NULL) || (sourceDoc->dict == NULL) || \
-	        (!xmlDictOwns(sourceDoc->dict, old))) \
-		xmlFree((char *)old); \
-	} else if ((sourceDoc) && (sourceDoc->dict) && \
-	    xmlDictOwns(sourceDoc->dict, str)) { \
-	    str = BAD_CAST xmlStrdup(str); \
-	} \
-    }
-
-/*
-* XML_TREE_ADOPT_STR_2: If @str was in the source-dict, then
-* put it in dest-dict or copy it.
-*/
-#define XML_TREE_ADOPT_STR_2(str) \
-    if (adoptStr && (str != NULL) && (sourceDoc != NULL) && \
-	(sourceDoc->dict != NULL) && \
-	xmlDictOwns(sourceDoc->dict, cur->content)) { \
-	if (destDoc->dict) \
-	    cur->content = (xmlChar *) \
-		xmlDictLookup(destDoc->dict, cur->content, -1); \
-	else \
-	    cur->content = xmlStrdup(BAD_CAST cur->content); \
-    }
-
-/*
 * xmlDOMWrapNSNormAddNsMapItem2:
 *
 * For internal use. Adds a ns-decl mapping.
@@ -8695,20 +8662,11 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
     xmlNsMapPtr nsMap = NULL;
     xmlNsMapItemPtr mi;
     xmlNsPtr ns = NULL;
-    int depth = -1, adoptStr = 1;
+    int depth = -1;
     /* gather @parent's ns-decls. */
     int parnsdone;
     /* @ancestorsOnly should be set per option. */
     int ancestorsOnly = 0;
-
-    /*
-    * Optimize string adoption for equal or none dicts.
-    */
-    if ((sourceDoc != NULL) &&
-	(sourceDoc->dict == destDoc->dict))
-	adoptStr = 0;
-    else
-	adoptStr = 1;
 
     /*
     * Get the ns-map from the context if available.
@@ -8753,7 +8711,12 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 	    if (cur->doc != node->doc)
 		goto leave_node;
 	}
-	cur->doc = destDoc;
+
+        if (cur->doc != destDoc) {
+            if (xmlNodeSetDoc(cur, destDoc) < 0)
+                ret = -1;
+        }
+
 	switch (cur->type) {
 	    case XML_XINCLUDE_START:
 	    case XML_XINCLUDE_END:
@@ -8788,8 +8751,6 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 		    for (ns = cur->nsDef; ns != NULL; ns = ns->next) {
 			/*
 			* NOTE: ns->prefix and ns->href are never in the dict.
-			* XML_TREE_ADOPT_STR(ns->prefix)
-			* XML_TREE_ADOPT_STR(ns->href)
 			*/
 			/*
 			* Does it shadow any ns-decl?
@@ -8874,12 +8835,8 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 			ret = -1;
 		    cur->ns = ns;
 		}
+
 ns_end:
-		/*
-		* Further node properties.
-		* TODO: Is this all?
-		*/
-		XML_TREE_ADOPT_STR(cur->name)
 		if (cur->type == XML_ELEMENT_NODE) {
 		    cur->psvi = NULL;
 		    cur->line = 0;
@@ -8894,53 +8851,14 @@ ns_end:
 			cur = (xmlNodePtr) cur->properties;
 			continue;
 		    }
-		} else {
-		    /*
-		    * Attributes.
-		    */
-		    if ((sourceDoc != NULL) &&
-			(((xmlAttrPtr) cur)->atype == XML_ATTRIBUTE_ID))
-		    {
-			xmlRemoveID(sourceDoc, (xmlAttrPtr) cur);
-		    }
-		    ((xmlAttrPtr) cur)->atype = 0;
-		    ((xmlAttrPtr) cur)->psvi = NULL;
 		}
 		break;
 	    case XML_TEXT_NODE:
 	    case XML_CDATA_SECTION_NODE:
-		/*
-		* This puts the content in the dest dict, only if
-		* it was previously in the source dict.
-		*/
-		XML_TREE_ADOPT_STR_2(cur->content)
-		goto leave_node;
-	    case XML_ENTITY_REF_NODE:
-		/*
-		* Remove reference to the entity-node.
-		*/
-		cur->content = NULL;
-		cur->children = NULL;
-		cur->last = NULL;
-		if ((destDoc->intSubset) || (destDoc->extSubset)) {
-		    xmlEntityPtr ent;
-		    /*
-		    * Assign new entity-node if available.
-		    */
-		    ent = xmlGetDocEntity(destDoc, cur->name);
-		    if (ent != NULL) {
-			cur->content = ent->content;
-			cur->children = (xmlNodePtr) ent;
-			cur->last = (xmlNodePtr) ent;
-		    }
-		}
-		goto leave_node;
 	    case XML_PI_NODE:
-		XML_TREE_ADOPT_STR(cur->name)
-		XML_TREE_ADOPT_STR_2(cur->content)
-		break;
 	    case XML_COMMENT_NODE:
-		break;
+	    case XML_ENTITY_REF_NODE:
+		goto leave_node;
 	    default:
 		ret = -1;
 	}
@@ -9576,19 +9494,22 @@ exit:
 */
 static int
 xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
-		    xmlDocPtr sourceDoc,
+		    xmlDocPtr sourceDoc ATTRIBUTE_UNUSED,
 		    xmlAttrPtr attr,
 		    xmlDocPtr destDoc,
 		    xmlNodePtr destParent,
 		    int options ATTRIBUTE_UNUSED)
 {
-    xmlNodePtr cur;
-    int adoptStr = 1, ret = 0;
+    int ret = 0;
 
     if ((attr == NULL) || (destDoc == NULL))
 	return (-1);
 
-    attr->doc = destDoc;
+    if (attr->doc != destDoc) {
+        if (xmlSetTreeDoc((xmlNodePtr) attr, destDoc) < 0)
+            ret = -1;
+    }
+
     if (attr->ns != NULL) {
 	xmlNsPtr ns = NULL;
 
@@ -9618,62 +9539,6 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 	if (ns == NULL)
 	    ret = -1;
 	attr->ns = ns;
-    }
-
-    XML_TREE_ADOPT_STR(attr->name);
-    attr->atype = 0;
-    attr->psvi = NULL;
-    /*
-    * Walk content.
-    */
-    if (attr->children == NULL)
-	return (ret);
-    cur = attr->children;
-    if ((cur != NULL) && (cur->type == XML_NAMESPACE_DECL))
-        ret = -1;
-    while (cur != NULL) {
-	cur->doc = destDoc;
-	switch (cur->type) {
-	    case XML_TEXT_NODE:
-	    case XML_CDATA_SECTION_NODE:
-		XML_TREE_ADOPT_STR_2(cur->content)
-		break;
-	    case XML_ENTITY_REF_NODE:
-		/*
-		* Remove reference to the entity-node.
-		*/
-		cur->content = NULL;
-		cur->children = NULL;
-		cur->last = NULL;
-		if ((destDoc->intSubset) || (destDoc->extSubset)) {
-		    xmlEntityPtr ent;
-		    /*
-		    * Assign new entity-node if available.
-		    */
-		    ent = xmlGetDocEntity(destDoc, cur->name);
-		    if (ent != NULL) {
-			cur->content = ent->content;
-			cur->children = (xmlNodePtr) ent;
-			cur->last = (xmlNodePtr) ent;
-		    }
-		}
-		break;
-	    default:
-		break;
-	}
-	if (cur->children != NULL) {
-	    cur = cur->children;
-	    continue;
-	}
-next_sibling:
-	if (cur == (xmlNodePtr) attr)
-	    break;
-	if (cur->next != NULL)
-	    cur = cur->next;
-	else {
-	    cur = cur->parent;
-	    goto next_sibling;
-	}
     }
 
     return (ret);
@@ -9714,6 +9579,8 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 		    xmlNodePtr destParent,
 		    int options)
 {
+    int ret = 0;
+
     if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||
         (destDoc == NULL) ||
 	((destParent != NULL) && (destParent->doc != destDoc)))
@@ -9728,10 +9595,12 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 	*/
 	return (-1);
     }
+
     if (sourceDoc == NULL)
 	sourceDoc = node->doc;
     if (sourceDoc == destDoc)
 	return (-1);
+
     switch (node->type) {
 	case XML_ELEMENT_NODE:
 	case XML_ATTRIBUTE_NODE:
@@ -9760,52 +9629,12 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 	    return (xmlDOMWrapAdoptAttr(ctxt, sourceDoc,
 		(xmlAttrPtr) node, destDoc, destParent, options));
     } else {
-	xmlNodePtr cur = node;
-	int adoptStr = 1;
-
-	cur->doc = destDoc;
-	/*
-	* Optimize string adoption.
-	*/
-	if ((sourceDoc != NULL) &&
-	    (sourceDoc->dict == destDoc->dict))
-		adoptStr = 0;
-	switch (node->type) {
-	    case XML_TEXT_NODE:
-	    case XML_CDATA_SECTION_NODE:
-		XML_TREE_ADOPT_STR_2(node->content)
-		    break;
-	    case XML_ENTITY_REF_NODE:
-		/*
-		* Remove reference to the entity-node.
-		*/
-		node->content = NULL;
-		node->children = NULL;
-		node->last = NULL;
-		if ((destDoc->intSubset) || (destDoc->extSubset)) {
-		    xmlEntityPtr ent;
-		    /*
-		    * Assign new entity-node if available.
-		    */
-		    ent = xmlGetDocEntity(destDoc, node->name);
-		    if (ent != NULL) {
-			node->content = ent->content;
-			node->children = (xmlNodePtr) ent;
-			node->last = (xmlNodePtr) ent;
-		    }
-		}
-		XML_TREE_ADOPT_STR(node->name)
-		break;
-	    case XML_PI_NODE: {
-		XML_TREE_ADOPT_STR(node->name)
-		XML_TREE_ADOPT_STR_2(node->content)
-		break;
-	    }
-	    default:
-		break;
-	}
+        if (node->doc != destDoc) {
+            if (xmlNodeSetDoc(node, destDoc) < 0)
+                ret = -1;
+        }
     }
-    return (0);
+    return (ret);
 }
 
 /************************************************************************

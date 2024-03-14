@@ -8990,7 +8990,8 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     xmlNsPtr cloneNs = NULL, *cloneNsDefSlot = NULL;
     xmlDictPtr dict; /* The destination dict */
 
-    if ((node == NULL) || (resNode == NULL) || (destDoc == NULL))
+    if ((node == NULL) || (resNode == NULL) || (destDoc == NULL) ||
+	((destParent != NULL) && (destParent->doc != destDoc)))
 	return(-1);
     /*
     * TODO: Initially we support only element-nodes.

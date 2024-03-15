@@ -1,5 +1,15 @@
 NEWS file for libxml2
 
+v2.12.6: Mar 15 2024
+
+### Regressions
+
+- parser: Fix detection of duplicate attributes in XML namespace
+- xmlreader: Fix xmlTextReaderConstEncoding
+- html: Fix htmlCreatePushParserCtxt with encoding
+- xmllint: Return error code if XPath returns empty nodeset
+
+
 v2.12.5: Feb 4 2024
 
 ### Security

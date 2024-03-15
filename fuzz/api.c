@@ -17,7 +17,6 @@
  *
  * TODO:
  * - Create documents with a dictionary.
- * - Create nodes with null name (xmlSetTreeDoc).
  */
 
 #include <stdlib.h>
@@ -439,6 +438,10 @@ moveStr(int offset, xmlChar *str) {
     }
 }
 
+/*
+ * This doesn't use xmlMalloc and can't fail because of malloc failure
+ * injection.
+ */
 static xmlChar *
 uncheckedStrdup(const xmlChar *str) {
     xmlChar *copy;
@@ -599,7 +602,7 @@ isDtdChild(xmlNodePtr child) {
 }
 
 static xmlNodePtr
-nodeGetSubtree(xmlNodePtr node) {
+nodeGetTree(xmlNodePtr node) {
     xmlNodePtr cur = node;
 
     while (cur->parent)
@@ -607,23 +610,30 @@ nodeGetSubtree(xmlNodePtr node) {
     return cur;
 }
 
+/*
+ * This function is called whenever a reference to a node is removed.
+ * It checks whether the node is still reachable and frees unreferenced
+ * nodes.
+ *
+ * A node is reachable if its tree, identified by the root node,
+ * is reachable. If a non-document tree is unreachable, it can be
+ * freed.
+ *
+ * Multiple trees can share the same document, so a document tree
+ * can only be freed if no other trees reference the document.
+ */
 static void
 dropNode(xmlNodePtr node) {
     xmlNodePtr *nodes = vars->nodes;
-    xmlNodePtr subtree;
+    xmlNodePtr tree;
     xmlDocPtr doc;
     int docReferenced = 0;
     int i;
 
-    /*
-     * We have to handle separate subtrees and the document pointer
-     * which makes memory management a bit tricky.
-     */
-
     if (node == NULL)
         return;
 
-    subtree = nodeGetSubtree(node);
+    tree = nodeGetTree(node);
     doc = node->doc;
 
     for (i = 0; i < REG_MAX; i++) {
@@ -634,19 +644,19 @@ dropNode(xmlNodePtr node) {
             continue;
 
         /*
-         * Return if subtree is referenced from another node
+         * Return if tree is referenced from another node
          */
-        if (nodeGetSubtree(other) == subtree)
+        if (nodeGetTree(other) == tree)
             return;
         if (doc != NULL && other->doc == doc)
             docReferenced = 1;
     }
 
-    if (subtree != (xmlNodePtr) doc && !isDtdChild(subtree)) {
-        if (doc == NULL || subtree->type != XML_DTD_NODE ||
-            ((xmlDtdPtr) subtree != doc->intSubset &&
-             (xmlDtdPtr) subtree != doc->extSubset))
-            xmlFreeNode(subtree);
+    if (tree != (xmlNodePtr) doc && !isDtdChild(tree)) {
+        if (doc == NULL || tree->type != XML_DTD_NODE ||
+            ((xmlDtdPtr) tree != doc->intSubset &&
+             (xmlDtdPtr) tree != doc->extSubset))
+            xmlFreeNode(tree);
     }
 
     /*
@@ -655,6 +665,13 @@ dropNode(xmlNodePtr node) {
     if (doc != NULL && !docReferenced)
         xmlFreeDoc(doc);
 }
+
+/*
+ * removeNode and removeChildren remove all references to a node
+ * or its children from the registers. These functions should be
+ * called in an API function destroys nodes, for example by merging
+ * text nodes.
+ */
 
 static void
 removeNode(xmlNodePtr node) {
@@ -722,6 +739,17 @@ nodeGetNs(xmlNodePtr node, int k) {
 
     return ns;
 }
+
+/*
+ * It's easy for programs to exhibit exponential growth patterns.
+ * For example, a tree being copied and added to the original source
+ * node doubles memory usage with two operations. Repeating these
+ * operations leads to 2^n nodes. Similar issues can arise when
+ * concatenating strings.
+ *
+ * We simply ignore tree copies or truncate text if they grow too
+ * large.
+ */
 
 static void
 checkContent(xmlNodePtr node) {

@@ -5925,7 +5925,8 @@ child_ok:
 		 */
 		child = elem->children;
 		while (child != NULL) {
-		    if (child->type == XML_TEXT_NODE) {
+		    if ((child->type == XML_TEXT_NODE) &&
+                        (child->content != NULL)) {
 			const xmlChar *content = child->content;
 
 			while (IS_BLANK_CH(*content))

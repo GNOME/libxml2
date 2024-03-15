@@ -2,12 +2,12 @@
 .\"     Title: xmllint
 .\"    Author: John Fleck <jfleck@inkstain.net>
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 11/04/2023
+.\"      Date: 03/15/2024
 .\"    Manual: xmllint Manual
 .\"    Source: libxml2
 .\"  Language: English
 .\"
-.TH "XMLLINT" "1" "11/04/2023" "libxml2" "xmllint Manual"
+.TH "XMLLINT" "1" "03/15/2024" "libxml2" "xmllint Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -357,7 +357,7 @@ the section called \(lqSHELL COMMANDS\(rq)\&.
 .PP
 \fB\-\-xpath "\fR\fB\fIXPath_expression\fR\fR\fB"\fR
 .RS 4
-Run an XPath expression given as argument and print the result\&. In case of a nodeset result, each node in the node set is serialized in full in the output\&. In case of an empty node set the "XPath set is empty" result will be shown and an error exit code will be returned\&.
+Run an XPath expression given as argument and print the result\&. In case of a nodeset result, each node in the node set is serialized in full in the output\&. In case of an empty node set the "XPath set is empty" result will be shown and exit code 11 will be returned\&.\&. This feature is EXPERIMENTAL\&. Implementation details can change without futher notice\&.
 .RE
 .PP
 \fB\-\-stream\fR
@@ -614,6 +614,11 @@ Out of memory error
 \fB10\fR
 .RS 4
 XPath evaluation error
+.RE
+.PP
+\fB11\fR
+.RS 4
+XPath result is empty
 .RE
 .SH "SEE ALSO"
 .PP

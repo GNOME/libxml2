@@ -97,7 +97,9 @@
                     result. In case of a nodeset result, each node in the
                     node set is serialized in full in the output. In case
                     of an empty node set the "XPath set is empty" result
-                    will be shown and an error exit code will be returned.
+                    will be shown and exit code 11 will be returned..
+                    This feature is EXPERIMENTAL. Implementation details can
+                    change without futher notice.
                 </p></dd><dt><span class="term"><code class="option">--stream</code></span></dt><dd><p>
                     Use streaming <acronym class="acronym">API</acronym> - useful when used in combination
                     with <code class="option">--relaxng</code> or <code class="option">--valid</code> options
@@ -162,7 +164,7 @@
                 </p></dd><dt><span class="term"><span class="errorcode">8</span></span></dt><dd><p>
                     Error in Reader registration (generated
                     when <code class="option">--chkregister</code> option is used)
-                </p></dd><dt><span class="term"><span class="errorcode">9</span></span></dt><dd><p>Out of memory error</p></dd><dt><span class="term"><span class="errorcode">10</span></span></dt><dd><p>XPath evaluation error</p></dd></dl></div></div><div class="refsect1"><a name="seealso"></a><h2>SEE ALSO</h2><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span>
+                </p></dd><dt><span class="term"><span class="errorcode">9</span></span></dt><dd><p>Out of memory error</p></dd><dt><span class="term"><span class="errorcode">10</span></span></dt><dd><p>XPath evaluation error</p></dd><dt><span class="term"><span class="errorcode">11</span></span></dt><dd><p>XPath result is empty</p></dd></dl></div></div><div class="refsect1"><a name="seealso"></a><h2>SEE ALSO</h2><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span>
     </p><p>
         More information can be found at
         </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="citerefentry"><span class="refentrytitle">libxml</span>(3)</span> web page <a class="ulink" href="https://gitlab.gnome.org/GNOME/libxml2" target="_top">https://gitlab.gnome.org/GNOME/libxml2</a>

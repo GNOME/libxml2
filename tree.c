@@ -8651,7 +8651,7 @@ next_sibling:
 */
 static int
 xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
-		      xmlDocPtr sourceDoc,
+		      xmlDocPtr sourceDoc ATTRIBUTE_UNUSED,
 		      xmlNodePtr node,
 		      xmlDocPtr destDoc,
 		      xmlNodePtr destParent,
@@ -8689,29 +8689,6 @@ xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
     cur = node;
 
     while (cur != NULL) {
-	/*
-	* Paranoid source-doc sanity check.
-	*/
-	if (cur->doc != sourceDoc) {
-	    /*
-	    * We'll assume XIncluded nodes if the doc differs.
-	    * TODO: Do we need to reconciliate XIncluded nodes?
-	    * This here skips XIncluded nodes and tries to handle
-	    * broken sequences.
-	    */
-	    if (cur->next == NULL)
-		goto leave_node;
-	    do {
-		cur = cur->next;
-		if ((cur->type == XML_XINCLUDE_END) ||
-		    (cur->doc == node->doc))
-		    break;
-	    } while (cur->next != NULL);
-
-	    if (cur->doc != node->doc)
-		goto leave_node;
-	}
-
         if (cur->doc != destDoc) {
             if (xmlNodeSetDoc(cur, destDoc) < 0)
                 ret = -1;
@@ -9589,16 +9566,15 @@ xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
     /*
     * Check node->doc sanity.
     */
-    if ((node->doc != NULL) && (sourceDoc != NULL) &&
-	(node->doc != sourceDoc)) {
-	/*
-	* Might be an XIncluded node.
-	*/
+    if (sourceDoc == NULL) {
+        sourceDoc = node->doc;
+    } else if (node->doc != sourceDoc) {
 	return (-1);
     }
 
-    if (sourceDoc == NULL)
-	sourceDoc = node->doc;
+    /*
+     * TODO: Shouldn't this be allowed?
+     */
     if (sourceDoc == destDoc)
 	return (-1);
 

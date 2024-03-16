@@ -27,6 +27,9 @@ Run fuzzers:
 
     make -C fuzz fuzz-xml
 
+The environment variable XML_FUZZ_OPTIONS can be used to pass additional
+flags to the fuzzer.
+
 Malloc failure injection
 ------------------------
 

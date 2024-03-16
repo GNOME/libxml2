@@ -592,6 +592,8 @@ xmlValidBuildAContentModel(xmlElementContentPtr content,
  * @ctxt:  a validation context
  * @elem:  an element declaration node
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * (Re)Build the automata associated to the content model of this
  * element
  *
@@ -3155,6 +3157,8 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
  * @doc:  the document
  * @notationName:  the notation name to check
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Validate that the given name match a notation declaration.
  * - [ VC: Notation Declared ]
  *
@@ -3570,6 +3574,8 @@ xmlValidateNmtokensValue(const xmlChar *value) {
  * @doc:  a document instance
  * @nota:  a notation definition
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Try to validate a single notation definition
  * basically it does the following checks as described by the
  * XML-1.0 recommendation:
@@ -3625,6 +3631,8 @@ xmlValidateAttributeValueInternal(xmlDocPtr doc, xmlAttributeType type,
  * xmlValidateAttributeValue:
  * @type:  an attribute type
  * @value:  an attribute value
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Validate that the given attribute value match  the proper production
  *
@@ -3782,6 +3790,8 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @value:  the attribute value
  * @ctxt:  the validation context or NULL
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Does the validation related extra step of the normalization of attribute
  * values:
  *
@@ -3878,6 +3888,8 @@ done:
  * @name:  the attribute name
  * @value:  the attribute value
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Does the validation related extra step of the normalization of attribute
  * values:
  *
@@ -3940,6 +3952,8 @@ xmlValidateAttributeIdCallback(void *payload, void *data,
  * @ctxt:  the validation context
  * @doc:  a document instance
  * @attr:  an attribute definition
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Try to validate a single attribute definition
  * basically it does the following checks as described by the
@@ -4069,6 +4083,8 @@ xmlValidateAttributeDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @ctxt:  the validation context
  * @doc:  a document instance
  * @elem:  an element definition
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Try to validate a single element definition
  * basically it does the following checks as described by the
@@ -4201,6 +4217,8 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @elem:  an element instance
  * @attr:  an attribute instance
  * @value:  the attribute value (without entities processing)
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Try to validate a single attribute for an element
  * basically it does the following checks as described by the
@@ -4370,6 +4388,8 @@ xmlValidateOneAttribute(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @prefix:  the namespace prefix
  * @ns:  an namespace declaration instance
  * @value:  the attribute value (without entities processing)
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Try to validate a single namespace declaration for an element
  * basically it does the following checks as described by the
@@ -5544,6 +5564,8 @@ xmlValidGetElemDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @elem:  an element instance
  * @qname:  the qualified name as appearing in the serialization
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Push a new element start on the validation stack.
  *
  * returns 1 if no validation problem was found or 0 otherwise
@@ -5641,6 +5663,8 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @data:  some character data read
  * @len:  the length of the data
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * check the CData parsed for validation in the current stack
  *
  * returns 1 if no validation problem was found or 0 otherwise
@@ -5714,6 +5738,8 @@ done:
  * @elem:  an element instance
  * @qname:  the qualified name as appearing in the serialization
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Pop the element end from the validation stack.
  *
  * returns 1 if no validation problem was found or 0 otherwise
@@ -5767,6 +5793,8 @@ xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
  * @ctxt:  the validation context
  * @doc:  a document instance
  * @elem:  an element instance
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Try to validate a single element and it's attributes,
  * basically it does the following checks as described by the
@@ -6094,6 +6122,8 @@ found:
  * @ctxt:  the validation context
  * @doc:  a document instance
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Try to validate a the root element
  * basically it does the following check as described by the
  * XML-1.0 recommendation:
@@ -6355,6 +6385,8 @@ xmlValidateCheckRefCallback(void *payload, void *data, const xmlChar *name) {
  * @ctxt:  the validation context
  * @doc:  a document instance
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Does the final step for the document validation once all the
  * incremental validation steps have been completed
  *
@@ -6582,6 +6614,8 @@ xmlValidateAttributeCallback(void *payload, void *data,
  * xmlValidateDtdFinal:
  * @ctxt:  the validation context
  * @doc:  a document instance
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Does the final step for the dtds validation once all the
  * subsets have been parsed

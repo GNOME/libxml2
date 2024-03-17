@@ -2031,25 +2031,33 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 break;
             }
 
-            case OP_XML_SEARCH_NS:
-                startOp("xmlSearchNs");
-                xmlSearchNs(
-                    getDoc(0),
-                    getNode(1),
-                    getStr(0));
-                oomReport = 0;
-                endOp();
-                break;
+            case OP_XML_SEARCH_NS: {
+                xmlNsPtr ns;
 
-            case OP_XML_SEARCH_NS_BY_HREF:
-                startOp("xmlSearchNsByHref");
-                xmlSearchNsByHref(
+                startOp("xmlSearchNs");
+                ns = xmlSearchNs(
                     getDoc(0),
                     getNode(1),
                     getStr(0));
-                oomReport = 0;
+                if (ns != NULL)
+                    oomReport = 0;
                 endOp();
                 break;
+            }
+
+            case OP_XML_SEARCH_NS_BY_HREF: {
+                xmlNsPtr ns;
+
+                startOp("xmlSearchNsByHref");
+                ns = xmlSearchNsByHref(
+                    getDoc(0),
+                    getNode(1),
+                    getStr(0));
+                if (ns != NULL)
+                    oomReport = 0;
+                endOp();
+                break;
+            }
 
             case OP_XML_GET_NS_LIST: {
                 xmlNsPtr *list;

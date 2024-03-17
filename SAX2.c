@@ -812,10 +812,6 @@ xmlSAX2StartDocument(void *ctx)
 	    doc->dict = ctxt->dict;
 	    xmlDictReference(doc->dict);
 	}
-        if (xmlTreeEnsureXMLDecl(doc) == NULL) {
-            xmlSAX2ErrMemory(ctxt);
-            return;
-        }
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {
@@ -1104,7 +1100,11 @@ xmlSAX2AttributeInternal(void *ctx, const xmlChar *fullname,
     }
 
     if (ns != NULL) {
-	namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, ns);
+        int res;
+
+	res = xmlSearchNsSafe(ctxt->node, ns, &namespace);
+        if (res < 0)
+            xmlSAX2ErrMemory(ctxt);
 
 	if (namespace == NULL) {
 	    xmlNsErrMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
@@ -1489,6 +1489,8 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     xmlAddChild(parent, ret);
 
     if (!ctxt->html) {
+        int res;
+
         /*
          * Insert all the defaulted attributes from the DTD especially
          * namespaces
@@ -1519,9 +1521,14 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
          * Search the namespace, note that since the attributes have been
          * processed, the local namespaces are available.
          */
-        ns = xmlSearchNs(ctxt->myDoc, ret, prefix);
-        if ((ns == NULL) && (parent != NULL))
-            ns = xmlSearchNs(ctxt->myDoc, parent, prefix);
+        res = xmlSearchNsSafe(ret, prefix, &ns);
+        if (res < 0)
+            xmlSAX2ErrMemory(ctxt);
+        if ((ns == NULL) && (parent != NULL)) {
+            res = xmlSearchNsSafe(parent, prefix, &ns);
+            if (res < 0)
+                xmlSAX2ErrMemory(ctxt);
+        }
         if ((prefix != NULL) && (ns == NULL)) {
             xmlNsWarnMsg(ctxt, XML_NS_ERR_UNDEFINED_NAMESPACE,
                          "Namespace prefix %s is not defined\n",
@@ -1773,7 +1780,11 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     if (prefix != NULL) {
 	namespace = xmlParserNsLookupSax(ctxt, prefix);
 	if ((namespace == NULL) && (xmlStrEqual(prefix, BAD_CAST "xml"))) {
-	    namespace = xmlSearchNs(ctxt->myDoc, ctxt->node, prefix);
+            int res;
+
+	    res = xmlSearchNsSafe(ctxt->node, prefix, &namespace);
+            if (res < 0)
+                xmlSAX2ErrMemory(ctxt);
 	}
     }
 
@@ -2154,7 +2165,11 @@ xmlSAX2StartElementNs(void *ctx,
     if ((URI != NULL) && (ret->ns == NULL)) {
         ret->ns = xmlParserNsLookupSax(ctxt, prefix);
 	if ((ret->ns == NULL) && (xmlStrEqual(prefix, BAD_CAST "xml"))) {
-	    ret->ns = xmlSearchNs(ctxt->myDoc, ret, prefix);
+            int res;
+
+	    res = xmlSearchNsSafe(ret, prefix, &ret->ns);
+            if (res < 0)
+                xmlSAX2ErrMemory(ctxt);
 	}
 	if (ret->ns == NULL) {
 	    ns = xmlNewNs(ret, NULL, prefix);

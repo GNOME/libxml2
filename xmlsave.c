@@ -1542,7 +1542,7 @@ xhtmlIsEmpty(xmlNodePtr node) {
 	return(0);
     if (node->children != NULL)
 	return(0);
-    switch (node->name[0]) {
+    switch (node->name ? node->name[0] : 0) {
 	case 'a':
 	    if (xmlStrEqual(node->name, BAD_CAST "area"))
 		return(1);

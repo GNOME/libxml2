@@ -8063,7 +8063,7 @@ xmlSchemaCheckCSelectorXPath(xmlSchemaParserCtxtPtr ctxt,
 	return (annot);         \
     }                           \
     cur = item->annot;          \
-    if (cur->next != NULL) {    \
+    while (cur->next != NULL) { \
 	cur = cur->next;	\
     }                           \
     cur->next = annot;

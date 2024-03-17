@@ -68,14 +68,14 @@ testBalancedChunk(void) {
     int err = 0;
 
     ret = xmlParseBalancedChunkMemory(NULL, NULL, NULL, 0,
-            BAD_CAST "start <xml:node>abc</xml:node> end", &list);
+            BAD_CAST "start <node xml:lang='en'>abc</node> end", &list);
 
     if ((ret != XML_ERR_OK) ||
         (list == NULL) ||
         ((elem = list->next) == NULL) ||
         (elem->type != XML_ELEMENT_NODE) ||
-        (elem->ns == NULL) ||
-        (!xmlStrEqual(elem->ns->href, XML_XML_NAMESPACE))) {
+        (elem->nsDef == NULL) ||
+        (!xmlStrEqual(elem->nsDef->href, XML_XML_NAMESPACE))) {
         fprintf(stderr, "xmlParseBalancedChunkMemory failed\n");
         err = 1;
     }

@@ -82,16 +82,6 @@ const xmlChar xmlStringComment[] = { 'c', 'o', 'm', 'm', 'e', 'n', 't', 0 };
 
 static int xmlCompressMode = 0;
 
-static const xmlNs xmlXmlNamespaceStruct = {
-    NULL,
-    XML_NAMESPACE_DECL,
-    XML_XML_NAMESPACE,
-    BAD_CAST "xml",
-    NULL,
-    NULL
-};
-xmlNsPtr xmlXmlNamespace = (xmlNsPtr) &xmlXmlNamespaceStruct;
-
 #define IS_STR_XML(str) ((str != NULL) && (str[0] == 'x') && \
   (str[1] == 'm') && (str[2] == 'l') && (str[3] == 0))
 
@@ -3944,14 +3934,14 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
     if ((cur->ns != NULL) && (target != NULL)) {
       xmlNsPtr ns;
 
-      ns = xmlSearchNs(NULL, target, cur->ns->prefix);
+      ns = xmlSearchNs(target->doc, target, cur->ns->prefix);
       if (ns == NULL) {
         /*
          * Humm, we are copying an element whose namespace is defined
          * out of the new tree scope. Search it in the original tree
          * and add it at the top of the new tree
          */
-        ns = xmlSearchNs(NULL, cur->parent, cur->ns->prefix);
+        ns = xmlSearchNs(cur->doc, cur->parent, cur->ns->prefix);
         if (ns != NULL) {
           xmlNodePtr root = target;
           xmlNodePtr pred = NULL;
@@ -3982,7 +3972,7 @@ xmlCopyPropInternal(xmlDocPtr doc, xmlNodePtr target, xmlAttrPtr cur) {
            * we are in trouble: we need a new reconciled namespace.
            * This is expensive
            */
-          ret->ns = xmlNewReconciledNs(NULL, target, cur->ns);
+          ret->ns = xmlNewReconciledNs(target->doc, target, cur->ns);
           if (ret->ns == NULL)
               goto error;
         }
@@ -4217,7 +4207,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     if ((node->type == XML_ELEMENT_NODE) && (node->ns != NULL)) {
         xmlNsPtr ns;
 
-	ns = xmlSearchNs(NULL, ret, node->ns->prefix);
+	ns = xmlSearchNs(doc, ret, node->ns->prefix);
 	if (ns == NULL) {
 	    /*
 	     * Humm, we are copying an element whose namespace is defined
@@ -4227,14 +4217,14 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
              * TODO: Searching the original tree seems unnecessary. We
              * already have a namespace URI.
 	     */
-	    ns = xmlSearchNs(NULL, node, node->ns->prefix);
+	    ns = xmlSearchNs(node->doc, node, node->ns->prefix);
 	    if (ns != NULL) {
 	        xmlNodePtr root = ret;
 
 		while (root->parent != NULL) root = root->parent;
 		ret->ns = xmlNewNs(root, ns->href, ns->prefix);
             } else {
-                ret->ns = xmlNewReconciledNs(NULL, ret, node->ns);
+                ret->ns = xmlNewReconciledNs(doc, ret, node->ns);
 	    }
             if (ret->ns == NULL)
                 goto error;
@@ -5065,7 +5055,9 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
         default:
 	    return;
     }
-    ns = xmlXmlNamespace;
+    ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
+    if (ns == NULL)
+	return;
     xmlSetNsProp(cur, ns, BAD_CAST "lang", lang);
 }
 #endif /* LIBXML_TREE_ENABLED */
@@ -5117,7 +5109,9 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
         default:
             return;
     }
-    ns = xmlXmlNamespace;
+    ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
+    if (ns == NULL)
+	return;
     switch (val) {
     case 0:
 	xmlSetNsProp(cur, ns, BAD_CAST "space", BAD_CAST "default");
@@ -5252,7 +5246,9 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
 	    return(-1);
     }
 
-    ns = xmlXmlNamespace;
+    ns = xmlSearchNsByHref(cur->doc, cur, XML_XML_NAMESPACE);
+    if (ns == NULL)
+	return(-1);
     fixed = xmlPathToURI(uri);
     if (fixed == NULL)
         return(-1);
@@ -5872,6 +5868,43 @@ xmlGetNsList(const xmlDoc *doc, const xmlNode *node)
 }
 #endif /* LIBXML_TREE_ENABLED */
 
+/*
+* xmlTreeEnsureXMLDecl:
+* @doc: the doc
+*
+* Ensures that there is an XML namespace declaration on the doc.
+*
+* Returns the XML ns-struct or NULL if a memory allocation failed.
+*/
+xmlNsPtr
+xmlTreeEnsureXMLDecl(xmlDocPtr doc)
+{
+    if (doc == NULL)
+	return (NULL);
+    if (doc->oldNs != NULL)
+	return (doc->oldNs);
+    {
+	xmlNsPtr ns;
+	ns = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	if (ns == NULL)
+	    return(NULL);
+	memset(ns, 0, sizeof(xmlNs));
+	ns->type = XML_LOCAL_NAMESPACE;
+	ns->href = xmlStrdup(XML_XML_NAMESPACE);
+        if (ns->href == NULL) {
+            xmlFreeNs(ns);
+            return(NULL);
+        }
+	ns->prefix = xmlStrdup((const xmlChar *)"xml");
+        if (ns->prefix == NULL) {
+            xmlFreeNs(ns);
+            return(NULL);
+        }
+	doc->oldNs = ns;
+	return (ns);
+    }
+}
+
 /**
  * xmlSearchNs:
  * @doc:  the document
@@ -5886,20 +5919,50 @@ xmlGetNsList(const xmlDoc *doc, const xmlNode *node)
  * the namespace within those you will be in troubles !!! A warning
  * is generated to cover this case.
  *
- * Returns the namespace pointer or NULL if no namespace was found.
+ * Returns the namespace pointer or NULL if no namespace was found or
+ * a memory allocation failed. Allocations can only fail if the "xml"
+ * namespace is queried and xmlTreeEnsureXMLDecl wasn't called
+ * successfully or doc is NULL.
  */
 xmlNsPtr
-xmlSearchNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
-            const xmlChar *nameSpace) {
+xmlSearchNs(xmlDocPtr doc, xmlNodePtr node, const xmlChar *nameSpace) {
+
     xmlNsPtr cur;
     const xmlNode *orig = node;
 
-    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
-        return(NULL);
-
-    if (xmlStrEqual(nameSpace, BAD_CAST "xml"))
-        return(xmlXmlNamespace);
-
+    if ((node == NULL) || (node->type == XML_NAMESPACE_DECL)) return(NULL);
+    if ((nameSpace != NULL) &&
+	(xmlStrEqual(nameSpace, (const xmlChar *)"xml"))) {
+	if ((doc == NULL) && (node->type == XML_ELEMENT_NODE)) {
+	    /*
+	     * The XML-1.0 namespace is normally held on the root
+	     * element. In this case exceptionally create it on the
+	     * node element.
+	     */
+	    cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+	    if (cur == NULL)
+		return(NULL);
+	    memset(cur, 0, sizeof(xmlNs));
+	    cur->type = XML_LOCAL_NAMESPACE;
+	    cur->href = xmlStrdup(XML_XML_NAMESPACE);
+	    cur->prefix = xmlStrdup((const xmlChar *)"xml");
+	    cur->next = node->nsDef;
+	    node->nsDef = cur;
+	    return(cur);
+	}
+	if (doc == NULL) {
+	    doc = node->doc;
+	    if (doc == NULL)
+		return(NULL);
+	}
+	/*
+	* Return the XML namespace declaration held by the doc.
+	*/
+	if (doc->oldNs == NULL)
+	    return(xmlTreeEnsureXMLDecl(doc));
+	else
+	    return(doc->oldNs);
+    }
     while (node != NULL) {
 	if ((node->type == XML_ENTITY_REF_NODE) ||
 	    (node->type == XML_ENTITY_DECL))
@@ -5974,21 +6037,54 @@ xmlNsInScope(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
  * Search a Ns aliasing a given URI. Recurse on the parents until it finds
  * the defined namespace or return NULL otherwise.
  *
- * Returns the namespace pointer or NULL if no namespace was found.
+ * Returns the namespace pointer or NULL if no namespace was found or
+ * a memory allocation failed. Allocations can only fail if the "xml"
+ * namespace is queried and xmlTreeEnsureXMLDecl wasn't called
+ * successfully or doc is NULL.
  */
 xmlNsPtr
-xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
-                  const xmlChar * href) {
+xmlSearchNsByHref(xmlDocPtr doc, xmlNodePtr node, const xmlChar * href)
+{
     xmlNsPtr cur;
     xmlNodePtr orig = node;
     int is_attr;
 
     if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
         return (NULL);
-
-    if (xmlStrEqual(href, XML_XML_NAMESPACE))
-        return(xmlXmlNamespace);
-
+    if (xmlStrEqual(href, XML_XML_NAMESPACE)) {
+        /*
+         * Only the document can hold the XML spec namespace.
+         */
+        if ((doc == NULL) && (node->type == XML_ELEMENT_NODE)) {
+            /*
+             * The XML-1.0 namespace is normally held on the root
+             * element. In this case exceptionally create it on the
+             * node element.
+             */
+            cur = (xmlNsPtr) xmlMalloc(sizeof(xmlNs));
+            if (cur == NULL)
+                return (NULL);
+            memset(cur, 0, sizeof(xmlNs));
+            cur->type = XML_LOCAL_NAMESPACE;
+            cur->href = xmlStrdup(XML_XML_NAMESPACE);
+            cur->prefix = xmlStrdup((const xmlChar *) "xml");
+            cur->next = node->nsDef;
+            node->nsDef = cur;
+            return (cur);
+        }
+	if (doc == NULL) {
+	    doc = node->doc;
+	    if (doc == NULL)
+		return(NULL);
+	}
+	/*
+	* Return the XML namespace declaration held by the doc.
+	*/
+	if (doc->oldNs == NULL)
+	    return(xmlTreeEnsureXMLDecl(doc));
+	else
+	    return(doc->oldNs);
+    }
     is_attr = (node->type == XML_ATTRIBUTE_NODE);
     while (node != NULL) {
         if ((node->type == XML_ENTITY_REF_NODE) ||
@@ -5999,7 +6095,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
             while (cur != NULL) {
                 if (xmlStrEqual(cur->href, href)) {
 		    if (((!is_attr) || (cur->prefix != NULL)) &&
-		        (xmlNsInScope(NULL, orig, node, cur->prefix) == 1))
+		        (xmlNsInScope(doc, orig, node, cur->prefix) == 1))
 			return (cur);
                 }
                 cur = cur->next;
@@ -6009,7 +6105,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
                 if (cur != NULL) {
                     if (xmlStrEqual(cur->href, href)) {
 			if (((!is_attr) || (cur->prefix != NULL)) &&
-		            (xmlNsInScope(NULL, orig, node, cur->prefix) == 1))
+		            (xmlNsInScope(doc, orig, node, cur->prefix) == 1))
 			    return (cur);
                     }
                 }
@@ -6034,8 +6130,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
  * Returns the (new) namespace definition or NULL in case of error
  */
 static xmlNsPtr
-xmlNewReconciledNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree,
-                   xmlNsPtr ns) {
+xmlNewReconciledNs(xmlDocPtr doc, xmlNodePtr tree, xmlNsPtr ns) {
     xmlNsPtr def;
     xmlChar prefix[50];
     int counter = 1;
@@ -6049,7 +6144,7 @@ xmlNewReconciledNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree,
     /*
      * Search an existing namespace definition inherited.
      */
-    def = xmlSearchNsByHref(NULL, tree, ns->href);
+    def = xmlSearchNsByHref(doc, tree, ns->href);
     if (def != NULL)
         return(def);
 
@@ -6062,7 +6157,7 @@ xmlNewReconciledNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree,
     else
 	snprintf((char *) prefix, sizeof(prefix), "%.20s", (char *)ns->prefix);
 
-    def = xmlSearchNs(NULL, tree, prefix);
+    def = xmlSearchNs(doc, tree, prefix);
     while (def != NULL) {
         if (counter > 1000) return(NULL);
 	if (ns->prefix == NULL)
@@ -6070,7 +6165,7 @@ xmlNewReconciledNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree,
 	else
 	    snprintf((char *) prefix, sizeof(prefix), "%.20s%d",
 		(char *)ns->prefix, counter++);
-	def = xmlSearchNs(NULL, tree, prefix);
+	def = xmlSearchNs(doc, tree, prefix);
     }
 
     /*
@@ -6103,7 +6198,7 @@ typedef struct {
  * Returns 0 on success or -1 in case of error.
  */
 int
-xmlReconciliateNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree) {
+xmlReconciliateNs(xmlDocPtr doc, xmlNodePtr tree) {
     xmlNsCache *cache = NULL;
     int sizeCache = 0;
     int nbCache = 0;
@@ -6113,9 +6208,8 @@ xmlReconciliateNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree) {
     xmlAttrPtr attr;
     int ret = 0, i;
 
-    if ((node == NULL) || (node->type != XML_ELEMENT_NODE))
-        return(-1);
-
+    if ((node == NULL) || (node->type != XML_ELEMENT_NODE)) return(-1);
+    if (node->doc != doc) return(-1);
     while (node != NULL) {
         /*
 	 * Reconciliate the node namespace
@@ -6131,7 +6225,7 @@ xmlReconciliateNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree) {
 	        /*
 		 * OK we need to recreate a new namespace definition
 		 */
-		n = xmlNewReconciledNs(NULL, tree, node->ns);
+		n = xmlNewReconciledNs(doc, tree, node->ns);
 		if (n == NULL) {
                     ret = -1;
                 } else {
@@ -6175,7 +6269,7 @@ xmlReconciliateNs(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr tree) {
 			/*
 			 * OK we need to recreate a new namespace definition
 			 */
-			n = xmlNewReconciledNs(NULL, tree, attr->ns);
+			n = xmlNewReconciledNs(doc, tree, attr->ns);
 			if (n == NULL) {
                             ret = -1;
                         } else {
@@ -6654,7 +6748,7 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     if (nqname != NULL) {
         xmlNsPtr ns;
 	xmlChar *prefix = xmlStrndup(name, len);
-	ns = xmlSearchNs(NULL, node, prefix);
+	ns = xmlSearchNs(node->doc, node, prefix);
 	if (prefix != NULL)
 	    xmlFree(prefix);
 	if (ns != NULL)
@@ -7673,29 +7767,28 @@ xmlDOMWrapStoreNs(xmlDocPtr doc,
 
     if (doc == NULL)
 	return (NULL);
-
-    /* Reuse. */
-    ns = doc->oldNs;
-    while (ns != NULL) {
-        if (((ns->prefix == prefix) ||
-            xmlStrEqual(ns->prefix, prefix)) &&
-            xmlStrEqual(ns->href, nsName)) {
-            return(ns);
-        }
-        if (ns->next == NULL)
-            break;
-        ns = ns->next;
+    ns = xmlTreeEnsureXMLDecl(doc);
+    if (ns == NULL)
+	return (NULL);
+    if (ns->next != NULL) {
+	/* Reuse. */
+	ns = ns->next;
+	while (ns != NULL) {
+	    if (((ns->prefix == prefix) ||
+		xmlStrEqual(ns->prefix, prefix)) &&
+		xmlStrEqual(ns->href, nsName)) {
+		return (ns);
+	    }
+	    if (ns->next == NULL)
+		break;
+	    ns = ns->next;
+	}
     }
-
     /* Create. */
-    if (ns == NULL) {
-        doc->oldNs = xmlNewNs(NULL, nsName, prefix);
-        return(doc->oldNs);
-    } else {
+    if (ns != NULL) {
         ns->next = xmlNewNs(NULL, nsName, prefix);
-        return(ns->next);
+        return (ns->next);
     }
-
     return(NULL);
 }
 
@@ -8026,7 +8119,9 @@ xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
 
     *retNs = NULL;
     if (xmlStrEqual(nsName, XML_XML_NAMESPACE)) {
-	*retNs = xmlXmlNamespace;
+	*retNs = xmlTreeEnsureXMLDecl(doc);
+	if (*retNs == NULL)
+	    return (-1);
 	return (1);
     }
     cur = node;
@@ -8070,7 +8165,7 @@ xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
 			if (out) {
 			    int ret;
 
-			    ret = xmlNsInScope(NULL, node, prev, ns->prefix);
+			    ret = xmlNsInScope(doc, node, prev, ns->prefix);
 			    if (ret < 0)
 				return (-1);
 			    /*
@@ -8125,7 +8220,9 @@ xmlSearchNsByPrefixStrict(xmlDocPtr doc, xmlNodePtr node,
 	*retNs = NULL;
     if (IS_STR_XML(prefix)) {
 	if (retNs) {
-	    *retNs = xmlXmlNamespace;
+	    *retNs = xmlTreeEnsureXMLDecl(doc);
+	    if (*retNs == NULL)
+		return (-1);
 	}
 	return (1);
     }
@@ -8276,7 +8373,9 @@ xmlDOMWrapNSNormAcquireNormalizedNs(xmlDocPtr doc,
 	/*
 	* Insert XML namespace mapping.
 	*/
-	*retNs = xmlXmlNamespace;
+	*retNs = xmlTreeEnsureXMLDecl(doc);
+	if (*retNs == NULL)
+	    return (-1);
 	return (0);
     }
     /*
@@ -9496,7 +9595,7 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 	}
 	/* XML Namespace. */
 	if (IS_STR_XML(attr->ns->prefix)) {
-	    ns = xmlXmlNamespace;
+	    ns = xmlTreeEnsureXMLDecl(destDoc);
 	} else if (destParent == NULL) {
 	    /*
 	    * Store in @destDoc->oldNs.

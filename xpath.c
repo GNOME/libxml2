@@ -49,7 +49,6 @@
 
 #include "private/buf.h"
 #include "private/error.h"
-#include "private/tree.h"
 #include "private/xpath.h"
 
 /* Disabled for now */
@@ -225,6 +224,15 @@ xmlXPathIsInf(double val) {
  *       the test should just be name[0] = ' '
  */
 
+static xmlNs xmlXPathXMLNamespaceStruct = {
+    NULL,
+    XML_NAMESPACE_DECL,
+    XML_XML_NAMESPACE,
+    BAD_CAST "xml",
+    NULL,
+    NULL
+};
+static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
 #ifndef LIBXML_THREAD_ENABLED
 /*
  * Optimizer is disabled only when threaded apps are detected while
@@ -7334,7 +7342,7 @@ xmlXPathNextNamespace(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
                 ctxt->context->tmpNsNr++;
             }
         }
-	return((xmlNodePtr) xmlXmlNamespace);
+	return((xmlNodePtr) xmlXPathXMLNamespace);
     }
     if (ctxt->context->tmpNsNr > 0) {
 	return (xmlNodePtr)ctxt->context->tmpNsList[--ctxt->context->tmpNsNr];

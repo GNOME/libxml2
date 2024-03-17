@@ -812,6 +812,10 @@ xmlSAX2StartDocument(void *ctx)
 	    doc->dict = ctxt->dict;
 	    xmlDictReference(doc->dict);
 	}
+        if (xmlTreeEnsureXMLDecl(doc) == NULL) {
+            xmlSAX2ErrMemory(ctxt);
+            return;
+        }
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->URL == NULL) &&
 	(ctxt->input != NULL) && (ctxt->input->filename != NULL)) {

@@ -101,10 +101,6 @@ xmlNsCheckScope(xmlNodePtr node, xmlNsPtr ns)
 	(node->type != XML_XINCLUDE_START))
 	return(-2);
 
-    /* xml namespace */
-    if (xmlStrEqual(ns->prefix, BAD_CAST "xml"))
-        return(1);
-
     while ((node != NULL) &&
            ((node->type == XML_ELEMENT_NODE) ||
             (node->type == XML_ATTRIBUTE_NODE) ||
@@ -123,7 +119,14 @@ xmlNsCheckScope(xmlNodePtr node, xmlNsPtr ns)
 	}
 	node = node->parent;
     }
-
+    /* the xml namespace may be declared on the document node */
+    if ((node != NULL) &&
+        ((node->type == XML_DOCUMENT_NODE) ||
+	 (node->type == XML_HTML_DOCUMENT_NODE))) {
+	 xmlNsPtr oldNs = ((xmlDocPtr) node)->oldNs;
+	 if (oldNs == ns)
+	     return(1);
+    }
     return(-3);
 }
 

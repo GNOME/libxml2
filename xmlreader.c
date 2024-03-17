@@ -227,6 +227,8 @@ xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
          * Operating in streaming mode, attr is gonna disappear
          */
         cur->id->attr = NULL;
+        if (cur->id->name != NULL)
+            DICT_FREE(cur->id->name);
         cur->id->name = cur->name;
         cur->name = NULL;
     } else {

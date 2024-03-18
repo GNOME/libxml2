@@ -132,6 +132,9 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree);
 static void
 xmlXIncludeErrMemory(xmlXIncludeCtxtPtr ctxt)
 {
+    ctxt->errNo = XML_ERR_NO_MEMORY;
+    ctxt->fatalErr = 1;
+
     xmlRaiseMemoryError(ctxt->errorHandler, NULL, ctxt->errorCtxt,
                         XML_FROM_XINCLUDE, NULL);
 }

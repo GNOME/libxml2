@@ -195,8 +195,16 @@ xmlBufDetach(xmlBufPtr buf) {
     if (buf->error)
         return(NULL);
 
-    ret = buf->content;
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) &&
+        (buf->content != buf->contentIO)) {
+        ret = xmlStrndup(buf->content, buf->use);
+        xmlFree(buf->contentIO);
+    } else {
+        ret = buf->content;
+    }
+
     buf->content = NULL;
+    buf->contentIO = NULL;
     buf->size = 0;
     buf->use = 0;
     UPDATE_COMPAT(buf);

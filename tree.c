@@ -5052,23 +5052,27 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
  *
  * Set the language of a node, i.e. the values of the xml:lang
  * attribute.
+ *
+ * Return 0 on success, 1 if arguments are invalid, -1 if a
+ * memory allocation failed.
  */
-void
+int
 xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
     xmlNsPtr ns;
+    xmlAttrPtr attr;
+    int res;
 
-    if (cur == NULL) return;
-    switch(cur->type) {
-        case XML_ELEMENT_NODE:
-        case XML_ATTRIBUTE_NODE:
-	    break;
-        default:
-	    return;
-    }
-    xmlSearchNsByHrefSafe(cur, XML_XML_NAMESPACE, &ns);
-    if (ns == NULL)
-	return;
-    xmlSetNsProp(cur, ns, BAD_CAST "lang", lang);
+    if ((cur == NULL) || (cur->type != XML_ELEMENT_NODE))
+        return(1);
+
+    res = xmlSearchNsByHrefSafe(cur, XML_XML_NAMESPACE, &ns);
+    if (res != 0)
+        return(res);
+    attr = xmlSetNsProp(cur, ns, BAD_CAST "lang", lang);
+    if (attr == NULL)
+        return(-1);
+
+    return(0);
 }
 #endif /* LIBXML_TREE_ENABLED */
 
@@ -5085,15 +5089,22 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
 xmlChar *
 xmlNodeGetLang(const xmlNode *cur) {
     xmlChar *lang;
+    int res;
 
     if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL))
         return(NULL);
+
     while (cur != NULL) {
-        lang = xmlGetNsProp(cur, BAD_CAST "lang", XML_XML_NAMESPACE);
+        res = xmlNodeGetAttrValue(cur, BAD_CAST "lang", XML_XML_NAMESPACE,
+                                  &lang);
+        if (res < 0)
+            return(NULL);
 	if (lang != NULL)
 	    return(lang);
+
 	cur = cur->parent;
     }
+
     return(NULL);
 }
 
@@ -5106,30 +5117,34 @@ xmlNodeGetLang(const xmlNode *cur) {
  *
  * Set (or reset) the space preserving behaviour of a node, i.e. the
  * value of the xml:space attribute.
+ *
+ * Return 0 on success, 1 if arguments are invalid, -1 if a
+ * memory allocation failed.
  */
-void
+int
 xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
     xmlNsPtr ns;
+    xmlAttrPtr attr;
+    const char *string;
+    int res;
 
-    if (cur == NULL) return;
-    switch(cur->type) {
-        case XML_ELEMENT_NODE:
-        case XML_ATTRIBUTE_NODE:
-	    break;
-        default:
-            return;
-    }
-    xmlSearchNsByHrefSafe(cur, XML_XML_NAMESPACE, &ns);
-    if (ns == NULL)
-	return;
-    switch (val) {
-    case 0:
-	xmlSetNsProp(cur, ns, BAD_CAST "space", BAD_CAST "default");
-	break;
-    case 1:
-	xmlSetNsProp(cur, ns, BAD_CAST "space", BAD_CAST "preserve");
-	break;
-    }
+    if ((cur == NULL) || (cur->type != XML_ELEMENT_NODE))
+        return(1);
+
+    res = xmlSearchNsByHrefSafe(cur, XML_XML_NAMESPACE, &ns);
+    if (res != 0)
+	return(res);
+
+    if (val == 0)
+        string = "default";
+    else
+        string = "preserve";
+
+    attr = xmlSetNsProp(cur, ns, BAD_CAST "space", BAD_CAST string);
+    if (attr == NULL)
+        return(-1);
+
+    return(0);
 }
 #endif /* LIBXML_TREE_ENABLED */
 
@@ -5146,11 +5161,16 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
 int
 xmlNodeGetSpacePreserve(const xmlNode *cur) {
     xmlChar *space;
+        int res;
 
     if ((cur == NULL) || (cur->type != XML_ELEMENT_NODE))
         return(-1);
+
     while (cur != NULL) {
-	space = xmlGetNsProp(cur, BAD_CAST "space", XML_XML_NAMESPACE);
+	res = xmlNodeGetAttrValue(cur, BAD_CAST "space", XML_XML_NAMESPACE,
+                                  &space);
+        if (res < 0)
+            return(-1);
 	if (space != NULL) {
 	    if (xmlStrEqual(space, BAD_CAST "preserve")) {
 		xmlFree(space);
@@ -5162,8 +5182,10 @@ xmlNodeGetSpacePreserve(const xmlNode *cur) {
 	    }
 	    xmlFree(space);
 	}
+
 	cur = cur->parent;
     }
+
     return(-1);
 }
 
@@ -6790,8 +6812,10 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
  */
 xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
-    int len;
-    const xmlChar *nqname;
+    xmlNsPtr ns = NULL;
+    const xmlChar *localname;
+    xmlChar *prefix;
+    int res;
 
     if ((node == NULL) || (name == NULL) || (node->type != XML_ELEMENT_NODE))
 	return(NULL);
@@ -6799,20 +6823,19 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
     /*
      * handle QNames
      */
-    nqname = xmlSplitQName3(name, &len);
-    if (nqname != NULL) {
-        xmlNsPtr ns;
-	xmlChar *prefix = xmlStrndup(name, len);
-        int res;
+    localname = xmlSplitQName4(name, &prefix);
+    if (localname == NULL)
+        return(NULL);
 
+    if (prefix != NULL) {
 	res = xmlSearchNsSafe(node, prefix, &ns);
+	xmlFree(prefix);
         if (res < 0)
             return(NULL);
-	if (prefix != NULL)
-	    xmlFree(prefix);
-	if (ns != NULL)
-	    return(xmlSetNsProp(node, ns, nqname, value));
+        if (ns != NULL)
+            return(xmlSetNsProp(node, ns, localname, value));
     }
+
     return(xmlSetNsProp(node, NULL, name, value));
 }
 

@@ -109,9 +109,9 @@ typedef enum {
     OP_XML_NODE_IS_TEXT,
     OP_XML_NODE_GET_ATTR_VALUE,
     OP_XML_NODE_GET_LANG,
-    OP_XML_NODE_SET_LANG, /* TODO */
+    OP_XML_NODE_SET_LANG,
     OP_XML_NODE_GET_SPACE_PRESERVE,
-    OP_XML_NODE_SET_SPACE_PRESERVE, /* TODO */
+    OP_XML_NODE_SET_SPACE_PRESERVE,
     OP_XML_NODE_GET_BASE,
     OP_XML_NODE_GET_BASE_SAFE,
     OP_XML_NODE_SET_BASE,
@@ -1736,12 +1736,60 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 break;
             }
 
-            case OP_XML_NODE_GET_SPACE_PRESERVE:
-                incIntIdx();
-                startOp("xmlNodeGetSpacePreserve");
-                setInt(0, xmlNodeGetSpacePreserve(getNode(0)));
+            case OP_XML_NODE_SET_LANG: {
+                xmlNodePtr node;
+                xmlAttrPtr attr;
+                int res;
+
+                startOp("xmlNodeSetLang");
+                node = getNode(0);
+                attr = xmlHasNsProp(
+                    node,
+                    BAD_CAST "lang",
+                    XML_XML_NAMESPACE);
+                xmlFuzzResetMallocFailed();
+                removeChildren((xmlNodePtr) attr, 0);
+                res = xmlNodeSetLang(
+                    node,
+                    getStr(0));
+                oomReport = (res < 0);
                 endOp();
                 break;
+            }
+
+            case OP_XML_NODE_GET_SPACE_PRESERVE: {
+                int res;
+
+                incIntIdx();
+                startOp("xmlNodeGetSpacePreserve");
+                res = xmlNodeGetSpacePreserve(getNode(0));
+                if (res >= 0)
+                    oomReport = 0;
+                setInt(0, res);
+                endOp();
+                break;
+            }
+
+            case OP_XML_NODE_SET_SPACE_PRESERVE: {
+                xmlNodePtr node;
+                xmlAttrPtr attr;
+                int res;
+
+                startOp("xmlNodeSetSpacePreserve");
+                node = getNode(0);
+                attr = xmlHasNsProp(
+                    node,
+                    BAD_CAST "space",
+                    XML_XML_NAMESPACE);
+                xmlFuzzResetMallocFailed();
+                removeChildren((xmlNodePtr) attr, 0);
+                res = xmlNodeSetSpacePreserve(
+                    node,
+                    getInt(0));
+                oomReport = (res < 0);
+                endOp();
+                break;
+            }
 
             case OP_XML_NODE_GET_BASE: {
                 xmlChar *base;
@@ -1897,11 +1945,9 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 break;
             }
 
-#if 0
-            /* TODO: Split QName */
             case OP_XML_SET_PROP: {
                 xmlNodePtr node;
-                xmlAttrPtr attr;
+                xmlAttrPtr oldAttr, attr;
                 const xmlChar *name, *value;
 
                 startOp("xmlSetProp");
@@ -1909,16 +1955,18 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 node = getNode(1);
                 name = getStr(0);
                 value = getStr(1);
-                attr = xmlHasProp(node, name);
-                if (attr != NULL)
-                    removeChildren((xmlNodePtr) attr, 0);
-                setNode(0, (xmlNodePtr) xmlSetProp(
-                    node,
-                    name,
-                    value));
+                oldAttr = xmlHasProp(node, name);
+                xmlFuzzResetMallocFailed();
+                if (oldAttr != NULL)
+                    removeChildren((xmlNodePtr) oldAttr, 0);
+                attr = xmlSetProp(node, name, value);
+                oomReport =
+                    (node != NULL && node->type == XML_ELEMENT_NODE &&
+                     name != NULL &&
+                     attr == NULL);
+                setNode(0, (xmlNodePtr) attr);
                 break;
             }
-#endif
 
             case OP_XML_SET_NS_PROP: {
                 xmlNodePtr node;

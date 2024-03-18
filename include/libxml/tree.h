@@ -1125,10 +1125,10 @@ XMLPUBFUN xmlChar *
 XMLPUBFUN int
 		xmlNodeGetSpacePreserve	(const xmlNode *cur);
 #ifdef LIBXML_TREE_ENABLED
-XMLPUBFUN void
+XMLPUBFUN int
 		xmlNodeSetLang		(xmlNodePtr cur,
 					 const xmlChar *lang);
-XMLPUBFUN void
+XMLPUBFUN int
 		xmlNodeSetSpacePreserve (xmlNodePtr cur,
 					 int val);
 #endif /* LIBXML_TREE_ENABLED */

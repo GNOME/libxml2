@@ -5020,7 +5020,8 @@ xmlSnprintfElements(char *buf, int size, xmlNodePtr node, int glob) {
 			strcat(buf, " ...");
 		    return;
 		}
-	        strcat(buf, (char *) cur->name);
+                if (cur->name != NULL)
+	            strcat(buf, (char *) cur->name);
 		if (cur->next != NULL)
 		    strcat(buf, " ");
 		break;

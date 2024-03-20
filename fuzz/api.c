@@ -2349,6 +2349,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 if (result != NULL && result != node) {
                     /* Text node was merged */
                     removeNode(node);
+                    checkContent(result);
                     /* Drop old parent of node */
                     if (oldNodeParent != NULL)
                         dropNode(oldNodeParent);

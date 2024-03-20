@@ -22,7 +22,7 @@ cd fuzz
 make clean-corpus
 make fuzz.o
 
-for fuzzer in html regexp schema uri valid xinclude xml xpath; do
+for fuzzer in api html regexp schema uri valid xinclude xml xpath; do
     make $fuzzer.o
     # Link with $CXX
     $CXX $CXXFLAGS \
@@ -31,8 +31,10 @@ for fuzzer in html regexp schema uri valid xinclude xml xpath; do
         $LIB_FUZZING_ENGINE \
         ../.libs/libxml2.a -Wl,-Bstatic -lz -llzma -Wl,-Bdynamic
 
-    [ -e seed/$fuzzer ] || make seed/$fuzzer.stamp
-    zip -j $OUT/${fuzzer}_seed_corpus.zip seed/$fuzzer/*
+    if [ $fuzzer != api ]; then
+        [ -e seed/$fuzzer ] || make seed/$fuzzer.stamp
+        zip -j $OUT/${fuzzer}_seed_corpus.zip seed/$fuzzer/*
+    fi
 done
 
 cp *.dict *.options $OUT/

@@ -806,6 +806,11 @@ checkCopy(xmlNodePtr copy) {
     return copy;
 }
 
+/*
+ * Fix namespaces, for example after unlinking a node. This makes
+ * sure that the node only references namespaces declared in ancestor
+ * nodes.
+ */
 static int
 fixNs(xmlNodePtr node) {
     if (node == NULL)
@@ -3373,8 +3378,11 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                      doc != NULL &&
                      node->doc == doc &&
                      res < 0);
-                if (node && node->parent != oldParent)
+                if (node != NULL && node->parent != oldParent) {
+                    if (fixNs(node) < 0)
+                        oomReport = 1;
                     dropNode(oldParent);
+                }
                 endOp();
                 break;
             }

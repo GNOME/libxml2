@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl git ca-certificates \
         autoconf automake libtool pkg-config \
-        make gcc clang llvm \
+        make gcc clang llvm libclang-rt-dev \
         zlib1g-dev liblzma-dev libgcrypt-dev \
         python3-dev \
         cmake meson

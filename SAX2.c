@@ -1903,7 +1903,9 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 		    xmlChar *fullname;
 
 		    fullname = xmlBuildQName(localname, prefix, fn, 50);
-		    if (fullname != NULL) {
+                    if (fullname == NULL) {
+                        xmlSAX2ErrMemory(ctxt);
+                    } else {
 			ctxt->vctxt.valid = 1;
 		        nvalnorm = xmlValidCtxtNormalizeAttributeValue(
 			                 &ctxt->vctxt, ctxt->myDoc,

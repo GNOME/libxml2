@@ -521,8 +521,10 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
             base = NULL;
         } else {
             ref->base = xmlStrdup(BAD_CAST "");
-            if (ref->base == NULL)
+            if (ref->base == NULL) {
+	        xmlXIncludeErrMemory(ctxt);
                 goto error;
+            }
         }
     }
 

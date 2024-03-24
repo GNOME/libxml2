@@ -3,10 +3,12 @@
 # OSS-Fuzz integration, see
 # https://github.com/google/oss-fuzz/tree/master/projects/libxml2
 
-# Add all integer sanitizers
+# Add extra UBSan checks
 if [ "$SANITIZER" = undefined ]; then
-    export CFLAGS="$CFLAGS -fsanitize=integer -fno-sanitize-recover=integer"
-    export CXXFLAGS="$CXXFLAGS -fsanitize=integer -fno-sanitize-recover=integer"
+    extra_checks="integer,float-divide-by-zero"
+    extra_cflags="-fsanitize=$extra_checks -fno-sanitize-recover=$extra_checks"
+    export CFLAGS="$CFLAGS $extra_cflags"
+    export CXXFLAGS="$CXXFLAGS $extra_cflags"
 fi
 
 export V=1

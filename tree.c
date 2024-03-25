@@ -2637,8 +2637,10 @@ xmlNewCDataBlock(xmlDocPtr doc, const xmlChar *content, int len) {
  * @doc:  the document
  * @content:  the comment content
  *
- * Creation of a new node containing a comment within a document.
- * Returns a pointer to the new node object.
+ * Create a comment node.
+ *
+ * Returns a pointer to the new node object or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr
 xmlNewDocComment(xmlDocPtr doc, const xmlChar *content) {
@@ -3862,9 +3864,10 @@ xmlReplaceNode(xmlNodePtr old, xmlNodePtr cur) {
  * xmlCopyNamespace:
  * @cur:  the namespace
  *
- * Do a copy of the namespace.
+ * Copy a namespace.
  *
- * Returns: a new #xmlNsPtr, or NULL in case of error.
+ * Returns the copied namespace or NULL if a memory allocation
+ * failed.
  */
 xmlNsPtr
 xmlCopyNamespace(xmlNsPtr cur) {
@@ -3885,9 +3888,10 @@ xmlCopyNamespace(xmlNsPtr cur) {
  * xmlCopyNamespaceList:
  * @cur:  the first namespace
  *
- * Do a copy of an namespace list.
+ * Copy a namespace list.
  *
- * Returns: a new #xmlNsPtr, or NULL in case of error.
+ * Returns the head of the copied list or NULL if a memory
+ * allocation failed.
  */
 xmlNsPtr
 xmlCopyNamespaceList(xmlNsPtr cur) {
@@ -4043,7 +4047,8 @@ error:
  * by calling xmlAddChild afterwards or reset the parent pointer to
  * NULL.
  *
- * Returns: a new #xmlAttrPtr, or NULL in case of error.
+ * Returns the copied attribute or NULL if a memory allocation
+ * failed.
  */
 xmlAttrPtr
 xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
@@ -4059,7 +4064,8 @@ xmlCopyProp(xmlNodePtr target, xmlAttrPtr cur) {
  * parent pointers of the copied attributes to @target but doesn't
  * set the attributes on the target element.
  *
- * Returns: a new #xmlAttrPtr, or NULL in case of error.
+ * Returns the head of the copied list or NULL if a memory
+ * allocation failed.
  */
 xmlAttrPtr
 xmlCopyPropList(xmlNodePtr target, xmlAttrPtr cur) {
@@ -4414,9 +4420,11 @@ error:
  *			when applicable)
  *		if 2 copy properties and namespaces (when applicable)
  *
- * Do a copy of the node.
+ * Copy a node.
  *
- * Returns: a new #xmlNodePtr, or NULL in case of error.
+ * Use of this function is DISCOURAGED in favor of xmlDocCopyNode.
+ *
+ * Returns the copied node or NULL if a memory allocation failed.
  */
 xmlNodePtr
 xmlCopyNode(xmlNodePtr node, int extended) {
@@ -4434,9 +4442,9 @@ xmlCopyNode(xmlNodePtr node, int extended) {
  *			when applicable)
  *		if 2 copy properties and namespaces (when applicable)
  *
- * Do a copy of the node to a given document.
+ * Copy a node into another document.
  *
- * Returns: a new #xmlNodePtr, or NULL in case of error.
+ * Returns the copied node or NULL if a memory allocation failed.
  */
 xmlNodePtr
 xmlDocCopyNode(xmlNodePtr node, xmlDocPtr doc, int extended) {
@@ -4451,9 +4459,10 @@ xmlDocCopyNode(xmlNodePtr node, xmlDocPtr doc, int extended) {
  * @doc: the target document
  * @node:  the first node in the list.
  *
- * Do a recursive copy of the node list.
+ * Copy a node list and all children into a new document.
  *
- * Returns: a new #xmlNodePtr, or NULL in case of error.
+ * Returns the head of the copied list or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr xmlDocCopyNodeList(xmlDocPtr doc, xmlNodePtr node) {
     xmlNodePtr ret = xmlStaticCopyNodeList(node, doc, NULL);
@@ -4464,10 +4473,12 @@ xmlNodePtr xmlDocCopyNodeList(xmlDocPtr doc, xmlNodePtr node) {
  * xmlCopyNodeList:
  * @node:  the first node in the list.
  *
- * Do a recursive copy of the node list.
- * Use xmlDocCopyNodeList() if possible to ensure string interning.
+ * Copy a node list and all children.
  *
- * Returns: a new #xmlNodePtr, or NULL in case of error.
+ * Use of this function is DISCOURAGED in favor of xmlDocCopyNodeList.
+ *
+ * Returns the head of the copied list or NULL if a memory
+ * allocation failed.
  */
 xmlNodePtr xmlCopyNodeList(xmlNodePtr node) {
     xmlNodePtr ret = xmlStaticCopyNodeList(node, NULL, NULL);
@@ -4477,11 +4488,11 @@ xmlNodePtr xmlCopyNodeList(xmlNodePtr node) {
 #if defined(LIBXML_TREE_ENABLED)
 /**
  * xmlCopyDtd:
- * @dtd:  the dtd
+ * @dtd:  the DTD
  *
- * Do a copy of the dtd.
+ * Copy a DTD.
  *
- * Returns: a new #xmlDtdPtr, or NULL in case of error.
+ * Returns the copied DTD or NULL if a memory allocation failed.
  */
 xmlDtdPtr
 xmlCopyDtd(xmlDtdPtr dtd) {
@@ -4588,10 +4599,11 @@ error:
  * @doc:  the document
  * @recursive:  if not zero do a recursive copy.
  *
- * Do a copy of the document info. If recursive, the content tree will
+ * Copy a document. If recursive, the content tree will
  * be copied too as well as DTD, namespaces and entities.
  *
- * Returns: a new #xmlDocPtr, or NULL in case of error.
+ * Returns the copied document or NULL if a memory allocation
+ * failed.
  */
 xmlDocPtr
 xmlCopyDoc(xmlDocPtr doc, int recursive) {
@@ -4983,7 +4995,7 @@ xmlGetNodePath(const xmlNode *node)
  * Get the root element of the document (doc->children is a list
  * containing possibly comments, PIs, etc ...).
  *
- * Returns the #xmlNodePtr for the root or NULL
+ * Returns the root element or NULL if no element was found.
  */
 xmlNodePtr
 xmlDocGetRootElement(const xmlDoc *doc) {
@@ -5009,7 +5021,10 @@ xmlDocGetRootElement(const xmlDoc *doc) {
  * Set the root element of the document (doc->children is a list
  * containing possibly comments, PIs, etc ...).
  *
- * Returns the old root element if any was found, NULL on error.
+ * @root must be an element node. It is unlinked before insertion.
+ *
+ * Returns the unlinked old root element or NULL if the document
+ * didn't have a root element or a memory allocation failed.
  */
 xmlNodePtr
 xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
@@ -5820,12 +5835,12 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  * @node:  the current node
  * @out:  the returned namespace array
  *
- * Search all the namespace applying to a given element. @out returns
- * a NULL terminated array of all the namespaces found that needs to be
- * freed by the caller allocation failed.
+ * Find all in-scope namespaces of a node. @out returns a NULL
+ * terminated array of namespace pointers that must be freed by
+ * the caller.
  *
- * Returns 0 on success, 1 if no namespace were found, -1 if a memory
- * allocation failed.
+ * Returns 0 on success, 1 if no namespaces were found, -1 if a
+ * memory allocation failed.
  */
 int
 xmlGetNsListSafe(const xmlDoc *doc ATTRIBUTE_UNUSED, const xmlNode *node,
@@ -5885,10 +5900,13 @@ xmlGetNsListSafe(const xmlDoc *doc ATTRIBUTE_UNUSED, const xmlNode *node,
  * @doc:  the document
  * @node:  the current node
  *
- * Search all the namespace applying to a given element.
- * Returns an NULL terminated array of all the #xmlNsPtr found
- *         that need to be freed by the caller or NULL if a memory
- *         allocation failed
+ * Find all in-scope namespaces of a node.
+ *
+ * Use xmlGetNsListSafe for better error reporting.
+ *
+ * Returns a NULL terminated array of namespace pointers that must
+ * be freed by the caller or NULL if no namespaces were found or
+ * a memory allocation failed.
  */
 xmlNsPtr *
 xmlGetNsList(const xmlDoc *doc, const xmlNode *node)
@@ -6567,10 +6585,11 @@ xmlGetPropNodeValueInternal(const xmlAttr *prop)
  *
  * Search an attribute associated to a node
  * This function also looks in DTD attribute declaration for #FIXED or
- * default declaration values unless DTD use has been turned off.
+ * default declaration values.
  *
  * Returns the attribute or the attribute declaration or NULL if
- *         neither was found.
+ * neither was found. Also returns NULL if a memory allocation failed
+ * making this function unreliable.
  */
 xmlAttrPtr
 xmlHasProp(const xmlNode *node, const xmlChar *name) {
@@ -6620,11 +6639,12 @@ xmlHasProp(const xmlNode *node, const xmlChar *name) {
  * This attribute has to be anchored in the namespace specified.
  * This does the entity substitution.
  * This function looks in DTD attribute declaration for #FIXED or
- * default declaration values unless DTD use has been turned off.
+ * default declaration values.
  * Note that a namespace of NULL indicates to use the default namespace.
  *
- * Returns the attribute or the attribute declaration or NULL
- *     if neither was found.
+ * Returns the attribute or the attribute declaration or NULL if
+ * neither was found. Also returns NULL if a memory allocation failed
+ * making this function unreliable.
  */
 xmlAttrPtr
 xmlHasNsProp(const xmlNode *node, const xmlChar *name, const xmlChar *nameSpace) {

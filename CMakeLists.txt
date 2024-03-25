@@ -63,6 +63,7 @@ option(LIBXML2_WITH_XPTR "Add the XPointer support" ON)
 option(LIBXML2_WITH_XPTR_LOCS "Add support for XPointer locations" OFF)
 option(LIBXML2_WITH_ZLIB "Use libz" ON)
 set(LIBXML2_XMLCONF_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH "Working directory for XML Conformance Test Suite")
+option(LIBXML2_WITH_POSTFIX "Use postfix of lib name for msvc." OFF)
 
 if(LIBXML2_WITH_PYTHON)
 	check_include_files(unistd.h HAVE_UNISTD_H)
@@ -442,7 +443,7 @@ set_target_properties(
         SOVERSION ${LIBXML_MAJOR_VERSION}
 )
 
-if(MSVC)
+if(MSVC AND LIBXML2_WITH_POSTFIX)
 	if(BUILD_SHARED_LIBS)
 		set_target_properties(
 			LibXml2

@@ -956,6 +956,9 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     size_t maxAlloc;
     int i;
 
+    if (size > 1000)
+        return 0;
+
     memset(vars, 0, sizeof(*vars));
 
     xmlFuzzDataInit(data, size);

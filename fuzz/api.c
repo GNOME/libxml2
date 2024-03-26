@@ -38,7 +38,8 @@
 #endif
 
 #define MAX_CONTENT     100
-#define MAX_COPY         50
+#define MAX_COPY_NODES   50
+#define MAX_COPY_OPS     20
 
 typedef enum {
     /* Basic operations */
@@ -347,6 +348,8 @@ typedef struct {
     int intIdx;
     int stringIdx;
     int nodeIdx;
+
+    int numCopyOps;
 
     const char *opName;
 
@@ -794,7 +797,11 @@ done:
 
 static xmlNodePtr
 checkCopy(xmlNodePtr copy) {
-    if (countNodes(copy) > MAX_COPY) {
+    vars->numCopyOps += 1;
+
+    if (copy != NULL &&
+        (vars->numCopyOps > MAX_COPY_OPS ||
+         countNodes(copy) > MAX_COPY_NODES)) {
         if (copy->type == XML_DOCUMENT_NODE ||
             copy->type == XML_HTML_DOCUMENT_NODE)
             xmlFreeDoc((xmlDocPtr) copy);

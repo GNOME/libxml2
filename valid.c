@@ -5894,8 +5894,10 @@ xmlValidateOneElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
 			fullname = xmlBuildQName(child->name, child->ns->prefix,
 				                 fn, 50);
-			if (fullname == NULL)
+			if (fullname == NULL) {
+                            xmlVErrMemory(ctxt);
 			    return(0);
+                        }
 			cont = elemDecl->content;
 			while (cont != NULL) {
 			    if (cont->type == XML_ELEMENT_CONTENT_ELEMENT) {

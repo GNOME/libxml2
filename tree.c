@@ -3031,10 +3031,10 @@ xmlInsertProp(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
 static xmlNodePtr
 xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
               xmlNodePtr prev, xmlNodePtr next) {
+    xmlNodePtr oldParent;
+
     if (cur->type == XML_ATTRIBUTE_NODE)
 	return xmlInsertProp(doc, cur, parent, prev, next);
-
-    xmlUnlinkNodeInternal(cur);
 
     /*
      * Coalesce text nodes
@@ -3044,6 +3044,7 @@ xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
             (prev->name == cur->name)) {
             if (xmlTextAddContent(prev, cur->content, -1) < 0)
                 return(NULL);
+            xmlUnlinkNodeInternal(cur);
 	    xmlFreeNode(cur);
 	    return(prev);
 	}
@@ -3059,14 +3060,32 @@ xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
                 xmlTextSetContent(next, merged);
             }
 
+            xmlUnlinkNodeInternal(cur);
 	    xmlFreeNode(cur);
 	    return(next);
 	}
     }
 
+    /* Unlink */
+    oldParent = cur->parent;
+    if (oldParent != NULL) {
+        if (oldParent->children == cur)
+            oldParent->children = cur->next;
+        if (oldParent->last == cur)
+            oldParent->last = cur->prev;
+    }
+    if (cur->next != NULL)
+        cur->next->prev = cur->prev;
+    if (cur->prev != NULL)
+        cur->prev->next = cur->next;
+
     if (cur->doc != doc) {
-	if (xmlSetTreeDoc(cur, doc) < 0)
+	if (xmlSetTreeDoc(cur, doc) < 0) {
+            cur->parent = NULL;
+            cur->prev = NULL;
+            cur->next = NULL;
             return(NULL);
+        }
     }
 
     cur->parent = parent;

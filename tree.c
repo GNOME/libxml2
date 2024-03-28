@@ -3081,6 +3081,13 @@ xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
 
     if (cur->doc != doc) {
 	if (xmlSetTreeDoc(cur, doc) < 0) {
+            /*
+             * We shouldn't make any modifications to the inserted
+             * tree if a memory allocation fails, but that's hard to
+             * implement. The tree has been moved to the target
+             * document now but some contents are corrupted.
+             * Unlinking is the best we can do.
+             */
             cur->parent = NULL;
             cur->prev = NULL;
             cur->next = NULL;
@@ -3332,6 +3339,10 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  * avoid cycles in the tree structure. In general, only
  * document, document fragments, elements and attributes
  * should be used as parent nodes.
+ *
+ * When moving a node between documents and a memory allocation
+ * fails, the node's content will be corrupted and it will be
+ * unlinked. In this case, the node must be freed manually.
  *
  * Moving DTDs between documents isn't supported.
  *

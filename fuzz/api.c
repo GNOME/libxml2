@@ -2358,13 +2358,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
                 switch (op) {
                     case OP_XML_ADD_CHILD:
-                        argsOk =
-                            (parent != NULL &&
-                             node != NULL &&
-                             node->next == NULL &&
-                             node->prev == NULL &&
-                             (node->parent == NULL ||
-                              node->parent == parent));
+                        argsOk = (parent != NULL && node != NULL);
                         result = xmlAddChild(parent, node);
                         break;
                     case OP_XML_ADD_SIBLING:

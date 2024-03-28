@@ -3285,11 +3285,7 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  * @parent:  the parent node
  * @cur:  the child node
  *
- * Append @cur to the children of @parent.
- *
- * Unlike functions like xmlAddSibling, this function doesn't unlink
- * @cur before appending. It is an error if @cur has siblings or a
- * parent. This behavior might change in future releases.
+ * Unlink @cur and append it to the children of @parent.
  *
  * If @cur is a text node, it may be merged with an adjacent text
  * node and freed. In this case the text node containing the merged
@@ -3327,22 +3323,14 @@ xmlNodePtr
 xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     xmlNodePtr prev;
 
-    if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL)) {
-	return(NULL);
-    }
-
-    if ((cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
-        (cur->next != NULL) || (cur->prev != NULL) ||
-        ((cur->parent != NULL && cur->parent != parent))) {
-	return(NULL);
-    }
-
-    if (parent == cur) {
-	return(NULL);
-    }
+    if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL) ||
+        (cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
+        (parent == cur))
+        return(NULL);
 
     /*
-     * Handle text parent
+     * If parent is a text node, call xmlTextAddContent. This
+     * undocumented quirk should probably be removed.
      */
     if (parent->type == XML_TEXT_NODE) {
         if (xmlTextAddContent(parent, cur->content, -1) < 0)
@@ -3351,79 +3339,20 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
         return(parent);
     }
 
-    /*
-     * If cur is a TEXT node, merge its content with adjacent TEXT nodes
-     * cur is then freed.
-     */
-    if (cur->type == XML_TEXT_NODE) {
-        xmlNodePtr last = parent->last;
-
-	if ((last != NULL) && (last->type == XML_TEXT_NODE) &&
-	    (last->name == cur->name) &&
-            (last != cur)) {
-            if (xmlTextAddContent(last, cur->content, -1) < 0)
-                return(NULL);
-	    xmlFreeNode(cur);
-	    return(last);
-	}
-    } else if (cur->type == XML_ATTRIBUTE_NODE) {
-        if (parent->type != XML_ELEMENT_NODE)
-            return(NULL);
-    }
-
-    /*
-     * add the new element at the end of the children list.
-     */
-    prev = cur->parent;
-    if (cur->doc != parent->doc) {
-	if (xmlSetTreeDoc(cur, parent->doc) < 0)
-            return(NULL);
-    }
-    cur->parent = parent;
-    /* this check prevents a loop on tree-traversions if a developer
-     * tries to add a node to its parent multiple times
-     */
-    if (prev == parent)
-	return(cur);
-
     if (cur->type == XML_ATTRIBUTE_NODE) {
-	if (parent->properties != NULL) {
-	    /* check if an attribute with the same name exists */
-	    xmlAttrPtr lastattr;
-
-            lastattr = xmlGetPropNodeInternal(parent, cur->name,
-                    cur->ns ? cur->ns->href : NULL, 0);
-	    if (lastattr != NULL) {
-                if (lastattr == (xmlAttrPtr) cur)
-                    return(cur);
-		/* different instance, destroy it (attributes must be unique) */
-                xmlUnlinkNode((xmlNodePtr) lastattr);
-		xmlFreeProp(lastattr);
-	    }
-	}
-	if (parent->properties == NULL) {
-	    parent->properties = (xmlAttrPtr) cur;
-	} else {
-	    /* find the end */
-	    xmlAttrPtr lastattr = parent->properties;
-	    while (lastattr->next != NULL) {
-		lastattr = lastattr->next;
-	    }
-	    lastattr->next = (xmlAttrPtr) cur;
-	    ((xmlAttrPtr) cur)->prev = lastattr;
-	}
+        prev = (xmlNodePtr) parent->properties;
+        if (prev != NULL) {
+            while (prev->next != NULL)
+                prev = prev->next;
+        }
     } else {
-	if (parent->children == NULL) {
-	    parent->children = cur;
-	    parent->last = cur;
-	} else {
-	    prev = parent->last;
-	    prev->next = cur;
-	    cur->prev = prev;
-	    parent->last = cur;
-	}
+        prev = parent->last;
     }
-    return(cur);
+
+    if (cur == prev)
+        return(cur);
+
+    return(xmlInsertNode(parent->doc, cur, parent, prev, NULL));
 }
 
 /**
@@ -4246,32 +4175,6 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
       if (node->type == XML_ELEMENT_NODE)
         ret->line = node->line;
     }
-    if (parent != NULL) {
-	xmlNodePtr tmp;
-
-	/*
-	 * this is a tricky part for the node register thing:
-	 * in case ret does get coalesced in xmlAddChild
-	 * the deregister-node callback is called; so we register ret now already
-	 */
-	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
-	    xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
-
-        /*
-         * Note that since ret->parent is already set, xmlAddChild will
-         * return early and not actually insert the node. It will only
-         * coalesce text nodes and unnecessarily call xmlSetTreeDoc.
-         * Assuming that the subtree to be copied always has its text
-         * nodes coalesced, the somewhat confusing call to xmlAddChild
-         * could be removed.
-         */
-        tmp = xmlAddChild(parent, ret);
-	/* node could have coalesced */
-        if (tmp == NULL)
-            goto error;
-	if (tmp != ret)
-	    return(tmp);
-    }
 
     if (!extended)
 	goto out;
@@ -4381,9 +4284,7 @@ xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
     }
 
 out:
-    /* if parent != NULL we already registered the node above */
-    if ((parent == NULL) &&
-        ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue)))
+    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
     return(ret);
 

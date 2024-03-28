@@ -441,19 +441,24 @@ moveStr(int offset, xmlChar *str) {
  * injection.
  */
 static xmlChar *
-uncheckedStrdup(const xmlChar *str) {
+uncheckedStrndup(const xmlChar *str, int size) {
     xmlChar *copy;
 
     if (str == NULL)
         return NULL;
 
-    copy = BAD_CAST strndup((const char *) str, MAX_CONTENT);
+    copy = BAD_CAST strndup((const char *) str, size);
     if (copy == NULL) {
         fprintf(stderr, "out of memory\n");
         abort();
     }
 
     return copy;
+}
+
+static xmlChar *
+uncheckedStrdup(const xmlChar *str) {
+    return uncheckedStrndup(str, MAX_CONTENT);
 }
 
 static void
@@ -1958,18 +1963,36 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             case OP_XML_SET_PROP: {
                 xmlNodePtr node;
                 xmlAttrPtr oldAttr, attr;
-                const xmlChar *name, *value;
+                xmlNsPtr ns = NULL;
+                const xmlChar *name, *value, *localName;
+                xmlChar *prefix;
+                int prefixLen;
 
                 startOp("xmlSetProp");
                 incNodeIdx();
                 node = getNode(1);
                 name = getStr(0);
                 value = getStr(1);
-                oldAttr = xmlHasProp(node, name);
+
+                /*
+                 * Find the old attribute node which will be deleted.
+                 */
+                localName = xmlSplitQName3(name, &prefixLen);
+                if (localName != NULL) {
+                    prefix = uncheckedStrndup(name, prefixLen);
+                    ns = xmlSearchNs(NULL, node, prefix);
+                    xmlFree(prefix);
+                }
+                if (ns == NULL)
+                    oldAttr = xmlHasNsProp(node, name, NULL);
+                else
+                    oldAttr = xmlHasNsProp(node, localName, ns->href);
                 xmlFuzzResetMallocFailed();
                 if (oldAttr != NULL)
                     removeChildren((xmlNodePtr) oldAttr, 0);
+
                 attr = xmlSetProp(node, name, value);
+
                 oomReport =
                     (node != NULL && node->type == XML_ELEMENT_NODE &&
                      name != NULL &&

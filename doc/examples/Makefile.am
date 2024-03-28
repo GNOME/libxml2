@@ -1,8 +1,6 @@
 AM_CPPFLAGS = -I$(top_builddir)/include -I$(top_srcdir)/include
 LDADD = $(top_builddir)/libxml2.la
 
-CLEANFILES = *.tmp
-
 rebuild:
 	cd $(srcdir) && $(PYTHON) index.py
 	$(MAKE) Makefile
@@ -100,4 +98,3 @@ check-local:
 	@$(CHECKER) ./tree2 >/dev/null
 	@$(CHECKER) ./xpath1 test3.xml '//child2' >/dev/null
 	@$(CHECKER) ./xpath2 test3.xml '//discarded' discarded >/dev/null
-	@rm -f *.tmp

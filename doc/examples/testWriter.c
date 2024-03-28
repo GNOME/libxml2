@@ -17,14 +17,18 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/parser.h>
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 #if defined(LIBXML_WRITER_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 
 #define MY_ENCODING "ISO-8859-1"
 
 void testXmlwriterFilename(const char *uri);
-void testXmlwriterMemory(const char *file);
-void testXmlwriterDoc(const char *file);
-void testXmlwriterTree(const char *file);
+void testXmlwriterMemory(void);
+void testXmlwriterDoc(void);
+void testXmlwriterTree(void);
 xmlChar *ConvertInput(const char *in, const char *encoding);
 
 int
@@ -39,15 +43,16 @@ main(void)
 
     /* first, the file version */
     testXmlwriterFilename("writer1.tmp");
+    unlink("writer1.tmp");
 
     /* next, the memory version */
-    testXmlwriterMemory("writer2.tmp");
+    testXmlwriterMemory();
 
     /* next, the DOM version */
-    testXmlwriterDoc("writer3.tmp");
+    testXmlwriterDoc();
 
     /* next, the tree version */
-    testXmlwriterTree("writer4.tmp");
+    testXmlwriterTree();
 
     return 0;
 }
@@ -327,13 +332,12 @@ testXmlwriterFilename(const char *uri)
  * test the xmlWriter interface when writing to memory
  */
 void
-testXmlwriterMemory(const char *file)
+testXmlwriterMemory(void)
 {
     int rc;
     xmlTextWriterPtr writer;
     xmlBufferPtr buf;
     xmlChar *tmp;
-    FILE *fp;
 
     /* Create a new XML buffer, to which the XML document will be
      * written */
@@ -593,16 +597,6 @@ testXmlwriterMemory(const char *file)
 
     xmlFreeTextWriter(writer);
 
-    fp = fopen(file, "w");
-    if (fp == NULL) {
-        printf("testXmlwriterMemory: Error at fopen\n");
-        return;
-    }
-
-    fprintf(fp, "%s", (const char *) buf->content);
-
-    fclose(fp);
-
     xmlBufferFree(buf);
 }
 
@@ -613,7 +607,7 @@ testXmlwriterMemory(const char *file)
  * test the xmlWriter interface when creating a new document
  */
 void
-testXmlwriterDoc(const char *file)
+testXmlwriterDoc(void)
 {
     int rc;
     xmlTextWriterPtr writer;
@@ -853,8 +847,6 @@ testXmlwriterDoc(const char *file)
 
     xmlFreeTextWriter(writer);
 
-    xmlSaveFileEnc(file, doc, MY_ENCODING);
-
     xmlFreeDoc(doc);
 }
 
@@ -865,7 +857,7 @@ testXmlwriterDoc(const char *file)
  * test the xmlWriter interface when writing to a subtree
  */
 void
-testXmlwriterTree(const char *file)
+testXmlwriterTree(void)
 {
     int rc;
     xmlTextWriterPtr writer;
@@ -1118,8 +1110,6 @@ testXmlwriterTree(const char *file)
     }
 
     xmlFreeTextWriter(writer);
-
-    xmlSaveFileEnc(file, doc, MY_ENCODING);
 
     xmlFreeDoc(doc);
 }

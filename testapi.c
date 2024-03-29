@@ -19789,7 +19789,7 @@ test_xmlDocSetRootElement(void) {
         root = gen_xmlNodePtr_in(n_root, 1);
 
         ret_val = xmlDocSetRootElement(doc, root);
-        if (ret_val == NULL) { xmlFreeNode(root) ; root = NULL ; }
+        if (doc == NULL) { xmlFreeNode(root) ; root = NULL ; }
         desret_xmlNodePtr(ret_val);
         call_tests++;
         des_xmlDocPtr(n_doc, doc, 0);

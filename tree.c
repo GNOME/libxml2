@@ -5027,7 +5027,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
     xmlNodePtr old = NULL;
 
     if (doc == NULL) return(NULL);
-    if ((root == NULL) || (root->type != XML_ELEMENT_NODE))
+    if ((root == NULL) || (root->type == XML_NAMESPACE_DECL))
 	return(NULL);
     old = doc->children;
     while (old != NULL) {

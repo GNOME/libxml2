@@ -746,11 +746,13 @@ xmlNewNs(xmlNodePtr node, const xmlChar *href, const xmlChar *prefix) {
 	} else {
 	    xmlNsPtr prev = node->nsDef;
 
-	    if (xmlStrEqual(prev->prefix, cur->prefix))
+	    if ((xmlStrEqual(prev->prefix, cur->prefix)) &&
+                (prev->href != NULL))
                 goto error;
 	    while (prev->next != NULL) {
 	        prev = prev->next;
-		if (xmlStrEqual(prev->prefix, cur->prefix))
+		if ((xmlStrEqual(prev->prefix, cur->prefix)) &&
+                    (prev->href != NULL))
                     goto error;
 	    }
 	    prev->next = cur;
@@ -5993,7 +5995,8 @@ xmlSearchNsSafe(xmlNodePtr node, const xmlChar *prefix,
     while ((node != NULL) && (node->type == XML_ELEMENT_NODE)) {
         cur = node->nsDef;
         while (cur != NULL) {
-            if (xmlStrEqual(cur->prefix, prefix)) {
+            if ((xmlStrEqual(cur->prefix, prefix)) &&
+                (cur->href != NULL)) {
                 *out = cur;
                 return(0);
             }
@@ -6002,7 +6005,8 @@ xmlSearchNsSafe(xmlNodePtr node, const xmlChar *prefix,
         if (orig != node) {
             cur = node->ns;
             if ((cur != NULL) &&
-                (xmlStrEqual(cur->prefix, prefix))) {
+                (xmlStrEqual(cur->prefix, prefix)) &&
+                (cur->href != NULL)) {
                 *out = cur;
                 return(0);
             }

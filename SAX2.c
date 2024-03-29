@@ -558,17 +558,15 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
         if (ctxt->input != NULL)
             base = ctxt->input->filename;
 
-        if (base != NULL) {
-            if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
-                xmlSAX2ErrMemory(ctxt);
-                return;
-            }
-            if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
-                xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
-                xmlFree(URI);
-            } else {
-                ent->URI = URI;
-            }
+        if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
+            xmlSAX2ErrMemory(ctxt);
+            return;
+        }
+        if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
+            xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
+            xmlFree(URI);
+        } else {
+            ent->URI = URI;
         }
     }
 }

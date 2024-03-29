@@ -1688,6 +1688,8 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 root = getNode(2);
                 if (doc != NULL && doc->parent != NULL)
                     doc = NULL;
+                if (!isValidChild((xmlNodePtr) doc, root))
+                    root = NULL;
                 oldDoc = root ? root->doc : NULL;
                 oldParent = root ? root->parent : NULL;
 

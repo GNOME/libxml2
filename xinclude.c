@@ -1957,6 +1957,8 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
     if (ctxt->parseFlags & XML_PARSE_NOXINCNODE) {
 	/*
 	 * Add the list of nodes
+         *
+         * TODO: Coalesce text nodes unless we are streaming mode.
 	 */
 	while (list != NULL) {
 	    end = list;
@@ -1968,9 +1970,6 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
                 goto err_memory;
             }
 	}
-        /*
-         * FIXME: xmlUnlinkNode doesn't coalesce text nodes.
-         */
 	xmlUnlinkNode(cur);
 	xmlFreeNode(cur);
     } else {

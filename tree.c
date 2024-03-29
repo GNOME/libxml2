@@ -3030,7 +3030,7 @@ xmlInsertProp(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
 
 static xmlNodePtr
 xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
-              xmlNodePtr prev, xmlNodePtr next) {
+              xmlNodePtr prev, xmlNodePtr next, int coalesce) {
     xmlNodePtr oldParent;
 
     if (cur->type == XML_ATTRIBUTE_NODE)
@@ -3039,7 +3039,7 @@ xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
     /*
      * Coalesce text nodes
      */
-    if (cur->type == XML_TEXT_NODE) {
+    if ((coalesce) && (cur->type == XML_TEXT_NODE)) {
 	if ((prev != NULL) && (prev->type == XML_TEXT_NODE) &&
             (prev->name == cur->name)) {
             if (xmlTextAddContent(prev, cur->content, -1) < 0)
@@ -3122,9 +3122,7 @@ xmlInsertNode(xmlDocPtr doc, xmlNodePtr cur, xmlNodePtr parent,
  *
  * Unlinks @cur and inserts it as next sibling after @prev.
  *
- * If @cur is a text node, it may be merged with an adjacent text
- * node and freed. In this case the text node containing the merged
- * content is returned.
+ * Unlike xmlAddChild this function does not merge text nodes.
  *
  * If @cur is an attribute node, it is inserted after attribute
  * @prev. If the attribute list contains an attribute with a name
@@ -3145,7 +3143,7 @@ xmlAddNextSibling(xmlNodePtr prev, xmlNodePtr cur) {
     if (cur == prev->next)
         return(cur);
 
-    return(xmlInsertNode(prev->doc, cur, prev->parent, prev, prev->next));
+    return(xmlInsertNode(prev->doc, cur, prev->parent, prev, prev->next, 0));
 }
 
 #if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || \
@@ -3157,9 +3155,7 @@ xmlAddNextSibling(xmlNodePtr prev, xmlNodePtr cur) {
  *
  * Unlinks @cur and inserts it as previous sibling before @next.
  *
- * If @cur is a text node, it may be merged with an adjacent text
- * node and freed. In this case the text node containing the merged
- * content is returned.
+ * Unlike xmlAddChild this function does not merge text nodes.
  *
  * If @cur is an attribute node, it is inserted before attribute
  * @next. If the attribute list contains an attribute with a name
@@ -3180,7 +3176,7 @@ xmlAddPrevSibling(xmlNodePtr next, xmlNodePtr cur) {
     if (cur == next->prev)
         return(cur);
 
-    return(xmlInsertNode(next->doc, cur, next->parent, next->prev, next));
+    return(xmlInsertNode(next->doc, cur, next->parent, next->prev, next, 0));
 }
 #endif /* LIBXML_TREE_ENABLED */
 
@@ -3226,7 +3222,7 @@ xmlAddSibling(xmlNodePtr node, xmlNodePtr cur) {
     if (cur == node)
         return(cur);
 
-    return(xmlInsertNode(node->doc, cur, node->parent, node, NULL));
+    return(xmlInsertNode(node->doc, cur, node->parent, node, NULL, 1));
 }
 
 /**
@@ -3382,7 +3378,7 @@ xmlAddChild(xmlNodePtr parent, xmlNodePtr cur) {
     if (cur == prev)
         return(cur);
 
-    return(xmlInsertNode(parent->doc, cur, parent, prev, NULL));
+    return(xmlInsertNode(parent->doc, cur, parent, prev, NULL, 1));
 }
 
 /**

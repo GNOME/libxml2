@@ -612,7 +612,7 @@ xmlXIncludeBaseFixup(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur, xmlNodePtr copy,
                      const xmlChar *targetBase) {
     xmlChar *base = NULL;
     xmlChar *relBase = NULL;
-    xmlAttrPtr attr;
+    xmlNs ns;
     int res;
 
     if (xmlNodeGetBaseSafe(cur->doc, cur, &base) < 0)
@@ -645,12 +645,9 @@ xmlXIncludeBaseFixup(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur, xmlNodePtr copy,
     /*
      * Delete existing xml:base if bases are equal
      */
-    attr = xmlHasNsProp(copy, BAD_CAST "base",
-                        XML_XML_NAMESPACE);
-    if (attr != NULL) {
-        xmlUnlinkNode((xmlNodePtr) attr);
-        xmlFreeProp(attr);
-    }
+    memset(&ns, 0, sizeof(ns));
+    ns.href = XML_XML_NAMESPACE;
+    xmlUnsetNsProp(copy, &ns, BAD_CAST "base");
 
 done:
     xmlFree(base);

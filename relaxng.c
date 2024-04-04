@@ -5273,7 +5273,7 @@ xmlRelaxNGParseNameClass(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node,
                 if (tmp != NULL) {
                     if (last == NULL) {
                         last = tmp;
-                    } else {
+                    } else if (tmp != ret) {
                         last->next = tmp;
                         last = tmp;
                     }

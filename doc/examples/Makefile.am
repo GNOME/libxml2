@@ -28,7 +28,8 @@ EXTRA_DIST = \
 	index.py \
 	test1.xml \
 	test2.xml \
-	test3.xml
+	test3.xml \
+	meson.build
 
 check_PROGRAMS = \
 	io1 \

@@ -60,7 +60,8 @@ EXTRA_DIST = \
 	apibuild.py \
 	libxml2-api.xml \
 	xmlcatalog.xml \
-	xmllint.xml
+	xmllint.xml \
+	meson.build
 
 DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl
 

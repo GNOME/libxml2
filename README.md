@@ -21,8 +21,8 @@ This code is released under the MIT License, see the Copyright file.
 
 ## Build instructions
 
-libxml2 can be built with GNU Autotools, CMake, or several other build
-systems in platform-specific subdirectories.
+libxml2 can be built with GNU Autotools, CMake, meson or several other
+build systems in platform-specific subdirectories.
 
 ### Autotools (for POSIX systems like Linux, BSD, macOS)
 
@@ -120,6 +120,25 @@ Common CMake options include:
 
 You can also open the libxml source directory with its CMakeLists.txt
 directly in various IDEs such as CLion, QtCreator, or Visual Studio.
+
+### Meson
+
+Libxml can also be built with meson. Without option, simply call
+
+meson setup builddir
+ninja -C builddir
+
+To add options, see the meson_options.txt file. For example:
+
+meson setup -Dprefix=$prefix -Dftp=true -Dhistory=true -Dicu=true -Dhttp=true builddir
+
+To install libxml:
+
+ninja -C builddir install
+
+To launch tests:
+
+meson test -C builddir
 
 ## Dependencies
 

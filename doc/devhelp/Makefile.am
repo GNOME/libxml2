@@ -65,7 +65,7 @@ EXTRA_FORMAT=				\
 	up.png				\
 	style.css
 
-EXTRA_DIST = devhelp2.xsl html.xsl
+EXTRA_DIST = devhelp2.xsl html.xsl meson.build
 
 rebuild:
 	(cd $(srcdir) && $(XSLTPROC) -o libxml2.devhelp2 devhelp2.xsl ../libxml2-api.xml)

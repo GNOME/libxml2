@@ -75,3 +75,5 @@ check-local:
 	    fi ; \
 	  done)
 endif
+
+EXTRA_DIST = meson.build

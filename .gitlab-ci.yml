@@ -274,6 +274,18 @@ cmake:msvc:v141:x86:static:
     BUILD_SHARED_LIBS: "OFF"
     SUFFIX: static
 
+meson:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/test_meson.sh
+
+cmake:linux:gcc:shared:
+  extends: .cmake:linux
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    CC: gcc
+    SUFFIX: linux-gcc-shared
+
 pages:
   script:
     - mkdir -p public

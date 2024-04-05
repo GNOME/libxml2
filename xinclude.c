@@ -615,6 +615,9 @@ xmlXIncludeBaseFixup(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur, xmlNodePtr copy,
     xmlNs ns;
     int res;
 
+    if (cur->type != XML_ELEMENT_NODE)
+        return;
+
     if (xmlNodeGetBaseSafe(cur->doc, cur, &base) < 0)
         xmlXIncludeErrMemory(ctxt);
 

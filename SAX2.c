@@ -405,13 +405,18 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr ret = NULL;
     xmlChar *URI;
-    const char *base = NULL;
+    const xmlChar *base = NULL;
 
     if (ctx == NULL) return(NULL);
     if (ctxt->input != NULL)
-	base = ctxt->input->filename;
+	base = BAD_CAST ctxt->input->filename;
 
-    if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
+    if ((xmlStrlen(systemId) > XML_MAX_URI_LENGTH) ||
+        (xmlStrlen(base) > XML_MAX_URI_LENGTH)) {
+        xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
+        return(NULL);
+    }
+    if (xmlBuildURISafe(systemId, base, &URI) < 0) {
         xmlSAX2ErrMemory(ctxt);
         return(NULL);
     }

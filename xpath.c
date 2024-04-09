@@ -8316,6 +8316,21 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     if (ctxt->error != 0)
         goto error;
 
+    /*
+     * Account for quadratic runtime
+     */
+    if (ctxt->context->opLimit != 0) {
+        unsigned long f1 = xmlStrlen(from->stringval) / 100;
+        unsigned long f2 = xmlStrlen(str->stringval);
+
+        if ((f1 > 0) && (f2 > 0)) {
+            unsigned long p = f1 > ULONG_MAX / f2 ? ULONG_MAX : f1 * f2;
+
+            if (xmlXPathCheckOpLimit(ctxt, p) < 0)
+                goto error;
+        }
+    }
+
     target = xmlBufCreateSize(64);
     if (target == NULL) {
         xmlXPathPErrMemory(ctxt);

@@ -68,6 +68,8 @@ xmlFuzzErrorFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg ATTRIBUTE_UNUSED,
 
 static void *
 xmlFuzzMalloc(size_t size) {
+    void *ret;
+
     if (fuzzMaxAllocs > 0) {
         fuzzNumAllocs += 1;
         if (fuzzNumAllocs == fuzzMaxAllocs) {
@@ -75,14 +77,21 @@ xmlFuzzMalloc(size_t size) {
             abort();
 #endif
             fuzzAllocFailed = 1;
-            return(NULL);
+            return NULL;
         }
     }
-    return malloc(size);
+
+    ret = malloc(size);
+    if (ret == NULL)
+        fuzzAllocFailed = 1;
+
+    return ret;
 }
 
 static void *
 xmlFuzzRealloc(void *ptr, size_t size) {
+    void *ret;
+
     if (fuzzMaxAllocs > 0) {
         fuzzNumAllocs += 1;
         if (fuzzNumAllocs == fuzzMaxAllocs) {
@@ -90,10 +99,15 @@ xmlFuzzRealloc(void *ptr, size_t size) {
             abort();
 #endif
             fuzzAllocFailed = 1;
-            return(NULL);
+            return NULL;
         }
     }
-    return realloc(ptr, size);
+
+    ret = realloc(ptr, size);
+    if (ret == NULL)
+        fuzzAllocFailed = 1;
+
+    return ret;
 }
 
 void

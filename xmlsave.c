@@ -870,7 +870,8 @@ xmlOutputBufferWriteWSNonSig(xmlSaveCtxtPtr ctxt, int extra)
  * If @ctxt is supplied, @buf should be its buffer.
  */
 static void
-xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur, xmlSaveCtxtPtr ctxt) {
+xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNsPtr cur,
+                xmlSaveCtxtPtr ctxt) {
     if ((cur == NULL) || (buf == NULL)) return;
     if ((cur->type == XML_LOCAL_NAMESPACE) && (cur->href != NULL)) {
 	if (xmlStrEqual(cur->prefix, BAD_CAST "xml"))
@@ -887,22 +888,10 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur, xmlSaveCtxtPtr ctxt) {
 	    xmlOutputBufferWriteString(buf, (const char *)cur->prefix);
 	} else
 	    xmlOutputBufferWrite(buf, 5, "xmlns");
-	xmlOutputBufferWrite(buf, 1, "=");
-	xmlOutputBufferWriteQuotedString(buf, cur->href);
+        xmlOutputBufferWrite(buf, 2, "=\"");
+        xmlBufAttrSerializeTxtContent(buf, doc, cur->href);
+        xmlOutputBufferWrite(buf, 1, "\"");
     }
-}
-
-/**
- * xmlNsDumpOutputCtxt
- * @ctxt: the save context
- * @cur:  a namespace
- *
- * Dump a local Namespace definition to a save context.
- * Should be called in the context of attribute dumps.
- */
-static void
-xmlNsDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
-    xmlNsDumpOutput(ctxt->buf, cur, ctxt);
 }
 
 /**
@@ -914,9 +903,9 @@ xmlNsDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
  * Should be called in the context of attribute dumps.
  */
 static void
-xmlNsListDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
+xmlNsListDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlDocPtr doc, xmlNsPtr cur) {
     while (cur != NULL) {
-        xmlNsDumpOutput(ctxt->buf, cur, ctxt);
+        xmlNsDumpOutput(ctxt->buf, doc, cur, ctxt);
 	cur = cur->next;
     }
 }
@@ -932,7 +921,7 @@ xmlNsListDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
 void
 xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
     while (cur != NULL) {
-        xmlNsDumpOutput(buf, cur, NULL);
+        xmlNsDumpOutput(buf, NULL, cur, NULL);
 	cur = cur->next;
     }
 }
@@ -1168,7 +1157,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             }
             xmlOutputBufferWriteString(buf, (const char *)cur->name);
             if (cur->nsDef)
-                xmlNsListDumpOutputCtxt(ctxt, cur->nsDef);
+                xmlNsListDumpOutputCtxt(ctxt, cur->doc, cur->nsDef);
             for (attr = cur->properties; attr != NULL; attr = attr->next)
                 xmlAttrDumpOutput(ctxt, attr);
 
@@ -1308,7 +1297,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             break;
 
         case XML_NAMESPACE_DECL:
-            xmlNsDumpOutputCtxt(ctxt, (xmlNsPtr) cur);
+            xmlNsDumpOutput(buf, NULL, (xmlNsPtr) cur, ctxt);
             break;
 
         default:
@@ -1692,7 +1681,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    break;
 
         case XML_NAMESPACE_DECL:
-	    xmlNsDumpOutputCtxt(ctxt, (xmlNsPtr) cur);
+	    xmlNsDumpOutput(buf, NULL, (xmlNsPtr) cur, ctxt);
 	    break;
 
         case XML_DTD_NODE:
@@ -1747,7 +1736,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
             xmlOutputBufferWriteString(buf, (const char *)cur->name);
             if (cur->nsDef)
-                xmlNsListDumpOutputCtxt(ctxt, cur->nsDef);
+                xmlNsListDumpOutputCtxt(ctxt, cur->doc, cur->nsDef);
             if ((xmlStrEqual(cur->name, BAD_CAST "html") &&
                 (cur->ns == NULL) && (cur->nsDef == NULL))) {
                 /*

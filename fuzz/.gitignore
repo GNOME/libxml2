@@ -2,6 +2,7 @@ api
 corpus/
 genSeed
 html
+reader
 regexp
 schema
 seed/

@@ -1,5 +1,6 @@
 AUTOMAKE_OPTIONS = -Wno-syntax
-EXTRA_PROGRAMS = api genSeed html regexp schema uri valid xinclude xml xpath
+EXTRA_PROGRAMS = genSeed \
+		 api html reader regexp schema uri valid xinclude xml xpath
 check_PROGRAMS = testFuzzer
 EXTRA_DIST = html.dict regexp.dict schema.dict xml.dict xpath.dict \
 	     static_seed/uri static_seed/regexp fuzz.h
@@ -114,6 +115,26 @@ fuzz-html: html$(EXEEXT) seed/html.stamp
 	    -max_len=1000000 \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/html seed/html
+
+# Reader fuzzer
+
+seed/reader.stamp: genSeed$(EXEEXT)
+	@mkdir -p seed/reader
+	./genSeed$(EXEEXT) reader \
+	    $(XML_SEED_CORPUS_SRC) \
+	    '$(top_srcdir)/test/XInclude/docs/*'
+	@touch seed/reader.stamp
+
+reader_SOURCES = reader.c fuzz.c
+reader_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
+
+fuzz-reader: reader$(EXEEXT) seed/reader.stamp
+	@mkdir -p corpus/reader
+	./reader$(EXEEXT) \
+	    -dict=xml.dict \
+	    -max_len=$(XML_MAX_LEN) \
+	    $$XML_FUZZ_OPTIONS \
+	    corpus/reader seed/reader
 
 # API fuzzer
 

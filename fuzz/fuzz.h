@@ -18,6 +18,9 @@ extern "C" {
 #if defined(LIBXML_HTML_ENABLED)
   #define HAVE_HTML_FUZZER
 #endif
+#if defined(LIBXML_READER_ENABLED)
+  #define HAVE_READER_FUZZER
+#endif
 #if defined(LIBXML_REGEXP_ENABLED)
   #define HAVE_REGEXP_FUZZER
 #endif

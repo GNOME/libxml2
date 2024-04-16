@@ -22,6 +22,16 @@ int fuzzHtml(const char *data, size_t size);
 #undef LLVMFuzzerTestOneInput
 #endif
 
+#ifdef HAVE_READER_FUZZER
+int fuzzReaderInit(int *argc, char ***argv);
+int fuzzReader(const char *data, size_t size);
+#define LLVMFuzzerInitialize fuzzReaderInit
+#define LLVMFuzzerTestOneInput fuzzReader
+#include "reader.c"
+#undef LLVMFuzzerInitialize
+#undef LLVMFuzzerTestOneInput
+#endif
+
 #ifdef HAVE_REGEXP_FUZZER
 int fuzzRegexpInit(int *argc, char ***argv);
 int fuzzRegexp(const char *data, size_t size);
@@ -194,6 +204,10 @@ main(void) {
 #endif
 #ifdef HAVE_HTML_FUZZER
     if (testFuzzer(fuzzHtmlInit, fuzzHtml, "seed/html/*") != 0)
+        ret = 1;
+#endif
+#ifdef HAVE_READER_FUZZER
+    if (testFuzzer(fuzzReaderInit, fuzzReader, "seed/xml/*") != 0)
         ret = 1;
 #endif
 #ifdef HAVE_REGEXP_FUZZER

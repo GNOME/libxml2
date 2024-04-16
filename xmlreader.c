@@ -3892,10 +3892,7 @@ xmlTextReaderPreserve(xmlTextReaderPtr reader) {
     if (reader == NULL)
 	return(NULL);
 
-    if (reader->curnode != NULL)
-        cur = reader->curnode;
-    else
-        cur = reader->node;
+    cur = reader->node;
     if (cur == NULL)
         return(NULL);
 

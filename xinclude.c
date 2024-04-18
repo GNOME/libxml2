@@ -134,6 +134,7 @@ xmlXIncludeErrMemory(xmlXIncludeCtxtPtr ctxt)
 {
     ctxt->errNo = XML_ERR_NO_MEMORY;
     ctxt->fatalErr = 1;
+    ctxt->nbErrors++;
 
     xmlRaiseMemoryError(ctxt->errorHandler, NULL, ctxt->errorCtxt,
                         XML_FROM_XINCLUDE, NULL);

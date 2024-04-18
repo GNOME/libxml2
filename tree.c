@@ -226,7 +226,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
     while ((name[len] != 0) && (name[len] != ':'))
 	len++;
 
-    if (name[len] == 0)
+    if ((name[len] == 0) || (name[len+1] == 0))
 	return(NULL);
 
     *prefix = xmlStrndup(name, len);
@@ -274,7 +274,7 @@ xmlSplitQName3(const xmlChar *name, int *len) {
     while ((name[l] != 0) && (name[l] != ':'))
 	l++;
 
-    if (name[l] == 0)
+    if ((name[l] == 0) || (name[l+1] == 0))
 	return(NULL);
 
     *len = l;

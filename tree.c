@@ -9198,9 +9198,6 @@ xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
     *resNode = NULL;
 
     cur = node;
-    if (cur->type == XML_NAMESPACE_DECL)
-        return(-1);
-
     while (cur != NULL) {
 	if (cur->doc != sourceDoc) {
 	    /*

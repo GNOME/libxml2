@@ -161,22 +161,9 @@ struct _xmlTextReader {
 #define NODE_IS_PRESERVED	0x2
 #define NODE_IS_SPRESERVED	0x4
 
-/**
- * CONSTSTR:
- *
- * Macro used to return an interned string
- */
-#define CONSTSTR(str) xmlDictLookup(reader->dict, (str), -1)
-#define CONSTQSTR(p, str) xmlDictQLookup(reader->dict, (p), (str))
-
 static int xmlTextReaderReadTree(xmlTextReaderPtr reader);
 static int xmlTextReaderNextTree(xmlTextReaderPtr reader);
 
-/************************************************************************
- *									*
- *	Our own version of the freeing routines as we recycle nodes	*
- *									*
- ************************************************************************/
 /**
  * DICT_FREE:
  * @str:  a string
@@ -198,6 +185,55 @@ xmlTextReaderErrMemory(xmlTextReaderPtr reader) {
     reader->mode = XML_TEXTREADER_MODE_ERROR;
     reader->state = XML_TEXTREADER_ERROR;
 }
+
+static xmlChar *
+readerStrdup(xmlTextReaderPtr reader, const xmlChar *string) {
+    xmlChar *copy;
+
+    if (string == NULL)
+        return(NULL);
+
+    copy = xmlStrdup(string);
+    if (copy == NULL)
+        xmlTextReaderErrMemory(reader);
+
+    return(copy);
+}
+
+static const xmlChar *
+constString(xmlTextReaderPtr reader, const xmlChar *string) {
+    const xmlChar *dictString;
+
+    if (string == NULL)
+        return(NULL);
+
+    dictString = xmlDictLookup(reader->dict, string, -1);
+    if (dictString == NULL)
+        xmlTextReaderErrMemory(reader);
+
+    return(dictString);
+}
+
+static const xmlChar *
+constQString(xmlTextReaderPtr reader, const xmlChar *prefix,
+             const xmlChar *name) {
+    const xmlChar *dictString;
+
+    if (name == NULL)
+        return(NULL);
+
+    dictString = xmlDictQLookup(reader->dict, prefix, name);
+    if (dictString == NULL)
+        xmlTextReaderErrMemory(reader);
+
+    return(dictString);
+}
+
+/************************************************************************
+ *									*
+ *	Our own version of the freeing routines as we recycle nodes	*
+ *									*
+ ************************************************************************/
 
 /**
  * xmlTextReaderFreeProp:
@@ -850,27 +886,18 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
 	    reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
 				    reader->ctxt->myDoc, node, node->name);
 	} else {
-	    /* TODO use the BuildQName interface */
+            xmlChar buf[50];
 	    xmlChar *qname;
 
-	    qname = xmlStrdup(node->ns->prefix);
-            if (qname == NULL) {
-                xmlTextReaderErrMemory(reader);
-                return(-1);
-            }
-	    qname = xmlStrcat(qname, BAD_CAST ":");
-            if (qname == NULL) {
-                xmlTextReaderErrMemory(reader);
-                return(-1);
-            }
-	    qname = xmlStrcat(qname, node->name);
+	    qname = xmlBuildQName(node->name, node->ns->prefix, buf, 50);
             if (qname == NULL) {
                 xmlTextReaderErrMemory(reader);
                 return(-1);
             }
 	    reader->ctxt->valid &= xmlValidatePushElement(&reader->ctxt->vctxt,
 				    reader->ctxt->myDoc, node, qname);
-	    xmlFree(qname);
+            if (qname != buf)
+	        xmlFree(qname);
 	}
         /*if (reader->ctxt->errNo == XML_ERR_NO_MEMORY) {
             reader->mode = XML_TEXTREADER_MODE_ERROR;
@@ -958,27 +985,18 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 	    reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
 				    reader->ctxt->myDoc, node, node->name);
 	} else {
-	    /* TODO use the BuildQName interface */
+            xmlChar buf[50];
 	    xmlChar *qname;
 
-	    qname = xmlStrdup(node->ns->prefix);
-            if (qname == NULL) {
-                xmlTextReaderErrMemory(reader);
-                return(-1);
-            }
-	    qname = xmlStrcat(qname, BAD_CAST ":");
-            if (qname == NULL) {
-                xmlTextReaderErrMemory(reader);
-                return(-1);
-            }
-	    qname = xmlStrcat(qname, node->name);
+	    qname = xmlBuildQName(node->name, node->ns->prefix, buf, 50);
             if (qname == NULL) {
                 xmlTextReaderErrMemory(reader);
                 return(-1);
             }
 	    reader->ctxt->valid &= xmlValidatePopElement(&reader->ctxt->vctxt,
 				    reader->ctxt->myDoc, node, qname);
-	    xmlFree(qname);
+            if (qname != buf)
+	        xmlFree(qname);
 	}
         /*if (reader->ctxt->errNo == XML_ERR_NO_MEMORY) {
             reader->mode = XML_TEXTREADER_MODE_ERROR;
@@ -1757,7 +1775,7 @@ xmlTextReaderReadString(xmlTextReaderPtr reader)
     switch (node->type) {
     case XML_TEXT_NODE:
        if (node->content != NULL)
-           return(xmlStrdup(node->content));
+           return(readerStrdup(reader, node->content));
        break;
     case XML_ELEMENT_NODE:
 	if (xmlTextReaderDoExpand(reader) != -1) {
@@ -2214,6 +2232,7 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
  *			Methods for XmlTextReader			*
  *									*
  ************************************************************************/
+
 /**
  * xmlTextReaderClose:
  * @reader:  the xmlTextReaderPtr used
@@ -2294,7 +2313,7 @@ xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
 	ns = ns->next;
     }
     if (ns != NULL)
-	return(xmlStrdup(ns->href));
+	return(readerStrdup(reader, ns->href));
 
     cur = reader->node->properties;
     if (cur == NULL)
@@ -2307,7 +2326,8 @@ xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
     /* TODO walk the DTD if present */
 
     ret = xmlNodeListGetString(reader->node->doc, cur->children, 1);
-    if (ret == NULL) return(xmlStrdup((xmlChar *)""));
+    if (ret == NULL)
+        xmlTextReaderErrMemory(reader);
     return(ret);
 }
 
@@ -2324,9 +2344,10 @@ xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
 xmlChar *
 xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
     xmlChar *prefix = NULL;
-    xmlChar *localname;
+    const xmlChar *localname;
     xmlNsPtr ns;
     xmlChar *ret = NULL;
+    int result;
 
     if ((reader == NULL) || (name == NULL))
 	return(NULL);
@@ -2339,43 +2360,56 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
     if (reader->node->type != XML_ELEMENT_NODE)
 	return(NULL);
 
-    localname = xmlSplitQName2(name, &prefix);
+    localname = xmlSplitQName4(name, &prefix);
     if (localname == NULL) {
-		/*
-		 * Namespace default decl
-		 */
-		if (xmlStrEqual(name, BAD_CAST "xmlns")) {
-			ns = reader->node->nsDef;
-			while (ns != NULL) {
-				if (ns->prefix == NULL) {
-					return(xmlStrdup(ns->href));
-				}
-				ns = ns->next;
-			}
-			return NULL;
-		}
-		return(xmlGetNoNsProp(reader->node, name));
-	}
+        xmlTextReaderErrMemory(reader);
+        return(NULL);
+    }
+    if (prefix == NULL) {
+        /*
+         * Namespace default decl
+         */
+        if (xmlStrEqual(name, BAD_CAST "xmlns")) {
+            ns = reader->node->nsDef;
+            while (ns != NULL) {
+                if (ns->prefix == NULL) {
+                    return(readerStrdup(reader, ns->href));
+                }
+                ns = ns->next;
+            }
+            return NULL;
+        }
+
+        result = xmlNodeGetAttrValue(reader->node, name, NULL, &ret);
+        if (result < 0)
+            xmlTextReaderErrMemory(reader);
+        return(ret);
+    }
 
     /*
      * Namespace default decl
      */
     if (xmlStrEqual(prefix, BAD_CAST "xmlns")) {
-		ns = reader->node->nsDef;
-		while (ns != NULL) {
-			if ((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localname))) {
-				ret = xmlStrdup(ns->href);
-				break;
-			}
-			ns = ns->next;
-		}
+        ns = reader->node->nsDef;
+        while (ns != NULL) {
+            if ((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localname))) {
+                ret = readerStrdup(reader, ns->href);
+                break;
+            }
+            ns = ns->next;
+        }
     } else {
-		ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
-		if (ns != NULL)
-			ret = xmlGetNsProp(reader->node, localname, ns->href);
-	}
+        result = xmlSearchNsSafe(reader->node, prefix, &ns);
+        if (result < 0)
+            xmlTextReaderErrMemory(reader);
+        if (ns != NULL) {
+            result = xmlNodeGetAttrValue(reader->node, localname, ns->href,
+                                         &ret);
+            if (result < 0)
+                xmlTextReaderErrMemory(reader);
+        }
+    }
 
-    xmlFree(localname);
     if (prefix != NULL)
         xmlFree(prefix);
     return(ret);
@@ -2396,8 +2430,10 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 xmlChar *
 xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
 			    const xmlChar *namespaceURI) {
+    xmlChar *ret = NULL;
     xmlChar *prefix = NULL;
     xmlNsPtr ns;
+    int result;
 
     if ((reader == NULL) || (localName == NULL))
 	return(NULL);
@@ -2411,21 +2447,25 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
 	return(NULL);
 
     if (xmlStrEqual(namespaceURI, BAD_CAST "http://www.w3.org/2000/xmlns/")) {
-		if (! xmlStrEqual(localName, BAD_CAST "xmlns")) {
-			prefix = BAD_CAST localName;
-		}
-		ns = reader->node->nsDef;
-		while (ns != NULL) {
-			if ((prefix == NULL && ns->prefix == NULL) ||
-				((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localName)))) {
-				return xmlStrdup(ns->href);
-			}
-			ns = ns->next;
-		}
-		return NULL;
+        if (! xmlStrEqual(localName, BAD_CAST "xmlns")) {
+            prefix = BAD_CAST localName;
+        }
+        ns = reader->node->nsDef;
+        while (ns != NULL) {
+            if ((prefix == NULL && ns->prefix == NULL) ||
+                ((ns->prefix != NULL) && (xmlStrEqual(ns->prefix, localName)))) {
+                return readerStrdup(reader, ns->href);
+            }
+            ns = ns->next;
+        }
+        return NULL;
     }
 
-    return(xmlGetNsProp(reader->node, localName, namespaceURI));
+    result = xmlNodeGetAttrValue(reader->node, localName, namespaceURI, &ret);
+    if (result < 0)
+        xmlTextReaderErrMemory(reader);
+
+    return(ret);
 }
 
 /**
@@ -2493,16 +2533,21 @@ xmlTextReaderGetRemainder(xmlTextReaderPtr reader) {
 xmlChar *
 xmlTextReaderLookupNamespace(xmlTextReaderPtr reader, const xmlChar *prefix) {
     xmlNsPtr ns;
+    int result;
 
     if (reader == NULL)
 	return(NULL);
     if (reader->node == NULL)
 	return(NULL);
 
-    ns = xmlSearchNs(reader->node->doc, reader->node, prefix);
+    result = xmlSearchNsSafe(reader->node, prefix, &ns);
+    if (result < 0) {
+        xmlTextReaderErrMemory(reader);
+        return(NULL);
+    }
     if (ns == NULL)
 	return(NULL);
-    return(xmlStrdup(ns->href));
+    return(readerStrdup(reader, ns->href));
 }
 
 /**
@@ -2568,7 +2613,7 @@ xmlTextReaderMoveToAttributeNo(xmlTextReaderPtr reader, int no) {
 int
 xmlTextReaderMoveToAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
     xmlChar *prefix = NULL;
-    xmlChar *localname;
+    const xmlChar *localname;
     xmlNsPtr ns;
     xmlAttrPtr prop;
 
@@ -2581,8 +2626,12 @@ xmlTextReaderMoveToAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
     if (reader->node->type != XML_ELEMENT_NODE)
 	return(0);
 
-    localname = xmlSplitQName2(name, &prefix);
+    localname = xmlSplitQName4(name, &prefix);
     if (localname == NULL) {
+        xmlTextReaderErrMemory(reader);
+        return(-1);
+    }
+    if (prefix == NULL) {
 	/*
 	 * Namespace default decl
 	 */
@@ -2644,15 +2693,11 @@ xmlTextReaderMoveToAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 	prop = prop->next;
     }
 not_found:
-    if (localname != NULL)
-        xmlFree(localname);
     if (prefix != NULL)
         xmlFree(prefix);
     return(0);
 
 found:
-    if (localname != NULL)
-        xmlFree(localname);
     if (prefix != NULL)
         xmlFree(prefix);
     return(1);
@@ -2888,7 +2933,7 @@ xmlTextReaderConstEncoding(xmlTextReaderPtr reader) {
     else if (reader->doc != NULL)
         encoding = reader->doc->encoding;
 
-    return(CONSTSTR(encoding));
+    return(constString(reader, encoding));
 }
 
 
@@ -3062,14 +3107,14 @@ xmlTextReaderLocalName(xmlTextReaderPtr reader) {
     if (node->type == XML_NAMESPACE_DECL) {
 	xmlNsPtr ns = (xmlNsPtr) node;
 	if (ns->prefix == NULL)
-	    return(xmlStrdup(BAD_CAST "xmlns"));
+	    return(readerStrdup(reader, BAD_CAST "xmlns"));
 	else
-	    return(xmlStrdup(ns->prefix));
+	    return(readerStrdup(reader, ns->prefix));
     }
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(xmlTextReaderName(reader));
-    return(xmlStrdup(node->name));
+    return(readerStrdup(reader, node->name));
 }
 
 /**
@@ -3093,7 +3138,7 @@ xmlTextReaderConstLocalName(xmlTextReaderPtr reader) {
     if (node->type == XML_NAMESPACE_DECL) {
 	xmlNsPtr ns = (xmlNsPtr) node;
 	if (ns->prefix == NULL)
-	    return(CONSTSTR(BAD_CAST "xmlns"));
+	    return(constString(reader, BAD_CAST "xmlns"));
 	else
 	    return(ns->prefix);
     }
@@ -3128,41 +3173,41 @@ xmlTextReaderName(xmlTextReaderPtr reader) {
         case XML_ATTRIBUTE_NODE:
 	    if ((node->ns == NULL) ||
 		(node->ns->prefix == NULL))
-		return(xmlStrdup(node->name));
+		return(readerStrdup(reader, node->name));
 
-	    ret = xmlStrdup(node->ns->prefix);
-	    ret = xmlStrcat(ret, BAD_CAST ":");
-	    ret = xmlStrcat(ret, node->name);
+            ret = xmlBuildQName(node->name, node->ns->prefix, NULL, 0);
+            if (ret == NULL)
+                xmlTextReaderErrMemory(reader);
 	    return(ret);
         case XML_TEXT_NODE:
-	    return(xmlStrdup(BAD_CAST "#text"));
+	    return(readerStrdup(reader, BAD_CAST "#text"));
         case XML_CDATA_SECTION_NODE:
-	    return(xmlStrdup(BAD_CAST "#cdata-section"));
+	    return(readerStrdup(reader, BAD_CAST "#cdata-section"));
         case XML_ENTITY_NODE:
         case XML_ENTITY_REF_NODE:
-	    return(xmlStrdup(node->name));
+	    return(readerStrdup(reader, node->name));
         case XML_PI_NODE:
-	    return(xmlStrdup(node->name));
+	    return(readerStrdup(reader, node->name));
         case XML_COMMENT_NODE:
-	    return(xmlStrdup(BAD_CAST "#comment"));
+	    return(readerStrdup(reader, BAD_CAST "#comment"));
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
-	    return(xmlStrdup(BAD_CAST "#document"));
+	    return(readerStrdup(reader, BAD_CAST "#document"));
         case XML_DOCUMENT_FRAG_NODE:
-	    return(xmlStrdup(BAD_CAST "#document-fragment"));
+	    return(readerStrdup(reader, BAD_CAST "#document-fragment"));
         case XML_NOTATION_NODE:
-	    return(xmlStrdup(node->name));
+	    return(readerStrdup(reader, node->name));
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DTD_NODE:
-	    return(xmlStrdup(node->name));
+	    return(readerStrdup(reader, node->name));
         case XML_NAMESPACE_DECL: {
 	    xmlNsPtr ns = (xmlNsPtr) node;
 
-	    ret = xmlStrdup(BAD_CAST "xmlns");
 	    if (ns->prefix == NULL)
-		return(ret);
-	    ret = xmlStrcat(ret, BAD_CAST ":");
-	    ret = xmlStrcat(ret, ns->prefix);
+		return(readerStrdup(reader, BAD_CAST "xmlns"));
+            ret = xmlBuildQName(ns->prefix, BAD_CAST "xmlns", NULL, 0);
+            if (ret == NULL)
+                xmlTextReaderErrMemory(reader);
 	    return(ret);
 	}
 
@@ -3201,34 +3246,34 @@ xmlTextReaderConstName(xmlTextReaderPtr reader) {
 	    if ((node->ns == NULL) ||
 		(node->ns->prefix == NULL))
 		return(node->name);
-	    return(CONSTQSTR(node->ns->prefix, node->name));
+	    return(constQString(reader, node->ns->prefix, node->name));
         case XML_TEXT_NODE:
-	    return(CONSTSTR(BAD_CAST "#text"));
+	    return(constString(reader, BAD_CAST "#text"));
         case XML_CDATA_SECTION_NODE:
-	    return(CONSTSTR(BAD_CAST "#cdata-section"));
+	    return(constString(reader, BAD_CAST "#cdata-section"));
         case XML_ENTITY_NODE:
         case XML_ENTITY_REF_NODE:
-	    return(CONSTSTR(node->name));
+	    return(constString(reader, node->name));
         case XML_PI_NODE:
-	    return(CONSTSTR(node->name));
+	    return(constString(reader, node->name));
         case XML_COMMENT_NODE:
-	    return(CONSTSTR(BAD_CAST "#comment"));
+	    return(constString(reader, BAD_CAST "#comment"));
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
-	    return(CONSTSTR(BAD_CAST "#document"));
+	    return(constString(reader, BAD_CAST "#document"));
         case XML_DOCUMENT_FRAG_NODE:
-	    return(CONSTSTR(BAD_CAST "#document-fragment"));
+	    return(constString(reader, BAD_CAST "#document-fragment"));
         case XML_NOTATION_NODE:
-	    return(CONSTSTR(node->name));
+	    return(constString(reader, node->name));
         case XML_DOCUMENT_TYPE_NODE:
         case XML_DTD_NODE:
-	    return(CONSTSTR(node->name));
+	    return(constString(reader, node->name));
         case XML_NAMESPACE_DECL: {
 	    xmlNsPtr ns = (xmlNsPtr) node;
 
 	    if (ns->prefix == NULL)
-		return(CONSTSTR(BAD_CAST "xmlns"));
-	    return(CONSTQSTR(BAD_CAST "xmlns", ns->prefix));
+		return(constString(reader, BAD_CAST "xmlns"));
+	    return(constQString(reader, BAD_CAST "xmlns", ns->prefix));
 	}
 
         case XML_ELEMENT_DECL:
@@ -3263,13 +3308,13 @@ xmlTextReaderPrefix(xmlTextReaderPtr reader) {
 	xmlNsPtr ns = (xmlNsPtr) node;
 	if (ns->prefix == NULL)
 	    return(NULL);
-	return(xmlStrdup(BAD_CAST "xmlns"));
+	return(readerStrdup(reader, BAD_CAST "xmlns"));
     }
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
     if ((node->ns != NULL) && (node->ns->prefix != NULL))
-	return(xmlStrdup(node->ns->prefix));
+	return(readerStrdup(reader, node->ns->prefix));
     return(NULL);
 }
 
@@ -3295,13 +3340,13 @@ xmlTextReaderConstPrefix(xmlTextReaderPtr reader) {
 	xmlNsPtr ns = (xmlNsPtr) node;
 	if (ns->prefix == NULL)
 	    return(NULL);
-	return(CONSTSTR(BAD_CAST "xmlns"));
+	return(constString(reader, BAD_CAST "xmlns"));
     }
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
     if ((node->ns != NULL) && (node->ns->prefix != NULL))
-	return(CONSTSTR(node->ns->prefix));
+	return(constString(reader, node->ns->prefix));
     return(NULL);
 }
 
@@ -3324,12 +3369,12 @@ xmlTextReaderNamespaceUri(xmlTextReaderPtr reader) {
     else
 	node = reader->node;
     if (node->type == XML_NAMESPACE_DECL)
-	return(xmlStrdup(BAD_CAST "http://www.w3.org/2000/xmlns/"));
+	return(readerStrdup(reader, BAD_CAST "http://www.w3.org/2000/xmlns/"));
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
     if (node->ns != NULL)
-	return(xmlStrdup(node->ns->href));
+	return(readerStrdup(reader, node->ns->href));
     return(NULL);
 }
 
@@ -3352,12 +3397,12 @@ xmlTextReaderConstNamespaceUri(xmlTextReaderPtr reader) {
     else
 	node = reader->node;
     if (node->type == XML_NAMESPACE_DECL)
-	return(CONSTSTR(BAD_CAST "http://www.w3.org/2000/xmlns/"));
+	return(constString(reader, BAD_CAST "http://www.w3.org/2000/xmlns/"));
     if ((node->type != XML_ELEMENT_NODE) &&
 	(node->type != XML_ATTRIBUTE_NODE))
 	return(NULL);
     if (node->ns != NULL)
-	return(CONSTSTR(node->ns->href));
+	return(constString(reader, node->ns->href));
     return(NULL);
 }
 
@@ -3372,9 +3417,16 @@ xmlTextReaderConstNamespaceUri(xmlTextReaderPtr reader) {
  */
 xmlChar *
 xmlTextReaderBaseUri(xmlTextReaderPtr reader) {
+    xmlChar *ret = NULL;
+    int result;
+
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    return(xmlNodeGetBase(NULL, reader->node));
+    result = xmlNodeGetBaseSafe(NULL, reader->node, &ret);
+    if (result < 0)
+        xmlTextReaderErrMemory(reader);
+
+    return(ret);
 }
 
 /**
@@ -3390,13 +3442,16 @@ const xmlChar *
 xmlTextReaderConstBaseUri(xmlTextReaderPtr reader) {
     xmlChar *tmp;
     const xmlChar *ret;
+    int result;
 
     if ((reader == NULL) || (reader->node == NULL))
 	return(NULL);
-    tmp = xmlNodeGetBase(NULL, reader->node);
+    result = xmlNodeGetBaseSafe(NULL, reader->node, &tmp);
+    if (result < 0)
+        xmlTextReaderErrMemory(reader);
     if (tmp == NULL)
         return(NULL);
-    ret = CONSTSTR(tmp);
+    ret = constString(reader, tmp);
     xmlFree(tmp);
     return(ret);
 }
@@ -3509,23 +3564,24 @@ xmlTextReaderValue(xmlTextReaderPtr reader) {
 
     switch (node->type) {
         case XML_NAMESPACE_DECL:
-	    return(xmlStrdup(((xmlNsPtr) node)->href));
+	    return(readerStrdup(reader, ((xmlNsPtr) node)->href));
         case XML_ATTRIBUTE_NODE:{
 	    xmlAttrPtr attr = (xmlAttrPtr) node;
+            xmlDocPtr doc = NULL;
+            xmlChar *ret;
 
 	    if (attr->parent != NULL)
-		return (xmlNodeListGetString
-			(attr->parent->doc, attr->children, 1));
-	    else
-		return (xmlNodeListGetString(NULL, attr->children, 1));
-	    break;
+                doc = attr->parent->doc;
+	    ret = xmlNodeListGetString(doc, attr->children, 1);
+            if (ret == NULL)
+                xmlTextReaderErrMemory(reader);
+	    return(ret);
 	}
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
         case XML_PI_NODE:
         case XML_COMMENT_NODE:
-            if (node->content != NULL)
-                return (xmlStrdup(node->content));
+            return(readerStrdup(reader, node->content));
 	default:
 	    break;
     }
@@ -3668,7 +3724,7 @@ xmlTextReaderConstXmlLang(xmlTextReaderPtr reader) {
     tmp = xmlNodeGetLang(reader->node);
     if (tmp == NULL)
         return(NULL);
-    ret = CONSTSTR(tmp);
+    ret = constString(reader, tmp);
     xmlFree(tmp);
     return(ret);
 }
@@ -3688,7 +3744,7 @@ const xmlChar *
 xmlTextReaderConstString(xmlTextReaderPtr reader, const xmlChar *str) {
     if (reader == NULL)
 	return(NULL);
-    return(CONSTSTR(str));
+    return(constString(reader, str));
 }
 
 /**
@@ -4508,7 +4564,7 @@ xmlTextReaderConstXmlVersion(xmlTextReaderPtr reader) {
     if (doc->version == NULL)
 	return(NULL);
     else
-      return(CONSTSTR(doc->version));
+      return(constString(reader, doc->version));
 }
 
 /**
@@ -4921,6 +4977,8 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
     if (options & XML_PARSE_XINCLUDE) {
         reader->xinclude = 1;
 	reader->xinclude_name = xmlDictLookup(reader->dict, XINCLUDE_NODE, -1);
+        if (reader->xinclude_name == NULL)
+            return(-1);
 	options -= XML_PARSE_XINCLUDE;
     } else
         reader->xinclude = 0;
@@ -4947,9 +5005,12 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
     if (encoding != NULL)
         xmlSwitchEncodingName(reader->ctxt, encoding);
     if ((URL != NULL) && (reader->ctxt->input != NULL) &&
-        (reader->ctxt->input->filename == NULL))
+        (reader->ctxt->input->filename == NULL)) {
         reader->ctxt->input->filename = (char *)
             xmlStrdup((const xmlChar *) URL);
+        if (reader->ctxt->input->filename == NULL)
+            return(-1);
+    }
 
     reader->doc = NULL;
 
@@ -5078,7 +5139,10 @@ xmlReaderForFile(const char *filename, const char *encoding, int options)
     reader = xmlNewTextReaderFilename(filename);
     if (reader == NULL)
         return (NULL);
-    xmlTextReaderSetup(reader, NULL, NULL, encoding, options);
+    if (xmlTextReaderSetup(reader, NULL, NULL, encoding, options) < 0) {
+        xmlFreeTextReader(reader);
+        return (NULL);
+    }
     return (reader);
 }
 
@@ -5112,7 +5176,10 @@ xmlReaderForMemory(const char *buffer, int size, const char *URL,
         return (NULL);
     }
     reader->allocs |= XML_TEXTREADER_INPUT;
-    xmlTextReaderSetup(reader, NULL, URL, encoding, options);
+    if (xmlTextReaderSetup(reader, NULL, URL, encoding, options) < 0) {
+        xmlFreeTextReader(reader);
+        return (NULL);
+    }
     return (reader);
 }
 
@@ -5149,7 +5216,10 @@ xmlReaderForFd(int fd, const char *URL, const char *encoding, int options)
         return (NULL);
     }
     reader->allocs |= XML_TEXTREADER_INPUT;
-    xmlTextReaderSetup(reader, NULL, URL, encoding, options);
+    if (xmlTextReaderSetup(reader, NULL, URL, encoding, options) < 0) {
+        xmlFreeTextReader(reader);
+        return (NULL);
+    }
     return (reader);
 }
 
@@ -5191,7 +5261,10 @@ xmlReaderForIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
         return (NULL);
     }
     reader->allocs |= XML_TEXTREADER_INPUT;
-    xmlTextReaderSetup(reader, NULL, URL, encoding, options);
+    if (xmlTextReaderSetup(reader, NULL, URL, encoding, options) < 0) {
+        xmlFreeTextReader(reader);
+        return (NULL);
+    }
     return (reader);
 }
 

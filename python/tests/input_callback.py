@@ -101,7 +101,7 @@ run_test(desc="Loading entity with custom callback",
         exp_status="loaded", exp_err=[
             (  3, 'failed to load "http://example.com/dtds/sample.dtd": Attempt to load network entity\n'),
             ( -1, "Attempt to load network entity: http://example.com/dtds/sample.dtd"),
-            (  4, "Entity 'sample.entity' not defined\n")
+            (  3, "Entity 'sample.entity' not defined\n")
             ])
 
 # Register a catalog (also accessible via pystr://) and retry
@@ -114,7 +114,7 @@ run_test(desc="Loading entity and unregistering callback",
         test_callback=lambda: libxml2.popInputCallbacks(),
         exp_status="loaded", exp_err=[
             ( 3, "failed to load \"py://strings/dtds/sample.dtd\": No such file or directory\n"),
-            ( 4, "Entity 'sample.entity' not defined\n")
+            ( 3, "Entity 'sample.entity' not defined\n")
             ])
 
 # Try to load the document again

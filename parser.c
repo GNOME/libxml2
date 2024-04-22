@@ -7600,8 +7600,8 @@ xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 		     "Entity '%s' not defined\n", name);
 	} else {
-	    xmlErrMsgStr(ctxt, XML_WAR_UNDECLARED_ENTITY,
-		     "Entity '%s' not defined\n", name);
+	    xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+		          "Entity '%s' not defined\n", name, NULL);
 	    if ((ctxt->inSubset == 0) &&
 		(ctxt->sax != NULL) &&
                 (ctxt->disableSAX == 0) &&
@@ -7844,7 +7844,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 	     * precede any reference to it...
 	     */
             if ((ctxt->validate) && (ctxt->vctxt.error != NULL)) {
-                xmlValidityError(ctxt, XML_WAR_UNDECLARED_ENTITY,
+                xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
                                  "PEReference: %%%s; not found\n",
                                  name, NULL);
             } else

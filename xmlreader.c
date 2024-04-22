@@ -1655,6 +1655,37 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
 }
 
 #ifdef LIBXML_WRITER_ENABLED
+static void
+xmlTextReaderDumpCopy(xmlTextReaderPtr reader, xmlOutputBufferPtr output,
+                      xmlNodePtr node) {
+    if ((node->type == XML_DTD_NODE) ||
+        (node->type == XML_ELEMENT_DECL) ||
+        (node->type == XML_ATTRIBUTE_DECL) ||
+        (node->type == XML_ENTITY_DECL))
+        return;
+
+    if ((node->type == XML_DOCUMENT_NODE) ||
+        (node->type == XML_HTML_DOCUMENT_NODE)) {
+        xmlNodeDumpOutput(output, node->doc, node, 0, 0, NULL);
+    } else {
+        xmlNodePtr copy;
+
+        /*
+         * Create a copy to make sure that namespace declarations from
+         * ancestors are added.
+         */
+        copy = xmlDocCopyNode(node, node->doc, 1);
+        if (copy == NULL) {
+            xmlTextReaderErrMemory(reader);
+            return;
+        }
+
+        xmlNodeDumpOutput(output, copy->doc, copy, 0, 0, NULL);
+
+        xmlFreeNode(copy);
+    }
+}
+
 /**
  * xmlTextReaderReadInnerXml:
  * @reader:  the xmlTextReaderPtr used
@@ -1666,47 +1697,36 @@ xmlTextReaderNext(xmlTextReaderPtr reader) {
  *         string must be deallocated by the caller.
  */
 xmlChar *
-xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
+xmlTextReaderReadInnerXml(xmlTextReaderPtr reader)
 {
-    xmlChar *resbuf;
-    xmlNodePtr node, cur_node;
-    xmlBufferPtr buff, buff2;
-    xmlDocPtr doc;
+    xmlOutputBufferPtr output;
+    xmlNodePtr cur;
+    xmlChar *ret;
 
-    if (xmlTextReaderExpand(reader) == NULL) {
-        return NULL;
-    }
-    doc = reader->node->doc;
-    buff = xmlBufferCreate();
-    if (buff == NULL)
-        return NULL;
-    xmlBufferSetAllocationScheme(buff, XML_BUFFER_ALLOC_DOUBLEIT);
-    for (cur_node = reader->node->children; cur_node != NULL;
-         cur_node = cur_node->next) {
-        /* XXX: Why is the node copied? */
-        node = xmlDocCopyNode(cur_node, doc, 1);
-        /* XXX: Why do we need a second buffer? */
-        buff2 = xmlBufferCreate();
-        xmlBufferSetAllocationScheme(buff2, XML_BUFFER_ALLOC_DOUBLEIT);
-        if (xmlNodeDump(buff2, doc, node, 0, 0) == -1) {
-            xmlFreeNode(node);
-            xmlBufferFree(buff2);
-            xmlBufferFree(buff);
-            return NULL;
-        }
-        xmlBufferCat(buff, buff2->content);
-        xmlFreeNode(node);
-        xmlBufferFree(buff2);
-    }
-    resbuf = buff->content;
-    buff->content = NULL;
+    if (xmlTextReaderExpand(reader) == NULL)
+        return(NULL);
 
-    xmlBufferFree(buff);
-    return resbuf;
+    if (reader->node == NULL)
+        return(NULL);
+
+    output = xmlAllocOutputBuffer(NULL);
+    if (output == NULL) {
+        xmlTextReaderErrMemory(reader);
+        return(NULL);
+    }
+
+    for (cur = reader->node->children; cur != NULL; cur = cur->next)
+        xmlTextReaderDumpCopy(reader, output, cur);
+
+    if (output->error)
+        xmlCtxtErrIO(reader->ctxt, output->error, NULL);
+
+    ret = xmlBufDetach(output->buffer);
+    xmlOutputBufferClose(output);
+
+    return(ret);
 }
-#endif
 
-#ifdef LIBXML_WRITER_ENABLED
 /**
  * xmlTextReaderReadOuterXml:
  * @reader:  the xmlTextReaderPtr used
@@ -1718,38 +1738,33 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
  *         by the caller.
  */
 xmlChar *
-xmlTextReaderReadOuterXml(xmlTextReaderPtr reader ATTRIBUTE_UNUSED)
+xmlTextReaderReadOuterXml(xmlTextReaderPtr reader)
 {
-    xmlChar *resbuf;
+    xmlOutputBufferPtr output;
     xmlNodePtr node;
-    xmlBufferPtr buff;
-    xmlDocPtr doc;
+    xmlChar *ret;
 
-    if (xmlTextReaderExpand(reader) == NULL) {
-        return NULL;
-    }
+    if (xmlTextReaderExpand(reader) == NULL)
+        return(NULL);
+
     node = reader->node;
-    doc = node->doc;
-    /* XXX: Why is the node copied? */
-	if (node->type == XML_DTD_NODE) {
-		node = (xmlNodePtr) xmlCopyDtd((xmlDtdPtr) node);
-	} else {
-		node = xmlDocCopyNode(node, doc, 1);
-	}
-    buff = xmlBufferCreate();
-    xmlBufferSetAllocationScheme(buff, XML_BUFFER_ALLOC_DOUBLEIT);
-    if (xmlNodeDump(buff, doc, node, 0, 0) == -1) {
-        xmlFreeNode(node);
-        xmlBufferFree(buff);
-        return NULL;
+    if (node == NULL)
+        return(NULL);
+
+    output = xmlAllocOutputBuffer(NULL);
+    if (output == NULL) {
+        xmlTextReaderErrMemory(reader);
+        return(NULL);
     }
 
-    resbuf = buff->content;
-    buff->content = NULL;
+    xmlTextReaderDumpCopy(reader, output, node);
+    if (output->error)
+        xmlCtxtErrIO(reader->ctxt, output->error, NULL);
 
-    xmlFreeNode(node);
-    xmlBufferFree(buff);
-    return resbuf;
+    ret = xmlBufDetach(output->buffer);
+    xmlOutputBufferClose(output);
+
+    return(ret);
 }
 #endif
 

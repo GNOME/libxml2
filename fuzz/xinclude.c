@@ -9,7 +9,6 @@
 #include <libxml/tree.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xinclude.h>
-#include <libxml/xmlreader.h>
 #include "fuzz.h"
 
 int
@@ -77,32 +76,6 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlFreeDoc(doc);
         xmlFreeParserCtxt(ctxt);
     }
-
-    /* Reader */
-
-#ifdef LIBXML_READER_ENABLED
-    {
-        xmlTextReaderPtr reader;
-        int j;
-
-        xmlFuzzMemSetLimit(maxAlloc);
-        reader = xmlReaderForMemory(docBuffer, docSize, NULL, NULL, opts);
-        if (reader == NULL)
-            goto exit;
-        while (xmlTextReaderRead(reader) == 1) {
-            if (xmlTextReaderNodeType(reader) == XML_ELEMENT_NODE) {
-                int i, n = xmlTextReaderAttributeCount(reader);
-                for (i=0; i<n; i++) {
-                    xmlTextReaderMoveToAttributeNo(reader, i);
-                    while (xmlTextReaderReadAttributeValue(reader) == 1);
-                }
-            }
-        }
-        for (j = 0; j < 10; j++)
-            xmlTextReaderRead(reader);
-        xmlFreeTextReader(reader);
-    }
-#endif
 
 exit:
     xmlFuzzMemSetLimit(0);

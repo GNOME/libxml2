@@ -21,6 +21,8 @@ XML_SEED_CORPUS_SRC = \
     '$(top_srcdir)/test/valid/*.xml' \
     '$(top_srcdir)/test/VC/*' \
     '$(top_srcdir)/test/VCM/*' \
+    '$(top_srcdir)/test/XInclude/docs/*' \
+    '$(top_srcdir)/test/XInclude/without-reader/*' \
     '$(top_srcdir)/test/xmlid/*'
 
 testFuzzer_SOURCES = testFuzzer.c fuzz.c
@@ -82,9 +84,7 @@ fuzz-valid: valid$(EXEEXT) seed/valid.stamp
 
 seed/xinclude.stamp: genSeed$(EXEEXT)
 	@mkdir -p seed/xinclude
-	./genSeed$(EXEEXT) xinclude \
-	    '$(top_srcdir)/test/XInclude/docs/*' \
-	    '$(top_srcdir)/test/XInclude/without-reader/*'
+	./genSeed$(EXEEXT) xinclude $(XML_SEED_CORPUS_SRC)
 	@touch seed/xinclude.stamp
 
 xinclude_SOURCES = xinclude.c fuzz.c
@@ -120,9 +120,7 @@ fuzz-html: html$(EXEEXT) seed/html.stamp
 
 seed/reader.stamp: genSeed$(EXEEXT)
 	@mkdir -p seed/reader
-	./genSeed$(EXEEXT) reader \
-	    $(XML_SEED_CORPUS_SRC) \
-	    '$(top_srcdir)/test/XInclude/docs/*'
+	./genSeed$(EXEEXT) reader $(XML_SEED_CORPUS_SRC)
 	@touch seed/reader.stamp
 
 reader_SOURCES = reader.c fuzz.c

@@ -1249,8 +1249,10 @@ xmlXIncludeMergeEntities(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 	if (cur == NULL)
 	    return(-1);
         target = xmlCreateIntSubset(doc, cur->name, NULL, NULL);
-	if (target == NULL)
+	if (target == NULL) {
+            xmlXIncludeErrMemory(ctxt);
 	    return(-1);
+        }
     }
 
     source = from->intSubset;

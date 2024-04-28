@@ -814,8 +814,6 @@ configure_file(
 
 install_data(files('libxml.m4'), install_dir: dir_data / 'aclocal')
 
-install_data(files('xmllint.c'), install_dir: dir_doc / 'examples')
-
 if support_tls == false
     message('===============================================================')
     message('WARNING: Your C compiler appears to not support thread-local')

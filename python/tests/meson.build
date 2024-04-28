@@ -56,8 +56,3 @@ xml_files = files(
     'tst.xml',
     'valid.xml',
 )
-
-install_data(
-    [python_test_files, xml_files, files('setup_test.py')],
-    install_dir: dir_doc / 'python' / 'examples',
-)

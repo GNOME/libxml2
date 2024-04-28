@@ -396,12 +396,6 @@ pkgconfig_DATA = libxml-2.0.pc
 cmakedir = $(libdir)/cmake/libxml2
 cmake_DATA = libxml2-config.cmake
 
-#
-# Install the tests program sources as examples 
-#
-examplesdir = $(docdir)/examples
-examples_DATA = xmllint.c
-
 tst: tst.c
 	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz -llzma
 

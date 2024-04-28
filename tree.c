@@ -7673,6 +7673,8 @@ xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
 /**
  * xmlGetCompressMode:
  *
+ * DEPRECATED: Use xmlGetDocCompressMode
+ *
  * get the default compression mode used, ZLIB based.
  * Returns 0 (uncompressed) to 9 (max compression)
  */
@@ -7685,6 +7687,8 @@ xmlGetCompressMode(void)
 /**
  * xmlSetCompressMode:
  * @mode:  the compression ratio
+ *
+ * DEPRECATED: Use xmlSetDocCompressMode
  *
  * set the default compression mode used, ZLIB based
  * Correct values: 0 (uncompressed) to 9 (max compression)

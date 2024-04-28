@@ -224,7 +224,7 @@ xmlXPathIsInf(double val) {
  *       the test should just be name[0] = ' '
  */
 
-static xmlNs xmlXPathXMLNamespaceStruct = {
+static const xmlNs xmlXPathXMLNamespaceStruct = {
     NULL,
     XML_NAMESPACE_DECL,
     XML_XML_NAMESPACE,
@@ -232,7 +232,7 @@ static xmlNs xmlXPathXMLNamespaceStruct = {
     NULL,
     NULL
 };
-static xmlNsPtr xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
+static const xmlNs *const xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
 #ifndef LIBXML_THREAD_ENABLED
 /*
  * Optimizer is disabled only when threaded apps are detected while

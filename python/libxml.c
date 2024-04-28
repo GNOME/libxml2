@@ -185,17 +185,6 @@ libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
     return(Py_None);
 }
 
-PyObject *
-libxml_xmlDumpMemory(ATTRIBUTE_UNUSED PyObject * self,
-                     ATTRIBUTE_UNUSED PyObject * args)
-{
-
-    if (libxmlMemoryDebug != 0)
-        xmlMemoryDump();
-    Py_INCREF(Py_None);
-    return (Py_None);
-}
-
 /************************************************************************
  *									*
  *		Handling Python FILE I/O at the C level			*

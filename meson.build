@@ -67,7 +67,6 @@ want_ipv6 = get_option('ipv6')
 want_iso8859x = get_option('iso8859x')
 want_legacy = get_option('legacy')
 want_lzma = get_option('lzma')
-want_mem_debug = get_option('mem-debug')
 want_modules = get_option('modules')
 want_output = get_option('output')
 want_pattern = get_option('pattern')
@@ -188,7 +187,6 @@ if get_option('minimum')
     want_ipv6 = false
     want_iso8859x = false
     want_lzma = false
-    want_mem_debug = false
     want_modules = false
     want_output = false
     want_pattern = false
@@ -846,7 +844,6 @@ summary(
         'iso8859x': want_iso8859x,
         'legacy': want_legacy,
         'lzma': want_lzma,
-        'mem-debug': want_mem_debug,
         'modules': want_modules,
         'output': want_output,
         'pattern': want_pattern,

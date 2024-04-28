@@ -54,7 +54,6 @@ The following options disable or enable code modules and relevant symbols:
     --with-icu              ICU support (off)
     --with-iso8859x         ISO-8859-X support if no iconv (on)
     --with-lzma[=DIR]       use liblzma in DIR (off)
-    --with-mem-debug        memory debugging module (off)
     --with-modules          dynamic modules support (on)
     --with-output           serialization support (on)
     --with-pattern          xmlPattern selection interface (on)

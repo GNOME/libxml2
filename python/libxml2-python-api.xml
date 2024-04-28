@@ -124,10 +124,6 @@
       <return type='int' info="returns the number of bytes allocated and not freed"/>
       <arg name='activate' type='int' info='1 switch on memory debugging 0 switch it off'/>
     </function>
-    <function name='xmlDumpMemory' file='python'>
-      <info>dump the memory allocated in the file .memdump</info>
-      <return type='void'/>
-    </function>
     <!-- xmlNsPtr accessors -->
     <function name='xmlNodeGetNs' file='python_accessor'>
       <info>Get the namespace of a node</info>

@@ -779,6 +779,12 @@ def popInputCallbacks():
     if len(__input_callbacks) == 0:
         libxml2mod.xmlUnregisterInputCallback()
 
+#
+# Deprecated
+#
+def dumpMemory():
+    """DEPRECATED: This feature was removed."""
+
 # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
 #
 # Everything before this line comes from libxml.py 

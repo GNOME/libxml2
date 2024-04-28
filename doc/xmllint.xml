@@ -732,13 +732,6 @@
         </varlistentry>
 
         <varlistentry>
-            <term><command>free</command></term>
-            <listitem>
-                <para>Display memory usage.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><command>load <replaceable>FILENAME</replaceable></command></term>
             <listitem>
                 <para>Load a new document with the given filename.</para>

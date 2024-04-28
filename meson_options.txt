@@ -15,7 +15,6 @@
 # [X] iso8859x
 # [X] legacy
 # [X] lzma
-# [X] mem-debug
 # [X] modules
 # [X] output
 # [X] pattern
@@ -127,12 +126,6 @@ option('lzma',
   type: 'boolean',
   value: false,
   description: 'LZMA support'
-)
-
-option('mem-debug',
-  type: 'boolean',
-  value: false,
-  description: 'Memory debugging module'
 )
 
 option('modules',

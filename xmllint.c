@@ -2987,7 +2987,6 @@ static void showVersion(const char *name) {
     if (xmlHasFeature(XML_WITH_SCHEMATRON)) fprintf(stderr, "Schematron ");
     if (xmlHasFeature(XML_WITH_MODULES)) fprintf(stderr, "Modules ");
     if (xmlHasFeature(XML_WITH_DEBUG)) fprintf(stderr, "Debug ");
-    if (xmlHasFeature(XML_WITH_DEBUG_MEM)) fprintf(stderr, "MemDebug ");
     if (xmlHasFeature(XML_WITH_ZLIB)) fprintf(stderr, "Zlib ");
     if (xmlHasFeature(XML_WITH_LZMA)) fprintf(stderr, "Lzma ");
     fprintf(stderr, "\n");

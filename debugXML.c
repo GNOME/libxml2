@@ -2944,15 +2944,6 @@ xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
 #endif /* LIBXML_OUTPUT_ENABLED */
         } else if (!strcmp(command, "grep")) {
             xmlShellGrep(ctxt, arg, ctxt->node, NULL);
-        } else if (!strcmp(command, "free")) {
-            if (arg[0] == 0) {
-                xmlMemShow(ctxt->output, 0);
-            } else {
-                int len = 0;
-
-                sscanf(arg, "%d", &len);
-                xmlMemShow(ctxt->output, len);
-            }
         } else if (!strcmp(command, "pwd")) {
             char dir[500];
 

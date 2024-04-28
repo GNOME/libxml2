@@ -1,8 +1,27 @@
-
-exe = executable(
+examples = [
     'gjobread',
-    files('gjobread.c'),
-    dependencies: xml_dep,
-    include_directories: config_dir,
-)
-test('gjobread', exe, timeout: 0)
+    'io1',
+    'io2',
+    'parse1',
+    'parse2',
+    'parse3',
+    'parse4',
+    'reader1',
+    'reader2',
+    'reader3',
+    'reader4',
+    'testWriter',
+    'tree1',
+    'tree2',
+    'xpath1',
+    'xpath2',
+]
+
+foreach example : examples
+    exe = executable(
+        example,
+        files(example + '.c'),
+        dependencies: xml_dep,
+        include_directories: config_dir,
+    )
+endforeach

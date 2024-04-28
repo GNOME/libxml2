@@ -380,7 +380,6 @@ DISTCLEANFILES = COPYING missing.lst
 EXTRA_DIST = Copyright check-xml-test-suite.py gentest.py \
 	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
 	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
-             example/Makefile.am example/gjobread.c example/gjobs.xml \
 	     libxml2-config.cmake.in autogen.sh \
 	     libxml.h \
 	     genUnicode.py \

@@ -290,8 +290,6 @@ pages:
   script:
     - mkdir -p public
     - cp -r doc/devhelp doc/tutorial doc/xmllint.html doc/xmlcatalog.html public
-    - mkdir -p public/examples
-    - cp doc/examples/*.html doc/examples/*.c public/examples
   artifacts:
     paths:
       - public

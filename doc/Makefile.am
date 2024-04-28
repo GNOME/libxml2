@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-SUBDIRS = . devhelp examples
+SUBDIRS = . devhelp
 
 nobase_dist_doc_DATA = \
 	tutorial/apa.html \
@@ -72,7 +72,6 @@ rebuild:
 	cd $(srcdir) && $(XSLTPROC) --nonet xmlcatalog.xml
 	cd $(srcdir) && $(XSLTPROC) --nonet -o xmlcatalog.html $(DOCBOOK_HTML) xmlcatalog.xml
 	cd devhelp && $(MAKE) rebuild
-	cd examples && $(MAKE) rebuild
 	cd .. && $(MAKE) rebuild_testapi
 
 .PHONY: rebuild

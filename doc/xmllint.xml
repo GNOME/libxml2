@@ -113,7 +113,6 @@
             <arg choice="plain"><option>--stream</option></arg>
             <arg choice="plain"><option>--walker</option></arg>
             <arg choice="plain"><option>--pattern <replaceable class="option">PATTERNVALUE</replaceable></option></arg>
-            <arg choice="plain"><option>--chkregister</option></arg>
             <arg choice="plain"><option>--relaxng <replaceable class="option">SCHEMA</replaceable></option></arg>
             <arg choice="plain"><option>--schema <replaceable class="option">SCHEMA</replaceable></option></arg>
             <arg choice="plain"><option>--c14n</option></arg>
@@ -170,18 +169,6 @@
                     Otherwise <acronym>XML</acronym> catalogs starting
                     from <filename>/etc/xml/catalog</filename> or, more specifically,
                     <filename>${sysconfdir}/xml/catalog</filename> are used by default.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--chkregister</option></term>
-            <listitem>
-                <para>
-                    Turn on node registration. Useful for developers testing <citerefentry>
-                <refentrytitle>libxml</refentrytitle>
-                <manvolnum>3</manvolnum>
-            </citerefentry> node tracking code.
                 </para>
             </listitem>
         </varlistentry>
@@ -919,16 +906,6 @@
             <listitem>
                 <para>
                     Error in pattern (generated when <option>--pattern</option> option is used)
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><errorcode>8</errorcode></term>
-            <listitem>
-                <para>
-                    Error in Reader registration (generated
-                    when <option>--chkregister</option> option is used)
                 </para>
             </listitem>
         </varlistentry>

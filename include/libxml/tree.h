@@ -1345,12 +1345,16 @@ XMLPUBFUN xmlNodePtr
             xmlPreviousElementSibling   (xmlNodePtr node);
 #endif
 
+XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc
 	    xmlRegisterNodeDefault	(xmlRegisterNodeFunc func);
+XML_DEPRECATED
 XMLPUBFUN xmlDeregisterNodeFunc
 	    xmlDeregisterNodeDefault	(xmlDeregisterNodeFunc func);
+XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc
             xmlThrDefRegisterNodeDefault(xmlRegisterNodeFunc func);
+XML_DEPRECATED
 XMLPUBFUN xmlDeregisterNodeFunc
             xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
 

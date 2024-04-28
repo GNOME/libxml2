@@ -5996,6 +5996,8 @@ htmlParseFile(const char *filename, const char *encoding) {
  * htmlHandleOmittedElem:
  * @val:  int 0 or 1
  *
+ * DEPRECATED: Use HTML_PARSE_NOIMPLIED
+ *
  * Set and return the previous value for handling HTML omitted tags.
  *
  * Returns the last value for 0 for no handling, 1 for auto insertion.

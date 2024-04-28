@@ -289,7 +289,7 @@ cmake:linux:gcc:shared:
 pages:
   script:
     - mkdir -p public
-    - cp -r doc/devhelp doc/tutorial doc/xmllint.html doc/xmlcatalog.html public
+    - cp -r doc/devhelp doc/xmllint.html doc/xmlcatalog.html public
   artifacts:
     paths:
       - public

@@ -3640,12 +3640,12 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
 	        xmlBufGetNodeContent(reader->buffer, node);
 		ret = xmlBufContent(reader->buffer);
 		if (ret == NULL) {
+                    xmlTextReaderErrMemory(reader);
 		    /* error on the buffer best to reallocate */
 		    xmlBufFree(reader->buffer);
 		    reader->buffer = xmlBufCreateSize(100);
 		    xmlBufSetAllocationScheme(reader->buffer,
 		                              XML_BUFFER_ALLOC_DOUBLEIT);
-		    ret = BAD_CAST "";
 		}
 		return(ret);
 	    }

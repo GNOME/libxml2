@@ -492,7 +492,10 @@ def print_function_wrapper(name, output, export, include):
         # Don't delete the function entry in the caller.
         return 1
 
-    is_deprecated = name in deprecated_funcs
+    if name.startswith('xmlUCSIs'):
+        is_deprecated = name != 'xmlUCSIsBlock' and name != 'xmlUCSIsCat'
+    else:
+        is_deprecated = name in deprecated_funcs
 
     c_call = ""
     format=""

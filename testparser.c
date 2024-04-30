@@ -59,6 +59,25 @@ testUnsupportedEncoding(void) {
     return err;
 }
 
+static int
+testNodeGetContent(void) {
+    xmlDocPtr doc;
+    xmlChar *content;
+    int err = 0;
+
+    doc = xmlReadDoc(BAD_CAST "<doc/>", NULL, NULL, 0);
+    xmlAddChild(doc->children, xmlNewReference(doc, BAD_CAST "lt"));
+    content = xmlNodeGetContent((xmlNodePtr) doc);
+    if (strcmp((char *) content, "<") != 0) {
+        fprintf(stderr, "xmlNodeGetContent failed\n");
+        err = 1;
+    }
+    xmlFree(content);
+    xmlFreeDoc(doc);
+
+    return err;
+}
+
 #ifdef LIBXML_SAX1_ENABLED
 static int
 testBalancedChunk(void) {
@@ -373,6 +392,7 @@ main(void) {
 
     err |= testStandaloneWithEncoding();
     err |= testUnsupportedEncoding();
+    err |= testNodeGetContent();
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();
 #endif

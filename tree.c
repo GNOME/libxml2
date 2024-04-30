@@ -5504,6 +5504,16 @@ xmlBufGetEntityRefContent(xmlBufPtr buf, const xmlNode *ref) {
             return;
     }
 
+    /*
+     * The parser should always expand predefined entities but it's
+     * possible to create references to predefined entities using
+     * the tree API.
+     */
+    if (ent->etype == XML_INTERNAL_PREDEFINED_ENTITY) {
+        xmlBufCat(buf, ent->content);
+        return;
+    }
+
     if (ent->flags & XML_ENT_EXPANDING)
         return;
 

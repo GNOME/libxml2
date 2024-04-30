@@ -89,7 +89,7 @@ Now you can run the test suite with:
 
     make check
 
-Please report test failures to the mailing list or bug tracker.
+Please report test failures to the bug tracker.
 
 Then you can install the library:
 
@@ -159,10 +159,7 @@ Use of this feature is discouraged.
 
 The current version of the code can be found in GNOME's GitLab at 
 at <https://gitlab.gnome.org/GNOME/libxml2>. The best way to get involved
-is by creating issues and merge requests on GitLab. Alternatively, you can
-start discussions and send patches to the mailing list. If you want to
-work with patches, please format them with git-format-patch and use plain
-text attachments.
+is by creating issues and merge requests on GitLab.
 
 All code must conform to C89 and pass the GitLab CI tests. Add regression
 tests if possible.

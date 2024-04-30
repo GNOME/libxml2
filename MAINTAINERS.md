@@ -82,8 +82,8 @@ Create a new GitLab release on
 
 ### Announce the release
 
-Announce the release by sending an email to the mailing list at
-xml@gnome.org.
+Announce the release on https://discourse.gnome.org under topics 'libxml2'
+and 'announcements'.
 
 ## Breaking the ABI
 

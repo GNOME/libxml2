@@ -441,11 +441,6 @@ if want_threads == true
     endif
 endif
 
-if want_threads == true
-    thread_cflags = '-D_REENTRANT'
-    libxml2_cflags += thread_cflags
-endif
-
 want_thread_alloc = (
     (want_threads == true and want_threads == true) ? true : false
 )

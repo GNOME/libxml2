@@ -699,7 +699,10 @@ xml_lib = library(
     version: meson.project_version(),
 )
 
-xml_dep = declare_dependency(link_with: xml_lib)
+dep_inc = include_directories('include')
+xml_dep = declare_dependency(include_directories: dep_inc, link_with: xml_lib)
+
+meson.override_dependency('libxml-2.0', xml_dep)
 
 ## xmllint tool
 

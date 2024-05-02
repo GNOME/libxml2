@@ -1,4 +1,3 @@
-xmlParseDocument returned error 26
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(test, , )

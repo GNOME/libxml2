@@ -11,6 +11,8 @@
  * daniel@veillard.com
  */
 
+#define XML_DEPRECATED
+
 #include "libxml.h"
 #include <stdio.h>
 #ifdef HAVE_UNISTD_H
@@ -1601,9 +1603,11 @@ oldParseTest(const char *filename, const char *result,
      * base of the test, parse with the old API
      */
 #ifdef LIBXML_SAX1_ENABLED
+    xmlGetWarningsDefaultValue = 0;
     doc = xmlParseFile(filename);
+    xmlGetWarningsDefaultValue = 1;
 #else
-    doc = xmlReadFile(filename, NULL, 0);
+    doc = xmlReadFile(filename, NULL, XML_PARSE_NOWARNING);
 #endif
     if (doc == NULL)
         return(1);
@@ -1622,9 +1626,11 @@ oldParseTest(const char *filename, const char *result,
      * Parse the saved result to make sure the round trip is okay
      */
 #ifdef LIBXML_SAX1_ENABLED
+    xmlGetWarningsDefaultValue = 0;
     doc = xmlParseFile(temp);
+    xmlGetWarningsDefaultValue = 1;
 #else
-    doc = xmlReadFile(temp, NULL, 0);
+    doc = xmlReadFile(temp, NULL, XML_PARSE_NOWARNING);
 #endif
     if (doc == NULL)
         return(1);

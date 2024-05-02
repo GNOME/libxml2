@@ -7602,11 +7602,22 @@ xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
      * standalone='yes'.
      */
     if (ent == NULL) {
-	if ((ctxt->standalone == 1) ||
+	if (((!ctxt->validate) && (ctxt->loadsubset)) ||
+            (ctxt->standalone == 1) ||
 	    ((ctxt->hasExternalSubset == 0) &&
 	     (ctxt->hasPErefs == 0))) {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 		     "Entity '%s' not defined\n", name);
+        } else if (ctxt->validate) {
+            /*
+             * [ VC: Entity Declared ]
+             * In a document with an external subset or external
+             * parameter entities with "standalone='no'", ...
+             * ... The declaration of a parameter entity must
+             * precede any reference to it...
+             */
+            xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
+                             "Entity '%s' not defined\n", name, NULL);
 	} else {
 	    xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
 		          "Entity '%s' not defined\n", name, NULL);
@@ -7823,37 +7834,19 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 	(ctxt->sax->getParameterEntity != NULL))
 	entity = ctxt->sax->getParameterEntity(ctxt->userData, name);
     if (entity == NULL) {
-	/*
-	 * [ WFC: Entity Declared ]
-	 * In a document without any DTD, a document with only an
-	 * internal DTD subset which contains no parameter entity
-	 * references, or a document with "standalone='yes'", ...
-	 * ... The declaration of a parameter entity must precede
-	 * any reference to it...
-	 */
-	if ((ctxt->standalone == 1) ||
-	    ((ctxt->hasExternalSubset == 0) &&
-	     (ctxt->hasPErefs == 0))) {
+	if (((!ctxt->validate) && (ctxt->loadsubset)) ||
+            (ctxt->standalone == 1)) {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 			      "PEReference: %%%s; not found\n",
 			      name);
-	} else {
-	    /*
-	     * [ VC: Entity Declared ]
-	     * In a document with an external subset or external
-	     * parameter entities with "standalone='no'", ...
-	     * ... The declaration of a parameter entity must
-	     * precede any reference to it...
-	     */
-            if ((ctxt->validate) && (ctxt->vctxt.error != NULL)) {
-                xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
-                                 "PEReference: %%%s; not found\n",
-                                 name, NULL);
-            } else
-                xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
-                              "PEReference: %%%s; not found\n",
+	} else if (ctxt->validate) {
+            xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
+                             "PEReference: %%%s; not found\n",
+                             name, NULL);
+        } else {
+            xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+                          "PEReference: %%%s; not found\n",
                               name, NULL);
-            ctxt->valid = 0;
 	}
     } else {
 	/*
@@ -8098,30 +8091,18 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 	(ctxt->sax->getParameterEntity != NULL))
 	entity = ctxt->sax->getParameterEntity(ctxt->userData, name);
     if (entity == NULL) {
-	/*
-	 * [ WFC: Entity Declared ]
-	 * In a document without any DTD, a document with only an
-	 * internal DTD subset which contains no parameter entity
-	 * references, or a document with "standalone='yes'", ...
-	 * ... The declaration of a parameter entity must precede
-	 * any reference to it...
-	 */
-	if ((ctxt->standalone == 1) ||
-	    ((ctxt->hasExternalSubset == 0) && (ctxt->hasPErefs == 0))) {
+	if (((!ctxt->validate) && (ctxt->loadsubset)) ||
+            (ctxt->standalone == 1)) {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
 		 "PEReference: %%%s; not found\n", name);
-	} else {
-	    /*
-	     * [ VC: Entity Declared ]
-	     * In a document with an external subset or external
-	     * parameter entities with "standalone='no'", ...
-	     * ... The declaration of a parameter entity must
-	     * precede any reference to it...
-	     */
+	} else if (ctxt->validate) {
+            xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
+                             "PEReference: %%%s; not found\n",
+                             name, NULL);
+        } else {
 	    xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
 			  "PEReference: %%%s; not found\n",
 			  name, NULL);
-	    ctxt->valid = 0;
 	}
     } else {
 	/*

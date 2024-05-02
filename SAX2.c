@@ -559,9 +559,14 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
     if ((ent->URI == NULL) && (systemId != NULL)) {
         xmlChar *URI;
         const char *base = NULL;
+        int i;
 
-        if (ctxt->input != NULL)
-            base = ctxt->input->filename;
+        for (i = ctxt->inputNr - 1; i >= 0; i--) {
+            if (ctxt->inputTab[i]->filename != NULL) {
+                base = ctxt->inputTab[i]->filename;
+                break;
+            }
+        }
 
         if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
             xmlSAX2ErrMemory(ctxt);

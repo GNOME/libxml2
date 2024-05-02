@@ -7365,10 +7365,9 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     if (ent == NULL) {
         /*
          * Create a reference for undeclared entities.
-         * TODO: Should we really create a reference if entity
-         * substitution is enabled?
          */
-        if ((ctxt->sax != NULL) &&
+        if ((ctxt->replaceEntities == 0) &&
+            (ctxt->sax != NULL) &&
             (ctxt->disableSAX == 0) &&
             (ctxt->sax->reference != NULL)) {
             ctxt->sax->reference(ctxt->userData, name);

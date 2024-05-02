@@ -16,7 +16,6 @@ SAX.characters(
 SAX.startElementNs(elem, NULL, NULL, 0, 0, 0)
 SAX.getEntity(undeclared)
 SAX.warning: Entity 'undeclared' not defined
-SAX.reference(undeclared)
 SAX.endElementNs(elem, NULL, NULL)
 SAX.characters(
 , 1)

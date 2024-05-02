@@ -3,5 +3,5 @@
 <!DOCTYPE doc SYSTEM "foo">
 <doc>
     <elem attr=""/>
-    <elem>&undeclared;</elem>
+    <elem/>
 </doc>

@@ -412,7 +412,11 @@ if want_modules == true
     endif
 
     if with_modules == false
-        dl_dep = dependency('dl', required: false)
+        if meson.version().version_compare('>=0.62')
+            dl_dep = dependency('dl', required: false)
+        else
+            dl_dep = cc.find_library('dl', required: false)
+        endif
         if dl_dep.found()
             config_h.set10('HAVE_DLOPEN', true)
             xml_deps += dl_dep

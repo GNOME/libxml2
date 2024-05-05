@@ -2492,7 +2492,10 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
 	if (doc->children != NULL) {
 	    node = doc->children;
-	    while ((node != NULL) && (node->last == NULL)) node = node->next;
+	    while ((node != NULL) &&
+                   ((node->type != XML_ELEMENT_NODE) ||
+                    (node->last == NULL)))
+                node = node->next;
 	    if (node != NULL) {
 		nb = xmlValidGetValidElements(node->last, NULL, list, 256);
 		if (nb < 0) {

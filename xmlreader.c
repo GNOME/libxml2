@@ -40,6 +40,7 @@
 #endif
 
 #include "private/buf.h"
+#include "private/error.h"
 #include "private/tree.h"
 #include "private/parser.h"
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -181,7 +182,10 @@ static void xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur);
 
 static void
 xmlTextReaderErrMemory(xmlTextReaderPtr reader) {
-    xmlCtxtErrMemory(reader->ctxt);
+    if (reader->ctxt != NULL)
+        xmlCtxtErrMemory(reader->ctxt);
+    else
+        xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_PARSER, NULL);
     reader->mode = XML_TEXTREADER_MODE_ERROR;
     reader->state = XML_TEXTREADER_ERROR;
 }

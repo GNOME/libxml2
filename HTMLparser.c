@@ -6488,7 +6488,6 @@ htmlReadFd(int fd, const char *url, const char *encoding, int options)
     htmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputFd(ctxt, url, fd, encoding, 0);
-    input->buf->closecallback = NULL;
 
     doc = htmlCtxtParseDocument(ctxt, input);
 
@@ -6660,7 +6659,6 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
     htmlCtxtUseOptions(ctxt, options);
 
     input = xmlNewInputFd(ctxt, URL, fd, encoding, 0);
-    input->buf->closecallback = NULL;
 
     return(htmlCtxtParseDocument(ctxt, input));
 }

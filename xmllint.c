@@ -2216,8 +2216,8 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	if (push) {
 	    FILE *f;
             int ret;
-            int res, size = 1024;
-            char chars[1024];
+            int res;
+            char chars[4096];
             xmlParserCtxtPtr ctxt;
 
 	    /* '-' Usually means stdin -<sven@zen.org> */
@@ -2244,7 +2244,7 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
             xmlCtxtUseOptions(ctxt, options);
             if (maxAmpl > 0)
                 xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-            while ((res = fread(chars, 1, size, f)) > 0) {
+            while ((res = fread(chars, 1, pushsize, f)) > 0) {
                 xmlParseChunk(ctxt, chars, res, 0);
             }
             xmlParseChunk(ctxt, chars, 0, 1);

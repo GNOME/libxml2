@@ -2792,7 +2792,7 @@ xmlShellPwd(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
  * using a environment similar to a UNIX commandline.
  */
 void
-xmlShell(xmlDocPtr doc, char *filename, xmlShellReadlineFunc input,
+xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
          FILE * output)
 {
     char prompt[500] = "/ > ";

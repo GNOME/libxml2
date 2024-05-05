@@ -127,17 +127,17 @@ static int oldout = 0;
 #ifdef LIBXML_VALID_ENABLED
 static int valid = 0;
 static int postvalid = 0;
-static char * dtdvalid = NULL;
-static char * dtdvalidfpi = NULL;
+static const char *dtdvalid = NULL;
+static const char *dtdvalidfpi = NULL;
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
-static char * relaxng = NULL;
+static const char *relaxng = NULL;
 static xmlRelaxNGPtr relaxngschemas = NULL;
-static char * schema = NULL;
+static const char *schema = NULL;
 static xmlSchemaPtr wxschemas = NULL;
 #endif
 #ifdef LIBXML_SCHEMATRON_ENABLED
-static char * schematron = NULL;
+static const char *schematron = NULL;
 static xmlSchematronPtr wxschematron = NULL;
 #endif
 static int repeat = 0;
@@ -158,7 +158,7 @@ static int pushsize = 4096;
 static int memory = 0;
 #endif
 static int testIO = 0;
-static char *encoding = NULL;
+static const char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
 static int xinclude = 0;
 #endif
@@ -1768,7 +1768,7 @@ static void processNode(xmlTextReaderPtr reader) {
 #endif
 }
 
-static void streamFile(char *filename) {
+static void streamFile(const char *filename) {
     xmlTextReaderPtr reader;
     int ret;
 #ifdef HAVE_MMAP
@@ -2116,7 +2116,7 @@ static void doXPathQuery(xmlDocPtr doc, const char *query) {
  *			Tree Test processing				*
  *									*
  ************************************************************************/
-static void parseAndPrintFile(char *filename, xmlParserCtxtPtr rectxt) {
+static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
     xmlDocPtr doc = NULL;
 #ifdef LIBXML_TREE_ENABLED
     xmlDocPtr tmp;

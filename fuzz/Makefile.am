@@ -29,8 +29,9 @@ testFuzzer_SOURCES = testFuzzer.c fuzz.c
 
 .PHONY: corpus clean-corpus
 
-corpus: seed/html.stamp seed/regexp.stamp seed/schema.stamp seed/uri.stamp \
-    seed/valid.stamp seed/xinclude.stamp seed/xml.stamp seed/xpath.stamp
+corpus: seed/html.stamp seed/reader.stamp seed/regexp.stamp seed/schema.stamp \
+    seed/uri.stamp seed/valid.stamp seed/xinclude.stamp seed/xml.stamp \
+    seed/xpath.stamp
 
 check-local: corpus
 	./testFuzzer$(EXEEXT)

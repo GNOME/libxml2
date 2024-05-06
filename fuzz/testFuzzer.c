@@ -207,7 +207,7 @@ main(void) {
         ret = 1;
 #endif
 #ifdef HAVE_READER_FUZZER
-    if (testFuzzer(fuzzReaderInit, fuzzReader, "seed/xml/*") != 0)
+    if (testFuzzer(fuzzReaderInit, fuzzReader, "seed/reader/*") != 0)
         ret = 1;
 #endif
 #ifdef HAVE_REGEXP_FUZZER

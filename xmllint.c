@@ -1939,45 +1939,51 @@ static void walkDoc(xmlDocPtr doc) {
     int ret;
 
 #ifdef LIBXML_PATTERN_ENABLED
-    xmlNodePtr root;
-    const xmlChar *namespaces[22];
-    int i;
-    xmlNsPtr ns;
-
-    root = xmlDocGetRootElement(doc);
-    if (root == NULL ) {
-        fprintf(ERR_STREAM,
-                "Document does not have a root element");
-        progresult = XMLLINT_ERR_UNCLASS;
-        return;
-    }
-    for (ns = root->nsDef, i = 0;ns != NULL && i < 20;ns=ns->next) {
-        namespaces[i++] = ns->href;
-        namespaces[i++] = ns->prefix;
-    }
-    namespaces[i++] = NULL;
-    namespaces[i] = NULL;
-
     if (pattern != NULL) {
-        patternc = xmlPatterncompile((const xmlChar *) pattern, doc->dict,
-	                             0, &namespaces[0]);
+        xmlNodePtr root;
+        const xmlChar *namespaces[22];
+        int i;
+        xmlNsPtr ns;
+
+        root = xmlDocGetRootElement(doc);
+        if (root == NULL ) {
+            fprintf(ERR_STREAM,
+                    "Document does not have a root element");
+            progresult = XMLLINT_ERR_UNCLASS;
+            return;
+        }
+        for (ns = root->nsDef, i = 0;ns != NULL && i < 20;ns=ns->next) {
+            namespaces[i++] = ns->href;
+            namespaces[i++] = ns->prefix;
+        }
+        namespaces[i++] = NULL;
+        namespaces[i] = NULL;
+
+        ret = xmlPatternCompileSafe((const xmlChar *) pattern, doc->dict,
+                                    0, &namespaces[0], &patternc);
 	if (patternc == NULL) {
-	    fprintf(ERR_STREAM,
-		    "Pattern %s failed to compile\n", pattern);
-            progresult = XMLLINT_ERR_SCHEMAPAT;
-	    pattern = NULL;
-	}
-    }
-    if (patternc != NULL) {
-        patstream = xmlPatternGetStreamCtxt(patternc);
-	if (patstream != NULL) {
-	    ret = xmlStreamPush(patstream, NULL, NULL);
-	    if (ret < 0) {
-		fprintf(ERR_STREAM, "xmlStreamPush() failure\n");
-		xmlFreeStreamCtxt(patstream);
-		patstream = NULL;
+            if (ret < 0) {
+                progresult = XMLLINT_ERR_MEM;
+            } else {
+                fprintf(ERR_STREAM,
+                        "Pattern %s failed to compile\n", pattern);
+                progresult = XMLLINT_ERR_SCHEMAPAT;
             }
+            goto error;
 	}
+
+        patstream = xmlPatternGetStreamCtxt(patternc);
+        if (patstream == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            goto error;
+        }
+
+        ret = xmlStreamPush(patstream, NULL, NULL);
+        if (ret < 0) {
+            fprintf(ERR_STREAM, "xmlStreamPush() failure\n");
+            progresult = XMLLINT_ERR_MEM;
+            goto error;
+        }
     }
 #endif /* LIBXML_PATTERN_ENABLED */
     reader = xmlReaderWalker(doc);
@@ -2007,7 +2013,13 @@ static void walkDoc(xmlDocPtr doc) {
 	fprintf(ERR_STREAM, "Failed to crate a reader from the document\n");
 	progresult = XMLLINT_ERR_UNCLASS;
     }
+
 #ifdef LIBXML_PATTERN_ENABLED
+error:
+    if (patternc != NULL) {
+        xmlFreePattern(patternc);
+        patternc = NULL;
+    }
     if (patstream != NULL) {
 	xmlFreeStreamCtxt(patstream);
 	patstream = NULL;

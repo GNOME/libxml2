@@ -672,10 +672,13 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
 
     buffer[0] = 0;
     input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1))
-        input = ctxt->inputTab[ctxt->inputNr - 2];
 
-    xmlHTMLPrintFileInfo(input);
+    if (input != NULL) {
+        if ((input->filename == NULL) && (ctxt->inputNr > 1))
+            input = ctxt->inputTab[ctxt->inputNr - 2];
+
+        xmlHTMLPrintFileInfo(input);
+    }
 
     fprintf(ERR_STREAM, "<b>validity error</b>: ");
     len = strlen(buffer);
@@ -685,7 +688,8 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
     xmlHTMLEncodeSend();
     fprintf(ERR_STREAM, "</p>\n");
 
-    xmlHTMLPrintFileContext(input);
+    if (input != NULL)
+        xmlHTMLPrintFileContext(input);
     xmlHTMLEncodeSend();
     progresult = XMLLINT_ERR_VALID;
 }

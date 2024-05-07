@@ -2105,19 +2105,6 @@ xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
     return (ret);
 }
 
-
-
-/*
- * Macro used to grow the current buffer.
- */
-#define growBufferReentrant() {						\
-    buffer_size *= 2;							\
-    buffer = (xmlChar *)						\
-		xmlRealloc(buffer, buffer_size);			\
-    if (buffer == NULL)							\
-	return(NULL);							\
-}
-
 /**
  * xmlC11NNormalizeString:
  * @input:		the input string
@@ -2153,9 +2140,16 @@ xmlC11NNormalizeString(const xmlChar * input,
 
     while (*cur != '\0') {
         if ((out - buffer) > (buffer_size - 10)) {
+            xmlChar *tmp;
             int indx = out - buffer;
 
-            growBufferReentrant();
+            buffer_size *= 2;
+            tmp = xmlRealloc(buffer, buffer_size);
+            if (tmp == NULL) {
+                xmlFree(buffer);
+                return(NULL);
+            }
+            buffer = tmp;
             out = &buffer[indx];
         }
 

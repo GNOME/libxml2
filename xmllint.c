@@ -2134,35 +2134,45 @@ static void doXPathQuery(xmlDocPtr doc, const char *query) {
  *			Tree Test processing				*
  *									*
  ************************************************************************/
-static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
+
+static xmlDocPtr
+parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
+    xmlParserCtxtPtr ctxt;
     xmlDocPtr doc = NULL;
-#ifdef LIBXML_TREE_ENABLED
-    xmlDocPtr tmp;
-#endif /* LIBXML_TREE_ENABLED */
-
-    if ((timing) && (!repeat))
-	startTimer();
-
 
 #ifdef LIBXML_TREE_ENABLED
-    if (filename == NULL) {
-	if (generate) {
-	    xmlNodePtr n;
+    if ((generate) && (filename == NULL)) {
+        xmlNodePtr n;
 
-	    doc = xmlNewDoc(BAD_CAST "1.0");
-	    n = xmlNewDocNode(doc, NULL, BAD_CAST "info", NULL);
-	    xmlNodeSetContent(n, BAD_CAST "abc");
-	    xmlDocSetRootElement(doc, n);
-	}
+        doc = xmlNewDoc(BAD_CAST "1.0");
+        if (doc == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            return(NULL);
+        }
+        n = xmlNewDocNode(doc, NULL, BAD_CAST "info", NULL);
+        if (n == NULL) {
+            xmlFreeDoc(doc);
+            progresult = XMLLINT_ERR_MEM;
+            return(NULL);
+        }
+        if (xmlNodeSetContent(n, BAD_CAST "abc") < 0) {
+            xmlFreeNode(n);
+            xmlFreeDoc(doc);
+            progresult = XMLLINT_ERR_MEM;
+            return(NULL);
+        }
+        xmlDocSetRootElement(doc, n);
+
+        return(doc);
     }
 #endif /* LIBXML_TREE_ENABLED */
+
 #ifdef LIBXML_HTML_ENABLED
 #ifdef LIBXML_PUSH_ENABLED
-    else if ((html) && (push)) {
+    if ((html) && (push)) {
         FILE *f;
         int res;
         char chars[4096];
-        htmlParserCtxtPtr ctxt;
 
         if ((filename[0] == '-') && (filename[1] == 0)) {
             f = stdin;
@@ -2170,8 +2180,8 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	    f = fopen(filename, "rb");
             if (f == NULL) {
                 fprintf(ERR_STREAM, "Can't open %s\n", filename);
-                progresult = XMLLINT_ERR_UNCLASS;
-                return;
+                progresult = XMLLINT_ERR_RDFILE;
+                return(NULL);
             }
         }
 
@@ -2182,7 +2192,7 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
             progresult = XMLLINT_ERR_MEM;
             if (f != stdin)
                 fclose(f);
-            return;
+            return(NULL);
         }
         htmlCtxtUseOptions(ctxt, options);
         while ((res = fread(chars, 1, pushsize, f)) > 0) {
@@ -2193,23 +2203,26 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
         htmlFreeParserCtxt(ctxt);
         if (f != stdin)
             fclose(f);
+
+        return(doc);
     }
 #endif /* LIBXML_PUSH_ENABLED */
+
 #ifdef HAVE_MMAP
-    else if ((html) && (memory)) {
+    if ((html) && (memory)) {
 	int fd;
 	struct stat info;
 	const char *base;
 	if (stat(filename, &info) < 0)
-	    return;
+	    return(NULL);
 	if ((fd = open(filename, O_RDONLY)) < 0)
-	    return;
+	    return(NULL);
 	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
 	if (base == (void *) MAP_FAILED) {
 	    close(fd);
 	    fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
 	    progresult = XMLLINT_ERR_RDFILE;
-	    return;
+	    return(NULL);
 	}
 
 	doc = htmlReadMemory((char *) base, info.st_size, filename,
@@ -2217,211 +2230,168 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
 	munmap((char *) base, info.st_size);
 	close(fd);
+
+        return(doc);
     }
 #endif
-    else if (html) {
+
+    if (html) {
         if (strcmp(filename, "-") == 0)
             doc = htmlReadFd(STDIN_FILENO, "-", NULL, options);
         else
             doc = htmlReadFile(filename, NULL, options);
+
+        return(doc);
     }
 #endif /* LIBXML_HTML_ENABLED */
-    else {
+
 #ifdef LIBXML_PUSH_ENABLED
-	/*
-	 * build an XML tree from a string;
-	 */
-	if (push) {
-	    FILE *f;
-            int ret;
-            int res;
-            char chars[4096];
-            xmlParserCtxtPtr ctxt;
+    if (push) {
+        FILE *f;
+        int res;
+        char chars[4096];
 
-	    /* '-' Usually means stdin -<sven@zen.org> */
-	    if ((filename[0] == '-') && (filename[1] == 0)) {
-	        f = stdin;
-	    } else {
-		f = fopen(filename, "rb");
-                if (f == NULL) {
-                    fprintf(ERR_STREAM, "Can't open %s\n", filename);
-                    progresult = XMLLINT_ERR_UNCLASS;
-                    return;
-                }
-	    }
+        if ((filename[0] == '-') && (filename[1] == 0)) {
+            f = stdin;
+        } else {
+            f = fopen(filename, "rb");
+            if (f == NULL) {
+                fprintf(ERR_STREAM, "Can't open %s\n", filename);
+                progresult = XMLLINT_ERR_RDFILE;
+                return(NULL);
+            }
+        }
 
-            res = fread(chars, 1, 4, f);
-            ctxt = xmlCreatePushParserCtxt(NULL, NULL,
-                        chars, res, filename);
-            if (ctxt == NULL) {
-                progresult = XMLLINT_ERR_MEM;
-                if (f != stdin)
-                    fclose(f);
-                return;
-            }
-            xmlCtxtUseOptions(ctxt, options);
-            if (maxAmpl > 0)
-                xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-            while ((res = fread(chars, 1, pushsize, f)) > 0) {
-                xmlParseChunk(ctxt, chars, res, 0);
-            }
-            xmlParseChunk(ctxt, chars, 0, 1);
-            doc = ctxt->myDoc;
-            ret = ctxt->wellFormed;
-            xmlFreeParserCtxt(ctxt);
-            if ((!ret) && (!recovery)) {
-                xmlFreeDoc(doc);
-                doc = NULL;
-            }
+        res = fread(chars, 1, 4, f);
+        ctxt = xmlCreatePushParserCtxt(NULL, NULL,
+                    chars, res, filename);
+        if (ctxt == NULL) {
+            progresult = XMLLINT_ERR_MEM;
             if (f != stdin)
                 fclose(f);
-	} else
-#endif /* LIBXML_PUSH_ENABLED */
-        if (testIO) {
-	    if ((filename[0] == '-') && (filename[1] == 0)) {
-	        doc = xmlReadFd(STDIN_FILENO, "-", NULL, options);
-	    } else {
-	        FILE *f;
+            return(NULL);
+        }
+        xmlCtxtUseOptions(ctxt, options);
 
-		f = fopen(filename, "rb");
-		if (f != NULL) {
-		    if (rectxt == NULL)
-			doc = xmlReadIO(myRead, myClose, f, filename, NULL,
-                                        options);
-		    else
-			doc = xmlCtxtReadIO(rectxt, myRead, myClose, f,
-					    filename, NULL, options);
-		} else
-		    doc = NULL;
-	    }
-	} else if (htmlout) {
-	    xmlParserCtxtPtr ctxt;
+        if (maxAmpl > 0)
+            xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
 
-	    if (rectxt == NULL) {
-		ctxt = xmlNewParserCtxt();
-                if (ctxt == NULL) {
-                    progresult = XMLLINT_ERR_MEM;
-                    return;
-                }
-                if (maxAmpl > 0)
-                    xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-            } else {
-                ctxt = rectxt;
-            }
-
+        if (htmlout) {
             ctxt->sax->error = xmlHTMLError;
             ctxt->sax->warning = xmlHTMLWarning;
             ctxt->vctxt.error = xmlHTMLValidityError;
             ctxt->vctxt.warning = xmlHTMLValidityWarning;
+        }
 
-            if (strcmp(filename, "-") == 0)
-                doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
-            else
-                doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+        while ((res = fread(chars, 1, pushsize, f)) > 0) {
+            xmlParseChunk(ctxt, chars, res, 0);
+        }
+        xmlParseChunk(ctxt, chars, 0, 1);
 
-            if (rectxt == NULL)
-                xmlFreeParserCtxt(ctxt);
+        doc = ctxt->myDoc;
+        if (f != stdin)
+            fclose(f);
+    } else
+#endif /* LIBXML_PUSH_ENABLED */
+    {
+        if (rectxt == NULL) {
+            ctxt = xmlNewParserCtxt();
+            if (ctxt == NULL) {
+                progresult = XMLLINT_ERR_MEM;
+                return(NULL);
+            }
+        } else {
+            ctxt = rectxt;
+        }
+
+        if (maxAmpl > 0)
+            xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
+
+        if (htmlout) {
+            ctxt->sax->error = xmlHTMLError;
+            ctxt->sax->warning = xmlHTMLWarning;
+            ctxt->vctxt.error = xmlHTMLValidityError;
+            ctxt->vctxt.warning = xmlHTMLValidityWarning;
+        }
+
+        if (testIO) {
+            FILE *f;
+
+            if ((filename[0] == '-') && (filename[1] == 0)) {
+                f = stdin;
+            } else {
+                f = fopen(filename, "rb");
+                if (f == NULL) {
+                    fprintf(ERR_STREAM, "Can't open %s\n", filename);
+                    progresult = XMLLINT_ERR_RDFILE;
+                    goto error;
+                }
+            }
+
+            doc = xmlCtxtReadIO(ctxt, myRead, myClose, f, filename, NULL,
+                                options);
 #ifdef HAVE_MMAP
-	} else if (memory) {
-	    int fd;
-	    struct stat info;
-	    const char *base;
-	    if (stat(filename, &info) < 0)
-		return;
-	    if ((fd = open(filename, O_RDONLY)) < 0)
-		return;
-	    base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	    if (base == (void *) MAP_FAILED) {
-	        close(fd);
-	        fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
-		progresult = XMLLINT_ERR_RDFILE;
-	        return;
-	    }
+        } else if (memory) {
+            int fd;
+            struct stat info;
+            const char *base;
 
-	    if (rectxt == NULL) {
-                xmlParserCtxtPtr ctxt;
-
-                ctxt = xmlNewParserCtxt();
-                if (ctxt == NULL) {
-                    fprintf(ERR_STREAM, "out of memory\n");
-                    progresult = XMLLINT_ERR_MEM;
-                    return;
-                }
-                if (maxAmpl > 0)
-                    xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-                doc = xmlCtxtReadMemory(ctxt, base, info.st_size,
-                                        filename, NULL, options);
-                xmlFreeParserCtxt(ctxt);
-            } else {
-		doc = xmlCtxtReadMemory(rectxt, (char *) base, info.st_size,
-			                filename, NULL, options);
+            if (stat(filename, &info) < 0)
+                goto error;
+            if ((fd = open(filename, O_RDONLY)) < 0)
+                goto error;
+            base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
+            if (base == (void *) MAP_FAILED) {
+                close(fd);
+                fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
+                progresult = XMLLINT_ERR_RDFILE;
+                goto error;
             }
 
-	    munmap((char *) base, info.st_size);
-	    close(fd);
+            doc = xmlCtxtReadMemory(ctxt, base, info.st_size, filename, NULL,
+                                    options);
+
+            munmap((char *) base, info.st_size);
+            close(fd);
 #endif
-#ifdef LIBXML_VALID_ENABLED
-	} else if (valid) {
-	    xmlParserCtxtPtr ctxt = NULL;
-
-	    if (rectxt == NULL) {
-		ctxt = xmlNewParserCtxt();
-                if (ctxt == NULL) {
-                    progresult = XMLLINT_ERR_MEM;
-                    return;
-                }
-            } else {
-	        ctxt = rectxt;
-            }
-
-            if (maxAmpl > 0)
-                xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-
+        } else {
             if (strcmp(filename, "-") == 0)
                 doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
             else
                 doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
-
-            if (ctxt->valid == 0)
-                progresult = XMLLINT_ERR_RDFILE;
-            if (rectxt == NULL)
-                xmlFreeParserCtxt(ctxt);
-#endif /* LIBXML_VALID_ENABLED */
-	} else {
-	    if (rectxt != NULL) {
-                if (strcmp(filename, "-") == 0)
-                    doc = xmlCtxtReadFd(rectxt, STDIN_FILENO, "-", NULL,
-                                        options);
-                else
-                    doc = xmlCtxtReadFile(rectxt, filename, NULL, options);
-	    } else {
-                xmlParserCtxtPtr ctxt;
-
-                ctxt = xmlNewParserCtxt();
-                if (ctxt == NULL) {
-                    fprintf(ERR_STREAM, "out of memory\n");
-                    progresult = XMLLINT_ERR_MEM;
-                    return;
-                }
-                if (maxAmpl > 0)
-                    xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-
-                if (strcmp(filename, "-") == 0)
-                    doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
-                                        options);
-                else
-                    doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
-
-                xmlFreeParserCtxt(ctxt);
-            }
-	}
+        }
     }
 
-    /*
-     * If we don't have a document we might as well give up.  Do we
-     * want an error message here?  <sven@zen.org> */
     if (doc == NULL) {
-	progresult = XMLLINT_ERR_UNCLASS;
+        if (ctxt->errNo == XML_ERR_NO_MEMORY)
+            progresult = XMLLINT_ERR_MEM;
+        else
+	    progresult = XMLLINT_ERR_RDFILE;
+    } else {
+#ifdef LIBXML_VALID_ENABLED
+        if ((valid) && (ctxt->valid == 0))
+            progresult = XMLLINT_ERR_VALID;
+#endif /* LIBXML_VALID_ENABLED */
+    }
+
+error:
+    if (ctxt != rectxt)
+        xmlFreeParserCtxt(ctxt);
+
+    return(doc);
+}
+
+static void
+parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
+    xmlDocPtr doc;
+
+    if ((timing) && (!repeat))
+	startTimer();
+
+    doc = parseFile(filename, rectxt);
+    if (doc == NULL) {
+        if (progresult == XMLLINT_RETURN_OK)
+            progresult = XMLLINT_ERR_UNCLASS;
 	return;
     }
 
@@ -2479,6 +2449,8 @@ static void parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
      * test intermediate copy if needed.
      */
     if (copy) {
+        xmlDocPtr tmp;
+
         tmp = doc;
 	if (timing) {
 	    startTimer();

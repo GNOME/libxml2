@@ -105,6 +105,7 @@ typedef enum {
     XMLLINT_ERR_XPATH = 10,	    /* XPath evaluation error */
     XMLLINT_ERR_XPATH_EMPTY = 11    /* XPath result is empty */
 } xmllintReturnCode;
+
 #ifdef LIBXML_DEBUG_ENABLED
 static int shell = 0;
 static int debugent = 0;
@@ -114,23 +115,18 @@ static int maxmem = 0;
 #ifdef LIBXML_TREE_ENABLED
 static int copy = 0;
 #endif /* LIBXML_TREE_ENABLED */
-static int recovery = 0;
-static int noent = 0;
-static int noenc = 0;
-static int noblanks = 0;
 static int noout = 0;
-static int nowrap = 0;
-static int format = 0;
 #ifdef LIBXML_OUTPUT_ENABLED
 static const char *output = NULL;
+static int format = 0;
+static const char *encoding = NULL;
 static int compress = 0;
-static int oldout = 0;
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_VALID_ENABLED
-static int valid = 0;
 static int postvalid = 0;
 static const char *dtdvalid = NULL;
 static const char *dtdvalidfpi = NULL;
+static int insert = 0;
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
 static const char *relaxng = NULL;
@@ -143,15 +139,11 @@ static const char *schematron = NULL;
 static xmlSchematronPtr wxschematron = NULL;
 #endif
 static int repeat = 0;
-static int insert = 0;
-#if defined(LIBXML_HTML_ENABLED) || defined(LIBXML_VALID_ENABLED)
+#if defined(LIBXML_HTML_ENABLED)
 static int html = 0;
 static int xmlout = 0;
 #endif
 static int htmlout = 0;
-#if defined(LIBXML_HTML_ENABLED)
-static int nodefdtd = 0;
-#endif
 #ifdef LIBXML_PUSH_ENABLED
 static int push = 0;
 static int pushsize = 4096;
@@ -160,28 +152,20 @@ static int pushsize = 4096;
 static int memory = 0;
 #endif
 static int testIO = 0;
-static const char *encoding = NULL;
 #ifdef LIBXML_XINCLUDE_ENABLED
 static int xinclude = 0;
 #endif
-static int dtdattrs = 0;
-static int loaddtd = 0;
 static xmllintReturnCode progresult = XMLLINT_RETURN_OK;
 static int quiet = 0;
 static int timing = 0;
 static int generate = 0;
 static int dropdtd = 0;
-#ifdef LIBXML_CATALOG_ENABLED
-static int catalogs = 0;
-static int nocatalogs = 0;
-#endif
 #ifdef LIBXML_C14N_ENABLED
 static int canonical = 0;
 static int canonical_11 = 0;
 static int exc_canonical = 0;
 #endif
 #ifdef LIBXML_READER_ENABLED
-static int stream = 0;
 static int walker = 0;
 #ifdef LIBXML_PATTERN_ENABLED
 static const char *pattern = NULL;
@@ -189,15 +173,10 @@ static xmlPatternPtr patternc = NULL;
 static xmlStreamCtxtPtr patstream = NULL;
 #endif
 #endif /* LIBXML_READER_ENABLED */
-#ifdef LIBXML_SAX1_ENABLED
-static int sax1 = 0;
-#endif /* LIBXML_SAX1_ENABLED */
 #ifdef LIBXML_XPATH_ENABLED
 static const char *xpathquery = NULL;
 #endif
 static int options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
-static int sax = 0;
-static int oldxml10 = 0;
 static unsigned maxAmpl = 0;
 
 /************************************************************************
@@ -1600,7 +1579,7 @@ testSAX(const char *filename) {
     if (noout) {
         handler = emptySAXHandler;
 #ifdef LIBXML_SAX1_ENABLED
-    } else if (sax1) {
+    } else if (options & XML_PARSE_SAX1) {
         handler = debugSAXHandler;
 #endif
     } else {
@@ -1821,13 +1800,6 @@ static void streamFile(const char *filename) {
     if (reader != NULL) {
         if (maxAmpl > 0)
             xmlTextReaderSetMaxAmplification(reader, maxAmpl);
-#ifdef LIBXML_VALID_ENABLED
-	if (valid)
-	    xmlTextReaderSetParserProp(reader, XML_PARSER_VALIDATE, 1);
-	else
-#endif /* LIBXML_VALID_ENABLED */
-	    if (loaddtd)
-		xmlTextReaderSetParserProp(reader, XML_PARSER_LOADDTD, 1);
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
 	    if ((timing) && (!repeat)) {
@@ -1884,7 +1856,7 @@ static void streamFile(const char *filename) {
 	    else
 #endif
 #ifdef LIBXML_VALID_ENABLED
-	    if (valid)
+	    if (options & XML_PARSE_DTDVALID)
 		endTimer("Parsing and validating");
 	    else
 #endif
@@ -1892,7 +1864,7 @@ static void streamFile(const char *filename) {
 	}
 
 #ifdef LIBXML_VALID_ENABLED
-	if (valid) {
+	if (options & XML_PARSE_DTDVALID) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
 		fprintf(ERR_STREAM,
 			"Document %s does not validate\n", filename);
@@ -2369,7 +2341,7 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	    progresult = XMLLINT_ERR_RDFILE;
     } else {
 #ifdef LIBXML_VALID_ENABLED
-        if ((valid) && (ctxt->valid == 0))
+        if ((options & XML_PARSE_DTDVALID) && (ctxt->valid == 0))
             progresult = XMLLINT_ERR_VALID;
 #endif /* LIBXML_VALID_ENABLED */
     }
@@ -2510,8 +2482,6 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_OUTPUT_ENABLED
     if (noout == 0) {
-        int ret;
-
         if (compress)
             xmlSetDocCompressMode(doc, 9);
 
@@ -2640,46 +2610,6 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* HAVE_MMAP */
 	    if (compress) {
 		xmlSaveFile(output ? output : "-", doc);
-	    } else if (oldout) {
-	        if (encoding != NULL) {
-		    if (format == 1) {
-			ret = xmlSaveFormatFileEnc(output ? output : "-", doc,
-						   encoding, 1);
-		    }
-		    else {
-			ret = xmlSaveFileEnc(output ? output : "-", doc,
-			                     encoding);
-		    }
-		    if (ret < 0) {
-			fprintf(ERR_STREAM, "failed save to %s\n",
-				output ? output : "-");
-			progresult = XMLLINT_ERR_OUT;
-		    }
-		} else if (format == 1) {
-		    ret = xmlSaveFormatFile(output ? output : "-", doc, 1);
-		    if (ret < 0) {
-			fprintf(ERR_STREAM, "failed save to %s\n",
-				output ? output : "-");
-			progresult = XMLLINT_ERR_OUT;
-		    }
-		} else {
-		    FILE *out;
-		    if (output == NULL)
-			out = stdout;
-		    else {
-			out = fopen(output,"wb");
-		    }
-		    if (out != NULL) {
-			if (xmlDocDump(out, doc) < 0)
-			    progresult = XMLLINT_ERR_OUT;
-
-			if (output != NULL)
-			    fclose(out);
-		    } else {
-			fprintf(ERR_STREAM, "failed to open %s\n", output);
-			progresult = XMLLINT_ERR_OUT;
-		    }
-		}
 	    } else {
 	        xmlSaveCtxtPtr ctxt;
 		int saveOpts = 0;
@@ -3021,17 +2951,12 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--postvalid : do a posteriori validation, i.e after parsing\n");
     fprintf(f, "\t--dtdvalid URL : do a posteriori validation against a given DTD\n");
     fprintf(f, "\t--dtdvalidfpi FPI : same but name the DTD with a Public Identifier\n");
+    fprintf(f, "\t--insert : ad-hoc test for valid insertions\n");
 #endif /* LIBXML_VALID_ENABLED */
     fprintf(f, "\t--quiet : be quiet when succeeded\n");
     fprintf(f, "\t--timing : print some timings\n");
-    fprintf(f, "\t--output file or -o file: save to a given file\n");
     fprintf(f, "\t--repeat : repeat 100 times, for timing or profiling\n");
-    fprintf(f, "\t--insert : ad-hoc test for valid insertions\n");
-#ifdef LIBXML_OUTPUT_ENABLED
-#ifdef LIBXML_ZLIB_ENABLED
-    fprintf(f, "\t--compress : turn on gzip compression of output\n");
-#endif
-#endif /* LIBXML_OUTPUT_ENABLED */
+    fprintf(f, "\t--dropdtd : remove the DOCTYPE of the input docs\n");
 #ifdef LIBXML_HTML_ENABLED
     fprintf(f, "\t--html : use the HTML parser\n");
     fprintf(f, "\t--xmlout : force to use the XML serializer when using --html\n");
@@ -3049,13 +2974,16 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--noblanks : drop (ignorable?) blanks spaces\n");
     fprintf(f, "\t--nocdata : replace cdata section with text nodes\n");
 #ifdef LIBXML_OUTPUT_ENABLED
+    fprintf(f, "\t--output file or -o file: save to a given file\n");
     fprintf(f, "\t--format : reformat/reindent the output\n");
     fprintf(f, "\t--encode encoding : output in the given encoding\n");
-    fprintf(f, "\t--dropdtd : remove the DOCTYPE of the input docs\n");
     fprintf(f, "\t--pretty STYLE : pretty-print in a particular style\n");
     fprintf(f, "\t                 0 Do not pretty print\n");
     fprintf(f, "\t                 1 Format the XML content, as --format\n");
     fprintf(f, "\t                 2 Add whitespace inside tags, preserving content\n");
+#ifdef LIBXML_ZLIB_ENABLED
+    fprintf(f, "\t--compress : turn on gzip compression of output\n");
+#endif
 #endif /* LIBXML_OUTPUT_ENABLED */
     fprintf(f, "\t--c14n : save in W3C canonical format v1.0 (with comments)\n");
     fprintf(f, "\t--c14n11 : save in W3C canonical format v1.1 (with comments)\n");
@@ -3127,29 +3055,35 @@ parseInteger(const char *ctxt, const char *str,
 
 static int
 skipArgs(const char *arg) {
-    if ((!strcmp(arg, "-encode")) ||
-        (!strcmp(arg, "--encode")) ||
+    if ((!strcmp(arg, "-path")) ||
+        (!strcmp(arg, "--path")) ||
+        (!strcmp(arg, "-maxmem")) ||
+        (!strcmp(arg, "--maxmem")) ||
+#ifdef LIBXML_OUTPUT_ENABLED
         (!strcmp(arg, "-o")) ||
         (!strcmp(arg, "-output")) ||
         (!strcmp(arg, "--output")) ||
-        (!strcmp(arg, "-path")) ||
-        (!strcmp(arg, "--path")) ||
+        (!strcmp(arg, "-encode")) ||
+        (!strcmp(arg, "--encode")) ||
+        (!strcmp(arg, "-pretty")) ||
+        (!strcmp(arg, "--pretty")) ||
+#endif
 #ifdef LIBXML_VALID_ENABLED
         (!strcmp(arg, "-dtdvalid")) ||
         (!strcmp(arg, "--dtdvalid")) ||
         (!strcmp(arg, "-dtdvalidfpi")) ||
         (!strcmp(arg, "--dtdvalidfpi")) ||
-#endif /* LIBXML_VALID_ENABLED */
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         (!strcmp(arg, "-relaxng")) ||
         (!strcmp(arg, "--relaxng")) ||
-        (!strcmp(arg, "-maxmem")) ||
-        (!strcmp(arg, "--maxmem")) ||
-        (!strcmp(arg, "-pretty")) ||
-        (!strcmp(arg, "--pretty")) ||
         (!strcmp(arg, "-schema")) ||
         (!strcmp(arg, "--schema")) ||
+#endif
+#ifdef LIBXML_SCHEMATRON_ENABLED
         (!strcmp(arg, "-schematron")) ||
         (!strcmp(arg, "--schematron")) ||
+#endif
 #if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
         (!strcmp(arg, "-pattern")) ||
         (!strcmp(arg, "--pattern")) ||
@@ -3172,6 +3106,15 @@ main(int argc, char **argv) {
     int i, acount;
     int files = 0;
     int version = 0;
+    int nowrap = 0;
+    int sax = 0;
+#ifdef LIBXML_READER_ENABLED
+    int stream = 0;
+#endif
+#ifdef LIBXML_CATALOG_ENABLED
+    int catalogs = 0;
+    int nocatalogs = 0;
+#endif
 
     if (argc <= 1) {
 	usage(ERR_STREAM, argv[0]);
@@ -3219,17 +3162,15 @@ main(int argc, char **argv) {
 #endif /* LIBXML_TREE_ENABLED */
 	if ((!strcmp(argv[i], "-recover")) ||
 	         (!strcmp(argv[i], "--recover"))) {
-	    recovery++;
 	    options |= XML_PARSE_RECOVER;
 	} else if ((!strcmp(argv[i], "-huge")) ||
 	         (!strcmp(argv[i], "--huge"))) {
 	    options |= XML_PARSE_HUGE;
 	} else if ((!strcmp(argv[i], "-noent")) ||
 	         (!strcmp(argv[i], "--noent"))) {
-	    noent = 1;
+	    options |= XML_PARSE_NOENT;
 	} else if ((!strcmp(argv[i], "-noenc")) ||
 	         (!strcmp(argv[i], "--noenc"))) {
-	    noenc++;
 	    options |= XML_PARSE_IGNORE_ENC;
 	} else if ((!strcmp(argv[i], "-nsclean")) ||
 	         (!strcmp(argv[i], "--nsclean"))) {
@@ -3247,14 +3188,6 @@ main(int argc, char **argv) {
 	} else if ((!strcmp(argv[i], "-noout")) ||
 	         (!strcmp(argv[i], "--noout")))
 	    noout++;
-#ifdef LIBXML_OUTPUT_ENABLED
-	else if ((!strcmp(argv[i], "-o")) ||
-	         (!strcmp(argv[i], "-output")) ||
-	         (!strcmp(argv[i], "--output"))) {
-	    i++;
-	    output = argv[i];
-	}
-#endif /* LIBXML_OUTPUT_ENABLED */
 	else if ((!strcmp(argv[i], "-htmlout")) ||
 	         (!strcmp(argv[i], "--htmlout")))
 	    htmlout++;
@@ -3271,50 +3204,42 @@ main(int argc, char **argv) {
 	    xmlout++;
 	} else if ((!strcmp(argv[i], "-nodefdtd")) ||
 	         (!strcmp(argv[i], "--nodefdtd"))) {
-            nodefdtd++;
 	    options |= HTML_PARSE_NODEFDTD;
         }
 #endif /* LIBXML_HTML_ENABLED */
 	else if ((!strcmp(argv[i], "-loaddtd")) ||
 	         (!strcmp(argv[i], "--loaddtd"))) {
-	    loaddtd++;
 	    options |= XML_PARSE_DTDLOAD;
 	} else if ((!strcmp(argv[i], "-dtdattr")) ||
 	         (!strcmp(argv[i], "--dtdattr"))) {
-	    loaddtd++;
-	    dtdattrs++;
 	    options |= XML_PARSE_DTDATTR;
 	}
 #ifdef LIBXML_VALID_ENABLED
 	else if ((!strcmp(argv[i], "-valid")) ||
 	         (!strcmp(argv[i], "--valid"))) {
-	    valid++;
 	    options |= XML_PARSE_DTDVALID;
 	} else if ((!strcmp(argv[i], "-postvalid")) ||
 	         (!strcmp(argv[i], "--postvalid"))) {
 	    postvalid++;
-	    loaddtd++;
 	    options |= XML_PARSE_DTDLOAD;
 	} else if ((!strcmp(argv[i], "-dtdvalid")) ||
 	         (!strcmp(argv[i], "--dtdvalid"))) {
 	    i++;
 	    dtdvalid = argv[i];
-	    loaddtd++;
 	    options |= XML_PARSE_DTDLOAD;
 	} else if ((!strcmp(argv[i], "-dtdvalidfpi")) ||
 	         (!strcmp(argv[i], "--dtdvalidfpi"))) {
 	    i++;
 	    dtdvalidfpi = argv[i];
-	    loaddtd++;
 	    options |= XML_PARSE_DTDLOAD;
         }
+	else if ((!strcmp(argv[i], "-insert")) ||
+	         (!strcmp(argv[i], "--insert")))
+	    insert++;
 #endif /* LIBXML_VALID_ENABLED */
 	else if ((!strcmp(argv[i], "-dropdtd")) ||
 	         (!strcmp(argv[i], "--dropdtd")))
 	    dropdtd++;
-	else if ((!strcmp(argv[i], "-insert")) ||
-	         (!strcmp(argv[i], "--insert")))
-	    insert++;
 	else if ((!strcmp(argv[i], "-quiet")) ||
 	         (!strcmp(argv[i], "--quiet")))
 	    quiet++;
@@ -3368,14 +3293,6 @@ main(int argc, char **argv) {
 	    options |= XML_PARSE_NOBASEFIX;
 	}
 #endif
-#ifdef LIBXML_OUTPUT_ENABLED
-#ifdef LIBXML_ZLIB_ENABLED
-	else if ((!strcmp(argv[i], "-compress")) ||
-	         (!strcmp(argv[i], "--compress"))) {
-	    compress++;
-        }
-#endif
-#endif /* LIBXML_OUTPUT_ENABLED */
 	else if ((!strcmp(argv[i], "-nowarning")) ||
 	         (!strcmp(argv[i], "--nowarning"))) {
 	    options |= XML_PARSE_NOWARNING;
@@ -3418,6 +3335,26 @@ main(int argc, char **argv) {
 	    nocatalogs++;
 	}
 #endif
+	else if ((!strcmp(argv[i], "-noblanks")) ||
+	         (!strcmp(argv[i], "--noblanks"))) {
+            options |= XML_PARSE_NOBLANKS;
+        }
+	else if ((!strcmp(argv[i], "-maxmem")) ||
+	         (!strcmp(argv[i], "--maxmem"))) {
+	     i++;
+        }
+#ifdef LIBXML_OUTPUT_ENABLED
+	else if ((!strcmp(argv[i], "-o")) ||
+	         (!strcmp(argv[i], "-output")) ||
+	         (!strcmp(argv[i], "--output"))) {
+	    i++;
+	    output = argv[i];
+	}
+	else if ((!strcmp(argv[i], "-format")) ||
+	         (!strcmp(argv[i], "--format"))) {
+	    format = 1;
+            options |= XML_PARSE_NOBLANKS;
+	}
 	else if ((!strcmp(argv[i], "-encode")) ||
 	         (!strcmp(argv[i], "--encode"))) {
 	    i++;
@@ -3427,28 +3364,19 @@ main(int argc, char **argv) {
 	     */
 	    xmlAddEncodingAlias("UTF-8", "DVEnc");
         }
-	else if ((!strcmp(argv[i], "-noblanks")) ||
-	         (!strcmp(argv[i], "--noblanks"))) {
-	    noblanks = 1;
-        }
-	else if ((!strcmp(argv[i], "-maxmem")) ||
-	         (!strcmp(argv[i], "--maxmem"))) {
-	     i++;
-        }
-	else if ((!strcmp(argv[i], "-format")) ||
-	         (!strcmp(argv[i], "--format"))) {
-#ifdef LIBXML_OUTPUT_ENABLED
-	    format = 1;
-#endif /* LIBXML_OUTPUT_ENABLED */
-	}
 	else if ((!strcmp(argv[i], "-pretty")) ||
 	         (!strcmp(argv[i], "--pretty"))) {
 	    i++;
-#ifdef LIBXML_OUTPUT_ENABLED
             if (argv[i] != NULL)
 	        format = atoi(argv[i]);
-#endif /* LIBXML_OUTPUT_ENABLED */
 	}
+#ifdef LIBXML_ZLIB_ENABLED
+	else if ((!strcmp(argv[i], "-compress")) ||
+	         (!strcmp(argv[i], "--compress"))) {
+	    compress++;
+        }
+#endif
+#endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_READER_ENABLED
 	else if ((!strcmp(argv[i], "-stream")) ||
 	         (!strcmp(argv[i], "--stream"))) {
@@ -3458,44 +3386,47 @@ main(int argc, char **argv) {
 	         (!strcmp(argv[i], "--walker"))) {
 	     walker++;
              noout++;
+        }
 #ifdef LIBXML_PATTERN_ENABLED
-        } else if ((!strcmp(argv[i], "-pattern")) ||
+        else if ((!strcmp(argv[i], "-pattern")) ||
                    (!strcmp(argv[i], "--pattern"))) {
 	    i++;
 	    pattern = argv[i];
-#endif
 	}
+#endif
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_SAX1_ENABLED
 	else if ((!strcmp(argv[i], "-sax1")) ||
 	         (!strcmp(argv[i], "--sax1"))) {
-	    sax1++;
 	    options |= XML_PARSE_SAX1;
 	}
 #endif /* LIBXML_SAX1_ENABLED */
 	else if ((!strcmp(argv[i], "-sax")) ||
 	         (!strcmp(argv[i], "--sax"))) {
 	    sax++;
+        }
 #ifdef LIBXML_SCHEMAS_ENABLED
-	} else if ((!strcmp(argv[i], "-relaxng")) ||
+	else if ((!strcmp(argv[i], "-relaxng")) ||
 	         (!strcmp(argv[i], "--relaxng"))) {
 	    i++;
 	    relaxng = argv[i];
-	    noent = 1;
+	    options |= XML_PARSE_NOENT;
 	} else if ((!strcmp(argv[i], "-schema")) ||
 	         (!strcmp(argv[i], "--schema"))) {
 	    i++;
 	    schema = argv[i];
-	    noent = 1;
+	    options |= XML_PARSE_NOENT;
+        }
 #endif
 #ifdef LIBXML_SCHEMATRON_ENABLED
-	} else if ((!strcmp(argv[i], "-schematron")) ||
+	else if ((!strcmp(argv[i], "-schematron")) ||
 	         (!strcmp(argv[i], "--schematron"))) {
 	    i++;
 	    schematron = argv[i];
-	    noent = 1;
+	    options |= XML_PARSE_NOENT;
+        }
 #endif
-        } else if ((!strcmp(argv[i], "-nonet")) ||
+        else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
 	    xmlSetExternalEntityLoader(xmlNoNetExternalEntityLoader);
@@ -3509,16 +3440,17 @@ main(int argc, char **argv) {
                    (!strcmp(argv[i], "--path"))) {
 	    i++;
 	    parsePath(BAD_CAST argv[i]);
+        }
 #ifdef LIBXML_XPATH_ENABLED
-        } else if ((!strcmp(argv[i], "-xpath")) ||
+        else if ((!strcmp(argv[i], "-xpath")) ||
                    (!strcmp(argv[i], "--xpath"))) {
 	    i++;
 	    noout++;
 	    xpathquery = argv[i];
+        }
 #endif
-	} else if ((!strcmp(argv[i], "-oldxml10")) ||
+	else if ((!strcmp(argv[i], "-oldxml10")) ||
 	           (!strcmp(argv[i], "--oldxml10"))) {
-	    oldxml10++;
 	    options |= XML_PARSE_OLD10;
 	} else if ((!strcmp(argv[i], "-max-ampl")) ||
 	           (!strcmp(argv[i], "--max-ampl"))) {
@@ -3562,10 +3494,6 @@ main(int argc, char **argv) {
     defaultEntityLoader = xmlGetExternalEntityLoader();
     xmlSetExternalEntityLoader(xmllintExternalEntityLoader);
 
-    if (noent != 0)
-        options |= XML_PARSE_NOENT;
-    if ((noblanks != 0) || (format == 1))
-        options |= XML_PARSE_NOBLANKS;
     if ((htmlout) && (!nowrap)) {
 	fprintf(ERR_STREAM,
          "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");

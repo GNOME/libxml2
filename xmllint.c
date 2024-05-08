@@ -3350,7 +3350,7 @@ main(int argc, char **argv) {
 	else if ((!strcmp(argv[i], "-pedantic")) ||
 	         (!strcmp(argv[i], "--pedantic"))) {
 	    options |= XML_PARSE_PEDANTIC;
-            options &= XML_PARSE_NOWARNING;
+            options &= ~XML_PARSE_NOWARNING;
         }
 #ifdef LIBXML_DEBUG_ENABLED
 	else if ((!strcmp(argv[i], "-debugent")) ||

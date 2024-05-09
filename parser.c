@@ -350,23 +350,6 @@ xmlFatalErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlErrMsgStr:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @val:  a string value
- *
- * Handle a non fatal parser error
- */
-static void LIBXML_ATTR_FORMAT(3,0)
-xmlErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
-                  const char *msg, const xmlChar * val)
-{
-    xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_ERROR,
-               val, NULL, NULL, 0, msg, val);
-}
-
-/**
  * xmlNsErr:
  * @ctxt:  an XML parser context
  * @error:  the error number
@@ -5735,23 +5718,7 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    xmlFatalErr(ctxt, XML_ERR_VALUE_REQUIRED, NULL);
 		}
 		if (URI) {
-		    xmlURIPtr uri;
-
-                    if (xmlParseURISafe((const char *) URI, &uri) < 0) {
-                        xmlErrMemory(ctxt);
-                    } else if (uri == NULL) {
-                        /*
-                         * This really ought to be a well formedness error
-                         * but the XML Core WG decided otherwise c.f. issue
-                         * E26 of the XML erratas.
-                         */
-                        xmlErrMsgStr(ctxt, XML_ERR_INVALID_URI,
-                                     "Invalid URI: %s\n", URI);
-                    } else if (uri->fragment != NULL) {
-                        /*
-                         * Okay this is foolish to block those but not
-                         * invalid URIs.
-                         */
+                    if (xmlStrchr(URI, '#')) {
                         xmlFatalErr(ctxt, XML_ERR_URI_FRAGMENT, NULL);
                     } else {
                         if ((ctxt->sax != NULL) &&
@@ -5761,7 +5728,6 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
                                         XML_EXTERNAL_PARAMETER_ENTITY,
                                         literal, URI, NULL);
                     }
-		    xmlFreeURI(uri);
 		}
 	    }
 	} else {
@@ -5803,26 +5769,9 @@ xmlParseEntityDecl(xmlParserCtxtPtr ctxt) {
 		    xmlFatalErr(ctxt, XML_ERR_VALUE_REQUIRED, NULL);
 		}
 		if (URI) {
-		    xmlURIPtr uri;
-
-                    if (xmlParseURISafe((const char *) URI, &uri) < 0) {
-                        xmlErrMemory(ctxt);
-                    } else if (uri == NULL) {
-                        /*
-                         * This really ought to be a well formedness error
-                         * but the XML Core WG decided otherwise c.f. issue
-                         * E26 of the XML erratas.
-                         */
-                        xmlErrMsgStr(ctxt, XML_ERR_INVALID_URI,
-                                     "Invalid URI: %s\n", URI);
-                    } else if (uri->fragment != NULL) {
-                        /*
-                         * Okay this is foolish to block those but not
-                         * invalid URIs.
-                         */
+                    if (xmlStrchr(URI, '#')) {
                         xmlFatalErr(ctxt, XML_ERR_URI_FRAGMENT, NULL);
                     }
-                    xmlFreeURI(uri);
 		}
 		if ((RAW != '>') && (SKIP_BLANKS_PE == 0)) {
 		    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,

@@ -2371,17 +2371,13 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	endTimer("Parsing");
     }
 
-    /*
-     * Remove DOCTYPE nodes
-     */
     if (dropdtd) {
 	xmlDtdPtr dtd;
 
 	dtd = xmlGetIntSubset(doc);
 	if (dtd != NULL) {
 	    xmlUnlinkNode((xmlNodePtr)dtd);
-            doc->intSubset = NULL;
-	    xmlFreeDtd(dtd);
+            doc->intSubset = dtd;
 	}
     }
 

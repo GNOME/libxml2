@@ -1199,16 +1199,16 @@ xmlTextReaderRead(xmlTextReaderPtr reader) {
     xmlTextReaderState oldstate = XML_TEXTREADER_START;
     xmlNodePtr oldnode = NULL;
 
-
     if (reader == NULL)
 	return(-1);
+    if (reader->state == XML_TEXTREADER_ERROR)
+        return(-1);
+
     reader->curnode = NULL;
     if (reader->doc != NULL)
         return(xmlTextReaderReadTree(reader));
     if (reader->ctxt == NULL)
 	return(-1);
-    if (reader->state == XML_TEXTREADER_ERROR)
-        return(-1);
 
     if (reader->mode == XML_TEXTREADER_MODE_INITIAL) {
 	reader->mode = XML_TEXTREADER_MODE_INTERACTIVE;

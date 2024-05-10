@@ -12168,6 +12168,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
  * @ID:  the System ID for the entity to load
  * @lst:  the return value for the set of parsed nodes
  *
+ * DEPRECATED: Use xmlParseCtxtExternalEntity.
+ *
  * Parse an external general entity
  * An external general parsed entity is well-formed if it matches the
  * production labeled extParsedEnt.

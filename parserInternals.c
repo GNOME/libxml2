@@ -1844,9 +1844,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
         input = xmlLoadExternalEntity((char *) ent->URI,
                                       (char *) ent->ExternalID, ctxt);
     } else {
-        input = xmlNewInputMemory(ctxt, NULL, "", 0, NULL,
-                                  XML_INPUT_BUF_STATIC |
-                                  XML_INPUT_BUF_ZERO_TERMINATED);
+        return(NULL);
     }
 
     if (input == NULL)

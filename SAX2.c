@@ -406,6 +406,7 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId
     xmlParserInputPtr ret = NULL;
     xmlChar *URI;
     const xmlChar *base = NULL;
+    int res;
 
     if (ctx == NULL) return(NULL);
     if (ctxt->input != NULL)
@@ -416,8 +417,13 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId
         xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
         return(NULL);
     }
-    if (xmlBuildURISafe(systemId, base, &URI) < 0) {
-        xmlSAX2ErrMemory(ctxt);
+    res = xmlBuildURISafe(systemId, base, &URI);
+    if (URI == NULL) {
+        if (res < 0)
+            xmlSAX2ErrMemory(ctxt);
+        else
+            xmlWarnMsg(ctxt, XML_ERR_INVALID_URI,
+                       "Can't resolve URI: %s\n", systemId);
         return(NULL);
     }
     if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
@@ -568,11 +574,16 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
             }
         }
 
-        if (xmlBuildURISafe(systemId, (const xmlChar *) base, &URI) < 0) {
-            xmlSAX2ErrMemory(ctxt);
-            return;
-        }
-        if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
+        res = xmlBuildURISafe(systemId, (const xmlChar *) base, &URI);
+
+        if (URI == NULL) {
+            if (res < 0) {
+                xmlSAX2ErrMemory(ctxt);
+            } else {
+                xmlWarnMsg(ctxt, XML_ERR_INVALID_URI,
+                           "Can't resolve URI: %s\n", systemId);
+            }
+        } else if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
             xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
             xmlFree(URI);
         } else {

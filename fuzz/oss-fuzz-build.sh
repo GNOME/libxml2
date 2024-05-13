@@ -26,7 +26,9 @@ cd fuzz
 make clean-corpus
 make fuzz.o
 
-for fuzzer in api html reader regexp schema uri valid xinclude xml xpath; do
+for fuzzer in \
+    api html lint reader regexp schema uri valid xinclude xml xpath
+do
     make $fuzzer.o
     # Link with $CXX
     $CXX $CXXFLAGS \

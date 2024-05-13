@@ -81,7 +81,11 @@
 #include <libxml/xmlsave.h>
 #endif
 
-#define ERR_STREAM stderr
+#ifdef XMLLINT_FUZZ
+  #define ERR_STREAM stdout
+#else
+  #define ERR_STREAM stderr
+#endif
 
 #ifndef XML_XML_DEFAULT_CATALOG
 #define XML_XML_DEFAULT_CATALOG "file://" SYSCONFDIR "/xml/catalog"
@@ -302,6 +306,7 @@ xmllintExternalEntityLoader(const char *URL, const char *ID,
     }
     return(NULL);
 }
+
 /************************************************************************
  *									*
  * Memory allocation consumption debugging				*
@@ -356,7 +361,7 @@ myStrdupFunc(const char *str)
     if (ret != NULL) {
         if (xmlMemUsed() > maxmem) {
             OOM();
-            xmlFree(ret);
+            xmlMemFree(ret);
             return (NULL);
         }
     }
@@ -3097,8 +3102,8 @@ skipArgs(const char *arg) {
     return(0);
 }
 
-int
-main(int argc, char **argv) {
+static int
+xmllintMain(int argc, const char **argv) {
     int i, acount;
     int files = 0;
     int version = 0;
@@ -3111,6 +3116,82 @@ main(int argc, char **argv) {
     int catalogs = 0;
     int nocatalogs = 0;
 #endif
+
+#ifdef XMLLINT_FUZZ
+#ifdef LIBXML_DEBUG_ENABLED
+    shell = 0;
+    debugent = 0;
+#endif
+    debug = 0;
+    maxmem = 0;
+#ifdef LIBXML_TREE_ENABLED
+    copy = 0;
+#endif /* LIBXML_TREE_ENABLED */
+    noout = 0;
+#ifdef LIBXML_OUTPUT_ENABLED
+    format = 0;
+    output = NULL;
+    compress = 0;
+#endif /* LIBXML_OUTPUT_ENABLED */
+#ifdef LIBXML_VALID_ENABLED
+    postvalid = 0;
+    dtdvalid = NULL;
+    dtdvalidfpi = NULL;
+    insert = 0;
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
+    relaxng = NULL;
+    relaxngschemas = NULL;
+    schema = NULL;
+    wxschemas = NULL;
+#endif
+#ifdef LIBXML_SCHEMATRON_ENABLED
+    schematron = NULL;
+    wxschematron = NULL;
+#endif
+    repeat = 0;
+#if defined(LIBXML_HTML_ENABLED)
+    html = 0;
+    xmlout = 0;
+#endif
+    htmlout = 0;
+#ifdef LIBXML_PUSH_ENABLED
+    push = 0;
+    pushsize = 4096;
+#endif /* LIBXML_PUSH_ENABLED */
+#ifdef HAVE_MMAP
+    memory = 0;
+#endif
+    testIO = 0;
+    encoding = NULL;
+#ifdef LIBXML_XINCLUDE_ENABLED
+    xinclude = 0;
+#endif
+    progresult = XMLLINT_RETURN_OK;
+    quiet = 0;
+    timing = 0;
+    generate = 0;
+    dropdtd = 0;
+#ifdef LIBXML_C14N_ENABLED
+    canonical = 0;
+    canonical_11 = 0;
+    exc_canonical = 0;
+#endif
+#ifdef LIBXML_READER_ENABLED
+    walker = 0;
+#ifdef LIBXML_PATTERN_ENABLED
+    pattern = NULL;
+    patternc = NULL;
+    patstream = NULL;
+#endif
+#endif /* LIBXML_READER_ENABLED */
+#ifdef LIBXML_XPATH_ENABLED
+    xpathquery = NULL;
+#endif
+    options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
+    maxAmpl = 0;
+    defaultEntityLoader = NULL;
+#endif /* XMLLINT_FUZZ */
 
     if (argc <= 1) {
 	usage(ERR_STREAM, argv[0]);
@@ -3682,8 +3763,17 @@ main(int argc, char **argv) {
     goto error;
 
 error:
+    if (defaultEntityLoader != NULL)
+        xmlSetExternalEntityLoader(defaultEntityLoader);
     xmlCleanupParser();
 
     return(progresult);
 }
+
+#ifndef XMLLINT_FUZZ
+int
+main(int argc, char **argv) {
+    return(xmllintMain(argc, (const char **) argv));
+}
+#endif
 

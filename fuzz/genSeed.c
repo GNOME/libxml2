@@ -28,6 +28,7 @@
 #define EXPR_SIZE 4500
 
 #define FLAG_READER (1 << 0)
+#define FLAG_LINT   (1 << 1)
 
 typedef int
 (*fileFunc)(const char *base, FILE *out);
@@ -115,14 +116,32 @@ processXml(const char *docFile, FILE *out) {
     int opts = XML_PARSE_NOENT | XML_PARSE_DTDLOAD;
     xmlDocPtr doc;
 
-    /* Parser options. */
-    xmlFuzzWriteInt(out, opts, 4);
-    /* Max allocations. */
-    xmlFuzzWriteInt(out, 0, 4);
+    if (globalData.flags & FLAG_LINT) {
+        /* Switches */
+        xmlFuzzWriteInt(out, 0, 4);
+        xmlFuzzWriteInt(out, 0, 4);
+        /* maxmem */
+        xmlFuzzWriteInt(out, 0, 4);
+        /* max-ampl */
+        xmlFuzzWriteInt(out, 0, 1);
+        /* pretty */
+        xmlFuzzWriteInt(out, 0, 1);
+        /* encode */
+        xmlFuzzWriteString(out, "");
+        /* pattern */
+        xmlFuzzWriteString(out, "");
+        /* xpath */
+        xmlFuzzWriteString(out, "");
+    } else {
+        /* Parser options. */
+        xmlFuzzWriteInt(out, opts, 4);
+        /* Max allocations. */
+        xmlFuzzWriteInt(out, 0, 4);
 
-    if (globalData.flags & FLAG_READER) {
-        /* Initial reader program with a couple of OP_READs */
-        xmlFuzzWriteString(out, "\x01\x01\x01\x01\x01\x01\x01\x01");
+        if (globalData.flags & FLAG_READER) {
+            /* Initial reader program with a couple of OP_READs */
+            xmlFuzzWriteString(out, "\x01\x01\x01\x01\x01\x01\x01\x01");
+        }
     }
 
     fuzzRecorderInit(out);
@@ -423,6 +442,12 @@ main(int argc, const char **argv) {
 #ifdef HAVE_HTML_FUZZER
         processArg = processPattern;
         globalData.processFile = processHtml;
+#endif
+    } else if (strcmp(fuzzer, "lint") == 0) {
+#ifdef HAVE_LINT_FUZZER
+        processArg = processPattern;
+        globalData.flags |= FLAG_LINT;
+        globalData.processFile = processXml;
 #endif
     } else if (strcmp(fuzzer, "reader") == 0) {
 #ifdef HAVE_READER_FUZZER

@@ -18,6 +18,9 @@ extern "C" {
 #if defined(LIBXML_HTML_ENABLED)
   #define HAVE_HTML_FUZZER
 #endif
+#if 1
+  #define HAVE_LINT_FUZZER
+#endif
 #if defined(LIBXML_READER_ENABLED)
   #define HAVE_READER_FUZZER
 #endif
@@ -101,8 +104,8 @@ xmlFuzzMainUrl(void);
 const char *
 xmlFuzzMainEntity(size_t *size);
 
-xmlParserInputPtr
-xmlFuzzEntityLoader(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);
+xmlParserInputBufferPtr
+xmlFuzzEntityLoader(const char *URL, xmlCharEncoding enc);
 
 char *
 xmlSlurpFile(const char *path, size_t *size);

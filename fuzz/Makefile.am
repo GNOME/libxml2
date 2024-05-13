@@ -1,6 +1,7 @@
 AUTOMAKE_OPTIONS = -Wno-syntax
 EXTRA_PROGRAMS = genSeed \
-		 api html reader regexp schema uri valid xinclude xml xpath
+		 api html lint reader regexp schema uri valid xinclude \
+		 xml xpath
 check_PROGRAMS = testFuzzer
 EXTRA_DIST = html.dict regexp.dict schema.dict xml.dict xpath.dict \
 	     static_seed/uri static_seed/regexp fuzz.h
@@ -29,9 +30,9 @@ testFuzzer_SOURCES = testFuzzer.c fuzz.c
 
 .PHONY: corpus clean-corpus
 
-corpus: seed/html.stamp seed/reader.stamp seed/regexp.stamp seed/schema.stamp \
-    seed/uri.stamp seed/valid.stamp seed/xinclude.stamp seed/xml.stamp \
-    seed/xpath.stamp
+corpus: seed/html.stamp seed/lint.stamp seed/reader.stamp seed/regexp.stamp \
+    seed/schema.stamp seed/uri.stamp seed/valid.stamp seed/xinclude.stamp \
+    seed/xml.stamp seed/xpath.stamp
 
 check-local: corpus
 	./testFuzzer$(EXEEXT)
@@ -134,6 +135,24 @@ fuzz-reader: reader$(EXEEXT) seed/reader.stamp
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/reader seed/reader
+
+# xmllint fuzzer
+
+seed/lint.stamp: genSeed$(EXEEXT)
+	@mkdir -p seed/lint
+	./genSeed$(EXEEXT) lint $(XML_SEED_CORPUS_SRC)
+	@touch seed/lint.stamp
+
+lint_SOURCES = lint.c fuzz.c
+lint_LDFLAGS = -fsanitize=fuzzer
+
+fuzz-lint: lint$(EXEEXT) seed/lint.stamp
+	@mkdir -p corpus/lint
+	./lint$(EXEEXT) \
+	    -dict=xml.dict \
+	    -max_len=$(XML_MAX_LEN) \
+	    $$XML_FUZZ_OPTIONS \
+	    corpus/lint seed/lint
 
 # API fuzzer
 

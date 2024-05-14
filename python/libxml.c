@@ -1510,7 +1510,9 @@ static void
 libxml_xmlErrorInitialize(void)
 {
     xmlSetGenericErrorFunc(NULL, libxml_xmlErrorFuncHandler);
+XML_IGNORE_DEPRECATION_WARNINGS
     xmlThrDefSetGenericErrorFunc(NULL, libxml_xmlErrorFuncHandler);
+XML_POP_WARNINGS
 }
 
 static PyObject *

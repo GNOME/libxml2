@@ -350,6 +350,23 @@ xmlFatalErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
+ * xmlErrMsgStr:
+ * @ctxt:  an XML parser context
+ * @error:  the error number
+ * @msg:  the error message
+ * @val:  a string value
+ *
+ * Handle a non fatal parser error
+ */
+static void LIBXML_ATTR_FORMAT(3,0)
+xmlErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
+                  const char *msg, const xmlChar * val)
+{
+    xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_ERROR,
+               val, NULL, NULL, 0, msg, val);
+}
+
+/**
  * xmlNsErr:
  * @ctxt:  an XML parser context
  * @error:  the error number
@@ -7501,6 +7518,65 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
     }
 }
 
+static void
+xmlHandleUndeclaredEntity(xmlParserCtxtPtr ctxt, const xmlChar *name) {
+    /*
+     * [ WFC: Entity Declared ]
+     * In a document without any DTD, a document with only an
+     * internal DTD subset which contains no parameter entity
+     * references, or a document with "standalone='yes'", the
+     * Name given in the entity reference must match that in an
+     * entity declaration, except that well-formed documents
+     * need not declare any of the following entities: amp, lt,
+     * gt, apos, quot.
+     * The declaration of a parameter entity must precede any
+     * reference to it.
+     * Similarly, the declaration of a general entity must
+     * precede any reference to it which appears in a default
+     * value in an attribute-list declaration. Note that if
+     * entities are declared in the external subset or in
+     * external parameter entities, a non-validating processor
+     * is not obligated to read and process their declarations;
+     * for such documents, the rule that an entity must be
+     * declared is a well-formedness constraint only if
+     * standalone='yes'.
+     */
+    if ((ctxt->standalone == 1) ||
+        ((ctxt->hasExternalSubset == 0) &&
+         (ctxt->hasPErefs == 0))) {
+        xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
+                          "Entity '%s' not defined\n", name);
+    } else if (ctxt->validate) {
+        /*
+         * [ VC: Entity Declared ]
+         * In a document with an external subset or external
+         * parameter entities with "standalone='no'", ...
+         * ... The declaration of a parameter entity must
+         * precede any reference to it...
+         */
+        xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
+                         "Entity '%s' not defined\n", name, NULL);
+    } else if ((ctxt->loadsubset) ||
+               ((ctxt->replaceEntities) &&
+                ((ctxt->options & XML_PARSE_NO_XXE) == 0))) {
+        /*
+         * Also raise a non-fatal error
+         *
+         * - if the external subset is loaded and all entity declarations
+         *   should be available, or
+         * - entity substition was requested without restricting
+         *   external entity access.
+         */
+        xmlErrMsgStr(ctxt, XML_WAR_UNDECLARED_ENTITY,
+                     "Entity '%s' not defined\n", name);
+    } else {
+        xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
+                      "Entity '%s' not defined\n", name, NULL);
+    }
+
+    ctxt->valid = 0;
+}
+
 static xmlEntityPtr
 xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
     xmlEntityPtr ent;
@@ -7529,49 +7605,9 @@ xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
 	    ent = xmlSAX2GetEntity(ctxt, name);
 	}
     }
-    /*
-     * [ WFC: Entity Declared ]
-     * In a document without any DTD, a document with only an
-     * internal DTD subset which contains no parameter entity
-     * references, or a document with "standalone='yes'", the
-     * Name given in the entity reference must match that in an
-     * entity declaration, except that well-formed documents
-     * need not declare any of the following entities: amp, lt,
-     * gt, apos, quot.
-     * The declaration of a parameter entity must precede any
-     * reference to it.
-     * Similarly, the declaration of a general entity must
-     * precede any reference to it which appears in a default
-     * value in an attribute-list declaration. Note that if
-     * entities are declared in the external subset or in
-     * external parameter entities, a non-validating processor
-     * is not obligated to read and process their declarations;
-     * for such documents, the rule that an entity must be
-     * declared is a well-formedness constraint only if
-     * standalone='yes'.
-     */
+
     if (ent == NULL) {
-	if (((!ctxt->validate) && (ctxt->loadsubset)) ||
-            (ctxt->standalone == 1) ||
-	    ((ctxt->hasExternalSubset == 0) &&
-	     (ctxt->hasPErefs == 0))) {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
-		     "Entity '%s' not defined\n", name);
-        } else if (ctxt->validate) {
-            /*
-             * [ VC: Entity Declared ]
-             * In a document with an external subset or external
-             * parameter entities with "standalone='no'", ...
-             * ... The declaration of a parameter entity must
-             * precede any reference to it...
-             */
-            xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
-                             "Entity '%s' not defined\n", name, NULL);
-	} else {
-	    xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
-		          "Entity '%s' not defined\n", name, NULL);
-	}
-	ctxt->valid = 0;
+        xmlHandleUndeclaredEntity(ctxt, name);
     }
 
     /*
@@ -7776,27 +7812,18 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
 
     NEXT;
 
+    /* Must be set before xmlHandleUndeclaredEntity */
+    ctxt->hasPErefs = 1;
+
     /*
      * Request the entity from SAX
      */
     if ((ctxt->sax != NULL) &&
 	(ctxt->sax->getParameterEntity != NULL))
 	entity = ctxt->sax->getParameterEntity(ctxt->userData, name);
+
     if (entity == NULL) {
-	if (((!ctxt->validate) && (ctxt->loadsubset)) ||
-            (ctxt->standalone == 1)) {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
-			      "PEReference: %%%s; not found\n",
-			      name);
-	} else if (ctxt->validate) {
-            xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
-                             "PEReference: %%%s; not found\n",
-                             name, NULL);
-        } else {
-            xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
-                          "PEReference: %%%s; not found\n",
-                              name, NULL);
-	}
+        xmlHandleUndeclaredEntity(ctxt, name);
     } else {
 	/*
 	 * Internal checking in case the entity quest barfed
@@ -7838,7 +7865,6 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
             }
 	}
     }
-    ctxt->hasPErefs = 1;
 }
 
 /**
@@ -8033,26 +8059,18 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
     }
     ptr++;
 
+    /* Must be set before xmlHandleUndeclaredEntity */
+    ctxt->hasPErefs = 1;
+
     /*
      * Request the entity from SAX
      */
     if ((ctxt->sax != NULL) &&
 	(ctxt->sax->getParameterEntity != NULL))
 	entity = ctxt->sax->getParameterEntity(ctxt->userData, name);
+
     if (entity == NULL) {
-	if (((!ctxt->validate) && (ctxt->loadsubset)) ||
-            (ctxt->standalone == 1)) {
-	    xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
-		 "PEReference: %%%s; not found\n", name);
-	} else if (ctxt->validate) {
-            xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
-                             "PEReference: %%%s; not found\n",
-                             name, NULL);
-        } else {
-	    xmlWarningMsg(ctxt, XML_WAR_UNDECLARED_ENTITY,
-			  "PEReference: %%%s; not found\n",
-			  name, NULL);
-	}
+        xmlHandleUndeclaredEntity(ctxt, name);
     } else {
 	/*
 	 * Internal checking in case the entity quest barfed
@@ -8064,7 +8082,7 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 			  name, NULL);
 	}
     }
-    ctxt->hasPErefs = 1;
+
     xmlFree(name);
     *str = ptr;
     return(entity);

@@ -7,7 +7,7 @@ SAX.startElementNs(doc, NULL, NULL, 0, 0, 0)
 SAX.characters(
     , 5)
 SAX.getEntity(undeclared)
-SAX.warning: Entity 'undeclared' not defined
+SAX.error: Entity 'undeclared' not defined
 SAX.startElementNs(elem, NULL, NULL, 0, 1, 0, attr='"/>
 ...', 0)
 SAX.endElementNs(elem, NULL, NULL)
@@ -15,7 +15,7 @@ SAX.characters(
     , 5)
 SAX.startElementNs(elem, NULL, NULL, 0, 0, 0)
 SAX.getEntity(undeclared)
-SAX.warning: Entity 'undeclared' not defined
+SAX.error: Entity 'undeclared' not defined
 SAX.endElementNs(elem, NULL, NULL)
 SAX.characters(
 , 1)

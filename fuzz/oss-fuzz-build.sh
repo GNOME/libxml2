@@ -11,15 +11,21 @@ if [ "$SANITIZER" = undefined ]; then
     export CXXFLAGS="$CXXFLAGS $extra_cflags"
 fi
 
+# Don't enable zlib and liblzma with MSan
+if [ "$SANITIZER" = memory ]; then
+    CONFIG=''
+else
+    CONFIG='--with-zlib --with-lzma'
+fi
+
 export V=1
 
 ./autogen.sh \
     --disable-shared \
-    --with-zlib \
-    --with-lzma \
     --without-debug \
     --without-http \
-    --without-python
+    --without-python \
+    $CONFIG
 make -j$(nproc)
 
 cd fuzz

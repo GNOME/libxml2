@@ -162,7 +162,7 @@ testEntityLoader(void) {
     xmlDocPtr doc;
     int ret = 0;
 
-    xmlParserInputBufferCreateFilenameDefault(xmlFuzzEntityLoader);
+    xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
 
     xmlFuzzDataInit(data, sizeof(data) - 1);
     xmlFuzzReadEntities();

@@ -198,7 +198,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     pushArg(NULL);
 
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
-    xmlParserInputBufferCreateFilenameDefault(xmlFuzzEntityLoader);
+    xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif

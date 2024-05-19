@@ -104,8 +104,8 @@ xmlFuzzMainUrl(void);
 const char *
 xmlFuzzMainEntity(size_t *size);
 
-xmlParserInputBufferPtr
-xmlFuzzEntityLoader(const char *URL, xmlCharEncoding enc);
+xmlParserInputPtr
+xmlFuzzEntityLoader(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);
 
 char *
 xmlSlurpFile(const char *path, size_t *size);

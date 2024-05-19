@@ -391,8 +391,10 @@ xmlFuzzMainEntity(size_t *size) {
  *
  * The entity loader for fuzz data.
  */
-xmlParserInputBufferPtr
-xmlFuzzEntityLoader(const char *URL, xmlCharEncoding enc) {
+xmlParserInputPtr
+xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
+                    xmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr input;
     xmlFuzzEntityInfo *entity;
 
     if (URL == NULL)
@@ -401,7 +403,26 @@ xmlFuzzEntityLoader(const char *URL, xmlCharEncoding enc) {
     if (entity == NULL)
         return(NULL);
 
-    return(xmlParserInputBufferCreateMem(entity->data, entity->size, enc));
+    input = xmlNewInputStream(ctxt);
+    if (input == NULL)
+        return(NULL);
+    input->filename = (char *) xmlCharStrdup(URL);
+    if (input->filename == NULL) {
+        xmlCtxtErrMemory(ctxt);
+        xmlFreeInputStream(input);
+        return(NULL);
+    }
+    input->buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
+                                               XML_CHAR_ENCODING_NONE);
+    if (input->buf == NULL) {
+        xmlCtxtErrMemory(ctxt);
+        xmlFreeInputStream(input);
+        return(NULL);
+    }
+    input->base = input->cur = xmlBufContent(input->buf->buffer);
+    input->end = input->base + xmlBufUse(input->buf->buffer);
+
+    return input;
 }
 
 char *

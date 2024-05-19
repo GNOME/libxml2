@@ -3506,7 +3506,9 @@ xmllintMain(int argc, const char **argv) {
         else if ((!strcmp(argv[i], "-nonet")) ||
                    (!strcmp(argv[i], "--nonet"))) {
 	    options |= XML_PARSE_NONET;
+#ifndef XMLLINT_FUZZ
 	    xmlSetExternalEntityLoader(xmlNoNetExternalEntityLoader);
+#endif
         } else if ((!strcmp(argv[i], "-nocompact")) ||
                    (!strcmp(argv[i], "--nocompact"))) {
 	    options &= ~XML_PARSE_COMPACT;

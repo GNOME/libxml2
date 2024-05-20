@@ -87,7 +87,7 @@ option('html',
 
 option('http',
   type: 'boolean',
-  value: true,
+  value: false,
   description: 'HTTP support'
 )
 

@@ -141,6 +141,21 @@ AC_ARG_WITH(coverage,
 [  --with-coverage         build for code coverage with GCC (off)])
 
 dnl
+dnl Legacy defaults
+dnl
+if test "$with_legacy" = "yes"; then
+    if test "$with_http" = ""; then
+        with_http=yes
+    fi
+    if test "$with_lzma" = ""; then
+        with_lzma=yes
+    fi
+    if test "$with_zlib" = ""; then
+        with_zlib=yes
+    fi
+fi
+
+dnl
 dnl hard dependencies on options
 dnl
 if test "$with_c14n" = "yes"; then
@@ -317,7 +332,7 @@ AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 dnl
 dnl Checks for inet libraries
 dnl
-if test "$with_http" != "no" || test "with_ftp" = "yes"; then
+if test "$with_http" = "yes" || test "$with_ftp" = "yes"; then
     case "$host" in
         *-*-mingw*)
             dnl AC_SEARCH_LIBS doesn't work because of non-standard calling
@@ -531,10 +546,10 @@ fi
 AC_SUBST(WITH_FTP)
 AM_CONDITIONAL(WITH_FTP_SOURCES, test "$WITH_FTP" = "1")
 
-if test "$with_http" = "no" ; then
-    echo Disabling HTTP support
+if test "$with_http" != "yes" ; then
     WITH_HTTP=0
 else
+    echo Enabling HTTP support
     WITH_HTTP=1
 fi
 AC_SUBST(WITH_HTTP)
@@ -885,9 +900,7 @@ dnl Checks for zlib library.
 dnl
 WITH_ZLIB=0
 
-if test "$with_zlib" != "no" && \
-   (test "$with_zlib" != "" || test "$with_legacy" = "yes")
-then
+if test "$with_zlib" != "no" && test "$with_zlib" != ""; then
     echo "Enabling zlib compression support"
 
     if test "$with_zlib" != "yes"; then
@@ -939,9 +952,7 @@ dnl Checks for lzma library.
 dnl
 WITH_LZMA=0
 
-if test "$with_lzma" != "no" && \
-   (test "$with_lzma" != "" || test "$with_legacy" = "yes")
-then
+if test "$with_lzma" != "no" && test "$with_lzma" != ""; then
     echo "Enabling lzma compression support"
 
     if test "$with_lzma" != "yes"; then

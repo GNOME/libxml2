@@ -91,6 +91,8 @@ want_xptr = get_option('xptr')
 want_xptr_locs = get_option('xptr-locs')
 want_zlib = get_option('zlib')
 
+# TODO: Legacy defaults
+
 # hard dependencies on options
 
 if want_c14n == true

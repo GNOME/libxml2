@@ -882,9 +882,6 @@ XML_GLOBALS_PARSER
 #undef XML_OP
 
 #if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
-  #define oldXMLWDcompatibility XML_GLOBAL_MACRO(oldXMLWDcompatibility)
-  #define xmlDefaultSAXHandler XML_GLOBAL_MACRO(xmlDefaultSAXHandler)
-  #define xmlDefaultSAXLocator XML_GLOBAL_MACRO(xmlDefaultSAXLocator)
   #define xmlDoValidityCheckingDefaultValue \
     XML_GLOBAL_MACRO(xmlDoValidityCheckingDefaultValue)
   #define xmlGetWarningsDefaultValue \

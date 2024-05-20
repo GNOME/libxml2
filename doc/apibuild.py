@@ -905,7 +905,7 @@ class CParser:
                 i = i + 1
             if retdesc == "" and ret[0] != "void":
                 self.warning("Function comment for %s lacks description of return value" % (name))
-            if desc == "":
+            if desc == "" and retdesc == "":
                 self.warning("Function comment for %s lacks description of the function" % (name))
 
         return(((ret[0], retdesc), args, desc))
@@ -1774,7 +1774,8 @@ class docBuilder:
         try:
             (ret, params, desc) = id.info
             if (desc == None or desc == '') and \
-               name[0:9] != "xmlThrDef" and name != "xmlDllMain":
+               name[0:9] != "xmlThrDef" and name != "xmlDllMain" and \
+               ret[1] == '':
                 print("%s %s from %s has no description" % (id.type, name,
                        self.modulename_file(id.module)))
 

@@ -4,7 +4,8 @@ v2.13.0: not released yet
 
 ### Major changes
 
-Most of the core code should now report malloc failures reliably.
+Most of the core code should now report malloc failures reliably. Some
+API functions were extended with versions that report malloc failures.
 
 New API functions for error handling were added:
 
@@ -18,12 +19,31 @@ resorting to global handlers.
 A few error messages were improved and consolidated. Please update
 downstream test suites accordingly.
 
+A new parser option XML_PARSE_NO_XXE can be used to disable loading
+of external entities or DTDs. This is most useful in connection with
+XML_PARSE_NOENT.
+
 Support for HTTP POST was removed.
 
-Support for zlib and liblzma is now disabled by default and has to be
-enabled by passing --with-zlib or --with-lzma to configure. In legacy
-mode (--with-legacy) compression support is enabled by default as
-before.
+Support for zlib, liblzma and HTTP is now disabled by default and has
+to be enabled by passing --with-zlib, --with-lzma or --with-html to
+configure. In legacy mode (--with-legacy) these options are enabled
+by default as before.
+
+Support for FTP and xpointer() XPath extensions will be removed in
+the next release.
+
+Several more legacy symbols were deprecated. Users of the old "SAX1"
+API functions are encouraged to upgrade to the new "SAX2" API,
+available since version 2.6.0 from 2003.
+
+Some deprecated global variables were made const:
+
+- htmlDefaultSAXHandler
+- oldXMLWDcompatibility
+- xmlDefaultSAXHandler
+- xmlDefaultSAXLocator
+- xmlParserDebugEntities
 
 
 v2.12.0: Nov 16 2023

@@ -1809,7 +1809,8 @@ class docBuilder:
                                  escape(dict.info[data]),
                                  data.lower()))
                 except:
-                    print("Header %s lacks a %s description" % (module, data))
+                    if data != 'Author':
+                        print("Header %s lacks a %s description" % (module, data))
             if 'Description' in dict.info:
                 desc = dict.info['Description']
                 if desc.find("DEPRECATED") != -1:

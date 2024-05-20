@@ -6305,8 +6305,11 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 /**
  * htmlCtxtParseDocument:
  * @ctxt:  an HTML parser context
+ * @input:  parser input
  *
  * Parse an HTML document and return the resulting document tree.
+ *
+ * Available since 2.13.0.
  *
  * Returns the resulting document tree or NULL
  */

@@ -624,7 +624,6 @@ static const char* const xmlXPathErrorMessages[] = {
 /**
  * xmlXPathErrMemory:
  * @ctxt:  an XPath context
- * @extra:  extra information
  *
  * Handle a memory allocation failure.
  */
@@ -640,7 +639,6 @@ xmlXPathErrMemory(xmlXPathContextPtr ctxt)
 /**
  * xmlXPathPErrMemory:
  * @ctxt:  an XPath parser context
- * @extra:  extra information
  *
  * Handle a memory allocation failure.
  */
@@ -656,7 +654,7 @@ xmlXPathPErrMemory(xmlXPathParserContextPtr ctxt)
 /**
  * xmlXPathErr:
  * @ctxt:  a XPath parser context
- * @error:  the error code
+ * @code:  the error code
  *
  * Handle an XPath error
  */

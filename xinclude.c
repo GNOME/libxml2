@@ -2207,6 +2207,8 @@ xmlXIncludeDoProcessRoot(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
  * xmlXIncludeGetLastError:
  * @ctxt:  an XInclude processing context
  *
+ * Available since 2.13.0.
+ *
  * Returns the last error code.
  */
 int

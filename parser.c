@@ -11671,8 +11671,6 @@ xmlStopParser(xmlParserCtxtPtr ctxt) {
  * @ioctx:  an I/O handler
  * @enc:  the charset encoding if known (deprecated)
  *
- * DEPRECATED: Use xmlNewParserCtxt and xmlCtxtReadIO.
- *
  * Create a parser context for using the XML parser with an existing
  * I/O stream
  *
@@ -12132,10 +12130,10 @@ error:
 
 /**
  * xmlParseCtxtExternalEntity:
- * @ctx:  the existing parsing context
+ * @ctxt:  the existing parsing context
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
- * @lst:  the return value for the set of parsed nodes
+ * @listOut:  the return value for the set of parsed nodes
  *
  * Parse an external general entity within an existing parsing context
  * An external general parsed entity is well-formed if it matches the
@@ -12184,7 +12182,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
  * @depth:  Used for loop detection, use 0
  * @URL:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
- * @lst:  the return value for the set of parsed nodes
+ * @list:  the return value for the set of parsed nodes
  *
  * DEPRECATED: Use xmlParseCtxtExternalEntity.
  *
@@ -12461,7 +12459,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
  * @user_data:  The user data returned on SAX callbacks (possibly NULL)
  * @depth:  Used for loop detection, use 0
  * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
- * @list:  the return value for the set of parsed nodes
+ * @listOut:  the return value for the set of parsed nodes
  * @recover: return nodes even if the data is broken (use 0)
  *
  * Parse a well-balanced chunk of an XML document
@@ -13658,6 +13656,8 @@ xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt, unsigned maxAmpl)
  *
  * Parse an XML document and return the resulting document tree.
  * Takes ownership of the input object.
+ *
+ * Available since 2.13.0.
  *
  * Returns the resulting document tree or NULL
  */

@@ -2394,6 +2394,8 @@ done:
  *
  * Register a new id declaration
  *
+ * Available since 2.13.0.
+ *
  * Returns 1 on success, 0 if the ID already exists, -1 if a memory
  * allocation fails.
  */

@@ -124,9 +124,10 @@ xmlCtxtSetErrorHandler(xmlParserCtxtPtr ctxt, xmlStructuredErrorFunc handler,
 /**
  * xmlCtxtErrMemory:
  * @ctxt:  an XML parser context
- * @domain:  domain
  *
- * Handle an out-of-memory error
+ * Handle an out-of-memory error.
+ *
+ * Available since 2.13.0.
  */
 void
 xmlCtxtErrMemory(xmlParserCtxtPtr ctxt)
@@ -209,6 +210,22 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
                msg, str1, str2);
 }
 
+/**
+ * xmlCtxtVErr:
+ * @ctxt:  a parser context
+ * @node: the current node or NULL
+ * @domain: the domain for the error
+ * @code: the code for the error
+ * @level: the xmlErrorLevel for the error
+ * @str1: extra string info
+ * @str2: extra string info
+ * @str3: extra string info
+ * @int1: extra int info
+ * @msg:  the message to display/transmit
+ * @ap:  extra parameters for the message display
+ *
+ * Raise a parser error.
+ */
 void
 xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
             xmlParserErrors code, xmlErrorLevel level,
@@ -299,6 +316,22 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
     return;
 }
 
+/**
+ * xmlCtxtErr:
+ * @ctxt:  a parser context
+ * @node: the current node or NULL
+ * @domain: the domain for the error
+ * @code: the code for the error
+ * @level: the xmlErrorLevel for the error
+ * @str1: extra string info
+ * @str2: extra string info
+ * @str3: extra string info
+ * @int1: extra int info
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ *
+ * Raise a parser error.
+ */
 void
 xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
            xmlParserErrors code, xmlErrorLevel level,
@@ -316,7 +349,7 @@ xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
 /**
  * xmlFatalErr:
  * @ctxt:  an XML parser context
- * @error:  the error number
+ * @code:  the error number
  * @info:  extra information string
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
@@ -1069,6 +1102,8 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
  * @input:  the input strea,
  * @encoding:  the encoding name
  *
+ * Available since 2.13.0.
+ *
  * Returns 0 in case of success, -1 otherwise
  */
 static int
@@ -1797,10 +1832,8 @@ xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
 /**
  * xmlNewIOInputStream:
  * @ctxt:  an XML parser context
- * @input:  an I/O Input
+ * @buf:  an input buffer
  * @enc:  the charset encoding if known
- *
- * DEPRECATED: Use xmlNewInputURL, xmlNewInputMemory, etc.
  *
  * Create a new input stream structure encapsulating the @input into
  * a stream suitable for the parser.
@@ -1822,7 +1855,7 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
 /**
  * xmlNewEntityInputStream:
  * @ctxt:  an XML parser context
- * @entity:  an Entity pointer
+ * @ent:  an Entity pointer
  *
  * DEPRECATED: Internal function, do not use.
  *
@@ -1859,8 +1892,6 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
  * xmlNewStringInputStream:
  * @ctxt:  an XML parser context
  * @buffer:  an memory buffer
- *
- * DEPRECATED: Use xmlNewInputString.
  *
  * Create a new input stream based on a memory buffer.
  *
@@ -2022,8 +2053,6 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  * xmlNewInputFromFile:
  * @ctxt:  an XML parser context
  * @filename:  the filename to use as entity
- *
- * DEPRECATED: Use xmlNewInputURL.
  *
  * Create a new input stream based on a file or an URL.
  *
@@ -2198,8 +2227,6 @@ xmlGetExternalEntityLoader(void) {
  * @URL:  the URL for the entity to load
  * @ID:  the Public ID for the entity to load
  * @ctxt:  the context in which the entity is called or NULL
- *
- * DEPRECATED: Use xmlNewInputURL.
  *
  * Returns the xmlParserInputPtr or NULL
  */

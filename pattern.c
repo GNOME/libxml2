@@ -2252,7 +2252,7 @@ xmlStreamWantsAnyNode(xmlStreamCtxtPtr streamCtxt)
  ************************************************************************/
 
 /**
- * xmlPatterncompile:
+ * xmlPatternCompileSafe:
  * @pattern: the pattern to compile
  * @dict: an optional dictionary for interned strings
  * @flags: compilation flags, see xmlPatternFlags
@@ -2260,6 +2260,8 @@ xmlStreamWantsAnyNode(xmlStreamCtxtPtr streamCtxt)
  * @patternOut: output pattern
  *
  * Compile a pattern.
+ *
+ * Available since 2.13.0.
  *
  * Returns 0 on success, 1 on error, -1 if a memory allocation failed.
  */

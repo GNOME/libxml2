@@ -970,6 +970,8 @@ xmlParse3986URIReference(xmlURIPtr uri, const char *str) {
  *
  * URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
  *
+ * Available since 2.13.0.
+ *
  * Returns 0 on success, an error code (typically 1) if the URI is invalid
  * or -1 if a memory allocation failed.
  */
@@ -1989,7 +1991,7 @@ err_memory:
 }
 
 /**
- * xmlBulidURISafe:
+ * xmlBuildURISafe:
  * @URI:  the URI instance found in the document
  * @base:  the base value
  * @valPtr:  pointer to result URI
@@ -2000,6 +2002,8 @@ err_memory:
  * RFC 2396
  *
  * 5.2. Resolving Relative References to Absolute Form
+ *
+ * Available since 2.13.0.
  *
  * Returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.
@@ -2378,6 +2382,8 @@ xmlBuildURI(const xmlChar *URI, const xmlChar *base) {
  *       since this routine (for reasonable efficiency) assumes URI has
  *       already been through some validation.
  *
+ * Available since 2.13.0.
+ *
  * Returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.
  */
@@ -2650,6 +2656,8 @@ xmlBuildRelativeURI(const xmlChar * URI, const xmlChar * base)
  * The caller is responsible for freeing the memory occupied
  * by the returned string. If there is insufficient memory available, or the
  * argument is NULL, the function returns NULL.
+ *
+ * Returns the escaped path.
  */
 xmlChar *
 xmlCanonicPath(const xmlChar *path)

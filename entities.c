@@ -70,7 +70,10 @@ static const xmlEntity xmlEntityApos = {
 };
 
 /*
- * xmlFreeEntity : clean-up an entity record.
+ * xmlFreeEntity:
+ * @entity:  an entity
+ *
+ * Frees the entity.
  */
 void
 xmlFreeEntity(xmlEntityPtr entity)
@@ -173,6 +176,8 @@ error:
  * @out:  pointer to resulting entity (optional)
  *
  * Register a new entity for this document.
+ *
+ * Available since 2.13.0.
  *
  * Returns an xmlParserErrors error code.
  */

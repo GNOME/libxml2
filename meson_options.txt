@@ -42,6 +42,7 @@
 # [X] minimum
 # [X] ipv6
 
+# TODO: Options should be three-valued: "yes", "no", default
 
 option('c14n',
   type: 'boolean',

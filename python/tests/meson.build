@@ -1,3 +1,4 @@
+# TODO: Run the tests
 
 python_test_files = files(
     'attribs.py',

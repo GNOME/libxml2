@@ -50,8 +50,6 @@ endif
 # binaries
 cc = meson.get_compiler('c')
 
-cc.has_type('uint32_t', prefix: '#include <stdint.h>')
-
 # options
 want_c14n = get_option('c14n')
 want_catalog = get_option('catalog')

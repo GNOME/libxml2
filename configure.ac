@@ -312,11 +312,6 @@ AC_CHECK_HEADERS([dl.h dlfcn.h])
 AC_CHECK_HEADERS([glob.h])
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
-dnl
-dnl Checking types
-dnl
-AC_TYPE_UINT32_T
-
 dnl Checks for library functions.
 AC_CHECK_FUNCS([getentropy gettimeofday ftime isascii stat mmap munmap])
 

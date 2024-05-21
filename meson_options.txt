@@ -22,7 +22,6 @@
 # [X] reader
 # [X] readline
 # [X] regexps
-# [ ] run-debug   - not used
 # [X] sax1
 # [X] schemas
 # [X] schematron
@@ -174,12 +173,6 @@ option('regexps',
   type: 'boolean',
   value: true,
   description: 'Regular expressions support'
-)
-
-option('run-debug',
-  type: 'boolean',
-  value: false,
-  description: 'Runtime debugging module'
 )
 
 option('sax1',

@@ -73,7 +73,6 @@ want_python = get_option('python')
 want_reader = get_option('reader')
 want_readline = get_option('readline')
 want_regexps = get_option('regexps')
-want_run_debug = get_option('run-debug')
 want_sax1 = get_option('sax1')
 want_schemas = get_option('schemas')
 want_schematron = get_option('schematron')
@@ -198,7 +197,6 @@ if get_option('minimum')
     want_reader = false
     want_readline = false
     want_regexps = false
-    want_run_debug = false
     want_sax1 = false
     want_schemas = false
     want_schematron = false
@@ -846,7 +844,6 @@ summary(
         'reader': want_reader,
         'readline': want_readline,
         'regexps': want_regexps,
-        'run-debug': want_run_debug,
         'sax1': want_sax1,
         'schemas': want_schemas,
         'schematron': want_schematron,

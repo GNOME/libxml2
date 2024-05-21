@@ -78,7 +78,7 @@ AC_ARG_WITH(readline,
 AC_ARG_WITH(html,
 [  --with-html             HTML parser (on)])
 AC_ARG_WITH(http,
-[  --with-http             HTTP support (on)])
+[  --with-http             HTTP support (off)])
 AC_ARG_WITH(iconv,
 [  --with-iconv[[=DIR]]      iconv support (on)])
 AC_ARG_WITH(icu,

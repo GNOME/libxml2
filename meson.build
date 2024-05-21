@@ -54,7 +54,6 @@ cc = meson.get_compiler('c')
 want_c14n = get_option('c14n')
 want_catalog = get_option('catalog')
 want_debug = get_option('debuging')
-want_fexceptions = get_option('fexceptions')
 want_ftp = get_option('ftp')
 want_history = get_option('history')
 want_html = get_option('html')
@@ -181,7 +180,6 @@ if get_option('minimum')
     want_c14n = false
     want_catalog = false
     want_debug = false
-    want_fexceptions = false
     want_history = false
     want_html = false
     want_http = false
@@ -253,10 +251,6 @@ if cc.get_argument_syntax() == 'gcc'
         '-Wno-long-long',
         '-Wno-format-extra-args',
     ]
-
-    if want_fexceptions == true
-        cflags_try += '-fexceptions'
-    endif
 
     if host_machine.cpu_family() == 'alpha'
         cflags_try += '-mieee'
@@ -825,7 +819,6 @@ summary(
         'c14n': want_c14n,
         'catalog': want_catalog,
         'debug': want_debug,
-        'fexceptions': want_fexceptions,
         'ftp': want_ftp,
         'history': want_history,
         'html': want_html,

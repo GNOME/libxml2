@@ -3,7 +3,6 @@
 # [X] c14n
 # [X] catalog
 # [X] debugging
-# [X] fexceptions
 # [X] ftp         - not minimum
 # [X] history
 # [X] html
@@ -58,12 +57,6 @@ option('debuging',
   type: 'boolean',
   value: true,
   description: 'Debugging module and shell'
-)
-
-option('fexceptions',
-  type: 'boolean',
-  value: false,
-  description: 'add GCC flag -fexceptions for C++ exceptions'
 )
 
 option('ftp',

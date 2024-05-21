@@ -1047,9 +1047,9 @@ dnl Checks for ICU library.
 dnl
 WITH_ICU=0
 
-if test "$with_icu" = "no" || test "$with_icu" = "" ; then
-    echo Disabling ICU support
-else
+if test "$with_icu" != "no" && test "$with_icu" != "" ; then
+    echo Enabling ICU support
+
     # Try pkg-config first so that static linking works.
     # If this succeeeds, we ignore the WITH_ICU directory.
     PKG_CHECK_MODULES([ICU], [icu-i18n], [

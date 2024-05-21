@@ -137,8 +137,6 @@ AC_ARG_WITH(tls,
 [  --with-tls              thread-local storage (off)])
 AC_ARG_WITH(fexceptions,
 [  --with-fexceptions      add GCC flag -fexceptions for C++ exceptions (off)])
-AC_ARG_WITH(coverage,
-[  --with-coverage         build for code coverage with GCC (off)])
 
 dnl
 dnl Legacy defaults
@@ -1106,15 +1104,6 @@ case "$host" in
         CRYPTO_LIBS="-lbcrypt"
         ;;
 esac
-
-if test "$with_coverage" = "yes" && test "${GCC}" = "yes"
-then
-    echo Enabling code coverage for GCC
-    AM_CFLAGS="$AM_CFLAGS -fprofile-arcs -ftest-coverage"
-    AM_LDFLAGS="$AM_LDFLAGS -fprofile-arcs -ftest-coverage"
-else
-    echo Disabling code coverage for GCC
-fi
 
 XML_LIBS="-lxml2"
 XML_LIBTOOLLIBS="libxml2.la"

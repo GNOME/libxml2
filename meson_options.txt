@@ -2,7 +2,6 @@
 # AC_ARG_WITH / AC_ARG_ENABLE in configure.ac
 # [X] c14n
 # [X] catalog
-# [M] coverage    - use meson, not minimum
 # [X] debugging
 # [X] fexceptions
 # [X] ftp         - not minimum

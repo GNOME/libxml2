@@ -308,8 +308,6 @@ dnl
 AC_CHECK_HEADERS([stdint.h inttypes.h])
 AC_CHECK_HEADERS([fcntl.h unistd.h sys/stat.h])
 AC_CHECK_HEADERS([sys/mman.h])
-AC_CHECK_HEADERS([sys/socket.h netinet/in.h arpa/inet.h netdb.h])
-AC_CHECK_HEADERS([sys/select.h poll.h])
 AC_CHECK_HEADERS([sys/time.h sys/timeb.h])
 AC_CHECK_HEADERS([sys/random.h])
 AC_CHECK_HEADERS([dl.h dlfcn.h])
@@ -333,6 +331,9 @@ dnl
 dnl Checks for inet libraries
 dnl
 if test "$with_http" = "yes" || test "$with_ftp" = "yes"; then
+    AC_CHECK_HEADERS([sys/socket.h netinet/in.h arpa/inet.h netdb.h])
+    AC_CHECK_HEADERS([sys/select.h poll.h])
+
     case "$host" in
         *-*-mingw*)
             dnl AC_SEARCH_LIBS doesn't work because of non-standard calling

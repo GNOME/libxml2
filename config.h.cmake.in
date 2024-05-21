@@ -28,9 +28,6 @@
 /* Define to 1 if you have the `gettimeofday' function. */
 #cmakedefine HAVE_GETTIMEOFDAY 1
 
-/* Define to 1 if you have the `isascii' function. */
-#cmakedefine HAVE_ISASCII 1
-
 /* Define if history library is there (-lhistory) */
 #cmakedefine HAVE_LIBHISTORY 1
 

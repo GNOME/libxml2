@@ -331,7 +331,6 @@ xml_check_functions = [
     ['gettimeofday', 'sys/time.h'],
     ['ftime', 'sys/timeb.h'],
     ['stat', 'sys/stat.h'],
-    ['isascii', 'ctype.h'],
     ['mmap', 'sys/mman.h'],
     ['munmap', 'sys/mman.h'],
 ]

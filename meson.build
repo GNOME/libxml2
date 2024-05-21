@@ -304,7 +304,6 @@ config_h.set_quoted('LOCALEDIR', dir_locale)
 # header files
 xml_check_headers = [
     'stdint.h',
-    'inttypes.h',
     'fcntl.h',
     'unistd.h',
     'sys/stat.h',

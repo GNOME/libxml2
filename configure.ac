@@ -305,7 +305,7 @@ XML_PC_REQUIRES=
 dnl
 dnl Checks for header files.
 dnl
-AC_CHECK_HEADERS([stdint.h inttypes.h])
+AC_CHECK_HEADERS([stdint.h])
 AC_CHECK_HEADERS([fcntl.h unistd.h sys/stat.h])
 AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([sys/time.h sys/timeb.h])

@@ -68,6 +68,13 @@ clang:msan:
     CFLAGS: "-O2 -g -fno-omit-frame-pointer -fsanitize=memory"
     MSAN_SYMBOLIZER_PATH: "$CI_PROJECT_DIR/.gitlab-ci/llvm-symbolizer"
 
+freebsd:
+  extends: .test
+  tags:
+    - freebsd-13
+  rules:
+    if: $CI_PROJECT_NAMESPACE == "GNOME"
+
 .mingw:
   tags:
     - win32-ps

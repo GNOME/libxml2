@@ -18,6 +18,12 @@ else
     CONFIG='--with-zlib --with-lzma'
 fi
 
+# Workaround for a LeakSanitizer crashes,
+# see https://github.com/google/oss-fuzz/issues/11798.
+if [ "$ARCHITECTURE" = "aarch64" ]; then
+    export ASAN_OPTIONS=detect_leaks=0
+fi
+
 export V=1
 
 ./autogen.sh \

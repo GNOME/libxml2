@@ -806,10 +806,10 @@ else
             dnl Use pthread by default in other cases
             _libs=$LIBS
             AC_CHECK_HEADERS(pthread.h,
-                AC_SEARCH_LIBS([pthread_join], [pthread], [
+                AC_SEARCH_LIBS([pthread_create], [pthread], [
                     WITH_THREADS="1"
-                    if test "$ac_cv_search_pthread_join" != "none required"; then
-                        THREAD_LIBS=$ac_cv_search_pthread_join
+                    if test "$ac_cv_search_pthread_create" != "none required"; then
+                        THREAD_LIBS=$ac_cv_search_pthread_create
                     fi
                     AC_DEFINE([HAVE_PTHREAD_H], [],
                               [Define if <pthread.h> is there])]))

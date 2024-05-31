@@ -173,6 +173,12 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
     if (ncname == NULL) return(NULL);
     if (prefix == NULL) return((xmlChar *) ncname);
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    /* Make allocation more likely */
+    if (len > 8)
+        len = 8;
+#endif
+
     lenn = strlen((char *) ncname);
     lenp = strlen((char *) prefix);
 

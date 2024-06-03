@@ -739,7 +739,8 @@ xmlSBufGrow(xmlSBuf *buf, unsigned len) {
     unsigned cap;
 
     if (len >= UINT_MAX / 2 - buf->size) {
-        buf->code = XML_ERR_RESOURCE_LIMIT;
+        if (buf->code == XML_ERR_OK)
+            buf->code = XML_ERR_RESOURCE_LIMIT;
         return(-1);
     }
 
@@ -762,7 +763,8 @@ xmlSBufGrow(xmlSBuf *buf, unsigned len) {
 static void
 xmlSBufAddString(xmlSBuf *buf, const xmlChar *str, unsigned len) {
     if (buf->max - buf->size < len) {
-        buf->code = XML_ERR_RESOURCE_LIMIT;
+        if (buf->code == XML_ERR_OK)
+            buf->code = XML_ERR_RESOURCE_LIMIT;
         return;
     }
 
@@ -786,7 +788,8 @@ xmlSBufAddChar(xmlSBuf *buf, int c) {
     xmlChar *end;
 
     if (buf->max - buf->size < 4) {
-        buf->code = XML_ERR_RESOURCE_LIMIT;
+        if (buf->code == XML_ERR_OK)
+            buf->code = XML_ERR_RESOURCE_LIMIT;
         return;
     }
 

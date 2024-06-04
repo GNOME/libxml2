@@ -435,6 +435,8 @@ if want_threads == true
         else
             want_threads = false
         endif
+    else
+        threads_dep = dependency('', required: false)
     endif
 endif
 
@@ -759,7 +761,7 @@ foreach check : checks
     exe = executable(
         check,
         files(check + '.c'),
-        dependencies: xml_dep,
+        dependencies: [threads_dep, xml_dep],
         include_directories: config_dir,
     )
     if check != 'testlimits'

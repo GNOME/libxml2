@@ -1489,7 +1489,7 @@ xmlParserNsStartElement(xmlParserNsData *nsdb) {
 static int
 xmlParserNsLookup(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
                   xmlParserNsBucket **bucketPtr) {
-    xmlParserNsBucket *bucket;
+    xmlParserNsBucket *bucket, *tombstone;
     unsigned index, hashValue;
 
     if (prefix->name == NULL)
@@ -1501,10 +1501,13 @@ xmlParserNsLookup(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
     hashValue = prefix->hashValue;
     index = hashValue & (ctxt->nsdb->hashSize - 1);
     bucket = &ctxt->nsdb->hash[index];
+    tombstone = NULL;
 
     while (bucket->hashValue) {
-        if ((bucket->hashValue == hashValue) &&
-            (bucket->index != INT_MAX)) {
+        if (bucket->index == INT_MAX) {
+            if (tombstone == NULL)
+                tombstone = bucket;
+        } else if (bucket->hashValue == hashValue) {
             if (ctxt->nsTab[bucket->index * 2] == prefix->name) {
                 if (bucketPtr != NULL)
                     *bucketPtr = bucket;
@@ -1521,7 +1524,7 @@ xmlParserNsLookup(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
     }
 
     if (bucketPtr != NULL)
-        *bucketPtr = bucket;
+        *bucketPtr = tombstone ? tombstone : bucket;
     return(INT_MAX);
 }
 
@@ -1758,7 +1761,7 @@ xmlParserNsPush(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix,
             unsigned hv = ctxt->nsdb->hash[i].hashValue;
             unsigned newIndex;
 
-            if (hv == 0)
+            if ((hv == 0) || (ctxt->nsdb->hash[i].index == INT_MAX))
                 continue;
             newIndex = hv & (newSize - 1);
 

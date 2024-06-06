@@ -50,6 +50,8 @@ void initlibxml2mod(void);
     xmlGenericError(xmlGenericErrorContext,				\
 	    "Unimplemented block at %s:%d\n",				\
             __FILE__, __LINE__);
+
+#ifdef LIBXML_XPATH_ENABLED
 /*
  * the following vars are used for XPath extensions, but
  * are also referenced within the parser cleanup routine.
@@ -66,6 +68,7 @@ typedef libxml_xpathCallback libxml_xpathCallbackArray[];
 static int libxml_xpathCallbacksAllocd = 10;
 static libxml_xpathCallbackArray *libxml_xpathCallbacks = NULL;
 static int libxml_xpathCallbacksNb = 0;
+#endif /* LIBXML_XPATH_ENABLED */
 
 /************************************************************************
  *									*
@@ -160,6 +163,7 @@ PyObject *
 libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
                               PyObject *args ATTRIBUTE_UNUSED) {
 
+#ifdef LIBXML_XPATH_ENABLED
     int ix;
 
     /*
@@ -178,6 +182,7 @@ libxml_xmlPythonCleanupParser(PyObject *self ATTRIBUTE_UNUSED,
         xmlFree(libxml_xpathCallbacks);
 	libxml_xpathCallbacks = NULL;
     }
+#endif /* LIBXML_XPATH_ENABLED */
 
     xmlCleanupParser();
 
@@ -1327,6 +1332,7 @@ static xmlSAXHandler pythonSaxHandler = {
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_PUSH_ENABLED
 PyObject *
 libxml_xmlCreatePushParser(ATTRIBUTE_UNUSED PyObject * self,
                            PyObject * args)
@@ -1383,6 +1389,7 @@ libxml_htmlCreatePushParser(ATTRIBUTE_UNUSED PyObject * self,
     return (pyret);
 }
 #endif /* LIBXML_HTML_ENABLED */
+#endif /* LIBXML_PUSH_ENABLED */
 
 #ifdef LIBXML_SAX1_ENABLED
 PyObject *
@@ -2062,6 +2069,7 @@ libxml_xmlFreeTextReader(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) {
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_XPATH_ENABLED
 static void
 libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs)
 {
@@ -2236,6 +2244,7 @@ libxml_xmlXPathRegisterVariable(ATTRIBUTE_UNUSED PyObject * self,
     py_retval = libxml_intWrap(c_retval);
     return (py_retval);
 }
+#endif /* LIBXML_XPATH_ENABLED */
 
 /************************************************************************
  *									*
@@ -2876,6 +2885,8 @@ libxml_xmlNewNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
  *			Local Catalog stuff				*
  *									*
  ************************************************************************/
+
+#ifdef LIBXML_CATALOG_ENABLED
 static PyObject *
 libxml_addLocalCatalog(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 {
@@ -2895,6 +2906,7 @@ libxml_addLocalCatalog(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     Py_INCREF(Py_None);
     return (Py_None);
 }
+#endif /* LIBXML_CATALOG_ENABLED */
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 
@@ -3611,7 +3623,9 @@ static PyMethodDef libxmlMethods[] = {
     {(char *)"xmlTextReaderGetErrorHandler", libxml_xmlTextReaderGetErrorHandler, METH_VARARGS, NULL },
     {(char *)"xmlFreeTextReader", libxml_xmlFreeTextReader, METH_VARARGS, NULL },
 #endif
+#ifdef LIBXML_CATALOG_ENABLED
     {(char *)"addLocalCatalog", libxml_addLocalCatalog, METH_VARARGS, NULL },
+#endif
 #ifdef LIBXML_SCHEMAS_ENABLED
     {(char *)"xmlRelaxNGSetValidErrors", libxml_xmlRelaxNGSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlRelaxNGFreeValidCtxt", libxml_xmlRelaxNGFreeValidCtxt, METH_VARARGS, NULL},

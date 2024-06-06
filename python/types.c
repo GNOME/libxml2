@@ -425,6 +425,21 @@ libxml_xmlElementPtrWrap(xmlElementPtr elem)
 }
 
 PyObject *
+libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt)
+{
+    PyObject *ret;
+
+    if (ctxt == NULL) {
+        Py_INCREF(Py_None);
+        return (Py_None);
+    }
+
+    ret = PyCapsule_New((void *) ctxt, (char *) "xmlParserCtxtPtr", NULL);
+    return (ret);
+}
+
+#ifdef LIBXML_XPATH_ENABLED
+PyObject *
 libxml_xmlXPathContextPtrWrap(xmlXPathContextPtr ctxt)
 {
     PyObject *ret;
@@ -447,20 +462,6 @@ libxml_xmlXPathParserContextPtrWrap(xmlXPathParserContextPtr ctxt)
         return (Py_None);
     }
     ret = PyCapsule_New((void *)ctxt, (char *)"xmlXPathParserContextPtr", NULL);
-    return (ret);
-}
-
-PyObject *
-libxml_xmlParserCtxtPtrWrap(xmlParserCtxtPtr ctxt)
-{
-    PyObject *ret;
-
-    if (ctxt == NULL) {
-        Py_INCREF(Py_None);
-        return (Py_None);
-    }
-
-    ret = PyCapsule_New((void *) ctxt, (char *) "xmlParserCtxtPtr", NULL);
     return (ret);
 }
 
@@ -758,6 +759,7 @@ libxml_xmlXPathObjectPtrConvert(PyObject *obj)
     }
     return (ret);
 }
+#endif /* LIBXML_XPATH_ENABLED */
 
 PyObject *
 libxml_xmlValidCtxtPtrWrap(xmlValidCtxtPtr valid)
@@ -776,6 +778,7 @@ libxml_xmlValidCtxtPtrWrap(xmlValidCtxtPtr valid)
 	return (ret);
 }
 
+#ifdef LIBXML_CATALOG_ENABLED
 PyObject *
 libxml_xmlCatalogPtrWrap(xmlCatalogPtr catal)
 {
@@ -790,6 +793,7 @@ libxml_xmlCatalogPtrWrap(xmlCatalogPtr catal)
                                      (char *) "xmlCatalogPtr", NULL);
     return (ret);
 }
+#endif /* LIBXML_CATALOG_ENABLED */
 
 PyObject *
 libxml_xmlOutputBufferPtrWrap(xmlOutputBufferPtr buffer)

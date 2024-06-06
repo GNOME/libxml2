@@ -4932,9 +4932,10 @@ launchTests(testDescPtr tst) {
     char *result;
     char *error;
     int mem;
-    xmlCharEncodingHandlerPtr ebcdicHandler, eucJpHandler;
+    xmlCharEncodingHandlerPtr ebcdicHandler, ibm1141Handler, eucJpHandler;
 
     ebcdicHandler = xmlGetCharEncodingHandler(XML_CHAR_ENCODING_EBCDIC);
+    ibm1141Handler = xmlFindCharEncodingHandler("IBM-1141");
     eucJpHandler = xmlGetCharEncodingHandler(XML_CHAR_ENCODING_EUC_JP);
 
     if (tst == NULL) return(-1);
@@ -4946,7 +4947,7 @@ launchTests(testDescPtr tst) {
 	for (i = 0;i < globbuf.gl_pathc;i++) {
 	    if (!checkTestFile(globbuf.gl_pathv[i]))
 	        continue;
-            if (((ebcdicHandler == NULL) &&
+            if ((((ebcdicHandler == NULL) || (ibm1141Handler == NULL)) &&
                  (strstr(globbuf.gl_pathv[i], "ebcdic") != NULL)) ||
                 ((eucJpHandler == NULL) &&
                  (strstr(globbuf.gl_pathv[i], "icu_parse_test") != NULL)))
@@ -5012,6 +5013,7 @@ launchTests(testDescPtr tst) {
     }
 
     xmlCharEncCloseFunc(ebcdicHandler);
+    xmlCharEncCloseFunc(ibm1141Handler);
     xmlCharEncCloseFunc(eucJpHandler);
 
     return(err);

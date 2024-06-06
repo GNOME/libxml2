@@ -85,14 +85,12 @@ option('http',
 
 # TODO meson custom dependency
 option('iconv',
-  type: 'boolean',
-  value: true,
+  type: 'feature',
   description: 'iconv support'
 )
 
 option('icu',
-  type: 'boolean',
-  value: false,
+  type: 'feature',
   description: 'ICU support'
 )
 
@@ -115,14 +113,12 @@ option('legacy',
 )
 
 option('lzma',
-  type: 'boolean',
-  value: false,
+  type: 'feature',
   description: 'LZMA support'
 )
 
 option('modules',
-  type: 'boolean',
-  value: true,
+  type: 'feature',
   description: 'Dynamic modules support'
 )
 
@@ -187,8 +183,7 @@ option('schematron',
 )
 
 option('threads',
-  type: 'boolean',
-  value: true,
+  type: 'feature',
   description: 'Multithreading support'
 )
 
@@ -247,8 +242,7 @@ option('xptr-locs',
 )
 
 option('zlib',
-  type: 'boolean',
-  value: false,
+  type: 'feature',
   description: 'ZLIB support'
 )
 

@@ -1017,6 +1017,7 @@ xmlXIncludeCopyRange(xmlXIncludeCtxtPtr ctxt, xmlXPathObjectPtr range) {
 }
 #endif /* LIBXML_XPTR_LOCS_ENABLED */
 
+#ifdef LIBXML_XPTR_ENABLED
 /**
  * xmlXIncludeCopyXPointer:
  * @ctxt:  the XInclude context
@@ -1127,6 +1128,8 @@ xmlXIncludeCopyXPointer(xmlXIncludeCtxtPtr ctxt, xmlXPathObjectPtr obj,
     }
     return(list);
 }
+#endif
+
 /************************************************************************
  *									*
  *			XInclude I/O handling				*

@@ -10674,7 +10674,6 @@ xmlRelaxNGCleanPSVI(xmlNodePtr node) {
 	    }
 	} while (cur != NULL);
     }
-    return;
 }
 /************************************************************************
  *									*

@@ -27343,7 +27343,6 @@ exit:
 internal_error:
     vctxt->err = -1;
     xmlStopParser(vctxt->parserCtxt);
-    return;
 }
 
 static void
@@ -27387,7 +27386,6 @@ exit:
 internal_error:
     vctxt->err = -1;
     xmlStopParser(vctxt->parserCtxt);
-    return;
 }
 
 /************************************************************************

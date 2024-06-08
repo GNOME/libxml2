@@ -110,7 +110,6 @@ xz_error(xz_statep state, int err, const char *msg)
     strcpy(state->msg, state->path);
     strcat(state->msg, ": ");
     strcat(state->msg, msg);
-    return;
 }
 
 static void

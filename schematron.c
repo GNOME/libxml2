@@ -951,7 +951,6 @@ xmlSchematronParseTestReportMsg(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr con)
             xmlFree(select);
         }
         child = child->next;
-        continue;
     }
 }
 

@@ -1400,7 +1400,6 @@ error_unfinished:
     ctxt->error = 1;
     ERROR5(NULL, NULL, NULL,
 	"Unfinished expression '%s'.\n", ctxt->base);
-    return;
 }
 
 /************************************************************************

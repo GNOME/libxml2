@@ -225,8 +225,6 @@ xmlMemFree(void *ptr)
     xmlMutexUnlock(&xmlMemMutex);
 
     free(p);
-
-    return;
 }
 
 /**

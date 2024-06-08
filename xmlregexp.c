@@ -3980,7 +3980,6 @@ rollback:
 	continue;
 progress:
         progress = 1;
-	continue;
     }
     if (exec->status == XML_REGEXP_OK) {
         return(exec->state->type == XML_REGEXP_FINAL_STATE);
@@ -4995,7 +4994,6 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
         xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 		           XML_REGEXP_CHARVAL, start, end, NULL);
     }
-    return;
 }
 
 /**

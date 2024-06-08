@@ -1154,7 +1154,6 @@ xmlAddDefAttrs(xmlParserCtxtPtr ctxt,
 
 mem_error:
     xmlErrMemory(ctxt);
-    return;
 }
 
 /**
@@ -1185,7 +1184,6 @@ xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
 
 mem_error:
     xmlErrMemory(ctxt);
-    return;
 }
 
 /**
@@ -1224,7 +1222,6 @@ xmlCleanSpecialAttr(xmlParserCtxtPtr ctxt)
         xmlHashFree(ctxt->attsSpecial, NULL);
         ctxt->attsSpecial = NULL;
     }
-    return;
 }
 
 /**
@@ -3847,8 +3844,6 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
 
     if (chunk < str)
         xmlSBufAddString(buf, chunk, str - chunk);
-
-    return;
 }
 
 /**
@@ -4203,8 +4198,6 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
 
     if (chunkSize > 0)
         xmlSBufAddString(buf, str - chunkSize, chunkSize);
-
-    return;
 }
 
 /**
@@ -5176,7 +5169,6 @@ not_terminated:
     xmlFatalErrMsgStr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
 			 "Comment not terminated\n", NULL);
     xmlFree(buf);
-    return;
 }
 
 /**
@@ -5330,7 +5322,6 @@ get_more:
 	}
     } while (((*in >= 0x20) && (*in <= 0x7F)) || (*in == 0x09) || (*in == 0x0a));
     xmlParseCommentComplex(ctxt, buf, len, size);
-    return;
 }
 
 
@@ -8546,7 +8537,6 @@ xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
 
     namePop(ctxt);
     spacePop(ctxt);
-    return;
 }
 
 /**

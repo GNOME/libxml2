@@ -643,7 +643,6 @@ xmlListSort(xmlListPtr l)
     xmlListClear(l);
     xmlListMerge(l, lTemp);
     xmlListDelete(lTemp);
-    return;
 }
 
 /**

@@ -6798,7 +6798,6 @@ xmlValidGetPotentialChildren(xmlElementContent *ctree,
  */
 static void xmlNoValidityErr(void *ctx ATTRIBUTE_UNUSED,
                                 const char *msg ATTRIBUTE_UNUSED, ...) {
-    return;
 }
 
 /**

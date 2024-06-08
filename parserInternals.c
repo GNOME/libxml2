@@ -315,8 +315,6 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
         if (ctxt->recovery == 0)
             ctxt->disableSAX = 1;
     }
-
-    return;
 }
 
 /**
@@ -722,7 +720,6 @@ encoding_error:
         ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
     }
     ctxt->input->cur++;
-    return;
 }
 
 /**

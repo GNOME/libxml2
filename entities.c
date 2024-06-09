@@ -290,7 +290,8 @@ xmlAddEntity(xmlDocPtr doc, int extSubset, const xmlChar *name, int type,
 	dtd->last = (xmlNodePtr) ret;
     }
 
-    *out = ret;
+    if (out != NULL)
+        *out = ret;
     return(0);
 }
 

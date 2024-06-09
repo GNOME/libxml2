@@ -12172,7 +12172,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     xmlCtxtInitializeLate(ctxt);
 
     list = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, 1);
-    if (*listOut != NULL)
+    if (listOut != NULL)
         *listOut = list;
     else
         xmlFreeNodeList(list);

@@ -2211,13 +2211,17 @@ xmlOutputBufferCreateIO(xmlOutputWriteCallback   iowrite,
  * Returns the old value of the registration function
  */
 xmlParserInputBufferCreateFilenameFunc
-xmlParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilenameFunc func)
+xmlParserInputBufferCreateFilenameDefault(
+        xmlParserInputBufferCreateFilenameFunc func)
 {
-    xmlParserInputBufferCreateFilenameFunc old = xmlParserInputBufferCreateFilenameValue;
-    if (old == NULL) {
-		old = __xmlParserInputBufferCreateFilename;
-	}
+    xmlParserInputBufferCreateFilenameFunc old;
 
+    old = xmlParserInputBufferCreateFilenameValue;
+    if (old == NULL)
+        old = __xmlParserInputBufferCreateFilename;
+
+    if (func == __xmlParserInputBufferCreateFilename)
+        func = NULL;
     xmlParserInputBufferCreateFilenameValue = func;
     return(old);
 }

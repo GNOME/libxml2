@@ -1106,9 +1106,12 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
  */
 static int
 xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
-                    int flags ATTRIBUTE_UNUSED) {
+                    int flags) {
     int ret;
     int fd;
+
+    /* Avoid unused variable warning */
+    (void) flags;
 
 #ifdef LIBXML_FTP_ENABLED
     if (xmlIOFTPMatch(filename)) {
@@ -1138,7 +1141,7 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
         return(XML_IO_ENOENT);
 
 #ifdef LIBXML_LZMA_ENABLED
-    {
+    if (flags & XML_INPUT_UNZIP) {
         xzFile xzStream;
 
         ret = xmlFdOpen(filename, 0, &fd);
@@ -1165,7 +1168,7 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
 #endif /* LIBXML_LZMA_ENABLED */
 
 #ifdef LIBXML_ZLIB_ENABLED
-    {
+    if (flags & XML_INPUT_UNZIP) {
         gzFile gzStream;
 
         ret = xmlFdOpen(filename, 0, &fd);

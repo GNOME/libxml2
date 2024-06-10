@@ -1243,7 +1243,10 @@ typedef enum {
     XML_PARSE_OLDSAX    = 1<<20,/* parse using SAX2 interface before 2.7.0 */
     XML_PARSE_IGNORE_ENC= 1<<21,/* ignore internal document encoding hint */
     XML_PARSE_BIG_LINES = 1<<22,/* Store big lines numbers in text PSVI field */
-    XML_PARSE_NO_XXE    = 1<<23 /* disable loading of external content */
+    /* since 2.13.0 */
+    XML_PARSE_NO_XXE    = 1<<23,/* disable loading of external content */
+    /* since 2.14.0 */
+    XML_PARSE_NO_UNZIP  = 1<<24 /* disable compressed content */
 } xmlParserOption;
 
 XMLPUBFUN void

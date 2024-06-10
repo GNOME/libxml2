@@ -13578,6 +13578,13 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Enable reporting of line numbers larger than 65535.
  *
+ * XML_PARSE_NO_UNZIP
+ *
+ * Disables input decompression. Setting this option is recommended
+ * to avoid zip bombs.
+ *
+ * Available since 2.14.0.
+ *
  * Returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
  */

@@ -1509,19 +1509,6 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
     input->line = 1;
     input->col = 1;
 
-    /*
-     * If the context is NULL the id cannot be initialized, but that
-     * should not happen while parsing which is the situation where
-     * the id is actually needed.
-     */
-    if (ctxt != NULL) {
-        if (input->id >= INT_MAX) {
-            xmlCtxtErrMemory(ctxt);
-            return(NULL);
-        }
-        input->id = ctxt->input_id++;
-    }
-
     return(input);
 }
 

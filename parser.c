@@ -7850,11 +7850,19 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                 return;
             }
 
+            if (ctxt->input_id >= INT_MAX) {
+                xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
+                            "Input ID overflow\n");
+                return;
+            }
+
 	    input = xmlNewEntityInputStream(ctxt, entity);
 	    if (xmlPushInput(ctxt, input) < 0) {
                 xmlFreeInputStream(input);
 		return;
             }
+
+            input->id = ++ctxt->input_id;
 
             entity->flags |= XML_ENT_EXPANDING;
 

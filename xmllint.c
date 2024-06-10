@@ -445,6 +445,7 @@ endTimer(const char *fmt, ...)
  *									*
  ************************************************************************/
 static char buffer[50000];
+static int htmlBufLen;
 
 static void
 xmlHTMLEncodeSend(void) {
@@ -461,80 +462,61 @@ xmlHTMLEncodeSend(void) {
 	fprintf(ERR_STREAM, "%s", result);
 	xmlFree(result);
     }
-    buffer[0] = 0;
+
+    htmlBufLen = 0;
 }
 
-/**
- * xmlHTMLPrintFileInfo:
- * @input:  an xmlParserInputPtr input
- *
- * Displays the associated file and line information for the current input
- */
+static void
+xmlHTMLBufCat(void *data ATTRIBUTE_UNUSED, const char *fmt, ...) {
+    va_list ap;
+    int res;
+
+    va_start(ap, fmt);
+    res = vsnprintf(&buffer[htmlBufLen], sizeof(buffer) - htmlBufLen, fmt, ap);
+    va_end(ap);
+
+    if (res > 0) {
+        if ((size_t) res > sizeof(buffer) - htmlBufLen - 1)
+            htmlBufLen = sizeof(buffer) - 1;
+        else
+            htmlBufLen += res;
+    }
+}
 
 static void
-xmlHTMLPrintFileInfo(xmlParserInputPtr input) {
-    int len;
+xmlHTMLPrintError(void *ctx, const char *level, const char *msg, va_list ap) {
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+    xmlParserInputPtr input;
+
+    input = ctxt->input;
+    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
+        input = ctxt->inputTab[ctxt->inputNr - 2];
+    }
+
+    xmlSetGenericErrorFunc(NULL, xmlHTMLBufCat);
+
     fprintf(ERR_STREAM, "<p>");
 
-    len = strlen(buffer);
+    xmlParserPrintFileInfo(input);
+    xmlHTMLEncodeSend();
+
+    fprintf(ERR_STREAM, "<b>%s</b>: ", level);
+
+    vsnprintf(buffer, sizeof(buffer), msg, ap);
+    xmlHTMLEncodeSend();
+
+    fprintf(ERR_STREAM, "</p>\n");
+
     if (input != NULL) {
-	if (input->filename) {
-	    snprintf(&buffer[len], sizeof(buffer) - len, "%s:%d: ", input->filename,
-		    input->line);
-	} else {
-	    snprintf(&buffer[len], sizeof(buffer) - len, "Entity: line %d: ", input->line);
-	}
-    }
-    xmlHTMLEncodeSend();
-}
+        fprintf(ERR_STREAM, "<pre>\n");
 
-/**
- * xmlHTMLPrintFileContext:
- * @input:  an xmlParserInputPtr input
- *
- * Displays current context within the input content for error tracking
- */
+        xmlParserPrintFileContext(input);
+        xmlHTMLEncodeSend();
 
-static void
-xmlHTMLPrintFileContext(xmlParserInputPtr input) {
-    const xmlChar *cur, *base;
-    int len;
-    int n;
+        fprintf(ERR_STREAM, "</pre>");
+    }
 
-    if (input == NULL) return;
-    fprintf(ERR_STREAM, "<pre>\n");
-    cur = input->cur;
-    base = input->base;
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r'))) {
-	cur--;
-    }
-    n = 0;
-    while ((n++ < 80) && (cur > base) && (*cur != '\n') && (*cur != '\r'))
-        cur--;
-    if ((*cur == '\n') || (*cur == '\r')) cur++;
-    base = cur;
-    n = 0;
-    while ((*cur != 0) && (*cur != '\n') && (*cur != '\r') && (n < 79)) {
-	len = strlen(buffer);
-        snprintf(&buffer[len], sizeof(buffer) - len, "%c",
-		    (unsigned char) *cur++);
-	n++;
-    }
-    len = strlen(buffer);
-    snprintf(&buffer[len], sizeof(buffer) - len, "\n");
-    cur = input->cur;
-    while ((cur > base) && ((*cur == '\n') || (*cur == '\r')))
-	cur--;
-    n = 0;
-    while ((cur != base) && (n++ < 80)) {
-	len = strlen(buffer);
-        snprintf(&buffer[len], sizeof(buffer) - len, " ");
-        base++;
-    }
-    len = strlen(buffer);
-    snprintf(&buffer[len], sizeof(buffer) - len, "^\n");
-    xmlHTMLEncodeSend();
-    fprintf(ERR_STREAM, "</pre>");
+    xmlSetGenericErrorFunc(NULL, NULL);
 }
 
 /**
@@ -549,29 +531,11 @@ xmlHTMLPrintFileContext(xmlParserInputPtr input) {
 static void LIBXML_ATTR_FORMAT(2,3)
 xmlHTMLError(void *ctx, const char *msg, ...)
 {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
     va_list args;
-    int len;
 
-    buffer[0] = 0;
-    input = ctxt->input;
-    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-        input = ctxt->inputTab[ctxt->inputNr - 2];
-    }
-
-    xmlHTMLPrintFileInfo(input);
-
-    fprintf(ERR_STREAM, "<b>error</b>: ");
     va_start(args, msg);
-    len = strlen(buffer);
-    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
+    xmlHTMLPrintError(ctx, "error", msg, args);
     va_end(args);
-    xmlHTMLEncodeSend();
-    fprintf(ERR_STREAM, "</p>\n");
-
-    xmlHTMLPrintFileContext(input);
-    xmlHTMLEncodeSend();
 }
 
 /**
@@ -586,30 +550,11 @@ xmlHTMLError(void *ctx, const char *msg, ...)
 static void LIBXML_ATTR_FORMAT(2,3)
 xmlHTMLWarning(void *ctx, const char *msg, ...)
 {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
     va_list args;
-    int len;
 
-    buffer[0] = 0;
-    input = ctxt->input;
-    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-        input = ctxt->inputTab[ctxt->inputNr - 2];
-    }
-
-
-    xmlHTMLPrintFileInfo(input);
-
-    fprintf(ERR_STREAM, "<b>warning</b>: ");
     va_start(args, msg);
-    len = strlen(buffer);
-    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
+    xmlHTMLPrintError(ctx, "warning", msg, args);
     va_end(args);
-    xmlHTMLEncodeSend();
-    fprintf(ERR_STREAM, "</p>\n");
-
-    xmlHTMLPrintFileContext(input);
-    xmlHTMLEncodeSend();
 }
 
 /**
@@ -624,32 +569,12 @@ xmlHTMLWarning(void *ctx, const char *msg, ...)
 static void LIBXML_ATTR_FORMAT(2,3)
 xmlHTMLValidityError(void *ctx, const char *msg, ...)
 {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
     va_list args;
-    int len;
 
-    buffer[0] = 0;
-    input = ctxt->input;
-
-    if (input != NULL) {
-        if ((input->filename == NULL) && (ctxt->inputNr > 1))
-            input = ctxt->inputTab[ctxt->inputNr - 2];
-
-        xmlHTMLPrintFileInfo(input);
-    }
-
-    fprintf(ERR_STREAM, "<b>validity error</b>: ");
-    len = strlen(buffer);
     va_start(args, msg);
-    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
+    xmlHTMLPrintError(ctx, "validity error", msg, args);
     va_end(args);
-    xmlHTMLEncodeSend();
-    fprintf(ERR_STREAM, "</p>\n");
 
-    if (input != NULL)
-        xmlHTMLPrintFileContext(input);
-    xmlHTMLEncodeSend();
     progresult = XMLLINT_ERR_VALID;
 }
 
@@ -665,28 +590,11 @@ xmlHTMLValidityError(void *ctx, const char *msg, ...)
 static void LIBXML_ATTR_FORMAT(2,3)
 xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
 {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-    xmlParserInputPtr input;
     va_list args;
-    int len;
 
-    buffer[0] = 0;
-    input = ctxt->input;
-    if ((input->filename == NULL) && (ctxt->inputNr > 1))
-        input = ctxt->inputTab[ctxt->inputNr - 2];
-
-    xmlHTMLPrintFileInfo(input);
-
-    fprintf(ERR_STREAM, "<b>validity warning</b>: ");
     va_start(args, msg);
-    len = strlen(buffer);
-    vsnprintf(&buffer[len],  sizeof(buffer) - len, msg, args);
+    xmlHTMLPrintError(ctx, "validity warning", msg, args);
     va_end(args);
-    xmlHTMLEncodeSend();
-    fprintf(ERR_STREAM, "</p>\n");
-
-    xmlHTMLPrintFileContext(input);
-    xmlHTMLEncodeSend();
 }
 
 /************************************************************************

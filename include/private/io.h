@@ -12,8 +12,8 @@ XML_HIDDEN int
 xmlNoNetExists(const char *filename);
 
 XML_HIDDEN int
-xmlParserInputBufferCreateFilenameSafe(const char *URI, xmlCharEncoding enc,
-                                       xmlParserInputBufferPtr *out);
+xmlParserInputBufferCreateFilenameInt(const char *URI, xmlCharEncoding enc,
+                                      xmlParserInputBufferPtr *out);
 
 XML_HIDDEN xmlParserInputBufferPtr
 xmlNewInputBufferString(const char *str, int flags);

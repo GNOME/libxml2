@@ -1503,7 +1503,7 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
  *
  * Returns an xmlParserErrors code.
  */
-static int
+int
 xmlParserInputBufferCreateFilenameInt(const char *URI, xmlCharEncoding enc,
                                       xmlParserInputBufferPtr *out) {
     xmlParserInputBufferPtr buf;
@@ -1577,34 +1577,13 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
  */
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
+    xmlParserInputBufferPtr ret;
+
     if (xmlParserInputBufferCreateFilenameValue != NULL)
         return(xmlParserInputBufferCreateFilenameValue(URI, enc));
 
-    return(__xmlParserInputBufferCreateFilename(URI, enc));
-}
-
-/**
- * xmlParserInputBufferCreateFilenameSafe:
- * @URI:  the filename or URI
- * @enc:  encoding enum (deprecated)
- * @out:  pointer to resulting input buffer
- *
- * Create an input buffer for a filename or URI.
- *
- * Returns an xmlParserErrors code.
- */
-int
-xmlParserInputBufferCreateFilenameSafe(const char *URI, xmlCharEncoding enc,
-                                       xmlParserInputBufferPtr *out) {
-    if (xmlParserInputBufferCreateFilenameValue != NULL) {
-        *out = xmlParserInputBufferCreateFilenameValue(URI, enc);
-
-        if (*out == NULL)
-            return(XML_IO_ENOENT);
-        return(XML_ERR_OK);
-    }
-
-    return(xmlParserInputBufferCreateFilenameInt(URI, enc, out));
+    xmlParserInputBufferCreateFilenameInt(URI, enc, &ret);
+    return(ret);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

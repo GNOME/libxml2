@@ -2039,14 +2039,21 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputPtr inputStream;
     const xmlChar *URI;
     xmlChar *canonic;
-    int code;
+    int code = XML_ERR_OK;
 
     if ((ctxt == NULL) || (filename == NULL))
         return(NULL);
 
-    code = xmlParserInputBufferCreateFilenameSafe(filename,
-                                                  XML_CHAR_ENCODING_NONE, &buf);
-    if (buf == NULL) {
+    if (xmlParserInputBufferCreateFilenameValue != NULL) {
+        buf = xmlParserInputBufferCreateFilenameValue(filename,
+                XML_CHAR_ENCODING_NONE);
+        if (buf == NULL)
+            code = XML_IO_ENOENT;
+    } else {
+        code = xmlParserInputBufferCreateFilenameInt(filename,
+                XML_CHAR_ENCODING_NONE, &buf);
+    }
+    if (code != XML_ERR_OK) {
         xmlCtxtErrIO(ctxt, code, filename);
 	return(NULL);
     }

@@ -91,11 +91,16 @@ typedef enum {
 typedef struct _xmlBuffer xmlBuffer;
 typedef xmlBuffer *xmlBufferPtr;
 struct _xmlBuffer {
-    xmlChar *content;		/* The buffer content UTF8 */
-    unsigned int use;		/* The buffer size used */
-    unsigned int size;		/* The buffer size */
-    xmlBufferAllocationScheme alloc; /* The realloc method */
-    xmlChar *contentIO;		/* in IO mode we may have a different base */
+    /* The buffer content UTF8 */
+    xmlChar *content XML_DEPRECATED_MEMBER;
+    /* The buffer size used */
+    unsigned int use XML_DEPRECATED_MEMBER;
+    /* The buffer size */
+    unsigned int size XML_DEPRECATED_MEMBER;
+    /* The realloc method */
+    xmlBufferAllocationScheme alloc XML_DEPRECATED_MEMBER;
+    /* in IO mode we may have a different base */
+    xmlChar *contentIO XML_DEPRECATED_MEMBER;
 };
 
 /**

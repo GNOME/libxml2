@@ -2773,8 +2773,7 @@ libxml_serializeNode(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 	xmlSaveTree(ctxt, node);
     xmlSaveClose(ctxt);
 
-    c_retval = buf->content;
-    buf->content = NULL;
+    c_retval = xmlBufferDetach(buf);
 
     xmlBufferFree(buf);
     py_retval = libxml_charPtrWrap((char *) c_retval);

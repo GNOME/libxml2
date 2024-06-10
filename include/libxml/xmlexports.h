@@ -73,6 +73,16 @@
   #endif
 #endif
 
+#ifndef XML_DEPRECATED_MEMBER
+  #if defined(IN_LIBXML)
+    #define XML_DEPRECATED_MEMBER
+  #elif __GNUC__ * 100 + __GNUC_MINOR__ >= 301
+    #define XML_DEPRECATED_MEMBER __attribute__((deprecated))
+  #else
+    #define XML_DEPRECATED_MEMBER
+  #endif
+#endif
+
 /*
  * Warnings pragmas, should be moved from public headers
  */

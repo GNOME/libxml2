@@ -6,6 +6,7 @@
  */
 
 #define XML_DEPRECATED
+#define XML_DEPRECATED_MEMBER
 
 #include <stdio.h>
 #include <string.h>

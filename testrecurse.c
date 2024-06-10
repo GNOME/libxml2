@@ -10,6 +10,8 @@
  * daniel@veillard.com
  */
 
+#define XML_DEPRECATED_MEMBER
+
 #include "config.h"
 #include <stdio.h>
 

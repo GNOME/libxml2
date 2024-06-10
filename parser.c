@@ -2530,9 +2530,6 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
  *
  * Push an input stream onto the stack.
  *
- * This makes the parser use an input returned from advanced functions
- * like xmlNewInputURL or xmlNewInputMemory.
- *
  * Returns -1 in case of error or the index in the input stack
  */
 int
@@ -12605,7 +12602,7 @@ xmlParseEntity(const char *filename) {
  * @ID:  the entity PUBLIC ID
  * @base:  a possible base for the target URI
  *
- * DEPRECATED: Use xmlNewInputURL.
+ * DEPRECATED: Don't use.
  *
  * Create a parser context for an external entity
  * Automatic support for ZLIB/Compress compressed document is provided
@@ -13937,8 +13934,6 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar *str,
  *
  * Parse an XML file from the filesystem, the network or a user-defined
  * resource loader.
- *
- * See xmlNewInputURL and xmlCtxtUseOptions for details.
  *
  * Returns the resulting document tree
  */

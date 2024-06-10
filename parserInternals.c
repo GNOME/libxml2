@@ -2036,9 +2036,7 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
 xmlParserInputPtr
 xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputBufferPtr buf;
-    xmlParserInputPtr inputStream;
-    const xmlChar *URI;
-    xmlChar *canonic;
+    xmlParserInputPtr input;
     int code = XML_ERR_OK;
 
     if ((ctxt == NULL) || (filename == NULL))
@@ -2062,34 +2060,13 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 	return(NULL);
     }
 
-    inputStream = xmlNewInputStream(ctxt);
-    if (inputStream == NULL) {
-	xmlFreeParserInputBuffer(buf);
+    input = xmlNewInputInternal(ctxt, buf, filename, NULL);
+    if (input == NULL)
 	return(NULL);
-    }
 
-    inputStream->buf = buf;
-    inputStream = xmlCheckHTTPInput(ctxt, inputStream);
-    if (inputStream == NULL)
-        return(NULL);
+    input = xmlCheckHTTPInput(ctxt, input);
 
-    if (inputStream->filename == NULL)
-	URI = (xmlChar *) filename;
-    else
-	URI = (xmlChar *) inputStream->filename;
-    canonic = xmlCanonicPath(URI);
-    if (canonic == NULL) {
-        xmlCtxtErrMemory(ctxt);
-        xmlFreeInputStream(inputStream);
-        return(NULL);
-    }
-    if (inputStream->filename != NULL)
-        xmlFree((char *) inputStream->filename);
-    inputStream->filename = (char *) canonic;
-
-    xmlBufResetInput(inputStream->buf->buffer, inputStream);
-
-    return(inputStream);
+    return(input);
 }
 
 /**

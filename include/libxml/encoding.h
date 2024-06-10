@@ -139,15 +139,15 @@ typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
 typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 struct _xmlCharEncodingHandler {
     char                       *name;
-    xmlCharEncodingInputFunc   input;
-    xmlCharEncodingOutputFunc  output;
+    xmlCharEncodingInputFunc   input XML_DEPRECATED_MEMBER;
+    xmlCharEncodingOutputFunc  output XML_DEPRECATED_MEMBER;
 #ifdef LIBXML_ICONV_ENABLED
-    iconv_t                    iconv_in;
-    iconv_t                    iconv_out;
+    iconv_t                    iconv_in XML_DEPRECATED_MEMBER;
+    iconv_t                    iconv_out XML_DEPRECATED_MEMBER;
 #endif /* LIBXML_ICONV_ENABLED */
 #ifdef LIBXML_ICU_ENABLED
-    struct _uconv_t            *uconv_in;
-    struct _uconv_t            *uconv_out;
+    struct _uconv_t            *uconv_in XML_DEPRECATED_MEMBER;
+    struct _uconv_t            *uconv_out XML_DEPRECATED_MEMBER;
 #endif /* LIBXML_ICU_ENABLED */
 };
 

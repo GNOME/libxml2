@@ -2050,8 +2050,8 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
         if (buf == NULL)
             code = XML_IO_ENOENT;
     } else {
-        code = xmlParserInputBufferCreateFilenameInt(filename,
-                XML_CHAR_ENCODING_NONE, &buf);
+        code = xmlParserInputBufferCreateUrl(filename, XML_CHAR_ENCODING_NONE,
+                                             0, &buf);
     }
     if (code != XML_ERR_OK) {
         xmlCtxtErrIO(ctxt, code, filename);

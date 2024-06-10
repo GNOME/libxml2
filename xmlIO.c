@@ -1100,11 +1100,13 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
  * xmlInputDefaultOpen:
  * @buf:  input buffer to be filled
  * @filename:  filename or URI
+ * @flags:  XML_INPUT flags
  *
  * Returns an xmlParserErrors code.
  */
 static int
-xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
+xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
+                    int flags ATTRIBUTE_UNUSED) {
     int ret;
     int fd;
 
@@ -1496,16 +1498,17 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
- * xmlParserInputBufferCreateFilenameInt:
+ * xmlParserInputBufferCreateUrl:
  * @URI:  the filename or URI
  * @enc:  encoding enum (deprecated)
+ * @flags:  XML_INPUT flags
  * @out:  pointer to resulting input buffer
  *
  * Returns an xmlParserErrors code.
  */
 int
-xmlParserInputBufferCreateFilenameInt(const char *URI, xmlCharEncoding enc,
-                                      xmlParserInputBufferPtr *out) {
+xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
+                              int flags, xmlParserInputBufferPtr *out) {
     xmlParserInputBufferPtr buf;
     int ret;
     int i;
@@ -1530,7 +1533,7 @@ xmlParserInputBufferCreateFilenameInt(const char *URI, xmlCharEncoding enc,
         xmlInputCallback *cb = &xmlInputCallbackTable[i];
 
         if (cb->matchcallback == xmlIODefaultMatch) {
-            ret = xmlInputDefaultOpen(buf, URI);
+            ret = xmlInputDefaultOpen(buf, URI, flags);
 
             if ((ret == XML_ERR_OK) || (ret != XML_IO_ENOENT))
                 break;
@@ -1559,7 +1562,7 @@ xmlParserInputBufferPtr
 __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
 
-    xmlParserInputBufferCreateFilenameInt(URI, enc, &ret);
+    xmlParserInputBufferCreateUrl(URI, enc, 0, &ret);
     return(ret);
 }
 
@@ -1582,7 +1585,7 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     if (xmlParserInputBufferCreateFilenameValue != NULL)
         return(xmlParserInputBufferCreateFilenameValue(URI, enc));
 
-    xmlParserInputBufferCreateFilenameInt(URI, enc, &ret);
+    xmlParserInputBufferCreateUrl(URI, enc, 0, &ret);
     return(ret);
 }
 

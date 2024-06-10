@@ -2103,34 +2103,35 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
  * Returns a new allocated xmlParserInputPtr, or NULL.
  */
 static xmlParserInputPtr
-xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
+xmlDefaultExternalEntityLoader(const char *url, const char *ID,
                                xmlParserCtxtPtr ctxt)
 {
-    xmlParserInputPtr ret = NULL;
-    xmlChar *resource = NULL;
+    xmlParserInputPtr input = NULL;
+    char *resource = NULL;
 
-    if (URL == NULL)
+    (void) ID;
+
+    if (url == NULL)
         return(NULL);
 
-    if ((ctxt != NULL) && (ctxt->options & XML_PARSE_NONET)) {
-        int options = ctxt->options;
-
-	ctxt->options -= XML_PARSE_NONET;
-        ret = xmlNoNetExternalEntityLoader(URL, ID, ctxt);
-	ctxt->options = options;
-	return(ret);
-    }
 #ifdef LIBXML_CATALOG_ENABLED
-    resource = xmlResolveResourceFromCatalog(URL, ID, ctxt);
+    resource = (char *) xmlResolveResourceFromCatalog(url, ID, ctxt);
+    if (resource != NULL)
+	url = resource;
 #endif
 
-    if (resource == NULL)
-        resource = (xmlChar *) URL;
+    if ((ctxt != NULL) &&
+        (ctxt->options & XML_PARSE_NONET) &&
+        ((xmlStrncasecmp(BAD_CAST url, BAD_CAST "ftp://", 6) == 0) ||
+         (xmlStrncasecmp(BAD_CAST url, BAD_CAST "http://", 7) == 0))) {
+        xmlCtxtErrIO(ctxt, XML_IO_NETWORK_ATTEMPT, url);
+    } else {
+        input = xmlNewInputFromFile(ctxt, url);
+    }
 
-    ret = xmlNewInputFromFile(ctxt, (const char *) resource);
-    if ((resource != NULL) && (resource != (xmlChar *) URL))
-        xmlFree(resource);
-    return (ret);
+    if (resource != NULL)
+	xmlFree(resource);
+    return(input);
 }
 
 /**
@@ -2147,29 +2148,19 @@ xmlDefaultExternalEntityLoader(const char *URL, const char *ID,
 xmlParserInputPtr
 xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
                              xmlParserCtxtPtr ctxt) {
-    xmlParserInputPtr input = NULL;
-    xmlChar *resource = NULL;
+    int oldOptions = 0;
+    xmlParserInputPtr input;
 
-#ifdef LIBXML_CATALOG_ENABLED
-    resource = xmlResolveResourceFromCatalog(URL, ID, ctxt);
-#endif
-
-    if (resource == NULL)
-	resource = (xmlChar *) URL;
-
-    if (resource != NULL) {
-        if ((!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "ftp://", 6)) ||
-            (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
-            xmlCtxtErrIO(ctxt, XML_IO_NETWORK_ATTEMPT,
-                         (const char *) resource);
-	    if (resource != (xmlChar *) URL)
-		xmlFree(resource);
-	    return(NULL);
-	}
+    if (ctxt != NULL) {
+        oldOptions = ctxt->options;
+        ctxt->options |= XML_PARSE_NONET;
     }
-    input = xmlDefaultExternalEntityLoader((const char *) resource, ID, ctxt);
-    if (resource != (xmlChar *) URL)
-	xmlFree(resource);
+
+    input = xmlDefaultExternalEntityLoader(URL, ID, ctxt);
+
+    if (ctxt != NULL)
+        ctxt->options = oldOptions;
+
     return(input);
 }
 

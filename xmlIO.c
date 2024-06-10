@@ -2508,10 +2508,7 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
 		    xmlBufShrink(out->buffer, ret);
 	    }
 	    if (ret < 0) {
-                int errNo = (ret == -1) ? XML_IO_WRITE : -ret;
-
-		xmlIOErr(errNo, NULL);
-		out->error = errNo;
+		out->error = (ret == -1) ? XML_IO_WRITE : -ret;
 		return(ret);
 	    }
             if (out->written > INT_MAX - ret)
@@ -2711,9 +2708,7 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
 		    xmlBufShrink(out->buffer, ret);
 	    }
 	    if (ret < 0) {
-                int errNo = (ret == -1) ? XML_IO_WRITE : -ret;
-		xmlIOErr(errNo, NULL);
-		out->error = errNo;
+		out->error = (ret == -1) ? XML_IO_WRITE : -ret;
 		return(-1);
 	    }
             if (out->written > INT_MAX - ret)
@@ -2855,10 +2850,7 @@ xmlOutputBufferFlush(xmlOutputBufferPtr out) {
 	    xmlBufShrink(out->buffer, ret);
     }
     if (ret < 0) {
-        int errNo = (ret == -1) ? XML_IO_WRITE : -ret;
-
-        xmlIOErr(errNo, NULL);
-        out->error = errNo;
+        out->error = (ret == -1) ? XML_IO_WRITE : -ret;
 	return(ret);
     }
     if (out->written > INT_MAX - ret)

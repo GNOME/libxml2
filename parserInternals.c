@@ -2151,12 +2151,6 @@ xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
             (!xmlStrncasecmp(BAD_CAST resource, BAD_CAST "http://", 7))) {
             xmlCtxtErrIO(ctxt, XML_IO_NETWORK_ATTEMPT,
                          (const char *) resource);
-            /*
-             * Also forward the error directly to the global error
-             * handler, which the XML::LibXML test suite expects.
-             */
-            __xmlIOErr(XML_FROM_IO, XML_IO_NETWORK_ATTEMPT,
-                       (const char *) resource);
 	    if (resource != (xmlChar *) URL)
 		xmlFree(resource);
 	    return(NULL);

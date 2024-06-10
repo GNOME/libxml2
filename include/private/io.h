@@ -9,9 +9,6 @@ XML_HIDDEN void
 xmlInitIOCallbacks(void);
 
 XML_HIDDEN int
-__xmlIOErr(int domain, int code, const char *extra);
-
-XML_HIDDEN int
 xmlNoNetExists(const char *filename);
 
 XML_HIDDEN int

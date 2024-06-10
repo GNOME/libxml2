@@ -115,232 +115,175 @@ static int xmlOutputCallbackNr;
  ************************************************************************/
 
 /**
- * xmlIOErrMemory:
- * @extra:  extra information
- *
- * Handle an out of memory condition
- */
-static void
-xmlIOErrMemory(void)
-{
-    xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_IO, NULL);
-}
-
-/**
- * __xmlIOErr:
- * @code:  the error number
- * @
- * @extra:  extra information
- *
- * Handle an I/O error
- */
-int
-__xmlIOErr(int domain, int code, const char *extra)
-{
-    xmlStructuredErrorFunc schannel = NULL;
-    xmlGenericErrorFunc channel = NULL;
-    void *data = NULL;
-    const char *fmt, *arg1, *arg2;
-    int res;
-
-    if (code == 0) {
-	if (errno == 0) code = XML_IO_UNKNOWN;
-#ifdef EACCES
-        else if (errno == EACCES) code = XML_IO_EACCES;
-#endif
-#ifdef EAGAIN
-        else if (errno == EAGAIN) code = XML_IO_EAGAIN;
-#endif
-#ifdef EBADF
-        else if (errno == EBADF) code = XML_IO_EBADF;
-#endif
-#ifdef EBADMSG
-        else if (errno == EBADMSG) code = XML_IO_EBADMSG;
-#endif
-#ifdef EBUSY
-        else if (errno == EBUSY) code = XML_IO_EBUSY;
-#endif
-#ifdef ECANCELED
-        else if (errno == ECANCELED) code = XML_IO_ECANCELED;
-#endif
-#ifdef ECHILD
-        else if (errno == ECHILD) code = XML_IO_ECHILD;
-#endif
-#ifdef EDEADLK
-        else if (errno == EDEADLK) code = XML_IO_EDEADLK;
-#endif
-#ifdef EDOM
-        else if (errno == EDOM) code = XML_IO_EDOM;
-#endif
-#ifdef EEXIST
-        else if (errno == EEXIST) code = XML_IO_EEXIST;
-#endif
-#ifdef EFAULT
-        else if (errno == EFAULT) code = XML_IO_EFAULT;
-#endif
-#ifdef EFBIG
-        else if (errno == EFBIG) code = XML_IO_EFBIG;
-#endif
-#ifdef EINPROGRESS
-        else if (errno == EINPROGRESS) code = XML_IO_EINPROGRESS;
-#endif
-#ifdef EINTR
-        else if (errno == EINTR) code = XML_IO_EINTR;
-#endif
-#ifdef EINVAL
-        else if (errno == EINVAL) code = XML_IO_EINVAL;
-#endif
-#ifdef EIO
-        else if (errno == EIO) code = XML_IO_EIO;
-#endif
-#ifdef EISDIR
-        else if (errno == EISDIR) code = XML_IO_EISDIR;
-#endif
-#ifdef EMFILE
-        else if (errno == EMFILE) code = XML_IO_EMFILE;
-#endif
-#ifdef EMLINK
-        else if (errno == EMLINK) code = XML_IO_EMLINK;
-#endif
-#ifdef EMSGSIZE
-        else if (errno == EMSGSIZE) code = XML_IO_EMSGSIZE;
-#endif
-#ifdef ENAMETOOLONG
-        else if (errno == ENAMETOOLONG) code = XML_IO_ENAMETOOLONG;
-#endif
-#ifdef ENFILE
-        else if (errno == ENFILE) code = XML_IO_ENFILE;
-#endif
-#ifdef ENODEV
-        else if (errno == ENODEV) code = XML_IO_ENODEV;
-#endif
-#ifdef ENOENT
-        else if (errno == ENOENT) code = XML_IO_ENOENT;
-#endif
-#ifdef ENOEXEC
-        else if (errno == ENOEXEC) code = XML_IO_ENOEXEC;
-#endif
-#ifdef ENOLCK
-        else if (errno == ENOLCK) code = XML_IO_ENOLCK;
-#endif
-#ifdef ENOMEM
-        else if (errno == ENOMEM) code = XML_IO_ENOMEM;
-#endif
-#ifdef ENOSPC
-        else if (errno == ENOSPC) code = XML_IO_ENOSPC;
-#endif
-#ifdef ENOSYS
-        else if (errno == ENOSYS) code = XML_IO_ENOSYS;
-#endif
-#ifdef ENOTDIR
-        else if (errno == ENOTDIR) code = XML_IO_ENOTDIR;
-#endif
-#ifdef ENOTEMPTY
-        else if (errno == ENOTEMPTY) code = XML_IO_ENOTEMPTY;
-#endif
-#ifdef ENOTSUP
-        else if (errno == ENOTSUP) code = XML_IO_ENOTSUP;
-#endif
-#ifdef ENOTTY
-        else if (errno == ENOTTY) code = XML_IO_ENOTTY;
-#endif
-#ifdef ENXIO
-        else if (errno == ENXIO) code = XML_IO_ENXIO;
-#endif
-#ifdef EPERM
-        else if (errno == EPERM) code = XML_IO_EPERM;
-#endif
-#ifdef EPIPE
-        else if (errno == EPIPE) code = XML_IO_EPIPE;
-#endif
-#ifdef ERANGE
-        else if (errno == ERANGE) code = XML_IO_ERANGE;
-#endif
-#ifdef EROFS
-        else if (errno == EROFS) code = XML_IO_EROFS;
-#endif
-#ifdef ESPIPE
-        else if (errno == ESPIPE) code = XML_IO_ESPIPE;
-#endif
-#ifdef ESRCH
-        else if (errno == ESRCH) code = XML_IO_ESRCH;
-#endif
-#ifdef ETIMEDOUT
-        else if (errno == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
-#endif
-#ifdef EXDEV
-        else if (errno == EXDEV) code = XML_IO_EXDEV;
-#endif
-#ifdef ENOTSOCK
-        else if (errno == ENOTSOCK) code = XML_IO_ENOTSOCK;
-#endif
-#ifdef EISCONN
-        else if (errno == EISCONN) code = XML_IO_EISCONN;
-#endif
-#ifdef ECONNREFUSED
-        else if (errno == ECONNREFUSED) code = XML_IO_ECONNREFUSED;
-#endif
-#ifdef ETIMEDOUT
-        else if (errno == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
-#endif
-#ifdef ENETUNREACH
-        else if (errno == ENETUNREACH) code = XML_IO_ENETUNREACH;
-#endif
-#ifdef EADDRINUSE
-        else if (errno == EADDRINUSE) code = XML_IO_EADDRINUSE;
-#endif
-#ifdef EINPROGRESS
-        else if (errno == EINPROGRESS) code = XML_IO_EINPROGRESS;
-#endif
-#ifdef EALREADY
-        else if (errno == EALREADY) code = XML_IO_EALREADY;
-#endif
-#ifdef EAFNOSUPPORT
-        else if (errno == EAFNOSUPPORT) code = XML_IO_EAFNOSUPPORT;
-#endif
-        else code = XML_IO_UNKNOWN;
-    }
-
-    if (xmlStructuredError) {
-        schannel = xmlStructuredError;
-        data = xmlStructuredErrorContext;
-    } else {
-        channel = xmlGenericError;
-        data = xmlGenericErrorContext;
-    }
-
-    if (extra != NULL) {
-        fmt = "%s: %s";
-    } else {
-        fmt = "%s";
-    }
-
-    arg1 = xmlErrString(code);
-    arg2 = extra;
-
-    res = __xmlRaiseError(schannel, channel, data, NULL, NULL,
-                          domain, code, XML_ERR_ERROR, NULL, 0,
-                          extra, NULL, NULL, 0, 0,
-                          fmt, arg1, arg2);
-    if (res < 0) {
-        xmlIOErrMemory();
-        return(XML_ERR_NO_MEMORY);
-    }
-
-    return(code);
-}
-
-/**
  * xmlIOErr:
  * @code:  the error number
- * @extra:  extra information
  *
- * Handle an I/O error
+ * Convert errno to xmlParserErrors.
+ *
+ * Returns an xmlParserErrors code.
  */
 static int
-xmlIOErr(int code, const char *extra)
+xmlIOErr(int err)
 {
-    return(__xmlIOErr(XML_FROM_IO, code, extra));
+    int code;
+
+    if (err == 0) code = XML_IO_UNKNOWN;
+#ifdef EACCES
+    else if (err == EACCES) code = XML_IO_EACCES;
+#endif
+#ifdef EAGAIN
+    else if (err == EAGAIN) code = XML_IO_EAGAIN;
+#endif
+#ifdef EBADF
+    else if (err == EBADF) code = XML_IO_EBADF;
+#endif
+#ifdef EBADMSG
+    else if (err == EBADMSG) code = XML_IO_EBADMSG;
+#endif
+#ifdef EBUSY
+    else if (err == EBUSY) code = XML_IO_EBUSY;
+#endif
+#ifdef ECANCELED
+    else if (err == ECANCELED) code = XML_IO_ECANCELED;
+#endif
+#ifdef ECHILD
+    else if (err == ECHILD) code = XML_IO_ECHILD;
+#endif
+#ifdef EDEADLK
+    else if (err == EDEADLK) code = XML_IO_EDEADLK;
+#endif
+#ifdef EDOM
+    else if (err == EDOM) code = XML_IO_EDOM;
+#endif
+#ifdef EEXIST
+    else if (err == EEXIST) code = XML_IO_EEXIST;
+#endif
+#ifdef EFAULT
+    else if (err == EFAULT) code = XML_IO_EFAULT;
+#endif
+#ifdef EFBIG
+    else if (err == EFBIG) code = XML_IO_EFBIG;
+#endif
+#ifdef EINPROGRESS
+    else if (err == EINPROGRESS) code = XML_IO_EINPROGRESS;
+#endif
+#ifdef EINTR
+    else if (err == EINTR) code = XML_IO_EINTR;
+#endif
+#ifdef EINVAL
+    else if (err == EINVAL) code = XML_IO_EINVAL;
+#endif
+#ifdef EIO
+    else if (err == EIO) code = XML_IO_EIO;
+#endif
+#ifdef EISDIR
+    else if (err == EISDIR) code = XML_IO_EISDIR;
+#endif
+#ifdef EMFILE
+    else if (err == EMFILE) code = XML_IO_EMFILE;
+#endif
+#ifdef EMLINK
+    else if (err == EMLINK) code = XML_IO_EMLINK;
+#endif
+#ifdef EMSGSIZE
+    else if (err == EMSGSIZE) code = XML_IO_EMSGSIZE;
+#endif
+#ifdef ENAMETOOLONG
+    else if (err == ENAMETOOLONG) code = XML_IO_ENAMETOOLONG;
+#endif
+#ifdef ENFILE
+    else if (err == ENFILE) code = XML_IO_ENFILE;
+#endif
+#ifdef ENODEV
+    else if (err == ENODEV) code = XML_IO_ENODEV;
+#endif
+#ifdef ENOENT
+    else if (err == ENOENT) code = XML_IO_ENOENT;
+#endif
+#ifdef ENOEXEC
+    else if (err == ENOEXEC) code = XML_IO_ENOEXEC;
+#endif
+#ifdef ENOLCK
+    else if (err == ENOLCK) code = XML_IO_ENOLCK;
+#endif
+#ifdef ENOMEM
+    else if (err == ENOMEM) code = XML_IO_ENOMEM;
+#endif
+#ifdef ENOSPC
+    else if (err == ENOSPC) code = XML_IO_ENOSPC;
+#endif
+#ifdef ENOSYS
+    else if (err == ENOSYS) code = XML_IO_ENOSYS;
+#endif
+#ifdef ENOTDIR
+    else if (err == ENOTDIR) code = XML_IO_ENOTDIR;
+#endif
+#ifdef ENOTEMPTY
+    else if (err == ENOTEMPTY) code = XML_IO_ENOTEMPTY;
+#endif
+#ifdef ENOTSUP
+    else if (err == ENOTSUP) code = XML_IO_ENOTSUP;
+#endif
+#ifdef ENOTTY
+    else if (err == ENOTTY) code = XML_IO_ENOTTY;
+#endif
+#ifdef ENXIO
+    else if (err == ENXIO) code = XML_IO_ENXIO;
+#endif
+#ifdef EPERM
+    else if (err == EPERM) code = XML_IO_EPERM;
+#endif
+#ifdef EPIPE
+    else if (err == EPIPE) code = XML_IO_EPIPE;
+#endif
+#ifdef ERANGE
+    else if (err == ERANGE) code = XML_IO_ERANGE;
+#endif
+#ifdef EROFS
+    else if (err == EROFS) code = XML_IO_EROFS;
+#endif
+#ifdef ESPIPE
+    else if (err == ESPIPE) code = XML_IO_ESPIPE;
+#endif
+#ifdef ESRCH
+    else if (err == ESRCH) code = XML_IO_ESRCH;
+#endif
+#ifdef ETIMEDOUT
+    else if (err == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
+#endif
+#ifdef EXDEV
+    else if (err == EXDEV) code = XML_IO_EXDEV;
+#endif
+#ifdef ENOTSOCK
+    else if (err == ENOTSOCK) code = XML_IO_ENOTSOCK;
+#endif
+#ifdef EISCONN
+    else if (err == EISCONN) code = XML_IO_EISCONN;
+#endif
+#ifdef ECONNREFUSED
+    else if (err == ECONNREFUSED) code = XML_IO_ECONNREFUSED;
+#endif
+#ifdef ETIMEDOUT
+    else if (err == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
+#endif
+#ifdef ENETUNREACH
+    else if (err == ENETUNREACH) code = XML_IO_ENETUNREACH;
+#endif
+#ifdef EADDRINUSE
+    else if (err == EADDRINUSE) code = XML_IO_EADDRINUSE;
+#endif
+#ifdef EINPROGRESS
+    else if (err == EINPROGRESS) code = XML_IO_EINPROGRESS;
+#endif
+#ifdef EALREADY
+    else if (err == EALREADY) code = XML_IO_EALREADY;
+#endif
+#ifdef EAFNOSUPPORT
+    else if (err == EAFNOSUPPORT) code = XML_IO_EAFNOSUPPORT;
+#endif
+    else code = XML_IO_UNKNOWN;
+
+    return(code);
 }
 
 /************************************************************************
@@ -555,11 +498,7 @@ xmlFdOpen(const char *filename, int write, int *out) {
         if ((errno == ENOENT) || (errno == EINVAL)) {
             ret = XML_IO_ENOENT;
         } else {
-            /*
-             * This error won't be forwarded to the parser context
-             * which will report it a second time.
-             */
-            ret = xmlIOErr(0, filename);
+            ret = xmlIOErr(errno);
         }
     } else {
         *out = fd;
@@ -595,7 +534,7 @@ xmlFdRead(void *context, char *buffer, int len) {
              */
             if (ret > 0)
                 break;
-            return(-xmlIOErr(0, "read()"));
+            return(-xmlIOErr(errno));
         }
         if (bytes == 0)
             break;
@@ -627,7 +566,7 @@ xmlFdWrite(void *context, const char *buffer, int len) {
     while (len > 0) {
 	bytes = write(fd, buffer, len);
 	if (bytes < 0)
-            return(-xmlIOErr(0, "write()"));
+            return(-xmlIOErr(errno));
         ret += bytes;
         buffer += bytes;
         len -= bytes;
@@ -651,7 +590,7 @@ xmlFdClose (void * context) {
 
     ret = close((int) (ptrdiff_t) context);
     if (ret < 0)
-        return(xmlIOErr(0, "close()"));
+        return(xmlIOErr(errno));
 
     return(XML_ERR_OK);
 }
@@ -722,7 +661,7 @@ xmlFileOpenSafe(const char *filename, int write, void **out) {
              * This error won't be forwarded to the parser context
              * which will report it a second time.
              */
-            ret = xmlIOErr(0, filename);
+            ret = xmlIOErr(errno);
         }
     }
 
@@ -774,7 +713,7 @@ xmlFileRead(void * context, char * buffer, int len) {
     errno = 0;
     bytes = fread(buffer, 1, len, file);
     if ((bytes < (size_t) len) && (ferror(file)))
-        return(-xmlIOErr(0, "fread()"));
+        return(-xmlIOErr(errno));
 
     return(len);
 }
@@ -801,7 +740,7 @@ xmlFileWrite(void *context, const char *buffer, int len) {
     errno = 0;
     bytes = fwrite(buffer, 1, len, file);
     if (bytes < (size_t) len)
-        return(-xmlIOErr(0, "fwrite()"));
+        return(-xmlIOErr(errno));
 
     return(len);
 }
@@ -821,7 +760,7 @@ xmlFileFlush (void * context) {
         return(-1);
 
     if (fflush(file) != 0)
-        return(xmlIOErr(0, "fflush()"));
+        return(xmlIOErr(errno));
 
     return(XML_ERR_OK);
 }
@@ -847,7 +786,7 @@ xmlFileClose (void * context) {
         return(xmlFileFlush(file));
 
     if (fclose(file) != 0)
-        return(xmlIOErr(0, "fclose()"));
+        return(xmlIOErr(errno));
 
     return(0);
 }
@@ -897,7 +836,8 @@ xmlGzfileRead (void * context, char * buffer, int len) {
     int ret;
 
     ret = gzread((gzFile) context, &buffer[0], len);
-    if (ret < 0) xmlIOErr(0, "gzread()");
+    if (ret < 0)
+        return(-XML_IO_UNKNOWN);
     return(ret);
 }
 
@@ -917,7 +857,8 @@ xmlGzfileWrite (void * context, const char * buffer, int len) {
     int ret;
 
     ret = gzwrite((gzFile) context, (char *) &buffer[0], len);
-    if (ret < 0) xmlIOErr(0, "gzwrite()");
+    if (ret < 0)
+        return(-XML_IO_UNKNOWN);
     return(ret);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
@@ -930,11 +871,9 @@ xmlGzfileWrite (void * context, const char * buffer, int len) {
  */
 static int
 xmlGzfileClose (void * context) {
-    int ret;
-
-    ret =  (gzclose((gzFile) context) == Z_OK ) ? 0 : -1;
-    if (ret < 0) xmlIOErr(0, "gzclose()");
-    return(ret);
+    if (gzclose((gzFile) context) != Z_OK)
+        return(XML_IO_UNKNOWN);
+    return(0);
 }
 #endif /* LIBXML_ZLIB_ENABLED */
 
@@ -963,7 +902,8 @@ xmlXzfileRead (void * context, char * buffer, int len) {
     int ret;
 
     ret = __libxml2_xzread((xzFile) context, &buffer[0], len);
-    if (ret < 0) xmlIOErr(0, "xzread()");
+    if (ret < 0)
+        return(-XML_IO_UNKNOWN);
     return(ret);
 }
 
@@ -975,11 +915,9 @@ xmlXzfileRead (void * context, char * buffer, int len) {
  */
 static int
 xmlXzfileClose (void * context) {
-    int ret;
-
-    ret =  (__libxml2_xzclose((xzFile) context) == LZMA_OK ) ? 0 : -1;
-    if (ret < 0) xmlIOErr(0, "xzclose()");
-    return(ret);
+    if (__libxml2_xzclose((xzFile) context) != LZMA_OK)
+        return(XML_IO_UNKNOWN);
+    return(0);
 }
 #endif /* LIBXML_LZMA_ENABLED */
 
@@ -1287,7 +1225,7 @@ xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
         fd = dup(STDOUT_FILENO);
 
         if (fd < 0)
-            return(xmlIOErr(0, "dup()"));
+            return(xmlIOErr(errno));
     } else {
         int ret;
 
@@ -1306,7 +1244,7 @@ xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
 
         if (gzStream == NULL) {
             close(fd);
-            return(xmlIOErr(XML_IO_UNKNOWN, "gzdopen()"));
+            return(XML_IO_UNKNOWN);
         }
 
         buf->context = gzStream;

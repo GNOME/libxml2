@@ -85,6 +85,8 @@
 
 #define XML_NANO_MAX_URLBUF	4096
 
+#define __xmlIOErr(domain, code, extra) ((void) 0)
+
 typedef struct xmlNanoFTPCtxt {
     char *protocol;	/* the protocol name */
     char *hostname;	/* the host name */

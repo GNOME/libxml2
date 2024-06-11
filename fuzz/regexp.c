@@ -13,7 +13,6 @@ int
 LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
                      char ***argv ATTRIBUTE_UNUSED) {
     xmlFuzzMemSetup();
-    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     return 0;
 }

@@ -151,12 +151,14 @@ processXml(const char *docFile, FILE *out) {
     fuzzRecorderInit(out);
 
     ctxt = xmlNewParserCtxt();
+    xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
     xmlCtxtSetResourceLoader(ctxt, fuzzResourceRecorder, NULL);
     doc = xmlCtxtReadFile(ctxt, docFile, NULL, opts);
 #ifdef LIBXML_XINCLUDE_ENABLED
     {
         xmlXIncludeCtxtPtr xinc = xmlXIncludeNewContext(doc);
 
+        xmlXIncludeSetErrorHandler(xinc, xmlFuzzSErrorFunc, NULL);
         xmlXIncludeSetResourceLoader(xinc, fuzzResourceRecorder, NULL);
         xmlXIncludeSetFlags(xinc, opts);
         xmlXIncludeProcessNode(xinc, (xmlNodePtr) doc);
@@ -213,7 +215,7 @@ processSchema(const char *docFile, FILE *out) {
     fuzzRecorderInit(out);
 
     pctxt = xmlSchemaNewParserCtxt(docFile);
-    xmlSchemaSetParserErrors(pctxt, xmlFuzzErrorFunc, xmlFuzzErrorFunc, NULL);
+    xmlSchemaSetParserStructuredErrors(pctxt, xmlFuzzSErrorFunc, NULL);
     xmlSchemaSetResourceLoader(pctxt, fuzzResourceRecorder, NULL);
     schema = xmlSchemaParse(pctxt);
     xmlSchemaFreeParserCtxt(pctxt);
@@ -449,8 +451,6 @@ main(int argc, const char **argv) {
         fprintf(stderr, "usage: seed [FUZZER] [PATTERN...]\n");
         return(1);
     }
-
-    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     fuzzer = argv[1];
     if (strcmp(fuzzer, "html") == 0) {

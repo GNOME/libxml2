@@ -19,7 +19,6 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
     xmlInitializeCatalog();
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
-    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     return 0;
 }
@@ -50,6 +49,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFuzzMemSetLimit(maxAlloc);
     ctxt = xmlNewParserCtxt();
     if (ctxt != NULL) {
+        xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
         xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
         xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
@@ -63,17 +63,20 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFuzzMemSetLimit(maxAlloc);
     ctxt = xmlNewParserCtxt();
     if (ctxt != NULL) {
+        xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
         xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL,
                                 opts & ~XML_PARSE_DTDVALID);
         xmlFreeParserCtxt(ctxt);
 
         /* Post validation requires global callbacks */
+        xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
         xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
         vctxt = xmlNewValidCtxt();
         xmlValidateDocument(vctxt, doc);
         xmlFreeValidCtxt(vctxt);
         xmlFreeDoc(doc);
+        xmlSetGenericErrorFunc(NULL, NULL);
         xmlSetExternalEntityLoader(NULL);
     }
 
@@ -87,6 +90,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlFuzzMemSetLimit(maxAlloc);
         ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
         if (ctxt != NULL) {
+            xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
             xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
             xmlCtxtUseOptions(ctxt, opts);
 

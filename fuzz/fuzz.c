@@ -56,6 +56,16 @@ xmlFuzzErrorFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg ATTRIBUTE_UNUSED,
                  ...) {
 }
 
+/**
+ * xmlFuzzSErrorFunc:
+ *
+ * A structured error function that simply discards all errors.
+ */
+void
+xmlFuzzSErrorFunc(void *ctx ATTRIBUTE_UNUSED,
+                  const xmlError *error ATTRIBUTE_UNUSED) {
+}
+
 /*
  * Malloc failure injection.
  *

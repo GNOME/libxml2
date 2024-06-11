@@ -53,8 +53,10 @@ int
 LLVMFuzzerTestOneInput(const char *data, size_t size);
 
 void
-xmlFuzzErrorFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg ATTRIBUTE_UNUSED,
-                 ...);
+xmlFuzzErrorFunc(void *ctx, const char *msg, ...);
+
+void
+xmlFuzzSErrorFunc(void *ctx, const xmlError *error);
 
 void
 xmlFuzzMemSetup(void);

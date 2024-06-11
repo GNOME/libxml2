@@ -101,7 +101,6 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
     xmlInitializeCatalog();
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
-    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     return 0;
 }
@@ -136,6 +135,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     if (reader == NULL)
         goto exit;
 
+    xmlTextReaderSetStructuredErrorHandler(reader, xmlFuzzSErrorFunc, NULL);
     xmlTextReaderSetResourceLoader(reader, xmlFuzzResourceLoader, NULL);
 
     i = 0;

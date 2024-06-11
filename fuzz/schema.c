@@ -17,7 +17,6 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
     xmlInitializeCatalog();
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
-    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
 
     return 0;
 }
@@ -37,7 +36,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzMemSetLimit(maxAlloc);
     pctxt = xmlSchemaNewParserCtxt(xmlFuzzMainUrl());
-    xmlSchemaSetParserErrors(pctxt, xmlFuzzErrorFunc, xmlFuzzErrorFunc, NULL);
+    xmlSchemaSetParserStructuredErrors(pctxt, xmlFuzzSErrorFunc, NULL);
     xmlSchemaSetResourceLoader(pctxt, xmlFuzzResourceLoader, NULL);
     xmlSchemaFree(xmlSchemaParse(pctxt));
     xmlSchemaFreeParserCtxt(pctxt);

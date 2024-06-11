@@ -113,25 +113,22 @@ static int addEntity(char *name, char *content) {
     return(0);
 }
 
-static xmlParserInputPtr
-testExternalEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
-			 xmlParserCtxtPtr ctxt) {
-    xmlParserInputPtr ret;
+static int
+testResourceLoader(void *vctxt ATTRIBUTE_UNUSED, const char *URL,
+                   const char *ID ATTRIBUTE_UNUSED, int type ATTRIBUTE_UNUSED,
+                   int flags ATTRIBUTE_UNUSED, xmlParserInputPtr *out) {
     int i;
 
-    for (i = 0;i < nb_entities;i++) {
+    for (i = 0; i < nb_entities; i++) {
         if (!strcmp(testEntitiesName[i], URL)) {
-	    ret = xmlNewStringInputStream(ctxt,
-	                (const xmlChar *) testEntitiesValue[i]);
-	    if (ret != NULL) {
-	        ret->filename = (const char *)
-		                xmlStrdup((xmlChar *)testEntitiesName[i]);
-	    }
-	    return(ret);
+	    *out = xmlInputCreateString(testEntitiesName[i],
+                                        testEntitiesValue[i],
+                                        XML_INPUT_BUF_STATIC);
+	    return(XML_ERR_OK);
 	}
     }
 
-    return(xmlNewInputFromFile(ctxt, URL));
+    return(xmlInputCreateUrl(URL, 0, out));
 }
 
 /*
@@ -186,7 +183,6 @@ static void
 initializeLibxml2(void) {
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
     xmlInitParser();
-    xmlSetExternalEntityLoader(testExternalEntityLoader);
     ctxtXPath = xmlXPathNewContext(NULL);
     /*
     * Deactivate the cache if created; otherwise we have to create/free it
@@ -308,6 +304,7 @@ xsdIncorrectTestCase(xmlNodePtr cur) {
     pctxt = xmlRelaxNGNewMemParserCtxt((const char *)buf->content, buf->use);
     xmlRelaxNGSetParserErrors(pctxt, testErrorHandler, testErrorHandler,
             pctxt);
+    xmlRelaxNGSetResourceLoader(pctxt, testResourceLoader, NULL);
     rng = xmlRelaxNGParse(pctxt);
     xmlRelaxNGFreeParserCtxt(pctxt);
     if (rng != NULL) {
@@ -442,6 +439,7 @@ xsdTestCase(xmlNodePtr tst) {
     pctxt = xmlRelaxNGNewMemParserCtxt((const char *)buf->content, buf->use);
     xmlRelaxNGSetParserErrors(pctxt, testErrorHandler, testErrorHandler,
             pctxt);
+    xmlRelaxNGSetResourceLoader(pctxt, testResourceLoader, NULL);
     rng = xmlRelaxNGParse(pctxt);
     xmlRelaxNGFreeParserCtxt(pctxt);
 

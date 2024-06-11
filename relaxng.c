@@ -229,6 +229,9 @@ struct _xmlRelaxNGParserCtxt {
 
     int crng;			/* compact syntax and other flags */
     int freedoc;		/* need to free the document */
+
+    xmlResourceLoader resourceLoader;
+    void *resourceCtxt;
 };
 
 #define FLAGS_IGNORABLE		1
@@ -1423,6 +1426,9 @@ xmlRelaxReadFile(xmlRelaxNGParserCtxtPtr ctxt, const char *filename) {
     }
     if (ctxt->serror != NULL)
         xmlCtxtSetErrorHandler(pctxt, ctxt->serror, ctxt->userData);
+    if (ctxt->resourceLoader != NULL)
+        xmlCtxtSetResourceLoader(pctxt, ctxt->resourceLoader,
+                                 ctxt->resourceCtxt);
     doc = xmlCtxtReadFile(pctxt, filename, NULL, 0);
     xmlFreeParserCtxt(pctxt);
 
@@ -1441,6 +1447,9 @@ xmlRelaxReadMemory(xmlRelaxNGParserCtxtPtr ctxt, const char *buf, int size) {
     }
     if (ctxt->serror != NULL)
         xmlCtxtSetErrorHandler(pctxt, ctxt->serror, ctxt->userData);
+    if (ctxt->resourceLoader != NULL)
+        xmlCtxtSetResourceLoader(pctxt, ctxt->resourceLoader,
+                                 ctxt->resourceCtxt);
     doc = xmlCtxtReadMemory(pctxt, buf, size, NULL, NULL, 0);
     xmlFreeParserCtxt(pctxt);
 
@@ -7564,6 +7573,23 @@ xmlRelaxNGSetParserStructuredErrors(xmlRelaxNGParserCtxtPtr ctxt,
     ctxt->error = NULL;
     ctxt->warning = NULL;
     ctxt->userData = ctx;
+}
+
+/**
+ * xmlRelaxNGSetResourceLoader:
+ * @ctxt:  a Relax-NG parser context
+ * @loader:  the callback
+ * @vctxt:  contextual data for the callbacks
+ *
+ * Set the callback function used to load external resources.
+ */
+void
+xmlRelaxNGSetResourceLoader(xmlRelaxNGParserCtxtPtr ctxt,
+                            xmlResourceLoader loader, void *vctxt) {
+    if (ctxt == NULL)
+        return;
+    ctxt->resourceLoader = loader;
+    ctxt->resourceCtxt = vctxt;
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

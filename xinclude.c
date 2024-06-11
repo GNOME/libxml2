@@ -105,6 +105,9 @@ struct _xmlXIncludeCtxt {
 
     xmlStructuredErrorFunc errorHandler;
     void *errorCtxt;
+
+    xmlResourceLoader resourceLoader;
+    void *resourceCtxt;
 };
 
 static xmlXIncludeRefPtr
@@ -317,6 +320,9 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
     }
     if (ctxt->errorHandler != NULL)
         xmlCtxtSetErrorHandler(pctxt, ctxt->errorHandler, ctxt->errorCtxt);
+    if (ctxt->resourceLoader != NULL)
+        xmlCtxtSetResourceLoader(pctxt, ctxt->resourceLoader,
+                                 ctxt->resourceCtxt);
 
     /*
      * pass in the application data to the parser context.
@@ -1644,6 +1650,12 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
         xmlXIncludeErrMemory(ctxt);
         goto error;
     }
+    if (ctxt->errorHandler != NULL)
+        xmlCtxtSetErrorHandler(pctxt, ctxt->errorHandler, ctxt->errorCtxt);
+    if (ctxt->resourceLoader != NULL)
+        xmlCtxtSetResourceLoader(pctxt, ctxt->resourceLoader,
+                                 ctxt->resourceCtxt);
+
     inputStream = xmlLoadExternalEntity((const char*)url, NULL, pctxt);
     if (inputStream == NULL) {
         if (pctxt->errNo == XML_ERR_NO_MEMORY)
@@ -2239,6 +2251,26 @@ xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,
         return;
     ctxt->errorHandler = handler;
     ctxt->errorCtxt = data;
+}
+
+/**
+ * xmlXIncludeSetResourceLoader:
+ * @ctxt:  an XInclude processing context
+ * @loader:  resource loader
+ * @data:  user data which will be passed to the loader
+ *
+ * Register a callback function that will be called to load included
+ * documents.
+ *
+ * Available since 2.14.0.
+ */
+void
+xmlXIncludeSetResourceLoader(xmlXIncludeCtxtPtr ctxt,
+                             xmlResourceLoader loader, void *data) {
+    if (ctxt == NULL)
+        return;
+    ctxt->resourceLoader = loader;
+    ctxt->resourceCtxt = data;
 }
 
 /**

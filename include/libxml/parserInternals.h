@@ -357,6 +357,29 @@ XMLPUBFUN xmlParserInputPtr
 			xmlNewInputStream	(xmlParserCtxtPtr ctxt);
 
 /**
+ * New input API
+ */
+
+#define XML_INPUT_BUF_STATIC		(1u << 1)
+#define XML_INPUT_BUF_ZERO_TERMINATED	(1u << 2)
+#define XML_INPUT_UNZIP                 (1u << 3)
+
+XMLPUBFUN int
+xmlInputCreateUrl(const char *url, int flags, xmlParserInputPtr *out);
+XMLPUBFUN xmlParserInputPtr
+xmlInputCreateMemory(const char *url, const void *mem, size_t size,
+                     int flags);
+XMLPUBFUN xmlParserInputPtr
+xmlInputCreateString(const char *url, const char *str, int flags);
+XMLPUBFUN xmlParserInputPtr
+xmlInputCreateFd(const char *url, int fd, int flags);
+XMLPUBFUN xmlParserInputPtr
+xmlInputCreateIO(const char *url, xmlInputReadCallback ioRead,
+                 xmlInputCloseCallback ioClose, void *ioCtxt, int flags);
+XMLPUBFUN int
+xmlInputSetEncoding(xmlParserInputPtr input, const char *encoding);
+
+/**
  * Namespaces.
  */
 XMLPUBFUN xmlChar *

@@ -41,6 +41,7 @@
 #include <libxml/uri.h>
 #include <libxml/nanohttp.h>
 #include <libxml/nanoftp.h>
+#include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
@@ -50,7 +51,6 @@
 #include "private/enc.h"
 #include "private/error.h"
 #include "private/io.h"
-#include "private/parser.h"
 
 /* #define VERBOSE_FAILURE */
 

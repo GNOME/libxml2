@@ -1105,8 +1105,6 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
  * @input:  the input strea,
  * @encoding:  the encoding name
  *
- * Available since 2.13.0.
- *
  * Returns 0 in case of success, -1 otherwise
  */
 static int
@@ -1151,27 +1149,25 @@ xmlSwitchEncodingName(xmlParserCtxtPtr ctxt, const char *encoding) {
 }
 
 /**
- * xmlSwitchInputEncoding:
- * @ctxt:  the parser context, only for error reporting
+ * xmlInputSetEncodingHandler:
  * @input:  the input stream
  * @handler:  the encoding handler
  *
- * DEPRECATED: Internal function, don't use.
- *
  * Use encoding handler to decode input data.
  *
- * Returns 0 in case of success, -1 otherwise
+ * Closes the handler on error.
+ *
+ * Returns an xmlParserErrors code.
  */
-int
-xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
-                       xmlCharEncodingHandlerPtr handler)
-{
+static int
+xmlInputSetEncodingHandler(xmlParserInputPtr input,
+                           xmlCharEncodingHandlerPtr handler) {
     int nbchars;
     xmlParserInputBufferPtr in;
 
     if ((input == NULL) || (input->buf == NULL)) {
         xmlCharEncCloseFunc(handler);
-	return (-1);
+	return(XML_ERR_ARGUMENT);
     }
     in = input->buf;
 
@@ -1187,7 +1183,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     }
 
     if (in->encoder == handler)
-        return (0);
+        return(XML_ERR_OK);
 
     if (in->encoder != NULL) {
         /*
@@ -1201,7 +1197,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
         xmlCharEncCloseFunc(in->encoder);
         in->encoder = handler;
-        return (0);
+        return(XML_ERR_OK);
     }
 
     in->encoder = handler;
@@ -1214,10 +1210,8 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         size_t processed;
 
         buf = xmlBufCreate();
-        if (buf == NULL) {
-            xmlCtxtErrMemory(ctxt);
-            return(-1);
-        }
+        if (buf == NULL)
+            return(XML_ERR_NO_MEMORY);
 
         /*
          * Shrink the current input buffer.
@@ -1232,15 +1226,63 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
         nbchars = xmlCharEncInput(in);
         xmlBufResetInput(in->buffer, input);
-        if (nbchars == XML_ENC_ERR_MEMORY) {
-            xmlCtxtErrMemory(ctxt);
-        } else if (nbchars < 0) {
-            xmlCtxtErrIO(ctxt, in->error, NULL);
-            xmlHaltParser(ctxt);
-            return (-1);
-        }
+        if (nbchars < 0)
+            return(in->error);
     }
-    return (0);
+
+    return(XML_ERR_OK);
+}
+
+/**
+ * xmlInputSetEncoding:
+ * @input:  the input stream
+ * @encoding:  the encoding name
+ *
+ * Use specified encoding to decode input data. This overrides the
+ * encoding found in the XML declaration.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns an xmlParserErrors code.
+ */
+int
+xmlInputSetEncoding(xmlParserInputPtr input, const char *encoding) {
+    xmlCharEncodingHandlerPtr handler;
+    int res;
+
+    if (encoding == NULL)
+        return(XML_ERR_ARGUMENT);
+
+    res = xmlOpenCharEncodingHandler(encoding, /* output */ 0, &handler);
+    if (res != 0)
+        return(res);
+
+    return(xmlInputSetEncodingHandler(input, handler));
+}
+
+/**
+ * xmlSwitchInputEncoding:
+ * @ctxt:  the parser context, only for error reporting
+ * @input:  the input stream
+ * @handler:  the encoding handler
+ *
+ * DEPRECATED: Internal function, don't use.
+ *
+ * Use encoding handler to decode input data.
+ *
+ * Returns 0 in case of success, -1 otherwise
+ */
+int
+xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
+                       xmlCharEncodingHandlerPtr handler) {
+    int code = xmlInputSetEncodingHandler(input, handler);
+
+    if (code != XML_ERR_OK) {
+        xmlCtxtErrIO(ctxt, code, NULL);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**
@@ -1545,25 +1587,25 @@ xmlNewInputURL(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
 
 /**
  * xmlNewInputInternal:
- * @ctxt:  parser context
  * @buf:  parser input buffer
  * @filename:  filename or URL
- * @encoding:  character encoding (optional)
  *
  * Internal helper function.
  *
  * Returns a new parser input.
  */
 static xmlParserInputPtr
-xmlNewInputInternal(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
-                    const char *filename, const char *encoding) {
+xmlNewInputInternal(xmlParserInputBufferPtr buf, const char *filename) {
     xmlParserInputPtr input;
 
-    input = xmlNewInputStream(ctxt);
+    input = (xmlParserInputPtr) xmlMalloc(sizeof(xmlParserInput));
     if (input == NULL) {
 	xmlFreeParserInputBuffer(buf);
 	return(NULL);
     }
+    memset(input, 0, sizeof(xmlParserInput));
+    input->line = 1;
+    input->col = 1;
 
     input->buf = buf;
     xmlBufResetInput(input->buf->buffer, input);
@@ -1571,25 +1613,19 @@ xmlNewInputInternal(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
     if (filename != NULL) {
         input->filename = xmlMemStrdup(filename);
         if (input->filename == NULL) {
-            xmlCtxtErrMemory(ctxt);
             xmlFreeInputStream(input);
             return(NULL);
         }
     }
 
-    if (encoding != NULL)
-        xmlSwitchInputEncodingName(ctxt, input, encoding);
-
     return(input);
 }
 
 /**
- * xmlNewInputMemory:
- * @ctxt:  parser context
+ * xmlInputCreateMemory:
  * @url:  base URL (optional)
  * @mem:  pointer to char array
  * @size:  size of array
- * @encoding:  character encoding (optional)
  * @flags:  optimization hints
  *
  * Creates a new parser input to read from a memory area.
@@ -1605,32 +1641,61 @@ xmlNewInputInternal(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
  * area must contain a zero byte after the buffer at position @size.
  * This can avoid temporary copies.
  *
- * Returns a new parser input.
+ * Available since 2.14.0.
+ *
+ * Returns a new parser input or NULL if a memory allocation failed.
+ */
+xmlParserInputPtr
+xmlInputCreateMemory(const char *url, const void *mem, size_t size,
+                     int flags) {
+    xmlParserInputBufferPtr buf;
+
+    if (mem == NULL)
+	return(NULL);
+
+    buf = xmlNewInputBufferMemory(mem, size, flags, XML_CHAR_ENCODING_NONE);
+    if (buf == NULL)
+        return(NULL);
+
+    return(xmlNewInputInternal(buf, url));
+}
+
+/**
+ * xmlNewInputMemory:
+ * @ctxt:  parser context
+ * @url:  base URL (optional)
+ * @mem:  pointer to char array
+ * @size:  size of array
+ * @encoding:  character encoding (optional)
+ * @flags:  optimization hints
+ *
+ * Returns a new parser input or NULL in case of error.
  */
 xmlParserInputPtr
 xmlNewInputMemory(xmlParserCtxtPtr ctxt, const char *url,
                   const void *mem, size_t size,
                   const char *encoding, int flags) {
-    xmlParserInputBufferPtr buf;
+    xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (mem == NULL))
 	return(NULL);
 
-    buf = xmlNewInputBufferMemory(mem, size, flags, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-	xmlCtxtErrMemory(ctxt);
+    input = xmlInputCreateMemory(url, mem, size, flags);
+    if (input == NULL) {
+        xmlCtxtErrMemory(ctxt);
         return(NULL);
     }
 
-    return(xmlNewInputInternal(ctxt, buf, url, encoding));
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
+
+    return(input);
 }
 
 /**
- * xmlNewInputString:
- * @ctxt:  parser context
+ * xmlInputCreateString:
  * @url:  base URL (optional)
  * @str:  zero-terminated string
- * @encoding:  character encoding (optional)
  * @flags:  optimization hints
  *
  * Creates a new parser input to read from a zero-terminated string.
@@ -1642,23 +1707,83 @@ xmlNewInputMemory(xmlParserCtxtPtr ctxt, const char *url,
  * stay unchanged until parsing has finished. This can avoid
  * temporary copies.
  *
+ * Available since 2.14.0.
+ *
+ * Returns a new parser input or NULL if a memory allocation failed.
+ */
+xmlParserInputPtr
+xmlInputCreateString(const char *url, const char *str, int flags) {
+    xmlParserInputBufferPtr buf;
+
+    if (str == NULL)
+	return(NULL);
+
+    buf = xmlNewInputBufferString(str, flags);
+    if (buf == NULL)
+        return(NULL);
+
+    return(xmlNewInputInternal(buf, url));
+}
+
+/**
+ * xmlNewInputString:
+ * @ctxt:  parser context
+ * @url:  base URL (optional)
+ * @str:  zero-terminated string
+ * @encoding:  character encoding (optional)
+ * @flags:  optimization hints
+ *
  * Returns a new parser input.
  */
 xmlParserInputPtr
 xmlNewInputString(xmlParserCtxtPtr ctxt, const char *url,
                   const char *str, const char *encoding, int flags) {
-    xmlParserInputBufferPtr buf;
+    xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (str == NULL))
 	return(NULL);
 
-    buf = xmlNewInputBufferString(str, flags);
-    if (buf == NULL) {
-	xmlCtxtErrMemory(ctxt);
+    input = xmlInputCreateString(url, str, flags);
+    if (input == NULL) {
+        xmlCtxtErrMemory(ctxt);
         return(NULL);
     }
 
-    return(xmlNewInputInternal(ctxt, buf, url, encoding));
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
+
+    return(input);
+}
+
+/**
+ * xmlInputCreateFd:
+ * @url:  base URL (optional)
+ * @fd:  file descriptor
+ * @flags:  unused, pass 0
+ *
+ * Creates a new parser input to read from a zero-terminated string.
+ *
+ * @url is used as base to resolve external entities and for
+ * error reporting.
+ *
+ * @fd is closed after parsing has finished.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns a new parser input or NULL if a memory allocation failed.
+ */
+xmlParserInputPtr
+xmlInputCreateFd(const char *url, int fd, int flags ATTRIBUTE_UNUSED) {
+    xmlParserInputBufferPtr buf;
+
+    if (fd < 0)
+	return(NULL);
+
+    buf = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    if (buf == NULL)
+        return(NULL);
+
+    return(xmlNewInputInternal(buf, url));
 }
 
 /**
@@ -1669,40 +1794,34 @@ xmlNewInputString(xmlParserCtxtPtr ctxt, const char *url,
  * @encoding:  character encoding (optional)
  * @flags:  unused, pass 0
  *
- * Creates a new parser input to read from a zero-terminated string.
- *
- * @url is used as base to resolve external entities and for
- * error reporting.
- *
- * @fd is closed after parsing has finished.
- *
  * Returns a new parser input.
  */
 xmlParserInputPtr
 xmlNewInputFd(xmlParserCtxtPtr ctxt, const char *url,
-              int fd, const char *encoding, int flags ATTRIBUTE_UNUSED) {
-    xmlParserInputBufferPtr buf;
+              int fd, const char *encoding, int flags) {
+    xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (fd < 0))
 	return(NULL);
 
-    buf = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
+    input = xmlInputCreateFd(url, fd, flags);
+    if (input == NULL) {
 	xmlCtxtErrMemory(ctxt);
         return(NULL);
     }
 
-    return(xmlNewInputInternal(ctxt, buf, url, encoding));
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
+
+    return(input);
 }
 
 /**
- * xmlNewInputIO:
- * @ctxt:  parser context
+ * xmlInputCreateIO:
  * @url:  base URL (optional)
  * @ioRead:  read callback
  * @ioClose:  close callback (optional)
  * @ioCtxt:  IO context
- * @encoding:  character encoding (optional)
  * @flags:  unused, pass 0
  *
  * Creates a new parser input to read from input callbacks and
@@ -1719,21 +1838,21 @@ xmlNewInputFd(xmlParserCtxtPtr ctxt, const char *url,
  *
  * @ioCtxt is an opaque pointer passed to the callbacks.
  *
- * Returns a new parser input.
+ * Available since 2.14.0.
+ *
+ * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
-              xmlInputReadCallback ioRead, xmlInputCloseCallback ioClose,
-              void *ioCtxt,
-              const char *encoding, int flags ATTRIBUTE_UNUSED) {
+xmlInputCreateIO(const char *url, xmlInputReadCallback ioRead,
+                 xmlInputCloseCallback ioClose, void *ioCtxt,
+                 int flags ATTRIBUTE_UNUSED) {
     xmlParserInputBufferPtr buf;
 
-    if ((ctxt == NULL) || (ioRead == NULL))
+    if (ioRead == NULL)
 	return(NULL);
 
     buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
-        xmlCtxtErrMemory(ctxt);
         if (ioClose != NULL)
             ioClose(ioCtxt);
         return(NULL);
@@ -1743,7 +1862,40 @@ xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
     buf->readcallback = ioRead;
     buf->closecallback = ioClose;
 
-    return(xmlNewInputInternal(ctxt, buf, url, encoding));
+    return(xmlNewInputInternal(buf, url));
+}
+
+/**
+ * xmlNewInputIO:
+ * @ctxt:  parser context
+ * @url:  base URL (optional)
+ * @ioRead:  read callback
+ * @ioClose:  close callback (optional)
+ * @ioCtxt:  IO context
+ * @encoding:  character encoding (optional)
+ * @flags:  unused, pass 0
+ *
+ * Returns a new parser input.
+ */
+xmlParserInputPtr
+xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
+              xmlInputReadCallback ioRead, xmlInputCloseCallback ioClose,
+              void *ioCtxt, const char *encoding, int flags) {
+    xmlParserInputPtr input;
+
+    if ((ctxt == NULL) || (ioRead == NULL))
+	return(NULL);
+
+    input = xmlInputCreateIO(url, ioRead, ioClose, ioCtxt, flags);
+    if (input == NULL) {
+        xmlCtxtErrMemory(ctxt);
+        return(NULL);
+    }
+
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
+
+    return(input);
 }
 
 /**
@@ -1770,9 +1922,14 @@ xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
         return(NULL);
     }
 
-    input = xmlNewInputInternal(ctxt, buf, url, encoding);
-    if (input == NULL)
+    input = xmlNewInputInternal(buf, url);
+    if (input == NULL) {
+        xmlCtxtErrMemory(ctxt);
 	return(NULL);
+    }
+
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
 
     input->flags |= XML_INPUT_PROGRESSIVE;
 
@@ -1805,13 +1962,23 @@ xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
 xmlParserInputPtr
 xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
 	            xmlCharEncoding enc) {
+    xmlParserInputPtr input;
     const char *encoding;
 
     if (buf == NULL)
         return(NULL);
 
+    input = xmlNewInputInternal(buf, NULL);
+    if (input == NULL) {
+        xmlCtxtErrMemory(ctxt);
+	return(NULL);
+    }
+
     encoding = xmlGetCharEncodingName(enc);
-    return(xmlNewInputInternal(ctxt, buf, NULL, encoding));
+    if (encoding != NULL)
+        xmlSwitchInputEncodingName(ctxt, input, encoding);
+
+    return(input);
 }
 
 /**
@@ -2012,6 +2179,54 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
 }
 
 /**
+ * xmlInputCreateUrl:
+ * @filename:  the filename to use as entity
+ * @flags:  XML_INPUT flags
+ * @out:  pointer to new parser input
+ *
+ * Create a new input stream based on a file or a URL.
+ *
+ * The flag XML_INPUT_UNZIP allows decompression.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns an xmlParserErrors code.
+ */
+int
+xmlInputCreateUrl(const char *filename, int flags, xmlParserInputPtr *out) {
+    xmlParserInputBufferPtr buf;
+    xmlParserInputPtr input;
+    int code = XML_ERR_OK;
+
+    if (out == NULL)
+        return(XML_ERR_ARGUMENT);
+    *out = NULL;
+    if (filename == NULL)
+        return(XML_ERR_ARGUMENT);
+
+    if (xmlParserInputBufferCreateFilenameValue != NULL) {
+        buf = xmlParserInputBufferCreateFilenameValue(filename,
+                XML_CHAR_ENCODING_NONE);
+        if (buf == NULL)
+            code = XML_IO_ENOENT;
+    } else {
+        code = xmlParserInputBufferCreateUrl(filename, XML_CHAR_ENCODING_NONE,
+                                             flags, &buf);
+    }
+    if (code != XML_ERR_OK)
+	return(code);
+
+    input = xmlNewInputInternal(buf, filename);
+    if (input == NULL)
+	return(XML_ERR_NO_MEMORY);
+
+    /*input = xmlCheckHTTPInput(ctxt, input);*/
+
+    *out = input;
+    return(XML_ERR_OK);
+}
+
+/**
  * xmlNewInputFromFile:
  * @ctxt:  an XML parser context
  * @filename:  the filename to use as entity
@@ -2022,34 +2237,21 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  */
 xmlParserInputPtr
 xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
-    xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
-    int code = XML_ERR_OK;
+    int flags = 0;
+    int code;
 
     if ((ctxt == NULL) || (filename == NULL))
         return(NULL);
 
-    if (xmlParserInputBufferCreateFilenameValue != NULL) {
-        buf = xmlParserInputBufferCreateFilenameValue(filename,
-                XML_CHAR_ENCODING_NONE);
-        if (buf == NULL)
-            code = XML_IO_ENOENT;
-    } else {
-        int flags = 0;
+    if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
+        flags |= XML_INPUT_UNZIP;
 
-        if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
-            flags |= XML_INPUT_UNZIP;
-        code = xmlParserInputBufferCreateUrl(filename, XML_CHAR_ENCODING_NONE,
-                                             flags, &buf);
-    }
+    code = xmlInputCreateUrl(filename, flags, &input);
     if (code != XML_ERR_OK) {
         xmlCtxtErrIO(ctxt, code, filename);
-	return(NULL);
+        return(NULL);
     }
-
-    input = xmlNewInputInternal(ctxt, buf, filename, NULL);
-    if (input == NULL)
-	return(NULL);
 
     input = xmlCheckHTTPInput(ctxt, input);
 

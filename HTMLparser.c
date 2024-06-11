@@ -5817,12 +5817,16 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
 
     encoding = xmlGetCharEncodingName(enc);
-    input = xmlNewInputPush(ctxt, filename, chunk, size, encoding);
+    input = xmlInputCreatePush(filename, chunk, size);
     if (input == NULL) {
 	htmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
+
     inputPush(ctxt, input);
+
+    if (encoding != NULL)
+        xmlSwitchEncodingName(ctxt, encoding);
 
     return(ctxt);
 }

@@ -108,8 +108,7 @@ xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
               void *ioCtxt,
               const char *encoding, int flags);
 XML_HIDDEN xmlParserInputPtr
-xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
-                const char *chunk, int size, const char *encoding);
+xmlInputCreatePush(const char *url, const char *chunk, int size);
 
 XML_HIDDEN xmlChar *
 xmlExpandEntitiesInAttValue(xmlParserCtxtPtr ctxt, const xmlChar *str,

@@ -11633,7 +11633,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
  * @filename is used as base URI to fetch external entities and for
  * error reports.
  *
- * Returns the new parser context or NULL in case of error.
+ * Returns the new parser context or NULL if a memory allocation
+ * failed.
  */
 
 xmlParserCtxtPtr
@@ -11649,7 +11650,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     ctxt->options &= ~XML_PARSE_NODICT;
     ctxt->dictNames = 1;
 
-    input = xmlNewInputPush(ctxt, filename, chunk, size, NULL);
+    input = xmlInputCreatePush(filename, chunk, size);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
@@ -13348,10 +13349,14 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 
     xmlCtxtReset(ctxt);
 
-    input = xmlNewInputPush(ctxt, filename, chunk, size, encoding);
+    input = xmlInputCreatePush(filename, chunk, size);
     if (input == NULL)
         return(1);
+
     inputPush(ctxt, input);
+
+    if (encoding != NULL)
+        xmlSwitchEncodingName(ctxt, encoding);
 
     return(0);
 }

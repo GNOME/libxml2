@@ -1100,7 +1100,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 }
 
 /**
- * xmlSwitchEncodingName:
+ * xmlSwitchInputEncodingName:
  * @ctxt:  the parser context, only for error reporting
  * @input:  the input strea,
  * @encoding:  the encoding name
@@ -1899,37 +1899,27 @@ xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
 }
 
 /**
- * xmlNewInputPush:
- * @ctxt:  parser context
+ * xmlInputCreatePush:
  * @url:  base URL (optional)
  * @chunk:  pointer to char array
  * @size:  size of array
- * @encoding:  character encoding (optional)
  *
  * Creates a new parser input for a push parser.
  *
- * Returns a new parser input.
+ * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
-                const char *chunk, int size, const char *encoding) {
+xmlInputCreatePush(const char *url, const char *chunk, int size) {
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
 
     buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-        xmlCtxtErrMemory(ctxt);
+    if (buf == NULL)
         return(NULL);
-    }
 
     input = xmlNewInputInternal(buf, url);
-    if (input == NULL) {
-        xmlCtxtErrMemory(ctxt);
+    if (input == NULL)
 	return(NULL);
-    }
-
-    if (encoding != NULL)
-        xmlSwitchInputEncodingName(ctxt, input, encoding);
 
     input->flags |= XML_INPUT_PROGRESSIVE;
 
@@ -1939,7 +1929,6 @@ xmlNewInputPush(xmlParserCtxtPtr ctxt, const char *url,
 	res = xmlParserInputBufferPush(input->buf, size, chunk);
         xmlBufResetInput(input->buf->buffer, input);
         if (res < 0) {
-            xmlCtxtErrIO(ctxt, input->buf->error, NULL);
             xmlFreeInputStream(input);
             return(NULL);
         }
@@ -2616,10 +2605,8 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
 
     if (ctxt->nsdb == NULL) {
         ctxt->nsdb = xmlParserNsCreate();
-        if (ctxt->nsdb == NULL) {
-            xmlCtxtErrMemory(ctxt);
+        if (ctxt->nsdb == NULL)
             return(-1);
-        }
     }
 
     return(0);

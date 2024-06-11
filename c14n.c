@@ -644,7 +644,7 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
      *     have non-empty values in XPath)
      */
     if(visible && !has_empty_ns) {
-        static xmlNs ns_default;
+        xmlNs ns_default;
 
         memset(&ns_default, 0, sizeof(ns_default));
         if(!xmlC14NVisibleNsStackFind(ctx->ns_rendered, &ns_default)) {
@@ -821,7 +821,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
      */
     if(visible && has_visibly_utilized_empty_ns &&
 	    !has_empty_ns && !has_empty_ns_in_inclusive_list) {
-        static xmlNs ns_default;
+        xmlNs ns_default;
 
         memset(&ns_default, 0, sizeof(ns_default));
 
@@ -830,7 +830,7 @@ xmlExcC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 	    xmlC14NPrintNamespaces(&ns_default, ctx);
 	}
     } else if(visible && !has_empty_ns && has_empty_ns_in_inclusive_list) {
-        static xmlNs ns_default;
+        xmlNs ns_default;
 
         memset(&ns_default, 0, sizeof(ns_default));
         if(!xmlC14NVisibleNsStackFind(ctx->ns_rendered, &ns_default)) {

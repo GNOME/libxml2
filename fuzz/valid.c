@@ -20,7 +20,6 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
-    xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
 
     return 0;
 }
@@ -51,6 +50,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFuzzMemSetLimit(maxAlloc);
     ctxt = xmlNewParserCtxt();
     if (ctxt != NULL) {
+        xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
         xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
                                   ctxt->errNo == XML_ERR_NO_MEMORY);
@@ -61,12 +61,21 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Post validation */
 
     xmlFuzzMemSetLimit(maxAlloc);
-    doc = xmlReadMemory(docBuffer, docSize, docUrl, NULL,
-                        opts & ~XML_PARSE_DTDVALID);
-    vctxt = xmlNewValidCtxt();
-    xmlValidateDocument(vctxt, doc);
-    xmlFreeValidCtxt(vctxt);
-    xmlFreeDoc(doc);
+    ctxt = xmlNewParserCtxt();
+    if (ctxt != NULL) {
+        xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
+        doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL,
+                                opts & ~XML_PARSE_DTDVALID);
+        xmlFreeParserCtxt(ctxt);
+
+        /* Post validation requires global callbacks */
+        xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
+        vctxt = xmlNewValidCtxt();
+        xmlValidateDocument(vctxt, doc);
+        xmlFreeValidCtxt(vctxt);
+        xmlFreeDoc(doc);
+        xmlSetExternalEntityLoader(NULL);
+    }
 
     /* Push parser */
 
@@ -78,6 +87,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlFuzzMemSetLimit(maxAlloc);
         ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
         if (ctxt != NULL) {
+            xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
             xmlCtxtUseOptions(ctxt, opts);
 
             for (consumed = 0; consumed < docSize; consumed += chunkSize) {

@@ -21,7 +21,6 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
     xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
-    xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
 
     return 0;
 }
@@ -53,11 +52,14 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlXIncludeCtxtPtr xinc;
         xmlDocPtr copy;
 
+        xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
+
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
         xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
                                   ctxt->errNo == XML_ERR_NO_MEMORY);
 
         xinc = xmlXIncludeNewContext(doc);
+        xmlXIncludeSetResourceLoader(xinc, xmlFuzzResourceLoader, NULL);
         xmlXIncludeSetFlags(xinc, opts);
         xmlXIncludeProcessNode(xinc, (xmlNodePtr) doc);
         if (doc != NULL) {

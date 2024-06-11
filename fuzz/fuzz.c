@@ -387,6 +387,33 @@ xmlFuzzMainEntity(size_t *size) {
 }
 
 /**
+ * xmlFuzzResourceLoader:
+ *
+ * The resource loader for fuzz data.
+ */
+int
+xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
+                      const char *ID ATTRIBUTE_UNUSED,
+                      int type ATTRIBUTE_UNUSED, int flags ATTRIBUTE_UNUSED,
+                      xmlParserInputPtr *out) {
+    xmlParserInputPtr input;
+    xmlFuzzEntityInfo *entity;
+
+    entity = xmlHashLookup(fuzzData.entities, (xmlChar *) URL);
+    if (entity == NULL)
+        return(XML_IO_ENOENT);
+
+    input = xmlInputCreateMemory(URL, entity->data, entity->size,
+                                 XML_INPUT_BUF_STATIC |
+                                 XML_INPUT_BUF_ZERO_TERMINATED);
+    if (input == NULL)
+        return(XML_ERR_NO_MEMORY);
+
+    *out = input;
+    return(XML_ERR_OK);
+}
+
+/**
  * xmlFuzzEntityLoader:
  *
  * The entity loader for fuzz data.

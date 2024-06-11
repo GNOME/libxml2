@@ -148,6 +148,7 @@ error:
 #ifdef HAVE_XML_FUZZER
 static int
 testEntityLoader(void) {
+    xmlParserCtxtPtr ctxt;
     static const char data[] =
         "doc.xml\\\n"
         "<!DOCTYPE doc SYSTEM \"doc.dtd\">\n"
@@ -162,13 +163,14 @@ testEntityLoader(void) {
     xmlDocPtr doc;
     int ret = 0;
 
-    xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
-
     xmlFuzzDataInit(data, sizeof(data) - 1);
     xmlFuzzReadEntities();
     docBuffer = xmlFuzzMainEntity(&docSize);
-    doc = xmlReadMemory(docBuffer, docSize, NULL, NULL,
-                        XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    ctxt = xmlNewParserCtxt();
+    xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
+    doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, NULL, NULL,
+                            XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    xmlFreeParserCtxt(ctxt);
 
 #ifdef LIBXML_OUTPUT_ENABLED
     {

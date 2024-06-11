@@ -391,16 +391,14 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
  * @publicId: The public ID of the entity
  * @systemId: The system ID of the entity
  *
- * The entity loader, to control the loading of external entities,
- * the application can either:
- *    - override this xmlSAX2ResolveEntity() callback in the SAX block
- *    - or better use the xmlSetExternalEntityLoader() function to
- *      set up it's own entity resolution routine
+ * This is only used to load DTDs. The preferred way to install
+ * custom resolvers is xmlCtxtSetResourceLoader.
  *
- * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
+ * Returns a parser input.
  */
 xmlParserInputPtr
-xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId, const xmlChar *systemId)
+xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
+                     const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr ret = NULL;

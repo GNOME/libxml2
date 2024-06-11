@@ -2129,6 +2129,8 @@ xmlOutputBufferCreateIO(xmlOutputWriteCallback   iowrite,
  * xmlParserInputBufferCreateFilenameDefault:
  * @func: function pointer to the new ParserInputBufferCreateFilenameFunc
  *
+ * DEPRECATED: Use xmlCtxtSetResourceLoader or similar functions.
+ *
  * Registers a callback for URI input file handling
  *
  * Returns the old value of the registration function
@@ -2887,6 +2889,8 @@ xmlInitIOCallbacks(void)
  * @openFunc:  the xmlInputOpenCallback
  * @readFunc:  the xmlInputReadCallback
  * @closeFunc:  the xmlInputCloseCallback
+ *
+ * DEPRECATED: Use xmlCtxtSetResourceLoader or similar functions.
  *
  * Register a new set of I/O callback for handling parser input.
  *

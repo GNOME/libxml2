@@ -159,6 +159,10 @@ typedef struct _xmlStartTag xmlStartTag;
 typedef struct _xmlParserNsData xmlParserNsData;
 typedef struct _xmlAttrHashBucket xmlAttrHashBucket;
 
+typedef int
+(*xmlResourceLoader)(void *ctxt, const char *url, const char *publicId,
+                     int type, int flags, xmlParserInputPtr *out);
+
 /**
  * xmlParserCtxt:
  *
@@ -312,6 +316,9 @@ struct _xmlParserCtxt {
 
     xmlStructuredErrorFunc errorHandler;
     void *errorCtxt;
+
+    xmlResourceLoader resourceLoader;
+    void *resourceCtxt;
 };
 
 /**
@@ -1197,6 +1204,10 @@ XMLPUBFUN void
 		xmlSetExternalEntityLoader(xmlExternalEntityLoader f);
 XMLPUBFUN xmlExternalEntityLoader
 		xmlGetExternalEntityLoader(void);
+XMLPUBFUN void
+		xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt,
+					 xmlResourceLoader loader,
+					 void *vctxt);
 XMLPUBFUN xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,

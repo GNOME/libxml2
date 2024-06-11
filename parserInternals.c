@@ -2306,6 +2306,8 @@ xmlDefaultExternalEntityLoader(const char *url, const char *ID,
  * @ID:  the System ID for the entity to load
  * @ctxt:  the context in which the entity is called or NULL
  *
+ * DEPRECATED: Use XML_PARSE_NONET.
+ *
  * A specific entity loader disabling network accesses, though still
  * allowing local catalog accesses for resolution.
  *
@@ -2340,7 +2342,11 @@ xmlCurrentExternalEntityLoader = xmlDefaultExternalEntityLoader;
  * xmlSetExternalEntityLoader:
  * @f:  the new entity resolver function
  *
- * Changes the defaultexternal entity resolver function for the application
+ * DEPRECATED: This is a global setting and not thread-safe. Use
+ * xmlCtxtSetResourceLoader or similar functions.
+ *
+ * Changes the default external entity resolver function for the
+ * application.
  */
 void
 xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
@@ -2350,6 +2356,8 @@ xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
 /**
  * xmlGetExternalEntityLoader:
  *
+ * DEPRECATED: See xmlSetExternalEntityLoader.
+ *
  * Get the default external entity resolver function for the application
  *
  * Returns the xmlExternalEntityLoader function pointer
@@ -2357,6 +2365,27 @@ xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
 xmlExternalEntityLoader
 xmlGetExternalEntityLoader(void) {
     return(xmlCurrentExternalEntityLoader);
+}
+
+/**
+ * xmlCtxtSetResourceLoader:
+ * @ctxt:  parser context
+ * @loader:  callback
+ * @vctxt:  user data
+ *
+ * Installs a custom callback to load documents, DTDs or external
+ * entities.
+ *
+ * Available since 2.14.0.
+ */
+void
+xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt, xmlResourceLoader loader,
+                         void *vctxt) {
+    if (ctxt == NULL)
+        return;
+
+    ctxt->resourceLoader = loader;
+    ctxt->resourceCtxt = vctxt;
 }
 
 /**
@@ -2375,6 +2404,7 @@ xmlGetExternalEntityLoader(void) {
  * The following resource loaders will be called if they were
  * registered (in order of precedence):
  *
+ * - the resource loader set with xmlCtxtSetResourceLoader
  * - the global external entity loader set with
  *   xmlSetExternalEntityLoader
  * - the per-thread xmlParserInputBufferCreateFilenameFunc set with
@@ -2396,6 +2426,22 @@ xmlLoadExternalEntity(const char *URL, const char *ID,
 
     if (URL == NULL)
         return(NULL);
+
+    if ((ctxt != NULL) && (ctxt->resourceLoader != NULL)) {
+        int flags = 0;
+        int code;
+
+        if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
+            flags |= XML_INPUT_UNZIP;
+
+        code = ctxt->resourceLoader(ctxt->resourceCtxt, URL, ID, flags,
+                                    0, &ret);
+        if (code != XML_ERR_OK) {
+            xmlCtxtErrIO(ctxt, code, URL);
+            return(NULL);
+        }
+        return(ret);
+    }
 
     canonicFilename = (char *) xmlCanonicPath((const xmlChar *) URL);
     if (canonicFilename == NULL) {

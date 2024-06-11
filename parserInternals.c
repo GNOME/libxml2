@@ -2177,6 +2177,8 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  *
  * The flag XML_INPUT_UNZIP allows decompression.
  *
+ * The flag XML_INPUT_NETWORK allows network access.
+ *
  * Available since 2.14.0.
  *
  * Returns an xmlParserErrors code.
@@ -2235,6 +2237,8 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 
     if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
         flags |= XML_INPUT_UNZIP;
+    if ((ctxt->options & XML_PARSE_NONET) == 0)
+        flags |= XML_INPUT_NETWORK;
 
     code = xmlInputCreateUrl(filename, flags, &input);
     if (code != XML_ERR_OK) {
@@ -2422,6 +2426,8 @@ xmlLoadExternalEntity(const char *URL, const char *ID,
 
         if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
             flags |= XML_INPUT_UNZIP;
+        if ((ctxt->options & XML_PARSE_NONET) == 0)
+            flags |= XML_INPUT_NETWORK;
 
         code = ctxt->resourceLoader(ctxt->resourceCtxt, URL, ID, flags,
                                     0, &ret);

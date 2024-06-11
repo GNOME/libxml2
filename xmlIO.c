@@ -1115,6 +1115,9 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
 
 #ifdef LIBXML_FTP_ENABLED
     if (xmlIOFTPMatch(filename)) {
+        if ((flags & XML_INPUT_NETWORK) == 0)
+            return(XML_IO_NETWORK_ATTEMPT);
+
         buf->context = xmlIOFTPOpen(filename);
 
         if (buf->context != NULL) {
@@ -1127,6 +1130,9 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
 
 #ifdef LIBXML_HTTP_ENABLED
     if (xmlIOHTTPMatch(filename)) {
+        if ((flags & XML_INPUT_NETWORK) == 0)
+            return(XML_IO_NETWORK_ATTEMPT);
+
         buf->context = xmlIOHTTPOpen(filename);
 
         if (buf->context != NULL) {

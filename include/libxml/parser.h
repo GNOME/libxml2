@@ -36,6 +36,16 @@ extern "C" {
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
+typedef enum {
+    XML_RESOURCE_UNKNOWN = 0,
+    XML_RESOURCE_MAIN_DOCUMENT,
+    XML_RESOURCE_DTD,
+    XML_RESOURCE_GENERAL_ENTITY,
+    XML_RESOURCE_PARAMETER_ENTITY,
+    XML_RESOURCE_XINCLUDE,
+    XML_RESOURCE_XINCLUDE_TEXT
+} xmlResourceType;
+
 /**
  * xmlParserInput:
  *
@@ -161,7 +171,7 @@ typedef struct _xmlAttrHashBucket xmlAttrHashBucket;
 
 typedef int
 (*xmlResourceLoader)(void *ctxt, const char *url, const char *publicId,
-                     int type, int flags, xmlParserInputPtr *out);
+                     xmlResourceType type, int flags, xmlParserInputPtr *out);
 
 /**
  * xmlParserCtxt:

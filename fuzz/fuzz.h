@@ -108,7 +108,7 @@ xmlFuzzMainEntity(size_t *size);
 
 int
 xmlFuzzResourceLoader(void *data, const char *URL, const char *ID,
-                      int type, int flags, xmlParserInputPtr *out);
+                      xmlResourceType type, int flags, xmlParserInputPtr *out);
 
 xmlParserInputPtr
 xmlFuzzEntityLoader(const char *URL, const char *ID, xmlParserCtxtPtr ctxt);

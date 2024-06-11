@@ -115,7 +115,8 @@ static int addEntity(char *name, char *content) {
 
 static int
 testResourceLoader(void *vctxt ATTRIBUTE_UNUSED, const char *URL,
-                   const char *ID ATTRIBUTE_UNUSED, int type ATTRIBUTE_UNUSED,
+                   const char *ID ATTRIBUTE_UNUSED,
+                   xmlResourceType type ATTRIBUTE_UNUSED,
                    int flags ATTRIBUTE_UNUSED, xmlParserInputPtr *out) {
     int i;
 

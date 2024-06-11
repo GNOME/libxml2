@@ -7883,9 +7883,7 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
  * @ctxt:  an XML parser context
  * @entity: an unloaded system entity
  *
- * Load the original content of the given system entity from the
- * ExternalID/SystemID given. This is to be used for Included in Literal
- * http://www.w3.org/TR/REC-xml/#inliteral processing of entities references
+ * Load the content of an entity.
  *
  * Returns 0 in case of success and -1 in case of failure
  */
@@ -7895,6 +7893,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     xmlParserInputPtr *oldinputTab;
     const xmlChar *oldencoding;
     xmlChar *content = NULL;
+    xmlResourceType rtype;
     size_t length, i;
     int oldinputNr, oldinputMax;
     int ret = -1;
@@ -7909,8 +7908,13 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
         return(-1);
     }
 
-    input = xmlLoadExternalEntity((char *) entity->URI,
-           (char *) entity->ExternalID, ctxt);
+    if (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)
+        rtype = XML_RESOURCE_PARAMETER_ENTITY;
+    else
+        rtype = XML_RESOURCE_GENERAL_ENTITY;
+
+    input = xmlLoadResource(ctxt, (char *) entity->URI,
+                            (char *) entity->ExternalID, rtype);
     if (input == NULL)
         return(-1);
 
@@ -12171,7 +12175,8 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
     if (ctxt == NULL)
         return(XML_ERR_ARGUMENT);
 
-    input = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
+    input = xmlLoadResource(ctxt, (char *) URL, (char *) ID,
+                            XML_RESOURCE_GENERAL_ENTITY);
     if (input == NULL)
         return(ctxt->errNo);
 
@@ -12637,7 +12642,8 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
             URL = uri;
     }
 
-    input = xmlLoadExternalEntity((char *)URL, (char *)ID, ctxt);
+    input = xmlLoadResource(ctxt, (char *) URL, (char *) ID,
+                            XML_RESOURCE_UNKNOWN);
     if (input == NULL)
         goto error;
 
@@ -12685,7 +12691,7 @@ xmlCreateURLParserCtxt(const char *filename, int options)
     xmlCtxtUseOptions(ctxt, options);
     ctxt->linenumbers = 1;
 
-    input = xmlLoadExternalEntity(filename, NULL, ctxt);
+    input = xmlLoadResource(ctxt, filename, NULL, XML_RESOURCE_MAIN_DOCUMENT);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);

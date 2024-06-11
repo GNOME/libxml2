@@ -427,8 +427,8 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
     if (xmlStrlen(URI) > XML_MAX_URI_LENGTH) {
         xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT, "URI too long");
     } else {
-        ret = xmlLoadExternalEntity((const char *) URI,
-                                    (const char *) publicId, ctxt);
+        ret = xmlLoadResource(ctxt, (const char *) URI,
+                              (const char *) publicId, XML_RESOURCE_DTD);
     }
 
     xmlFree(URI);

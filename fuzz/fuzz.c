@@ -404,8 +404,8 @@ xmlFuzzMainEntity(size_t *size) {
 int
 xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
                       const char *ID ATTRIBUTE_UNUSED,
-                      int type ATTRIBUTE_UNUSED, int flags ATTRIBUTE_UNUSED,
-                      xmlParserInputPtr *out) {
+                      xmlResourceType type ATTRIBUTE_UNUSED,
+                      int flags ATTRIBUTE_UNUSED, xmlParserInputPtr *out) {
     xmlParserInputPtr input;
     xmlFuzzEntityInfo *entity;
 

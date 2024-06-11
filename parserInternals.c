@@ -1575,7 +1575,7 @@ xmlNewInputURL(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
     if ((ctxt == NULL) || (url == NULL))
 	return(NULL);
 
-    input = xmlLoadExternalEntity(url, publicId, ctxt);
+    input = xmlLoadResource(ctxt, url, publicId, XML_RESOURCE_MAIN_DOCUMENT);
     if (input == NULL)
         return(NULL);
 
@@ -1992,8 +1992,15 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
         input = xmlNewInputString(ctxt, NULL, (const char *) ent->content,
                                   NULL, XML_INPUT_BUF_STATIC);
     } else if (ent->URI != NULL) {
-        input = xmlLoadExternalEntity((char *) ent->URI,
-                                      (char *) ent->ExternalID, ctxt);
+        xmlResourceType rtype;
+
+        if (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY)
+            rtype = XML_RESOURCE_PARAMETER_ENTITY;
+        else
+            rtype = XML_RESOURCE_GENERAL_ENTITY;
+
+        input = xmlLoadResource(ctxt, (char *) ent->URI,
+                                (char *) ent->ExternalID, rtype);
     } else {
         return(NULL);
     }
@@ -2382,6 +2389,53 @@ xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt, xmlResourceLoader loader,
 }
 
 /**
+ * xmlLoadResource:
+ * @ctxt:  parser context
+ * @url:  the URL for the entity to load
+ * @publicId:  the Public ID for the entity to load
+ * @type:  resource type
+ *
+ * Returns the xmlParserInputPtr or NULL in case of error.
+ */
+xmlParserInputPtr
+xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
+                xmlResourceType type) {
+    char *canonicFilename;
+    xmlParserInputPtr ret;
+
+    if (url == NULL)
+        return(NULL);
+
+    if ((ctxt != NULL) && (ctxt->resourceLoader != NULL)) {
+        int flags = 0;
+        int code;
+
+        if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
+            flags |= XML_INPUT_UNZIP;
+        if ((ctxt->options & XML_PARSE_NONET) == 0)
+            flags |= XML_INPUT_NETWORK;
+
+        code = ctxt->resourceLoader(ctxt->resourceCtxt, url, publicId, flags,
+                                    type, &ret);
+        if (code != XML_ERR_OK) {
+            xmlCtxtErrIO(ctxt, code, url);
+            return(NULL);
+        }
+        return(ret);
+    }
+
+    canonicFilename = (char *) xmlCanonicPath((const xmlChar *) url);
+    if (canonicFilename == NULL) {
+        xmlCtxtErrMemory(ctxt);
+        return(NULL);
+    }
+
+    ret = xmlCurrentExternalEntityLoader(canonicFilename, publicId, ctxt);
+    xmlFree(canonicFilename);
+    return(ret);
+}
+
+/**
  * xmlLoadExternalEntity:
  * @URL:  the URL for the entity to load
  * @ID:  the Public ID for the entity to load
@@ -2414,39 +2468,7 @@ xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt, xmlResourceLoader loader,
 xmlParserInputPtr
 xmlLoadExternalEntity(const char *URL, const char *ID,
                       xmlParserCtxtPtr ctxt) {
-    char *canonicFilename;
-    xmlParserInputPtr ret;
-
-    if (URL == NULL)
-        return(NULL);
-
-    if ((ctxt != NULL) && (ctxt->resourceLoader != NULL)) {
-        int flags = 0;
-        int code;
-
-        if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
-            flags |= XML_INPUT_UNZIP;
-        if ((ctxt->options & XML_PARSE_NONET) == 0)
-            flags |= XML_INPUT_NETWORK;
-
-        code = ctxt->resourceLoader(ctxt->resourceCtxt, URL, ID, flags,
-                                    0, &ret);
-        if (code != XML_ERR_OK) {
-            xmlCtxtErrIO(ctxt, code, URL);
-            return(NULL);
-        }
-        return(ret);
-    }
-
-    canonicFilename = (char *) xmlCanonicPath((const xmlChar *) URL);
-    if (canonicFilename == NULL) {
-        xmlCtxtErrMemory(ctxt);
-        return(NULL);
-    }
-
-    ret = xmlCurrentExternalEntityLoader(canonicFilename, ID, ctxt);
-    xmlFree(canonicFilename);
-    return(ret);
+    return(xmlLoadResource(ctxt, URL, ID, XML_RESOURCE_UNKNOWN));
 }
 
 /************************************************************************

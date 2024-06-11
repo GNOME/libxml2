@@ -56,7 +56,7 @@ static struct {
 static int
 fuzzResourceRecorder(void *data ATTRIBUTE_UNUSED, const char *URL,
                      const char *ID ATTRIBUTE_UNUSED,
-                     int type ATTRIBUTE_UNUSED, int flags,
+                     xmlResourceType type ATTRIBUTE_UNUSED, int flags,
                      xmlParserInputPtr *out) {
     xmlParserInputPtr in;
     static const int chunkSize = 16384;

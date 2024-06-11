@@ -89,6 +89,9 @@ XML_HIDDEN void *
 xmlParserNsLookupSax(xmlParserCtxtPtr ctxt, const xmlChar *prefix);
 
 XML_HIDDEN xmlParserInputPtr
+xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
+                xmlResourceType type);
+XML_HIDDEN xmlParserInputPtr
 xmlNewInputURL(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
                const char *encoding, int flags);
 XML_HIDDEN xmlParserInputPtr

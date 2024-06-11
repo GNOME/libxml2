@@ -228,7 +228,7 @@ static xmlResourceLoader defaultResourceLoader = NULL;
 
 static int
 xmllintResourceLoader(void *ctxt ATTRIBUTE_UNUSED, const char *URL,
-                      const char *ID, int type, int flags,
+                      const char *ID, xmlResourceType type, int flags,
 		      xmlParserInputPtr *out) {
     int code;
     int i;

@@ -28,6 +28,7 @@
 
 #include "private/buf.h"
 #include "private/error.h"
+#include "private/parser.h"
 #include "private/tree.h"
 #include "private/xinclude.h"
 
@@ -342,7 +343,7 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 
     xmlCtxtUseOptions(pctxt, ctxt->parseFlags);
 
-    inputStream = xmlLoadExternalEntity(URL, NULL, pctxt);
+    inputStream = xmlLoadResource(pctxt, URL, NULL, XML_RESOURCE_XINCLUDE);
     if (inputStream == NULL)
         goto error;
 
@@ -1656,7 +1657,8 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
         xmlCtxtSetResourceLoader(pctxt, ctxt->resourceLoader,
                                  ctxt->resourceCtxt);
 
-    inputStream = xmlLoadExternalEntity((const char*)url, NULL, pctxt);
+    inputStream = xmlLoadResource(pctxt, (const char*) url, NULL,
+                                  XML_RESOURCE_XINCLUDE_TEXT);
     if (inputStream == NULL) {
         if (pctxt->errNo == XML_ERR_NO_MEMORY)
             xmlXIncludeErrMemory(ctxt);

@@ -1,5 +1,12 @@
 NEWS file for libxml2
 
+v2.12.8: Jun 12 2024
+
+### Regressions
+
+- parser: Fix performance regression when parsing namespaces
+
+
 v2.12.7: May 13 2024
 
 ### Security

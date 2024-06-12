@@ -64,6 +64,8 @@ xlinkSetDefaultHandler(xlinkHandlerPtr handler) {
 /**
  * xlinkGetDefaultDetect:
  *
+ * DEPRECATED: Don't use.
+ *
  * Get the default xlink detection routine
  *
  * Returns the current function or NULL;
@@ -76,6 +78,8 @@ xlinkGetDefaultDetect	(void) {
 /**
  * xlinkSetDefaultDetect:
  * @func: pointer to the new detection routine.
+ *
+ * DEPRECATED: Don't use.
  *
  * Set the default xlink detection routine
  */

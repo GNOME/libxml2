@@ -2276,6 +2276,9 @@ xmlPatternCompileSafe(const xmlChar *pattern, xmlDict *dict, int flags,
     int streamable = 1;
     int error;
 
+    if (patternOut == NULL)
+        return(1);
+
     if (pattern == NULL) {
         error = 1;
         goto error;

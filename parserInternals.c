@@ -136,6 +136,9 @@ xmlCtxtErrMemory(xmlParserCtxtPtr ctxt)
     xmlGenericErrorFunc channel = NULL;
     void *data;
 
+    if (ctxt == NULL)
+        return;
+
     ctxt->errNo = XML_ERR_NO_MEMORY;
     ctxt->instate = XML_PARSER_EOF; /* TODO: Remove after refactoring */
     ctxt->wellFormed = 0;
@@ -1141,6 +1144,9 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
  */
 int
 xmlSwitchEncodingName(xmlParserCtxtPtr ctxt, const char *encoding) {
+    if (ctxt == NULL)
+        return(-1);
+
     return(xmlSwitchInputEncodingName(ctxt, ctxt->input, encoding));
 }
 

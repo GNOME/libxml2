@@ -980,8 +980,9 @@ xmlParseURISafe(const char *str, xmlURIPtr *uriOut) {
     xmlURIPtr uri;
     int ret;
 
-    if (uriOut != NULL)
-        *uriOut = NULL;
+    if (uriOut == NULL)
+        return(1);
+    *uriOut = NULL;
     if (str == NULL)
 	return(1);
 
@@ -995,8 +996,7 @@ xmlParseURISafe(const char *str, xmlURIPtr *uriOut) {
         return(ret);
     }
 
-    if (uriOut != NULL)
-        *uriOut = uri;
+    *uriOut = uri;
     return(0);
 }
 
@@ -2015,6 +2015,9 @@ xmlBuildURISafe(const xmlChar *URI, const xmlChar *base, xmlChar **valPtr) {
     xmlURIPtr ref = NULL;
     xmlURIPtr bas = NULL;
     xmlURIPtr res = NULL;
+
+    if (valPtr == NULL)
+        return(1);
 
     /*
      * 1) The URI reference is parsed into the potential four components and

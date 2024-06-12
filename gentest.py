@@ -213,16 +213,14 @@ extra_pre_call = {
 extra_post_call = {
    "xmlAddChild": 
        "if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }",
-   "xmlAddEntity":
-       "if (ret_val != NULL) { xmlFreeNode(ret_val) ; ret_val = NULL; }",
    "xmlAddChildList": 
        "if (ret_val == NULL) { xmlFreeNodeList(cur) ; cur = NULL ; }",
    "xmlAddSibling":
-       "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
+       "if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }",
    "xmlAddNextSibling":
-       "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
+       "if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }",
    "xmlAddPrevSibling": 
-       "if (ret_val == NULL) { xmlFreeNode(elem) ; elem = NULL ; }",
+       "if (ret_val == NULL) { xmlFreeNode(cur) ; cur = NULL ; }",
    "xmlDocSetRootElement": 
        "if (doc == NULL) { xmlFreeNode(root) ; root = NULL ; }",
    "xmlReplaceNode": 
@@ -259,7 +257,7 @@ extra_post_call = {
    "xmlCopyNamespaceList": "if (ret_val != NULL) xmlFreeNsList(ret_val);",
    "xmlNewTextWriter": "if (ret_val != NULL) out = NULL;",
    "xmlNewTextWriterPushParser": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;} if (ret_val != NULL) ctxt = NULL;",
-   "xmlNewIOInputStream": "if (ret_val != NULL) input = NULL;",
+   "xmlNewIOInputStream": "if (ret_val != NULL) buf = NULL;",
    "htmlParseChunk": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
    "htmlParseDocument": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",
    "xmlParseDocument": "if (ctxt != NULL) {xmlFreeDoc(ctxt->myDoc); ctxt->myDoc = NULL;}",

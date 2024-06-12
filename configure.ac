@@ -69,8 +69,6 @@ AC_ARG_WITH(catalog,
 [  --with-catalog          XML Catalogs support (on)])
 AC_ARG_WITH(debug,
 [  --with-debug            debugging module and shell (on)])
-AC_ARG_WITH(ftp,
-[  --with-ftp              FTP support (off)])
 AC_ARG_WITH(history,
 [  --with-history          history support for shell (off)])
 AC_ARG_WITH(readline,
@@ -320,7 +318,7 @@ AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
 dnl
 dnl Checks for inet libraries
 dnl
-if test "$with_http" = "yes" || test "$with_ftp" = "yes"; then
+if test "$with_http" = "yes"; then
     AC_CHECK_HEADERS([sys/socket.h netinet/in.h arpa/inet.h netdb.h])
     AC_CHECK_HEADERS([sys/select.h poll.h])
 
@@ -518,15 +516,6 @@ else
     WITH_TREE=1
 fi
 AC_SUBST(WITH_TREE)
-
-if test "$with_ftp" != "yes" ; then
-    WITH_FTP=0
-else
-    echo Enabling FTP support
-    WITH_FTP=1
-fi
-AC_SUBST(WITH_FTP)
-AM_CONDITIONAL(WITH_FTP_SOURCES, test "$WITH_FTP" = "1")
 
 if test "$with_http" != "yes" ; then
     WITH_HTTP=0

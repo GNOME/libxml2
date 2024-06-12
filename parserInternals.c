@@ -2288,8 +2288,7 @@ xmlDefaultExternalEntityLoader(const char *url, const char *ID,
 
     if ((ctxt != NULL) &&
         (ctxt->options & XML_PARSE_NONET) &&
-        ((xmlStrncasecmp(BAD_CAST url, BAD_CAST "ftp://", 6) == 0) ||
-         (xmlStrncasecmp(BAD_CAST url, BAD_CAST "http://", 7) == 0))) {
+        (xmlStrncasecmp(BAD_CAST url, BAD_CAST "http://", 7) == 0)) {
         xmlCtxtErrIO(ctxt, XML_IO_NETWORK_ATTEMPT, url);
     } else {
         input = xmlNewInputFromFile(ctxt, url);

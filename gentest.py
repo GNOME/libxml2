@@ -20,7 +20,7 @@ else:
 # Modules we want to skip in API test
 #
 skipped_modules = [ "SAX", "xlink", "threads", "globals",
-  "xmlmemory", "xmlversion", "xmlexports",
+  "xmlmemory", "xmlversion", "xmlexports", "nanoftp",
 ]
 
 #
@@ -104,8 +104,8 @@ skipped_functions = [
 "xmlReaderNewFd", "xmlReaderForFd",
 "xmlIORead", "xmlReadIO", "xmlCtxtReadIO",
 "htmlIORead", "htmlReadIO", "htmlCtxtReadIO",
-"xmlReaderNewIO", "xmlBufferDump", "xmlNanoFTPConnect",
-"xmlNanoFTPConnectTo", "xmlNanoHTTPMethod", "xmlNanoHTTPMethodRedir",
+"xmlReaderNewIO", "xmlBufferDump",
+"xmlNanoHTTPMethod", "xmlNanoHTTPMethodRedir",
 # Complex I/O APIs
 "xmlCreateIOParserCtxt", "xmlParserInputBufferCreateIO",
 "xmlRegisterInputCallbacks", "xmlReaderForIO",
@@ -122,7 +122,7 @@ skipped_functions = [
 "xmlTextReaderReadInnerXml", "xmlTextReaderReadOuterXml",
 "xmlTextReaderReadString",
 # destructor
-"xmlListDelete", "xmlOutputBufferClose", "xmlNanoFTPClose", "xmlNanoHTTPClose",
+"xmlListDelete", "xmlOutputBufferClose", "xmlNanoHTTPClose",
 # deprecated
 "xmlCatalogGetPublic", "xmlCatalogGetSystem", "xmlEncodeEntities",
 "xmlNewGlobalNs", "xmlHandleEntity", "xmlNamespaceParseNCName",
@@ -169,7 +169,7 @@ skipped_functions = [
 # and hence generate errors on memory allocation tests
 #
 skipped_memcheck = [ "xmlLoadCatalog", "xmlAddEncodingAlias",
-   "xmlSchemaInitTypes", "xmlNanoFTPProxy", "xmlNanoFTPScanProxy",
+   "xmlSchemaInitTypes",
    "xmlNanoHTTPScanProxy", "xmlResetLastError", "xmlCatalogConvert",
    "xmlCatalogRemove", "xmlLoadCatalogs", "xmlCleanupCharEncodingHandlers",
    "xmlInitCharEncodingHandlers", "xmlCatalogCleanup",
@@ -346,12 +346,6 @@ def type_convert(str, name, info, module, function, pos):
                 return('fileoutput')
             return('filepath')
     if res == 'void_ptr':
-        if module == 'nanoftp' and name == 'ctx':
-            return('xmlNanoFTPCtxtPtr')
-        if function == 'xmlNanoFTPNewCtxt' or \
-           function == 'xmlNanoFTPConnectTo' or \
-           function == 'xmlNanoFTPOpen':
-            return('xmlNanoFTPCtxtPtr')
         if module == 'nanohttp' and name == 'ctx':
             return('xmlNanoHTTPCtxtPtr')
         if function == 'xmlNanoHTTPMethod' or \

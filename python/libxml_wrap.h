@@ -4,7 +4,6 @@
 #include <libxml/parserInternals.h>
 #include <libxml/catalog.h>
 #include <libxml/threads.h>
-#include <libxml/nanoftp.h>
 #include <libxml/nanohttp.h>
 #include <libxml/uri.h>
 #include <libxml/xpath.h>

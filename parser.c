@@ -564,12 +564,6 @@ xmlHasFeature(xmlFeature feature)
 #else
             return(0);
 #endif
-        case XML_WITH_FTP:
-#ifdef LIBXML_FTP_ENABLED
-            return(1);
-#else
-            return(0);
-#endif
         case XML_WITH_HTTP:
 #ifdef LIBXML_HTTP_ENABLED
             return(1);
@@ -13531,7 +13525,7 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * XML_PARSE_NONET
  *
- * Disable network access with the builtin HTTP and FTP clients.
+ * Disable network access with the builtin HTTP client.
  *
  * XML_PARSE_NODICT
  *

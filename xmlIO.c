@@ -40,7 +40,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
 #include <libxml/nanohttp.h>
-#include <libxml/nanoftp.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #ifdef LIBXML_CATALOG_ENABLED
@@ -1013,78 +1012,6 @@ xmlIOHTTPClose (void * context) {
 }
 #endif /* LIBXML_HTTP_ENABLED */
 
-#ifdef LIBXML_FTP_ENABLED
-/************************************************************************
- *									*
- *			I/O for FTP file accesses			*
- *									*
- ************************************************************************/
-/**
- * xmlIOFTPMatch:
- * @filename:  the URI for matching
- *
- * DEPRECATED: Internal function, don't use.
- *
- * check if the URI matches an FTP one
- *
- * Returns 1 if matches, 0 otherwise
- */
-int
-xmlIOFTPMatch (const char *filename) {
-    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "ftp://", 6))
-	return(1);
-    return(0);
-}
-
-/**
- * xmlIOFTPOpen:
- * @filename:  the URI for matching
- *
- * DEPRECATED: Internal function, don't use.
- *
- * open an FTP I/O channel
- *
- * Returns an I/O context or NULL in case of error
- */
-void *
-xmlIOFTPOpen (const char *filename) {
-    return(xmlNanoFTPOpen(filename));
-}
-
-/**
- * xmlIOFTPRead:
- * @context:  the I/O context
- * @buffer:  where to drop data
- * @len:  number of bytes to write
- *
- * DEPRECATED: Internal function, don't use.
- *
- * Read @len bytes to @buffer from the I/O channel.
- *
- * Returns the number of bytes written
- */
-int
-xmlIOFTPRead(void * context, char * buffer, int len) {
-    if ((buffer == NULL) || (len < 0)) return(-1);
-    return(xmlNanoFTPRead(context, &buffer[0], len));
-}
-
-/**
- * xmlIOFTPClose:
- * @context:  the I/O context
- *
- * DEPRECATED: Internal function, don't use.
- *
- * Close an FTP I/O channel
- *
- * Returns 0
- */
-int
-xmlIOFTPClose (void * context) {
-    return ( xmlNanoFTPClose(context) );
-}
-#endif /* LIBXML_FTP_ENABLED */
-
 /************************************************************************
  *									*
  *			Input/output buffers				*
@@ -1112,21 +1039,6 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
 
     /* Avoid unused variable warning */
     (void) flags;
-
-#ifdef LIBXML_FTP_ENABLED
-    if (xmlIOFTPMatch(filename)) {
-        if ((flags & XML_INPUT_NETWORK) == 0)
-            return(XML_IO_NETWORK_ATTEMPT);
-
-        buf->context = xmlIOFTPOpen(filename);
-
-        if (buf->context != NULL) {
-            buf->readcallback = xmlIOFTPRead;
-            buf->closecallback = xmlIOFTPClose;
-            return(XML_ERR_OK);
-        }
-    }
-#endif /* LIBXML_FTP_ENABLED */
 
 #ifdef LIBXML_HTTP_ENABLED
     if (xmlIOHTTPMatch(filename)) {

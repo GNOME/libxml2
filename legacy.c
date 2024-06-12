@@ -1354,10 +1354,6 @@ cdataBlock(void *ctx, const xmlChar * value, int len)
  * nanoftp.h
  */
 
-#ifndef LIBXML_FTP_ENABLED
-
-#include <libxml/nanoftp.h>
-
 /** DOC_DISABLE */
 
 #ifdef _WIN32
@@ -1596,8 +1592,6 @@ xmlIOFTPClose(void *context ATTRIBUTE_UNUSED) {
 }
 
 /** DOC_ENABLE */
-
-#endif /* #ifndef LIBXML_FTP_ENABLED */
 
 /*
  * xpointer.h

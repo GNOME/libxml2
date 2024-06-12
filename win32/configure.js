@@ -29,7 +29,6 @@ var verCvs;
 var useCvsVer = true;
 /* Libxml features. */
 var withThreads = "native";
-var withFtp = true;
 var withHttp = true;
 var withHtml = true;
 var withC14n = true;
@@ -112,7 +111,6 @@ function usage()
 	txt += "either 'yes' or 'no', if not stated otherwise.\n\n";
 	txt += "\nXML processor options, default value given in parentheses:\n\n";
 	txt += "  threads:    Enable thread safety [no|ctls|native|posix] (" + (withThreads)  + ") \n";
-	txt += "  ftp:        Enable FTP client (" + (withFtp? "yes" : "no")  + ")\n";
 	txt += "  http:       Enable HTTP client (" + (withHttp? "yes" : "no")  + ")\n";
 	txt += "  html:       Enable HTML processor (" + (withHtml? "yes" : "no")  + ")\n";
 	txt += "  c14n:       Enable C14N support (" + (withC14n? "yes" : "no")  + ")\n";
@@ -206,7 +204,6 @@ function discoverVersion()
 	vf.WriteLine("XML_SRCDIR=" + srcDirXml);
 	vf.WriteLine("UTILS_SRCDIR=" + srcDirUtils);
 	vf.WriteLine("WITH_THREADS=" + withThreads);
-	vf.WriteLine("WITH_FTP=" + (withFtp? "1" : "0"));
 	vf.WriteLine("WITH_HTTP=" + (withHttp? "1" : "0"));
 	vf.WriteLine("WITH_HTML=" + (withHtml? "1" : "0"));
 	vf.WriteLine("WITH_C14N=" + (withC14n? "1" : "0"));
@@ -294,8 +291,6 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_THREADS\@/, withThreads == "no"? "0" : "1"));
 		} else if (s.search(/\@WITH_THREAD_ALLOC\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_THREAD_ALLOC\@/, "0"));
-		} else if (s.search(/\@WITH_FTP\@/) != -1) {
-			of.WriteLine(s.replace(/\@WITH_FTP\@/, withFtp? "1" : "0"));
 		} else if (s.search(/\@WITH_HTTP\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_HTTP\@/, withHttp? "1" : "0"));
 		} else if (s.search(/\@WITH_HTML\@/) != -1) {
@@ -443,8 +438,6 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 	if (opt.length > 0) {
 		if (opt == "threads")
 			withThreads = arg.substring(opt.length + 1, arg.length);
-		else if (opt == "ftp")
-			withFtp = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "http")
 			withHttp = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "html")
@@ -634,7 +627,6 @@ WScript.Echo("Created config.h.");
 var txtOut = "\nXML processor configuration\n";
 txtOut += "---------------------------\n";
 txtOut += "     Thread safety: " + withThreads + "\n";
-txtOut += "        FTP client: " + boolToStr(withFtp) + "\n";
 txtOut += "       HTTP client: " + boolToStr(withHttp) + "\n";
 txtOut += "    HTML processor: " + boolToStr(withHtml) + "\n";
 txtOut += "      C14N support: " + boolToStr(withC14n) + "\n";

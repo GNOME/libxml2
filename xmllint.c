@@ -2882,7 +2882,6 @@ static void showVersion(const char *name) {
     if (xmlHasFeature(XML_WITH_PATTERN)) fprintf(ERR_STREAM, "Patterns ");
     if (xmlHasFeature(XML_WITH_WRITER)) fprintf(ERR_STREAM, "Writer ");
     if (xmlHasFeature(XML_WITH_SAX1)) fprintf(ERR_STREAM, "SAXv1 ");
-    if (xmlHasFeature(XML_WITH_FTP)) fprintf(ERR_STREAM, "FTP ");
     if (xmlHasFeature(XML_WITH_HTTP)) fprintf(ERR_STREAM, "HTTP ");
     if (xmlHasFeature(XML_WITH_VALID)) fprintf(ERR_STREAM, "DTDValid ");
     if (xmlHasFeature(XML_WITH_HTML)) fprintf(ERR_STREAM, "HTML ");

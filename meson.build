@@ -56,7 +56,6 @@ cc = meson.get_compiler('c')
 want_c14n = get_option('c14n')
 want_catalog = get_option('catalog')
 want_debug = get_option('debuging')
-want_ftp = get_option('ftp')
 want_history = get_option('history')
 want_html = get_option('html')
 want_http = get_option('http')
@@ -469,7 +468,7 @@ if sys_windows == true
 endif
 
 ### inet
-if want_http == true or want_ftp == true
+if want_http == true
     if sys_windows == true
         ws2_dep = cc.find_library('ws2_32', required: true)
         xml_deps += ws2_dep
@@ -639,7 +638,6 @@ xml_opt_src = [
     [want_c14n, ['c14n.c']],
     [want_catalog, ['catalog.c']],
     [want_debug, ['debugXML.c']],
-    [want_ftp, ['nanoftp.c']],
     [want_html, ['HTMLparser.c', 'HTMLtree.c']],
     [want_http, ['nanohttp.c']],
     [want_legacy, ['legacy.c']],
@@ -806,7 +804,6 @@ summary(
         'c14n': want_c14n,
         'catalog': want_catalog,
         'debug': want_debug,
-        'ftp': want_ftp,
         'history': want_history,
         'html': want_html,
         'http': want_http,

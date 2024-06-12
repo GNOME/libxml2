@@ -183,7 +183,6 @@ int main(int argc, char **argv) {
 #include <libxml/entities.h>
 #include <libxml/hash.h>
 #include <libxml/list.h>
-#include <libxml/nanoftp.h>
 #include <libxml/nanohttp.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -28534,156 +28533,6 @@ test_xmlFileRead(void) {
 
 
 static int
-test_xmlIOFTPClose(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_FTP_ENABLED)
-    int mem_base;
-    int ret_val;
-    void * context; /* the I/O context */
-    int n_context;
-
-    for (n_context = 0;n_context < gen_nb_void_ptr;n_context++) {
-        mem_base = xmlMemBlocks();
-        context = gen_void_ptr(n_context, 0);
-
-        ret_val = xmlIOFTPClose(context);
-        desret_int(ret_val);
-        call_tests++;
-        des_void_ptr(n_context, context, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOFTPClose",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_context);
-            printf("\n");
-        }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlIOFTPMatch(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_FTP_ENABLED)
-    int mem_base;
-    int ret_val;
-    const char * filename; /* the URI for matching */
-    int n_filename;
-
-    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
-        mem_base = xmlMemBlocks();
-        filename = gen_filepath(n_filename, 0);
-
-        ret_val = xmlIOFTPMatch(filename);
-        desret_int(ret_val);
-        call_tests++;
-        des_filepath(n_filename, filename, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOFTPMatch",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_filename);
-            printf("\n");
-        }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlIOFTPOpen(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_FTP_ENABLED)
-    int mem_base;
-    void * ret_val;
-    const char * filename; /* the URI for matching */
-    int n_filename;
-
-    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
-        mem_base = xmlMemBlocks();
-        filename = gen_filepath(n_filename, 0);
-
-        ret_val = xmlIOFTPOpen(filename);
-        desret_void_ptr(ret_val);
-        call_tests++;
-        des_filepath(n_filename, filename, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOFTPOpen",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_filename);
-            printf("\n");
-        }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlIOFTPRead(void) {
-    int test_ret = 0;
-
-#if defined(LIBXML_FTP_ENABLED)
-    int mem_base;
-    int ret_val;
-    void * context; /* the I/O context */
-    int n_context;
-    char * buffer; /* where to drop data */
-    int n_buffer;
-    int len; /* number of bytes to write */
-    int n_len;
-
-    for (n_context = 0;n_context < gen_nb_void_ptr;n_context++) {
-    for (n_buffer = 0;n_buffer < gen_nb_char_ptr;n_buffer++) {
-    for (n_len = 0;n_len < gen_nb_int;n_len++) {
-        mem_base = xmlMemBlocks();
-        context = gen_void_ptr(n_context, 0);
-        buffer = gen_char_ptr(n_buffer, 1);
-        len = gen_int(n_len, 2);
-
-        ret_val = xmlIOFTPRead(context, buffer, len);
-        desret_int(ret_val);
-        call_tests++;
-        des_void_ptr(n_context, context, 0);
-        des_char_ptr(n_buffer, buffer, 1);
-        des_int(n_len, len, 2);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlIOFTPRead",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_context);
-            printf(" %d", n_buffer);
-            printf(" %d", n_len);
-            printf("\n");
-        }
-    }
-    }
-    }
-    function_tests++;
-#endif
-
-    return(test_ret);
-}
-
-
-static int
 test_xmlIOHTTPClose(void) {
     int test_ret = 0;
 
@@ -29783,7 +29632,7 @@ static int
 test_xmlIO(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlIO : 41 of 55 functions ...\n");
+    if (quiet == 0) printf("Testing xmlIO : 37 of 51 functions ...\n");
     test_ret += test_xmlAllocOutputBuffer();
     test_ret += test_xmlAllocParserInputBuffer();
     test_ret += test_xmlCheckFilename();
@@ -29794,10 +29643,6 @@ test_xmlIO(void) {
     test_ret += test_xmlFileMatch();
     test_ret += test_xmlFileOpen();
     test_ret += test_xmlFileRead();
-    test_ret += test_xmlIOFTPClose();
-    test_ret += test_xmlIOFTPMatch();
-    test_ret += test_xmlIOFTPOpen();
-    test_ret += test_xmlIOFTPRead();
     test_ret += test_xmlIOHTTPClose();
     test_ret += test_xmlIOHTTPMatch();
     test_ret += test_xmlIOHTTPOpen();

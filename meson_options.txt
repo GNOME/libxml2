@@ -3,7 +3,6 @@
 # [X] c14n
 # [X] catalog
 # [X] debugging
-# [X] ftp         - not minimum
 # [X] history
 # [X] html
 # [X] http
@@ -57,12 +56,6 @@ option('debuging',
   type: 'boolean',
   value: true,
   description: 'Debugging module and shell'
-)
-
-option('ftp',
-  type: 'boolean',
-  value: false,
-  description: 'FTP support'
 )
 
 option('history',

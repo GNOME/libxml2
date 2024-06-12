@@ -80,7 +80,6 @@ want_writer = get_option('writer')
 want_xinclude = get_option('xinclude')
 want_xpath = get_option('xpath')
 want_xptr = get_option('xptr')
-want_xptr_locs = get_option('xptr-locs')
 
 # TODO: Options should be three-valued: "yes", "no", default
 
@@ -154,13 +153,6 @@ if want_xinclude == true
     want_xpath = true
 endif
 
-if want_xptr_locs == true
-    if want_xptr == false
-        message('-Dxptr-locs=true overrides -Dxptr')
-    endif
-    want_xptr = true
-endif
-
 if want_xptr == true
     if want_xpath == false
         message('-Dxptr=true overrides -Dxpath')
@@ -197,7 +189,6 @@ if get_option('minimum')
     want_xinclude = false
     want_xpath = false
     want_xptr = false
-    want_xptr_locs = false
 else
     # Disable dependent modules
     if want_output == false
@@ -833,7 +824,6 @@ summary(
         'xinclude': want_xinclude,
         'xpath': want_xpath,
         'xptr': want_xptr,
-        'xptr-locs': want_xptr_locs,
         'zlib': zlib_dep.found(),
     },
     section: 'Configuration Options Summary:',

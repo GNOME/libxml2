@@ -1830,20 +1830,6 @@ xmlShellPrintXPathError(int errorType, const char *arg)
             fprintf(stderr,
                             "%s is a string\n", arg);
             break;
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-        case XPATH_POINT:
-            fprintf(stderr,
-                            "%s is a point\n", arg);
-            break;
-        case XPATH_RANGE:
-            fprintf(stderr,
-                            "%s is a range\n", arg);
-            break;
-        case XPATH_LOCATIONSET:
-            fprintf(stderr,
-                            "%s is a range\n", arg);
-            break;
-#endif /* LIBXML_XPTR_LOCS_ENABLED */
         case XPATH_USERS:
             fprintf(stderr,
                             "%s is user-defined\n", arg);
@@ -2992,20 +2978,6 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
                             fprintf(ctxt->output,
                                             "%s is a string\n", arg);
                             break;
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-                        case XPATH_POINT:
-                            fprintf(ctxt->output,
-                                            "%s is a point\n", arg);
-                            break;
-                        case XPATH_RANGE:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-                        case XPATH_LOCATIONSET:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-#endif /* LIBXML_XPTR_LOCS_ENABLED */
                         case XPATH_USERS:
                             fprintf(ctxt->output,
                                             "%s is user-defined\n", arg);
@@ -3111,20 +3083,6 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
                             fprintf(ctxt->output,
                                             "%s is a string\n", arg);
                             break;
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-                        case XPATH_POINT:
-                            fprintf(ctxt->output,
-                                            "%s is a point\n", arg);
-                            break;
-                        case XPATH_RANGE:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-                        case XPATH_LOCATIONSET:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-#endif /* LIBXML_XPTR_LOCS_ENABLED */
                         case XPATH_USERS:
                             fprintf(ctxt->output,
                                             "%s is user-defined\n", arg);
@@ -3190,20 +3148,6 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
                             fprintf(ctxt->output,
                                             "%s is a string\n", arg);
                             break;
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-                        case XPATH_POINT:
-                            fprintf(ctxt->output,
-                                            "%s is a point\n", arg);
-                            break;
-                        case XPATH_RANGE:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-                        case XPATH_LOCATIONSET:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-#endif /* LIBXML_XPTR_LOCS_ENABLED */
                         case XPATH_USERS:
                             fprintf(ctxt->output,
                                             "%s is user-defined\n", arg);
@@ -3277,20 +3221,6 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
                             fprintf(ctxt->output,
                                             "%s is a string\n", arg);
                             break;
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-                        case XPATH_POINT:
-                            fprintf(ctxt->output,
-                                            "%s is a point\n", arg);
-                            break;
-                        case XPATH_RANGE:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-                        case XPATH_LOCATIONSET:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-#endif /* LIBXML_XPTR_LOCS_ENABLED */
                         case XPATH_USERS:
                             fprintf(ctxt->output,
                                             "%s is user-defined\n", arg);
@@ -3357,20 +3287,6 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
                             fprintf(ctxt->output,
                                             "%s is a string\n", arg);
                             break;
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-                        case XPATH_POINT:
-                            fprintf(ctxt->output,
-                                            "%s is a point\n", arg);
-                            break;
-                        case XPATH_RANGE:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-                        case XPATH_LOCATIONSET:
-                            fprintf(ctxt->output,
-                                            "%s is a range\n", arg);
-                            break;
-#endif /* LIBXML_XPTR_LOCS_ENABLED */
                         case XPATH_USERS:
                             fprintf(ctxt->output,
                                             "%s is user-defined\n", arg);

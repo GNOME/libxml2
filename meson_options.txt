@@ -32,7 +32,6 @@
 # [X] xinclude
 # [X] xpath
 # [X] xptr
-# [X] xptr-locs
 # [X] zlib
 
 # [X] minimum
@@ -226,12 +225,6 @@ option('xptr',
   type: 'boolean',
   value: true,
   description: 'XPointer support'
-)
-
-option('xptr-locs',
-  type: 'boolean',
-  value: false,
-  description: 'XPointer ranges and points'
 )
 
 option('zlib',

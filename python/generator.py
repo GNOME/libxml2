@@ -414,6 +414,7 @@ deprecated_funcs = {
     'xmlXPathInit': True,
     'xmlXPtrEvalRangePredicate': True,
     'xmlXPtrNewCollapsedRange': True,
+    'xmlXPtrNewContext': True,
     'xmlXPtrNewLocationSetNodes': True,
     'xmlXPtrNewRange': True,
     'xmlXPtrNewRangeNodes': True,

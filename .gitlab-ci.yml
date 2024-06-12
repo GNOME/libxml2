@@ -1,7 +1,7 @@
 .test:
   image: registry.gitlab.gnome.org/gnome/libxml2
   variables:
-    BASE_CONFIG: "--with-legacy --with-xptr-locs"
+    BASE_CONFIG: "--with-legacy"
   before_script:
     - rm -rf libxml2-build
     - mkdir libxml2-build
@@ -72,7 +72,7 @@ clang:msan:
   tags:
     - win32-ps
   variables:
-    BASE_CONFIG: "--with-legacy --with-xptr-locs"
+    BASE_CONFIG: "--with-legacy"
     # Disabled for now, see #658
     CONFIG: "--without-python"
     CHERE_INVOKING: "yes"

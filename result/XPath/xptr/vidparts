@@ -1,6 +1,6 @@
 
 ========================
-Expression: xpointer(id("chapter1"))
+Expression: xpath1(id("chapter1"))
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter
@@ -9,7 +9,7 @@ Set contains 1 nodes:
         content=chapter1
 
 ========================
-Expression: xpointer(//*[@id="chapter1"])
+Expression: xpath1(//*[@id="chapter1"])
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter
@@ -18,7 +18,7 @@ Set contains 1 nodes:
         content=chapter1
 
 ========================
-Expression: xpointer(id("chapter1"))xpointer(//*[@id="chapter1"])
+Expression: xpath1(id("chapter1"))xpath1(//*[@id="chapter1"])
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter

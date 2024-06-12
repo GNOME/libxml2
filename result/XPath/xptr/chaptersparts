@@ -1,10 +1,10 @@
 
 ========================
-Expression: xpointer(//chapitre[2])
+Expression: xpath1(//chapitre[2])
 Object is empty (NULL)
 
 ========================
-Expression: xpointer(//chapter[2])
+Expression: xpath1(//chapter[2])
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter
@@ -13,7 +13,7 @@ Set contains 1 nodes:
         content=chapter2
 
 ========================
-Expression: xpointer(//chapitre[2])xpointer(//chapter[2])
+Expression: xpath1(//chapitre[2])xpath1(//chapter[2])
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter
@@ -22,11 +22,11 @@ Set contains 1 nodes:
         content=chapter2
 
 ========================
-Expression: xpointer(id("chapter1"))
+Expression: xpath1(id("chapter1"))
 Object is empty (NULL)
 
 ========================
-Expression: xpointer(//*[@id="chapter1"])
+Expression: xpath1(//*[@id="chapter1"])
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter
@@ -35,7 +35,7 @@ Set contains 1 nodes:
         content=chapter1
 
 ========================
-Expression: xpointer(id("chapter1"))xpointer(//*[@id="chapter1"])
+Expression: xpath1(id("chapter1"))xpath1(//*[@id="chapter1"])
 Object is a Node Set :
 Set contains 1 nodes:
 1  ELEMENT chapter

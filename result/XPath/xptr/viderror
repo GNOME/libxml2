@@ -1,4 +1,4 @@
 
 ========================
-Expression: xpointer(non-existing-fn()/range-to(id('chapter2')))
+Expression: xpath1(non-existing-fn())
 Object is empty (NULL)

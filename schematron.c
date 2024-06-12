@@ -1864,11 +1864,6 @@ xmlSchematronRunTest(xmlSchematronValidCtxtPtr ctxt,
                     failed = 1;
                 break;
             case XPATH_UNDEFINED:
-#ifdef LIBXML_XPTR_LOCS_ENABLED
-            case XPATH_POINT:
-            case XPATH_RANGE:
-            case XPATH_LOCATIONSET:
-#endif
             case XPATH_USERS:
                 failed = 1;
                 break;

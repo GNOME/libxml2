@@ -155,13 +155,6 @@ skipped_functions = [
 # Legacy
 "xmlCleanupPredefinedEntities", "xmlInitializePredefinedEntities",
 "xmlSetFeature", "xmlGetFeature", "xmlGetFeaturesList",
-# location sets
-"xmlXPtrLocationSetAdd",
-"xmlXPtrLocationSetCreate",
-"xmlXPtrLocationSetDel",
-"xmlXPtrLocationSetMerge",
-"xmlXPtrLocationSetRemove",
-"xmlXPtrWrapLocationSet",
 ]
 
 #

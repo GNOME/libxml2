@@ -32,7 +32,6 @@ xmlversion_h.set10('WITH_WRITER', want_writer)
 xmlversion_h.set10('WITH_XINCLUDE', want_xinclude)
 xmlversion_h.set10('WITH_XPATH', want_xpath)
 xmlversion_h.set10('WITH_XPTR', want_xptr)
-xmlversion_h.set10('WITH_XPTR_LOCS', want_xptr_locs)
 xmlversion_h.set10('WITH_ZLIB', zlib_dep.found())
 
 configure_file(

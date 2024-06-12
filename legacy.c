@@ -1597,174 +1597,163 @@ xmlIOFTPClose(void *context ATTRIBUTE_UNUSED) {
  * xpointer.h
  */
 
-#ifndef LIBXML_XPTR_LOCS_ENABLED
-
-#include <libxml/xpath.h>
-#include <libxml/xpathInternals.h>
-#include <libxml/xpointer.h>
-
 /** DOC_DISABLE */
 
-typedef struct _xmlLocationSet *xmlLocationSetPtr;
+XMLPUBFUN void *
+xmlXPtrNewRange(void *start, int startindex,
+                void *end, int endindex);
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewRange(xmlNodePtr start, int startindex,
-                xmlNodePtr end, int endindex);
-
-xmlXPathObjectPtr
-xmlXPtrNewRange(xmlNodePtr start ATTRIBUTE_UNUSED,
+void *
+xmlXPtrNewRange(void *start ATTRIBUTE_UNUSED,
                 int startindex ATTRIBUTE_UNUSED,
-                xmlNodePtr end ATTRIBUTE_UNUSED,
+                void *end ATTRIBUTE_UNUSED,
                 int endindex ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewRangePoints(xmlXPathObjectPtr start, xmlXPathObjectPtr end);
+XMLPUBFUN void *
+xmlXPtrNewRangePoints(void *start, void *end);
 
-xmlXPathObjectPtr
-xmlXPtrNewRangePoints(xmlXPathObjectPtr start ATTRIBUTE_UNUSED,
-                      xmlXPathObjectPtr end ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewRangePoints(void *start ATTRIBUTE_UNUSED,
+                      void *end ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewRangePointNode(xmlXPathObjectPtr start, xmlNodePtr end);
+XMLPUBFUN void *
+xmlXPtrNewRangePointNode(void *start, void *end);
 
-xmlXPathObjectPtr
-xmlXPtrNewRangePointNode(xmlXPathObjectPtr start ATTRIBUTE_UNUSED,
-                         xmlNodePtr end ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewRangePointNode(void *start ATTRIBUTE_UNUSED,
+                         void *end ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewRangeNodePoint(xmlNodePtr start, xmlXPathObjectPtr end);
+XMLPUBFUN void *
+xmlXPtrNewRangeNodePoint(void *start, void *end);
 
-xmlXPathObjectPtr
-xmlXPtrNewRangeNodePoint(xmlNodePtr start ATTRIBUTE_UNUSED,
-                         xmlXPathObjectPtr end ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewRangeNodePoint(void *start ATTRIBUTE_UNUSED,
+                         void *end ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewRangeNodes(xmlNodePtr start, xmlNodePtr end);
+XMLPUBFUN void *
+xmlXPtrNewRangeNodes(void *start, void *end);
 
-xmlXPathObjectPtr
-xmlXPtrNewRangeNodes(xmlNodePtr start ATTRIBUTE_UNUSED,
-                     xmlNodePtr end ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewRangeNodes(void *start ATTRIBUTE_UNUSED,
+                     void *end ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewCollapsedRange(xmlNodePtr start);
+XMLPUBFUN void *
+xmlXPtrNewCollapsedRange(void *start);
 
-xmlXPathObjectPtr
-xmlXPtrNewCollapsedRange(xmlNodePtr start ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewCollapsedRange(void *start ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewRangeNodeObject(xmlNodePtr start, xmlXPathObjectPtr end);
+XMLPUBFUN void *
+xmlXPtrNewRangeNodeObject(void *start, void *end);
 
-xmlXPathObjectPtr
-xmlXPtrNewRangeNodeObject(xmlNodePtr start ATTRIBUTE_UNUSED,
-                          xmlXPathObjectPtr end ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewRangeNodeObject(void *start ATTRIBUTE_UNUSED,
+                          void *end ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlLocationSetPtr
-xmlXPtrLocationSetCreate(xmlXPathObjectPtr val);
+XMLPUBFUN void *
+xmlXPtrLocationSetCreate(void *val);
 
-xmlLocationSetPtr
-xmlXPtrLocationSetCreate(xmlXPathObjectPtr val ATTRIBUTE_UNUSED) {
-    return(NULL);
-}
-
-XMLPUBFUN void
-xmlXPtrLocationSetAdd(xmlLocationSetPtr cur, xmlXPathObjectPtr val);
-
-void
-xmlXPtrLocationSetAdd(xmlLocationSetPtr cur ATTRIBUTE_UNUSED,
-                      xmlXPathObjectPtr val ATTRIBUTE_UNUSED) {
-}
-
-XMLPUBFUN xmlLocationSetPtr
-xmlXPtrLocationSetMerge(xmlLocationSetPtr val1, xmlLocationSetPtr val2);
-
-xmlLocationSetPtr
-xmlXPtrLocationSetMerge(xmlLocationSetPtr val1 ATTRIBUTE_UNUSED,
-                        xmlLocationSetPtr val2 ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrLocationSetCreate(void *val ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
 XMLPUBFUN void
-xmlXPtrLocationSetDel(xmlLocationSetPtr cur, xmlXPathObjectPtr val);
+xmlXPtrLocationSetAdd(void *cur, void *val);
 
 void
-xmlXPtrLocationSetDel(xmlLocationSetPtr cur ATTRIBUTE_UNUSED,
-                      xmlXPathObjectPtr val ATTRIBUTE_UNUSED) {
+xmlXPtrLocationSetAdd(void *cur ATTRIBUTE_UNUSED,
+                      void *val ATTRIBUTE_UNUSED) {
+}
+
+XMLPUBFUN void *
+xmlXPtrLocationSetMerge(void *val1, void *val2);
+
+void *
+xmlXPtrLocationSetMerge(void *val1 ATTRIBUTE_UNUSED,
+                        void *val2 ATTRIBUTE_UNUSED) {
+    return(NULL);
 }
 
 XMLPUBFUN void
-xmlXPtrLocationSetRemove(xmlLocationSetPtr cur, int val);
+xmlXPtrLocationSetDel(void *cur, void *val);
 
 void
-xmlXPtrLocationSetRemove(xmlLocationSetPtr cur ATTRIBUTE_UNUSED,
+xmlXPtrLocationSetDel(void *cur ATTRIBUTE_UNUSED,
+                      void *val ATTRIBUTE_UNUSED) {
+}
+
+XMLPUBFUN void
+xmlXPtrLocationSetRemove(void *cur, int val);
+
+void
+xmlXPtrLocationSetRemove(void *cur ATTRIBUTE_UNUSED,
                          int val ATTRIBUTE_UNUSED) {
 }
 
 XMLPUBFUN void
-xmlXPtrFreeLocationSet(xmlLocationSetPtr obj);
+xmlXPtrFreeLocationSet(void *obj);
 
 void
-xmlXPtrFreeLocationSet(xmlLocationSetPtr obj ATTRIBUTE_UNUSED) {
+xmlXPtrFreeLocationSet(void *obj ATTRIBUTE_UNUSED) {
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewLocationSetNodes(xmlNodePtr start, xmlNodePtr end);
+XMLPUBFUN void *
+xmlXPtrNewLocationSetNodes(void *start, void *end);
 
-xmlXPathObjectPtr
-xmlXPtrNewLocationSetNodes(xmlNodePtr start ATTRIBUTE_UNUSED,
-                           xmlNodePtr end ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewLocationSetNodes(void *start ATTRIBUTE_UNUSED,
+                           void *end ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrNewLocationSetNodeSet(xmlNodeSetPtr set);
+XMLPUBFUN void *
+xmlXPtrNewLocationSetNodeSet(void *set);
 
-xmlXPathObjectPtr
-xmlXPtrNewLocationSetNodeSet(xmlNodeSetPtr set ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrNewLocationSetNodeSet(void *set ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlXPathObjectPtr
-xmlXPtrWrapLocationSet(xmlLocationSetPtr val);
+XMLPUBFUN void *
+xmlXPtrWrapLocationSet(void *val);
 
-xmlXPathObjectPtr
-xmlXPtrWrapLocationSet(xmlLocationSetPtr val ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrWrapLocationSet(void *val ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
-XMLPUBFUN xmlNodePtr
-xmlXPtrBuildNodeList(xmlXPathObjectPtr obj);
+XMLPUBFUN void *
+xmlXPtrBuildNodeList(void *obj);
 
-xmlNodePtr
-xmlXPtrBuildNodeList(xmlXPathObjectPtr obj ATTRIBUTE_UNUSED) {
+void *
+xmlXPtrBuildNodeList(void *obj ATTRIBUTE_UNUSED) {
     return(NULL);
 }
 
 XMLPUBFUN void
-xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt, int nargs);
+xmlXPtrRangeToFunction(void *ctxt, int nargs);
 
 void
-xmlXPtrRangeToFunction(xmlXPathParserContextPtr ctxt,
+xmlXPtrRangeToFunction(void *ctxt ATTRIBUTE_UNUSED,
                        int nargs ATTRIBUTE_UNUSED) {
-    XP_ERROR(XPATH_EXPR_ERROR);
 }
 
 /** DOC_ENABLE */
-
-#endif /* #ifndef LIBXML_XPTR_LOCS_ENABLED */
 
 #endif /* LIBXML_LEGACY_ENABLED */
 

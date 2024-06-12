@@ -92,6 +92,7 @@ int	<a href="#xmlXPathIsNaN">xmlXPathIsNaN</a>			(double val);
 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathObjectCopy">xmlXPathObjectCopy</a>	(<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> val);
 long	<a href="#xmlXPathOrderDocElems">xmlXPathOrderDocElems</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 int	<a href="#xmlXPathSetContextNode">xmlXPathSetContextNode</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctx);
+void	<a href="#xmlXPathSetErrorHandler">xmlXPathSetErrorHandler</a>		(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler, <br>					 void * data);
 typedef <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> <a href="#xmlXPathVariableLookupFunc">xmlXPathVariableLookupFunc</a>	(void * ctxt, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns_uri);
 </pre>
 </div>
@@ -1018,7 +1019,7 @@ The content of this structure is not made public by the API.
 <a name="xmlXPathContextSetCache"></a>xmlXPathContextSetCache ()</h3>
 <pre class="programlisting">int	xmlXPathContextSetCache		(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br>					 int active, <br>					 int value, <br>					 int options)<br>
 </pre>
-<p>Creates/frees an object cache on the XPath context. If activates XPath objects (xmlXPathObject) will be cached internally to be reused. @options: 0: This will set the XPath object caching: @value: This will set the maximum number of XPath objects to be cached per slot There are 5 slots for: node-set, string, number, boolean, and misc objects. Use &lt;0 for the default number (100). Other values for @options have currently no effect.</p>
+<p>Creates/frees an object cache on the XPath context. If activates XPath objects (xmlXPathObject) will be cached internally to be reused. @options: 0: This will set the XPath object caching: @value: This will set the maximum number of XPath objects to be cached per slot There are two slots for node-set and misc objects. Use &lt;0 for the default number (100). Other values for @options have currently no effect.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1467,6 +1468,31 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>-1 in case of error or 0 if successful</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlXPathSetErrorHandler"></a>xmlXPathSetErrorHandler ()</h3>
+<pre class="programlisting">void	xmlXPathSetErrorHandler		(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler, <br>					 void * data)<br>
+</pre>
+<p>Register a callback function that will be called on errors and warnings. If handler is NULL, the error handler will be deactivated. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>the XPath context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>handler</tt></i>:</span></td>
+<td>error handler</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>data</tt></i>:</span></td>
+<td>user data which will be passed to the handler</td>
 </tr>
 </tbody>
 </table></div>

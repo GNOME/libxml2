@@ -517,7 +517,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRelaxNGSetParserErrors"></a>xmlRelaxNGSetParserErrors ()</h3>
 <pre class="programlisting">void	xmlRelaxNGSetParserErrors	(<a href="libxml2-relaxng.html#xmlRelaxNGParserCtxtPtr">xmlRelaxNGParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err, <br>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn, <br>					 void * ctx)<br>
 </pre>
-<p>Set the callback functions used to handle errors for a validation context</p>
+<p>DEPRECATED: Use <a href="libxml2-relaxng.html#xmlRelaxNGSetParserStructuredErrors">xmlRelaxNGSetParserStructuredErrors</a>. Set the callback functions used to handle errors for a validation context</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -571,7 +571,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRelaxNGSetValidErrors"></a>xmlRelaxNGSetValidErrors ()</h3>
 <pre class="programlisting">void	xmlRelaxNGSetValidErrors	(<a href="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr">xmlRelaxNGValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc">xmlRelaxNGValidityErrorFunc</a> err, <br>					 <a href="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc">xmlRelaxNGValidityWarningFunc</a> warn, <br>					 void * ctx)<br>
 </pre>
-<p>Set the error and warning callback information</p>
+<p>DEPRECATED: Use <a href="libxml2-relaxng.html#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a>. Set the error and warning callback information</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

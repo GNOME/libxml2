@@ -35,6 +35,7 @@
 typedef struct _xmlXIncludeCtxt <a href="#xmlXIncludeCtxt">xmlXIncludeCtxt</a>;
 typedef <a href="libxml2-xinclude.html#xmlXIncludeCtxt">xmlXIncludeCtxt</a> * <a href="#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a>;
 void	<a href="#xmlXIncludeFreeContext">xmlXIncludeFreeContext</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt);
+int	<a href="#xmlXIncludeGetLastError">xmlXIncludeGetLastError</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt);
 <a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a>	<a href="#xmlXIncludeNewContext">xmlXIncludeNewContext</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 int	<a href="#xmlXIncludeProcess">xmlXIncludeProcess</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 int	<a href="#xmlXIncludeProcessFlags">xmlXIncludeProcessFlags</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int flags);
@@ -43,6 +44,7 @@ int	<a href="#xmlXIncludeProcessNode">xmlXIncludeProcessNode</a>		(<a href="libx
 int	<a href="#xmlXIncludeProcessTree">xmlXIncludeProcessTree</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
 int	<a href="#xmlXIncludeProcessTreeFlags">xmlXIncludeProcessTreeFlags</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 int flags);
 int	<a href="#xmlXIncludeProcessTreeFlagsData">xmlXIncludeProcessTreeFlagsData</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 int flags, <br>					 void * data);
+void	<a href="#xmlXIncludeSetErrorHandler">xmlXIncludeSetErrorHandler</a>	(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler, <br>					 void * data);
 int	<a href="#xmlXIncludeSetFlags">xmlXIncludeSetFlags</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 int flags);
 </pre>
 </div>
@@ -160,6 +162,27 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
 <td>the XInclude context</td>
 </tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlXIncludeGetLastError"></a>xmlXIncludeGetLastError ()</h3>
+<pre class="programlisting">int	xmlXIncludeGetLastError		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt)<br>
+</pre>
+<p>Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XInclude processing context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the last error code.</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <hr>
@@ -354,6 +377,31 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>0 if no substitution were done, -1 if some processing failed or the number of substitutions done.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlXIncludeSetErrorHandler"></a>xmlXIncludeSetErrorHandler ()</h3>
+<pre class="programlisting">void	xmlXIncludeSetErrorHandler	(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler, <br>					 void * data)<br>
+</pre>
+<p>Register a callback function that will be called on errors and warnings. If handler is NULL, the error handler will be deactivated. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XInclude processing context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>handler</tt></i>:</span></td>
+<td>error handler</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>data</tt></i>:</span></td>
+<td>user data which will be passed to the handler</td>
 </tr>
 </tbody>
 </table></div>

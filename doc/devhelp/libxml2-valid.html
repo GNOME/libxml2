@@ -39,6 +39,7 @@ typedef <a href="libxml2-valid.html#xmlValidState">xmlValidState</a> * <a href="
 <a href="libxml2-tree.html#xmlAttributePtr">xmlAttributePtr</a>	<a href="#xmlAddAttributeDecl">xmlAddAttributeDecl</a>	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elem, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns, <br>					 <a href="libxml2-tree.html#xmlAttributeType">xmlAttributeType</a> type, <br>					 <a href="libxml2-tree.html#xmlAttributeDefault">xmlAttributeDefault</a> def, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * defaultValue, <br>					 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> tree);
 <a href="libxml2-tree.html#xmlElementPtr">xmlElementPtr</a>	<a href="#xmlAddElementDecl">xmlAddElementDecl</a>	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-tree.html#xmlElementTypeVal">xmlElementTypeVal</a> type, <br>					 <a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a> content);
 <a href="libxml2-tree.html#xmlIDPtr">xmlIDPtr</a>	<a href="#xmlAddID">xmlAddID</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);
+int	<a href="#xmlAddIDSafe">xmlAddIDSafe</a>			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 <a href="libxml2-tree.html#xmlNotationPtr">xmlNotationPtr</a>	<a href="#xmlAddNotationDecl">xmlAddNotationDecl</a>	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * PublicID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID);
 <a href="libxml2-tree.html#xmlRefPtr">xmlRefPtr</a>	<a href="#xmlAddRef">xmlAddRef</a>		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr);
 <a href="libxml2-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a>	<a href="#xmlCopyAttributeTable">xmlCopyAttributeTable</a>	(<a href="libxml2-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> table);
@@ -433,6 +434,31 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlAddIDSafe"></a>xmlAddIDSafe ()</h3>
+<pre class="programlisting">int	xmlAddIDSafe			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
+</pre>
+<p>Register a new id declaration Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>attr</tt></i>:</span></td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> holding the ID</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>value</tt></i>:</span></td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> (ID) value</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>1 on success, 0 if the ID already exists, -1 if a memory allocation fails.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlAddNotationDecl"></a>xmlAddNotationDecl ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNotationPtr">xmlNotationPtr</a>	xmlAddNotationDecl	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * PublicID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID)<br>
 </pre>
@@ -658,7 +684,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDumpAttributeDecl"></a>xmlDumpAttributeDecl ()</h3>
 <pre class="programlisting">void	xmlDumpAttributeDecl		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlAttributePtr">xmlAttributePtr</a> attr)<br>
 </pre>
-<p>This will dump the content of the <a href="libxml2-SAX.html#attribute">attribute</a> declaration as an XML DTD definition</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlsave.html#xmlSaveTree">xmlSaveTree</a>. This will dump the content of the <a href="libxml2-SAX.html#attribute">attribute</a> declaration as an XML DTD definition</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -679,7 +705,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDumpAttributeTable"></a>xmlDumpAttributeTable ()</h3>
 <pre class="programlisting">void	xmlDumpAttributeTable		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-valid.html#xmlAttributeTablePtr">xmlAttributeTablePtr</a> table)<br>
 </pre>
-<p>This will dump the content of the <a href="libxml2-SAX.html#attribute">attribute</a> table as an XML DTD definition</p>
+<p>DEPRECATED: Don't use. This will dump the content of the <a href="libxml2-SAX.html#attribute">attribute</a> table as an XML DTD definition</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -700,7 +726,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDumpElementDecl"></a>xmlDumpElementDecl ()</h3>
 <pre class="programlisting">void	xmlDumpElementDecl		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlElementPtr">xmlElementPtr</a> elem)<br>
 </pre>
-<p>This will dump the content of the element declaration as an XML DTD definition</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlsave.html#xmlSaveTree">xmlSaveTree</a>. This will dump the content of the element declaration as an XML DTD definition</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -721,7 +747,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDumpElementTable"></a>xmlDumpElementTable ()</h3>
 <pre class="programlisting">void	xmlDumpElementTable		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-valid.html#xmlElementTablePtr">xmlElementTablePtr</a> table)<br>
 </pre>
-<p>This will dump the content of the element table as an XML DTD definition</p>
+<p>DEPRECATED: Don't use. This will dump the content of the element table as an XML DTD definition</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -742,7 +768,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDumpNotationDecl"></a>xmlDumpNotationDecl ()</h3>
 <pre class="programlisting">void	xmlDumpNotationDecl		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlNotationPtr">xmlNotationPtr</a> nota)<br>
 </pre>
-<p>This will dump the content the notation declaration as an XML DTD definition</p>
+<p>DEPRECATED: Don't use. This will dump the content the notation declaration as an XML DTD definition</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -763,7 +789,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDumpNotationTable"></a>xmlDumpNotationTable ()</h3>
 <pre class="programlisting">void	xmlDumpNotationTable		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-valid.html#xmlNotationTablePtr">xmlNotationTablePtr</a> table)<br>
 </pre>
-<p>This will dump the content of the notation table as an XML DTD definition</p>
+<p>DEPRECATED: Don't use. This will dump the content of the notation table as an XML DTD definition</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -954,7 +980,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetDtdElementDesc"></a>xmlGetDtdElementDesc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlElementPtr">xmlElementPtr</a>	xmlGetDtdElementDesc	(<a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Search the DTD for the description of this element</p>
+<p>Search the DTD for the description of this element NOTE: A NULL return value can also mean that a memory allocation failed.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1136,7 +1162,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 or 1 depending on the lookup result</td>
+<td>0 or 1 depending on the lookup result or -1 if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1378,7 +1404,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidBuildContentModel"></a>xmlValidBuildContentModel ()</h3>
 <pre class="programlisting">int	xmlValidBuildContentModel	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlElementPtr">xmlElementPtr</a> elem)<br>
 </pre>
-<p>(Re)Build the automata associated to the content model of this element</p>
+<p>DEPRECATED: Internal function, don't use. (Re)Build the automata associated to the content model of this element</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1403,7 +1429,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidCtxtNormalizeAttributeValue"></a>xmlValidCtxtNormalizeAttributeValue ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlValidCtxtNormalizeAttributeValue	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>							 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>							 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Does the validation related extra step of the normalization of <a href="libxml2-SAX.html#attribute">attribute</a> values: If the declared value is not CDATA, then the XML processor must further process the normalized <a href="libxml2-SAX.html#attribute">attribute</a> value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) <a href="libxml2-SAX.html#characters">characters</a> by single space (#x20) character. Also check VC: Standalone Document Declaration in P32, and update ctxt-&gt;valid accordingly</p>
+<p>DEPRECATED: Internal function, don't use. Does the validation related extra step of the normalization of <a href="libxml2-SAX.html#attribute">attribute</a> values: If the declared value is not CDATA, then the XML processor must further process the normalized <a href="libxml2-SAX.html#attribute">attribute</a> value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) <a href="libxml2-SAX.html#characters">characters</a> by single space (#x20) character. Also check VC: Standalone Document Declaration in P32, and update ctxt-&gt;valid accordingly</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1506,7 +1532,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidNormalizeAttributeValue"></a>xmlValidNormalizeAttributeValue ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlValidNormalizeAttributeValue	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>						 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Does the validation related extra step of the normalization of <a href="libxml2-SAX.html#attribute">attribute</a> values: If the declared value is not CDATA, then the XML processor must further process the normalized <a href="libxml2-SAX.html#attribute">attribute</a> value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) <a href="libxml2-SAX.html#characters">characters</a> by single space (#x20) character.</p>
+<p>DEPRECATED: Internal function, don't use. Does the validation related extra step of the normalization of <a href="libxml2-SAX.html#attribute">attribute</a> values: If the declared value is not CDATA, then the XML processor must further process the normalized <a href="libxml2-SAX.html#attribute">attribute</a> value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) <a href="libxml2-SAX.html#characters">characters</a> by single space (#x20) character.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1539,7 +1565,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateAttributeDecl"></a>xmlValidateAttributeDecl ()</h3>
 <pre class="programlisting">int	xmlValidateAttributeDecl	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlAttributePtr">xmlAttributePtr</a> attr)<br>
 </pre>
-<p>Try to validate a single <a href="libxml2-SAX.html#attribute">attribute</a> definition basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Default Legal ] - [ VC: Enumeration ] - [ VC: ID Attribute Default ] The ID/IDREF uniqueness and matching are done separately</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a single <a href="libxml2-SAX.html#attribute">attribute</a> definition basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Default Legal ] - [ VC: Enumeration ] - [ VC: ID Attribute Default ] The ID/IDREF uniqueness and matching are done separately</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1568,7 +1594,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateAttributeValue"></a>xmlValidateAttributeValue ()</h3>
 <pre class="programlisting">int	xmlValidateAttributeValue	(<a href="libxml2-tree.html#xmlAttributeType">xmlAttributeType</a> type, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Validate that the given <a href="libxml2-SAX.html#attribute">attribute</a> value match the proper production [ VC: ID ] Values of type ID must match the Name production.... [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names ... [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names ... [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</p>
+<p>DEPRECATED: Internal function, don't use. Validate that the given <a href="libxml2-SAX.html#attribute">attribute</a> value match the proper production [ VC: ID ] Values of type ID must match the Name production.... [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names ... [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names ... [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1618,7 +1644,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateDocumentFinal"></a>xmlValidateDocumentFinal ()</h3>
 <pre class="programlisting">int	xmlValidateDocumentFinal	(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>Does the final step for the document validation once all the incremental validation steps have been completed basically it does the following checks described by the XML Rec Check all the IDREF/IDREFS attributes definition for validity</p>
+<p>DEPRECATED: Internal function, don't use. Does the final step for the document validation once all the incremental validation steps have been completed basically it does the following checks described by the XML Rec Check all the IDREF/IDREFS attributes definition for validity</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1672,7 +1698,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateDtdFinal"></a>xmlValidateDtdFinal ()</h3>
 <pre class="programlisting">int	xmlValidateDtdFinal		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>Does the final step for the dtds validation once all the subsets have been parsed basically it does the following checks described by the XML Rec - check that ENTITY and ENTITIES type attributes default or possible values matches one of the defined entities. - check that NOTATION type attributes default or possible values matches one of the defined notations.</p>
+<p>DEPRECATED: Internal function, don't use. Does the final step for the dtds validation once all the subsets have been parsed basically it does the following checks described by the XML Rec - check that ENTITY and ENTITIES type attributes default or possible values matches one of the defined entities. - check that NOTATION type attributes default or possible values matches one of the defined notations.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1726,7 +1752,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateElementDecl"></a>xmlValidateElementDecl ()</h3>
 <pre class="programlisting">int	xmlValidateElementDecl		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlElementPtr">xmlElementPtr</a> elem)<br>
 </pre>
-<p>Try to validate a single element definition basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: One ID per Element Type ] - [ VC: No Duplicate Types ] - [ VC: Unique Element Type Declaration ]</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a single element definition basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: One ID per Element Type ] - [ VC: No Duplicate Types ] - [ VC: Unique Element Type Declaration ]</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1839,7 +1865,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateNotationDecl"></a>xmlValidateNotationDecl ()</h3>
 <pre class="programlisting">int	xmlValidateNotationDecl		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNotationPtr">xmlNotationPtr</a> nota)<br>
 </pre>
-<p>Try to validate a single notation definition basically it does the following checks as described by the XML-1.0 recommendation: - it seems that no validity constraint exists on notation declarations But this function get called anyway ...</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a single notation definition basically it does the following checks as described by the XML-1.0 recommendation: - it seems that no validity constraint exists on notation declarations But this function get called anyway ...</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1868,7 +1894,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateNotationUse"></a>xmlValidateNotationUse ()</h3>
 <pre class="programlisting">int	xmlValidateNotationUse		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * notationName)<br>
 </pre>
-<p>Validate that the given name match a notation declaration. - [ VC: Notation Declared ]</p>
+<p>DEPRECATED: Internal function, don't use. Validate that the given name match a notation declaration. - [ VC: Notation Declared ]</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1897,7 +1923,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateOneAttribute"></a>xmlValidateOneAttribute ()</h3>
 <pre class="programlisting">int	xmlValidateOneAttribute		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Try to validate a single <a href="libxml2-SAX.html#attribute">attribute</a> for an element basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Value Type ] - [ VC: Fixed Attribute Default ] - [ VC: Entity Name ] - [ VC: Name Token ] - [ VC: ID ] - [ VC: IDREF ] - [ VC: Entity Name ] - [ VC: Notation Attributes ] The ID/IDREF uniqueness and matching are done separately</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a single <a href="libxml2-SAX.html#attribute">attribute</a> for an element basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Value Type ] - [ VC: Fixed Attribute Default ] - [ VC: Entity Name ] - [ VC: Name Token ] - [ VC: ID ] - [ VC: IDREF ] - [ VC: Entity Name ] - [ VC: Notation Attributes ] The ID/IDREF uniqueness and matching are done separately</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1934,7 +1960,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateOneElement"></a>xmlValidateOneElement ()</h3>
 <pre class="programlisting">int	xmlValidateOneElement		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem)<br>
 </pre>
-<p>Try to validate a single element and it's attributes, basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Element Valid ] - [ VC: Required Attribute ] Then call xmlValidateOneAttribute() for each <a href="libxml2-SAX.html#attribute">attribute</a> present. The ID/IDREF checkings are done separately</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a single element and it's attributes, basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Element Valid ] - [ VC: Required Attribute ] Then call xmlValidateOneAttribute() for each <a href="libxml2-SAX.html#attribute">attribute</a> present. The ID/IDREF checkings are done separately</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1963,7 +1989,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateOneNamespace"></a>xmlValidateOneNamespace ()</h3>
 <pre class="programlisting">int	xmlValidateOneNamespace		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Try to validate a single namespace declaration for an element basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Value Type ] - [ VC: Fixed Attribute Default ] - [ VC: Entity Name ] - [ VC: Name Token ] - [ VC: ID ] - [ VC: IDREF ] - [ VC: Entity Name ] - [ VC: Notation Attributes ] The ID/IDREF uniqueness and matching are done separately</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a single namespace declaration for an element basically it does the following checks as described by the XML-1.0 recommendation: - [ VC: Attribute Value Type ] - [ VC: Fixed Attribute Default ] - [ VC: Entity Name ] - [ VC: Name Token ] - [ VC: ID ] - [ VC: IDREF ] - [ VC: Entity Name ] - [ VC: Notation Attributes ] The ID/IDREF uniqueness and matching are done separately</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2004,7 +2030,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidatePopElement"></a>xmlValidatePopElement ()</h3>
 <pre class="programlisting">int	xmlValidatePopElement		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * qname)<br>
 </pre>
-<p>Pop the element end from the validation stack.</p>
+<p>DEPRECATED: Internal function, don't use. Pop the element end from the validation stack.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2037,7 +2063,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidatePushCData"></a>xmlValidatePushCData ()</h3>
 <pre class="programlisting">int	xmlValidatePushCData		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * data, <br>					 int len)<br>
 </pre>
-<p>check the CData parsed for validation in the current stack</p>
+<p>DEPRECATED: Internal function, don't use. check the CData parsed for validation in the current stack</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2066,7 +2092,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidatePushElement"></a>xmlValidatePushElement ()</h3>
 <pre class="programlisting">int	xmlValidatePushElement		(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * qname)<br>
 </pre>
-<p>Push a new element start on the validation stack.</p>
+<p>DEPRECATED: Internal function, don't use. Push a new element start on the validation stack.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2099,7 +2125,7 @@ The content of this structure is not made public by the API.
 <a name="xmlValidateRoot"></a>xmlValidateRoot ()</h3>
 <pre class="programlisting">int	xmlValidateRoot			(<a href="libxml2-valid.html#xmlValidCtxtPtr">xmlValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>Try to validate a the root element basically it does the following check as described by the XML-1.0 recommendation: - [ VC: Root Element Type ] it doesn't try to recurse or apply other check to the element</p>
+<p>DEPRECATED: Internal function, don't use. Try to validate a the root element basically it does the following check as described by the XML-1.0 recommendation: - [ VC: Root Element Type ] it doesn't try to recurse or apply other check to the element</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

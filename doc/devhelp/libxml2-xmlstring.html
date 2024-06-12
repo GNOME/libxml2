@@ -841,7 +841,7 @@ int	<a href="#xmlUTF8Strsize">xmlUTF8Strsize</a>			(const <a href="libxml2-xmlst
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to a newly created string or NULL if any problem</td>
+<td>a pointer to a newly created string or NULL if the start index is out of bounds or a memory allocation failed. If len is too large, the result is truncated.</td>
 </tr>
 </tbody>
 </table></div>

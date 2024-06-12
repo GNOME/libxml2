@@ -44,7 +44,9 @@ int	<a href="#xmlDelEncodingAlias">xmlDelEncodingAlias</a>		(const char * alias)
 const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 const char *	<a href="#xmlGetEncodingAlias">xmlGetEncodingAlias</a>	(const char * alias);
 void	<a href="#xmlInitCharEncodingHandlers">xmlInitCharEncodingHandlers</a>	(void);
+int	<a href="#xmlLookupCharEncodingHandler">xmlLookupCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlNewCharEncodingHandler">xmlNewCharEncodingHandler</a>	(const char * name, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output);
+int	<a href="#xmlOpenCharEncodingHandler">xmlOpenCharEncodingHandler</a>	(const char * name, <br>					 int output, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlParseCharEncoding">xmlParseCharEncoding</a>	(const char * name);
 void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);
 </pre>
@@ -457,7 +459,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlFindCharEncodingHandler"></a>xmlFindCharEncodingHandler ()</h3>
 <pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlFindCharEncodingHandler	(const char * name)<br>
 </pre>
-<p>Search in the registered set the handler able to read/write that encoding or create a new one.</p>
+<p>DEPRECATED: Use <a href="libxml2-encoding.html#xmlOpenCharEncodingHandler">xmlOpenCharEncodingHandler</a> which has better error reporting.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -467,7 +469,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the handler or NULL if not found</td>
+<td>the handler or NULL if no handler was found or an error occurred.</td>
 </tr>
 </tbody>
 </table></div>
@@ -478,7 +480,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlGetCharEncodingHandler"></a>xmlGetCharEncodingHandler ()</h3>
 <pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlGetCharEncodingHandler	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Search in the registered set the handler able to read/write that encoding.</p>
+<p>DEPRECATED: Use <a href="libxml2-encoding.html#xmlLookupCharEncodingHandler">xmlLookupCharEncodingHandler</a> which has better error reporting.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -488,7 +490,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the handler or NULL if not found</td>
+<td>the handler or NULL if no handler was found or an error occurred.</td>
 </tr>
 </tbody>
 </table></div>
@@ -546,6 +548,31 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlLookupCharEncodingHandler"></a>xmlLookupCharEncodingHandler ()</h3>
+<pre class="programlisting">int	xmlLookupCharEncodingHandler	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+</pre>
+<p>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported. The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>enc</tt></i>:</span></td>
+<td>an <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> value.</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>pointer to result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlNewCharEncodingHandler"></a>xmlNewCharEncodingHandler ()</h3>
 <pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlNewCharEncodingHandler	(const char * name, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output)<br>
 </pre>
@@ -568,6 +595,35 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> created (or NULL in case of error).</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlOpenCharEncodingHandler"></a>xmlOpenCharEncodingHandler ()</h3>
+<pre class="programlisting">int	xmlOpenCharEncodingHandler	(const char * name, <br>					 int output, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+</pre>
+<p>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported. The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>name</tt></i>:</span></td>
+<td>a string describing the char encoding.</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>output</tt></i>:</span></td>
+<td>boolean, use handler for output</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>pointer to result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
 </tr>
 </tbody>
 </table></div>

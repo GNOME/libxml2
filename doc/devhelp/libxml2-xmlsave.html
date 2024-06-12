@@ -27,6 +27,7 @@ typedef <a href="libxml2-xmlsave.html#xmlSaveCtxt">xmlSaveCtxt</a> * <a href="#x
 typedef enum <a href="#xmlSaveOption">xmlSaveOption</a>;
 int	<a href="#xmlSaveClose">xmlSaveClose</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 long	<a href="#xmlSaveDoc">xmlSaveDoc</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlSaveFinish">xmlSaveFinish</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 int	<a href="#xmlSaveFlush">xmlSaveFlush</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 int	<a href="#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
 int	<a href="#xmlSaveSetEscape">xmlSaveSetEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
@@ -120,6 +121,27 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the number of byte written or -1 in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlSaveFinish"></a>xmlSaveFinish ()</h3>
+<pre class="programlisting">int	xmlSaveFinish			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt)<br>
+</pre>
+<p>Close a document saving context, i.e. make sure that all bytes have been output and free the associated data. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>a document saving context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> code.</td>
 </tr>
 </tbody>
 </table></div>

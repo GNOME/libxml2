@@ -603,7 +603,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSchemaSetParserErrors"></a>xmlSchemaSetParserErrors ()</h3>
 <pre class="programlisting">void	xmlSchemaSetParserErrors	(<a href="libxml2-xmlschemas.html#xmlSchemaParserCtxtPtr">xmlSchemaParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn, <br>					 void * ctx)<br>
 </pre>
-<p>Set the callback functions used to handle errors for a validation context</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlschemas.html#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a>. Set the callback functions used to handle errors for a validation context</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -657,7 +657,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSchemaSetValidErrors"></a>xmlSchemaSetValidErrors ()</h3>
 <pre class="programlisting">void	xmlSchemaSetValidErrors		(<a href="libxml2-xmlschemas.html#xmlSchemaValidCtxtPtr">xmlSchemaValidCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc">xmlSchemaValidityErrorFunc</a> err, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc">xmlSchemaValidityWarningFunc</a> warn, <br>					 void * ctx)<br>
 </pre>
-<p>Set the error and warning callback information</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlschemas.html#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErrors</a>. Set the error and warning callback information</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

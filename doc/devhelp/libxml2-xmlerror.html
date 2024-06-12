@@ -31,6 +31,7 @@ void	<a href="#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>	(<a 
 int	<a href="#xmlCopyError">xmlCopyError</a>			(const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * from, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to);
 const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	<a href="#xmlCtxtGetLastError">xmlCtxtGetLastError</a>	(void * ctx);
 void	<a href="#xmlCtxtResetLastError">xmlCtxtResetLastError</a>		(void * ctx);
+void	<a href="#xmlFormatError">xmlFormatError</a>			(const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * err, <br>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> channel, <br>					 void * data);
 typedef void <a href="#xmlGenericErrorFunc">xmlGenericErrorFunc</a>		(void * ctx, <br>					 const char * msg, <br>					 ... ...);
 const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	<a href="#xmlGetLastError">xmlGetLastError</a>	(void);
 void	<a href="#xmlParserError">xmlParserError</a>			(void * ctx, <br>					 const char * msg, <br>					 ... ...);
@@ -253,6 +254,11 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
     <a name="XML_ERR_USER_STOP">XML_ERR_USER_STOP</a> = 111 /* 111 */
     <a name="XML_ERR_COMMENT_ABRUPTLY_ENDED">XML_ERR_COMMENT_ABRUPTLY_ENDED</a> = 112 /* 112 */
     <a name="XML_WAR_ENCODING_MISMATCH">XML_WAR_ENCODING_MISMATCH</a> = 113 /* 113 */
+    <a name="XML_ERR_RESOURCE_LIMIT">XML_ERR_RESOURCE_LIMIT</a> = 114 /* 114 */
+    <a name="XML_ERR_ARGUMENT">XML_ERR_ARGUMENT</a> = 115 /* 115 */
+    <a name="XML_ERR_SYSTEM">XML_ERR_SYSTEM</a> = 116 /* 116 */
+    <a name="XML_ERR_REDECL_PREDEF_ENTITY">XML_ERR_REDECL_PREDEF_ENTITY</a> = 117 /* 117 */
+    <a name="XML_ERR_INT_SUBSET_NOT_FINISHED">XML_ERR_INT_SUBSET_NOT_FINISHED</a> = 118 /* 118 */
     <a name="XML_NS_ERR_XML_NAMESPACE">XML_NS_ERR_XML_NAMESPACE</a> = 200
     <a name="XML_NS_ERR_UNDEFINED_NAMESPACE">XML_NS_ERR_UNDEFINED_NAMESPACE</a> = 201 /* 201 */
     <a name="XML_NS_ERR_QNAME">XML_NS_ERR_QNAME</a> = 202 /* 202 */
@@ -515,6 +521,7 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
     <a name="XML_IO_EADDRINUSE">XML_IO_EADDRINUSE</a> = 1554 /* 1554 */
     <a name="XML_IO_EALREADY">XML_IO_EALREADY</a> = 1555 /* 1555 */
     <a name="XML_IO_EAFNOSUPPORT">XML_IO_EAFNOSUPPORT</a> = 1556 /* 1556 */
+    <a name="XML_IO_UNSUPPORTED_PROTOCOL">XML_IO_UNSUPPORTED_PROTOCOL</a> = 1557 /* 1557 */
     <a name="XML_XINCLUDE_RECURSION">XML_XINCLUDE_RECURSION</a> = 1600
     <a name="XML_XINCLUDE_PARSE_VALUE">XML_XINCLUDE_PARSE_VALUE</a> = 1601 /* 1601 */
     <a name="XML_XINCLUDE_ENTITY_DEF_MISMATCH">XML_XINCLUDE_ENTITY_DEF_MISMATCH</a> = 1602 /* 1602 */
@@ -1005,6 +1012,31 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlFormatError"></a>xmlFormatError ()</h3>
+<pre class="programlisting">void	xmlFormatError			(const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * err, <br>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> channel, <br>					 void * data)<br>
+</pre>
+<p>Report a formatted error to a printf-like callback. This can result in a verbose multi-line report including additional information from the parser context. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>err</tt></i>:</span></td>
+<td>the error</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>channel</tt></i>:</span></td>
+<td>callback</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>data</tt></i>:</span></td>
+<td>user data for callback</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlGetLastError"></a>xmlGetLastError ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	xmlGetLastError	(void)<br>
 </pre>
@@ -1048,7 +1080,7 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <a name="xmlParserPrintFileContext"></a>xmlParserPrintFileContext ()</h3>
 <pre class="programlisting">void	xmlParserPrintFileContext	(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br>
 </pre>
-<p>Displays current context within the input content for error tracking</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlerror.html#xmlFormatError">xmlFormatError</a>. Displays current context within the input content for error tracking</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1063,7 +1095,7 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <a name="xmlParserPrintFileInfo"></a>xmlParserPrintFileInfo ()</h3>
 <pre class="programlisting">void	xmlParserPrintFileInfo		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br>
 </pre>
-<p>Displays the associated file and line information for the current input</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlerror.html#xmlFormatError">xmlFormatError</a>. Displays the associated file and line information for the current input</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1176,7 +1208,7 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <a name="xmlSetGenericErrorFunc"></a>xmlSetGenericErrorFunc ()</h3>
 <pre class="programlisting">void	xmlSetGenericErrorFunc		(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> handler)<br>
 </pre>
-<p>Function to reset the handler and the error context for out of context error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler One can simply force messages to be emitted to another FILE * than stderr by setting @ctx to this file handle and @handler to NULL. For multi-threaded applications, this must be set separately for each thread.</p>
+<p>DEPRECATED: See <a href="libxml2-xmlerror.html#xmlSetStructuredErrorFunc">xmlSetStructuredErrorFunc</a> for alternatives. Set the global "generic" handler and context for error messages. The generic error handler will only receive fragments of error messages which should be concatenated or printed to a stream. If handler is NULL, use the built-in default handler which prints to stderr. Since this is a global setting, it's a good idea to reset the error handler to its default value after collecting the errors you're interested in. For multi-threaded applications, this must be set separately for each thread.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1197,7 +1229,7 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <a name="xmlSetStructuredErrorFunc"></a>xmlSetStructuredErrorFunc ()</h3>
 <pre class="programlisting">void	xmlSetStructuredErrorFunc	(void * ctx, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler)<br>
 </pre>
-<p>Function to reset the handler and the error context for out of context structured error messages. This simply means that @handler will be called for subsequent error messages while not parsing nor validating. And @ctx will be passed as first argument to @handler For multi-threaded applications, this must be set separately for each thread.</p>
+<p>DEPRECATED: Use a per-context error handler. It's recommended to use the per-context error handlers instead: - <a href="libxml2-parser.html#xmlCtxtSetErrorHandler">xmlCtxtSetErrorHandler</a> (since 2.13.0) - <a href="libxml2-xmlreader.html#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a> - <a href="libxml2-xpath.html#xmlXPathSetErrorHandler">xmlXPathSetErrorHandler</a> (since 2.13.0) - <a href="libxml2-xinclude.html#xmlXIncludeSetErrorHandler">xmlXIncludeSetErrorHandler</a> (since 2.13.0) - <a href="libxml2-xmlschemas.html#xmlSchemaSetParserStructuredErrors">xmlSchemaSetParserStructuredErrors</a> - <a href="libxml2-xmlschemas.html#xmlSchemaSetValidStructuredErrors">xmlSchemaSetValidStructuredErrors</a> - <a href="libxml2-relaxng.html#xmlRelaxNGSetParserStructuredErrors">xmlRelaxNGSetParserStructuredErrors</a> - <a href="libxml2-relaxng.html#xmlRelaxNGSetValidStructuredErrors">xmlRelaxNGSetValidStructuredErrors</a> Set the global "structured" handler and context for error messages. If handler is NULL, the error handler is deactivated. The structured error handler takes precedence over "generic" handlers, even per-context generic handlers. Since this is a global setting, it's a good idea to deactivate the error handler after collecting the errors you're interested in. For multi-threaded applications, this must be set separately for each thread.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

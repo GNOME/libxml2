@@ -67,7 +67,7 @@ void	<a href="#xmlXPathDebugDumpObject">xmlXPathDebugDumpObject</a>		(FILE * out
 <a href="libxml2-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a>	<a href="#xmlXPathDistinctSorted">xmlXPathDistinctSorted</a>	(<a href="libxml2-xpath.html#xmlNodeSetPtr">xmlNodeSetPtr</a> nodes);
 void	<a href="#xmlXPathDivValues">xmlXPathDivValues</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
 int	<a href="#xmlXPathEqualValues">xmlXPathEqualValues</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
-void	<a href="#xmlXPathErr">xmlXPathErr</a>			(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int error);
+void	<a href="#xmlXPathErr">xmlXPathErr</a>			(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int code);
 void	<a href="#xmlXPathEvalExpr">xmlXPathEvalExpr</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
 int	<a href="#xmlXPathEvaluatePredicateResult">xmlXPathEvaluatePredicateResult</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> res);
 void	<a href="#xmlXPathFalseFunction">xmlXPathFalseFunction</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs);
@@ -961,7 +961,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlXPathErr"></a>xmlXPathErr ()</h3>
-<pre class="programlisting">void	xmlXPathErr			(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int error)<br>
+<pre class="programlisting">void	xmlXPathErr			(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int code)<br>
 </pre>
 <p>Handle an XPath error</p>
 <div class="variablelist"><table border="0">
@@ -972,7 +972,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <td>a XPath parser context</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>error</tt></i>:</span></td>
+<td><span class="term"><i><tt>code</tt></i>:</span></td>
 <td>the error code</td>
 </tr>
 </tbody>
@@ -2867,7 +2867,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathSubstringAfterFunction"></a>xmlXPathSubstringAfterFunction ()</h3>
 <pre class="programlisting">void	xmlXPathSubstringAfterFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the substring-after() XPath function string substring-after(string, string) The substring-after function returns the substring of the first argument string that follows the first occurrence of the second argument string in the first argument string, or the empty stringi if the first argument string does not contain the second argument string. For example, substring-after("1999/04/01","/") returns 04/01, and substring-after("1999/04/01","19") returns 99/04/01.</p>
+<p>Implement the substring-after() XPath function string substring-after(string, string) The substring-after function returns the substring of the first argument string that follows the first occurrence of the second argument string in the first argument string, or the empty string if the first argument string does not contain the second argument string. For example, substring-after("1999/04/01","/") returns 04/01, and substring-after("1999/04/01","19") returns 99/04/01.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

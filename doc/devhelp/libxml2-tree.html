@@ -86,9 +86,9 @@ typedef struct _xmlSAXLocator <a href="#xmlSAXLocator">xmlSAXLocator</a>;
 typedef <a href="libxml2-tree.html#xmlSAXLocator">xmlSAXLocator</a> * <a href="#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a>;
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddChild">xmlAddChild</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddChildList">xmlAddChildList</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
-<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddNextSibling">xmlAddNextSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
-<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddPrevSibling">xmlAddPrevSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
-<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddSibling">xmlAddSibling</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem);
+<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddNextSibling">xmlAddNextSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> prev, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
+<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddPrevSibling">xmlAddPrevSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> next, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
+<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlAddSibling">xmlAddSibling</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur);
 void	<a href="#xmlAttrSerializeTxtContent">xmlAttrSerializeTxtContent</a>	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> attr, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * string);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBufContent">xmlBufContent</a>		(const <a href="libxml2-tree.html#xmlBuf">xmlBuf</a> * buf);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlBufEnd">xmlBufEnd</a>		(<a href="libxml2-tree.html#xmlBufPtr">xmlBufPtr</a> buf);
@@ -165,6 +165,7 @@ long	<a href="#xmlGetLineNo">xmlGetLineNo</a>			(const <a href="libxml2-tree.htm
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetNoNsProp">xmlGetNoNsProp</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetNodePath">xmlGetNodePath</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node);
 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	<a href="#xmlGetNsList">xmlGetNsList</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node);
+int	<a href="#xmlGetNsListSafe">xmlGetNsListSafe</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ** out);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetNsProp">xmlGetNsProp</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlGetProp">xmlGetProp</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlHasNsProp">xmlHasNsProp</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace);
@@ -200,24 +201,26 @@ int	<a href="#xmlIsXHTML">xmlIsXHTML</a>			(const <a href="libxml2-xmlstring.htm
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewTextChild">xmlNewTextChild</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNewTextLen">xmlNewTextLen</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlNextElementSibling">xmlNextElementSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-void	<a href="#xmlNodeAddContent">xmlNodeAddContent</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
-void	<a href="#xmlNodeAddContentLen">xmlNodeAddContentLen</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len);
+int	<a href="#xmlNodeAddContent">xmlNodeAddContent</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
+int	<a href="#xmlNodeAddContentLen">xmlNodeAddContentLen</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len);
 int	<a href="#xmlNodeBufGetContent">xmlNodeBufGetContent</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur);
 int	<a href="#xmlNodeDump">xmlNodeDump</a>			(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int level, <br>					 int format);
 void	<a href="#xmlNodeDumpOutput">xmlNodeDumpOutput</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> buf, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int level, <br>					 int format, <br>					 const char * encoding);
+int	<a href="#xmlNodeGetAttrValue">xmlNodeGetAttrValue</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nsUri, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** out);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeGetBase">xmlNodeGetBase</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur);
+int	<a href="#xmlNodeGetBaseSafe">xmlNodeGetBaseSafe</a>		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** baseOut);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeGetContent">xmlNodeGetContent</a>	(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeGetLang">xmlNodeGetLang</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur);
 int	<a href="#xmlNodeGetSpacePreserve">xmlNodeGetSpacePreserve</a>		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur);
 int	<a href="#xmlNodeIsText">xmlNodeIsText</a>			(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeListGetRawString">xmlNodeListGetRawString</a>	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * list, <br>					 int inLine);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNodeListGetString">xmlNodeListGetString</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * list, <br>					 int inLine);
-void	<a href="#xmlNodeSetBase">xmlNodeSetBase</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * uri);
-void	<a href="#xmlNodeSetContent">xmlNodeSetContent</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
-void	<a href="#xmlNodeSetContentLen">xmlNodeSetContentLen</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len);
-void	<a href="#xmlNodeSetLang">xmlNodeSetLang</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang);
+int	<a href="#xmlNodeSetBase">xmlNodeSetBase</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * uri);
+int	<a href="#xmlNodeSetContent">xmlNodeSetContent</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
+int	<a href="#xmlNodeSetContentLen">xmlNodeSetContentLen</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len);
+int	<a href="#xmlNodeSetLang">xmlNodeSetLang</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang);
 void	<a href="#xmlNodeSetName">xmlNodeSetName</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
-void	<a href="#xmlNodeSetSpacePreserve">xmlNodeSetSpacePreserve</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int val);
+int	<a href="#xmlNodeSetSpacePreserve">xmlNodeSetSpacePreserve</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int val);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlPreviousElementSibling">xmlPreviousElementSibling</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 int	<a href="#xmlReconciliateNs">xmlReconciliateNs</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree);
 <a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	<a href="#xmlRegisterNodeDefault">xmlRegisterNodeDefault</a>	(<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func);
@@ -235,11 +238,11 @@ int	<a href="#xmlSaveFormatFileTo">xmlSaveFormatFileTo</a>		(<a href="libxml2-tr
 void	<a href="#xmlSetBufferAllocationScheme">xmlSetBufferAllocationScheme</a>	(<a href="libxml2-tree.html#xmlBufferAllocationScheme">xmlBufferAllocationScheme</a> scheme);
 void	<a href="#xmlSetCompressMode">xmlSetCompressMode</a>		(int mode);
 void	<a href="#xmlSetDocCompressMode">xmlSetDocCompressMode</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int mode);
-void	<a href="#xmlSetListDoc">xmlSetListDoc</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> list, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlSetListDoc">xmlSetListDoc</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> list, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 void	<a href="#xmlSetNs">xmlSetNs</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlSetNsProp">xmlSetNsProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	<a href="#xmlSetProp">xmlSetProp</a>		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
-void	<a href="#xmlSetTreeDoc">xmlSetTreeDoc</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
+int	<a href="#xmlSetTreeDoc">xmlSetTreeDoc</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSplitQName2">xmlSplitQName2</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** prefix);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSplitQName3">xmlSplitQName3</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int * len);
 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#xmlStringGetNodeList">xmlStringGetNodeList</a>	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
@@ -351,6 +354,7 @@ int	<a href="#xmlValidateQName">xmlValidateQName</a>		(const <a href="libxml2-xm
     <a href="libxml2-tree.html#xmlNs">xmlNs</a> *	ns	: pointer to the associated namespace
     <a href="libxml2-tree.html#xmlAttributeType">xmlAttributeType</a>	atype	: the <a href="libxml2-SAX.html#attribute">attribute</a> type if validating
     void *	psvi	: for type/PSVI information
+    struct _xmlID *	id	: the ID struct
 } xmlAttr;
 </pre>
 <p></p>
@@ -687,13 +691,13 @@ The content of this structure is not made public by the API.
     <a name="XML_TEXT_NODE">XML_TEXT_NODE</a> = 3
     <a name="XML_CDATA_SECTION_NODE">XML_CDATA_SECTION_NODE</a> = 4
     <a name="XML_ENTITY_REF_NODE">XML_ENTITY_REF_NODE</a> = 5
-    <a name="XML_ENTITY_NODE">XML_ENTITY_NODE</a> = 6
+    <a name="XML_ENTITY_NODE">XML_ENTITY_NODE</a> = 6 /* unused */
     <a name="XML_PI_NODE">XML_PI_NODE</a> = 7
     <a name="XML_COMMENT_NODE">XML_COMMENT_NODE</a> = 8
     <a name="XML_DOCUMENT_NODE">XML_DOCUMENT_NODE</a> = 9
-    <a name="XML_DOCUMENT_TYPE_NODE">XML_DOCUMENT_TYPE_NODE</a> = 10
+    <a name="XML_DOCUMENT_TYPE_NODE">XML_DOCUMENT_TYPE_NODE</a> = 10 /* unused */
     <a name="XML_DOCUMENT_FRAG_NODE">XML_DOCUMENT_FRAG_NODE</a> = 11
-    <a name="XML_NOTATION_NODE">XML_NOTATION_NODE</a> = 12
+    <a name="XML_NOTATION_NODE">XML_NOTATION_NODE</a> = 12 /* unused */
     <a name="XML_HTML_DOCUMENT_NODE">XML_HTML_DOCUMENT_NODE</a> = 13
     <a name="XML_DTD_NODE">XML_DTD_NODE</a> = 14
     <a name="XML_ELEMENT_DECL">XML_ELEMENT_DECL</a> = 15
@@ -742,7 +746,7 @@ The content of this structure is not made public by the API.
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	SystemID	: URI for a SYSTEM or PUBLIC Entity
     struct _xmlEntity *	nexte	: unused
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	URI	: the full URI as computed
-    int	owner	: does the entity own the childrens
+    int	owner	: unused
     int	flags	: various flags
     unsigned long	expandedSize	: expanded size
 } xmlEntity;
@@ -935,13 +939,13 @@ The content of this structure is not made public by the API.
     int	errNo	: error code
     int	hasExternalSubset	: <a href="libxml2-SAX.html#reference">reference</a> and external subset
     int	hasPErefs	: the internal subset has PE refs
-    int	external	: are we parsing an external entity
+    int	external	: unused
     int	valid	: is the document valid
     int	validate	: shall we try to validate ?
     <a href="libxml2-valid.html#xmlValidCtxt">xmlValidCtxt</a>	vctxt	: The validity context
-    <a href="libxml2-parser.html#xmlParserInputState">xmlParserInputState</a>	instate	: current type of input
-    int	token	: next char look-ahead
-    char *	directory	: the data directory Node name stack
+    <a href="libxml2-parser.html#xmlParserInputState">xmlParserInputState</a>	instate	: push parser state
+    int	token	: unused
+    char *	directory	: unused Node name stack
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name	: Current parsed Node
     int	nameNr	: Depth of the parsing stack
     int	nameMax	: Max depth of the parsing stack
@@ -959,7 +963,7 @@ The content of this structure is not made public by the API.
     int	spaceMax	: Max depth of the parsing stack
     int *	spaceTab	: array of space infos
     int	depth	: to prevent entity substitution loops
-    <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	entity	: used to check entities boundaries
+    <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	entity	: unused
     int	charset	: unused
     int	nodelen	: Those two fields are there to
     int	nodemem	: Speed up large node parsing
@@ -969,7 +973,7 @@ The content of this structure is not made public by the API.
     int	linenumbers	: set line number in element content
     void *	catalogs	: document's own catalog
     int	recovery	: run in recovery mode
-    int	progressive	: is this a progressive parsing
+    int	progressive	: unused
     <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	dict	: dictionary for the parser
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * *	atts	: array for the attributes callbacks
     int	maxatts	: the size of the array
@@ -995,7 +999,7 @@ The content of this structure is not made public by the API.
     <a href="libxml2-xmlerror.html#xmlError">xmlError</a>	lastError
     <a href="libxml2-parser.html#xmlParserMode">xmlParserMode</a>	parseMode	: the parser mode
     unsigned long	nbentities	: unused
-    unsigned long	sizeentities	: size of parsed entities for use by HTML non-recursive parser
+    unsigned long	sizeentities	: size of external entities for use by HTML non-recursive parser
     <a href="libxml2-parser.html#xmlParserNodeInfo">xmlParserNodeInfo</a> *	nodeInfo	: Current NodeInfo
     int	nodeInfoNr	: Depth of the parsing stack
     int	nodeInfoMax	: Max depth of the parsing stack
@@ -1009,6 +1013,8 @@ The content of this structure is not made public by the API.
     <a href="libxml2-parser.html#xmlParserNsData">xmlParserNsData</a> *	nsdb	: namespace database
     unsigned	attrHashMax	: allocated size
     <a href="libxml2-parser.html#xmlAttrHashBucket">xmlAttrHashBucket</a> *	attrHash	: atttribute hash table
+    <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>	errorHandler
+    void *	errorCtxt
 } xmlParserCtxt;
 </pre>
 <p></p>
@@ -1028,11 +1034,11 @@ The content of this structure is not made public by the API.
 <pre class="programlisting">struct _xmlParserInput {
     <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	buf	: UTF-8 encoded buffer
     const char *	filename	: The file analyzed, if any
-    const char *	directory	: the directory/base of the file
+    const char *	directory	: unused
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	base	: Base of the array to parse
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	cur	: Current char being parsed
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	end	: end of the array to parse
-    int	length	: length if known
+    int	length	: unused
     int	line	: Current line
     int	col	: Current column
     unsigned long	consumed	: How many xmlChars already consumed
@@ -1041,7 +1047,7 @@ The content of this structure is not made public by the API.
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	version	: the version string for entity
     int	flags	: Flags
     int	id	: an unique identifier for the entity
-    unsigned long	parentConsumed	: consumed bytes from parents
+    unsigned long	parentConsumed	: unused
     <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	entity	: entity, if any
 } xmlParserInput;
 </pre>
@@ -1121,7 +1127,7 @@ The content of this structure is not made public by the API.
     <a href="libxml2-parser.html#unparsedEntityDeclSAXFunc">unparsedEntityDeclSAXFunc</a>	unparsedEntityDecl
     <a href="libxml2-parser.html#setDocumentLocatorSAXFunc">setDocumentLocatorSAXFunc</a>	setDocumentLocator
     <a href="libxml2-parser.html#startDocumentSAXFunc">startDocumentSAXFunc</a>	startDocument
-    <a href="libxml2-parser.html#endDocumentSAXFunc">endDocumentSAXFunc</a>	endDocument
+    <a href="libxml2-parser.html#endDocumentSAXFunc">endDocumentSAXFunc</a>	endDocument	: * `startElement` and `endElement` are only used by the legacy SAX1 * i
     <a href="libxml2-parser.html#startElementSAXFunc">startElementSAXFunc</a>	startElement
     <a href="libxml2-parser.html#endElementSAXFunc">endElementSAXFunc</a>	endElement
     <a href="libxml2-parser.html#referenceSAXFunc">referenceSAXFunc</a>	reference
@@ -1134,8 +1140,8 @@ The content of this structure is not made public by the API.
     <a href="libxml2-parser.html#fatalErrorSAXFunc">fatalErrorSAXFunc</a>	fatalError	: unused error() get all the errors
     <a href="libxml2-parser.html#getParameterEntitySAXFunc">getParameterEntitySAXFunc</a>	getParameterEntity
     <a href="libxml2-parser.html#cdataBlockSAXFunc">cdataBlockSAXFunc</a>	cdataBlock
-    <a href="libxml2-parser.html#externalSubsetSAXFunc">externalSubsetSAXFunc</a>	externalSubset
-    unsigned int	initialized	: The following fields are extensions available only on version 2
+    <a href="libxml2-parser.html#externalSubsetSAXFunc">externalSubsetSAXFunc</a>	externalSubset	: * `initialized` should always be set to <a href="libxml2-parser.html#XML_SAX2_MAGIC">XML_SAX2_MAGIC</a> to enable the *
+    unsigned int	initialized	: * The following members are only used by the SAX2 interface. *
     void *	_private
     <a href="libxml2-parser.html#startElementNsSAX2Func">startElementNsSAX2Func</a>	startElementNs
     <a href="libxml2-parser.html#endElementNsSAX2Func">endElementNsSAX2Func</a>	endElementNs
@@ -1242,7 +1248,7 @@ The content of this structure is not made public by the API.
 <a name="xmlAddChild"></a>xmlAddChild ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddChild		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Add a new node to @parent, at the end of the child (or property) list merging adjacent TEXT nodes (in which case @cur is freed) If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an <a href="libxml2-SAX.html#attribute">attribute</a> with equal name, it is first destroyed. All tree manipulation functions can safely move nodes within a document. But when moving nodes from one document to another, references to namespaces in element or <a href="libxml2-SAX.html#attribute">attribute</a> nodes are NOT fixed. In this case, you MUST call <a href="libxml2-tree.html#xmlReconciliateNs">xmlReconciliateNs</a> after the move operation to avoid memory errors.</p>
+<p>Unlink @cur and append it to the children of @parent. If @cur is a text node, it may be merged with an adjacent text node and freed. In this case the text node containing the merged content is returned. If @cur is an <a href="libxml2-SAX.html#attribute">attribute</a> node, it is appended to the attributes of @parent. If the <a href="libxml2-SAX.html#attribute">attribute</a> list contains an <a href="libxml2-SAX.html#attribute">attribute</a> with a name matching @elem, the old <a href="libxml2-SAX.html#attribute">attribute</a> is destroyed. General notes: Move operations like <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a> can cause element or <a href="libxml2-SAX.html#attribute">attribute</a> nodes to <a href="libxml2-SAX.html#reference">reference</a> namespaces that aren't declared in one of their ancestors. This can lead to use-after-free errors if the elements containing the declarations are freed later, especially when moving nodes from one document to another. You should consider calling <a href="libxml2-tree.html#xmlReconciliateNs">xmlReconciliateNs</a> after a move operation to normalize namespaces. Another option is to call <a href="libxml2-tree.html#xmlDOMWrapAdoptNode">xmlDOMWrapAdoptNode</a> with the target parent before moving a node. For the most part, move operations don't check whether the resulting tree structure is valid. Users must make sure that parent nodes only receive children of valid types. Inserted child nodes must never be an ancestor of the parent node to avoid cycles in the tree structure. In general, only document, document fragments, elements and attributes should be used as parent nodes. When moving a node between documents and a memory allocation fails, the node's content will be corrupted and it will be unlinked. In this case, the node must be freed manually. Moving DTDs between documents isn't supported.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1256,7 +1262,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the child or NULL in case of error.</td>
+<td>@elem or a sibling if @elem was merged. Returns NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1267,7 +1273,7 @@ The content of this structure is not made public by the API.
 <a name="xmlAddChildList"></a>xmlAddChildList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddChildList		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Add a list of node at the end of the child list of the parent merging adjacent TEXT nodes (@cur may be freed) See the note regarding namespaces in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
+<p>Append a node list to another node. See <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1290,23 +1296,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlAddNextSibling"></a>xmlAddNextSibling ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddNextSibling	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem)<br>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddNextSibling	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> prev, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Add a new node @elem as the next sibling of @cur If the new node was already inserted in a document it is first unlinked from its existing context. As a result of text merging @elem may be freed. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an <a href="libxml2-SAX.html#attribute">attribute</a> with equal name, it is first destroyed. See the note regarding namespaces in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
+<p>Unlinks @cur and inserts it as next sibling after @prev. Unlike <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a> this function does not merge text nodes. If @cur is an <a href="libxml2-SAX.html#attribute">attribute</a> node, it is inserted after <a href="libxml2-SAX.html#attribute">attribute</a> @prev. If the <a href="libxml2-SAX.html#attribute">attribute</a> list contains an <a href="libxml2-SAX.html#attribute">attribute</a> with a name matching @cur, the old <a href="libxml2-SAX.html#attribute">attribute</a> is destroyed. See the notes in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the child node</td>
+<td><span class="term"><i><tt>prev</tt></i>:</span></td>
+<td>the target node</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>elem</tt></i>:</span></td>
+<td><span class="term"><i><tt>cur</tt></i>:</span></td>
 <td>the new node</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the new node or NULL in case of error.</td>
+<td>@cur or a sibling if @cur was merged. Returns NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1315,23 +1321,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlAddPrevSibling"></a>xmlAddPrevSibling ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddPrevSibling	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem)<br>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddPrevSibling	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> next, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Add a new node @elem as the previous sibling of @cur merging adjacent TEXT nodes (@elem may be freed) If the new node was already inserted in a document it is first unlinked from its existing context. If the new node is ATTRIBUTE, it is added into properties instead of children. If there is an <a href="libxml2-SAX.html#attribute">attribute</a> with equal name, it is first destroyed. See the note regarding namespaces in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
+<p>Unlinks @cur and inserts it as previous sibling before @next. Unlike <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a> this function does not merge text nodes. If @cur is an <a href="libxml2-SAX.html#attribute">attribute</a> node, it is inserted before <a href="libxml2-SAX.html#attribute">attribute</a> @next. If the <a href="libxml2-SAX.html#attribute">attribute</a> list contains an <a href="libxml2-SAX.html#attribute">attribute</a> with a name matching @cur, the old <a href="libxml2-SAX.html#attribute">attribute</a> is destroyed. See the notes in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the child node</td>
+<td><span class="term"><i><tt>next</tt></i>:</span></td>
+<td>the target node</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>elem</tt></i>:</span></td>
+<td><span class="term"><i><tt>cur</tt></i>:</span></td>
 <td>the new node</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the new node or NULL in case of error.</td>
+<td>@cur or a sibling if @cur was merged. Returns NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1340,23 +1346,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlAddSibling"></a>xmlAddSibling ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddSibling		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> elem)<br>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlAddSibling		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Add a new element @elem to the list of siblings of @cur merging adjacent TEXT nodes (@elem may be freed) If the new element was already inserted in a document it is first unlinked from its existing context. See the note regarding namespaces in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
+<p>Unlinks @cur and inserts it as last sibling of @node. If @cur is a text node, it may be merged with an adjacent text node and freed. In this case the text node containing the merged content is returned. If @cur is an <a href="libxml2-SAX.html#attribute">attribute</a> node, it is appended to the <a href="libxml2-SAX.html#attribute">attribute</a> list containing @node. If the <a href="libxml2-SAX.html#attribute">attribute</a> list contains an <a href="libxml2-SAX.html#attribute">attribute</a> with a name matching @cur, the old <a href="libxml2-SAX.html#attribute">attribute</a> is destroyed. See the notes in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
-<td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the child node</td>
+<td><span class="term"><i><tt>node</tt></i>:</span></td>
+<td>the target node</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>elem</tt></i>:</span></td>
+<td><span class="term"><i><tt>cur</tt></i>:</span></td>
 <td>the new node</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the new element or NULL in case of error.</td>
+<td>@cur or a sibling if @cur was merged. Returns NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2026,7 +2032,7 @@ The content of this structure is not made public by the API.
 <a name="xmlChildElementCount"></a>xmlChildElementCount ()</h3>
 <pre class="programlisting">unsigned long	xmlChildElementCount	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent)<br>
 </pre>
-<p>Finds the current number of child nodes of that element which are element nodes. Note the handling of entities references is different than in the W3C DOM element traversal spec since we don't have back <a href="libxml2-SAX.html#reference">reference</a> from entities content to entities references.</p>
+<p>Count the number of child nodes which are elements. Note that entity references are not expanded.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2036,7 +2042,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the count of element child or 0 if not available</td>
+<td>the number of element children or 0 if arguments are invalid.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2047,7 +2053,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyDoc"></a>xmlCopyDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlCopyDoc		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int recursive)<br>
 </pre>
-<p>Do a copy of the document info. If recursive, the content tree will be copied too as well as DTD, namespaces and entities.</p>
+<p>Copy a document. If recursive, the content tree will be copied too as well as DTD, namespaces and entities.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2061,7 +2067,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlDocPtr, or NULL in case of error.</td>
+<td>the copied document or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2072,17 +2078,17 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyDtd"></a>xmlCopyDtd ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a>	xmlCopyDtd		(<a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a> dtd)<br>
 </pre>
-<p>Do a copy of the dtd.</p>
+<p>Copy a DTD.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>dtd</tt></i>:</span></td>
-<td>the dtd</td>
+<td>the DTD</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlDtdPtr, or NULL in case of error.</td>
+<td>the copied DTD or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2093,7 +2099,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyNamespace"></a>xmlCopyNamespace ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a>	xmlCopyNamespace	(<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> cur)<br>
 </pre>
-<p>Do a copy of the namespace.</p>
+<p>Copy a namespace.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2103,7 +2109,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlNsPtr, or NULL in case of error.</td>
+<td>the copied namespace or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2114,7 +2120,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyNamespaceList"></a>xmlCopyNamespaceList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a>	xmlCopyNamespaceList	(<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> cur)<br>
 </pre>
-<p>Do a copy of an namespace list.</p>
+<p>Copy a namespace list.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2124,7 +2130,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlNsPtr, or NULL in case of error.</td>
+<td>the head of the copied list or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2135,7 +2141,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyNode"></a>xmlCopyNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlCopyNode		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 int extended)<br>
 </pre>
-<p>Do a copy of the node.</p>
+<p>Copy a node. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlDocCopyNode">xmlDocCopyNode</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2149,7 +2155,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlNodePtr, or NULL in case of error.</td>
+<td>the copied node or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2160,7 +2166,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyNodeList"></a>xmlCopyNodeList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlCopyNodeList		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
 </pre>
-<p>Do a recursive copy of the node list. Use xmlDocCopyNodeList() if possible to ensure string interning.</p>
+<p>Copy a node list and all children. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlDocCopyNodeList">xmlDocCopyNodeList</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2170,7 +2176,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlNodePtr, or NULL in case of error.</td>
+<td>the head of the copied list or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2181,7 +2187,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyProp"></a>xmlCopyProp ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlCopyProp		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> target, <br>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur)<br>
 </pre>
-<p>Do a copy of the <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Create a copy of the <a href="libxml2-SAX.html#attribute">attribute</a>. This function sets the parent pointer of the copy to @target but doesn't set the <a href="libxml2-SAX.html#attribute">attribute</a> on the target element. Users should consider to set the <a href="libxml2-SAX.html#attribute">attribute</a> by calling <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a> afterwards or reset the parent pointer to NULL.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2196,7 +2202,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlAttrPtr, or NULL in case of error.</td>
+<td>the copied <a href="libxml2-SAX.html#attribute">attribute</a> or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2207,7 +2213,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCopyPropList"></a>xmlCopyPropList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlCopyPropList		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> target, <br>					 <a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur)<br>
 </pre>
-<p>Do a copy of an <a href="libxml2-SAX.html#attribute">attribute</a> list.</p>
+<p>Create a copy of an <a href="libxml2-SAX.html#attribute">attribute</a> list. This function sets the parent pointers of the copied attributes to @target but doesn't set the attributes on the target element.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2222,7 +2228,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlAttrPtr, or NULL in case of error.</td>
+<td>the head of the copied list or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2233,29 +2239,29 @@ The content of this structure is not made public by the API.
 <a name="xmlCreateIntSubset"></a>xmlCreateIntSubset ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a>	xmlCreateIntSubset	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID)<br>
 </pre>
-<p>Create the internal subset of a document</p>
+<p>Create a DTD node. If a document is provided and it already has an internal subset, the existing DTD object is returned without creating a new object. If the document has no internal subset, it will be set to the created DTD.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document pointer</td>
+<td>the document pointer (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the DTD name</td>
+<td>the DTD name (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ExternalID</tt></i>:</span></td>
-<td>the external (PUBLIC) ID</td>
+<td>the external (PUBLIC) ID (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>SystemID</tt></i>:</span></td>
-<td>the system ID</td>
+<td>the system ID (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new DTD structure</td>
+<td>a pointer to the new or existing DTD object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2448,7 +2454,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDeregisterNodeDefault"></a>xmlDeregisterNodeDefault ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a>	xmlDeregisterNodeDefault	(<a href="libxml2-tree.html#xmlDeregisterNodeFunc">xmlDeregisterNodeFunc</a> func)<br>
 </pre>
-<p>Registers a callback for node destruction</p>
+<p>DEPRECATED: don't use Registers a callback for node destruction</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2469,7 +2475,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDocCopyNode"></a>xmlDocCopyNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlDocCopyNode		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int extended)<br>
 </pre>
-<p>Do a copy of the node to a given document.</p>
+<p>Copy a node into another document.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2487,7 +2493,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlNodePtr, or NULL in case of error.</td>
+<td>the copied node or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2498,7 +2504,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDocCopyNodeList"></a>xmlDocCopyNodeList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlDocCopyNodeList	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
 </pre>
-<p>Do a recursive copy of the node list.</p>
+<p>Copy a node list and all children into a new document.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2512,7 +2518,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new #xmlNodePtr, or NULL in case of error.</td>
+<td>the head of the copied list or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2703,7 +2709,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the #xmlNodePtr for the root or NULL</td>
+<td>the root element or NULL if no element was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2714,7 +2720,7 @@ The content of this structure is not made public by the API.
 <a name="xmlDocSetRootElement"></a>xmlDocSetRootElement ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlDocSetRootElement	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> root)<br>
 </pre>
-<p>Set the root element of the document (doc-&gt;children is a list containing possibly comments, PIs, etc ...).</p>
+<p>Set the root element of the document (doc-&gt;children is a list containing possibly comments, PIs, etc ...). @root must be an element node. It is unlinked before insertion.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2728,7 +2734,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the old root element if any was found, NULL if root was NULL</td>
+<td>the unlinked old root element or NULL if the document didn't have a root element or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2764,7 +2770,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFirstElementChild"></a>xmlFirstElementChild ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlFirstElementChild	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent)<br>
 </pre>
-<p>Finds the first child node of that element which is a Element node Note the handling of entities references is different than in the W3C DOM element traversal spec since we don't have back <a href="libxml2-SAX.html#reference">reference</a> from entities content to entities references.</p>
+<p>Find the first child node which is an element. Note that entity references are not expanded.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2774,7 +2780,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the first element child or NULL if not available</td>
+<td>the first element or NULL if parent has no children.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2785,7 +2791,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeDoc"></a>xmlFreeDoc ()</h3>
 <pre class="programlisting">void	xmlFreeDoc			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> cur)<br>
 </pre>
-<p>Free up all the structures used by a document, tree included.</p>
+<p>Free a document including all children and associated DTDs.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2815,7 +2821,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeNode"></a>xmlFreeNode ()</h3>
 <pre class="programlisting">void	xmlFreeNode			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Free a node, this is a recursive behaviour, all the children are freed too. This doesn't unlink the child from the list, use xmlUnlinkNode() first.</p>
+<p>Free a node including all the children. This doesn't unlink the node from the tree. Call <a href="libxml2-tree.html#xmlUnlinkNode">xmlUnlinkNode</a> first unless @cur is a root node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2830,7 +2836,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeNodeList"></a>xmlFreeNodeList ()</h3>
 <pre class="programlisting">void	xmlFreeNodeList			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Free a node and all its siblings, this is a recursive behaviour, all the children are freed too.</p>
+<p>Free a node list including all children.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2845,7 +2851,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeNs"></a>xmlFreeNs ()</h3>
 <pre class="programlisting">void	xmlFreeNs			(<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> cur)<br>
 </pre>
-<p>Free up the structures associated to a namespace</p>
+<p>Free an <a href="libxml2-tree.html#xmlNs">xmlNs</a> object.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2860,7 +2866,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeNsList"></a>xmlFreeNsList ()</h3>
 <pre class="programlisting">void	xmlFreeNsList			(<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> cur)<br>
 </pre>
-<p>Free up all the structures associated to the chained namespaces.</p>
+<p>Free a list of <a href="libxml2-tree.html#xmlNs">xmlNs</a> objects.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2875,7 +2881,7 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeProp"></a>xmlFreeProp ()</h3>
 <pre class="programlisting">void	xmlFreeProp			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur)<br>
 </pre>
-<p>Free one attribute, all the content is freed too</p>
+<p>Free an <a href="libxml2-SAX.html#attribute">attribute</a> including all children.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2891,12 +2897,12 @@ The content of this structure is not made public by the API.
 <a name="xmlFreePropList"></a>xmlFreePropList ()</h3>
 <pre class="programlisting">void	xmlFreePropList			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur)<br>
 </pre>
-<p>Free a property and all its siblings, all the children are freed too.</p>
+<p>Free an <a href="libxml2-SAX.html#attribute">attribute</a> list including all children.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the first property in the list</td>
+<td>the first <a href="libxml2-SAX.html#attribute">attribute</a> in the list</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -2921,7 +2927,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetCompressMode"></a>xmlGetCompressMode ()</h3>
 <pre class="programlisting">int	xmlGetCompressMode		(void)<br>
 </pre>
-<p>get the default compression mode used, ZLIB based.</p>
+<p>DEPRECATED: Use <a href="libxml2-tree.html#xmlGetDocCompressMode">xmlGetDocCompressMode</a> get the default compression mode used, ZLIB based.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2957,7 +2963,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetIntSubset"></a>xmlGetIntSubset ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a>	xmlGetIntSubset		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc)<br>
 </pre>
-<p>Get the internal subset of a document</p>
+<p>Get the internal subset of a document.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2967,7 +2973,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the DTD structure or NULL if not found</td>
+<td>a pointer to the DTD object or NULL if not found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2978,7 +2984,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetLastChild"></a>xmlGetLastChild ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlGetLastChild		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * parent)<br>
 </pre>
-<p>Search the last child of a node.</p>
+<p>Find the last child of a node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2988,7 +2994,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the last child or NULL if none.</td>
+<td>the last child or NULL if parent has no children.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3020,7 +3026,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetNoNsProp"></a>xmlGetNoNsProp ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlGetNoNsProp		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values unless DTD use has been turned off. This function is similar to <a href="libxml2-tree.html#xmlGetProp">xmlGetProp</a> except it will accept only an <a href="libxml2-SAX.html#attribute">attribute</a> in no namespace.</p>
+<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values. This function is similar to <a href="libxml2-tree.html#xmlGetProp">xmlGetProp</a> except it will accept only an <a href="libxml2-SAX.html#attribute">attribute</a> in no namespace. NOTE: This function doesn't allow to distinguish malloc failures from missing attributes. It's more robust to use <a href="libxml2-tree.html#xmlNodeGetAttrValue">xmlNodeGetAttrValue</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3034,7 +3040,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> value or NULL if not found. It's up to the caller to free the memory with xmlFree().</td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> value or NULL if not found or a memory allocation failed. It's up to the caller to free the memory with xmlFree().</td>
 </tr>
 </tbody>
 </table></div>
@@ -3066,7 +3072,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetNsList"></a>xmlGetNsList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	xmlGetNsList		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node)<br>
 </pre>
-<p>Search all the namespace applying to a given element.</p>
+<p>Find all in-scope namespaces of a node. Use <a href="libxml2-tree.html#xmlGetNsListSafe">xmlGetNsListSafe</a> for better error reporting.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3080,7 +3086,36 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>an NULL terminated array of all the #xmlNsPtr found that need to be freed by the caller or NULL if no namespace if defined</td>
+<td>a NULL terminated array of namespace pointers that must be freed by the caller or NULL if no namespaces were found or a memory allocation failed.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlGetNsListSafe"></a>xmlGetNsListSafe ()</h3>
+<pre class="programlisting">int	xmlGetNsListSafe		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ** out)<br>
+</pre>
+<p>Find all in-scope namespaces of a node. @out returns a NULL terminated array of namespace pointers that must be freed by the caller. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>doc</tt></i>:</span></td>
+<td>the document</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>node</tt></i>:</span></td>
+<td>the current node</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>the returned namespace array</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 if no namespaces were found, -1 if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3091,7 +3126,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetNsProp"></a>xmlGetNsProp ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlGetNsProp		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace)<br>
 </pre>
-<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This <a href="libxml2-SAX.html#attribute">attribute</a> has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values unless DTD use has been turned off.</p>
+<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This <a href="libxml2-SAX.html#attribute">attribute</a> has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values. NOTE: This function doesn't allow to distinguish malloc failures from missing attributes. It's more robust to use <a href="libxml2-tree.html#xmlNodeGetAttrValue">xmlNodeGetAttrValue</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3109,7 +3144,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> value or NULL if not found. It's up to the caller to free the memory with xmlFree().</td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> value or NULL if not found or a memory allocation failed. It's up to the caller to free the memory with xmlFree().</td>
 </tr>
 </tbody>
 </table></div>
@@ -3120,7 +3155,7 @@ The content of this structure is not made public by the API.
 <a name="xmlGetProp"></a>xmlGetProp ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlGetProp		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values unless DTD use has been turned off. NOTE: this function acts independently of namespaces associated to the <a href="libxml2-SAX.html#attribute">attribute</a>. Use xmlGetNsProp() or xmlGetNoNsProp() for namespace aware processing.</p>
+<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values. NOTE: This function acts independently of namespaces associated to the <a href="libxml2-SAX.html#attribute">attribute</a>. Use xmlGetNsProp() or xmlGetNoNsProp() for namespace aware processing. NOTE: This function doesn't allow to distinguish malloc failures from missing attributes. It's more robust to use <a href="libxml2-tree.html#xmlNodeGetAttrValue">xmlNodeGetAttrValue</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3134,7 +3169,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> value or NULL if not found. It's up to the caller to free the memory with xmlFree().</td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> value or NULL if not found or a memory allocation failed. It's up to the caller to free the memory with xmlFree().</td>
 </tr>
 </tbody>
 </table></div>
@@ -3145,7 +3180,7 @@ The content of this structure is not made public by the API.
 <a name="xmlHasNsProp"></a>xmlHasNsProp ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlHasNsProp		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nameSpace)<br>
 </pre>
-<p>Search for an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This <a href="libxml2-SAX.html#attribute">attribute</a> has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values unless DTD use has been turned off. Note that a namespace of NULL indicates to use the default namespace.</p>
+<p>Search for an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This <a href="libxml2-SAX.html#attribute">attribute</a> has to be anchored in the namespace specified. This does the entity substitution. This function looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values. Note that a namespace of NULL indicates to use the default namespace.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3163,7 +3198,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> or the <a href="libxml2-SAX.html#attribute">attribute</a> declaration or NULL if neither was found.</td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> or the <a href="libxml2-SAX.html#attribute">attribute</a> declaration or NULL if neither was found. Also returns NULL if a memory allocation failed making this function unreliable.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3174,7 +3209,7 @@ The content of this structure is not made public by the API.
 <a name="xmlHasProp"></a>xmlHasProp ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlHasProp		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Search an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This function also looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values unless DTD use has been turned off.</p>
+<p>Search an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This function also looks in DTD <a href="libxml2-SAX.html#attribute">attribute</a> declaration for #FIXED or default declaration values.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3188,7 +3223,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> or the <a href="libxml2-SAX.html#attribute">attribute</a> declaration or NULL if neither was found.</td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> or the <a href="libxml2-SAX.html#attribute">attribute</a> declaration or NULL if neither was found. Also returns NULL if a memory allocation failed making this function unreliable.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3245,7 +3280,7 @@ The content of this structure is not made public by the API.
 <a name="xmlLastElementChild"></a>xmlLastElementChild ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlLastElementChild	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent)<br>
 </pre>
-<p>Finds the last child node of that element which is a Element node Note the handling of entities references is different than in the W3C DOM element traversal spec since we don't have back <a href="libxml2-SAX.html#reference">reference</a> from entities content to entities references.</p>
+<p>Find the last child node which is an element. Note that entity references are not expanded.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3255,7 +3290,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the last element child or NULL if not available</td>
+<td>the last element or NULL if parent has no children.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3266,25 +3301,25 @@ The content of this structure is not made public by the API.
 <a name="xmlNewCDataBlock"></a>xmlNewCDataBlock ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewCDataBlock	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
 </pre>
-<p>Creation of a new node containing a CDATA block.</p>
+<p>Create a CDATA section node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the CDATA block content content</td>
+<td>raw text content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>the length of the block</td>
+<td>size of text content</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3295,21 +3330,21 @@ The content of this structure is not made public by the API.
 <a name="xmlNewCharRef"></a>xmlNewCharRef ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewCharRef		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Creation of a new character <a href="libxml2-SAX.html#reference">reference</a> node.</p>
+<p>This function is MISNAMED. It doesn't create a character <a href="libxml2-SAX.html#reference">reference</a> but an entity <a href="libxml2-SAX.html#reference">reference</a>. Create an empty entity <a href="libxml2-SAX.html#reference">reference</a> node. This function doesn't attempt to look up the entity in @doc. Entity names like '&amp;entity;' are handled as well.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the char ref string, starting with # or "&amp;# ... ;"</td>
+<td>the entity name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3320,7 +3355,7 @@ The content of this structure is not made public by the API.
 <a name="xmlNewChild"></a>xmlNewChild ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewChild		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @ns is NULL, the newly created element inherits the namespace of @parent. If @content is non NULL, a child list containing the TEXTs and ENTITY_REFs node will be created. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references. XML special chars must be escaped first by using xmlEncodeEntitiesReentrant(), or xmlNewTextChild() should be used.</p>
+<p>Create a new child element and append it to a parent element. If @ns is NULL, the newly created element inherits the namespace of the parent. If provided, @content is expected to be a valid XML <a href="libxml2-SAX.html#attribute">attribute</a> value possibly containing character and entity references. Text and entity <a href="libxml2-SAX.html#reference">reference</a> node will be added to the child element, see <a href="libxml2-tree.html#xmlNewDocNode">xmlNewDocNode</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3330,7 +3365,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>a namespace if any</td>
+<td>a namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3338,11 +3373,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the XML content of the child if any.</td>
+<td>text content with XML references (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3353,17 +3388,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewComment"></a>xmlNewComment ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewComment		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocComment">xmlNewDocComment</a>. Creation of a new node containing a <a href="libxml2-SAX.html#comment">comment</a>.</p>
+<p>Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocComment">xmlNewDocComment</a>. Create a <a href="libxml2-SAX.html#comment">comment</a> node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#comment">comment</a> content</td>
+<td>the <a href="libxml2-SAX.html#comment">comment</a> content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3374,18 +3409,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDoc"></a>xmlNewDoc ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlNewDoc		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * version)<br>
 </pre>
-<p>Creates a new XML document</p>
+<p>Creates a new XML document. If version is NULL, "1.0" is used.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>version</tt></i>:</span></td>
-<td>
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> string giving the version of XML "1.0"</td>
+<td>XML version string like "1.0" (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new document</td>
+<td>a new document or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3396,7 +3430,7 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocComment"></a>xmlNewDocComment ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocComment	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new node containing a <a href="libxml2-SAX.html#comment">comment</a> within a document.</p>
+<p>Create a <a href="libxml2-SAX.html#comment">comment</a> node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3410,7 +3444,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3421,17 +3455,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocFragment"></a>xmlNewDocFragment ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocFragment	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>Creation of a new Fragment node.</p>
+<p>Create a document fragment node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document owning the fragment</td>
+<td>the target document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3442,17 +3476,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocNode"></a>xmlNewDocNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocNode		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new node element within a document. @ns and @content are optional (NULL). NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't need entities support.</p>
+<p>Create an element node. If provided, @content is expected to be a valid XML <a href="libxml2-SAX.html#attribute">attribute</a> value possibly containing character and entity references. Syntax errors and references to undeclared entities are ignored silently. Only references are handled, nested elements, comments or PIs are not. See <a href="libxml2-tree.html#xmlNewDocRawNode">xmlNewDocRawNode</a> for an alternative. General notes on object creation: Each node and all its children are associated with the same document. The document should be provided when creating nodes to avoid a performance penalty when adding the node to a document tree. Note that a document only owns nodes reachable from the root node. Unlinked subtrees must be freed manually.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>namespace if any</td>
+<td>namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3460,11 +3494,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the XML text content if any</td>
+<td>text content with XML references (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3475,17 +3509,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocNodeEatName"></a>xmlNewDocNodeEatName ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocNodeEatName	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new node element within a document. @ns and @content are optional (NULL). NOTE: @content is supposed to be a piece of XML CDATA, so it allow entities references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewDocRawNode() if you don't need entities support.</p>
+<p>Create an element node. Like xmlNewDocNode, but the @name string will be used directly without making a copy. Takes ownership of @name which will also be freed on error.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>namespace if any</td>
+<td>namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3493,11 +3527,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the XML text content if any</td>
+<td>text content with XML references (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3508,25 +3542,25 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocPI"></a>xmlNewDocPI ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocPI		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a processing instruction element.</p>
+<p>Create a processing instruction object.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the target document</td>
+<td>the target document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the processing instruction name</td>
+<td>the processing instruction target</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the PI content</td>
+<td>the PI content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3537,13 +3571,13 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocProp"></a>xmlNewDocProp ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlNewDocProp		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Create a new property carried by a document. NOTE: @value is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant(). Use xmlNewProp() if you don't need entities support.</p>
+<p>Create an <a href="libxml2-SAX.html#attribute">attribute</a> object. If provided, @value is expected to be a valid XML <a href="libxml2-SAX.html#attribute">attribute</a> value possibly containing character and entity references. Syntax errors and references to undeclared entities are ignored silently. If you want to pass a raw string, see <a href="libxml2-tree.html#xmlNewProp">xmlNewProp</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3552,13 +3586,12 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>
+<a href="libxml2-SAX.html#attribute">attribute</a> value with XML references (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a> or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3569,17 +3602,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocRawNode"></a>xmlNewDocRawNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocRawNode	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new node element within a document. @ns and @content are optional (NULL).</p>
+<p>Create an element node. If provided, @value should be a raw, unescaped string.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>namespace if any</td>
+<td>namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3587,11 +3620,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the text content if any</td>
+<td>raw text content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3602,21 +3635,21 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocText"></a>xmlNewDocText ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocText		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new text node within a document.</p>
+<p>Create a new text node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the text content</td>
+<td>raw text content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3627,25 +3660,25 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDocTextLen"></a>xmlNewDocTextLen ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewDocTextLen	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
 </pre>
-<p>Creation of a new text node with an extra content length parameter. The text node pertain to a given document.</p>
+<p>Create a new text node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the text content</td>
+<td>raw text content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>the text len.</td>
+<td>size of text content</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3656,29 +3689,29 @@ The content of this structure is not made public by the API.
 <a name="xmlNewDtd"></a>xmlNewDtd ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDtdPtr">xmlDtdPtr</a>	xmlNewDtd		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID)<br>
 </pre>
-<p>Creation of a new DTD for the external subset. To create an internal subset, use xmlCreateIntSubset().</p>
+<p>Create a DTD node. If a document is provided, it is an error if it already has an external subset. If the document has no external subset, it will be set to the created DTD. To create an internal subset, use xmlCreateIntSubset().</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document pointer</td>
+<td>the document pointer (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the DTD name</td>
+<td>the DTD name (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ExternalID</tt></i>:</span></td>
-<td>the external ID</td>
+<td>the external ID (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>SystemID</tt></i>:</span></td>
-<td>the system ID</td>
+<td>the system ID (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new DTD structure</td>
+<td>a pointer to the new DTD object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3718,13 +3751,13 @@ The content of this structure is not made public by the API.
 <a name="xmlNewNode"></a>xmlNewNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewNode		(<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Creation of a new node element. @ns is optional (NULL). Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocNode">xmlNewDocNode</a>.</p>
+<p>Create an element node. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocNode">xmlNewDocNode</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>namespace if any</td>
+<td>namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3732,7 +3765,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object. Uses xmlStrdup() to make copy of @name.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3743,13 +3776,13 @@ The content of this structure is not made public by the API.
 <a name="xmlNewNodeEatName"></a>xmlNewNodeEatName ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewNodeEatName	(<a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Creation of a new node element. @ns is optional (NULL). Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocNodeEatName">xmlNewDocNodeEatName</a>.</p>
+<p>Create an element node. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocNodeEatName">xmlNewDocNodeEatName</a>. Like xmlNewNode, but the @name string will be used directly without making a copy. Takes ownership of @name which will also be freed on error.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>namespace if any</td>
+<td>namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3757,7 +3790,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object, with pointer @name as new node's name. Use xmlNewNode() if a copy of @name string is is needed as new node's name.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3768,13 +3801,13 @@ The content of this structure is not made public by the API.
 <a name="xmlNewNs"></a>xmlNewNs ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a>	xmlNewNs		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * href, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix)<br>
 </pre>
-<p>Creation of a new Namespace. This function will refuse to create a namespace with a similar prefix than an existing one present on this node. Note that for a default namespace, @prefix should be NULL. We use href==NULL in the case of an element creation where the namespace was not defined.</p>
+<p>Create a new namespace. For a default namespace, @prefix should be NULL. The namespace URI in @href is not checked. You should make sure to pass a valid URI. If @node is provided, it must be an element node. The namespace will be appended to the node's namespace declarations. It is an error if the node already has a definition for the prefix or default namespace.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>node</tt></i>:</span></td>
-<td>the element carrying the namespace</td>
+<td>the element carrying the namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>href</tt></i>:</span></td>
@@ -3782,11 +3815,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>prefix</tt></i>:</span></td>
-<td>the prefix for the namespace</td>
+<td>the prefix for the namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a new namespace pointer or NULL</td>
+<td>a new namespace pointer or NULL if arguments are invalid, the prefix is already in use or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3797,32 +3830,30 @@ The content of this structure is not made public by the API.
 <a name="xmlNewNsProp"></a>xmlNewNsProp ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlNewNsProp		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Create a new property tagged with a namespace and carried by a node.</p>
+<p>Create an <a href="libxml2-SAX.html#attribute">attribute</a> object. If provided, @value should be a raw, unescaped string. If @node is provided, the created <a href="libxml2-SAX.html#attribute">attribute</a> will be appended without checking for duplicate names. It is an error if @node is not an element.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>node</tt></i>:</span></td>
-<td>the holding node</td>
+<td>the parent node (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>the namespace</td>
+<td>the namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the <a href="libxml2-SAX.html#attribute">attribute</a>
+<td>the local name of the <a href="libxml2-SAX.html#attribute">attribute</a>
 </td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a> (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a> or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3833,32 +3864,30 @@ The content of this structure is not made public by the API.
 <a name="xmlNewNsPropEatName"></a>xmlNewNsPropEatName ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlNewNsPropEatName	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Create a new property tagged with a namespace and carried by a node.</p>
+<p>Like xmlNewNsProp, but the @name string will be used directly without making a copy. Takes ownership of @name which will also be freed on error.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>node</tt></i>:</span></td>
-<td>the holding node</td>
+<td>the parent node (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>the namespace</td>
+<td>the namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the <a href="libxml2-SAX.html#attribute">attribute</a>
+<td>the local name of the <a href="libxml2-SAX.html#attribute">attribute</a>
 </td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a> (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a> or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3869,21 +3898,21 @@ The content of this structure is not made public by the API.
 <a name="xmlNewPI"></a>xmlNewPI ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewPI		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a processing instruction element. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocPI">xmlNewDocPI</a>.</p>
+<p>Create a processing instruction node. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocPI">xmlNewDocPI</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the processing instruction name</td>
+<td>the processing instruction target</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the PI content</td>
+<td>the PI content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3894,13 +3923,13 @@ The content of this structure is not made public by the API.
 <a name="xmlNewProp"></a>xmlNewProp ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a>	xmlNewProp		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Create a new property carried by a node.</p>
+<p>Create an <a href="libxml2-SAX.html#attribute">attribute</a> node. If provided, @value should be a raw, unescaped string. If @node is provided, the created <a href="libxml2-SAX.html#attribute">attribute</a> will be appended without checking for duplicate names. It is an error if @node is not an element.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>node</tt></i>:</span></td>
-<td>the holding node</td>
+<td>the parent node (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3909,13 +3938,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a> (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>a pointer to the <a href="libxml2-SAX.html#attribute">attribute</a> or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3926,21 +3953,21 @@ The content of this structure is not made public by the API.
 <a name="xmlNewReference"></a>xmlNewReference ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewReference		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Creation of a new <a href="libxml2-SAX.html#reference">reference</a> node.</p>
+<p>Create a new entity <a href="libxml2-SAX.html#reference">reference</a> node, linking the result with the entity in @doc if found. Entity names like '&amp;entity;' are handled as well.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>the target document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#reference">reference</a> name, or the <a href="libxml2-SAX.html#reference">reference</a> string with &amp; and ;</td>
+<td>the entity name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3951,17 +3978,17 @@ The content of this structure is not made public by the API.
 <a name="xmlNewText"></a>xmlNewText ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewText		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new text node. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocText">xmlNewDocText</a>.</p>
+<p>Create a text node. Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocText">xmlNewDocText</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the text content</td>
+<td>raw text content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -3972,7 +3999,7 @@ The content of this structure is not made public by the API.
 <a name="xmlNewTextChild"></a>xmlNewTextChild ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewTextChild		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> parent, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Creation of a new child element, added at the end of @parent children list. @ns and @content parameters are optional (NULL). If @ns is NULL, the newly created element inherits the namespace of @parent. If @content is non NULL, a child TEXT node will be created containing the string @content. NOTE: Use xmlNewChild() if @content will contain entities that need to be preserved. Use this function, xmlNewTextChild(), if you need to ensure that reserved XML chars that might appear in @content, such as the ampersand, greater-than or less-than signs, are automatically replaced by their XML escaped entity representations.</p>
+<p>Create a new child element and append it to a parent element. If @ns is NULL, the newly created element inherits the namespace of the parent. If @content is provided, a text node will be added to the child element, see <a href="libxml2-tree.html#xmlNewDocRawNode">xmlNewDocRawNode</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3982,7 +4009,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>a namespace if any</td>
+<td>a namespace (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
@@ -3990,11 +4017,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the text content of the child if any.</td>
+<td>raw text content of the child (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4005,21 +4032,21 @@ The content of this structure is not made public by the API.
 <a name="xmlNewTextLen"></a>xmlNewTextLen ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNewTextLen		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
 </pre>
-<p>Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocTextLen">xmlNewDocTextLen</a>. Creation of a new text node with an extra parameter for the content's length</p>
+<p>Use of this function is DISCOURAGED in favor of <a href="libxml2-tree.html#xmlNewDocTextLen">xmlNewDocTextLen</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>the text content</td>
+<td>raw text content (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>the text len.</td>
+<td>size of text content</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the new node object.</td>
+<td>a pointer to the new node object or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4030,7 +4057,7 @@ The content of this structure is not made public by the API.
 <a name="xmlNextElementSibling"></a>xmlNextElementSibling ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlNextElementSibling	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
 </pre>
-<p>Finds the first closest next sibling of the node which is an element node. Note the handling of entities references is different than in the W3C DOM element traversal spec since we don't have back <a href="libxml2-SAX.html#reference">reference</a> from entities content to entities references.</p>
+<p>Find the closest following sibling which is a element. Note that entity references are not expanded.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4040,7 +4067,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the next element sibling or NULL if not available</td>
+<td>the sibling or NULL if no sibling was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4049,7 +4076,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeAddContent"></a>xmlNodeAddContent ()</h3>
-<pre class="programlisting">void	xmlNodeAddContent		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
+<pre class="programlisting">int	xmlNodeAddContent		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
 <p>Append the extra substring to the node content. NOTE: In contrast to xmlNodeSetContent(), @content is supposed to be raw text, so unescaped XML special chars are allowed, entity references are not supported.</p>
 <div class="variablelist"><table border="0">
@@ -4063,6 +4090,10 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
 <td>extra content</td>
 </tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 on error, -1 if a memory allocation failed.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -4070,7 +4101,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeAddContentLen"></a>xmlNodeAddContentLen ()</h3>
-<pre class="programlisting">void	xmlNodeAddContentLen		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
+<pre class="programlisting">int	xmlNodeAddContentLen		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
 </pre>
 <p>Append the extra substring to the node content. NOTE: In contrast to xmlNodeSetContentLen(), @content is supposed to be raw text, so unescaped XML special chars are allowed, entity references are not supported.</p>
 <div class="variablelist"><table border="0">
@@ -4087,6 +4118,10 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
 <td>the size of @content</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 on error, -1 if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4193,10 +4228,43 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlNodeGetAttrValue"></a>xmlNodeGetAttrValue ()</h3>
+<pre class="programlisting">int	xmlNodeGetAttrValue		(const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * nsUri, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** out)<br>
+</pre>
+<p>Search and get the value of an <a href="libxml2-SAX.html#attribute">attribute</a> associated to a node This <a href="libxml2-SAX.html#attribute">attribute</a> has to be anchored in the namespace specified. This does the entity substitution. The returned value must be freed by the caller. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>node</tt></i>:</span></td>
+<td>the node</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>name</tt></i>:</span></td>
+<td>the <a href="libxml2-SAX.html#attribute">attribute</a> name</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>nsUri</tt></i>:</span></td>
+<td>the URI of the namespace</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>the returned string</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 if no <a href="libxml2-SAX.html#attribute">attribute</a> was found, -1 if a memory allocation failed.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlNodeGetBase"></a>xmlNodeGetBase ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlNodeGetBase		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur)<br>
 </pre>
-<p>Searches for the BASE URL. The code should work on both XML and HTML document even if base mechanisms are completely different. It returns the base as defined in RFC 2396 sections 5.1.1. Base URI within Document Content and 5.1.2. Base URI from the Encapsulating Entity However it does not return the document base (5.1.3), use doc-&gt;URL in this case</p>
+<p>See <a href="libxml2-tree.html#xmlNodeGetBaseSafe">xmlNodeGetBaseSafe</a>. This function doesn't allow to distinguish memory allocation failures from a non-existing base.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4211,6 +4279,35 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>a pointer to the base URL, or NULL if not found It's up to the caller to free the memory with xmlFree().</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlNodeGetBaseSafe"></a>xmlNodeGetBaseSafe ()</h3>
+<pre class="programlisting">int	xmlNodeGetBaseSafe		(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * cur, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** baseOut)<br>
+</pre>
+<p>Searches for the BASE URL. The code should work on both XML and HTML document even if base mechanisms are completely different. It returns the base as defined in RFC 2396 sections 5.1.1. Base URI within Document Content and 5.1.2. Base URI from the Encapsulating Entity However it does not return the document base (5.1.3), use doc-&gt;URL in this case Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>doc</tt></i>:</span></td>
+<td>the document the node pertains to</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>cur</tt></i>:</span></td>
+<td>the node being checked</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>baseOut</tt></i>:</span></td>
+<td>pointer to base</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 in case of success, 1 if a URI or argument is invalid, -1 if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4305,25 +4402,25 @@ The content of this structure is not made public by the API.
 <a name="xmlNodeListGetRawString"></a>xmlNodeListGetRawString ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlNodeListGetRawString	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * list, <br>					 int inLine)<br>
 </pre>
-<p>Builds the string equivalent to the text contained in the Node list made of TEXTs and ENTITY_REFs, contrary to xmlNodeListGetString() this function doesn't do any character encoding handling.</p>
+<p>Serializes <a href="libxml2-SAX.html#attribute">attribute</a> children (text and entity <a href="libxml2-SAX.html#reference">reference</a> nodes) into a string. An empty list produces an empty string. If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special <a href="libxml2-SAX.html#characters">characters</a> like '&amp;' will be escaped.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>a document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>list</tt></i>:</span></td>
-<td>a Node list</td>
+<td>a node list of <a href="libxml2-SAX.html#attribute">attribute</a> children (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>inLine</tt></i>:</span></td>
-<td>should we replace entity contents or show their external form</td>
+<td>whether entity references are substituted</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the string copy, the caller must free it with xmlFree().</td>
+<td>a string or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4334,25 +4431,25 @@ The content of this structure is not made public by the API.
 <a name="xmlNodeListGetString"></a>xmlNodeListGetString ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlNodeListGetString	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-tree.html#xmlNode">xmlNode</a> * list, <br>					 int inLine)<br>
 </pre>
-<p>Build the string equivalent to the text contained in the Node list made of TEXTs and ENTITY_REFs</p>
+<p>Serializes <a href="libxml2-SAX.html#attribute">attribute</a> children (text and entity <a href="libxml2-SAX.html#reference">reference</a> nodes) into a string. An empty list produces an empty string. If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special <a href="libxml2-SAX.html#characters">characters</a> like '&amp;' as well as non-ASCII chars will be escaped. See <a href="libxml2-tree.html#xmlNodeListGetRawString">xmlNodeListGetRawString</a> for an alternative option.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>a document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>list</tt></i>:</span></td>
-<td>a Node list</td>
+<td>a node list of <a href="libxml2-SAX.html#attribute">attribute</a> children (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>inLine</tt></i>:</span></td>
-<td>should we replace entity contents or show their external form</td>
+<td>whether entity references are substituted</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the string copy, the caller must free it with xmlFree().</td>
+<td>a string or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4361,7 +4458,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeSetBase"></a>xmlNodeSetBase ()</h3>
-<pre class="programlisting">void	xmlNodeSetBase			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * uri)<br>
+<pre class="programlisting">int	xmlNodeSetBase			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * uri)<br>
 </pre>
 <p>Set (or reset) the base URI of a node, i.e. the value of the xml:base <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
 <div class="variablelist"><table border="0">
@@ -4375,6 +4472,10 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>uri</tt></i>:</span></td>
 <td>the new base URI</td>
 </tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, -1 on error.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -4382,9 +4483,9 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeSetContent"></a>xmlNodeSetContent ()</h3>
-<pre class="programlisting">void	xmlNodeSetContent		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
+<pre class="programlisting">int	xmlNodeSetContent		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Replace the content of a node. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().</p>
+<p>Replace the text content of a node. Sets the raw text content of text, CDATA, <a href="libxml2-SAX.html#comment">comment</a> or PI nodes. For element and <a href="libxml2-SAX.html#attribute">attribute</a> nodes, removes all children and replaces them by parsing @content which is expected to be a valid XML <a href="libxml2-SAX.html#attribute">attribute</a> value possibly containing character and entity references. Syntax errors and references to undeclared entities are ignored silently. Unfortunately, there isn't an API to pass raw content directly. An inefficient work-around is to escape the content with <a href="libxml2-entities.html#xmlEncodeSpecialChars">xmlEncodeSpecialChars</a> before passing it. A better trick is clearing the old content with xmlNodeSetContent(node, NULL) first and then calling xmlNodeAddContent(node, content). Unlike this function, <a href="libxml2-tree.html#xmlNodeAddContent">xmlNodeAddContent</a> accepts raw text.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4396,6 +4497,10 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
 <td>the new value of the content</td>
 </tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 on error, -1 if a memory allocation failed.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -4403,9 +4508,9 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeSetContentLen"></a>xmlNodeSetContentLen ()</h3>
-<pre class="programlisting">void	xmlNodeSetContentLen		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
+<pre class="programlisting">int	xmlNodeSetContentLen		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
 </pre>
-<p>Replace the content of a node. NOTE: @content is supposed to be a piece of XML CDATA, so it allows entity references, but XML special chars need to be escaped first by using xmlEncodeEntitiesReentrant() resp. xmlEncodeSpecialChars().</p>
+<p>See <a href="libxml2-tree.html#xmlNodeSetContent">xmlNodeSetContent</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4421,6 +4526,10 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
 <td>the size of @content</td>
 </tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 on error, -1 if a memory allocation failed.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -4428,7 +4537,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeSetLang"></a>xmlNodeSetLang ()</h3>
-<pre class="programlisting">void	xmlNodeSetLang			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang)<br>
+<pre class="programlisting">int	xmlNodeSetLang			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang)<br>
 </pre>
 <p>Set the language of a node, i.e. the values of the xml:lang <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
 <div class="variablelist"><table border="0">
@@ -4441,6 +4550,10 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>lang</tt></i>:</span></td>
 <td>the language description</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 if arguments are invalid, -1 if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4470,7 +4583,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlNodeSetSpacePreserve"></a>xmlNodeSetSpacePreserve ()</h3>
-<pre class="programlisting">void	xmlNodeSetSpacePreserve		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int val)<br>
+<pre class="programlisting">int	xmlNodeSetSpacePreserve		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur, <br>					 int val)<br>
 </pre>
 <p>Set (or reset) the space preserving behaviour of a node, i.e. the value of the xml:space <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
 <div class="variablelist"><table border="0">
@@ -4484,6 +4597,10 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>val</tt></i>:</span></td>
 <td>the xml:space value ("0": default, 1: "preserve")</td>
 </tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 if arguments are invalid, -1 if a memory allocation failed.</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -4493,7 +4610,7 @@ The content of this structure is not made public by the API.
 <a name="xmlPreviousElementSibling"></a>xmlPreviousElementSibling ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlPreviousElementSibling	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node)<br>
 </pre>
-<p>Finds the first closest previous sibling of the node which is an element node. Note the handling of entities references is different than in the W3C DOM element traversal spec since we don't have back <a href="libxml2-SAX.html#reference">reference</a> from entities content to entities references.</p>
+<p>Find the closest preceding sibling which is a element. Note that entity references are not expanded.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4503,7 +4620,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the previous element sibling or NULL if not available</td>
+<td>the sibling or NULL if no sibling was found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4528,7 +4645,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of namespace declarations created or -1 in case of error.</td>
+<td>0 on success or -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4539,7 +4656,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRegisterNodeDefault"></a>xmlRegisterNodeDefault ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a>	xmlRegisterNodeDefault	(<a href="libxml2-tree.html#xmlRegisterNodeFunc">xmlRegisterNodeFunc</a> func)<br>
 </pre>
-<p>Registers a callback for node creation</p>
+<p>DEPRECATED: don't use Registers a callback for node creation</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4560,7 +4677,7 @@ The content of this structure is not made public by the API.
 <a name="xmlRemoveProp"></a>xmlRemoveProp ()</h3>
 <pre class="programlisting">int	xmlRemoveProp			(<a href="libxml2-tree.html#xmlAttrPtr">xmlAttrPtr</a> cur)<br>
 </pre>
-<p>Unlink and free one attribute, all the content is freed too Note this doesn't work for namespace definition attributes</p>
+<p>Unlink and free an <a href="libxml2-SAX.html#attribute">attribute</a> including all children. Note this doesn't work for namespace declarations. The <a href="libxml2-SAX.html#attribute">attribute</a> must have a non-NULL parent pointer.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4571,7 +4688,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if success and -1 in case of error.</td>
+<td>0 on success or -1 if the <a href="libxml2-SAX.html#attribute">attribute</a> was not found or arguments are invalid.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4582,7 +4699,7 @@ The content of this structure is not made public by the API.
 <a name="xmlReplaceNode"></a>xmlReplaceNode ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlReplaceNode		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> old, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Unlink the old node from its current context, prune the new one at the same place. If @cur was already inserted in a document it is first unlinked from its existing context. See the note regarding namespaces in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
+<p>Unlink the old node. If @cur is provided, it is unlinked and inserted in place of @old. It is an error if @old has no parent. Unlike xmlAddChild, this function doesn't merge text nodes or delete duplicate attributes. See the notes in <a href="libxml2-tree.html#xmlAddChild">xmlAddChild</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4592,11 +4709,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the node</td>
+<td>the node (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the @old node</td>
+<td>@old or NULL if arguments are invalid or a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4803,7 +4920,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the namespace pointer or NULL.</td>
+<td>the namespace pointer or NULL if no namespace was found or a memory allocation failed. Allocations can only fail if the "xml" namespace is queried.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4832,7 +4949,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the namespace pointer or NULL.</td>
+<td>the namespace pointer or NULL if no namespace was found or a memory allocation failed. Allocations can only fail if the "xml" namespace is queried.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4858,7 +4975,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSetCompressMode"></a>xmlSetCompressMode ()</h3>
 <pre class="programlisting">void	xmlSetCompressMode		(int mode)<br>
 </pre>
-<p>set the default compression mode used, ZLIB based Correct values: 0 (uncompressed) to 9 (max compression)</p>
+<p>DEPRECATED: Use <a href="libxml2-tree.html#xmlSetDocCompressMode">xmlSetDocCompressMode</a> set the default compression mode used, ZLIB based Correct values: 0 (uncompressed) to 9 (max compression)</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -4892,19 +5009,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlSetListDoc"></a>xmlSetListDoc ()</h3>
-<pre class="programlisting">void	xmlSetListDoc			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> list, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
+<pre class="programlisting">int	xmlSetListDoc			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> list, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>update all nodes in the list to point to the right document</p>
+<p>Associate all subtrees in @list with a new document. Internal function, see <a href="libxml2-tree.html#xmlSetTreeDoc">xmlSetTreeDoc</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>list</tt></i>:</span></td>
-<td>the first element</td>
+<td>a node list</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>new document</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success. If a memory allocation fails, returns -1. All subtrees will be updated on failure but some strings may be lost.</td>
 </tr>
 </tbody>
 </table></div>
@@ -4915,7 +5036,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSetNs"></a>xmlSetNs ()</h3>
 <pre class="programlisting">void	xmlSetNs			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> ns)<br>
 </pre>
-<p>Associate a namespace to a node, a posteriori.</p>
+<p>Set the namespace of an element or <a href="libxml2-SAX.html#attribute">attribute</a> node. Passing a NULL namespace unsets the namespace.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -4925,7 +5046,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>ns</tt></i>:</span></td>
-<td>a namespace pointer</td>
+<td>a namespace pointer (optional)</td>
 </tr>
 </tbody>
 </table></div>
@@ -4996,19 +5117,23 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlSetTreeDoc"></a>xmlSetTreeDoc ()</h3>
-<pre class="programlisting">void	xmlSetTreeDoc			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
+<pre class="programlisting">int	xmlSetTreeDoc			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc)<br>
 </pre>
-<p>update all nodes under the tree to point to the right document</p>
+<p>This is an internal function which shouldn't be used. It is invoked by functions like xmlAddChild, <a href="libxml2-tree.html#xmlAddSibling">xmlAddSibling</a> or <a href="libxml2-tree.html#xmlReplaceNode">xmlReplaceNode</a>. @tree must be the root node of an unlinked subtree. Associate all nodes in a tree with a new document. Also copy strings from the old document's dictionary and remove ID attributes from the old ID table.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>tree</tt></i>:</span></td>
-<td>the top element</td>
+<td>root of a subtree</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>new document</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success. If a memory allocation fails, returns -1. The whole tree will be updated on failure but some strings may be lost.</td>
 </tr>
 </tbody>
 </table></div>
@@ -5019,7 +5144,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSplitQName2"></a>xmlSplitQName2 ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlSplitQName2		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** prefix)<br>
 </pre>
-<p>parse an XML qualified name string [NS 5] QName ::= (Prefix ':')? LocalPart [NS 6] Prefix ::= NCName [NS 7] LocalPart ::= NCName</p>
+<p>DEPRECATED: This function doesn't report malloc failures. parse an XML qualified name string [NS 5] QName ::= (Prefix ':')? LocalPart [NS 6] Prefix ::= NCName [NS 7] LocalPart ::= NCName</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -5069,22 +5194,21 @@ The content of this structure is not made public by the API.
 <a name="xmlStringGetNodeList"></a>xmlStringGetNodeList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlStringGetNodeList	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
 </pre>
-<p>Parse the value string and build the node list associated. Should produce a flat tree with only TEXTs and ENTITY_REFs.</p>
+<p>DEPRECATED: Use <a href="libxml2-tree.html#xmlNodeSetContent">xmlNodeSetContent</a>. Parse an <a href="libxml2-SAX.html#attribute">attribute</a> value and build a node list containing only text and entity <a href="libxml2-SAX.html#reference">reference</a> nodes. The resulting nodes will be associated with the document if provided. The document is also used to look up entities. The input is not validated. Syntax errors or references to undeclared entities will be ignored silently with unspecified results.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>a document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the value of the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>an <a href="libxml2-SAX.html#attribute">attribute</a> value</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the first child</td>
+<td>a pointer to the first child or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -5095,25 +5219,25 @@ The content of this structure is not made public by the API.
 <a name="xmlStringLenGetNodeList"></a>xmlStringLenGetNodeList ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlStringLenGetNodeList	(const <a href="libxml2-tree.html#xmlDoc">xmlDoc</a> * doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value, <br>					 int len)<br>
 </pre>
-<p>Parse the value string and build the node list associated. Should produce a flat tree with only TEXTs and ENTITY_REFs.</p>
+<p>DEPRECATED: Use <a href="libxml2-tree.html#xmlNodeSetContentLen">xmlNodeSetContentLen</a>. See <a href="libxml2-tree.html#xmlStringGetNodeList">xmlStringGetNodeList</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>doc</tt></i>:</span></td>
-<td>the document</td>
+<td>a document (optional)</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the value of the text</td>
+<td>an <a href="libxml2-SAX.html#attribute">attribute</a> value</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>the length of the string value</td>
+<td>maximum length of the <a href="libxml2-SAX.html#attribute">attribute</a> value</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a pointer to the first child</td>
+<td>a pointer to the first child or NULL if a memory allocation failed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -5124,7 +5248,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextConcat"></a>xmlTextConcat ()</h3>
 <pre class="programlisting">int	xmlTextConcat			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 int len)<br>
 </pre>
-<p>Concat the given string at the end of the existing node content</p>
+<p>Concat the given string at the end of the existing node content. If @len is -1, the string length will be calculated.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -5153,7 +5277,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextMerge"></a>xmlTextMerge ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlTextMerge		(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> first, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> second)<br>
 </pre>
-<p>Merge two text nodes into one</p>
+<p>Merge the second text node into the first. The second node is unlinked and freed.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -5167,7 +5291,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the first text node augmented</td>
+<td>the first text node augmented or NULL in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -5262,7 +5386,7 @@ The content of this structure is not made public by the API.
 <a name="xmlUnlinkNode"></a>xmlUnlinkNode ()</h3>
 <pre class="programlisting">void	xmlUnlinkNode			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Unlink a node from it's current context, the node is not freed If one need to free the node, use xmlFreeNode() routine after the unlink to discard it. Note that namespace nodes can't be unlinked as they do not have pointer to their parent.</p>
+<p>Unlink a node from its tree. The node is not freed. Unless it is reinserted, it must be managed manually and freed eventually by calling <a href="libxml2-tree.html#xmlFreeNode">xmlFreeNode</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>

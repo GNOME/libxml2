@@ -267,7 +267,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td></td>
+<td>0.</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -277,7 +277,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMallocAtomicLoc"></a>xmlMallocAtomicLoc ()</h3>
 <pre class="programlisting">void *	xmlMallocAtomicLoc		(size_t size, <br>					 const char * file, <br>					 int line)<br>
 </pre>
-<p>a malloc() equivalent, with logging of the allocation info.</p>
+<p>DEPRECATED: don't use</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -306,7 +306,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMallocLoc"></a>xmlMallocLoc ()</h3>
 <pre class="programlisting">void *	xmlMallocLoc			(size_t size, <br>					 const char * file, <br>					 int line)<br>
 </pre>
-<p>a malloc() equivalent, with logging of the allocation info.</p>
+<p>DEPRECATED: don't use</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -350,12 +350,12 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMemDisplay"></a>xmlMemDisplay ()</h3>
 <pre class="programlisting">void	xmlMemDisplay			(FILE * fp)<br>
 </pre>
-<p>show in-extenso the memory blocks allocated</p>
+<p>DEPRECATED: This feature was removed.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>fp</tt></i>:</span></td>
-<td>a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist</td>
+<td>a FILE descriptor</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -365,13 +365,13 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMemDisplayLast"></a>xmlMemDisplayLast ()</h3>
 <pre class="programlisting">void	xmlMemDisplayLast		(FILE * fp, <br>					 long nbBytes)<br>
 </pre>
-<p>the last nbBytes of memory allocated and not freed, useful for dumping the memory left allocated between two places at runtime.</p>
+<p>DEPRECATED: This feature was removed.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>fp</tt></i>:</span></td>
-<td>a FILE descriptor used as the output file, if NULL, the result is written to the file .memorylist</td>
+<td>a FILE descriptor</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>nbBytes</tt></i>:</span></td>
@@ -513,13 +513,13 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMemShow"></a>xmlMemShow ()</h3>
 <pre class="programlisting">void	xmlMemShow			(FILE * fp, <br>					 int nr)<br>
 </pre>
-<p>show a show display of the memory allocated, and dump the @nr last allocated areas which were not freed</p>
+<p>DEPRECATED: This feature was removed.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>fp</tt></i>:</span></td>
-<td>a FILE descriptor used as the output file</td>
+<td>a FILE descriptor</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>nr</tt></i>:</span></td>
@@ -555,7 +555,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMemStrdupLoc"></a>xmlMemStrdupLoc ()</h3>
 <pre class="programlisting">char *	xmlMemStrdupLoc			(const char * str, <br>					 const char * file, <br>					 int line)<br>
 </pre>
-<p>a strdup() equivalent, with logging of the allocation info.</p>
+<p>DEPRECATED: don't use</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -599,7 +599,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlMemoryDump"></a>xmlMemoryDump ()</h3>
 <pre class="programlisting">void	xmlMemoryDump			(void)<br>
 </pre>
-<p>Dump in-extenso the memory blocks allocated to the file .memorylist</p>
+<p>DEPRECATED: This feature was removed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -628,7 +628,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlReallocLoc"></a>xmlReallocLoc ()</h3>
 <pre class="programlisting">void *	xmlReallocLoc			(void * ptr, <br>					 size_t size, <br>					 const char * file, <br>					 int line)<br>
 </pre>
-<p>a realloc() equivalent, with logging of the allocation info.</p>
+<p>DEPRECATED: don't use</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

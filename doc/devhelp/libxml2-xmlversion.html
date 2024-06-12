@@ -22,14 +22,11 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">#define <a href="#DEBUG_MEMORY_LOCATION">DEBUG_MEMORY_LOCATION</a>;
-#define <a href="#LIBXML_AUTOMATA_ENABLED">LIBXML_AUTOMATA_ENABLED</a>;
+<pre class="synopsis">#define <a href="#LIBXML_AUTOMATA_ENABLED">LIBXML_AUTOMATA_ENABLED</a>;
 #define <a href="#LIBXML_C14N_ENABLED">LIBXML_C14N_ENABLED</a>;
 #define <a href="#LIBXML_CATALOG_ENABLED">LIBXML_CATALOG_ENABLED</a>;
 #define <a href="#LIBXML_DEBUG_ENABLED">LIBXML_DEBUG_ENABLED</a>;
-#define <a href="#LIBXML_DEBUG_RUNTIME">LIBXML_DEBUG_RUNTIME</a>;
 #define <a href="#LIBXML_DOTTED_VERSION">LIBXML_DOTTED_VERSION</a>;
-#define <a href="#LIBXML_EXPR_ENABLED">LIBXML_EXPR_ENABLED</a>;
 #define <a href="#LIBXML_FTP_ENABLED">LIBXML_FTP_ENABLED</a>;
 #define <a href="#LIBXML_HTML_ENABLED">LIBXML_HTML_ENABLED</a>;
 #define <a href="#LIBXML_HTTP_ENABLED">LIBXML_HTTP_ENABLED</a>;
@@ -63,23 +60,12 @@
 #define <a href="#LIBXML_XPTR_ENABLED">LIBXML_XPTR_ENABLED</a>;
 #define <a href="#LIBXML_XPTR_LOCS_ENABLED">LIBXML_XPTR_LOCS_ENABLED</a>;
 #define <a href="#LIBXML_ZLIB_ENABLED">LIBXML_ZLIB_ENABLED</a>;
-#define <a href="#WITHOUT_TRIO">WITHOUT_TRIO</a>;
-#define <a href="#WITH_TRIO">WITH_TRIO</a>;
-void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
 <div class="refsect1" lang="en">
 <h2>Details</h2>
 <div class="refsect2" lang="en">
-<div class="refsect2" lang="en">
-<h3>
-<a name="DEBUG_MEMORY_LOCATION">Macro </a>DEBUG_MEMORY_LOCATION</h3>
-<pre class="programlisting">#define <a href="#DEBUG_MEMORY_LOCATION">DEBUG_MEMORY_LOCATION</a>;
-</pre>
-<p>Whether the memory debugging is configured in</p>
-</div>
-<hr>
 <div class="refsect2" lang="en">
 <h3>
 <a name="LIBXML_AUTOMATA_ENABLED">Macro </a>LIBXML_AUTOMATA_ENABLED</h3>
@@ -114,26 +100,10 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="LIBXML_DEBUG_RUNTIME">Macro </a>LIBXML_DEBUG_RUNTIME</h3>
-<pre class="programlisting">#define <a href="#LIBXML_DEBUG_RUNTIME">LIBXML_DEBUG_RUNTIME</a>;
-</pre>
-<p>Removed</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="LIBXML_DOTTED_VERSION">Macro </a>LIBXML_DOTTED_VERSION</h3>
 <pre class="programlisting">#define <a href="#LIBXML_DOTTED_VERSION">LIBXML_DOTTED_VERSION</a>;
 </pre>
 <p>the version string like "1.2.3"</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="LIBXML_EXPR_ENABLED">Macro </a>LIBXML_EXPR_ENABLED</h3>
-<pre class="programlisting">#define <a href="#LIBXML_EXPR_ENABLED">LIBXML_EXPR_ENABLED</a>;
-</pre>
-<p>Whether the formal expressions interfaces are compiled in This code is unused and disabled unconditionally for now.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -398,37 +368,6 @@ void	<a href="#xmlCheckVersion">xmlCheckVersion</a>			(int version);
 <pre class="programlisting">#define <a href="#LIBXML_ZLIB_ENABLED">LIBXML_ZLIB_ENABLED</a>;
 </pre>
 <p>Whether the Zlib support is compiled in</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="WITHOUT_TRIO">Macro </a>WITHOUT_TRIO</h3>
-<pre class="programlisting">#define <a href="#WITHOUT_TRIO">WITHOUT_TRIO</a>;
-</pre>
-<p>defined if the trio support should not be configured in</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="WITH_TRIO">Macro </a>WITH_TRIO</h3>
-<pre class="programlisting">#define <a href="#WITH_TRIO">WITH_TRIO</a>;
-</pre>
-<p>defined if the trio support need to be configured in</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlCheckVersion"></a>xmlCheckVersion ()</h3>
-<pre class="programlisting">void	xmlCheckVersion			(int version)<br>
-</pre>
-<p>check the compiled lib version against the include one. This can warn or immediately kill the application</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody><tr>
-<td><span class="term"><i><tt>version</tt></i>:</span></td>
-<td>the include version number</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
 </div>

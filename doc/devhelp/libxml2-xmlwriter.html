@@ -33,6 +33,7 @@ void	<a href="#xmlFreeTextWriter">xmlFreeTextWriter</a>		(<a href="libxml2-xmlwr
 <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a>	<a href="#xmlNewTextWriterMemory">xmlNewTextWriterMemory</a>	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buf, <br>						 int compression);
 <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a>	<a href="#xmlNewTextWriterPushParser">xmlNewTextWriterPushParser</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>							 int compression);
 <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a>	<a href="#xmlNewTextWriterTree">xmlNewTextWriterTree</a>	(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>						 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>						 int compression);
+int	<a href="#xmlTextWriterClose">xmlTextWriterClose</a>		(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
 int	<a href="#xmlTextWriterEndAttribute">xmlTextWriterEndAttribute</a>	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
 int	<a href="#xmlTextWriterEndCDATA">xmlTextWriterEndCDATA</a>		(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
 int	<a href="#xmlTextWriterEndComment">xmlTextWriterEndComment</a>		(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer);
@@ -310,6 +311,28 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the new <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> or NULL in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlTextWriterClose"></a>xmlTextWriterClose ()</h3>
+<pre class="programlisting">int	xmlTextWriterClose		(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer)<br>
+</pre>
+<p>Flushes and closes the output buffer. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>writer</tt></i>:</span></td>
+<td>the <a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a>
+</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> code.</td>
 </tr>
 </tbody>
 </table></div>

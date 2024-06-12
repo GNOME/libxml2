@@ -67,6 +67,7 @@ typedef void <a href="#xmlTextReaderErrorFunc">xmlTextReaderErrorFunc</a>		(void
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlTextReaderGetAttributeNo">xmlTextReaderGetAttributeNo</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 int no);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlTextReaderGetAttributeNs">xmlTextReaderGetAttributeNs</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * localName, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespaceURI);
 void	<a href="#xmlTextReaderGetErrorHandler">xmlTextReaderGetErrorHandler</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlreader.html#xmlTextReaderErrorFunc">xmlTextReaderErrorFunc</a> * f, <br>					 void ** arg);
+const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	<a href="#xmlTextReaderGetLastError">xmlTextReaderGetLastError</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader);
 int	<a href="#xmlTextReaderGetParserColumnNumber">xmlTextReaderGetParserColumnNumber</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader);
 int	<a href="#xmlTextReaderGetParserLineNumber">xmlTextReaderGetParserLineNumber</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader);
 int	<a href="#xmlTextReaderGetParserProp">xmlTextReaderGetParserProp</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 int prop);
@@ -1218,6 +1219,27 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlTextReaderGetLastError"></a>xmlTextReaderGetLastError ()</h3>
+<pre class="programlisting">const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	xmlTextReaderGetLastError	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
+</pre>
+<p>Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>reader</tt></i>:</span></td>
+<td>an XML reader</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the last error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlTextReaderGetParserColumnNumber"></a>xmlTextReaderGetParserColumnNumber ()</h3>
 <pre class="programlisting">int	xmlTextReaderGetParserColumnNumber	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
@@ -2142,7 +2164,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderSetErrorHandler"></a>xmlTextReaderSetErrorHandler ()</h3>
 <pre class="programlisting">void	xmlTextReaderSetErrorHandler	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlreader.html#xmlTextReaderErrorFunc">xmlTextReaderErrorFunc</a> f, <br>					 void * arg)<br>
 </pre>
-<p>Register a callback function that will be called on error and warnings. If @f is NULL, the default error and warning handlers are restored.</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlreader.html#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a>. Register a callback function that will be called on error and warnings. If @f is NULL, the default error and warning handlers are restored.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

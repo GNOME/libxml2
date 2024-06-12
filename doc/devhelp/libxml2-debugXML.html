@@ -38,7 +38,7 @@ void	<a href="#xmlDebugDumpOneNode">xmlDebugDumpOneNode</a>		(FILE * output, <br
 void	<a href="#xmlDebugDumpString">xmlDebugDumpString</a>		(FILE * output, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str);
 int	<a href="#xmlLsCountNode">xmlLsCountNode</a>			(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
 void	<a href="#xmlLsOneNode">xmlLsOneNode</a>			(FILE * output, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
-void	<a href="#xmlShell">xmlShell</a>			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 char * filename, <br>					 <a href="libxml2-debugXML.html#xmlShellReadlineFunc">xmlShellReadlineFunc</a> input, <br>					 FILE * output);
+void	<a href="#xmlShell">xmlShell</a>			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const char * filename, <br>					 <a href="libxml2-debugXML.html#xmlShellReadlineFunc">xmlShellReadlineFunc</a> input, <br>					 FILE * output);
 int	<a href="#xmlShellBase">xmlShellBase</a>			(<a href="libxml2-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt, <br>					 char * arg, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
 int	<a href="#xmlShellCat">xmlShellCat</a>			(<a href="libxml2-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt, <br>					 char * arg, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
 typedef int <a href="#xmlShellCmd">xmlShellCmd</a>			(<a href="libxml2-debugXML.html#xmlShellCtxtPtr">xmlShellCtxtPtr</a> ctxt, <br>					 char * arg, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node2);
@@ -460,7 +460,7 @@ int	<a href="#xmlShellWrite">xmlShellWrite</a>			(<a href="libxml2-debugXML.html
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlShell"></a>xmlShell ()</h3>
-<pre class="programlisting">void	xmlShell			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 char * filename, <br>					 <a href="libxml2-debugXML.html#xmlShellReadlineFunc">xmlShellReadlineFunc</a> input, <br>					 FILE * output)<br>
+<pre class="programlisting">void	xmlShell			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const char * filename, <br>					 <a href="libxml2-debugXML.html#xmlShellReadlineFunc">xmlShellReadlineFunc</a> input, <br>					 FILE * output)<br>
 </pre>
 <p>Implements the XML shell This allow to load, validate, view, modify and save a document using a environment similar to a UNIX commandline.</p>
 <div class="variablelist"><table border="0">

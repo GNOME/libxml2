@@ -27,6 +27,7 @@ typedef <a href="libxml2-entities.html#xmlEntitiesTable">xmlEntitiesTable</a> * 
 typedef enum <a href="#xmlEntityType">xmlEntityType</a>;
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlAddDocEntity">xmlAddDocEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int type, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a>	<a href="#xmlAddDtdEntity">xmlAddDtdEntity</a>		(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int type, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content);
+int	<a href="#xmlAddEntity">xmlAddEntity</a>			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int extSubset, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int type, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> * out);
 void	<a href="#xmlCleanupPredefinedEntities">xmlCleanupPredefinedEntities</a>	(void);
 <a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>	<a href="#xmlCopyEntitiesTable">xmlCopyEntitiesTable</a>	(<a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a> table);
 <a href="libxml2-entities.html#xmlEntitiesTablePtr">xmlEntitiesTablePtr</a>	<a href="#xmlCreateEntitiesTable">xmlCreateEntitiesTable</a>	(void);
@@ -159,6 +160,55 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>a pointer to the entity or NULL in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlAddEntity"></a>xmlAddEntity ()</h3>
+<pre class="programlisting">int	xmlAddEntity			(<a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc, <br>					 int extSubset, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 int type, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content, <br>					 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> * out)<br>
+</pre>
+<p>Register a new entity for this document. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>doc</tt></i>:</span></td>
+<td>the document</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>extSubset</tt></i>:</span></td>
+<td>add to the external or internal subset</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>name</tt></i>:</span></td>
+<td>the entity name</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>type</tt></i>:</span></td>
+<td>the entity type XML_xxx_yyy_ENTITY</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>ExternalID</tt></i>:</span></td>
+<td>the entity external ID if available</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>SystemID</tt></i>:</span></td>
+<td>the entity system ID if available</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>content</tt></i>:</span></td>
+<td>the entity content</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>pointer to resulting entity (optional)</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -345,12 +395,12 @@ The content of this structure is not made public by the API.
 <a name="xmlFreeEntity"></a>xmlFreeEntity ()</h3>
 <pre class="programlisting">void	xmlFreeEntity			(<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity)<br>
 </pre>
-<p></p>
+<p>Frees the entity.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>entity</tt></i>:</span></td>
-<td></td>
+<td>an entity</td>
 </tr></tbody>
 </table></div>
 </div>

@@ -29,12 +29,12 @@ typedef <a href="libxml2-list.html#xmlList">xmlList</a> * <a href="#xmlListPtr">
 void *	<a href="#xmlLinkGetData">xmlLinkGetData</a>			(<a href="libxml2-list.html#xmlLinkPtr">xmlLinkPtr</a> lk);
 int	<a href="#xmlListAppend">xmlListAppend</a>			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> l, <br>					 void * data);
 void	<a href="#xmlListClear">xmlListClear</a>			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> l);
-int	<a href="#xmlListCopy">xmlListCopy</a>			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> cur, <br>					 const <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old);
+int	<a href="#xmlListCopy">xmlListCopy</a>			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> cur, <br>					 <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old);
 <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a>	<a href="#xmlListCreate">xmlListCreate</a>		(<a href="libxml2-list.html#xmlListDeallocator">xmlListDeallocator</a> deallocator, <br>					 <a href="libxml2-list.html#xmlListDataCompare">xmlListDataCompare</a> compare);
 typedef int <a href="#xmlListDataCompare">xmlListDataCompare</a>		(const void * data0, <br>					 const void * data1);
 typedef void <a href="#xmlListDeallocator">xmlListDeallocator</a>		(<a href="libxml2-list.html#xmlLinkPtr">xmlLinkPtr</a> lk);
 void	<a href="#xmlListDelete">xmlListDelete</a>			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> l);
-<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a>	<a href="#xmlListDup">xmlListDup</a>		(const <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old);
+<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a>	<a href="#xmlListDup">xmlListDup</a>		(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old);
 int	<a href="#xmlListEmpty">xmlListEmpty</a>			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> l);
 <a href="libxml2-list.html#xmlLinkPtr">xmlLinkPtr</a>	<a href="#xmlListEnd">xmlListEnd</a>		(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> l);
 <a href="libxml2-list.html#xmlLinkPtr">xmlLinkPtr</a>	<a href="#xmlListFront">xmlListFront</a>		(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> l);
@@ -226,7 +226,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlListCopy"></a>xmlListCopy ()</h3>
-<pre class="programlisting">int	xmlListCopy			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> cur, <br>					 const <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old)<br>
+<pre class="programlisting">int	xmlListCopy			(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> cur, <br>					 <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old)<br>
 </pre>
 <p>Move all the element from the old list in the new list</p>
 <div class="variablelist"><table border="0">
@@ -291,7 +291,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlListDup"></a>xmlListDup ()</h3>
-<pre class="programlisting"><a href="libxml2-list.html#xmlListPtr">xmlListPtr</a>	xmlListDup		(const <a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old)<br>
+<pre class="programlisting"><a href="libxml2-list.html#xmlListPtr">xmlListPtr</a>	xmlListDup		(<a href="libxml2-list.html#xmlListPtr">xmlListPtr</a> old)<br>
 </pre>
 <p>Duplicate the list</p>
 <div class="variablelist"><table border="0">

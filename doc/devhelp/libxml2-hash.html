@@ -25,11 +25,15 @@
 <pre class="synopsis">#define <a href="#XML_CAST_FPTR">XML_CAST_FPTR</a>(fptr);
 typedef struct _xmlHashTable <a href="#xmlHashTable">xmlHashTable</a>;
 typedef <a href="libxml2-hash.html#xmlHashTable">xmlHashTable</a> * <a href="#xmlHashTablePtr">xmlHashTablePtr</a>;
+int	<a href="#xmlHashAdd">xmlHashAdd</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload);
+int	<a href="#xmlHashAdd2">xmlHashAdd2</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload);
+int	<a href="#xmlHashAdd3">xmlHashAdd3</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload);
 int	<a href="#xmlHashAddEntry">xmlHashAddEntry</a>			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload);
 int	<a href="#xmlHashAddEntry2">xmlHashAddEntry2</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload);
 int	<a href="#xmlHashAddEntry3">xmlHashAddEntry3</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload);
 typedef void * <a href="#xmlHashCopier">xmlHashCopier</a>			(void * payload, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCopy">xmlHashCopy</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> copy);
+<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCopySafe">xmlHashCopySafe</a>		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> copyFunc, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> deallocFunc);
 <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCreate">xmlHashCreate</a>		(int size);
 <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	<a href="#xmlHashCreateDict">xmlHashCreateDict</a>	(int size, <br>					 <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a> dict);
 typedef void <a href="#xmlHashDeallocator">xmlHashDeallocator</a>		(void * payload, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
@@ -199,10 +203,109 @@ The content of this structure is not made public by the API.
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlHashAdd"></a>xmlHashAdd ()</h3>
+<pre class="programlisting">int	xmlHashAdd			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload)<br>
+</pre>
+<p>Add a hash table entry. If an entry with this key already exists, payload will not be updated and 0 is returned. This return value can't be distinguished from out-of-memory errors, so this function should be used with care. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>string key</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>1 on success, 0 if an entry exists and -1 in case of error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlHashAdd2"></a>xmlHashAdd2 ()</h3>
+<pre class="programlisting">int	xmlHashAdd2			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 void * payload)<br>
+</pre>
+<p>Add a hash table entry with two strings as key. See <a href="libxml2-hash.html#xmlHashAdd">xmlHashAdd</a>. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>1 on success, 0 if an entry exists and -1 in case of error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlHashAdd3"></a>xmlHashAdd3 ()</h3>
+<pre class="programlisting">int	xmlHashAdd3			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key2, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key3, <br>					 void * payload)<br>
+</pre>
+<p>Add a hash table entry with three strings as key. See <a href="libxml2-hash.html#xmlHashAdd">xmlHashAdd</a>. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>key</tt></i>:</span></td>
+<td>first string key</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>key2</tt></i>:</span></td>
+<td>second string key</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>key3</tt></i>:</span></td>
+<td>third string key</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>payload</tt></i>:</span></td>
+<td>pointer to the payload</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>1 on success, 0 if an entry exists and -1 in case of error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlHashAddEntry"></a>xmlHashAddEntry ()</h3>
 <pre class="programlisting">int	xmlHashAddEntry			(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * key, <br>					 void * payload)<br>
 </pre>
-<p>Add a hash table entry. If an entry with this key already exists, payload will not be updated and -1 is returned. This return value can't be distinguished from out-of-memory errors, so this function should be used with care.</p>
+<p>Add a hash table entry. If an entry with this key already exists, payload will not be updated and -1 is returned. This return value can't be distinguished from out-of-memory errors, so this function should be used with care. NOTE: This function doesn't allow to distinguish malloc failures from existing entries. Use <a href="libxml2-hash.html#xmlHashAdd">xmlHashAdd</a> instead.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -301,7 +404,7 @@ The content of this structure is not made public by the API.
 <a name="xmlHashCopy"></a>xmlHashCopy ()</h3>
 <pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCopy		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> copy)<br>
 </pre>
-<p>Copy the hash @table using @copy to copy payloads.</p>
+<p>DEPRECATED: Leaks memory in error case. Copy the hash table using @copy to copy payloads.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -312,6 +415,35 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>copy</tt></i>:</span></td>
 <td>copier function for items in the hash</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the new table or NULL if a memory allocation failed.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlHashCopySafe"></a>xmlHashCopySafe ()</h3>
+<pre class="programlisting"><a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	xmlHashCopySafe		(<a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a> hash, <br>					 <a href="libxml2-hash.html#xmlHashCopier">xmlHashCopier</a> copyFunc, <br>					 <a href="libxml2-hash.html#xmlHashDeallocator">xmlHashDeallocator</a> deallocFunc)<br>
+</pre>
+<p>Copy the hash table using @copyFunc to copy payloads. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>hash</tt></i>:</span></td>
+<td>hash table</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>copyFunc</tt></i>:</span></td>
+<td>copier function for items in the hash</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>deallocFunc</tt></i>:</span></td>
+<td>deallocation function in case of errors</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>

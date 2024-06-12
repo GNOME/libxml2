@@ -30,6 +30,7 @@ typedef <a href="libxml2-pattern.html#xmlStreamCtxt">xmlStreamCtxt</a> * <a href
 void	<a href="#xmlFreePattern">xmlFreePattern</a>			(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
 void	<a href="#xmlFreePatternList">xmlFreePatternList</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
 void	<a href="#xmlFreeStreamCtxt">xmlFreeStreamCtxt</a>		(<a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a> stream);
+int	<a href="#xmlPatternCompileSafe">xmlPatternCompileSafe</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pattern, <br>					 <a href="libxml2-dict.html#xmlDict">xmlDict</a> * dict, <br>					 int flags, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** namespaces, <br>					 <a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> * patternOut);
 int	<a href="#xmlPatternFromRoot">xmlPatternFromRoot</a>		(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
 <a href="libxml2-pattern.html#xmlStreamCtxtPtr">xmlStreamCtxtPtr</a>	<a href="#xmlPatternGetStreamCtxt">xmlPatternGetStreamCtxt</a>	(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp);
 int	<a href="#xmlPatternMatch">xmlPatternMatch</a>			(<a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> comp, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> node);
@@ -139,6 +140,44 @@ The content of this structure is not made public by the API.
 <td><span class="term"><i><tt>stream</tt></i>:</span></td>
 <td>the stream context</td>
 </tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlPatternCompileSafe"></a>xmlPatternCompileSafe ()</h3>
+<pre class="programlisting">int	xmlPatternCompileSafe		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pattern, <br>					 <a href="libxml2-dict.html#xmlDict">xmlDict</a> * dict, <br>					 int flags, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** namespaces, <br>					 <a href="libxml2-pattern.html#xmlPatternPtr">xmlPatternPtr</a> * patternOut)<br>
+</pre>
+<p>Compile a pattern. Available since 2.13.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>pattern</tt></i>:</span></td>
+<td>the pattern to compile</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>dict</tt></i>:</span></td>
+<td>an optional dictionary for interned strings</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>flags</tt></i>:</span></td>
+<td>compilation flags, see <a href="libxml2-pattern.html#xmlPatternFlags">xmlPatternFlags</a>
+</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>namespaces</tt></i>:</span></td>
+<td>the prefix definitions, array of [URI, prefix] or NULL</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>patternOut</tt></i>:</span></td>
+<td>output pattern</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, 1 on error, -1 if a memory allocation failed.</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <hr>

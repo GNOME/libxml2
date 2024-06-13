@@ -431,7 +431,7 @@ xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
 xmlParserInputPtr
 xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
                     xmlParserCtxtPtr ctxt) {
-    xmlParserInputPtr input;
+    xmlParserInputBufferPtr buf;
     xmlFuzzEntityInfo *entity;
 
     if (URL == NULL)
@@ -440,26 +440,14 @@ xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
     if (entity == NULL)
         return(NULL);
 
-    input = xmlNewInputStream(ctxt);
-    if (input == NULL)
-        return(NULL);
-    input->filename = (char *) xmlCharStrdup(URL);
-    if (input->filename == NULL) {
+    buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
+                                        XML_CHAR_ENCODING_NONE);
+    if (buf == NULL) {
         xmlCtxtErrMemory(ctxt);
-        xmlFreeInputStream(input);
         return(NULL);
     }
-    input->buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
-                                               XML_CHAR_ENCODING_NONE);
-    if (input->buf == NULL) {
-        xmlCtxtErrMemory(ctxt);
-        xmlFreeInputStream(input);
-        return(NULL);
-    }
-    input->base = input->cur = xmlBufContent(input->buf->buffer);
-    input->end = input->base + xmlBufUse(input->buf->buffer);
 
-    return input;
+    return(xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE));
 }
 
 char *

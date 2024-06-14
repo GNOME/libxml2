@@ -180,12 +180,12 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
         return;
 
     /*
-     * Don't report a well-formedness error if an external entity could
-     * not be found. We assume that inputNr is zero for the document
-     * entity which is somewhat fragile.
+     * Only report a warning if a file could not be found. This should
+     * only be done for external entities, but the external entity loader
+     * of xsltproc can try multiple paths and assumes that ENOENT doesn't
+     * raise an error and aborts parsing.
      */
-    if ((ctxt->inputNr > 0) &&
-        ((code == XML_IO_ENOENT) ||
+    if (((code == XML_IO_ENOENT) ||
          (code == XML_IO_NETWORK_ATTEMPT) ||
          (code == XML_IO_UNKNOWN))) {
         if (ctxt->validate == 0)

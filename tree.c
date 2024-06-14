@@ -3731,17 +3731,16 @@ xmlFreeNode(xmlNodePtr cur) {
 	xmlFreeProp((xmlAttrPtr) cur);
 	return;
     }
+    if (cur->type == XML_ENTITY_DECL) {
+        xmlFreeEntity((xmlEntityPtr) cur);
+        return;
+    }
 
     if ((__xmlRegisterCallbacks) && (xmlDeregisterNodeDefaultValue))
 	xmlDeregisterNodeDefaultValue(cur);
 
     if (cur->doc != NULL) dict = cur->doc->dict;
 
-    if (cur->type == XML_ENTITY_DECL) {
-        xmlEntityPtr ent = (xmlEntityPtr) cur;
-	DICT_FREE(ent->SystemID);
-	DICT_FREE(ent->ExternalID);
-    }
     if ((cur->children != NULL) &&
 	(cur->type != XML_ENTITY_REF_NODE))
 	xmlFreeNodeList(cur->children);

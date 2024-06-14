@@ -81,6 +81,7 @@ LIBS = $(LIBS) pthreadVC.lib
 !if "$(WITH_MODULES)" == "1"
 LIBS = $(LIBS) kernel32.lib
 !endif
+LIBS = $(LIBS) Bcrypt.lib
 
 # The archiver and its options.
 AR = lib.exe

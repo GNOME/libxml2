@@ -26,7 +26,7 @@ XML_PARSE_NOENT.
 Support for HTTP POST was removed.
 
 Support for zlib, liblzma and HTTP is now disabled by default and has
-to be enabled by passing --with-zlib, --with-lzma or --with-html to
+to be enabled by passing --with-zlib, --with-lzma or --with-http to
 configure. In legacy mode (--with-legacy) these options are enabled
 by default as before.
 

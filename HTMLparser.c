@@ -4753,12 +4753,9 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     if ((ctxt == NULL) || (ctxt->input == NULL))
 	return(-1);
 
-    /*
-     * Document locator is unused. Only for backward compatibility.
-     */
     if ((ctxt->sax) && (ctxt->sax->setDocumentLocator)) {
-        xmlSAXLocator copy = xmlDefaultSAXLocator;
-        ctxt->sax->setDocumentLocator(ctxt->userData, &copy);
+        ctxt->sax->setDocumentLocator(ctxt->userData,
+                (xmlSAXLocator *) &xmlDefaultSAXLocator);
     }
 
     xmlDetectEncoding(ctxt);
@@ -5297,8 +5294,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                     avail = in->end - in->cur;
 		}
                 if ((ctxt->sax) && (ctxt->sax->setDocumentLocator)) {
-                    xmlSAXLocator copy = xmlDefaultSAXLocator;
-                    ctxt->sax->setDocumentLocator(ctxt->userData, &copy);
+                    ctxt->sax->setDocumentLocator(ctxt->userData,
+                            (xmlSAXLocator *) &xmlDefaultSAXLocator);
                 }
 		if ((ctxt->sax) && (ctxt->sax->startDocument) &&
 	            (!ctxt->disableSAX))

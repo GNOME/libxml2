@@ -1213,7 +1213,7 @@ loaded:
 #endif
         }
 	xptr = xmlXPtrEval(fragment, ctxt->xpctxt);
-	if (xptr == NULL) {
+	if (ctxt->xpctxt->lastError.code != XML_ERR_OK) {
             if (ctxt->xpctxt->lastError.code == XML_ERR_NO_MEMORY)
                 xmlXIncludeErrMemory(ctxt);
             else
@@ -1222,6 +1222,8 @@ loaded:
                                fragment);
             goto error;
 	}
+        if (xptr == NULL)
+            goto done;
 	switch (xptr->type) {
 	    case XPATH_UNDEFINED:
 	    case XPATH_BOOLEAN:
@@ -1293,6 +1295,7 @@ loaded:
     }
 #endif
 
+done:
     ret = 0;
 
 error:

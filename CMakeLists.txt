@@ -415,7 +415,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
 -Wstrict-prototypes -Wmissing-prototypes \
 -Wno-long-long -Wno-format-extra-args")
 
-    if(BUILD_SHARED_LIBS AND UNIX AND NOT APPLE)
+    if(LIBXML2_WITH_LEGACY AND BUILD_SHARED_LIBS AND UNIX AND NOT APPLE)
         check_linker_flag(C "LINKER:--undefined-version" FLAG_UNDEFINED_VERSION)
         if (FLAG_UNDEFINED_VERSION)
             target_link_options(LibXml2 PRIVATE "LINKER:--undefined-version")

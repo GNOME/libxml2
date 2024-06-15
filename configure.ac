@@ -428,24 +428,27 @@ dnl
 dnl Linker version scripts for symbol versioning
 dnl
 VERSION_SCRIPT_FLAGS=
-# lt_cv_prog_gnu_ld is from libtool 2.+
-if test "$lt_cv_prog_gnu_ld" = yes; then
-  case $host in
-    *-*-cygwin* | *-*-mingw* | *-*-msys* )
-      ;;
-    *)
-      dnl lld 16 defaults to --no-undefined-version but the version script
-      dnl can contain symbols disabled by configuration options.
-      AX_APPEND_LINK_FLAGS([-Wl,--undefined-version], [VERSION_SCRIPT_FLAGS])
-      AX_APPEND_FLAG([-Wl,--version-script=], [VERSION_SCRIPT_FLAGS])
-      ;;
-  esac
-else
-  case $host in
-  *-*-sunos*) VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,";;
-  esac
+if test "$with_legacy" = "yes"; then
+    # lt_cv_prog_gnu_ld is from libtool 2.+
+    if test "$lt_cv_prog_gnu_ld" = yes; then
+        case $host in
+            *-*-cygwin* | *-*-mingw* | *-*-msys* )
+                ;;
+            *)
+                dnl lld 16 defaults to --no-undefined-version but the version
+                dnl script can contain symbols disabled by configuration
+                dnl options.
+                AX_APPEND_LINK_FLAGS([-Wl,--undefined-version], [VERSION_SCRIPT_FLAGS])
+                AX_APPEND_FLAG([-Wl,--version-script=], [VERSION_SCRIPT_FLAGS])
+                ;;
+        esac
+    else
+        case $host in
+        *-*-sunos*) VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,";;
+        esac
+    fi
+    AC_SUBST(VERSION_SCRIPT_FLAGS)
 fi
-AC_SUBST(VERSION_SCRIPT_FLAGS)
 AM_CONDITIONAL([USE_VERSION_SCRIPT], [test -n "$VERSION_SCRIPT_FLAGS"])
 
 dnl

@@ -27,6 +27,7 @@
 #include <note.h>
 #endif
 
+#include "private/cata.h"
 #include "private/dict.h"
 #include "private/enc.h"
 #include "private/globals.h"
@@ -592,6 +593,9 @@ xmlInitParser(void) {
         xmlInitXPathInternal();
 #endif
         xmlInitIOCallbacks();
+#ifdef LIBXML_CATALOG_ENABLED
+        xmlInitCatalogInternal();
+#endif
 
         xmlParserInnerInitialized = 1;
     }
@@ -632,6 +636,7 @@ xmlCleanupParser(void) {
     xmlCleanupCharEncodingHandlers();
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogCleanup();
+    xmlCleanupCatalogInternal();
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
     xmlSchemaCleanupTypes();

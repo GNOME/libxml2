@@ -38,6 +38,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/threads.h>
 
+#include "private/cata.h"
 #include "private/buf.h"
 #include "private/error.h"
 
@@ -169,7 +170,7 @@ static xmlCatalogPtr xmlDefaultCatalog = NULL;
 static xmlRMutexPtr xmlCatalogMutex = NULL;
 
 /*
- * Whether the catalog support was initialized.
+ * Whether the default system catalog was initialized.
  */
 static int xmlCatalogInitialized = 0;
 
@@ -3056,41 +3057,31 @@ xmlCatalogIsEmpty(xmlCatalogPtr catal) {
  ************************************************************************/
 
 /**
- * xmlInitializeCatalogData:
+ * xmlInitCatalogInternal:
  *
  * Do the catalog initialization only of global data, doesn't try to load
  * any catalog actually.
- * this function is not thread safe, catalog initialization should
- * preferably be done once at startup
  */
-static void
-xmlInitializeCatalogData(void) {
-    if (xmlCatalogInitialized != 0)
-	return;
-
+void
+xmlInitCatalogInternal(void) {
     if (getenv("XML_DEBUG_CATALOG"))
 	xmlDebugCatalogs = 1;
     xmlCatalogMutex = xmlNewRMutex();
-
-    xmlCatalogInitialized = 1;
 }
+
 /**
  * xmlInitializeCatalog:
  *
- * Do the catalog initialization.
- * this function is not thread safe, catalog initialization should
- * preferably be done once at startup
+ * Load the default system catalog.
  */
 void
 xmlInitializeCatalog(void) {
     if (xmlCatalogInitialized != 0)
 	return;
 
-    xmlInitializeCatalogData();
-    xmlRMutexLock(xmlCatalogMutex);
+    xmlInitParser();
 
-    if (getenv("XML_DEBUG_CATALOG"))
-	xmlDebugCatalogs = 1;
+    xmlRMutexLock(xmlCatalogMutex);
 
     if (xmlDefaultCatalog == NULL) {
 	const char *catalogs;
@@ -3152,8 +3143,7 @@ xmlLoadCatalog(const char *filename)
     int ret;
     xmlCatalogPtr catal;
 
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalogData();
+    xmlInitParser();
 
     xmlRMutexLock(xmlCatalogMutex);
 
@@ -3228,9 +3218,6 @@ xmlLoadCatalogs(const char *pathss) {
  */
 void
 xmlCatalogCleanup(void) {
-    if (xmlCatalogInitialized == 0)
-        return;
-
     xmlRMutexLock(xmlCatalogMutex);
     if (xmlDebugCatalogs)
 	fprintf(stderr,
@@ -3244,6 +3231,15 @@ xmlCatalogCleanup(void) {
     xmlDebugCatalogs = 0;
     xmlCatalogInitialized = 0;
     xmlRMutexUnlock(xmlCatalogMutex);
+}
+
+/**
+ * xmlCleanupCatalogInternal:
+ *
+ * Free global data.
+ */
+void
+xmlCleanupCatalogInternal(void) {
     xmlFreeRMutex(xmlCatalogMutex);
 }
 
@@ -3365,7 +3361,7 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
     int res = -1;
 
     if (!xmlCatalogInitialized)
-	xmlInitializeCatalogData();
+	xmlInitializeCatalog();
 
     xmlRMutexLock(xmlCatalogMutex);
     /*
@@ -3552,9 +3548,6 @@ void
 xmlCatalogFreeLocal(void *catalogs) {
     xmlCatalogEntryPtr catal;
 
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
     catal = (xmlCatalogEntryPtr) catalogs;
     if (catal != NULL)
 	xmlFreeCatalogEntryList(catal);
@@ -3574,8 +3567,7 @@ void *
 xmlCatalogAddLocal(void *catalogs, const xmlChar *URL) {
     xmlCatalogEntryPtr catal, add;
 
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
+    xmlInitParser();
 
     if (URL == NULL)
 	return(catalogs);
@@ -3617,9 +3609,6 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
     xmlCatalogEntryPtr catal;
     xmlChar *ret;
 
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
-
     if ((pubID == NULL) && (sysID == NULL))
 	return(NULL);
 
@@ -3660,9 +3649,6 @@ xmlChar *
 xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
     xmlCatalogEntryPtr catal;
     xmlChar *ret;
-
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
 
     if (URI == NULL)
 	return(NULL);

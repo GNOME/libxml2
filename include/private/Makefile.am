@@ -1,5 +1,6 @@
 EXTRA_DIST = \
 	buf.h \
+	cata.h \
 	dict.h \
 	enc.h \
 	entities.h \

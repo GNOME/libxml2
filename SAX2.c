@@ -1673,6 +1673,18 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
      */
     nodePop(ctxt);
 }
+#else /* LIBXML_SAX1_ENABLED || LIBXML_HTML_ENABLED || LIBXML_LEGACY_ENABLED */
+/** DOC_DISABLE */
+void
+xmlSAX2StartElement(void *ctx ATTRIBUTE_UNUSED,
+                    const xmlChar *fullname ATTRIBUTE_UNUSED,
+                    const xmlChar **atts ATTRIBUTE_UNUSED) {
+}
+void
+xmlSAX2EndElement(void *ctx ATTRIBUTE_UNUSED,
+                  const xmlChar *name ATTRIBUTE_UNUSED) {
+}
+/** DOC_ENABLE */
 #endif /* LIBXML_SAX1_ENABLED || LIBXML_HTML_ENABLED || LIBXML_LEGACY_ENABLED */
 
 /*

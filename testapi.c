@@ -4191,7 +4191,6 @@ static int
 test_xmlSAX2EndElement(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     void * ctx; /* the user data (XML parser context) */
@@ -4221,7 +4220,6 @@ test_xmlSAX2EndElement(void) {
     }
     }
     function_tests++;
-#endif
 #endif
 
     return(test_ret);
@@ -5121,7 +5119,6 @@ static int
 test_xmlSAX2StartElement(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_LEGACY_ENABLED)
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     void * ctx; /* the user data (XML parser context) */
@@ -5158,7 +5155,6 @@ test_xmlSAX2StartElement(void) {
     }
     }
     function_tests++;
-#endif
 #endif
 
     return(test_ret);

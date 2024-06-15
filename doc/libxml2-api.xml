@@ -13050,7 +13050,6 @@ Could we use @subtypes for this?'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2EndElement' file='SAX2' module='SAX2'>
-      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>called when the end of an element has been detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
@@ -13196,7 +13195,6 @@ Could we use @subtypes for this?'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2StartElement' file='SAX2' module='SAX2'>
-      <cond>defined(LIBXML_SAX1_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_WRITER_ENABLED) || defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>called when an opening tag has been processed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>

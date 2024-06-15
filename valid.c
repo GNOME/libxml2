@@ -119,7 +119,7 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
                   NULL, NULL, 0, msg, extra);
 }
 
-#if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlErrValidNode:
  * @ctxt:  an XML validation parser context
@@ -140,9 +140,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
     xmlDoErrValid(ctxt, node, error, XML_ERR_ERROR, str1, str2, str3, 0,
                   msg, str1, str2, str3);
 }
-#endif /* LIBXML_VALID_ENABLED or LIBXML_SCHEMAS_ENABLED */
 
-#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlErrValidNodeNr:
  * @ctxt:  an XML validation parser context
@@ -3149,7 +3147,7 @@ xmlGetDtdNotationDesc(xmlDtdPtr dtd, const xmlChar *name) {
     return(xmlHashLookup(table, name));
 }
 
-#if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlValidateNotationUse:
  * @ctxt:  the validation context
@@ -3175,7 +3173,7 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     if ((notaDecl == NULL) && (doc->extSubset != NULL))
 	notaDecl = xmlGetDtdNotationDesc(doc->extSubset, notationName);
 
-    if ((notaDecl == NULL) && (ctxt != NULL)) {
+    if (notaDecl == NULL) {
 	xmlErrValidNode(ctxt, (xmlNodePtr) doc, XML_DTD_UNKNOWN_NOTATION,
 	                "NOTATION %s is not declared\n",
 		        notationName, NULL, NULL);
@@ -3183,7 +3181,7 @@ xmlValidateNotationUse(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
     }
     return(1);
 }
-#endif /* LIBXML_VALID_ENABLED or LIBXML_SCHEMAS_ENABLED */
+#endif /* LIBXML_VALID_ENABLED */
 
 /**
  * xmlIsMixedElement:

@@ -16791,7 +16791,7 @@ Could we use @subtypes for this?'/>
       <arg name='nota' type='xmlNotationPtr' info='a notation definition'/>
     </function>
     <function name='xmlValidateNotationUse' file='valid' module='valid'>
-      <cond>defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_VALID_ENABLED)</cond>
       <info>DEPRECATED: Internal function, don&apos;t use.  Validate that the given name match a notation declaration. - [ VC: Notation Declared ]</info>
       <return type='int' info='1 if valid or 0 otherwise'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>

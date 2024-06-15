@@ -27445,7 +27445,7 @@ static int
 test_xmlValidateNotationUse(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_VALID_ENABLED)
     int mem_base;
     int ret_val;
     xmlValidCtxtPtr ctxt; /* the validation context */

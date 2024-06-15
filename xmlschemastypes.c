@@ -3196,8 +3196,13 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 if ((node == NULL) || (node->doc == NULL))
                     ret = 3;
                 if (ret == 0) {
-                    ret = xmlValidateNotationUse(NULL, node->doc, value);
-                    if (ret == 1)
+                    xmlNotationPtr nota;
+
+                    nota = xmlGetDtdNotationDesc(node->doc->intSubset, value);
+                    if ((nota == NULL) && (node->doc->extSubset != NULL))
+                        nota = xmlGetDtdNotationDesc(node->doc->extSubset,
+                                                     value);
+                    if (nota != NULL)
                         ret = 0;
                     else
                         ret = 1;

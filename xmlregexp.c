@@ -5550,7 +5550,6 @@ xmlRegFreeRegexp(xmlRegexpPtr regexp) {
     xmlFree(regexp);
 }
 
-#ifdef LIBXML_AUTOMATA_ENABLED
 /************************************************************************
  *									*
  *			The Automata interface				*
@@ -6315,7 +6314,6 @@ xmlAutomataIsDeterminist(xmlAutomataPtr am) {
     ret = xmlFAComputesDeterminism(am);
     return(ret);
 }
-#endif /* LIBXML_AUTOMATA_ENABLED */
 
 #ifdef LIBXML_EXPR_ENABLED
 /************************************************************************

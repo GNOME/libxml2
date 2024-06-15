@@ -639,7 +639,7 @@ xmlHasFeature(xmlFeature feature)
             return(0);
 #endif
         case XML_WITH_AUTOMATA:
-#ifdef LIBXML_AUTOMATA_ENABLED
+#ifdef LIBXML_REGEXP_ENABLED
             return(1);
 #else
             return(0);

@@ -29872,7 +29872,7 @@ static int
 test_xmlAutomataIsDeterminist(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlAutomataPtr am; /* an automata */
@@ -29946,7 +29946,7 @@ static int
 test_xmlAutomataNewCounter(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlAutomataPtr am; /* an automata */
@@ -30081,7 +30081,7 @@ static int
 test_xmlAutomataSetFinalState(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_REGEXP_ENABLED) && defined(LIBXML_AUTOMATA_ENABLED)
+#if defined(LIBXML_REGEXP_ENABLED)
     int mem_base;
     int ret_val;
     xmlAutomataPtr am; /* an automata */

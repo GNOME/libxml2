@@ -4452,9 +4452,6 @@ done:
     return(res);
 }
 
-#endif /* LIBXML_REGEXPS_ENABLED */
-
-#ifdef LIBXML_AUTOMATA_ENABLED
 /************************************************************************
  *									*
  *			Automata tests					*
@@ -4691,7 +4688,7 @@ automataTest(const char *filename, const char *result,
     return(res);
 }
 
-#endif /* LIBXML_AUTOMATA_ENABLED */
+#endif /* LIBXML_REGEXP_ENABLED */
 
 /************************************************************************
  *									*
@@ -4899,8 +4896,6 @@ testDesc testDescriptions[] = {
     { "Regexp regression tests" ,
       regexpTest, "./test/regexp/*", "result/regexp/", "", ".err",
       0 },
-#endif
-#if defined(LIBXML_AUTOMATA_ENABLED)
     { "Automata regression tests" ,
       automataTest, "./test/automata/*", "result/automata/", "", NULL,
       0 },

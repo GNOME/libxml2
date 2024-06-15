@@ -3123,6 +3123,8 @@ xmlInitializeCatalog(void) {
     }
 
     xmlRMutexUnlock(xmlCatalogMutex);
+
+    xmlCatalogInitialized = 1;
 }
 
 

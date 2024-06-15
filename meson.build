@@ -776,8 +776,6 @@ configure_file(
     install_dir: dir_lib / 'cmake' / 'libxml2',
 )
 
-install_data(files('libxml.m4'), install_dir: dir_data / 'aclocal')
-
 if support_tls == false
     message('===============================================================')
     message('WARNING: Your C compiler appears to not support thread-local')

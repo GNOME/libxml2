@@ -682,10 +682,6 @@ endif()
 configure_file(xml2-config.in xml2-config @ONLY)
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/xml2-config DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT development)
 
-if(UNIX)
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/libxml.m4 DESTINATION ${CMAKE_INSTALL_DATADIR}/aclocal)
-endif()
-
 set(XML_INCLUDEDIR "-I${CMAKE_INSTALL_FULL_INCLUDEDIR}/libxml2")
 set(XML_LIBDIR "-L${CMAKE_INSTALL_FULL_LIBDIR}")
 

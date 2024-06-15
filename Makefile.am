@@ -110,10 +110,6 @@ endif
 DEPS = libxml2.la
 LDADDS = libxml2.la
 
-
-m4datadir = $(datadir)/aclocal
-dist_m4data_DATA = libxml.m4
-
 runtest_SOURCES=runtest.c
 runtest_DEPENDENCIES = $(DEPS)
 runtest_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)

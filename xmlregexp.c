@@ -6316,11 +6316,119 @@ xmlAutomataIsDeterminist(xmlAutomataPtr am) {
 }
 
 #ifdef LIBXML_EXPR_ENABLED
+/** DOC_DISABLE */
 /************************************************************************
  *									*
  *		Formal Expression handling code				*
  *									*
  ************************************************************************/
+
+/*
+ * Formal regular expression handling
+ * Its goal is to do some formal work on content models
+ */
+
+/* expressions are used within a context */
+typedef struct _xmlExpCtxt xmlExpCtxt;
+typedef xmlExpCtxt *xmlExpCtxtPtr;
+
+XMLPUBFUN void
+			xmlExpFreeCtxt	(xmlExpCtxtPtr ctxt);
+XMLPUBFUN xmlExpCtxtPtr
+			xmlExpNewCtxt	(int maxNodes,
+					 xmlDictPtr dict);
+
+XMLPUBFUN int
+			xmlExpCtxtNbNodes(xmlExpCtxtPtr ctxt);
+XMLPUBFUN int
+			xmlExpCtxtNbCons(xmlExpCtxtPtr ctxt);
+
+/* Expressions are trees but the tree is opaque */
+typedef struct _xmlExpNode xmlExpNode;
+typedef xmlExpNode *xmlExpNodePtr;
+
+typedef enum {
+    XML_EXP_EMPTY = 0,
+    XML_EXP_FORBID = 1,
+    XML_EXP_ATOM = 2,
+    XML_EXP_SEQ = 3,
+    XML_EXP_OR = 4,
+    XML_EXP_COUNT = 5
+} xmlExpNodeType;
+
+/*
+ * 2 core expressions shared by all for the empty language set
+ * and for the set with just the empty token
+ */
+XMLPUBVAR xmlExpNodePtr forbiddenExp;
+XMLPUBVAR xmlExpNodePtr emptyExp;
+
+/*
+ * Expressions are reference counted internally
+ */
+XMLPUBFUN void
+			xmlExpFree	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr);
+XMLPUBFUN void
+			xmlExpRef	(xmlExpNodePtr expr);
+
+/*
+ * constructors can be either manual or from a string
+ */
+XMLPUBFUN xmlExpNodePtr
+			xmlExpParse	(xmlExpCtxtPtr ctxt,
+					 const char *expr);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewAtom	(xmlExpCtxtPtr ctxt,
+					 const xmlChar *name,
+					 int len);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewOr	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr left,
+					 xmlExpNodePtr right);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewSeq	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr left,
+					 xmlExpNodePtr right);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpNewRange	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr subset,
+					 int min,
+					 int max);
+/*
+ * The really interesting APIs
+ */
+XMLPUBFUN int
+			xmlExpIsNillable(xmlExpNodePtr expr);
+XMLPUBFUN int
+			xmlExpMaxToken	(xmlExpNodePtr expr);
+XMLPUBFUN int
+			xmlExpGetLanguage(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 const xmlChar**langList,
+					 int len);
+XMLPUBFUN int
+			xmlExpGetStart	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 const xmlChar**tokList,
+					 int len);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpStringDerive(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 const xmlChar *str,
+					 int len);
+XMLPUBFUN xmlExpNodePtr
+			xmlExpExpDerive	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 xmlExpNodePtr sub);
+XMLPUBFUN int
+			xmlExpSubsume	(xmlExpCtxtPtr ctxt,
+					 xmlExpNodePtr expr,
+					 xmlExpNodePtr sub);
+XMLPUBFUN void
+			xmlExpDump	(xmlBufferPtr buf,
+					 xmlExpNodePtr expr);
+
 /************************************************************************
  *									*
  *		Expression handling context				*
@@ -8008,6 +8116,7 @@ xmlExpCtxtNbCons(xmlExpCtxtPtr ctxt) {
     return(ctxt->nb_cons);
 }
 
+/** DOC_ENABLE */
 #endif /* LIBXML_EXPR_ENABLED */
 
 #endif /* LIBXML_REGEXP_ENABLED */

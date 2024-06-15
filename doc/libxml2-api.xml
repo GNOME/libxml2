@@ -2952,42 +2952,10 @@
      <summary>regular expressions handling</summary>
      <description>basic API for libxml regular expressions handling used for XML Schemas and validation. </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_EXP_ATOM' type='enum'/>
-     <exports symbol='XML_EXP_COUNT' type='enum'/>
-     <exports symbol='XML_EXP_EMPTY' type='enum'/>
-     <exports symbol='XML_EXP_FORBID' type='enum'/>
-     <exports symbol='XML_EXP_OR' type='enum'/>
-     <exports symbol='XML_EXP_SEQ' type='enum'/>
-     <exports symbol='xmlExpCtxt' type='typedef'/>
-     <exports symbol='xmlExpCtxtPtr' type='typedef'/>
-     <exports symbol='xmlExpNode' type='typedef'/>
-     <exports symbol='xmlExpNodePtr' type='typedef'/>
-     <exports symbol='xmlExpNodeType' type='typedef'/>
      <exports symbol='xmlRegExecCtxt' type='typedef'/>
      <exports symbol='xmlRegExecCtxtPtr' type='typedef'/>
      <exports symbol='xmlRegexp' type='typedef'/>
      <exports symbol='xmlRegexpPtr' type='typedef'/>
-     <exports symbol='emptyExp' type='variable'/>
-     <exports symbol='forbiddenExp' type='variable'/>
-     <exports symbol='xmlExpCtxtNbCons' type='function'/>
-     <exports symbol='xmlExpCtxtNbNodes' type='function'/>
-     <exports symbol='xmlExpDump' type='function'/>
-     <exports symbol='xmlExpExpDerive' type='function'/>
-     <exports symbol='xmlExpFree' type='function'/>
-     <exports symbol='xmlExpFreeCtxt' type='function'/>
-     <exports symbol='xmlExpGetLanguage' type='function'/>
-     <exports symbol='xmlExpGetStart' type='function'/>
-     <exports symbol='xmlExpIsNillable' type='function'/>
-     <exports symbol='xmlExpMaxToken' type='function'/>
-     <exports symbol='xmlExpNewAtom' type='function'/>
-     <exports symbol='xmlExpNewCtxt' type='function'/>
-     <exports symbol='xmlExpNewOr' type='function'/>
-     <exports symbol='xmlExpNewRange' type='function'/>
-     <exports symbol='xmlExpNewSeq' type='function'/>
-     <exports symbol='xmlExpParse' type='function'/>
-     <exports symbol='xmlExpRef' type='function'/>
-     <exports symbol='xmlExpStringDerive' type='function'/>
-     <exports symbol='xmlExpSubsume' type='function'/>
      <exports symbol='xmlRegExecCallbacks' type='function'/>
      <exports symbol='xmlRegExecErrInfo' type='function'/>
      <exports symbol='xmlRegExecNextValues' type='function'/>
@@ -4870,12 +4838,6 @@ and not by parsing an instance'/>
     <enum name='XML_ERR_WARNING' file='xmlerror' value='1' type='xmlErrorLevel' info='A simple warning'/>
     <enum name='XML_ERR_XMLDECL_NOT_FINISHED' file='xmlerror' value='57' type='xmlParserErrors' info='57'/>
     <enum name='XML_ERR_XMLDECL_NOT_STARTED' file='xmlerror' value='56' type='xmlParserErrors' info='56'/>
-    <enum name='XML_EXP_ATOM' file='xmlregexp' value='2' type='xmlExpNodeType'/>
-    <enum name='XML_EXP_COUNT' file='xmlregexp' value='5' type='xmlExpNodeType'/>
-    <enum name='XML_EXP_EMPTY' file='xmlregexp' value='0' type='xmlExpNodeType'/>
-    <enum name='XML_EXP_FORBID' file='xmlregexp' value='1' type='xmlExpNodeType'/>
-    <enum name='XML_EXP_OR' file='xmlregexp' value='4' type='xmlExpNodeType'/>
-    <enum name='XML_EXP_SEQ' file='xmlregexp' value='3' type='xmlExpNodeType'/>
     <enum name='XML_EXTERNAL_GENERAL_PARSED_ENTITY' file='entities' value='2' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' file='entities' value='3' type='xmlEntityType'/>
     <enum name='XML_EXTERNAL_PARAMETER_ENTITY' file='entities' value='5' type='xmlEntityType'/>
@@ -6118,11 +6080,6 @@ set at the end of parsing'/>
     <typedef name='xmlErrorDomain' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorLevel' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorPtr' file='xmlerror' type='xmlError *'/>
-    <struct name='xmlExpCtxt' file='xmlregexp' type='struct _xmlExpCtxt'/>
-    <typedef name='xmlExpCtxtPtr' file='xmlregexp' type='xmlExpCtxt *'/>
-    <struct name='xmlExpNode' file='xmlregexp' type='struct _xmlExpNode'/>
-    <typedef name='xmlExpNodePtr' file='xmlregexp' type='xmlExpNode *'/>
-    <typedef name='xmlExpNodeType' file='xmlregexp' type='enum'/>
     <typedef name='xmlFeature' file='parser' type='enum'/>
     <struct name='xmlGlobalState' file='globals' type='struct _xmlGlobalState'/>
     <typedef name='xmlGlobalStatePtr' file='globals' type='xmlGlobalState *'/>
@@ -6855,8 +6812,6 @@ Could we use @subtypes for this?'/>
       <field name='value' type='xmlXPathObjectPtr' info=' the value'/>
     </struct>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
-    <variable name='emptyExp' file='xmlregexp' type='xmlExpNodePtr'/>
-    <variable name='forbiddenExp' file='xmlregexp' type='xmlExpNodePtr'/>
     <variable name='htmlDefaultSAXHandler' file='HTMLparser' type='const xmlSAXHandlerV1'>
       <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default old SAX v1 handler for HTML, builds the DOM tree</info>
     </variable>
@@ -9573,146 +9528,6 @@ Could we use @subtypes for this?'/>
       <arg name='firstNode' type='xmlNodePtr' info='the fist node in the chunk'/>
       <arg name='lastNode' type='xmlNodePtr' info='the last nod in the chunk'/>
     </functype>
-    <function name='xmlExpCtxtNbCons' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Debugging facility provides the number of allocated nodes over lifetime</info>
-      <return type='int' info='the number of nodes ever allocated or -1 in case of error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='an expression context'/>
-    </function>
-    <function name='xmlExpCtxtNbNodes' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Debugging facility provides the number of allocated nodes at a that point</info>
-      <return type='int' info='the number of nodes in use or -1 in case of error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='an expression context'/>
-    </function>
-    <function name='xmlExpDump' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Serialize the expression as compiled to the buffer</info>
-      <return type='void'/>
-      <arg name='buf' type='xmlBufferPtr' info='a buffer to receive the output'/>
-      <arg name='expr' type='xmlExpNodePtr' info='the compiled expression'/>
-    </function>
-    <function name='xmlExpExpDerive' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Evaluates the expression resulting from @exp consuming a sub expression @sub Based on algebraic derivation and sometimes direct Brzozowski derivation it usually takes less than linear time and can handle expressions generating infinite languages.</info>
-      <return type='xmlExpNodePtr' info='the resulting expression or NULL in case of internal error, the result must be freed'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expressions context'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the englobing expression'/>
-      <arg name='sub' type='xmlExpNodePtr' info='the subexpression'/>
-    </function>
-    <function name='xmlExpFree' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Dereference the expression</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-    </function>
-    <function name='xmlExpFreeCtxt' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Free an expression context</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='an expression context'/>
-    </function>
-    <function name='xmlExpGetLanguage' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Find all the strings used in @exp and store them in @list</info>
-      <return type='int' info='the number of unique strings found, -1 in case of errors and -2 if there is more than @len strings'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-      <arg name='langList' type='const xmlChar **' info='where to store the tokens'/>
-      <arg name='len' type='int' info='the allocated length of @list'/>
-    </function>
-    <function name='xmlExpGetStart' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Find all the strings that appears at the start of the languages accepted by @exp and store them in @list. E.g. for (a, b) | c it will return the list [a, c]</info>
-      <return type='int' info='the number of unique strings found, -1 in case of errors and -2 if there is more than @len strings'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-      <arg name='tokList' type='const xmlChar **' info='where to store the tokens'/>
-      <arg name='len' type='int' info='the allocated length of @list'/>
-    </function>
-    <function name='xmlExpIsNillable' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Finds if the expression is nillable, i.e. if it accepts the empty sequence</info>
-      <return type='int' info='1 if nillable, 0 if not and -1 in case of error'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-    </function>
-    <function name='xmlExpMaxToken' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Indicate the maximum number of input a expression can accept</info>
-      <return type='int' info='the maximum length or -1 in case of error'/>
-      <arg name='expr' type='xmlExpNodePtr' info='a compiled expression'/>
-    </function>
-    <function name='xmlExpNewAtom' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Get the atom associated to this name from that context</info>
-      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='name' type='const xmlChar *' info='the atom name'/>
-      <arg name='len' type='int' info='the atom name length in byte (or -1);'/>
-    </function>
-    <function name='xmlExpNewCtxt' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Creates a new context for manipulating expressions</info>
-      <return type='xmlExpCtxtPtr' info='the context or NULL in case of error'/>
-      <arg name='maxNodes' type='int' info='the maximum number of nodes'/>
-      <arg name='dict' type='xmlDictPtr' info='optional dictionary to use internally'/>
-    </function>
-    <function name='xmlExpNewOr' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Get the atom associated to the choice @left | @right Note that @left and @right are consumed in the operation, to keep an handle on them use xmlExpRef() and use xmlExpFree() to release them, this is true even in case of failure (unless ctxt == NULL).</info>
-      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='left' type='xmlExpNodePtr' info='left expression'/>
-      <arg name='right' type='xmlExpNodePtr' info='right expression'/>
-    </function>
-    <function name='xmlExpNewRange' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Get the atom associated to the range (@subset){@min, @max} Note that @subset is consumed in the operation, to keep an handle on it use xmlExpRef() and use xmlExpFree() to release it, this is true even in case of failure (unless ctxt == NULL).</info>
-      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='subset' type='xmlExpNodePtr' info='the expression to be repeated'/>
-      <arg name='min' type='int' info='the lower bound for the repetition'/>
-      <arg name='max' type='int' info='the upper bound for the repetition, -1 means infinite'/>
-    </function>
-    <function name='xmlExpNewSeq' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Get the atom associated to the sequence @left , @right Note that @left and @right are consumed in the operation, to keep an handle on them use xmlExpRef() and use xmlExpFree() to release them, this is true even in case of failure (unless ctxt == NULL).</info>
-      <return type='xmlExpNodePtr' info='the node or NULL in case of error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='left' type='xmlExpNodePtr' info='left expression'/>
-      <arg name='right' type='xmlExpNodePtr' info='right expression'/>
-    </function>
-    <function name='xmlExpParse' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Minimal parser for regexps, it understand the following constructs - string terminals - choice operator | - sequence operator , - subexpressions (...) - usual cardinality operators + * and ? - finite sequences  { min, max } - infinite sequences { min, * } There is minimal checkings made especially no checking on strings values</info>
-      <return type='xmlExpNodePtr' info='a new expression or NULL in case of failure'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expressions context'/>
-      <arg name='expr' type='const char *' info='the 0 terminated string'/>
-    </function>
-    <function name='xmlExpRef' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Increase the reference count of the expression</info>
-      <return type='void'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-    </function>
-    <function name='xmlExpStringDerive' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Do one step of Brzozowski derivation of the expression @exp with respect to the input string</info>
-      <return type='xmlExpNodePtr' info='the resulting expression or NULL in case of internal error'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expression context'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the expression'/>
-      <arg name='str' type='const xmlChar *' info='the string'/>
-      <arg name='len' type='int' info='the string len in bytes if available'/>
-    </function>
-    <function name='xmlExpSubsume' file='xmlregexp' module='xmlregexp'>
-      <cond>defined(LIBXML_REGEXP_ENABLED) &amp;&amp; defined(LIBXML_EXPR_ENABLED)</cond>
-      <info>Check whether @exp accepts all the languages accepted by @sub the input being a subexpression.</info>
-      <return type='int' info='1 if true 0 if false and -1 in case of failure.'/>
-      <arg name='ctxt' type='xmlExpCtxtPtr' info='the expressions context'/>
-      <arg name='exp' type='xmlExpNodePtr' info='the englobing expression'/>
-      <arg name='sub' type='xmlExpNodePtr' info='the subexpression'/>
-    </function>
     <functype name='xmlExternalEntityLoader' file='parser' module='parser'>
       <info>External entity loaders types.</info>
       <return type='xmlParserInputPtr' info='the entity input parser.'/>

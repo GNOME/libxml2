@@ -36,10 +36,8 @@
 
 #include "private/error.h"
 
-#ifndef LIBXML_XPATH_ENABLED
-extern double xmlXPathNAN;
-extern double xmlXPathPINF;
-extern double xmlXPathNINF;
+#ifndef isnan
+  #define isnan(x) (!((x) == (x)))
 #endif
 
 #define XML_SCHEMAS_NAMESPACE_NAME \
@@ -124,6 +122,11 @@ struct _xmlSchemaVal {
 };
 
 static int xmlSchemaTypesInitialized = 0;
+
+static double xmlSchemaNAN = 0.0;
+static double xmlSchemaPINF = 0.0;
+static double xmlSchemaNINF = 0.0;
+
 static xmlHashTablePtr xmlSchemaTypesBank = NULL;
 
 /*
@@ -521,6 +524,19 @@ xmlSchemaInitTypes(void)
 {
     if (xmlSchemaTypesInitialized != 0)
         return (0);
+
+#if defined(NAN) && defined(INFINITY)
+    xmlSchemaNAN = NAN;
+    xmlSchemaPINF = INFINITY;
+    xmlSchemaNINF = -INFINITY;
+#else
+    /* MSVC doesn't allow division by zero in constant expressions. */
+    double zero = 0.0;
+    xmlSchemaNAN = 0.0 / zero;
+    xmlSchemaPINF = 1.0 / zero;
+    xmlSchemaNINF = -xmlSchemaPINF;
+#endif
+
     xmlSchemaTypesBank = xmlHashCreate(40);
     if (xmlSchemaTypesBank == NULL) {
 	xmlSchemaTypeErrMemory();
@@ -2709,7 +2725,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         if (type == xmlSchemaTypeFloatDef) {
                             v = xmlSchemaNewValue(XML_SCHEMAS_FLOAT);
                             if (v != NULL) {
-                                v->value.f = (float) xmlXPathNAN;
+                                v->value.f = (float) xmlSchemaNAN;
                             } else {
                                 xmlSchemaFreeValue(v);
                                 goto error;
@@ -2717,7 +2733,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         } else {
                             v = xmlSchemaNewValue(XML_SCHEMAS_DOUBLE);
                             if (v != NULL) {
-                                v->value.d = xmlXPathNAN;
+                                v->value.d = xmlSchemaNAN;
                             } else {
                                 xmlSchemaFreeValue(v);
                                 goto error;
@@ -2740,9 +2756,9 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                             v = xmlSchemaNewValue(XML_SCHEMAS_FLOAT);
                             if (v != NULL) {
                                 if (neg)
-                                    v->value.f = (float) xmlXPathNINF;
+                                    v->value.f = (float) xmlSchemaNINF;
                                 else
-                                    v->value.f = (float) xmlXPathPINF;
+                                    v->value.f = (float) xmlSchemaPINF;
                             } else {
                                 xmlSchemaFreeValue(v);
                                 goto error;
@@ -2751,9 +2767,9 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                             v = xmlSchemaNewValue(XML_SCHEMAS_DOUBLE);
                             if (v != NULL) {
                                 if (neg)
-                                    v->value.d = xmlXPathNINF;
+                                    v->value.d = xmlSchemaNINF;
                                 else
-                                    v->value.d = xmlXPathPINF;
+                                    v->value.d = xmlSchemaPINF;
                             } else {
                                 xmlSchemaFreeValue(v);
                                 goto error;
@@ -4818,27 +4834,13 @@ xmlSchemaCompareFloats(xmlSchemaValPtr x, xmlSchemaValPtr y) {
     /*
      * Check for special cases.
      */
-    if (xmlXPathIsNaN(d1)) {
-	if (xmlXPathIsNaN(d2))
+    if (isnan(d1)) {
+	if (isnan(d2))
 	    return(0);
 	return(1);
     }
-    if (xmlXPathIsNaN(d2))
+    if (isnan(d2))
 	return(-1);
-    if (d1 == xmlXPathPINF) {
-	if (d2 == xmlXPathPINF)
-	    return(0);
-        return(1);
-    }
-    if (d2 == xmlXPathPINF)
-        return(-1);
-    if (d1 == xmlXPathNINF) {
-	if (d2 == xmlXPathNINF)
-	    return(0);
-        return(-1);
-    }
-    if (d2 == xmlXPathNINF)
-        return(1);
 
     /*
      * basic tests, the last one we should have equality, but
@@ -5776,86 +5778,6 @@ xmlSchemaValidateFacetWhtsp(xmlSchemaFacetPtr facet,
      return(xmlSchemaValidateFacetInternal(facet, fws, valType,
 	 value, val, ws));
 }
-
-#if 0
-#ifndef DBL_DIG
-#define DBL_DIG 16
-#endif
-#ifndef DBL_EPSILON
-#define DBL_EPSILON 1E-9
-#endif
-
-#define INTEGER_DIGITS DBL_DIG
-#define FRACTION_DIGITS (DBL_DIG + 1)
-#define EXPONENT_DIGITS (3 + 2)
-
-/**
- * xmlXPathFormatNumber:
- * @number:     number to format
- * @buffer:     output buffer
- * @buffersize: size of output buffer
- *
- * Convert the number into a string representation.
- */
-static void
-xmlSchemaFormatFloat(double number, char buffer[], int buffersize)
-{
-    switch (xmlXPathIsInf(number)) {
-    case 1:
-	if (buffersize > (int)sizeof("INF"))
-	    snprintf(buffer, buffersize, "INF");
-	break;
-    case -1:
-	if (buffersize > (int)sizeof("-INF"))
-	    snprintf(buffer, buffersize, "-INF");
-	break;
-    default:
-	if (xmlXPathIsNaN(number)) {
-	    if (buffersize > (int)sizeof("NaN"))
-		snprintf(buffer, buffersize, "NaN");
-	} else if (number == 0) {
-	    snprintf(buffer, buffersize, "0.0E0");
-	} else {
-	    /* 3 is sign, decimal point, and terminating zero */
-	    char work[DBL_DIG + EXPONENT_DIGITS + 3];
-	    int integer_place, fraction_place;
-	    char *ptr;
-	    char *after_fraction;
-	    double absolute_value;
-	    int size;
-
-	    absolute_value = fabs(number);
-
-	    /*
-	     * Result is in work, and after_fraction points
-	     * just past the fractional part.
-	     * Use scientific notation
-	    */
-	    integer_place = DBL_DIG + EXPONENT_DIGITS + 1;
-	    fraction_place = DBL_DIG - 1;
-	    snprintf(work, sizeof(work),"%*.*e",
-		integer_place, fraction_place, number);
-	    after_fraction = strchr(work + DBL_DIG, 'e');
-	    /* Remove fractional trailing zeroes */
-	    ptr = after_fraction;
-	    while (*(--ptr) == '0')
-		;
-	    if (*ptr != '.')
-	        ptr++;
-	    while ((*ptr++ = *after_fraction++) != 0);
-
-	    /* Finally copy result back to caller */
-	    size = strlen(work) + 1;
-	    if (size > buffersize) {
-		work[buffersize - 1] = 0;
-		size = buffersize;
-	    }
-	    memmove(buffer, work, size);
-	}
-	break;
-    }
-}
-#endif
 
 /**
  * xmlSchemaGetCanonValue:

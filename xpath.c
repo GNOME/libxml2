@@ -131,7 +131,7 @@
  * any use of the macros IS_ASCII_CHARACTER and IS_ASCII_DIGIT)
  */
 
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED)
 
 /************************************************************************
  *									*
@@ -211,10 +211,6 @@ xmlXPathIsInf(double val) {
     return 0;
 #endif
 }
-
-#endif /* SCHEMAS or XPATH */
-
-#ifdef LIBXML_XPATH_ENABLED
 
 /*
  * TODO: when compatibility allows remove all "fake node libxslt" strings

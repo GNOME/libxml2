@@ -17555,7 +17555,7 @@ Could we use @subtypes for this?'/>
       <arg name='nargs' type='int' info='the number of arguments'/>
     </function>
     <function name='xmlXPathInit' file='xpath' module='xpath'>
-      <cond>defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>DEPRECATED: Alias for xmlInitParser.</info>
       <return type='void'/>
     </function>
@@ -17567,13 +17567,13 @@ Could we use @subtypes for this?'/>
       <arg name='nodes2' type='xmlNodeSetPtr' info='a node-set'/>
     </function>
     <function name='xmlXPathIsInf' file='xpath' module='xpath'>
-      <cond>defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Checks whether a double is an infinity.</info>
       <return type='int' info='1 if the value is +Infinite, -1 if -Infinite, 0 otherwise'/>
       <arg name='val' type='double' info='a double value'/>
     </function>
     <function name='xmlXPathIsNaN' file='xpath' module='xpath'>
-      <cond>defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
       <info>Checks whether a double is a NaN.</info>
       <return type='int' info='1 if the value is a NaN, 0 otherwise'/>
       <arg name='val' type='double' info='a double value'/>

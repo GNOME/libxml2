@@ -589,7 +589,7 @@ xmlInitParser(void) {
         xmlInitGlobalsInternal();
         xmlInitDictInternal();
         xmlInitEncodingInternal();
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED)
         xmlInitXPathInternal();
 #endif
         xmlInitIOCallbacks();

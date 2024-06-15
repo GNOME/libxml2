@@ -47629,7 +47629,7 @@ static int
 test_xmlXPathInit(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -47654,7 +47654,7 @@ static int
 test_xmlXPathIsInf(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     double val; /* a double value */
@@ -47688,7 +47688,7 @@ static int
 test_xmlXPathIsNaN(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+#if defined(LIBXML_XPATH_ENABLED)
     int mem_base;
     int ret_val;
     double val; /* a double value */

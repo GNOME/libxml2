@@ -266,13 +266,16 @@ initializeLibxml2(void) {
     xmlInitParser();
     xmlMemSetup(xmlMemFree, xmlMemMalloc, xmlMemRealloc, xmlMemoryStrdup);
 #ifdef LIBXML_CATALOG_ENABLED
+    /*
+     * Disable system catalog which could cause lazy memory allocations
+     * resulting in false positive memory leaks.
+     */
 #ifdef _WIN32
     putenv("XML_CATALOG_FILES=");
 #else
     setenv("XML_CATALOG_FILES", "", 1);
 #endif
     xmlInitializeCatalog();
-    xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
 #ifdef LIBXML_SCHEMAS_ENABLED
     xmlSchemaInitTypes();
@@ -4326,13 +4329,7 @@ threadsTest(const char *filename ATTRIBUTE_UNUSED,
 	    const char *resul ATTRIBUTE_UNUSED,
 	    const char *err ATTRIBUTE_UNUSED,
 	    int options ATTRIBUTE_UNUSED) {
-    int ret;
-
-    xmlCatalogSetDefaults(XML_CATA_ALLOW_ALL);
-    ret = testThread();
-    xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
-
-    return(ret);
+    return(testThread());
 }
 #endif
 

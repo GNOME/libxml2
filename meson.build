@@ -331,7 +331,6 @@ if sys_windows == false
 endif
 
 ### thread local storage
-support_tls = true
 if want_tls == true
     tls_src = '''
 #include <threads.h>
@@ -368,7 +367,6 @@ int main()
                 config_h.set('XML_THREAD_LOCAL', '__declspec(thread)')
             else
                 want_tls = false
-                support_tls = false
             endif
         endif
     endif
@@ -775,15 +773,6 @@ configure_file(
     configuration: config_cmake,
     install_dir: dir_lib / 'cmake' / 'libxml2',
 )
-
-if support_tls == false
-    message('===============================================================')
-    message('WARNING: Your C compiler appears to not support thread-local')
-    message('storage. Future versions of libxml2 will require this feature')
-    message('for multi-threading.')
-    message('===============================================================\n',
-    )
-endif
 
 # summary
 

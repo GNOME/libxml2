@@ -411,7 +411,7 @@ if test "$with_tls" = "yes"; then
     AC_COMPILE_IFELSE([
         AC_LANG_SOURCE([__declspec(thread) int v;]) ], [
         AC_DEFINE([XML_THREAD_LOCAL], [__declspec(thread)], [TLS specifier]) ], [
-    WARN_NO_TLS=1 ])])])
+    ])])])
 fi
 
 dnl Checking whether __attribute__((destructor)) is accepted by the compiler
@@ -1137,11 +1137,3 @@ AC_CONFIG_FILES([Makefile include/Makefile include/libxml/Makefile include/priva
 AC_CONFIG_FILES([python/setup.py], [chmod +x python/setup.py])
 AC_CONFIG_FILES([xml2-config], [chmod +x xml2-config])
 AC_OUTPUT
-
-if test "$WARN_NO_TLS" != ""; then
-    echo "================================================================"
-    echo "WARNING: Your C compiler appears to not support thread-local"
-    echo "storage. Future versions of libxml2 will require this feature"
-    echo "for multi-threading."
-    echo "================================================================"
-fi

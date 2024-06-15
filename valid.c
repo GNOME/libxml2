@@ -1353,7 +1353,6 @@ xmlFreeElementTable(xmlElementTablePtr table) {
     xmlHashFree(table, xmlFreeElementTableEntry);
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyElement:
  * @elem:  An element
@@ -1409,7 +1408,6 @@ xmlElementTablePtr
 xmlCopyElementTable(xmlElementTablePtr table) {
     return(xmlHashCopySafe(table, xmlCopyElement, xmlFreeElementTableEntry));
 }
-#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -1519,7 +1517,6 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
     }
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyEnumeration:
  * @cur:  the tree to copy.
@@ -1554,7 +1551,6 @@ xmlCopyEnumeration(xmlEnumerationPtr cur) {
 
     return(ret);
 }
-#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_VALID_ENABLED
 /**
@@ -1892,7 +1888,6 @@ xmlFreeAttributeTable(xmlAttributeTablePtr table) {
     xmlHashFree(table, xmlFreeAttributeTableEntry);
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyAttribute:
  * @attr:  An attribute
@@ -1958,7 +1953,6 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
     return(xmlHashCopySafe(table, xmlCopyAttribute,
                            xmlFreeAttributeTableEntry));
 }
-#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
@@ -2150,7 +2144,6 @@ xmlFreeNotationTable(xmlNotationTablePtr table) {
     xmlHashFree(table, xmlFreeNotationTableEntry);
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlCopyNotation:
  * @nota:  A notation
@@ -2202,7 +2195,6 @@ xmlNotationTablePtr
 xmlCopyNotationTable(xmlNotationTablePtr table) {
     return(xmlHashCopySafe(table, xmlCopyNotation, xmlFreeNotationTableEntry));
 }
-#endif /* LIBXML_TREE_ENABLED */
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**

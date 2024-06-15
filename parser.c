@@ -523,11 +523,7 @@ xmlHasFeature(xmlFeature feature)
 	    return(0);
 #endif
         case XML_WITH_TREE:
-#ifdef LIBXML_TREE_ENABLED
             return(1);
-#else
-            return(0);
-#endif
         case XML_WITH_OUTPUT:
 #ifdef LIBXML_OUTPUT_ENABLED
             return(1);

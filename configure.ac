@@ -109,8 +109,6 @@ AC_ARG_WITH(threads,
 [  --with-threads          multithreading support (on)])
 AC_ARG_WITH(thread-alloc,
 [  --with-thread-alloc     per-thread malloc hooks (off)])
-AC_ARG_WITH(tree,
-[  --with-tree             DOM like tree manipulation APIs (on)])
 AC_ARG_WITH(valid,
 [  --with-valid            DTD validation support (on)])
 AC_ARG_WITH(writer,
@@ -175,10 +173,6 @@ if test "$with_schematron" = "yes"; then
         echo WARNING: --with-schematron overrides --without-pattern
     fi
     with_pattern=yes
-    if test "$with_tree" = "no"; then
-        echo WARNING: --with-schematron overrides --without-tree
-    fi
-    with_tree=yes
     if test "$with_xpath" = "no"; then
         echo WARNING: --with-schematron overrides --without-xpath
     fi
@@ -189,10 +183,6 @@ if test "$with_reader" = "yes"; then
         echo WARNING: --with-reader overrides --without-push
     fi
     with_push=yes
-    if test "$with_tree" = "no"; then
-        echo WARNING: --with-reader overrides --without-tree
-    fi
-    with_tree=yes
 fi
 if test "$with_writer" = "yes"; then
     if test "$with_output" = "no"; then
@@ -243,7 +233,6 @@ if test "$with_minimum" = "yes"; then
     test "$with_schematron" = "" && with_schematron=no
     test "$with_threads" = "" && with_threads=no
     test "$with_thread_alloc" = "" && with_thread_alloc=no
-    test "$with_tree" = "" && with_tree=no
     test "$with_valid" = "" && with_valid=no
     test "$with_writer" = "" && with_writer=no
     test "$with_xinclude" = "" && with_xinclude=no
@@ -269,10 +258,6 @@ else
     fi
     if test "$with_regexps" = "no"; then
         with_schemas=no
-    fi
-    if test "$with_tree" = "no"; then
-        with_reader=no
-        with_schematron=no
     fi
     if test "$with_xpath" = "no"; then
         with_c14n=no
@@ -503,14 +488,6 @@ esac
 dnl
 dnl Simple API modules
 dnl
-
-if test "$with_tree" = "no" ; then
-    echo Disabling DOM like tree manipulation APIs
-    WITH_TREE=0
-else
-    WITH_TREE=1
-fi
-AC_SUBST(WITH_TREE)
 
 if test "$with_http" != "yes" ; then
     WITH_HTTP=0

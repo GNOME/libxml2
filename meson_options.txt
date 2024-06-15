@@ -26,7 +26,6 @@
 # [X] threads
 # [X] thread-alloc
 # [X] tls
-# [X] tree
 # [X] valid
 # [X] writer
 # [X] xinclude
@@ -189,12 +188,6 @@ option('tls',
   type: 'boolean',
   value: false,
   description: 'thread-local storage'
-)
-
-option('tree',
-  type: 'boolean',
-  value: true,
-  description: 'DOM like tree manipulation APIs'
 )
 
 option('valid',

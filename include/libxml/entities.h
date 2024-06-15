@@ -137,10 +137,8 @@ XMLPUBFUN xmlChar *
 						 const xmlChar *input);
 XMLPUBFUN xmlEntitiesTablePtr
 			xmlCreateEntitiesTable	(void);
-#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlEntitiesTablePtr
 			xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
-#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void
 			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED

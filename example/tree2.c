@@ -12,7 +12,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-#if defined(LIBXML_TREE_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+#if defined(LIBXML_OUTPUT_ENABLED)
 
 /*
  *To compile this file using gcc you can type
@@ -101,7 +101,7 @@ main(int argc, char **argv)
 }
 #else
 int main(void) {
-    fprintf(stderr, "tree support not compiled in\n");
+    fprintf(stderr, "output support not compiled in\n");
     return(0);
 }
 #endif

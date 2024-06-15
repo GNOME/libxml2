@@ -74,7 +74,6 @@ want_schemas = get_option('schemas')
 want_schematron = get_option('schematron')
 want_thread_alloc = get_option('thread-alloc')
 want_tls = get_option('tls')
-want_tree = get_option('tree')
 want_valid = get_option('valid')
 want_writer = get_option('writer')
 want_xinclude = get_option('xinclude')
@@ -114,10 +113,6 @@ if want_schematron == true
         message('-Dschematron=true overrides -Dpattern')
     endif
     want_pattern = true
-    if want_tree == false
-        message('-Dschematron=true overrides -Dtree')
-    endif
-    want_tree = true
     if want_xpath == false
         message('-Dschematron=true overrides -Dxpath')
     endif
@@ -129,10 +124,6 @@ if want_reader == true
         message('-Dreader=true overrides -Dpush')
     endif
     want_push = true
-    if want_tree == false
-        message('-Dreader=true overrides -Dtree')
-    endif
-    want_tree = true
 endif
 
 if want_writer == true
@@ -183,7 +174,6 @@ if get_option('minimum')
     want_schemas = false
     want_schematron = false
     want_thread_alloc = false
-    want_tree = false
     want_valid = false
     want_writer = false
     want_xinclude = false
@@ -205,10 +195,6 @@ else
     endif
     if want_regexps == false
         want_schemas = false
-    endif
-    if want_tree == false
-        want_reader = false
-        want_schematron = false
     endif
     if want_xpath == false
         want_c14n = false
@@ -805,7 +791,6 @@ summary(
         'threads': threads_dep.found(),
         'thread-alloc': want_thread_alloc,
         'tls': want_tls,
-        'tree': want_tree,
         'valid': want_valid,
         'writer': want_writer,
         'xinclude': want_xinclude,

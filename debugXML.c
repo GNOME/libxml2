@@ -240,12 +240,10 @@ xmlCtxtCheckName(xmlDebugCtxtPtr ctxt, const xmlChar * name)
 	    xmlDebugErr(ctxt, XML_CHECK_NO_NAME, "Name is NULL");
 	    return;
 	}
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
         if (xmlValidateName(name, 0)) {
 	    xmlDebugErr3(ctxt, XML_CHECK_NOT_NCNAME,
 			 "Name is not an NCName '%s'", (const char *) name);
 	}
-#endif
 	if ((ctxt->dict != NULL) &&
 	    (!xmlDictOwns(ctxt->dict, name)) &&
             ((ctxt->doc == NULL) ||
@@ -2036,7 +2034,6 @@ xmlShellBase(xmlShellCtxtPtr ctxt,
     return (0);
 }
 
-#ifdef LIBXML_TREE_ENABLED
 /**
  * xmlShellSetBase:
  * @ctxt:  the shell context
@@ -2057,7 +2054,6 @@ xmlShellSetBase(xmlShellCtxtPtr ctxt ATTRIBUTE_UNUSED,
     xmlNodeSetBase(node, (xmlChar*) arg);
     return (0);
 }
-#endif
 
 #ifdef LIBXML_XPATH_ENABLED
 /**
@@ -3025,10 +3021,8 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
 		xmlXPathFreeObject(list);
 	    }
 #endif /* LIBXML_XPATH_ENABLED */
-#ifdef LIBXML_TREE_ENABLED
         } else if (!strcmp(command, "setbase")) {
             xmlShellSetBase(ctxt, arg, ctxt->node, NULL);
-#endif
         } else if ((!strcmp(command, "ls")) || (!strcmp(command, "dir"))) {
             int dir = (!strcmp(command, "dir"));
 

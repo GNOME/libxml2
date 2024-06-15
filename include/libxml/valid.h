@@ -143,10 +143,8 @@ XMLPUBFUN xmlNotationPtr
 					 const xmlChar *name,
 					 const xmlChar *PublicID,
 					 const xmlChar *SystemID);
-#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlNotationTablePtr
 		xmlCopyNotationTable	(xmlNotationTablePtr table);
-#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void
 		xmlFreeNotationTable	(xmlNotationTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -200,10 +198,8 @@ XMLPUBFUN xmlElementPtr
 					 const xmlChar *name,
 					 xmlElementTypeVal type,
 					 xmlElementContentPtr content);
-#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlElementTablePtr
 		xmlCopyElementTable	(xmlElementTablePtr table);
-#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void
 		xmlFreeElementTable	(xmlElementTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -222,10 +218,8 @@ XMLPUBFUN xmlEnumerationPtr
 		xmlCreateEnumeration	(const xmlChar *name);
 XMLPUBFUN void
 		xmlFreeEnumeration	(xmlEnumerationPtr cur);
-#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlEnumerationPtr
 		xmlCopyEnumeration	(xmlEnumerationPtr cur);
-#endif /* LIBXML_TREE_ENABLED */
 
 /* Attribute */
 XMLPUBFUN xmlAttributePtr
@@ -238,10 +232,8 @@ XMLPUBFUN xmlAttributePtr
 					 xmlAttributeDefault def,
 					 const xmlChar *defaultValue,
 					 xmlEnumerationPtr tree);
-#ifdef LIBXML_TREE_ENABLED
 XMLPUBFUN xmlAttributeTablePtr
 		xmlCopyAttributeTable  (xmlAttributeTablePtr table);
-#endif /* LIBXML_TREE_ENABLED */
 XMLPUBFUN void
 		xmlFreeAttributeTable  (xmlAttributeTablePtr table);
 #ifdef LIBXML_OUTPUT_ENABLED

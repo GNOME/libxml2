@@ -13,8 +13,6 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-#ifdef LIBXML_TREE_ENABLED
-
 /*
  *To compile this file using gcc you can type
  *gcc `xml2-config --cflags --libs` -o xmlexample libxml2-example.c
@@ -80,9 +78,3 @@ main(int argc, char **argv)
 
     return 0;
 }
-#else
-int main(void) {
-    fprintf(stderr, "Tree support not compiled in\n");
-    return 0;
-}
-#endif

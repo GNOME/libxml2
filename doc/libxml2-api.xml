@@ -3975,7 +3975,7 @@
       <info>Whether the thread support is configured in</info>
     </macro>
     <macro name='LIBXML_TREE_ENABLED' file='xmlversion'>
-      <info>Whether the DOM like tree manipulation API support is configured in</info>
+      <info>Always enabled since 2.14.0</info>
     </macro>
     <macro name='LIBXML_UNICODE_ENABLED' file='xmlversion'>
       <info>Whether the Unicode related interfaces are compiled in</info>
@@ -8163,7 +8163,6 @@ Could we use @subtypes for this?'/>
       <arg name='SystemID' type='const xmlChar *' info='the system identifier or NULL'/>
     </function>
     <function name='xmlAddPrevSibling' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)</cond>
       <info>Unlinks @cur and inserts it as previous sibling before @next.  Unlike xmlAddChild this function does not merge text nodes.  If @cur is an attribute node, it is inserted before attribute @next. If the attribute list contains an attribute with a name matching @cur, the old attribute is destroyed.  See the notes in xmlAddChild.</info>
       <return type='xmlNodePtr' info='@cur or a sibling if @cur was merged. Returns NULL if arguments are invalid or a memory allocation failed.'/>
       <arg name='next' type='xmlNodePtr' info='the target node'/>
@@ -8823,7 +8822,6 @@ Could we use @subtypes for this?'/>
       <arg name='utf' type='const unsigned char *' info='Pointer to putative UTF-8 encoded string.'/>
     </function>
     <function name='xmlChildElementCount' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Count the number of child nodes which are elements.  Note that entity references are not expanded.</info>
       <return type='unsigned long' info='the number of element children or 0 if arguments are invalid.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
@@ -8883,7 +8881,6 @@ Could we use @subtypes for this?'/>
       <arg name='catal' type='xmlCatalogPtr' info='the catalog'/>
     </function>
     <function name='xmlCopyAttributeTable' file='valid' module='valid'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Build a copy of an attribute table.</info>
       <return type='xmlAttributeTablePtr' info='the new xmlAttributeTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlAttributeTablePtr' info='An attribute table'/>
@@ -8902,7 +8899,6 @@ Could we use @subtypes for this?'/>
       <arg name='val' type='int' info='the char value'/>
     </function>
     <function name='xmlCopyDoc' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Copy a document. If recursive, the content tree will be copied too as well as DTD, namespaces and entities.</info>
       <return type='xmlDocPtr' info='the copied document or NULL if a memory allocation failed.'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -8915,7 +8911,6 @@ Could we use @subtypes for this?'/>
       <arg name='cur' type='xmlElementContentPtr' info='An element content pointer.'/>
     </function>
     <function name='xmlCopyDtd' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Copy a DTD.</info>
       <return type='xmlDtdPtr' info='the copied DTD or NULL if a memory allocation failed.'/>
       <arg name='dtd' type='xmlDtdPtr' info='the DTD'/>
@@ -8926,19 +8921,16 @@ Could we use @subtypes for this?'/>
       <arg name='cur' type='xmlElementContentPtr' info='An element content pointer.'/>
     </function>
     <function name='xmlCopyElementTable' file='valid' module='valid'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Build a copy of an element table.</info>
       <return type='xmlElementTablePtr' info='the new xmlElementTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlElementTablePtr' info='An element table'/>
     </function>
     <function name='xmlCopyEntitiesTable' file='entities' module='entities'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Build a copy of an entity table.</info>
       <return type='xmlEntitiesTablePtr' info='the new xmlEntitiesTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlEntitiesTablePtr' info='An entity table'/>
     </function>
     <function name='xmlCopyEnumeration' file='valid' module='valid'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Copy an enumeration attribute node (recursive).</info>
       <return type='xmlEnumerationPtr' info='the xmlEnumerationPtr just created or NULL in case of error.'/>
       <arg name='cur' type='xmlEnumerationPtr' info='the tree to copy.'/>
@@ -8971,7 +8963,6 @@ Could we use @subtypes for this?'/>
       <arg name='node' type='xmlNodePtr' info='the first node in the list.'/>
     </function>
     <function name='xmlCopyNotationTable' file='valid' module='valid'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Build a copy of a notation table.</info>
       <return type='xmlNotationTablePtr' info='the new xmlNotationTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlNotationTablePtr' info='A notation table'/>
@@ -9486,7 +9477,6 @@ Could we use @subtypes for this?'/>
       <arg name='doc' type='const xmlDoc *' info='the document'/>
     </function>
     <function name='xmlDocSetRootElement' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Set the root element of the document (doc-&gt;children is a list containing possibly comments, PIs, etc ...).  @root must be an element node. It is unlinked before insertion.</info>
       <return type='xmlNodePtr' info='the unlinked old root element or NULL if the document didn&apos;t have a root element or a memory allocation failed.'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -9758,7 +9748,6 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
     </function>
     <function name='xmlFirstElementChild' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Find the first child node which is an element.  Note that entity references are not expanded.</info>
       <return type='xmlNodePtr' info='the first element or NULL if parent has no children.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
@@ -10098,20 +10087,17 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
     </function>
     <function name='xmlGetNodePath' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED)</cond>
       <info>Build a structure based Path for the given node</info>
       <return type='xmlChar *' info='the new path or NULL in case of error. The caller must free the returned string'/>
       <arg name='node' type='const xmlNode *' info='a node'/>
     </function>
     <function name='xmlGetNsList' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Find all in-scope namespaces of a node.  Use xmlGetNsListSafe for better error reporting.</info>
       <return type='xmlNsPtr *' info='a NULL terminated array of namespace pointers that must be freed by the caller or NULL if no namespaces were found or a memory allocation failed.'/>
       <arg name='doc' type='const xmlDoc *' info='the document'/>
       <arg name='node' type='const xmlNode *' info='the current node'/>
     </function>
     <function name='xmlGetNsListSafe' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XPATH_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Find all in-scope namespaces of a node. @out returns a NULL terminated array of namespace pointers that must be freed by the caller.  Available since 2.13.0.</info>
       <return type='int' info='0 on success, 1 if no namespaces were found, -1 if a memory allocation failed.'/>
       <arg name='doc' type='const xmlDoc *' info='the document'/>
@@ -10675,7 +10661,6 @@ Could we use @subtypes for this?'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>
     <function name='xmlLastElementChild' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Find the last child node which is an element.  Note that entity references are not expanded.</info>
       <return type='xmlNodePtr' info='the last element or NULL if parent has no children.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
@@ -11206,7 +11191,6 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const xmlChar *' info='the entity name'/>
     </function>
     <function name='xmlNewChild' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Create a new child element and append it to a parent element.  If @ns is NULL, the newly created element inherits the namespace of the parent.  If provided, @content is expected to be a valid XML attribute value possibly containing character and entity references. Text and entity reference node will be added to the child element, see xmlNewDocNode.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
@@ -11238,7 +11222,6 @@ Could we use @subtypes for this?'/>
       <arg name='type' type='xmlElementContentType' info='the type of element content decl'/>
     </function>
     <function name='xmlNewDocFragment' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Create a document fragment node.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object or NULL if a memory allocation failed.'/>
       <arg name='doc' type='xmlDocPtr' info='the target document (optional)'/>
@@ -11274,7 +11257,6 @@ Could we use @subtypes for this?'/>
       <arg name='value' type='const xmlChar *' info='attribute value with XML references (optional)'/>
     </function>
     <function name='xmlNewDocRawNode' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Create an element node.  If provided, @value should be a raw, unescaped string.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.'/>
       <arg name='doc' type='xmlDocPtr' info='the target document'/>
@@ -11401,7 +11383,6 @@ Could we use @subtypes for this?'/>
       <return type='xmlParserCtxtPtr' info='the xmlParserCtxtPtr or NULL'/>
     </function>
     <function name='xmlNewProp' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Create an attribute node.  If provided, @value should be a raw, unescaped string.  If @node is provided, the created attribute will be appended without checking for duplicate names. It is an error if @node is not an element.</info>
       <return type='xmlAttrPtr' info='a pointer to the attribute or NULL if arguments are invalid or a memory allocation failed.'/>
       <arg name='node' type='xmlNodePtr' info='the parent node (optional)'/>
@@ -11436,7 +11417,6 @@ Could we use @subtypes for this?'/>
       <arg name='content' type='const xmlChar *' info='raw text content (optional)'/>
     </function>
     <function name='xmlNewTextChild' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Create a new child element and append it to a parent element.  If @ns is NULL, the newly created element inherits the namespace of the parent.  If @content is provided, a text node will be added to the child element, see xmlNewDocRawNode.</info>
       <return type='xmlNodePtr' info='a pointer to the new node object or NULL if arguments are invalid or a memory allocation failed.'/>
       <arg name='parent' type='xmlNodePtr' info='the parent node'/>
@@ -11516,7 +11496,6 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
     </function>
     <function name='xmlNextElementSibling' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Find the closest following sibling which is a element.  Note that entity references are not expanded.</info>
       <return type='xmlNodePtr' info='the sibling or NULL if no sibling was found.'/>
       <arg name='node' type='xmlNodePtr' info='the current node'/>
@@ -11610,7 +11589,6 @@ Could we use @subtypes for this?'/>
       <arg name='node' type='const xmlNode *' info='the node'/>
     </function>
     <function name='xmlNodeListGetRawString' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Serializes attribute children (text and entity reference nodes) into a string. An empty list produces an empty string.  If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special characters like &apos;&amp;&apos; will be escaped.</info>
       <return type='xmlChar *' info='a string or NULL if a memory allocation failed.'/>
       <arg name='doc' type='const xmlDoc *' info='a document (optional)'/>
@@ -11625,7 +11603,6 @@ Could we use @subtypes for this?'/>
       <arg name='inLine' type='int' info='whether entity references are substituted'/>
     </function>
     <function name='xmlNodeSetBase' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)</cond>
       <info>Set (or reset) the base URI of a node, i.e. the value of the xml:base attribute.</info>
       <return type='int' info='0 on success, -1 on error.'/>
       <arg name='cur' type='xmlNodePtr' info='the node being changed'/>
@@ -11638,7 +11615,6 @@ Could we use @subtypes for this?'/>
       <arg name='content' type='const xmlChar *' info='the new value of the content'/>
     </function>
     <function name='xmlNodeSetContentLen' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>See xmlNodeSetContent.</info>
       <return type='int' info='0 on success, 1 on error, -1 if a memory allocation failed.'/>
       <arg name='cur' type='xmlNodePtr' info='the node being modified'/>
@@ -11646,21 +11622,18 @@ Could we use @subtypes for this?'/>
       <arg name='len' type='int' info='the size of @content'/>
     </function>
     <function name='xmlNodeSetLang' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Set the language of a node, i.e. the values of the xml:lang attribute.</info>
       <return type='int' info='0 on success, 1 if arguments are invalid, -1 if a memory allocation failed.'/>
       <arg name='cur' type='xmlNodePtr' info='the node being changed'/>
       <arg name='lang' type='const xmlChar *' info='the language description'/>
     </function>
     <function name='xmlNodeSetName' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Set (or reset) the name of a node.</info>
       <return type='void'/>
       <arg name='cur' type='xmlNodePtr' info='the node being changed'/>
       <arg name='name' type='const xmlChar *' info='the new tag name'/>
     </function>
     <function name='xmlNodeSetSpacePreserve' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Set (or reset) the space preserving behaviour of a node, i.e. the value of the xml:space attribute.</info>
       <return type='int' info='0 on success, 1 if arguments are invalid, -1 if a memory allocation failed.'/>
       <arg name='cur' type='xmlNodePtr' info='the node being changed'/>
@@ -12437,7 +12410,6 @@ Could we use @subtypes for this?'/>
       <return type='int' info='the number of output callback registered or -1 in case of error.'/>
     </function>
     <function name='xmlPreviousElementSibling' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>Find the closest preceding sibling which is a element.  Note that entity references are not expanded.</info>
       <return type='xmlNodePtr' info='the sibling or NULL if no sibling was found.'/>
       <arg name='node' type='xmlNodePtr' info='the current node'/>
@@ -12633,7 +12605,6 @@ Could we use @subtypes for this?'/>
       <arg name='line' type='int' info='the line number'/>
     </function>
     <function name='xmlReconciliateNs' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED)</cond>
       <info>This function checks that all the namespaces declared within the given tree are properly declared. This is needed for example after Copy or Cut and then paste operations. The subtree may still hold pointers to namespace declarations outside the subtree or invalid/masked. As much as possible the function try to reuse the existing namespaces found in the new environment. If not possible the new namespaces are redeclared on @tree at the top of the given subtree.</info>
       <return type='int' info='0 on success or -1 in case of error.'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
@@ -13010,7 +12981,6 @@ Could we use @subtypes for this?'/>
       <arg name='attr' type='xmlAttrPtr' info='the attribute'/>
     </function>
     <function name='xmlReplaceNode' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)</cond>
       <info>Unlink the old node. If @cur is provided, it is unlinked and inserted in place of @old.  It is an error if @old has no parent.  Unlike xmlAddChild, this function doesn&apos;t merge text nodes or delete duplicate attributes.  See the notes in xmlAddChild.</info>
       <return type='xmlNodePtr' info='@old or NULL if arguments are invalid or a memory allocation failed.'/>
       <arg name='old' type='xmlNodePtr' info='the old node'/>
@@ -14115,7 +14085,6 @@ Could we use @subtypes for this?'/>
       <arg name='ns' type='xmlNsPtr' info='a namespace pointer (optional)'/>
     </function>
     <function name='xmlSetNsProp' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)</cond>
       <info>Set (or reset) an attribute carried by a node. The ns structure must be in scope, this is not checked</info>
       <return type='xmlAttrPtr' info='the attribute pointer.'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
@@ -14124,7 +14093,6 @@ Could we use @subtypes for this?'/>
       <arg name='value' type='const xmlChar *' info='the attribute value'/>
     </function>
     <function name='xmlSetProp' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)</cond>
       <info>Set (or reset) an attribute carried by a node. If @name has a prefix, then the corresponding namespace-binding will be used, if in scope; it is an error it there&apos;s no such ns-binding for the prefix in scope.</info>
       <return type='xmlAttrPtr' info='the attribute pointer.'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
@@ -16843,7 +16811,6 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
     </function>
     <function name='xmlUnsetNsProp' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Remove an attribute carried by a node.</info>
       <return type='int' info='0 if successful, -1 if not found'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
@@ -16851,7 +16818,6 @@ Could we use @subtypes for this?'/>
       <arg name='name' type='const xmlChar *' info='the attribute name'/>
     </function>
     <function name='xmlUnsetProp' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Remove an attribute carried by a node. This handles only attributes in no namespace.</info>
       <return type='int' info='0 if successful, -1 if not found'/>
       <arg name='node' type='xmlNodePtr' info='the node'/>
@@ -16968,14 +16934,12 @@ Could we use @subtypes for this?'/>
       <arg name='space' type='int' info='allow spaces in front and end of the string'/>
     </function>
     <function name='xmlValidateNMToken' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Check that a value conforms to the lexical space of NMToken</info>
       <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='value' type='const xmlChar *' info='the value to check'/>
       <arg name='space' type='int' info='allow spaces in front and end of the string'/>
     </function>
     <function name='xmlValidateName' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Check that a value conforms to the lexical space of Name</info>
       <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='value' type='const xmlChar *' info='the value to check'/>
@@ -17077,7 +17041,6 @@ Could we use @subtypes for this?'/>
       <arg name='qname' type='const xmlChar *' info='the qualified name as appearing in the serialization'/>
     </function>
     <function name='xmlValidateQName' file='tree' module='tree'>
-      <cond>defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)</cond>
       <info>Check that a value conforms to the lexical space of QName</info>
       <return type='int' info='0 if this validates, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='value' type='const xmlChar *' info='the value to check'/>

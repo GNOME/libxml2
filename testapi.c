@@ -18583,7 +18583,6 @@ static int
 test_xmlAddPrevSibling(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr next; /* the target node */
@@ -18615,7 +18614,6 @@ test_xmlAddPrevSibling(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -19541,7 +19539,6 @@ static int
 test_xmlChildElementCount(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     unsigned long ret_val;
     xmlNodePtr parent; /* the parent node */
@@ -19565,7 +19562,6 @@ test_xmlChildElementCount(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -19575,7 +19571,6 @@ static int
 test_xmlCopyDoc(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     xmlDocPtr ret_val;
     xmlDocPtr doc; /* the document */
@@ -19606,7 +19601,6 @@ test_xmlCopyDoc(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -19616,7 +19610,6 @@ static int
 test_xmlCopyDtd(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlDtdPtr ret_val;
     xmlDtdPtr dtd; /* the DTD */
@@ -19640,7 +19633,6 @@ test_xmlCopyDtd(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -20608,7 +20600,6 @@ static int
 test_xmlDocSetRootElement(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlDocPtr doc; /* the document */
@@ -20640,7 +20631,6 @@ test_xmlDocSetRootElement(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -20696,7 +20686,6 @@ static int
 test_xmlFirstElementChild(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr parent; /* the parent node */
@@ -20720,7 +20709,6 @@ test_xmlFirstElementChild(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -20947,7 +20935,6 @@ static int
 test_xmlGetNodePath(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_DEBUG_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     const xmlNode * node; /* a node */
@@ -20971,7 +20958,6 @@ test_xmlGetNodePath(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -21242,7 +21228,6 @@ static int
 test_xmlLastElementChild(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr parent; /* the parent node */
@@ -21266,7 +21251,6 @@ test_xmlLastElementChild(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -21364,8 +21348,6 @@ static int
 test_xmlNewChild(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr parent; /* the parent node */
@@ -21410,8 +21392,6 @@ test_xmlNewChild(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -21524,7 +21504,6 @@ static int
 test_xmlNewDocFragment(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlDocPtr doc; /* the target document (optional) */
@@ -21548,7 +21527,6 @@ test_xmlNewDocFragment(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -21756,8 +21734,6 @@ static int
 test_xmlNewDocRawNode(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlNodePtr ret_val;
     xmlDocPtr doc; /* the target document */
@@ -21802,8 +21778,6 @@ test_xmlNewDocRawNode(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -22224,8 +22198,6 @@ static int
 test_xmlNewProp(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_HTML_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlAttrPtr ret_val;
     xmlNodePtr node; /* the parent node (optional) */
@@ -22263,8 +22235,6 @@ test_xmlNewProp(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -22345,8 +22315,6 @@ static int
 test_xmlNewTextChild(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr parent; /* the parent node */
@@ -22391,8 +22359,6 @@ test_xmlNewTextChild(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -22444,7 +22410,6 @@ static int
 test_xmlNextElementSibling(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr node; /* the current node */
@@ -22468,7 +22433,6 @@ test_xmlNextElementSibling(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23000,7 +22964,6 @@ static int
 test_xmlNodeListGetRawString(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlChar * ret_val;
     const xmlDoc * doc; /* a document (optional) */
@@ -23038,7 +23001,6 @@ test_xmlNodeListGetRawString(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23094,7 +23056,6 @@ static int
 test_xmlNodeSetBase(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr cur; /* the node being changed */
@@ -23125,7 +23086,6 @@ test_xmlNodeSetBase(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23174,7 +23134,6 @@ static int
 test_xmlNodeSetContentLen(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr cur; /* the node being modified */
@@ -23215,7 +23174,6 @@ test_xmlNodeSetContentLen(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23225,7 +23183,6 @@ static int
 test_xmlNodeSetLang(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr cur; /* the node being changed */
@@ -23256,7 +23213,6 @@ test_xmlNodeSetLang(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23266,7 +23222,6 @@ static int
 test_xmlNodeSetName(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr cur; /* the node being changed */
     int n_cur;
@@ -23295,7 +23250,6 @@ test_xmlNodeSetName(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23305,7 +23259,6 @@ static int
 test_xmlNodeSetSpacePreserve(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr cur; /* the node being changed */
@@ -23336,7 +23289,6 @@ test_xmlNodeSetSpacePreserve(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23346,7 +23298,6 @@ static int
 test_xmlPreviousElementSibling(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr node; /* the current node */
@@ -23370,7 +23321,6 @@ test_xmlPreviousElementSibling(void) {
         }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -23380,8 +23330,6 @@ static int
 test_xmlReconciliateNs(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
     xmlDocPtr doc; /* the document */
@@ -23412,8 +23360,6 @@ test_xmlReconciliateNs(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -23466,7 +23412,6 @@ static int
 test_xmlReplaceNode(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_WRITER_ENABLED)
     int mem_base;
     xmlNodePtr ret_val;
     xmlNodePtr old; /* the old node */
@@ -23504,7 +23449,6 @@ test_xmlReplaceNode(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -24037,7 +23981,6 @@ static int
 test_xmlSetNsProp(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
     int mem_base;
     xmlAttrPtr ret_val;
     xmlNodePtr node; /* the node */
@@ -24082,7 +24025,6 @@ test_xmlSetNsProp(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -24092,7 +24034,6 @@ static int
 test_xmlSetProp(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_XINCLUDE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_HTML_ENABLED)
     int mem_base;
     xmlAttrPtr ret_val;
     xmlNodePtr node; /* the node */
@@ -24130,7 +24071,6 @@ test_xmlSetProp(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -24482,7 +24422,6 @@ static int
 test_xmlUnsetNsProp(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr node; /* the node */
@@ -24520,7 +24459,6 @@ test_xmlUnsetNsProp(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -24530,7 +24468,6 @@ static int
 test_xmlUnsetProp(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
     int mem_base;
     int ret_val;
     xmlNodePtr node; /* the node */
@@ -24561,7 +24498,6 @@ test_xmlUnsetProp(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -24571,7 +24507,6 @@ static int
 test_xmlValidateNCName(void) {
     int test_ret = 0;
 
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
     const xmlChar * value; /* the value to check */
@@ -24602,7 +24537,6 @@ test_xmlValidateNCName(void) {
     }
     }
     function_tests++;
-#endif
 
     return(test_ret);
 }
@@ -24612,8 +24546,6 @@ static int
 test_xmlValidateNMToken(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
     const xmlChar * value; /* the value to check */
@@ -24644,8 +24576,6 @@ test_xmlValidateNMToken(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -24655,8 +24585,6 @@ static int
 test_xmlValidateName(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
     const xmlChar * value; /* the value to check */
@@ -24687,8 +24615,6 @@ test_xmlValidateName(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }
@@ -24698,8 +24624,6 @@ static int
 test_xmlValidateQName(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_TREE_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
-#ifdef LIBXML_TREE_ENABLED
     int mem_base;
     int ret_val;
     const xmlChar * value; /* the value to check */
@@ -24730,8 +24654,6 @@ test_xmlValidateQName(void) {
     }
     }
     function_tests++;
-#endif
-#endif
 
     return(test_ret);
 }

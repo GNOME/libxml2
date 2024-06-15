@@ -11,7 +11,7 @@
 /* Disable deprecation warnings */
 #define XML_DEPRECATED
 
-#include "config.h"
+#include "libxml.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

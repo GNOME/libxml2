@@ -6,6 +6,7 @@
  * joelwreed@comcast.net
  */
 
+#include "libxml.h"
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 

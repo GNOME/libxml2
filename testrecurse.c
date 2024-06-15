@@ -12,7 +12,7 @@
 
 #define XML_DEPRECATED_MEMBER
 
-#include "config.h"
+#include "libxml.h"
 #include <stdio.h>
 
 #include <stdlib.h>

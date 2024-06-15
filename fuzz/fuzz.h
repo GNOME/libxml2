@@ -15,6 +15,12 @@
 extern "C" {
 #endif
 
+#if __GNUC__ * 100 + __GNUC_MINOR__ >= 207
+  #define ATTRIBUTE_UNUSED __attribute__((unused))
+#else
+  #define ATTRIBUTE_UNUSED
+#endif
+
 #if defined(LIBXML_HTML_ENABLED)
   #define HAVE_HTML_FUZZER
 #endif

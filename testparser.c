@@ -4,6 +4,7 @@
  * See Copyright for the status of this software.
  */
 
+#include "libxml.h"
 #include <libxml/parser.h>
 #include <libxml/xmlreader.h>
 #include <libxml/xmlwriter.h>

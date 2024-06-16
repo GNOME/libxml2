@@ -410,7 +410,6 @@
      <summary>interface for the XML entities handling</summary>
      <description>this module provides some of the entity API needed for the parser and applications. </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_TREE_INTERNALS' type='macro'/>
      <exports symbol='XML_EXTERNAL_GENERAL_PARSED_ENTITY' type='enum'/>
      <exports symbol='XML_EXTERNAL_GENERAL_UNPARSED_ENTITY' type='enum'/>
      <exports symbol='XML_EXTERNAL_PARAMETER_ENTITY' type='enum'/>
@@ -560,7 +559,6 @@
      <author>Daniel Veillard </author>
      <exports symbol='XML_DEFAULT_VERSION' type='macro'/>
      <exports symbol='XML_SAX2_MAGIC' type='macro'/>
-     <exports symbol='XML_TREE_INTERNALS' type='macro'/>
      <exports symbol='XML_PARSER_ATTRIBUTE_VALUE' type='enum'/>
      <exports symbol='XML_PARSER_CDATA_SECTION' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
@@ -1679,7 +1677,6 @@
      <summary>The DTD validation</summary>
      <description>API for the DTD handling and the validity checking </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_TREE_INTERNALS' type='macro'/>
      <exports symbol='xmlAttributeTable' type='typedef'/>
      <exports symbol='xmlAttributeTablePtr' type='typedef'/>
      <exports symbol='xmlElementTable' type='typedef'/>
@@ -1837,7 +1834,6 @@
      <summary>interface for the I/O interfaces used by the parser</summary>
      <description>interface for the I/O interfaces used by the parser </description>
      <author>Daniel Veillard </author>
-     <exports symbol='XML_TREE_INTERNALS' type='macro'/>
      <exports symbol='_xmlOutputBuffer' type='struct'/>
      <exports symbol='_xmlParserInputBuffer' type='struct'/>
      <exports symbol='xmlAllocOutputBuffer' type='function'/>
@@ -4291,8 +4287,6 @@
     </macro>
     <macro name='XML_SUBSTITUTE_REF' file='parserInternals'>
       <info>Whether general entities need to be substituted.</info>
-    </macro>
-    <macro name='XML_TREE_INTERNALS' file='valid'>
     </macro>
     <macro name='XML_XML_ID' file='tree'>
       <info>This is the name for the special xml:id attribute</info>

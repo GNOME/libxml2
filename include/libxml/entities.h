@@ -11,10 +11,12 @@
 #ifndef __XML_ENTITIES_H__
 #define __XML_ENTITIES_H__
 
+/** DOC_DISABLE */
 #include <libxml/xmlversion.h>
 #define XML_TREE_INTERNALS
 #include <libxml/tree.h>
 #undef XML_TREE_INTERNALS
+/** DOC_ENABLE */
 
 #ifdef __cplusplus
 extern "C" {

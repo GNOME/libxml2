@@ -7607,14 +7607,14 @@ Could we use @subtypes for this?'/>
       <return type='void'/>
       <arg name='handler' type='xmlGenericErrorFunc *' info='the handler'/>
     </function>
-    <function name='inithtmlDefaultSAXHandler' file='SAX' module='SAX'>
-      <cond>defined(LIBXML_LEGACY_ENABLED) &amp;&amp; defined(LIBXML_SAX1_ENABLED) &amp;&amp; defined(LIBXML_HTML_ENABLED)</cond>
+    <function name='inithtmlDefaultSAXHandler' file='SAX' module='legacy'>
+      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>Initialize the default HTML SAX version 1 handler DEPRECATED: use xmlSAX2InitHtmlDefaultSAXHandler() for the new SAX2 blocks</info>
       <return type='void'/>
       <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>
     </function>
-    <function name='initxmlDefaultSAXHandler' file='SAX' module='SAX'>
-      <cond>defined(LIBXML_LEGACY_ENABLED) &amp;&amp; defined(LIBXML_SAX1_ENABLED)</cond>
+    <function name='initxmlDefaultSAXHandler' file='SAX' module='legacy'>
+      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
       <info>Initialize the default XML SAX version 1 handler DEPRECATED: use xmlSAX2InitDefaultSAXHandler() for the new SAX2 blocks</info>
       <return type='void'/>
       <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>

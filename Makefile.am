@@ -62,9 +62,6 @@ libxml2_la_SOURCES += nanohttp.c
 endif
 if WITH_LEGACY_SOURCES
 libxml2_la_SOURCES += legacy.c
-if WITH_SAX1_SOURCES
-libxml2_la_SOURCES += SAX.c
-endif
 endif
 if WITH_LZMA_SOURCES
 libxml2_la_SOURCES += xzlib.c

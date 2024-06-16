@@ -20,7 +20,7 @@
  * different ranges of character are actually implanted either in
  * parserInternals.h or parserInternals.c
  * The DOM tree build is realized from the default SAX callbacks in
- * the module SAX.c.
+ * the module SAX2.c.
  * The routines doing the validation checks are in valid.c and called either
  * from the SAX callbacks or as standalone functions using a preparsed
  * document.
@@ -4395,8 +4395,8 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
 
             if ((val == '&') && (!replaceEntities)) {
                 /*
-                 * The reparsing will be done in xmlStringGetNodeList()
-                 * called by the attribute() function in SAX.c
+                 * The reparsing will be done in xmlNodeParseContent()
+                 * called from SAX2.c
                  */
                 xmlSBufAddCString(&buf, "&#38;", 5);
                 inSpace = 0;

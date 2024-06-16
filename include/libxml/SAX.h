@@ -181,17 +181,13 @@ XMLPUBFUN void
 						 const xmlChar *value,
 						 int len);
 
-#ifdef LIBXML_SAX1_ENABLED
 XML_DEPRECATED
 XMLPUBFUN void
 		initxmlDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr,
 						 int warning);
-#ifdef LIBXML_HTML_ENABLED
 XML_DEPRECATED
 XMLPUBFUN void
 		inithtmlDefaultSAXHandler	(xmlSAXHandlerV1 *hdlr);
-#endif
-#endif /* LIBXML_SAX1_ENABLED */
 
 #ifdef __cplusplus
 }

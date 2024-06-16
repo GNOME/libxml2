@@ -276,7 +276,6 @@ set(
     parserInternals.c
     pattern.c
     relaxng.c
-    SAX.c
     SAX2.c
     schematron.c
     threads.c

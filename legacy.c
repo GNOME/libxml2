@@ -17,6 +17,7 @@
 #include <libxml/tree.h>
 #include <libxml/entities.h>
 #include <libxml/SAX.h>
+#include <libxml/SAX2.h>
 #include <libxml/parserInternals.h>
 #include <libxml/HTMLparser.h>
 
@@ -1348,6 +1349,98 @@ cdataBlock(void *ctx, const xmlChar * value, int len)
 {
     DEPRECATED("cdataBlock")
         xmlSAX2CDataBlock(ctx, value, len);
+}
+
+/**
+ * initxmlDefaultSAXHandler:
+ * @hdlr:  the SAX handler
+ * @warning:  flag if non-zero sets the handler warning procedure
+ *
+ * Initialize the default XML SAX version 1 handler
+ * DEPRECATED: use xmlSAX2InitDefaultSAXHandler() for the new SAX2 blocks
+ */
+void
+initxmlDefaultSAXHandler(xmlSAXHandlerV1 *hdlr, int warning)
+{
+
+    if(hdlr->initialized == 1)
+	return;
+
+    hdlr->internalSubset = xmlSAX2InternalSubset;
+    hdlr->externalSubset = xmlSAX2ExternalSubset;
+    hdlr->isStandalone = xmlSAX2IsStandalone;
+    hdlr->hasInternalSubset = xmlSAX2HasInternalSubset;
+    hdlr->hasExternalSubset = xmlSAX2HasExternalSubset;
+    hdlr->resolveEntity = xmlSAX2ResolveEntity;
+    hdlr->getEntity = xmlSAX2GetEntity;
+    hdlr->getParameterEntity = xmlSAX2GetParameterEntity;
+    hdlr->entityDecl = xmlSAX2EntityDecl;
+    hdlr->attributeDecl = xmlSAX2AttributeDecl;
+    hdlr->elementDecl = xmlSAX2ElementDecl;
+    hdlr->notationDecl = xmlSAX2NotationDecl;
+    hdlr->unparsedEntityDecl = xmlSAX2UnparsedEntityDecl;
+    hdlr->setDocumentLocator = xmlSAX2SetDocumentLocator;
+    hdlr->startDocument = xmlSAX2StartDocument;
+    hdlr->endDocument = xmlSAX2EndDocument;
+    hdlr->startElement = xmlSAX2StartElement;
+    hdlr->endElement = xmlSAX2EndElement;
+    hdlr->reference = xmlSAX2Reference;
+    hdlr->characters = xmlSAX2Characters;
+    hdlr->cdataBlock = xmlSAX2CDataBlock;
+    hdlr->ignorableWhitespace = xmlSAX2Characters;
+    hdlr->processingInstruction = xmlSAX2ProcessingInstruction;
+    if (warning == 0)
+	hdlr->warning = NULL;
+    else
+	hdlr->warning = xmlParserWarning;
+    hdlr->error = xmlParserError;
+    hdlr->fatalError = xmlParserError;
+
+    hdlr->initialized = 1;
+}
+
+/**
+ * inithtmlDefaultSAXHandler:
+ * @hdlr:  the SAX handler
+ *
+ * Initialize the default HTML SAX version 1 handler
+ * DEPRECATED: use xmlSAX2InitHtmlDefaultSAXHandler() for the new SAX2 blocks
+ */
+void
+inithtmlDefaultSAXHandler(xmlSAXHandlerV1 *hdlr)
+{
+    if(hdlr->initialized == 1)
+	return;
+
+    hdlr->internalSubset = xmlSAX2InternalSubset;
+    hdlr->externalSubset = NULL;
+    hdlr->isStandalone = NULL;
+    hdlr->hasInternalSubset = NULL;
+    hdlr->hasExternalSubset = NULL;
+    hdlr->resolveEntity = NULL;
+    hdlr->getEntity = xmlSAX2GetEntity;
+    hdlr->getParameterEntity = NULL;
+    hdlr->entityDecl = NULL;
+    hdlr->attributeDecl = NULL;
+    hdlr->elementDecl = NULL;
+    hdlr->notationDecl = NULL;
+    hdlr->unparsedEntityDecl = NULL;
+    hdlr->setDocumentLocator = xmlSAX2SetDocumentLocator;
+    hdlr->startDocument = xmlSAX2StartDocument;
+    hdlr->endDocument = xmlSAX2EndDocument;
+    hdlr->startElement = xmlSAX2StartElement;
+    hdlr->endElement = xmlSAX2EndElement;
+    hdlr->reference = NULL;
+    hdlr->characters = xmlSAX2Characters;
+    hdlr->cdataBlock = xmlSAX2CDataBlock;
+    hdlr->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
+    hdlr->processingInstruction = xmlSAX2ProcessingInstruction;
+    hdlr->comment = xmlSAX2Comment;
+    hdlr->warning = xmlParserWarning;
+    hdlr->error = xmlParserError;
+    hdlr->fatalError = xmlParserError;
+
+    hdlr->initialized = 1;
 }
 
 /*

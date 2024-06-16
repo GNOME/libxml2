@@ -561,9 +561,24 @@ else
 endif
 xml_deps += lzma_dep
 
+# icu
+icu_dep = dependency('icu-i18n', method: 'pkg-config', required: get_option('icu'))
+if icu_dep.found()
+    defs = icu_dep.get_variable(pkgconfig: 'DEFS')
+    if cc.has_argument(defs)
+        libxml2_cflags += defs
+    endif
+endif
+xml_deps += icu_dep
+
 ### iconv
 if not get_option('minimum')
-    iconv_dep = dependency('iconv', required: get_option('iconv'))
+# this is a hack for the BSDs. The iconv dependency works as long as libiconv is not in the include path.
+    if sys_bsd and icu_dep.found()
+        iconv_dep = cc.find_library('iconv', dirs: icu_dep.get_variable(pkgconfig: 'includedir'), required: get_option('iconv'))
+    else
+        iconv_dep = dependency('iconv', required: get_option('iconv'))
+    endif
 else
     iconv_dep = dependency('', required: false)
 endif
@@ -574,16 +589,6 @@ if not iconv_dep.found() and want_iso8859x == false
 else
     want_iso8859x = true
 endif
-
-# icu
-icu_dep = dependency('icu-i18n', method: 'pkg-config', required: get_option('icu'))
-if icu_dep.found()
-    defs = icu_dep.get_variable(pkgconfig: 'DEFS')
-    if cc.has_argument(defs)
-        libxml2_cflags += defs
-    endif
-endif
-xml_deps += icu_dep
 
 subdir('include/libxml')
 

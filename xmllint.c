@@ -485,12 +485,16 @@ static void
 xmlHTMLPrintError(void *ctx, const char *level, const char *msg, va_list ap) {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlParserInputPtr input;
+    xmlGenericErrorFunc oldError;
+    void *oldErrorCtxt;
 
     input = ctxt->input;
     if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
         input = ctxt->inputTab[ctxt->inputNr - 2];
     }
 
+    oldError = xmlGenericError;
+    oldErrorCtxt = xmlGenericErrorContext;
     xmlSetGenericErrorFunc(NULL, xmlHTMLBufCat);
 
     fprintf(ERR_STREAM, "<p>");
@@ -514,7 +518,7 @@ xmlHTMLPrintError(void *ctx, const char *level, const char *msg, va_list ap) {
         fprintf(ERR_STREAM, "</pre>");
     }
 
-    xmlSetGenericErrorFunc(NULL, NULL);
+    xmlSetGenericErrorFunc(oldErrorCtxt, oldError);
 }
 
 /**

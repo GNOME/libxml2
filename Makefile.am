@@ -137,7 +137,7 @@ runsuite_SOURCES=runsuite.c
 runsuite_DEPENDENCIES = $(DEPS)
 runsuite_LDADD= $(LDADDS)
 
-xmllint_SOURCES=xmllint.c
+xmllint_SOURCES = xmllint.c shell.c
 xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
 xmllint_DEPENDENCIES = $(DEPS)
 xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)

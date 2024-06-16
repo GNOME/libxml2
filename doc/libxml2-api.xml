@@ -311,10 +311,6 @@
      <summary>Tree debugging APIs</summary>
      <description>Interfaces to a set of routines used for debugging the tree produced by the XML parser. </description>
      <author>Daniel Veillard </author>
-     <exports symbol='xmlShellCtxt' type='typedef'/>
-     <exports symbol='xmlShellCtxtPtr' type='typedef'/>
-     <exports symbol='_xmlShellCtxt' type='struct'/>
-     <exports symbol='xmlBoolToText' type='function'/>
      <exports symbol='xmlDebugCheckDocument' type='function'/>
      <exports symbol='xmlDebugDumpAttr' type='function'/>
      <exports symbol='xmlDebugDumpAttrList' type='function'/>
@@ -326,24 +322,6 @@
      <exports symbol='xmlDebugDumpNodeList' type='function'/>
      <exports symbol='xmlDebugDumpOneNode' type='function'/>
      <exports symbol='xmlDebugDumpString' type='function'/>
-     <exports symbol='xmlLsCountNode' type='function'/>
-     <exports symbol='xmlLsOneNode' type='function'/>
-     <exports symbol='xmlShell' type='function'/>
-     <exports symbol='xmlShellBase' type='function'/>
-     <exports symbol='xmlShellCat' type='function'/>
-     <exports symbol='xmlShellCmd' type='function'/>
-     <exports symbol='xmlShellDir' type='function'/>
-     <exports symbol='xmlShellDu' type='function'/>
-     <exports symbol='xmlShellList' type='function'/>
-     <exports symbol='xmlShellLoad' type='function'/>
-     <exports symbol='xmlShellPrintNode' type='function'/>
-     <exports symbol='xmlShellPrintXPathError' type='function'/>
-     <exports symbol='xmlShellPrintXPathResult' type='function'/>
-     <exports symbol='xmlShellPwd' type='function'/>
-     <exports symbol='xmlShellReadlineFunc' type='function'/>
-     <exports symbol='xmlShellSave' type='function'/>
-     <exports symbol='xmlShellValidate' type='function'/>
-     <exports symbol='xmlShellWrite' type='function'/>
     </file>
     <file name='dict'>
      <summary>string dictionary</summary>
@@ -6656,16 +6634,6 @@ Could we use @subtypes for this?'/>
     <struct name='xmlSchematronValidCtxt' file='schematron' type='struct _xmlSchematronValidCtxt'/>
     <typedef name='xmlSchematronValidCtxtPtr' file='schematron' type='xmlSchematronValidCtxt *'/>
     <typedef name='xmlSchematronValidOptions' file='schematron' type='enum'/>
-    <struct name='xmlShellCtxt' file='debugXML' type='struct _xmlShellCtxt'>
-      <field name='filename' type='char *' info=''/>
-      <field name='doc' type='xmlDocPtr' info=''/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='pctxt' type='xmlXPathContextPtr' info=''/>
-      <field name='loaded' type='int' info=''/>
-      <field name='output' type='FILE *' info=''/>
-      <field name='input' type='xmlShellReadlineFunc' info=''/>
-    </struct>
-    <typedef name='xmlShellCtxtPtr' file='debugXML' type='xmlShellCtxt *'/>
     <struct name='xmlStartTag' file='parser' type='struct _xmlStartTag'/>
     <struct name='xmlStreamCtxt' file='pattern' type='struct _xmlStreamCtxt'/>
     <typedef name='xmlStreamCtxtPtr' file='pattern' type='xmlStreamCtxt *'/>
@@ -8312,12 +8280,6 @@ Could we use @subtypes for this?'/>
       <return type='int' info='0 or -1 in case of error'/>
       <arg name='am' type='xmlAutomataPtr' info='an automata'/>
       <arg name='state' type='xmlAutomataStatePtr' info='a state in this automata'/>
-    </function>
-    <function name='xmlBoolToText' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED)</cond>
-      <info>Convenient way to turn bool into text</info>
-      <return type='const char *' info='a pointer to either &quot;True&quot; or &quot;False&quot;'/>
-      <arg name='boolval' type='int' info='a bool to turn into text'/>
     </function>
     <function name='xmlBufContent' file='tree' module='buf'>
       <info>Function to extract the content of a buffer</info>
@@ -10688,19 +10650,6 @@ Could we use @subtypes for this?'/>
       <return type='int' info='an xmlParserErrors error code.'/>
       <arg name='enc' type='xmlCharEncoding' info='an xmlCharEncoding value.'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>
-    </function>
-    <function name='xmlLsCountNode' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED)</cond>
-      <info>Count the children of @node.</info>
-      <return type='int' info='the number of children of @node.'/>
-      <arg name='node' type='xmlNodePtr' info='the node to count'/>
-    </function>
-    <function name='xmlLsOneNode' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED)</cond>
-      <info>Dump to @output the type and name of @node.</info>
-      <return type='void'/>
-      <arg name='output' type='FILE *' info='the FILE * for the output'/>
-      <arg name='node' type='xmlNodePtr' info='the node to dump'/>
     </function>
     <function name='xmlMallocAtomicLoc' file='xmlmemory' module='xmlmemory'>
       <info>DEPRECATED: don&apos;t use</info>
@@ -13931,139 +13880,6 @@ Could we use @subtypes for this?'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='buffer' type='const xmlChar *' info='a xmlChar * buffer'/>
       <arg name='filename' type='const char *' info='a file name'/>
-    </function>
-    <function name='xmlShell' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell This allow to load, validate, view, modify and save a document using a environment similar to a UNIX commandline.</info>
-      <return type='void'/>
-      <arg name='doc' type='xmlDocPtr' info='the initial document'/>
-      <arg name='filename' type='const char *' info='the output buffer'/>
-      <arg name='input' type='xmlShellReadlineFunc' info='the line reading function'/>
-      <arg name='output' type='FILE *' info='the output FILE*, defaults to stdout if NULL'/>
-    </function>
-    <function name='xmlShellBase' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;base&quot; dumps the current XML base of the node</info>
-      <return type='int' info='0'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='arg' type='char *' info='unused'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellCat' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;cat&quot; dumps the serialization node content (XML or HTML).</info>
-      <return type='int' info='0'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='arg' type='char *' info='unused'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <functype name='xmlShellCmd' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>This is a generic signature for the XML shell functions.</info>
-      <return type='int' info='an int, negative returns indicating errors.'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='a shell context'/>
-      <arg name='arg' type='char *' info='a string argument'/>
-      <arg name='node' type='xmlNodePtr' info='a first node'/>
-      <arg name='node2' type='xmlNodePtr' info='a second node'/>
-    </functype>
-    <function name='xmlShellDir' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;dir&quot; dumps information about the node (namespace, attributes, content).</info>
-      <return type='int' info='0'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='arg' type='char *' info='unused'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellDu' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;du&quot; show the structure of the subtree under node @tree If @tree is null, the command works on the current node.</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='arg' type='char *' info='unused'/>
-      <arg name='tree' type='xmlNodePtr' info='a node defining a subtree'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellList' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;ls&quot; Does an Unix like listing of the given node (like a directory)</info>
-      <return type='int' info='0'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='arg' type='char *' info='unused'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellLoad' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;load&quot; loads a new document specified by the filename</info>
-      <return type='int' info='0 or -1 if loading failed'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='filename' type='char *' info='the file name'/>
-      <arg name='node' type='xmlNodePtr' info='unused'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellPrintNode' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Print node to the output FILE</info>
-      <return type='void'/>
-      <arg name='node' type='xmlNodePtr' info='a non-null node to print to the output FILE'/>
-    </function>
-    <function name='xmlShellPrintXPathError' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Print the xpath error to libxml default error channel</info>
-      <return type='void'/>
-      <arg name='errorType' type='int' info='valid xpath error id'/>
-      <arg name='arg' type='const char *' info='the argument that cause xpath to fail'/>
-    </function>
-    <function name='xmlShellPrintXPathResult' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Prints result to the output FILE</info>
-      <return type='void'/>
-      <arg name='list' type='xmlXPathObjectPtr' info='a valid result generated by an xpath evaluation'/>
-    </function>
-    <function name='xmlShellPwd' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;pwd&quot; Show the full path from the root to the node, if needed building thumblers when similar elements exists at a given ancestor level. The output is compatible with XPath commands.</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='buffer' type='char *' info='the output buffer'/>
-      <arg name='node' type='xmlNodePtr' info='a node'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <functype name='xmlShellReadlineFunc' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>This is a generic signature for the XML shell input function.</info>
-      <return type='char *' info='a string which will be freed by the Shell.'/>
-      <arg name='prompt' type='char *' info='a string prompt'/>
-    </functype>
-    <function name='xmlShellSave' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;save&quot; Write the current document to the filename, or it&apos;s original name</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='filename' type='char *' info='the file name (optional)'/>
-      <arg name='node' type='xmlNodePtr' info='unused'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellValidate' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED) &amp;&amp; defined(LIBXML_VALID_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;validate&quot; Validate the document, if a DTD path is provided, then the validation is done against the given DTD.</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='dtd' type='char *' info='the DTD URI (optional)'/>
-      <arg name='node' type='xmlNodePtr' info='unused'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
-    </function>
-    <function name='xmlShellWrite' file='debugXML' module='debugXML'>
-      <cond>defined(LIBXML_DEBUG_ENABLED) &amp;&amp; defined(LIBXML_XPATH_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Implements the XML shell function &quot;write&quot; Write the current node to the filename, it saves the serialization of the subtree under the @node specified</info>
-      <return type='int' info='0 or -1 in case of error'/>
-      <arg name='ctxt' type='xmlShellCtxtPtr' info='the shell context'/>
-      <arg name='filename' type='char *' info='the file name'/>
-      <arg name='node' type='xmlNodePtr' info='a node in the tree'/>
-      <arg name='node2' type='xmlNodePtr' info='unused'/>
     </function>
     <function name='xmlSkipBlankChars' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, do not use.  Skip whitespace in the input stream.</info>

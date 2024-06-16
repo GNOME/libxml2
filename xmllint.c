@@ -41,12 +41,6 @@
 #define MAP_FAILED ((void *) -1)
 #endif
 #endif
-#ifdef HAVE_LIBREADLINE
-#include <readline/readline.h>
-#ifdef HAVE_LIBHISTORY
-#include <readline/history.h>
-#endif
-#endif
 
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -81,6 +75,8 @@
 #include <libxml/xmlsave.h>
 #endif
 
+#include "private/shell.h"
+
 #ifdef XMLLINT_FUZZ
   #define ERR_STREAM stdout
 #else
@@ -110,8 +106,8 @@ typedef enum {
     XMLLINT_ERR_XPATH_EMPTY = 11    /* XPath result is empty */
 } xmllintReturnCode;
 
-#ifdef LIBXML_DEBUG_ENABLED
 static int shell = 0;
+#ifdef LIBXML_DEBUG_ENABLED
 static int debugent = 0;
 #endif
 static int debug = 0;
@@ -598,57 +594,6 @@ xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
     xmlHTMLPrintError(ctx, "validity warning", msg, args);
     va_end(args);
 }
-
-/************************************************************************
- *									*
- *			Shell Interface					*
- *									*
- ************************************************************************/
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
-/**
- * xmlShellReadline:
- * @prompt:  the prompt value
- *
- * Read a string
- *
- * Returns a pointer to it or NULL on EOF the caller is expected to
- *     free the returned string.
- */
-static char *
-xmlShellReadline(char *prompt) {
-#ifdef HAVE_LIBREADLINE
-    char *line_read;
-
-    /* Get a line from the user. */
-    line_read = readline (prompt);
-
-    /* If the line has any text in it, save it on the history. */
-    if (line_read && *line_read)
-	add_history (line_read);
-
-    return (line_read);
-#else
-    char line_read[501];
-    char *ret;
-    int len;
-
-    if (prompt != NULL)
-	fprintf(stdout, "%s", prompt);
-    fflush(stdout);
-    if (!fgets(line_read, 500, stdin))
-        return(NULL);
-    line_read[500] = 0;
-    len = strlen(line_read);
-    ret = (char *) malloc(len + 1);
-    if (ret != NULL) {
-	memcpy (ret, line_read, len + 1);
-    }
-    return(ret);
-#endif
-}
-#endif /* LIBXML_XPATH_ENABLED */
-#endif /* LIBXML_DEBUG_ENABLED */
 
 /************************************************************************
  *									*
@@ -2292,16 +2237,16 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
     }
 #endif
 
-#ifdef LIBXML_DEBUG_ENABLED
-#ifdef LIBXML_XPATH_ENABLED
+#ifndef XMLLINT_FUZZ
     /*
      * shell interaction
      */
     if (shell) {
+#ifdef LIBXML_XPATH_ENABLED
         xmlXPathOrderDocElems(doc);
-        xmlShell(doc, filename, xmlShellReadline, stdout);
-    }
 #endif
+        xmllintShell(doc, filename, stdout);
+    }
 #endif
 
     /*
@@ -2814,9 +2759,9 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\tParse the XML files\n");
 #endif /* LIBXML_OUTPUT_ENABLED */
     fprintf(f, "\t--version : display the version of the XML library used\n");
+    fprintf(f, "\t--shell : run a navigating shell\n");
 #ifdef LIBXML_DEBUG_ENABLED
     fprintf(f, "\t--debug : dump a debug tree of the in-memory document\n");
-    fprintf(f, "\t--shell : run a navigating shell\n");
     fprintf(f, "\t--debugent : debug the entities defined in the document\n");
 #else
 #ifdef LIBXML_READER_ENABLED
@@ -3112,13 +3057,11 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	if ((!strcmp(argv[i], "-debug")) || (!strcmp(argv[i], "--debug")))
 	    debug++;
 	else
-#ifdef LIBXML_DEBUG_ENABLED
 	if ((!strcmp(argv[i], "-shell")) ||
 	         (!strcmp(argv[i], "--shell"))) {
 	    shell++;
             noout = 1;
         } else
-#endif
 	if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
 	else

@@ -468,13 +468,14 @@ if(MSVC AND BUILD_SHARED_LIBS)
 endif()
 
 if(LIBXML2_WITH_PROGRAMS)
+    add_executable(xmllint xmllint.c shell.c)
+    add_executable(xmlcatalog xmlcatalog.c)
     set(
         PROGRAMS
         xmlcatalog
         xmllint
     )
     foreach(PROGRAM ${PROGRAMS})
-        add_executable(${PROGRAM} ${PROGRAM}.c)
         add_executable(LibXml2::${PROGRAM} ALIAS ${PROGRAM})
         target_compile_definitions(${PROGRAM} PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
         target_link_libraries(${PROGRAM} LibXml2)

@@ -10,6 +10,7 @@
 #ifndef __XML_PARSER_H__
 #define __XML_PARSER_H__
 
+/** DOC_DISABLE */
 #include <libxml/xmlversion.h>
 #define XML_TREE_INTERNALS
 #include <libxml/tree.h>
@@ -26,6 +27,7 @@
 /* for compatibility */
 #include <libxml/SAX2.h>
 #include <libxml/threads.h>
+/** DOC_ENABLE */
 
 #ifdef __cplusplus
 extern "C" {

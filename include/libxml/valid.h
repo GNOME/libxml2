@@ -11,6 +11,7 @@
 #ifndef __XML_VALID_H__
 #define __XML_VALID_H__
 
+/** DOC_DISABLE */
 #include <libxml/xmlversion.h>
 #include <libxml/xmlerror.h>
 #define XML_TREE_INTERNALS
@@ -19,6 +20,7 @@
 #include <libxml/list.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
+/** DOC_ENABLE */
 
 #ifdef __cplusplus
 extern "C" {

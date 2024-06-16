@@ -58,6 +58,7 @@ ignored_words = {
   "ATTRIBUTE_NO_SANITIZE": (3, "macro keyword"),
   "ATTRIBUTE_NO_SANITIZE_INTEGER": (0, "macro keyword"),
   "XML_DEPRECATED": (0, "macro keyword"),
+  "XML_DEPRECATED_MEMBER": (0, "macro keyword"),
   "XML_GLOBALS_ALLOC": (0, "macro keyword"),
   "XML_GLOBALS_ERROR": (0, "macro keyword"),
   "XML_GLOBALS_IO": (0, "macro keyword"),

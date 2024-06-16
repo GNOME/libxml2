@@ -408,11 +408,11 @@ want_thread_alloc = threads_dep.found()
 
 ### xmllint shell history
 xmllint_deps = []
-if want_history == true and want_readline == true
+if want_readline == true
     termlib_lib = ['ncurses', 'curses', 'termcap', 'terminfo', 'termlib']
 
     foreach tl : termlib_lib
-        termlib_dep = cc.find_library(tl)
+        termlib_dep = cc.find_library(tl, required: false)
         if (
             termlib_dep.found()
             and cc.has_function('tputs', dependencies: termlib_dep)
@@ -423,16 +423,18 @@ if want_history == true and want_readline == true
         endif
     endforeach
 
-    history_dep = dependency('history', required: false)
-    if history_dep.found()
-        xmllint_deps += history_dep
-        config_h.set10('HAVE_LIBHISTORY', true)
-    endif
-
     readline_dep = dependency('readline', required: false)
     if readline_dep.found()
         xmllint_deps += readline_dep
         config_h.set10('HAVE_LIBREADLINE', true)
+    endif
+
+    if want_history == true
+        history_dep = dependency('history', required: false)
+        if history_dep.found()
+            xmllint_deps += history_dep
+            config_h.set10('HAVE_LIBHISTORY', true)
+        endif
     endif
 endif
 

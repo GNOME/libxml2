@@ -45,9 +45,9 @@ The following options disable or enable code modules and relevant symbols:
 
     --with-c14n             Canonical XML 1.0 support (on)
     --with-catalog          XML Catalogs support (on)
-    --with-debug            debugging module and shell (on)
-    --with-history          history support for shell (off)
-    --with-readline[=DIR]   use readline in DIR (for shell history)
+    --with-debug            debugging module (on)
+    --with-history          history support for xmllint shell (off)
+    --with-readline[=DIR]   use readline in DIR for shell (on)
     --with-html             HTML parser (on)
     --with-http             HTTP support (off)
     --with-iconv[=DIR]      iconv support (on)

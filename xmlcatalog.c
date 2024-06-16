@@ -64,9 +64,11 @@ xmlShellReadline(const char *prompt) {
     /* Get a line from the user. */
     line_read = readline (prompt);
 
+#ifdef HAVE_LIBHISTORY
     /* If the line has any text in it, save it on the history. */
     if (line_read && *line_read)
 	add_history (line_read);
+#endif
 
     return (line_read);
 #else

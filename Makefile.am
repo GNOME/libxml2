@@ -108,7 +108,7 @@ LDADDS = libxml2.la
 
 runtest_SOURCES=runtest.c
 runtest_DEPENDENCIES = $(DEPS)
-runtest_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
+runtest_LDADD= $(THREAD_LIBS) $(LDADDS)
 
 testrecurse_SOURCES=testrecurse.c
 testrecurse_DEPENDENCIES = $(DEPS)

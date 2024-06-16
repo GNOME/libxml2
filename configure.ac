@@ -746,7 +746,6 @@ dnl
 dnl Thread-related stuff
 dnl
 THREAD_LIBS=""
-BASE_THREAD_LIBS=""
 WITH_THREADS=0
 WITH_THREAD_ALLOC=0
 
@@ -776,22 +775,12 @@ else
     if test "$WITH_THREADS" = "0"; then
         AC_MSG_ERROR([libpthread not found])
     fi
-
-    case $host_os in
-        *linux*)
-            if test "${GCC}" = "yes" ; then
-                BASE_THREAD_LIBS="$THREAD_LIBS"
-                THREAD_LIBS=""
-            fi
-            ;;
-    esac
 fi
 if test "$with_thread_alloc" = "yes" && test "$WITH_THREADS" = "1" ; then
     WITH_THREAD_ALLOC=1
 fi
 
 AC_SUBST(THREAD_LIBS)
-AC_SUBST(BASE_THREAD_LIBS)
 AC_SUBST(WITH_THREADS)
 AC_SUBST(WITH_THREAD_ALLOC)
 

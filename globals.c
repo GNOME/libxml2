@@ -120,26 +120,6 @@ static XML_THREAD_LOCAL xmlGlobalState globalState;
 #ifdef HAVE_POSIX_THREADS
 
 /*
- * Weak symbol hack, see threads.c
- */
-#if defined(__GNUC__) && \
-    defined(__GLIBC__) && \
-    __GLIBC__ * 100 + __GLIBC_MINOR__ < 234
-
-#pragma weak pthread_getspecific
-#pragma weak pthread_setspecific
-#pragma weak pthread_key_create
-#pragma weak pthread_key_delete
-#pragma weak pthread_equal
-#pragma weak pthread_self
-
-#define XML_PTHREAD_WEAK
-
-static int libxml_is_threaded = -1;
-
-#endif
-
-/*
  * On POSIX, we need thread-specific data even with thread-local storage
  * to destroy indirect references from global state (xmlLastError) at
  * thread exit.
@@ -570,22 +550,6 @@ void xmlInitGlobalsInternal(void) {
     xmlInitMutex(&xmlThrDefMutex);
 
 #ifdef HAVE_POSIX_THREADS
-#ifdef XML_PTHREAD_WEAK
-    if (libxml_is_threaded == -1)
-        libxml_is_threaded =
-            (pthread_getspecific != NULL) &&
-            (pthread_setspecific != NULL) &&
-            (pthread_key_create != NULL) &&
-            (pthread_key_delete != NULL) &&
-            /*
-             * pthread_equal can be inline, resuting in -Waddress warnings.
-             * Let's assume it's available if all the other functions are.
-             */
-            /* (pthread_equal != NULL) && */
-            (pthread_self != NULL);
-    if (libxml_is_threaded == 0)
-        return;
-#endif /* XML_PTHREAD_WEAK */
     pthread_key_create(&globalkey, xmlFreeGlobalState);
     mainthread = pthread_self();
 #elif defined(HAVE_WIN32_THREADS)
@@ -623,10 +587,6 @@ void xmlCleanupGlobalsInternal(void) {
     xmlCleanupMutex(&xmlThrDefMutex);
 
 #ifdef HAVE_POSIX_THREADS
-#ifdef XML_PTHREAD_WEAK
-    if (libxml_is_threaded == 0)
-        return;
-#endif /* XML_PTHREAD_WEAK */
     pthread_key_delete(globalkey);
 #elif defined(HAVE_WIN32_THREADS)
 #ifndef USE_TLS
@@ -672,10 +632,6 @@ xmlIsMainThreadInternal(void) {
     }
 
 #ifdef HAVE_POSIX_THREADS
-#ifdef XML_PTHREAD_WEAK
-    if (libxml_is_threaded == 0)
-        return (1);
-#endif
     return (pthread_equal(mainthread, pthread_self()));
 #elif defined HAVE_WIN32_THREADS
     return (mainthread == GetCurrentThreadId());

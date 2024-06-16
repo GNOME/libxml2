@@ -5755,36 +5755,26 @@ crash if you try to modify the tree)'/>
     <enum name='XPTR_SYNTAX_ERROR' file='xpath' value='16' type='xmlXPathError'/>
     <typedef name='htmlDocPtr' file='HTMLparser' type='xmlDocPtr'/>
     <struct name='htmlElemDesc' file='HTMLparser' type='struct _htmlElemDesc'>
-      <field name='name' type='const char *' info=' The tag name'/>
-      <field name='startTag' type='char' info=' Whether the start tag can be implied'/>
-      <field name='endTag' type='char' info=' Whether the end tag can be implied'/>
-      <field name='saveEndTag' type='char' info=' Whether the end tag should be saved'/>
-      <field name='empty' type='char' info=' Is this an empty element ?'/>
-      <field name='depr' type='char' info=' Is this a deprecated element ?'/>
-      <field name='dtd' type='char' info=' 1: only in Loose DTD, 2: only Frameset one'/>
-      <field name='isinline' type='char' info=' is this a block 0 or inline 1 element'/>
-      <field name='desc' type='const char *' info=' the description NRK Jan.2003
-* New fields encapsulating HTML structure
-*
-* Bugs:
-*	This is a very limited representation.  It fails to tell us when
-*	an element *requires* subelements (we only have whether they&apos;re
-*	allowed or not), and it doesn&apos;t tell us where CDATA and PCDATA
-*	are allowed.  Some element relationships are not fully represented:
-*	these are flagged with the word MODIFIER
-*'/>
-      <field name='subelts' type='const char **' info=' allowed sub-elements of this element'/>
-      <field name='defaultsubelt' type='const char *' info=' subelement for suggested auto-repair
-if necessary or NULL'/>
-      <field name='attrs_opt' type='const char **' info=' Optional Attributes'/>
-      <field name='attrs_depr' type='const char **' info=' Additional deprecated attributes'/>
-      <field name='attrs_req' type='const char **' info=' Required attributes'/>
+      <field name='name' type='const char *'/>
+      <field name='startTag' type='char'/>
+      <field name='endTag' type='char'/>
+      <field name='saveEndTag' type='char'/>
+      <field name='empty' type='char'/>
+      <field name='depr' type='char'/>
+      <field name='dtd' type='char'/>
+      <field name='isinline' type='char'/>
+      <field name='desc' type='const char *'/>
+      <field name='subelts' type='const char **'/>
+      <field name='defaultsubelt' type='const char *'/>
+      <field name='attrs_opt' type='const char **'/>
+      <field name='attrs_depr' type='const char **'/>
+      <field name='attrs_req' type='const char **'/>
     </struct>
     <typedef name='htmlElemDescPtr' file='HTMLparser' type='htmlElemDesc *'/>
     <struct name='htmlEntityDesc' file='HTMLparser' type='struct _htmlEntityDesc'>
-      <field name='value' type='unsigned int' info=' the UNICODE value for the character'/>
-      <field name='name' type='const char *' info=' The entity name'/>
-      <field name='desc' type='const char *' info=' the description'/>
+      <field name='value' type='unsigned int'/>
+      <field name='name' type='const char *'/>
+      <field name='desc' type='const char *'/>
     </struct>
     <typedef name='htmlEntityDescPtr' file='HTMLparser' type='htmlEntityDesc *'/>
     <typedef name='htmlNodePtr' file='HTMLparser' type='xmlNodePtr'/>
@@ -5800,9 +5790,9 @@ if necessary or NULL'/>
     <typedef name='xlinkActuate' file='xlink' type='enum'/>
     <typedef name='xlinkHRef' file='xlink' type='xmlChar *'/>
     <struct name='xlinkHandler' file='xlink' type='struct _xlinkHandler'>
-      <field name='simple' type='xlinkSimpleLinkFunk' info=''/>
-      <field name='extended' type='xlinkExtendedLinkFunk' info=''/>
-      <field name='set' type='xlinkExtendedLinkSetFunk' info=''/>
+      <field name='simple' type='xlinkSimpleLinkFunk'/>
+      <field name='extended' type='xlinkExtendedLinkFunk'/>
+      <field name='set' type='xlinkExtendedLinkSetFunk'/>
     </struct>
     <typedef name='xlinkHandlerPtr' file='xlink' type='xlinkHandler *'/>
     <typedef name='xlinkRole' file='xlink' type='xmlChar *'/>
@@ -5810,39 +5800,39 @@ if necessary or NULL'/>
     <typedef name='xlinkTitle' file='xlink' type='xmlChar *'/>
     <typedef name='xlinkType' file='xlink' type='enum'/>
     <struct name='xmlAttr' file='tree' type='struct _xmlAttr'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' XML_ATTRIBUTE_NODE, must be second !'/>
-      <field name='name' type='const xmlChar *' info=' the name of the property'/>
-      <field name='children' type='struct _xmlNode *' info=' the value of the property'/>
-      <field name='last' type='struct _xmlNode *' info=' NULL'/>
-      <field name='parent' type='struct _xmlNode *' info=' child-&gt;parent link'/>
-      <field name='next' type='struct _xmlAttr *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlAttr *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' the containing document'/>
-      <field name='ns' type='xmlNs *' info=' pointer to the associated namespace'/>
-      <field name='atype' type='xmlAttributeType' info=' the attribute type if validating'/>
-      <field name='psvi' type='void *' info=' for type/PSVI information'/>
-      <field name='id' type='struct _xmlID *' info=' the ID struct'/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlNode *'/>
+      <field name='next' type='struct _xmlAttr *'/>
+      <field name='prev' type='struct _xmlAttr *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='ns' type='xmlNs *'/>
+      <field name='atype' type='xmlAttributeType'/>
+      <field name='psvi' type='void *'/>
+      <field name='id' type='struct _xmlID *'/>
     </struct>
     <struct name='xmlAttrHashBucket' file='parser' type='struct _xmlAttrHashBucket'/>
     <typedef name='xmlAttrPtr' file='tree' type='xmlAttr *'/>
     <struct name='xmlAttribute' file='tree' type='struct _xmlAttribute'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' XML_ATTRIBUTE_DECL, must be second !'/>
-      <field name='name' type='const xmlChar *' info=' Attribute name'/>
-      <field name='children' type='struct _xmlNode *' info=' NULL'/>
-      <field name='last' type='struct _xmlNode *' info=' NULL'/>
-      <field name='parent' type='struct _xmlDtd *' info=' -&gt; DTD'/>
-      <field name='next' type='struct _xmlNode *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' the containing document'/>
-      <field name='nexth' type='struct _xmlAttribute *' info=' next in hash table'/>
-      <field name='atype' type='xmlAttributeType' info=' The attribute type'/>
-      <field name='def' type='xmlAttributeDefault' info=' the default'/>
-      <field name='defaultValue' type='const xmlChar *' info=' or the default value'/>
-      <field name='tree' type='xmlEnumerationPtr' info=' or the enumeration tree if any'/>
-      <field name='prefix' type='const xmlChar *' info=' the namespace prefix if any'/>
-      <field name='elem' type='const xmlChar *' info=' Element holding the attribute'/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlDtd *'/>
+      <field name='next' type='struct _xmlNode *'/>
+      <field name='prev' type='struct _xmlNode *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='nexth' type='struct _xmlAttribute *'/>
+      <field name='atype' type='xmlAttributeType'/>
+      <field name='def' type='xmlAttributeDefault'/>
+      <field name='defaultValue' type='const xmlChar *'/>
+      <field name='tree' type='xmlEnumerationPtr'/>
+      <field name='prefix' type='const xmlChar *'/>
+      <field name='elem' type='const xmlChar *'/>
     </struct>
     <typedef name='xmlAttributeDefault' file='tree' type='enum'/>
     <typedef name='xmlAttributePtr' file='tree' type='xmlAttribute *'/>
@@ -5862,11 +5852,11 @@ if necessary or NULL'/>
       <info>A pointer to a buffer structure, the actual structure internals are not public</info>
     </typedef>
     <struct name='xmlBuffer' file='tree' type='struct _xmlBuffer'>
-      <field name='content' type='xmlChar *' info=' The buffer size used'/>
-      <field name='use' type='unsigned int' info=' The buffer size'/>
-      <field name='size' type='unsigned int' info=' The realloc method'/>
-      <field name='alloc' type='xmlBufferAllocationScheme' info=' in IO mode we may have a different base'/>
-      <field name='contentIO' type='xmlChar *' info=''/>
+      <field name='content' type='xmlChar *'/>
+      <field name='use' type='unsigned int'/>
+      <field name='size' type='unsigned int'/>
+      <field name='alloc' type='xmlBufferAllocationScheme'/>
+      <field name='contentIO' type='xmlChar *'/>
     </struct>
     <typedef name='xmlBufferAllocationScheme' file='tree' type='enum'/>
     <typedef name='xmlBufferPtr' file='tree' type='xmlBuffer *'/>
@@ -5876,20 +5866,20 @@ if necessary or NULL'/>
     <typedef name='xmlCatalogPrefer' file='catalog' type='enum'/>
     <typedef name='xmlCatalogPtr' file='catalog' type='xmlCatalog *'/>
     <struct name='xmlChLRange' file='chvalid' type='struct _xmlChLRange'>
-      <field name='low' type='unsigned int' info=''/>
-      <field name='high' type='unsigned int' info=''/>
+      <field name='low' type='unsigned int'/>
+      <field name='high' type='unsigned int'/>
     </struct>
     <typedef name='xmlChLRangePtr' file='chvalid' type='xmlChLRange *'/>
     <struct name='xmlChRangeGroup' file='chvalid' type='struct _xmlChRangeGroup'>
-      <field name='nbShortRange' type='int' info=''/>
-      <field name='nbLongRange' type='int' info=''/>
-      <field name='shortRange' type='const xmlChSRange *' info=' points to an array of ranges'/>
-      <field name='longRange' type='const xmlChLRange *' info=''/>
+      <field name='nbShortRange' type='int'/>
+      <field name='nbLongRange' type='int'/>
+      <field name='shortRange' type='const xmlChSRange *'/>
+      <field name='longRange' type='const xmlChLRange *'/>
     </struct>
     <typedef name='xmlChRangeGroupPtr' file='chvalid' type='xmlChRangeGroup *'/>
     <struct name='xmlChSRange' file='chvalid' type='struct _xmlChSRange'>
-      <field name='low' type='unsigned short' info=''/>
-      <field name='high' type='unsigned short' info=''/>
+      <field name='low' type='unsigned short'/>
+      <field name='high' type='unsigned short'/>
     </struct>
     <typedef name='xmlChSRangePtr' file='chvalid' type='xmlChSRange *'/>
     <typedef name='xmlChar' file='xmlstring' type='unsigned char'>
@@ -5898,108 +5888,96 @@ if necessary or NULL'/>
     <typedef name='xmlCharEncError' file='encoding' type='enum'/>
     <typedef name='xmlCharEncoding' file='encoding' type='enum'/>
     <struct name='xmlCharEncodingHandler' file='encoding' type='struct _xmlCharEncodingHandler'>
-      <field name='name' type='char *' info=''/>
-      <field name='input' type='xmlCharEncodingInputFunc' info=''/>
-      <field name='output' type='xmlCharEncodingOutputFunc' info=''/>
-      <field name='iconv_in' type='iconv_t' info=''/>
-      <field name='iconv_out' type='iconv_t' info=''/>
-      <field name='uconv_in' type='struct _uconv_t *' info=''/>
-      <field name='uconv_out' type='struct _uconv_t *' info=''/>
+      <field name='name' type='char *'/>
+      <field name='input' type='xmlCharEncodingInputFunc'/>
+      <field name='output' type='xmlCharEncodingOutputFunc'/>
+      <field name='iconv_in' type='iconv_t'/>
+      <field name='iconv_out' type='iconv_t'/>
+      <field name='uconv_in' type='struct _uconv_t *'/>
+      <field name='uconv_out' type='struct _uconv_t *'/>
     </struct>
     <typedef name='xmlCharEncodingHandlerPtr' file='encoding' type='xmlCharEncodingHandler *'/>
     <struct name='xmlDOMWrapCtxt' file='tree' type='struct _xmlDOMWrapCtxt'>
-      <field name='_private' type='void *' info='* The type of this context, just in case we need specialized
-* contexts in the future.
-*'/>
-      <field name='type' type='int' info='* Internal namespace map used for various operations.
-*'/>
-      <field name='namespaceMap' type='void *' info='* Use this one to acquire an xmlNsPtr intended for node-&gt;ns.
-* (Note that this is not intended for elem-&gt;nsDef).
-*'/>
-      <field name='getNsForNodeFunc' type='xmlDOMWrapAcquireNsFunction' info=''/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='int'/>
+      <field name='namespaceMap' type='void *'/>
+      <field name='getNsForNodeFunc' type='xmlDOMWrapAcquireNsFunction'/>
     </struct>
     <typedef name='xmlDOMWrapCtxtPtr' file='tree' type='xmlDOMWrapCtxt *'/>
     <struct name='xmlDict' file='dict' type='struct _xmlDict'/>
     <typedef name='xmlDictPtr' file='dict' type='xmlDict *'/>
     <struct name='xmlDoc' file='tree' type='struct _xmlDoc'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' XML_DOCUMENT_NODE, must be second !'/>
-      <field name='name' type='char *' info=' name/filename/URI of the document'/>
-      <field name='children' type='struct _xmlNode *' info=' the document tree'/>
-      <field name='last' type='struct _xmlNode *' info=' last child link'/>
-      <field name='parent' type='struct _xmlNode *' info=' child-&gt;parent link'/>
-      <field name='next' type='struct _xmlNode *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' autoreference to itself End of common part'/>
-      <field name='compression' type='int' info=' level of zlib compression'/>
-      <field name='standalone' type='int' info=' standalone document (no external refs)
-1 if standalone=&quot;yes&quot;
-0 if standalone=&quot;no&quot;
--1 if there is no XML declaration
--2 if there is an XML declaration, but no
-standalone attribute was specified'/>
-      <field name='intSubset' type='struct _xmlDtd *' info=' the document internal subset'/>
-      <field name='extSubset' type='struct _xmlDtd *' info=' the document external subset'/>
-      <field name='oldNs' type='struct _xmlNs *' info=' Global namespace, the old way'/>
-      <field name='version' type='const xmlChar *' info=' the XML version string'/>
-      <field name='encoding' type='const xmlChar *' info=' actual encoding, if any'/>
-      <field name='ids' type='void *' info=' Hash table for ID attributes if any'/>
-      <field name='refs' type='void *' info=' Hash table for IDREFs attributes if any'/>
-      <field name='URL' type='const xmlChar *' info=' The URI for that document'/>
-      <field name='charset' type='int' info=' unused'/>
-      <field name='dict' type='struct _xmlDict *' info=' dict used to allocate names or NULL'/>
-      <field name='psvi' type='void *' info=' for type/PSVI information'/>
-      <field name='parseFlags' type='int' info=' set of xmlParserOption used to parse the
-document'/>
-      <field name='properties' type='int' info=' set of xmlDocProperties for this document
-set at the end of parsing'/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='char *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlNode *'/>
+      <field name='next' type='struct _xmlNode *'/>
+      <field name='prev' type='struct _xmlNode *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='compression' type='int'/>
+      <field name='standalone' type='int'/>
+      <field name='intSubset' type='struct _xmlDtd *'/>
+      <field name='extSubset' type='struct _xmlDtd *'/>
+      <field name='oldNs' type='struct _xmlNs *'/>
+      <field name='version' type='const xmlChar *'/>
+      <field name='encoding' type='const xmlChar *'/>
+      <field name='ids' type='void *'/>
+      <field name='refs' type='void *'/>
+      <field name='URL' type='const xmlChar *'/>
+      <field name='charset' type='int'/>
+      <field name='dict' type='struct _xmlDict *'/>
+      <field name='psvi' type='void *'/>
+      <field name='parseFlags' type='int'/>
+      <field name='properties' type='int'/>
     </struct>
     <typedef name='xmlDocProperties' file='tree' type='enum'/>
     <typedef name='xmlDocPtr' file='tree' type='xmlDoc *'/>
     <struct name='xmlDtd' file='tree' type='struct _xmlDtd'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' XML_DTD_NODE, must be second !'/>
-      <field name='name' type='const xmlChar *' info=' Name of the DTD'/>
-      <field name='children' type='struct _xmlNode *' info=' the value of the property link'/>
-      <field name='last' type='struct _xmlNode *' info=' last child link'/>
-      <field name='parent' type='struct _xmlDoc *' info=' child-&gt;parent link'/>
-      <field name='next' type='struct _xmlNode *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' the containing document End of common part'/>
-      <field name='notations' type='void *' info=' Hash table for notations if any'/>
-      <field name='elements' type='void *' info=' Hash table for elements if any'/>
-      <field name='attributes' type='void *' info=' Hash table for attributes if any'/>
-      <field name='entities' type='void *' info=' Hash table for entities if any'/>
-      <field name='ExternalID' type='const xmlChar *' info=' External identifier for PUBLIC DTD'/>
-      <field name='SystemID' type='const xmlChar *' info=' URI for a SYSTEM or PUBLIC DTD'/>
-      <field name='pentities' type='void *' info=' Hash table for param entities if any'/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlDoc *'/>
+      <field name='next' type='struct _xmlNode *'/>
+      <field name='prev' type='struct _xmlNode *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='notations' type='void *'/>
+      <field name='elements' type='void *'/>
+      <field name='attributes' type='void *'/>
+      <field name='entities' type='void *'/>
+      <field name='ExternalID' type='const xmlChar *'/>
+      <field name='SystemID' type='const xmlChar *'/>
+      <field name='pentities' type='void *'/>
     </struct>
     <typedef name='xmlDtdPtr' file='tree' type='xmlDtd *'/>
     <struct name='xmlElement' file='tree' type='struct _xmlElement'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' XML_ELEMENT_DECL, must be second !'/>
-      <field name='name' type='const xmlChar *' info=' Element name'/>
-      <field name='children' type='struct _xmlNode *' info=' NULL'/>
-      <field name='last' type='struct _xmlNode *' info=' NULL'/>
-      <field name='parent' type='struct _xmlDtd *' info=' -&gt; DTD'/>
-      <field name='next' type='struct _xmlNode *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' the containing document'/>
-      <field name='etype' type='xmlElementTypeVal' info=' The type'/>
-      <field name='content' type='xmlElementContentPtr' info=' the allowed element content'/>
-      <field name='attributes' type='xmlAttributePtr' info=' List of the declared attributes'/>
-      <field name='prefix' type='const xmlChar *' info=' the namespace prefix if any'/>
-      <field name='contModel' type='xmlRegexpPtr' info=' the validating regexp'/>
-      <field name='contModel' type='void *' info=''/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlDtd *'/>
+      <field name='next' type='struct _xmlNode *'/>
+      <field name='prev' type='struct _xmlNode *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='etype' type='xmlElementTypeVal'/>
+      <field name='content' type='xmlElementContentPtr'/>
+      <field name='attributes' type='xmlAttributePtr'/>
+      <field name='prefix' type='const xmlChar *'/>
+      <field name='contModel' type='xmlRegexpPtr'/>
+      <field name='contModel' type='void *'/>
     </struct>
     <struct name='xmlElementContent' file='tree' type='struct _xmlElementContent'>
-      <field name='type' type='xmlElementContentType' info=' PCDATA, ELEMENT, SEQ or OR'/>
-      <field name='ocur' type='xmlElementContentOccur' info=' ONCE, OPT, MULT or PLUS'/>
-      <field name='name' type='const xmlChar *' info=' Element name'/>
-      <field name='c1' type='struct _xmlElementContent *' info=' first child'/>
-      <field name='c2' type='struct _xmlElementContent *' info=' second child'/>
-      <field name='parent' type='struct _xmlElementContent *' info=' parent'/>
-      <field name='prefix' type='const xmlChar *' info=' Namespace prefix'/>
+      <field name='type' type='xmlElementContentType'/>
+      <field name='ocur' type='xmlElementContentOccur'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='c1' type='struct _xmlElementContent *'/>
+      <field name='c2' type='struct _xmlElementContent *'/>
+      <field name='parent' type='struct _xmlElementContent *'/>
+      <field name='prefix' type='const xmlChar *'/>
     </struct>
     <typedef name='xmlElementContentOccur' file='tree' type='enum'/>
     <typedef name='xmlElementContentPtr' file='tree' type='xmlElementContent *'/>
@@ -6012,48 +5990,48 @@ set at the end of parsing'/>
     <struct name='xmlEntitiesTable' file='entities' type='struct _xmlHashTable'/>
     <typedef name='xmlEntitiesTablePtr' file='entities' type='xmlEntitiesTable *'/>
     <struct name='xmlEntity' file='tree' type='struct _xmlEntity'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' XML_ENTITY_DECL, must be second !'/>
-      <field name='name' type='const xmlChar *' info=' Entity name'/>
-      <field name='children' type='struct _xmlNode *' info=' First child link'/>
-      <field name='last' type='struct _xmlNode *' info=' Last child link'/>
-      <field name='parent' type='struct _xmlDtd *' info=' -&gt; DTD'/>
-      <field name='next' type='struct _xmlNode *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' the containing document'/>
-      <field name='orig' type='xmlChar *' info=' content without ref substitution'/>
-      <field name='content' type='xmlChar *' info=' content or ndata if unparsed'/>
-      <field name='length' type='int' info=' the content length'/>
-      <field name='etype' type='xmlEntityType' info=' The entity type'/>
-      <field name='ExternalID' type='const xmlChar *' info=' External identifier for PUBLIC'/>
-      <field name='SystemID' type='const xmlChar *' info=' URI for a SYSTEM or PUBLIC Entity'/>
-      <field name='nexte' type='struct _xmlEntity *' info=' unused'/>
-      <field name='URI' type='const xmlChar *' info=' the full URI as computed'/>
-      <field name='owner' type='int' info=' unused'/>
-      <field name='flags' type='int' info=' various flags'/>
-      <field name='expandedSize' type='unsigned long' info=' expanded size'/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlDtd *'/>
+      <field name='next' type='struct _xmlNode *'/>
+      <field name='prev' type='struct _xmlNode *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='orig' type='xmlChar *'/>
+      <field name='content' type='xmlChar *'/>
+      <field name='length' type='int'/>
+      <field name='etype' type='xmlEntityType'/>
+      <field name='ExternalID' type='const xmlChar *'/>
+      <field name='SystemID' type='const xmlChar *'/>
+      <field name='nexte' type='struct _xmlEntity *'/>
+      <field name='URI' type='const xmlChar *'/>
+      <field name='owner' type='int'/>
+      <field name='flags' type='int'/>
+      <field name='expandedSize' type='unsigned long'/>
     </struct>
     <typedef name='xmlEntityPtr' file='tree' type='xmlEntity *'/>
     <typedef name='xmlEntityType' file='entities' type='enum'/>
     <struct name='xmlEnumeration' file='tree' type='struct _xmlEnumeration'>
-      <field name='next' type='struct _xmlEnumeration *' info=' next one'/>
-      <field name='name' type='const xmlChar *' info=' Enumeration name'/>
+      <field name='next' type='struct _xmlEnumeration *'/>
+      <field name='name' type='const xmlChar *'/>
     </struct>
     <typedef name='xmlEnumerationPtr' file='tree' type='xmlEnumeration *'/>
     <struct name='xmlError' file='xmlerror' type='struct _xmlError'>
-      <field name='domain' type='int' info=' What part of the library raised this error'/>
-      <field name='code' type='int' info=' The error code, e.g. an xmlParserError'/>
-      <field name='message' type='char *' info=' human-readable informative error message'/>
-      <field name='level' type='xmlErrorLevel' info=' how consequent is the error'/>
-      <field name='file' type='char *' info=' the filename'/>
-      <field name='line' type='int' info=' the line number if available'/>
-      <field name='str1' type='char *' info=' extra string information'/>
-      <field name='str2' type='char *' info=' extra string information'/>
-      <field name='str3' type='char *' info=' extra string information'/>
-      <field name='int1' type='int' info=' extra number information'/>
-      <field name='int2' type='int' info=' error column # or 0 if N/A (todo: rename field when we would brk ABI)'/>
-      <field name='ctxt' type='void *' info=' the parser context if available'/>
-      <field name='node' type='void *' info=' the node in the tree'/>
+      <field name='domain' type='int'/>
+      <field name='code' type='int'/>
+      <field name='message' type='char *'/>
+      <field name='level' type='xmlErrorLevel'/>
+      <field name='file' type='char *'/>
+      <field name='line' type='int'/>
+      <field name='str1' type='char *'/>
+      <field name='str2' type='char *'/>
+      <field name='str3' type='char *'/>
+      <field name='int1' type='int'/>
+      <field name='int2' type='int'/>
+      <field name='ctxt' type='void *'/>
+      <field name='node' type='void *'/>
     </struct>
     <typedef name='xmlErrorDomain' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorLevel' file='xmlerror' type='enum'/>
@@ -6064,12 +6042,12 @@ set at the end of parsing'/>
     <struct name='xmlHashTable' file='hash' type='struct _xmlHashTable'/>
     <typedef name='xmlHashTablePtr' file='hash' type='xmlHashTable *'/>
     <struct name='xmlID' file='tree' type='struct _xmlID'>
-      <field name='next' type='struct _xmlID *' info=' next ID'/>
-      <field name='value' type='const xmlChar *' info=' The ID name'/>
-      <field name='attr' type='xmlAttrPtr' info=' The attribute holding it'/>
-      <field name='name' type='const xmlChar *' info=' The attribute if attr is not available'/>
-      <field name='lineno' type='int' info=' The line number if attr is not available'/>
-      <field name='doc' type='struct _xmlDoc *' info=' The document holding the ID'/>
+      <field name='next' type='struct _xmlID *'/>
+      <field name='value' type='const xmlChar *'/>
+      <field name='attr' type='xmlAttrPtr'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='lineno' type='int'/>
+      <field name='doc' type='struct _xmlDoc *'/>
     </struct>
     <typedef name='xmlIDPtr' file='tree' type='xmlID *'/>
     <struct name='xmlIDTable' file='valid' type='struct _xmlHashTable'/>
@@ -6086,216 +6064,209 @@ set at the end of parsing'/>
     <struct name='xmlMutex' file='threads' type='struct _xmlMutex'/>
     <typedef name='xmlMutexPtr' file='threads' type='xmlMutex *'/>
     <struct name='xmlNode' file='tree' type='struct _xmlNode'>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='type' type='xmlElementType' info=' type number, must be second !'/>
-      <field name='name' type='const xmlChar *' info=' the name of the node, or the entity'/>
-      <field name='children' type='struct _xmlNode *' info=' parent-&gt;childs link'/>
-      <field name='last' type='struct _xmlNode *' info=' last child link'/>
-      <field name='parent' type='struct _xmlNode *' info=' child-&gt;parent link'/>
-      <field name='next' type='struct _xmlNode *' info=' next sibling link '/>
-      <field name='prev' type='struct _xmlNode *' info=' previous sibling link '/>
-      <field name='doc' type='struct _xmlDoc *' info=' the containing document End of common part'/>
-      <field name='ns' type='xmlNs *' info=' pointer to the associated namespace'/>
-      <field name='content' type='xmlChar *' info=' the content'/>
-      <field name='properties' type='struct _xmlAttr *' info=' properties list'/>
-      <field name='nsDef' type='xmlNs *' info=' namespace definitions on this node'/>
-      <field name='psvi' type='void *' info=' for type/PSVI information'/>
-      <field name='line' type='unsigned short' info=' line number'/>
-      <field name='extra' type='unsigned short' info=' extra data for XPath/XSLT'/>
+      <field name='_private' type='void *'/>
+      <field name='type' type='xmlElementType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='children' type='struct _xmlNode *'/>
+      <field name='last' type='struct _xmlNode *'/>
+      <field name='parent' type='struct _xmlNode *'/>
+      <field name='next' type='struct _xmlNode *'/>
+      <field name='prev' type='struct _xmlNode *'/>
+      <field name='doc' type='struct _xmlDoc *'/>
+      <field name='ns' type='xmlNs *'/>
+      <field name='content' type='xmlChar *'/>
+      <field name='properties' type='struct _xmlAttr *'/>
+      <field name='nsDef' type='xmlNs *'/>
+      <field name='psvi' type='void *'/>
+      <field name='line' type='unsigned short'/>
+      <field name='extra' type='unsigned short'/>
     </struct>
     <typedef name='xmlNodePtr' file='tree' type='xmlNode *'/>
     <struct name='xmlNodeSet' file='xpath' type='struct _xmlNodeSet'>
-      <field name='nodeNr' type='int' info=' number of nodes in the set'/>
-      <field name='nodeMax' type='int' info=' size of the array as allocated'/>
-      <field name='nodeTab' type='xmlNodePtr *' info=' array of nodes in no particular order @@ with_ns to check whether namespace nodes should be looked at @@'/>
+      <field name='nodeNr' type='int'/>
+      <field name='nodeMax' type='int'/>
+      <field name='nodeTab' type='xmlNodePtr *'/>
     </struct>
     <typedef name='xmlNodeSetPtr' file='xpath' type='xmlNodeSet *'/>
     <struct name='xmlNotation' file='tree' type='struct _xmlNotation'>
-      <field name='name' type='const xmlChar *' info=' Notation name'/>
-      <field name='PublicID' type='const xmlChar *' info=' Public identifier, if any'/>
-      <field name='SystemID' type='const xmlChar *' info=' System identifier, if any'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='PublicID' type='const xmlChar *'/>
+      <field name='SystemID' type='const xmlChar *'/>
     </struct>
     <typedef name='xmlNotationPtr' file='tree' type='xmlNotation *'/>
     <struct name='xmlNotationTable' file='valid' type='struct _xmlHashTable'/>
     <typedef name='xmlNotationTablePtr' file='valid' type='xmlNotationTable *'/>
     <struct name='xmlNs' file='tree' type='struct _xmlNs'>
-      <field name='next' type='struct _xmlNs *' info=' next Ns link for this node '/>
-      <field name='type' type='xmlNsType' info=' global or local'/>
-      <field name='href' type='const xmlChar *' info=' URL for the namespace'/>
-      <field name='prefix' type='const xmlChar *' info=' prefix for the namespace'/>
-      <field name='_private' type='void *' info=' application data'/>
-      <field name='context' type='struct _xmlDoc *' info=' normally an xmlDoc'/>
+      <field name='next' type='struct _xmlNs *'/>
+      <field name='type' type='xmlNsType'/>
+      <field name='href' type='const xmlChar *'/>
+      <field name='prefix' type='const xmlChar *'/>
+      <field name='_private' type='void *'/>
+      <field name='context' type='struct _xmlDoc *'/>
     </struct>
     <typedef name='xmlNsPtr' file='tree' type='xmlNs *'/>
     <typedef name='xmlNsType' file='tree' type='xmlElementType'/>
     <struct name='xmlOutputBuffer' file='tree' type='struct _xmlOutputBuffer'>
-      <field name='context' type='void *' info=''/>
-      <field name='writecallback' type='xmlOutputWriteCallback' info=''/>
-      <field name='closecallback' type='xmlOutputCloseCallback' info=''/>
-      <field name='encoder' type='xmlCharEncodingHandlerPtr' info=' I18N conversions to UTF-8'/>
-      <field name='buffer' type='xmlBufPtr' info=' Local buffer encoded in UTF-8 or ISOLatin'/>
-      <field name='conv' type='xmlBufPtr' info=' if encoder != NULL buffer for output'/>
-      <field name='written' type='int' info=' total number of byte written'/>
-      <field name='error' type='int' info=''/>
+      <field name='context' type='void *'/>
+      <field name='writecallback' type='xmlOutputWriteCallback'/>
+      <field name='closecallback' type='xmlOutputCloseCallback'/>
+      <field name='encoder' type='xmlCharEncodingHandlerPtr'/>
+      <field name='buffer' type='xmlBufPtr'/>
+      <field name='conv' type='xmlBufPtr'/>
+      <field name='written' type='int'/>
+      <field name='error' type='int'/>
     </struct>
     <typedef name='xmlOutputBufferPtr' file='tree' type='xmlOutputBuffer *'/>
     <struct name='xmlParserCtxt' file='tree' type='struct _xmlParserCtxt'>
-      <field name='sax' type='struct _xmlSAXHandler *' info=' For SAX interface only, used by DOM build'/>
-      <field name='userData' type='void *' info=' the document being built'/>
-      <field name='myDoc' type='xmlDocPtr' info=' is the document well formed'/>
-      <field name='wellFormed' type='int' info=' shall we replace entities ?'/>
-      <field name='replaceEntities' type='int' info=' the XML version string'/>
-      <field name='version' type='const xmlChar *' info=' the declared encoding, if any'/>
-      <field name='encoding' type='const xmlChar *' info=' standalone document'/>
-      <field name='standalone' type='int' info=' an HTML(1) document
-* 3 is HTML after &lt;head&gt;
-* 10 is HTML after &lt;body&gt;
-*'/>
-      <field name='html' type='int' info=' Input stream stack Current input stream'/>
-      <field name='input' type='xmlParserInputPtr' info=' Number of current input streams'/>
-      <field name='inputNr' type='int' info=' Max number of input streams'/>
-      <field name='inputMax' type='int' info=' stack of inputs'/>
-      <field name='inputTab' type='xmlParserInputPtr *' info=' Node analysis stack only used for DOM building Current parsed Node'/>
-      <field name='node' type='xmlNodePtr' info=' Depth of the parsing stack'/>
-      <field name='nodeNr' type='int' info=' Max depth of the parsing stack'/>
-      <field name='nodeMax' type='int' info=' array of nodes'/>
-      <field name='nodeTab' type='xmlNodePtr *' info=' Whether node info should be kept'/>
-      <field name='record_info' type='int' info=' info about each node parsed'/>
-      <field name='node_seq' type='xmlParserNodeInfoSeq' info=' error code'/>
-      <field name='errNo' type='int' info=' reference and external subset'/>
-      <field name='hasExternalSubset' type='int' info=' the internal subset has PE refs'/>
-      <field name='hasPErefs' type='int' info=' unused'/>
-      <field name='external' type='int' info=' is the document valid'/>
-      <field name='valid' type='int' info=' shall we try to validate ?'/>
-      <field name='validate' type='int' info=' The validity context'/>
-      <field name='vctxt' type='xmlValidCtxt' info=' push parser state'/>
-      <field name='instate' type='xmlParserInputState' info=' unused'/>
-      <field name='token' type='int' info=' unused'/>
-      <field name='directory' type='char *' info=' Node name stack Current parsed Node'/>
-      <field name='name' type='const xmlChar *' info=' Depth of the parsing stack'/>
-      <field name='nameNr' type='int' info=' Max depth of the parsing stack'/>
-      <field name='nameMax' type='int' info=' array of nodes'/>
-      <field name='nameTab' type='const xmlChar **' info=' unused'/>
-      <field name='nbChars' type='long' info=' used by progressive parsing lookup'/>
-      <field name='checkIndex' type='long' info=' ugly but ...'/>
-      <field name='keepBlanks' type='int' info=' SAX callbacks are disabled'/>
-      <field name='disableSAX' type='int' info=' Parsing is in int 1/ext 2 subset'/>
-      <field name='inSubset' type='int' info=' name of subset'/>
-      <field name='intSubName' type='const xmlChar *' info=' URI of external subset'/>
-      <field name='extSubURI' type='xmlChar *' info=' SYSTEM ID of external subset'/>
-      <field name='extSubSystem' type='xmlChar *' info=' xml:space values Should the parser preserve spaces'/>
-      <field name='space' type='int *' info=' Depth of the parsing stack'/>
-      <field name='spaceNr' type='int' info=' Max depth of the parsing stack'/>
-      <field name='spaceMax' type='int' info=' array of space infos'/>
-      <field name='spaceTab' type='int *' info=' to prevent entity substitution loops'/>
-      <field name='depth' type='int' info=' unused'/>
-      <field name='entity' type='xmlParserInputPtr' info=' unused'/>
-      <field name='charset' type='int' info=' Those two fields are there to'/>
-      <field name='nodelen' type='int' info=' Speed up large node parsing'/>
-      <field name='nodemem' type='int' info=' signal pedantic warnings'/>
-      <field name='pedantic' type='int' info=' For user data, libxml won&apos;t touch it'/>
-      <field name='_private' type='void *' info=' should the external subset be loaded'/>
-      <field name='loadsubset' type='int' info=' set line number in element content'/>
-      <field name='linenumbers' type='int' info=' document&apos;s own catalog'/>
-      <field name='catalogs' type='void *' info=' run in recovery mode'/>
-      <field name='recovery' type='int' info=' unused'/>
-      <field name='progressive' type='int' info=' dictionary for the parser'/>
-      <field name='dict' type='xmlDictPtr' info=' array for the attributes callbacks'/>
-      <field name='atts' type='const xmlChar **' info=' the size of the array'/>
-      <field name='maxatts' type='int' info=' unused'/>
-      <field name='docdict' type='int' info='* pre-interned strings
-*'/>
-      <field name='str_xml' type='const xmlChar *' info=''/>
-      <field name='str_xmlns' type='const xmlChar *' info=''/>
-      <field name='str_xml_ns' type='const xmlChar *' info='* Everything below is used only by the new SAX mode
-* operating in the new SAX mode'/>
-      <field name='sax2' type='int' info=' the number of inherited namespaces'/>
-      <field name='nsNr' type='int' info=' the size of the arrays'/>
-      <field name='nsMax' type='int' info=' the array of prefix/namespace name'/>
-      <field name='nsTab' type='const xmlChar **' info=' which attribute were allocated'/>
-      <field name='attallocs' type='unsigned *' info=' array of data for push'/>
-      <field name='pushTab' type='xmlStartTag *' info=' defaulted attributes if any'/>
-      <field name='attsDefault' type='xmlHashTablePtr' info=' non-CDATA attributes if any'/>
-      <field name='attsSpecial' type='xmlHashTablePtr' info=' is the document XML Namespace okay'/>
-      <field name='nsWellFormed' type='int' info=' Extra options'/>
-      <field name='options' type='int' info='* Those fields are needed only for streaming parsing so far
-* Use dictionary names for the tree'/>
-      <field name='dictNames' type='int' info=' number of freed element nodes'/>
-      <field name='freeElemsNr' type='int' info=' List of freed element nodes'/>
-      <field name='freeElems' type='xmlNodePtr' info=' number of freed attributes nodes'/>
-      <field name='freeAttrsNr' type='int' info=' List of freed attributes nodes'/>
-      <field name='freeAttrs' type='xmlAttrPtr' info='* the complete error information for the last error.
-*'/>
-      <field name='lastError' type='xmlError' info=' the parser mode'/>
-      <field name='parseMode' type='xmlParserMode' info=' unused'/>
-      <field name='nbentities' type='unsigned long' info=' size of external entities'/>
-      <field name='sizeentities' type='unsigned long' info=' for use by HTML non-recursive parser Current NodeInfo'/>
-      <field name='nodeInfo' type='xmlParserNodeInfo *' info=' Depth of the parsing stack'/>
-      <field name='nodeInfoNr' type='int' info=' Max depth of the parsing stack'/>
-      <field name='nodeInfoMax' type='int' info=' array of nodeInfos'/>
-      <field name='nodeInfoTab' type='xmlParserNodeInfo *' info=' we need to label inputs'/>
-      <field name='input_id' type='int' info=' volume of entity copy'/>
-      <field name='sizeentcopy' type='unsigned long' info=' quote state for push parser'/>
-      <field name='endCheckState' type='int' info=' number of errors'/>
-      <field name='nbErrors' type='unsigned short' info=' number of warnings'/>
-      <field name='nbWarnings' type='unsigned short' info=' maximum amplification factor'/>
-      <field name='maxAmpl' type='unsigned' info=' namespace database'/>
-      <field name='nsdb' type='xmlParserNsData *' info=' allocated size'/>
-      <field name='attrHashMax' type='unsigned' info=' atttribute hash table'/>
-      <field name='attrHash' type='xmlAttrHashBucket *' info=''/>
-      <field name='errorHandler' type='xmlStructuredErrorFunc' info=''/>
-      <field name='errorCtxt' type='void *' info=''/>
-      <field name='resourceLoader' type='xmlResourceLoader' info=''/>
-      <field name='resourceCtxt' type='void *' info=''/>
+      <field name='sax' type='struct _xmlSAXHandler *'/>
+      <field name='userData' type='void *'/>
+      <field name='myDoc' type='xmlDocPtr'/>
+      <field name='wellFormed' type='int'/>
+      <field name='replaceEntities' type='int'/>
+      <field name='version' type='const xmlChar *'/>
+      <field name='encoding' type='const xmlChar *'/>
+      <field name='standalone' type='int'/>
+      <field name='html' type='int'/>
+      <field name='input' type='xmlParserInputPtr'/>
+      <field name='inputNr' type='int'/>
+      <field name='inputMax' type='int'/>
+      <field name='inputTab' type='xmlParserInputPtr *'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='nodeNr' type='int'/>
+      <field name='nodeMax' type='int'/>
+      <field name='nodeTab' type='xmlNodePtr *'/>
+      <field name='record_info' type='int'/>
+      <field name='node_seq' type='xmlParserNodeInfoSeq'/>
+      <field name='errNo' type='int'/>
+      <field name='hasExternalSubset' type='int'/>
+      <field name='hasPErefs' type='int'/>
+      <field name='external' type='int'/>
+      <field name='valid' type='int'/>
+      <field name='validate' type='int'/>
+      <field name='vctxt' type='xmlValidCtxt'/>
+      <field name='instate' type='xmlParserInputState'/>
+      <field name='token' type='int'/>
+      <field name='directory' type='char *'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='nameNr' type='int'/>
+      <field name='nameMax' type='int'/>
+      <field name='nameTab' type='const xmlChar **'/>
+      <field name='nbChars' type='long'/>
+      <field name='checkIndex' type='long'/>
+      <field name='keepBlanks' type='int'/>
+      <field name='disableSAX' type='int'/>
+      <field name='inSubset' type='int'/>
+      <field name='intSubName' type='const xmlChar *'/>
+      <field name='extSubURI' type='xmlChar *'/>
+      <field name='extSubSystem' type='xmlChar *'/>
+      <field name='space' type='int *'/>
+      <field name='spaceNr' type='int'/>
+      <field name='spaceMax' type='int'/>
+      <field name='spaceTab' type='int *'/>
+      <field name='depth' type='int'/>
+      <field name='entity' type='xmlParserInputPtr'/>
+      <field name='charset' type='int'/>
+      <field name='nodelen' type='int'/>
+      <field name='nodemem' type='int'/>
+      <field name='pedantic' type='int'/>
+      <field name='_private' type='void *'/>
+      <field name='loadsubset' type='int'/>
+      <field name='linenumbers' type='int'/>
+      <field name='catalogs' type='void *'/>
+      <field name='recovery' type='int'/>
+      <field name='progressive' type='int'/>
+      <field name='dict' type='xmlDictPtr'/>
+      <field name='atts' type='const xmlChar **'/>
+      <field name='maxatts' type='int'/>
+      <field name='docdict' type='int'/>
+      <field name='str_xml' type='const xmlChar *'/>
+      <field name='str_xmlns' type='const xmlChar *'/>
+      <field name='str_xml_ns' type='const xmlChar *'/>
+      <field name='sax2' type='int'/>
+      <field name='nsNr' type='int'/>
+      <field name='nsMax' type='int'/>
+      <field name='nsTab' type='const xmlChar **'/>
+      <field name='attallocs' type='unsigned *'/>
+      <field name='pushTab' type='xmlStartTag *'/>
+      <field name='attsDefault' type='xmlHashTablePtr'/>
+      <field name='attsSpecial' type='xmlHashTablePtr'/>
+      <field name='nsWellFormed' type='int'/>
+      <field name='options' type='int'/>
+      <field name='dictNames' type='int'/>
+      <field name='freeElemsNr' type='int'/>
+      <field name='freeElems' type='xmlNodePtr'/>
+      <field name='freeAttrsNr' type='int'/>
+      <field name='freeAttrs' type='xmlAttrPtr'/>
+      <field name='lastError' type='xmlError'/>
+      <field name='parseMode' type='xmlParserMode'/>
+      <field name='nbentities' type='unsigned long'/>
+      <field name='sizeentities' type='unsigned long'/>
+      <field name='nodeInfo' type='xmlParserNodeInfo *'/>
+      <field name='nodeInfoNr' type='int'/>
+      <field name='nodeInfoMax' type='int'/>
+      <field name='nodeInfoTab' type='xmlParserNodeInfo *'/>
+      <field name='input_id' type='int'/>
+      <field name='sizeentcopy' type='unsigned long'/>
+      <field name='endCheckState' type='int'/>
+      <field name='nbErrors' type='unsigned short'/>
+      <field name='nbWarnings' type='unsigned short'/>
+      <field name='maxAmpl' type='unsigned'/>
+      <field name='nsdb' type='xmlParserNsData *'/>
+      <field name='attrHashMax' type='unsigned'/>
+      <field name='attrHash' type='xmlAttrHashBucket *'/>
+      <field name='errorHandler' type='xmlStructuredErrorFunc'/>
+      <field name='errorCtxt' type='void *'/>
+      <field name='resourceLoader' type='xmlResourceLoader'/>
+      <field name='resourceCtxt' type='void *'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
     <struct name='xmlParserInput' file='tree' type='struct _xmlParserInput'>
-      <field name='buf' type='xmlParserInputBufferPtr' info=' The file analyzed, if any'/>
-      <field name='filename' type='const char *' info=' unused'/>
-      <field name='directory' type='const char *' info=' Base of the array to parse'/>
-      <field name='base' type='const xmlChar *' info=' Current char being parsed'/>
-      <field name='cur' type='const xmlChar *' info=' end of the array to parse'/>
-      <field name='end' type='const xmlChar *' info=' unused'/>
-      <field name='length' type='int' info=' Current line'/>
-      <field name='line' type='int' info=' Current column'/>
-      <field name='col' type='int' info=' How many xmlChars already consumed'/>
-      <field name='consumed' type='unsigned long' info=' function to deallocate the base'/>
-      <field name='free' type='xmlParserInputDeallocate' info=' unused'/>
-      <field name='encoding' type='const xmlChar *' info=' the version string for entity'/>
-      <field name='version' type='const xmlChar *' info=' Flags'/>
-      <field name='flags' type='int' info=' an unique identifier for the entity'/>
-      <field name='id' type='int' info=' unused'/>
-      <field name='parentConsumed' type='unsigned long' info=' entity, if any'/>
-      <field name='entity' type='xmlEntityPtr' info=''/>
+      <field name='buf' type='xmlParserInputBufferPtr'/>
+      <field name='filename' type='const char *'/>
+      <field name='directory' type='const char *'/>
+      <field name='base' type='const xmlChar *'/>
+      <field name='cur' type='const xmlChar *'/>
+      <field name='end' type='const xmlChar *'/>
+      <field name='length' type='int'/>
+      <field name='line' type='int'/>
+      <field name='col' type='int'/>
+      <field name='consumed' type='unsigned long'/>
+      <field name='free' type='xmlParserInputDeallocate'/>
+      <field name='encoding' type='const xmlChar *'/>
+      <field name='version' type='const xmlChar *'/>
+      <field name='flags' type='int'/>
+      <field name='id' type='int'/>
+      <field name='parentConsumed' type='unsigned long'/>
+      <field name='entity' type='xmlEntityPtr'/>
     </struct>
     <struct name='xmlParserInputBuffer' file='tree' type='struct _xmlParserInputBuffer'>
-      <field name='context' type='void *' info=''/>
-      <field name='readcallback' type='xmlInputReadCallback' info=''/>
-      <field name='closecallback' type='xmlInputCloseCallback' info=''/>
-      <field name='encoder' type='xmlCharEncodingHandlerPtr' info=' I18N conversions to UTF-8'/>
-      <field name='buffer' type='xmlBufPtr' info=' Local buffer encoded in UTF-8'/>
-      <field name='raw' type='xmlBufPtr' info=' if encoder != NULL buffer for raw input'/>
-      <field name='compressed' type='int' info=' -1=unknown, 0=not compressed, 1=compressed'/>
-      <field name='error' type='int' info=''/>
-      <field name='rawconsumed' type='unsigned long' info=' amount consumed from raw'/>
+      <field name='context' type='void *'/>
+      <field name='readcallback' type='xmlInputReadCallback'/>
+      <field name='closecallback' type='xmlInputCloseCallback'/>
+      <field name='encoder' type='xmlCharEncodingHandlerPtr'/>
+      <field name='buffer' type='xmlBufPtr'/>
+      <field name='raw' type='xmlBufPtr'/>
+      <field name='compressed' type='int'/>
+      <field name='error' type='int'/>
+      <field name='rawconsumed' type='unsigned long'/>
     </struct>
     <typedef name='xmlParserInputBufferPtr' file='tree' type='xmlParserInputBuffer *'/>
     <typedef name='xmlParserInputPtr' file='tree' type='xmlParserInput *'/>
     <typedef name='xmlParserInputState' file='parser' type='enum'/>
     <typedef name='xmlParserMode' file='parser' type='enum'/>
     <struct name='xmlParserNodeInfo' file='parser' type='struct _xmlParserNodeInfo'>
-      <field name='node' type='const struct _xmlNode *' info=' Position &amp; line # that text that created the node begins &amp; ends on'/>
-      <field name='begin_pos' type='unsigned long' info=''/>
-      <field name='begin_line' type='unsigned long' info=''/>
-      <field name='end_pos' type='unsigned long' info=''/>
-      <field name='end_line' type='unsigned long' info=''/>
+      <field name='node' type='const struct _xmlNode *'/>
+      <field name='begin_pos' type='unsigned long'/>
+      <field name='begin_line' type='unsigned long'/>
+      <field name='end_pos' type='unsigned long'/>
+      <field name='end_line' type='unsigned long'/>
     </struct>
     <typedef name='xmlParserNodeInfoPtr' file='parser' type='xmlParserNodeInfo *'/>
     <struct name='xmlParserNodeInfoSeq' file='parser' type='struct _xmlParserNodeInfoSeq'>
-      <field name='maximum' type='unsigned long' info=''/>
-      <field name='length' type='unsigned long' info=''/>
-      <field name='buffer' type='xmlParserNodeInfo *' info=''/>
+      <field name='maximum' type='unsigned long'/>
+      <field name='length' type='unsigned long'/>
+      <field name='buffer' type='xmlParserNodeInfo *'/>
     </struct>
     <typedef name='xmlParserNodeInfoSeqPtr' file='parser' type='xmlParserNodeInfoSeq *'/>
     <struct name='xmlParserNsData' file='parser' type='struct _xmlParserNsData'/>
@@ -6309,11 +6280,11 @@ set at the end of parsing'/>
     <typedef name='xmlRMutexPtr' file='threads' type='xmlRMutex *'/>
     <typedef name='xmlReaderTypes' file='xmlreader' type='enum'/>
     <struct name='xmlRef' file='tree' type='struct _xmlRef'>
-      <field name='next' type='struct _xmlRef *' info=' next Ref'/>
-      <field name='value' type='const xmlChar *' info=' The Ref name'/>
-      <field name='attr' type='xmlAttrPtr' info=' The attribute holding it'/>
-      <field name='name' type='const xmlChar *' info=' The attribute if attr is not available'/>
-      <field name='lineno' type='int' info=' The line number if attr is not available'/>
+      <field name='next' type='struct _xmlRef *'/>
+      <field name='value' type='const xmlChar *'/>
+      <field name='attr' type='xmlAttrPtr'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='lineno' type='int'/>
     </struct>
     <typedef name='xmlRefPtr' file='tree' type='xmlRef *'/>
     <struct name='xmlRefTable' file='valid' type='struct _xmlHashTable'/>
@@ -6336,223 +6307,208 @@ set at the end of parsing'/>
     <typedef name='xmlRelaxNGValidErr' file='relaxng' type='enum'/>
     <typedef name='xmlResourceType' file='parser' type='enum'/>
     <struct name='xmlSAXHandler' file='tree' type='struct _xmlSAXHandler'>
-      <field name='internalSubset' type='internalSubsetSAXFunc' info=''/>
-      <field name='isStandalone' type='isStandaloneSAXFunc' info=''/>
-      <field name='hasInternalSubset' type='hasInternalSubsetSAXFunc' info=''/>
-      <field name='hasExternalSubset' type='hasExternalSubsetSAXFunc' info=''/>
-      <field name='resolveEntity' type='resolveEntitySAXFunc' info=''/>
-      <field name='getEntity' type='getEntitySAXFunc' info=''/>
-      <field name='entityDecl' type='entityDeclSAXFunc' info=''/>
-      <field name='notationDecl' type='notationDeclSAXFunc' info=''/>
-      <field name='attributeDecl' type='attributeDeclSAXFunc' info=''/>
-      <field name='elementDecl' type='elementDeclSAXFunc' info=''/>
-      <field name='unparsedEntityDecl' type='unparsedEntityDeclSAXFunc' info=''/>
-      <field name='setDocumentLocator' type='setDocumentLocatorSAXFunc' info=''/>
-      <field name='startDocument' type='startDocumentSAXFunc' info=''/>
-      <field name='endDocument' type='endDocumentSAXFunc' info='* `startElement` and `endElement` are only used by the legacy SAX1
-* interface and should not be used in new software. If you really
-* have to enable SAX1, the preferred way is set the `initialized`
-* member to 1 instead of XML_SAX2_MAGIC.
-*
-* For backward compatibility, it&apos;s also possible to set the
-* `startElementNs` and `endElementNs` handlers to NULL.
-*
-* You can also set the XML_PARSE_SAX1 parser option, but versions
-* older than 2.12.0 will probably crash if this option is provided
-* together with custom SAX callbacks.
-*'/>
-      <field name='startElement' type='startElementSAXFunc' info=''/>
-      <field name='endElement' type='endElementSAXFunc' info=''/>
-      <field name='reference' type='referenceSAXFunc' info=''/>
-      <field name='characters' type='charactersSAXFunc' info=''/>
-      <field name='ignorableWhitespace' type='ignorableWhitespaceSAXFunc' info=''/>
-      <field name='processingInstruction' type='processingInstructionSAXFunc' info=''/>
-      <field name='comment' type='commentSAXFunc' info=''/>
-      <field name='warning' type='warningSAXFunc' info=''/>
-      <field name='error' type='errorSAXFunc' info=''/>
-      <field name='fatalError' type='fatalErrorSAXFunc' info=' unused error() get all the errors'/>
-      <field name='getParameterEntity' type='getParameterEntitySAXFunc' info=''/>
-      <field name='cdataBlock' type='cdataBlockSAXFunc' info=''/>
-      <field name='externalSubset' type='externalSubsetSAXFunc' info='* `initialized` should always be set to XML_SAX2_MAGIC to enable the
-* modern SAX2 interface.
-*'/>
-      <field name='initialized' type='unsigned int' info='* The following members are only used by the SAX2 interface.
-*'/>
-      <field name='_private' type='void *' info=''/>
-      <field name='startElementNs' type='startElementNsSAX2Func' info=''/>
-      <field name='endElementNs' type='endElementNsSAX2Func' info=''/>
-      <field name='serror' type='xmlStructuredErrorFunc' info=''/>
+      <field name='internalSubset' type='internalSubsetSAXFunc'/>
+      <field name='isStandalone' type='isStandaloneSAXFunc'/>
+      <field name='hasInternalSubset' type='hasInternalSubsetSAXFunc'/>
+      <field name='hasExternalSubset' type='hasExternalSubsetSAXFunc'/>
+      <field name='resolveEntity' type='resolveEntitySAXFunc'/>
+      <field name='getEntity' type='getEntitySAXFunc'/>
+      <field name='entityDecl' type='entityDeclSAXFunc'/>
+      <field name='notationDecl' type='notationDeclSAXFunc'/>
+      <field name='attributeDecl' type='attributeDeclSAXFunc'/>
+      <field name='elementDecl' type='elementDeclSAXFunc'/>
+      <field name='unparsedEntityDecl' type='unparsedEntityDeclSAXFunc'/>
+      <field name='setDocumentLocator' type='setDocumentLocatorSAXFunc'/>
+      <field name='startDocument' type='startDocumentSAXFunc'/>
+      <field name='endDocument' type='endDocumentSAXFunc'/>
+      <field name='startElement' type='startElementSAXFunc'/>
+      <field name='endElement' type='endElementSAXFunc'/>
+      <field name='reference' type='referenceSAXFunc'/>
+      <field name='characters' type='charactersSAXFunc'/>
+      <field name='ignorableWhitespace' type='ignorableWhitespaceSAXFunc'/>
+      <field name='processingInstruction' type='processingInstructionSAXFunc'/>
+      <field name='comment' type='commentSAXFunc'/>
+      <field name='warning' type='warningSAXFunc'/>
+      <field name='error' type='errorSAXFunc'/>
+      <field name='fatalError' type='fatalErrorSAXFunc'/>
+      <field name='getParameterEntity' type='getParameterEntitySAXFunc'/>
+      <field name='cdataBlock' type='cdataBlockSAXFunc'/>
+      <field name='externalSubset' type='externalSubsetSAXFunc'/>
+      <field name='initialized' type='unsigned int'/>
+      <field name='_private' type='void *'/>
+      <field name='startElementNs' type='startElementNsSAX2Func'/>
+      <field name='endElementNs' type='endElementNsSAX2Func'/>
+      <field name='serror' type='xmlStructuredErrorFunc'/>
     </struct>
     <typedef name='xmlSAXHandlerPtr' file='tree' type='xmlSAXHandler *'/>
     <struct name='xmlSAXHandlerV1' file='parser' type='struct _xmlSAXHandlerV1'>
-      <field name='internalSubset' type='internalSubsetSAXFunc' info=''/>
-      <field name='isStandalone' type='isStandaloneSAXFunc' info=''/>
-      <field name='hasInternalSubset' type='hasInternalSubsetSAXFunc' info=''/>
-      <field name='hasExternalSubset' type='hasExternalSubsetSAXFunc' info=''/>
-      <field name='resolveEntity' type='resolveEntitySAXFunc' info=''/>
-      <field name='getEntity' type='getEntitySAXFunc' info=''/>
-      <field name='entityDecl' type='entityDeclSAXFunc' info=''/>
-      <field name='notationDecl' type='notationDeclSAXFunc' info=''/>
-      <field name='attributeDecl' type='attributeDeclSAXFunc' info=''/>
-      <field name='elementDecl' type='elementDeclSAXFunc' info=''/>
-      <field name='unparsedEntityDecl' type='unparsedEntityDeclSAXFunc' info=''/>
-      <field name='setDocumentLocator' type='setDocumentLocatorSAXFunc' info=''/>
-      <field name='startDocument' type='startDocumentSAXFunc' info=''/>
-      <field name='endDocument' type='endDocumentSAXFunc' info=''/>
-      <field name='startElement' type='startElementSAXFunc' info=''/>
-      <field name='endElement' type='endElementSAXFunc' info=''/>
-      <field name='reference' type='referenceSAXFunc' info=''/>
-      <field name='characters' type='charactersSAXFunc' info=''/>
-      <field name='ignorableWhitespace' type='ignorableWhitespaceSAXFunc' info=''/>
-      <field name='processingInstruction' type='processingInstructionSAXFunc' info=''/>
-      <field name='comment' type='commentSAXFunc' info=''/>
-      <field name='warning' type='warningSAXFunc' info=''/>
-      <field name='error' type='errorSAXFunc' info=''/>
-      <field name='fatalError' type='fatalErrorSAXFunc' info=' unused error() get all the errors'/>
-      <field name='getParameterEntity' type='getParameterEntitySAXFunc' info=''/>
-      <field name='cdataBlock' type='cdataBlockSAXFunc' info=''/>
-      <field name='externalSubset' type='externalSubsetSAXFunc' info=''/>
-      <field name='initialized' type='unsigned int' info=''/>
+      <field name='internalSubset' type='internalSubsetSAXFunc'/>
+      <field name='isStandalone' type='isStandaloneSAXFunc'/>
+      <field name='hasInternalSubset' type='hasInternalSubsetSAXFunc'/>
+      <field name='hasExternalSubset' type='hasExternalSubsetSAXFunc'/>
+      <field name='resolveEntity' type='resolveEntitySAXFunc'/>
+      <field name='getEntity' type='getEntitySAXFunc'/>
+      <field name='entityDecl' type='entityDeclSAXFunc'/>
+      <field name='notationDecl' type='notationDeclSAXFunc'/>
+      <field name='attributeDecl' type='attributeDeclSAXFunc'/>
+      <field name='elementDecl' type='elementDeclSAXFunc'/>
+      <field name='unparsedEntityDecl' type='unparsedEntityDeclSAXFunc'/>
+      <field name='setDocumentLocator' type='setDocumentLocatorSAXFunc'/>
+      <field name='startDocument' type='startDocumentSAXFunc'/>
+      <field name='endDocument' type='endDocumentSAXFunc'/>
+      <field name='startElement' type='startElementSAXFunc'/>
+      <field name='endElement' type='endElementSAXFunc'/>
+      <field name='reference' type='referenceSAXFunc'/>
+      <field name='characters' type='charactersSAXFunc'/>
+      <field name='ignorableWhitespace' type='ignorableWhitespaceSAXFunc'/>
+      <field name='processingInstruction' type='processingInstructionSAXFunc'/>
+      <field name='comment' type='commentSAXFunc'/>
+      <field name='warning' type='warningSAXFunc'/>
+      <field name='error' type='errorSAXFunc'/>
+      <field name='fatalError' type='fatalErrorSAXFunc'/>
+      <field name='getParameterEntity' type='getParameterEntitySAXFunc'/>
+      <field name='cdataBlock' type='cdataBlockSAXFunc'/>
+      <field name='externalSubset' type='externalSubsetSAXFunc'/>
+      <field name='initialized' type='unsigned int'/>
     </struct>
     <typedef name='xmlSAXHandlerV1Ptr' file='parser' type='xmlSAXHandlerV1 *'/>
     <struct name='xmlSAXLocator' file='tree' type='struct _xmlSAXLocator'>
-      <field name='getPublicId' type='const xmlChar *(*getPublicId)' info=''/>
-      <field name='getSystemId' type='const xmlChar *(*getSystemId)' info=''/>
-      <field name='getLineNumber' type='int(*getLineNumber)' info=''/>
-      <field name='getColumnNumber' type='int(*getColumnNumber)' info=''/>
+      <field name='getPublicId' type='const xmlChar *(*getPublicId)'/>
+      <field name='getSystemId' type='const xmlChar *(*getSystemId)'/>
+      <field name='getLineNumber' type='int(*getLineNumber)'/>
+      <field name='getColumnNumber' type='int(*getColumnNumber)'/>
     </struct>
     <typedef name='xmlSAXLocatorPtr' file='tree' type='xmlSAXLocator *'/>
     <struct name='xmlSaveCtxt' file='xmlsave' type='struct _xmlSaveCtxt'/>
     <typedef name='xmlSaveCtxtPtr' file='xmlsave' type='xmlSaveCtxt *'/>
     <typedef name='xmlSaveOption' file='xmlsave' type='enum'/>
     <struct name='xmlSchema' file='xmlschemas' type='struct _xmlSchema'>
-      <field name='name' type='const xmlChar *' info=' schema name'/>
-      <field name='targetNamespace' type='const xmlChar *' info=' the target namespace'/>
-      <field name='version' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=' Obsolete'/>
-      <field name='doc' type='xmlDocPtr' info=''/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='flags' type='int' info=''/>
-      <field name='typeDecl' type='xmlHashTablePtr' info=''/>
-      <field name='attrDecl' type='xmlHashTablePtr' info=''/>
-      <field name='attrgrpDecl' type='xmlHashTablePtr' info=''/>
-      <field name='elemDecl' type='xmlHashTablePtr' info=''/>
-      <field name='notaDecl' type='xmlHashTablePtr' info=''/>
-      <field name='schemasImports' type='xmlHashTablePtr' info=''/>
-      <field name='_private' type='void *' info=' unused by the library for users or bindings'/>
-      <field name='groupDecl' type='xmlHashTablePtr' info=''/>
-      <field name='dict' type='xmlDictPtr' info=''/>
-      <field name='includes' type='void *' info=' the includes, this is opaque for now'/>
-      <field name='preserve' type='int' info=' whether to free the document'/>
-      <field name='counter' type='int' info=' used to give anonymous components unique names'/>
-      <field name='idcDef' type='xmlHashTablePtr' info=' All identity-constraint defs.'/>
-      <field name='volatiles' type='void *' info=' Obsolete'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='targetNamespace' type='const xmlChar *'/>
+      <field name='version' type='const xmlChar *'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='doc' type='xmlDocPtr'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='flags' type='int'/>
+      <field name='typeDecl' type='xmlHashTablePtr'/>
+      <field name='attrDecl' type='xmlHashTablePtr'/>
+      <field name='attrgrpDecl' type='xmlHashTablePtr'/>
+      <field name='elemDecl' type='xmlHashTablePtr'/>
+      <field name='notaDecl' type='xmlHashTablePtr'/>
+      <field name='schemasImports' type='xmlHashTablePtr'/>
+      <field name='_private' type='void *'/>
+      <field name='groupDecl' type='xmlHashTablePtr'/>
+      <field name='dict' type='xmlDictPtr'/>
+      <field name='includes' type='void *'/>
+      <field name='preserve' type='int'/>
+      <field name='counter' type='int'/>
+      <field name='idcDef' type='xmlHashTablePtr'/>
+      <field name='volatiles' type='void *'/>
     </struct>
     <struct name='xmlSchemaAnnot' file='schemasInternals' type='struct _xmlSchemaAnnot'>
-      <field name='next' type='struct _xmlSchemaAnnot *' info=''/>
-      <field name='content' type='xmlNodePtr' info=' the annotation'/>
+      <field name='next' type='struct _xmlSchemaAnnot *'/>
+      <field name='content' type='xmlNodePtr'/>
     </struct>
     <typedef name='xmlSchemaAnnotPtr' file='schemasInternals' type='xmlSchemaAnnot *'/>
     <struct name='xmlSchemaAttribute' file='schemasInternals' type='struct _xmlSchemaAttribute'>
-      <field name='type' type='xmlSchemaTypeType' info=''/>
-      <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute (not used?)'/>
-      <field name='name' type='const xmlChar *' info=' the name of the declaration'/>
-      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='typeName' type='const xmlChar *' info=' the local name of the type definition'/>
-      <field name='typeNs' type='const xmlChar *' info=' the ns URI of the type definition'/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='base' type='xmlSchemaTypePtr' info=' Deprecated; not used'/>
-      <field name='occurs' type='int' info=' Deprecated; not used'/>
-      <field name='defValue' type='const xmlChar *' info=' The initial value of the value constraint'/>
-      <field name='subtypes' type='xmlSchemaTypePtr' info=' the type definition'/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='targetNamespace' type='const xmlChar *' info=''/>
-      <field name='flags' type='int' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='defVal' type='xmlSchemaValPtr' info=' The compiled value constraint'/>
-      <field name='refDecl' type='xmlSchemaAttributePtr' info=' Deprecated; not used'/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='next' type='struct _xmlSchemaAttribute *'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='ref' type='const xmlChar *'/>
+      <field name='refNs' type='const xmlChar *'/>
+      <field name='typeName' type='const xmlChar *'/>
+      <field name='typeNs' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='base' type='xmlSchemaTypePtr'/>
+      <field name='occurs' type='int'/>
+      <field name='defValue' type='const xmlChar *'/>
+      <field name='subtypes' type='xmlSchemaTypePtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='targetNamespace' type='const xmlChar *'/>
+      <field name='flags' type='int'/>
+      <field name='refPrefix' type='const xmlChar *'/>
+      <field name='defVal' type='xmlSchemaValPtr'/>
+      <field name='refDecl' type='xmlSchemaAttributePtr'/>
     </struct>
     <struct name='xmlSchemaAttributeGroup' file='schemasInternals' type='struct _xmlSchemaAttributeGroup'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='next' type='struct _xmlSchemaAttribute *' info=' the next attribute if in a group ...'/>
-      <field name='name' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=''/>
-      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='attributes' type='xmlSchemaAttributePtr' info=' Deprecated; not used'/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='flags' type='int' info=''/>
-      <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='refItem' type='xmlSchemaAttributeGroupPtr' info=' Deprecated; not used'/>
-      <field name='targetNamespace' type='const xmlChar *' info=''/>
-      <field name='attrUses' type='void *' info=''/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='next' type='struct _xmlSchemaAttribute *'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='ref' type='const xmlChar *'/>
+      <field name='refNs' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='attributes' type='xmlSchemaAttributePtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='flags' type='int'/>
+      <field name='attributeWildcard' type='xmlSchemaWildcardPtr'/>
+      <field name='refPrefix' type='const xmlChar *'/>
+      <field name='refItem' type='xmlSchemaAttributeGroupPtr'/>
+      <field name='targetNamespace' type='const xmlChar *'/>
+      <field name='attrUses' type='void *'/>
     </struct>
     <typedef name='xmlSchemaAttributeGroupPtr' file='schemasInternals' type='xmlSchemaAttributeGroup *'/>
     <struct name='xmlSchemaAttributeLink' file='schemasInternals' type='struct _xmlSchemaAttributeLink'>
-      <field name='next' type='struct _xmlSchemaAttributeLink *' info=' the next attribute link ...'/>
-      <field name='attr' type='struct _xmlSchemaAttribute *' info=' the linked attribute'/>
+      <field name='next' type='struct _xmlSchemaAttributeLink *'/>
+      <field name='attr' type='struct _xmlSchemaAttribute *'/>
     </struct>
     <typedef name='xmlSchemaAttributeLinkPtr' file='schemasInternals' type='xmlSchemaAttributeLink *'/>
     <typedef name='xmlSchemaAttributePtr' file='schemasInternals' type='xmlSchemaAttribute *'/>
     <typedef name='xmlSchemaContentType' file='schemasInternals' type='enum'/>
     <struct name='xmlSchemaElement' file='schemasInternals' type='struct _xmlSchemaElement'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='next' type='struct _xmlSchemaType *' info=' Not used?'/>
-      <field name='name' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='subtypes' type='xmlSchemaTypePtr' info=' the type definition'/>
-      <field name='attributes' type='xmlSchemaAttributePtr' info=''/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='minOccurs' type='int' info=' Deprecated; not used'/>
-      <field name='maxOccurs' type='int' info=' Deprecated; not used'/>
-      <field name='flags' type='int' info=''/>
-      <field name='targetNamespace' type='const xmlChar *' info=''/>
-      <field name='namedType' type='const xmlChar *' info=''/>
-      <field name='namedTypeNs' type='const xmlChar *' info=''/>
-      <field name='substGroup' type='const xmlChar *' info=''/>
-      <field name='substGroupNs' type='const xmlChar *' info=''/>
-      <field name='scope' type='const xmlChar *' info=''/>
-      <field name='value' type='const xmlChar *' info=' The original value of the value constraint.'/>
-      <field name='refDecl' type='struct _xmlSchemaElement *' info=' This will now be used for the
-substitution group affiliation'/>
-      <field name='contModel' type='xmlRegexpPtr' info=' Obsolete for WXS, maybe used for RelaxNG'/>
-      <field name='contentType' type='xmlSchemaContentType' info=''/>
-      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='defVal' type='xmlSchemaValPtr' info=' The compiled value constraint.'/>
-      <field name='idcs' type='void *' info=' The identity-constraint defs'/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='next' type='struct _xmlSchemaType *'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='ref' type='const xmlChar *'/>
+      <field name='refNs' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='subtypes' type='xmlSchemaTypePtr'/>
+      <field name='attributes' type='xmlSchemaAttributePtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='minOccurs' type='int'/>
+      <field name='maxOccurs' type='int'/>
+      <field name='flags' type='int'/>
+      <field name='targetNamespace' type='const xmlChar *'/>
+      <field name='namedType' type='const xmlChar *'/>
+      <field name='namedTypeNs' type='const xmlChar *'/>
+      <field name='substGroup' type='const xmlChar *'/>
+      <field name='substGroupNs' type='const xmlChar *'/>
+      <field name='scope' type='const xmlChar *'/>
+      <field name='value' type='const xmlChar *'/>
+      <field name='refDecl' type='struct _xmlSchemaElement *'/>
+      <field name='contModel' type='xmlRegexpPtr'/>
+      <field name='contentType' type='xmlSchemaContentType'/>
+      <field name='refPrefix' type='const xmlChar *'/>
+      <field name='defVal' type='xmlSchemaValPtr'/>
+      <field name='idcs' type='void *'/>
     </struct>
     <typedef name='xmlSchemaElementPtr' file='schemasInternals' type='xmlSchemaElement *'/>
     <struct name='xmlSchemaFacet' file='schemasInternals' type='struct _xmlSchemaFacet'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='next' type='struct _xmlSchemaFacet *' info=' the next type if in a sequence ...'/>
-      <field name='value' type='const xmlChar *' info=' The original value'/>
-      <field name='id' type='const xmlChar *' info=' Obsolete'/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='fixed' type='int' info=' XML_SCHEMAS_FACET_PRESERVE, etc.'/>
-      <field name='whitespace' type='int' info=''/>
-      <field name='val' type='xmlSchemaValPtr' info=' The compiled value'/>
-      <field name='regexp' type='xmlRegexpPtr' info=' The regex for patterns'/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='next' type='struct _xmlSchemaFacet *'/>
+      <field name='value' type='const xmlChar *'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='fixed' type='int'/>
+      <field name='whitespace' type='int'/>
+      <field name='val' type='xmlSchemaValPtr'/>
+      <field name='regexp' type='xmlRegexpPtr'/>
     </struct>
     <struct name='xmlSchemaFacetLink' file='schemasInternals' type='struct _xmlSchemaFacetLink'>
-      <field name='next' type='struct _xmlSchemaFacetLink *' info=' the next facet link ...'/>
-      <field name='facet' type='xmlSchemaFacetPtr' info=' the linked facet'/>
+      <field name='next' type='struct _xmlSchemaFacetLink *'/>
+      <field name='facet' type='xmlSchemaFacetPtr'/>
     </struct>
     <typedef name='xmlSchemaFacetLinkPtr' file='schemasInternals' type='xmlSchemaFacetLink *'/>
     <typedef name='xmlSchemaFacetPtr' file='schemasInternals' type='xmlSchemaFacet *'/>
     <struct name='xmlSchemaNotation' file='schemasInternals' type='struct _xmlSchemaNotation'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='name' type='const xmlChar *' info=''/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='identifier' type='const xmlChar *' info=''/>
-      <field name='targetNamespace' type='const xmlChar *' info=''/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='identifier' type='const xmlChar *'/>
+      <field name='targetNamespace' type='const xmlChar *'/>
     </struct>
     <typedef name='xmlSchemaNotationPtr' file='schemasInternals' type='xmlSchemaNotation *'/>
     <struct name='xmlSchemaParserCtxt' file='xmlschemas' type='struct _xmlSchemaParserCtxt'/>
@@ -6561,41 +6517,40 @@ substitution group affiliation'/>
     <typedef name='xmlSchemaSAXPlugPtr' file='xmlschemas' type='xmlSchemaSAXPlugStruct *'/>
     <struct name='xmlSchemaSAXPlugStruct' file='xmlschemas' type='struct _xmlSchemaSAXPlug'/>
     <struct name='xmlSchemaType' file='schemasInternals' type='struct _xmlSchemaType'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='next' type='struct _xmlSchemaType *' info=' the next type if in a sequence ...'/>
-      <field name='name' type='const xmlChar *' info=''/>
-      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='ref' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='refNs' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='subtypes' type='xmlSchemaTypePtr' info=''/>
-      <field name='attributes' type='xmlSchemaAttributePtr' info=' Deprecated; not used'/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='minOccurs' type='int' info=' Deprecated; not used'/>
-      <field name='maxOccurs' type='int' info=' Deprecated; not used'/>
-      <field name='flags' type='int' info=''/>
-      <field name='contentType' type='xmlSchemaContentType' info=''/>
-      <field name='base' type='const xmlChar *' info=' Base type&apos;s local name'/>
-      <field name='baseNs' type='const xmlChar *' info=' Base type&apos;s target namespace'/>
-      <field name='baseType' type='xmlSchemaTypePtr' info=' The base type component'/>
-      <field name='facets' type='xmlSchemaFacetPtr' info=' Local facets'/>
-      <field name='redef' type='struct _xmlSchemaType *' info=' Deprecated; not used'/>
-      <field name='recurse' type='int' info=' Obsolete'/>
-      <field name='attributeUses' type='xmlSchemaAttributeLinkPtr *' info=' Deprecated; not used'/>
-      <field name='attributeWildcard' type='xmlSchemaWildcardPtr' info=''/>
-      <field name='builtInType' type='int' info=' Type of built-in types.'/>
-      <field name='memberTypes' type='xmlSchemaTypeLinkPtr' info=' member-types if a union type.'/>
-      <field name='facetSet' type='xmlSchemaFacetLinkPtr' info=' All facets (incl. inherited)'/>
-      <field name='refPrefix' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='contentTypeDef' type='xmlSchemaTypePtr' info=' Used for the simple content of complex types.
-Could we use @subtypes for this?'/>
-      <field name='contModel' type='xmlRegexpPtr' info=' Holds the automaton of the content model'/>
-      <field name='targetNamespace' type='const xmlChar *' info=''/>
-      <field name='attrUses' type='void *' info=''/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='next' type='struct _xmlSchemaType *'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='ref' type='const xmlChar *'/>
+      <field name='refNs' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='subtypes' type='xmlSchemaTypePtr'/>
+      <field name='attributes' type='xmlSchemaAttributePtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='minOccurs' type='int'/>
+      <field name='maxOccurs' type='int'/>
+      <field name='flags' type='int'/>
+      <field name='contentType' type='xmlSchemaContentType'/>
+      <field name='base' type='const xmlChar *'/>
+      <field name='baseNs' type='const xmlChar *'/>
+      <field name='baseType' type='xmlSchemaTypePtr'/>
+      <field name='facets' type='xmlSchemaFacetPtr'/>
+      <field name='redef' type='struct _xmlSchemaType *'/>
+      <field name='recurse' type='int'/>
+      <field name='attributeUses' type='xmlSchemaAttributeLinkPtr *'/>
+      <field name='attributeWildcard' type='xmlSchemaWildcardPtr'/>
+      <field name='builtInType' type='int'/>
+      <field name='memberTypes' type='xmlSchemaTypeLinkPtr'/>
+      <field name='facetSet' type='xmlSchemaFacetLinkPtr'/>
+      <field name='refPrefix' type='const xmlChar *'/>
+      <field name='contentTypeDef' type='xmlSchemaTypePtr'/>
+      <field name='contModel' type='xmlRegexpPtr'/>
+      <field name='targetNamespace' type='const xmlChar *'/>
+      <field name='attrUses' type='void *'/>
     </struct>
     <struct name='xmlSchemaTypeLink' file='schemasInternals' type='struct _xmlSchemaTypeLink'>
-      <field name='next' type='struct _xmlSchemaTypeLink *' info=' the next type link ...'/>
-      <field name='type' type='xmlSchemaTypePtr' info=' the linked type'/>
+      <field name='next' type='struct _xmlSchemaTypeLink *'/>
+      <field name='type' type='xmlSchemaTypePtr'/>
     </struct>
     <typedef name='xmlSchemaTypeLinkPtr' file='schemasInternals' type='xmlSchemaTypeLink *'/>
     <typedef name='xmlSchemaTypePtr' file='schemasInternals' type='xmlSchemaType *'/>
@@ -6609,21 +6564,21 @@ Could we use @subtypes for this?'/>
     <typedef name='xmlSchemaValidOption' file='xmlschemas' type='enum'/>
     <typedef name='xmlSchemaWhitespaceValueType' file='xmlschemastypes' type='enum'/>
     <struct name='xmlSchemaWildcard' file='schemasInternals' type='struct _xmlSchemaWildcard'>
-      <field name='type' type='xmlSchemaTypeType' info=' The kind of type'/>
-      <field name='id' type='const xmlChar *' info=' Deprecated; not used'/>
-      <field name='annot' type='xmlSchemaAnnotPtr' info=''/>
-      <field name='node' type='xmlNodePtr' info=''/>
-      <field name='minOccurs' type='int' info=' Deprecated; not used'/>
-      <field name='maxOccurs' type='int' info=' Deprecated; not used'/>
-      <field name='processContents' type='int' info=''/>
-      <field name='any' type='int' info=' Indicates if the ns constraint is of ##any'/>
-      <field name='nsSet' type='xmlSchemaWildcardNsPtr' info=' The list of allowed namespaces'/>
-      <field name='negNsSet' type='xmlSchemaWildcardNsPtr' info=' The negated namespace'/>
-      <field name='flags' type='int' info=''/>
+      <field name='type' type='xmlSchemaTypeType'/>
+      <field name='id' type='const xmlChar *'/>
+      <field name='annot' type='xmlSchemaAnnotPtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='minOccurs' type='int'/>
+      <field name='maxOccurs' type='int'/>
+      <field name='processContents' type='int'/>
+      <field name='any' type='int'/>
+      <field name='nsSet' type='xmlSchemaWildcardNsPtr'/>
+      <field name='negNsSet' type='xmlSchemaWildcardNsPtr'/>
+      <field name='flags' type='int'/>
     </struct>
     <struct name='xmlSchemaWildcardNs' file='schemasInternals' type='struct _xmlSchemaWildcardNs'>
-      <field name='next' type='struct _xmlSchemaWildcardNs *' info=' the next constraint link ...'/>
-      <field name='value' type='const xmlChar *' info=' the value'/>
+      <field name='next' type='struct _xmlSchemaWildcardNs *'/>
+      <field name='value' type='const xmlChar *'/>
     </struct>
     <typedef name='xmlSchemaWildcardNsPtr' file='schemasInternals' type='xmlSchemaWildcardNs *'/>
     <typedef name='xmlSchemaWildcardPtr' file='schemasInternals' type='xmlSchemaWildcard *'/>
@@ -6646,38 +6601,38 @@ Could we use @subtypes for this?'/>
     <struct name='xmlTextWriter' file='xmlwriter' type='struct _xmlTextWriter'/>
     <typedef name='xmlTextWriterPtr' file='xmlwriter' type='xmlTextWriter *'/>
     <struct name='xmlURI' file='uri' type='struct _xmlURI'>
-      <field name='scheme' type='char *' info=' the URI scheme'/>
-      <field name='opaque' type='char *' info=' opaque part'/>
-      <field name='authority' type='char *' info=' the authority part'/>
-      <field name='server' type='char *' info=' the server part'/>
-      <field name='user' type='char *' info=' the user part'/>
-      <field name='port' type='int' info=' the port number'/>
-      <field name='path' type='char *' info=' the path string'/>
-      <field name='query' type='char *' info=' the query string (deprecated - use with caution)'/>
-      <field name='fragment' type='char *' info=' the fragment identifier'/>
-      <field name='cleanup' type='int' info=' parsing potentially unclean URI'/>
-      <field name='query_raw' type='char *' info=' the query string (as it appears in the URI)'/>
+      <field name='scheme' type='char *'/>
+      <field name='opaque' type='char *'/>
+      <field name='authority' type='char *'/>
+      <field name='server' type='char *'/>
+      <field name='user' type='char *'/>
+      <field name='port' type='int'/>
+      <field name='path' type='char *'/>
+      <field name='query' type='char *'/>
+      <field name='fragment' type='char *'/>
+      <field name='cleanup' type='int'/>
+      <field name='query_raw' type='char *'/>
     </struct>
     <typedef name='xmlURIPtr' file='uri' type='xmlURI *'/>
     <struct name='xmlValidCtxt' file='valid' type='struct _xmlValidCtxt'>
-      <field name='userData' type='void *' info=' user specific data block'/>
-      <field name='error' type='xmlValidityErrorFunc' info=' the callback in case of errors'/>
-      <field name='warning' type='xmlValidityWarningFunc' info=' the callback in case of warning Node analysis stack used when validating within entities'/>
-      <field name='node' type='xmlNodePtr' info=' Current parsed Node'/>
-      <field name='nodeNr' type='int' info=' Depth of the parsing stack'/>
-      <field name='nodeMax' type='int' info=' Max depth of the parsing stack'/>
-      <field name='nodeTab' type='xmlNodePtr *' info=' array of nodes'/>
-      <field name='flags' type='unsigned int' info=' internal flags'/>
-      <field name='doc' type='xmlDocPtr' info=' the document'/>
-      <field name='valid' type='int' info=' temporary validity check result state state used for non-determinist content validation'/>
-      <field name='vstate' type='xmlValidState *' info=' current state'/>
-      <field name='vstateNr' type='int' info=' Depth of the validation stack'/>
-      <field name='vstateMax' type='int' info=' Max depth of the validation stack'/>
-      <field name='vstateTab' type='xmlValidState *' info=' array of validation states'/>
-      <field name='am' type='xmlAutomataPtr' info=' the automata'/>
-      <field name='state' type='xmlAutomataStatePtr' info=' used to build the automata'/>
-      <field name='am' type='void *' info=''/>
-      <field name='state' type='void *' info=''/>
+      <field name='userData' type='void *'/>
+      <field name='error' type='xmlValidityErrorFunc'/>
+      <field name='warning' type='xmlValidityWarningFunc'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='nodeNr' type='int'/>
+      <field name='nodeMax' type='int'/>
+      <field name='nodeTab' type='xmlNodePtr *'/>
+      <field name='flags' type='unsigned int'/>
+      <field name='doc' type='xmlDocPtr'/>
+      <field name='valid' type='int'/>
+      <field name='vstate' type='xmlValidState *'/>
+      <field name='vstateNr' type='int'/>
+      <field name='vstateMax' type='int'/>
+      <field name='vstateTab' type='xmlValidState *'/>
+      <field name='am' type='xmlAutomataPtr'/>
+      <field name='state' type='xmlAutomataStatePtr'/>
+      <field name='am' type='void *'/>
+      <field name='state' type='void *'/>
     </struct>
     <typedef name='xmlValidCtxtPtr' file='valid' type='xmlValidCtxt *'/>
     <struct name='xmlValidState' file='valid' type='struct _xmlValidState'/>
@@ -6685,99 +6640,99 @@ Could we use @subtypes for this?'/>
     <struct name='xmlXIncludeCtxt' file='xinclude' type='struct _xmlXIncludeCtxt'/>
     <typedef name='xmlXIncludeCtxtPtr' file='xinclude' type='xmlXIncludeCtxt *'/>
     <struct name='xmlXPathAxis' file='xpath' type='struct _xmlXPathAxis'>
-      <field name='name' type='const xmlChar *' info=' the axis name'/>
-      <field name='func' type='xmlXPathAxisFunc' info=' the search function'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='func' type='xmlXPathAxisFunc'/>
     </struct>
     <typedef name='xmlXPathAxisPtr' file='xpath' type='xmlXPathAxis *'/>
     <struct name='xmlXPathCompExpr' file='xpath' type='struct _xmlXPathCompExpr'/>
     <typedef name='xmlXPathCompExprPtr' file='xpath' type='xmlXPathCompExpr *'/>
     <struct name='xmlXPathContext' file='xpath' type='struct _xmlXPathContext'>
-      <field name='doc' type='xmlDocPtr' info=' The current document'/>
-      <field name='node' type='xmlNodePtr' info=' The current node'/>
-      <field name='nb_variables_unused' type='int' info=' unused (hash table)'/>
-      <field name='max_variables_unused' type='int' info=' unused (hash table)'/>
-      <field name='varHash' type='xmlHashTablePtr' info=' Hash table of defined variables'/>
-      <field name='nb_types' type='int' info=' number of defined types'/>
-      <field name='max_types' type='int' info=' max number of types'/>
-      <field name='types' type='xmlXPathTypePtr' info=' Array of defined types'/>
-      <field name='nb_funcs_unused' type='int' info=' unused (hash table)'/>
-      <field name='max_funcs_unused' type='int' info=' unused (hash table)'/>
-      <field name='funcHash' type='xmlHashTablePtr' info=' Hash table of defined funcs'/>
-      <field name='nb_axis' type='int' info=' number of defined axis'/>
-      <field name='max_axis' type='int' info=' max number of axis'/>
-      <field name='axis' type='xmlXPathAxisPtr' info=' Array of defined axis the namespace nodes of the context node'/>
-      <field name='namespaces' type='xmlNsPtr *' info=' Array of namespaces'/>
-      <field name='nsNr' type='int' info=' number of namespace in scope'/>
-      <field name='user' type='void *' info=' function to free extra variables'/>
-      <field name='contextSize' type='int' info=' the context size'/>
-      <field name='proximityPosition' type='int' info=' the proximity position extra stuff for XPointer'/>
-      <field name='xptr' type='int' info=' is this an XPointer context?'/>
-      <field name='here' type='xmlNodePtr' info=' for here()'/>
-      <field name='origin' type='xmlNodePtr' info=' for origin() the set of namespace declarations in scope for the expression'/>
-      <field name='nsHash' type='xmlHashTablePtr' info=' The namespaces hash table'/>
-      <field name='varLookupFunc' type='xmlXPathVariableLookupFunc' info=' variable lookup func'/>
-      <field name='varLookupData' type='void *' info=' variable lookup data Possibility to link in an extra item'/>
-      <field name='extra' type='void *' info=' needed for XSLT The function name and URI when calling a function'/>
-      <field name='function' type='const xmlChar *' info=''/>
-      <field name='functionURI' type='const xmlChar *' info=' function lookup function and data'/>
-      <field name='funcLookupFunc' type='xmlXPathFuncLookupFunc' info=' function lookup func'/>
-      <field name='funcLookupData' type='void *' info=' function lookup data temporary namespace lists kept for walking the namespace axis'/>
-      <field name='tmpNsList' type='xmlNsPtr *' info=' Array of namespaces'/>
-      <field name='tmpNsNr' type='int' info=' number of namespaces in scope error reporting mechanism'/>
-      <field name='userData' type='void *' info=' user specific data block'/>
-      <field name='error' type='xmlStructuredErrorFunc' info=' the callback in case of errors'/>
-      <field name='lastError' type='xmlError' info=' the last error'/>
-      <field name='debugNode' type='xmlNodePtr' info=' the source node XSLT dictionary'/>
-      <field name='dict' type='xmlDictPtr' info=' dictionary if any'/>
-      <field name='flags' type='int' info=' flags to control compilation Cache for reusal of XPath objects'/>
-      <field name='cache' type='void *' info=' Resource limits'/>
-      <field name='opLimit' type='unsigned long' info=''/>
-      <field name='opCount' type='unsigned long' info=''/>
-      <field name='depth' type='int' info=''/>
+      <field name='doc' type='xmlDocPtr'/>
+      <field name='node' type='xmlNodePtr'/>
+      <field name='nb_variables_unused' type='int'/>
+      <field name='max_variables_unused' type='int'/>
+      <field name='varHash' type='xmlHashTablePtr'/>
+      <field name='nb_types' type='int'/>
+      <field name='max_types' type='int'/>
+      <field name='types' type='xmlXPathTypePtr'/>
+      <field name='nb_funcs_unused' type='int'/>
+      <field name='max_funcs_unused' type='int'/>
+      <field name='funcHash' type='xmlHashTablePtr'/>
+      <field name='nb_axis' type='int'/>
+      <field name='max_axis' type='int'/>
+      <field name='axis' type='xmlXPathAxisPtr'/>
+      <field name='namespaces' type='xmlNsPtr *'/>
+      <field name='nsNr' type='int'/>
+      <field name='user' type='void *'/>
+      <field name='contextSize' type='int'/>
+      <field name='proximityPosition' type='int'/>
+      <field name='xptr' type='int'/>
+      <field name='here' type='xmlNodePtr'/>
+      <field name='origin' type='xmlNodePtr'/>
+      <field name='nsHash' type='xmlHashTablePtr'/>
+      <field name='varLookupFunc' type='xmlXPathVariableLookupFunc'/>
+      <field name='varLookupData' type='void *'/>
+      <field name='extra' type='void *'/>
+      <field name='function' type='const xmlChar *'/>
+      <field name='functionURI' type='const xmlChar *'/>
+      <field name='funcLookupFunc' type='xmlXPathFuncLookupFunc'/>
+      <field name='funcLookupData' type='void *'/>
+      <field name='tmpNsList' type='xmlNsPtr *'/>
+      <field name='tmpNsNr' type='int'/>
+      <field name='userData' type='void *'/>
+      <field name='error' type='xmlStructuredErrorFunc'/>
+      <field name='lastError' type='xmlError'/>
+      <field name='debugNode' type='xmlNodePtr'/>
+      <field name='dict' type='xmlDictPtr'/>
+      <field name='flags' type='int'/>
+      <field name='cache' type='void *'/>
+      <field name='opLimit' type='unsigned long'/>
+      <field name='opCount' type='unsigned long'/>
+      <field name='depth' type='int'/>
     </struct>
     <typedef name='xmlXPathContextPtr' file='xpath' type='xmlXPathContext *'/>
     <typedef name='xmlXPathError' file='xpath' type='enum'/>
     <typedef name='xmlXPathFuncPtr' file='xpath' type='xmlXPathFunct *'/>
     <struct name='xmlXPathFunct' file='xpath' type='struct _xmlXPathFunct'>
-      <field name='name' type='const xmlChar *' info=' the function name'/>
-      <field name='func' type='xmlXPathEvalFunc' info=' the evaluation function'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='func' type='xmlXPathEvalFunc'/>
     </struct>
     <struct name='xmlXPathObject' file='xpath' type='struct _xmlXPathObject'>
-      <field name='type' type='xmlXPathObjectType' info=''/>
-      <field name='nodesetval' type='xmlNodeSetPtr' info=''/>
-      <field name='boolval' type='int' info=''/>
-      <field name='floatval' type='double' info=''/>
-      <field name='stringval' type='xmlChar *' info=''/>
-      <field name='user' type='void *' info=''/>
-      <field name='index' type='int' info=''/>
-      <field name='user2' type='void *' info=''/>
-      <field name='index2' type='int' info=''/>
+      <field name='type' type='xmlXPathObjectType'/>
+      <field name='nodesetval' type='xmlNodeSetPtr'/>
+      <field name='boolval' type='int'/>
+      <field name='floatval' type='double'/>
+      <field name='stringval' type='xmlChar *'/>
+      <field name='user' type='void *'/>
+      <field name='index' type='int'/>
+      <field name='user2' type='void *'/>
+      <field name='index2' type='int'/>
     </struct>
     <typedef name='xmlXPathObjectPtr' file='xpath' type='xmlXPathObject *'/>
     <typedef name='xmlXPathObjectType' file='xpath' type='enum'/>
     <struct name='xmlXPathParserContext' file='xpath' type='struct _xmlXPathParserContext'>
-      <field name='cur' type='const xmlChar *' info=' the current char being parsed'/>
-      <field name='base' type='const xmlChar *' info=' the full expression'/>
-      <field name='error' type='int' info=' error code'/>
-      <field name='context' type='xmlXPathContextPtr' info=' the evaluation context'/>
-      <field name='value' type='xmlXPathObjectPtr' info=' the current value'/>
-      <field name='valueNr' type='int' info=' number of values stacked'/>
-      <field name='valueMax' type='int' info=' max number of values stacked'/>
-      <field name='valueTab' type='xmlXPathObjectPtr *' info=' stack of values'/>
-      <field name='comp' type='xmlXPathCompExprPtr' info=' the precompiled expression'/>
-      <field name='xptr' type='int' info=' it this an XPointer expression'/>
-      <field name='ancestor' type='xmlNodePtr' info=' used for walking preceding axis'/>
-      <field name='valueFrame' type='int' info=' always zero for compatibility'/>
+      <field name='cur' type='const xmlChar *'/>
+      <field name='base' type='const xmlChar *'/>
+      <field name='error' type='int'/>
+      <field name='context' type='xmlXPathContextPtr'/>
+      <field name='value' type='xmlXPathObjectPtr'/>
+      <field name='valueNr' type='int'/>
+      <field name='valueMax' type='int'/>
+      <field name='valueTab' type='xmlXPathObjectPtr *'/>
+      <field name='comp' type='xmlXPathCompExprPtr'/>
+      <field name='xptr' type='int'/>
+      <field name='ancestor' type='xmlNodePtr'/>
+      <field name='valueFrame' type='int'/>
     </struct>
     <typedef name='xmlXPathParserContextPtr' file='xpath' type='xmlXPathParserContext *'/>
     <struct name='xmlXPathType' file='xpath' type='struct _xmlXPathType'>
-      <field name='name' type='const xmlChar *' info=' the type name'/>
-      <field name='func' type='xmlXPathConvertFunc' info=' the conversion function'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='func' type='xmlXPathConvertFunc'/>
     </struct>
     <typedef name='xmlXPathTypePtr' file='xpath' type='xmlXPathType *'/>
     <struct name='xmlXPathVariable' file='xpath' type='struct _xmlXPathVariable'>
-      <field name='name' type='const xmlChar *' info=' the variable name'/>
-      <field name='value' type='xmlXPathObjectPtr' info=' the value'/>
+      <field name='name' type='const xmlChar *'/>
+      <field name='value' type='xmlXPathObjectPtr'/>
     </struct>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
     <variable name='htmlDefaultSAXHandler' file='HTMLparser' type='const xmlSAXHandlerV1'>

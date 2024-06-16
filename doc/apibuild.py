@@ -1161,10 +1161,8 @@ class CParser:
                     fname = token[1]
                     token = self.token()
                     if token[0] == "sep" and token[1] == ";":
-                        self.comment = None
                         token = self.token()
-                        fields.append((self.type, fname, self.comment))
-                        self.comment = None
+                        fields.append((self.type, fname))
                     else:
                         self.error("parseStruct: expecting ;", token)
                 elif token != None and token[0] == "sep" and token[1] == "{":
@@ -1714,12 +1712,7 @@ class docBuilder:
                 output.write(">\n");
                 try:
                     for field in self.idx.structs[name].info:
-                        desc = field[2]
-                        if desc == None:
-                            desc = ''
-                        else:
-                            desc = escape(desc)
-                        output.write("      <field name='%s' type='%s' info='%s'/>\n" % (field[1] , field[0], desc))
+                        output.write("      <field name='%s' type='%s'/>\n" % (field[1] , field[0]))
                 except:
                     print("Failed to serialize struct %s" % (name))
                 output.write("    </struct>\n")

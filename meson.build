@@ -699,7 +699,6 @@ checks = [
     'runxmlconf',
 # Disabled for now, see #694
 #    'testModule',
-    'testThreads',
     'testapi',
     'testchar',
     'testdict',

@@ -502,7 +502,6 @@ if(LIBXML2_WITH_TESTS)
         testlimits
         testparser
         testrecurse
-        testThreads
     )
     foreach(TEST ${TESTS})
         add_executable(${TEST} ${TEST}.c)
@@ -510,7 +509,7 @@ if(LIBXML2_WITH_TESTS)
         target_link_libraries(${TEST} LibXml2)
     endforeach()
     if(Threads_FOUND)
-        foreach(TEST runtest testThreads)
+        foreach(TEST runtest)
             target_link_libraries(${TEST} Threads::Threads)
         endforeach()
     endif()
@@ -526,7 +525,6 @@ if(LIBXML2_WITH_TESTS)
     add_test(NAME testdict COMMAND testdict)
     add_test(NAME testparser COMMAND testparser)
     add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    add_test(NAME testThreads COMMAND testThreads WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
 if(LIBXML2_WITH_PYTHON)

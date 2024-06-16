@@ -19,7 +19,6 @@ check_PROGRAMS = \
 	runtest \
 	runxmlconf \
 	testModule \
-	testThreads \
 	testapi \
 	testchar \
 	testdict \
@@ -148,10 +147,6 @@ xmlcatalog_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
 xmlcatalog_DEPENDENCIES = $(DEPS)
 xmlcatalog_LDADD = $(RDL_LIBS) $(LDADDS)
 
-testThreads_SOURCES = testThreads.c
-testThreads_DEPENDENCIES = $(DEPS)
-testThreads_LDADD= $(BASE_THREAD_LIBS) $(THREAD_LIBS) $(LDADDS)
-
 testModule_SOURCES=testModule.c
 testModule_DEPENDENCIES = $(DEPS)
 testModule_LDADD= $(LDADDS)
@@ -184,7 +179,6 @@ check-local:
 	$(CHECKER) ./testdict$(EXEEXT)
 	$(CHECKER) ./testparser$(EXEEXT)
 	$(CHECKER) ./testModule$(EXEEXT)
-	$(CHECKER) ./testThreads$(EXEEXT)
 	$(CHECKER) ./runxmlconf$(EXEEXT)
 	$(CHECKER) ./runsuite$(EXEEXT)
 

@@ -23,7 +23,6 @@ ignored_files = {
   "libxml.h": "internal only",
   "rngparser.c": "not yet integrated",
   "testModule.c": "test tool",
-  "testThreads.c": "test tool",
   "testapi.c": "generated regression tests",
   "runtest.c": "regression tests program",
   "runsuite.c": "regression tests program",

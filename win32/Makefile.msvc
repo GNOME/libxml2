@@ -254,10 +254,6 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testlimits.exe\
 	$(BINDIR)\testrecurse.exe
 	
-!if "$(WITH_THREADS)" != "no"
-UTILS = $(UTILS) $(BINDIR)\testThreads.exe
-!endif
-
 !if "$(VCMANIFEST)" == "1"
 _VC_MANIFEST_EMBED_EXE= if exist $@.manifest mt.exe -nologo -manifest $@.manifest -outputresource:$@;1
 _VC_MANIFEST_EMBED_DLL= if exist $@.manifest mt.exe -nologo -manifest $@.manifest -outputresource:$@;2

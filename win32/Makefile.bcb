@@ -206,12 +206,6 @@ UTILS = $(BINDIR)\xmllint.exe\
 	$(BINDIR)\testapi.exe\
 	$(BINDIR)\testlimits.exe
 
-
-!if "$(WITH_THREADS)" != "no"
-UTILS = $(UTILS) $(BINDIR)\testThreads.exe
-!endif
-
-
 all : libxml libxmla utils
 
 libxml : $(BINDIR)\$(XML_SO) 

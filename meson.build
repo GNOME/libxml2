@@ -703,25 +703,25 @@ testdso_mod = shared_module(
 
 ## tests
 
-checks = [
-    'runsuite',
-    'runtest',
-    'runxmlconf',
+checks = {
+    'runsuite': [],
+    'runtest': threads_dep,
+    'runxmlconf': [],
 # Disabled for now, see #694
-#    'testModule',
-    'testapi',
-    'testchar',
-    'testdict',
-    'testlimits',
-    'testparser',
-    'testrecurse',
-]
+#    'testModule': [],
+    'testapi': [],
+    'testchar': [],
+    'testdict': [],
+    'testlimits': [],
+    'testparser': [],
+    'testrecurse': [],
+}
 
-foreach check : checks
+foreach check, deps : checks
     exe = executable(
         check,
         files(check + '.c'),
-        dependencies: [threads_dep, xml_dep],
+        dependencies: [deps, xml_dep],
         include_directories: config_dir,
     )
     if check != 'testlimits'

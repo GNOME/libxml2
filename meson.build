@@ -32,8 +32,10 @@ dir_locale = dir_prefix / get_option('localedir')
 
 host_os = host_machine.system()
 
+bsd = ['freebsd', 'openbsd', 'dragonfly']
 cygwin = 'cygwin'
 windows = 'windows'
+sys_bsd = bsd.contains(host_os)
 sys_cygwin = cygwin.contains(host_os)
 sys_windows = windows.contains(host_os)
 
@@ -576,10 +578,12 @@ endif
 # icu
 icu_dep = dependency('icu-i18n', method: 'pkg-config', required: get_option('icu'))
 if icu_dep.found()
-    def_var = icu_dep.get_variable(pkgconfig: 'DEFS')
-    config_dir += include_directories(def_var)
-    xml_deps += icu_dep
+    defs = icu_dep.get_variable(pkgconfig: 'DEFS')
+    if cc.has_argument(defs)
+        libxml2_cflags += defs
+    endif
 endif
+xml_deps += icu_dep
 
 subdir('include/libxml')
 

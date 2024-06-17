@@ -334,7 +334,11 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
 	xmlDictReference(pctxt->dict);
     }
 
-    xmlCtxtUseOptions(pctxt, ctxt->parseFlags);
+    /*
+     * We set DTDLOAD to make sure that ID attributes declared in
+     * external DTDs are detected.
+     */
+    xmlCtxtUseOptions(pctxt, ctxt->parseFlags | XML_PARSE_DTDLOAD);
 
     inputStream = xmlLoadExternalEntity(URL, NULL, pctxt);
     if (inputStream == NULL)

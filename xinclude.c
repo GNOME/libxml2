@@ -1473,6 +1473,8 @@ loaded:
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
             ctxt->xpctxt->opLimit = 100000;
 #endif
+        } else {
+            ctxt->xpctxt->doc = doc;
         }
 	xptr = xmlXPtrEval(fragment, ctxt->xpctxt);
 	if (ctxt->xpctxt->lastError.code != XML_ERR_OK) {

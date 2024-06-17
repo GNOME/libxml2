@@ -20,7 +20,7 @@ else:
 # Modules we want to skip in API test
 #
 skipped_modules = [ "SAX", "xlink", "threads", "globals",
-  "xmlmemory", "xmlversion", "xmlexports", "nanoftp",
+  "xmlmemory", "xmlversion", "xmlexports", "xmlunicode", "nanoftp",
 ]
 
 #

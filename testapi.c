@@ -9149,7 +9149,7 @@ static int
 test_entities(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing entities : 12 of 19 functions ...\n");
+    if (quiet == 0) printf("Testing entities : 12 of 16 functions ...\n");
     test_ret += test_xmlAddDocEntity();
     test_ret += test_xmlAddDtdEntity();
     test_ret += test_xmlAddEntity();
@@ -14724,7 +14724,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 71 of 86 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 71 of 83 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlCleanupGlobals();
     test_ret += test_xmlClearNodeInfoSeq();
@@ -15879,16 +15879,6 @@ test_xmlPushInput(void) {
 
 
 static int
-test_xmlSetEntityReferenceFunc(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
-static int
 test_xmlSplitQName(void) {
     int test_ret = 0;
 
@@ -16290,7 +16280,7 @@ static int
 test_parserInternals(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parserInternals : 36 of 95 functions ...\n");
+    if (quiet == 0) printf("Testing parserInternals : 36 of 85 functions ...\n");
     test_ret += test_inputPop();
     test_ret += test_inputPush();
     test_ret += test_namePop();
@@ -16321,7 +16311,6 @@ test_parserInternals(void) {
     test_ret += test_xmlParserInputShrink();
     test_ret += test_xmlPopInput();
     test_ret += test_xmlPushInput();
-    test_ret += test_xmlSetEntityReferenceFunc();
     test_ret += test_xmlSplitQName();
     test_ret += test_xmlStringCurrentChar();
     test_ret += test_xmlStringDecodeEntities();
@@ -23929,7 +23918,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing tree : 146 of 173 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 146 of 172 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();

@@ -629,66 +629,6 @@ XMLPUBFUN void			xmlNextChar		(xmlParserCtxtPtr ctxt);
 XML_DEPRECATED
 XMLPUBFUN void			xmlParserInputShrink	(xmlParserInputPtr in);
 
-/*
- * Specific function to keep track of entities references
- * and used by the XSLT debugger.
- */
-#ifdef LIBXML_LEGACY_ENABLED
-/**
- * xmlEntityReferenceFunc:
- * @ent: the entity
- * @firstNode:  the fist node in the chunk
- * @lastNode:  the last nod in the chunk
- *
- * Callback function used when one needs to be able to track back the
- * provenance of a chunk of nodes inherited from an entity replacement.
- */
-typedef	void	(*xmlEntityReferenceFunc)	(xmlEntityPtr ent,
-						 xmlNodePtr firstNode,
-						 xmlNodePtr lastNode);
-
-XML_DEPRECATED
-XMLPUBFUN void		xmlSetEntityReferenceFunc	(xmlEntityReferenceFunc func);
-
-XML_DEPRECATED
-XMLPUBFUN xmlChar *
-			xmlParseQuotedString	(xmlParserCtxtPtr ctxt);
-XML_DEPRECATED
-XMLPUBFUN void
-                        xmlParseNamespace       (xmlParserCtxtPtr ctxt);
-XML_DEPRECATED
-XMLPUBFUN xmlChar *
-			xmlNamespaceParseNSDef	(xmlParserCtxtPtr ctxt);
-XML_DEPRECATED
-XMLPUBFUN xmlChar *
-			xmlScanName		(xmlParserCtxtPtr ctxt);
-XML_DEPRECATED
-XMLPUBFUN xmlChar *
-			xmlNamespaceParseNCName	(xmlParserCtxtPtr ctxt);
-XML_DEPRECATED
-XMLPUBFUN void	xmlParserHandleReference(xmlParserCtxtPtr ctxt);
-XML_DEPRECATED
-XMLPUBFUN xmlChar *
-			xmlNamespaceParseQName	(xmlParserCtxtPtr ctxt,
-						 xmlChar **prefix);
-/**
- * Entities
- */
-XML_DEPRECATED
-XMLPUBFUN xmlChar *
-		xmlDecodeEntities		(xmlParserCtxtPtr ctxt,
-						 int len,
-						 int what,
-						 xmlChar end,
-						 xmlChar  end2,
-						 xmlChar end3);
-XML_DEPRECATED
-XMLPUBFUN void
-			xmlHandleEntity		(xmlParserCtxtPtr ctxt,
-						 xmlEntityPtr entity);
-
-#endif /* LIBXML_LEGACY_ENABLED */
-
 #ifdef __cplusplus
 }
 #endif

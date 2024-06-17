@@ -40,8 +40,6 @@
 
 static int htmlOmittedDefaultValue = 1;
 
-xmlChar * htmlDecodeEntities(htmlParserCtxtPtr ctxt, int len,
-			     xmlChar end, xmlChar  end2, xmlChar end3);
 static void htmlParseComment(htmlParserCtxtPtr ctxt);
 
 /************************************************************************

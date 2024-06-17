@@ -1255,6 +1255,7 @@ XMLPUBFUN xmlParserCtxtPtr
 		xmlCreateDocParserCtxt	(const xmlChar *cur);
 
 #ifdef LIBXML_LEGACY_ENABLED
+/** DOC_DISABLE */
 /*
  * Reading/setting optional parsing features.
  */
@@ -1272,6 +1273,7 @@ XMLPUBFUN int
 		xmlSetFeature		(xmlParserCtxtPtr ctxt,
 					 const char *name,
 					 void *value);
+/** DOC_ENABLE */
 #endif /* LIBXML_LEGACY_ENABLED */
 
 #ifdef LIBXML_PUSH_ENABLED

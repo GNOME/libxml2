@@ -76,12 +76,6 @@ typedef xmlEntitiesTable *xmlEntitiesTablePtr;
  * External functions:
  */
 
-#ifdef LIBXML_LEGACY_ENABLED
-XML_DEPRECATED
-XMLPUBFUN void
-		xmlInitializePredefinedEntities	(void);
-#endif /* LIBXML_LEGACY_ENABLED */
-
 XMLPUBFUN xmlEntityPtr
 			xmlNewEntity		(xmlDocPtr doc,
 						 const xmlChar *name,
@@ -125,12 +119,6 @@ XMLPUBFUN xmlEntityPtr
 XMLPUBFUN xmlEntityPtr
 			xmlGetParameterEntity	(xmlDocPtr doc,
 						 const xmlChar *name);
-#ifdef LIBXML_LEGACY_ENABLED
-XML_DEPRECATED
-XMLPUBFUN const xmlChar *
-			xmlEncodeEntities	(xmlDocPtr doc,
-						 const xmlChar *input);
-#endif /* LIBXML_LEGACY_ENABLED */
 XMLPUBFUN xmlChar *
 			xmlEncodeEntitiesReentrant(xmlDocPtr doc,
 						 const xmlChar *input);
@@ -151,11 +139,6 @@ XMLPUBFUN void
 			xmlDumpEntityDecl	(xmlBufferPtr buf,
 						 xmlEntityPtr ent);
 #endif /* LIBXML_OUTPUT_ENABLED */
-#ifdef LIBXML_LEGACY_ENABLED
-XMLPUBFUN void
-			xmlCleanupPredefinedEntities(void);
-#endif /* LIBXML_LEGACY_ENABLED */
-
 
 #ifdef __cplusplus
 }

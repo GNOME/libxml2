@@ -802,13 +802,6 @@ XMLPUBFUN xmlDtdPtr
 		xmlGetIntSubset		(const xmlDoc *doc);
 XMLPUBFUN void
 		xmlFreeDtd		(xmlDtdPtr cur);
-#ifdef LIBXML_LEGACY_ENABLED
-XML_DEPRECATED
-XMLPUBFUN xmlNsPtr
-		xmlNewGlobalNs		(xmlDocPtr doc,
-					 const xmlChar *href,
-					 const xmlChar *prefix);
-#endif /* LIBXML_LEGACY_ENABLED */
 XMLPUBFUN xmlNsPtr
 		xmlNewNs		(xmlNodePtr node,
 					 const xmlChar *href,

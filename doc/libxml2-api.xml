@@ -117,42 +117,6 @@
      <description>DEPRECATED set of SAX version 1 interfaces used to build the DOM tree. </description>
      <author>Daniel Veillard </author>
      <deprecated/>
-     <exports symbol='attribute' type='function'/>
-     <exports symbol='attributeDecl' type='function'/>
-     <exports symbol='cdataBlock' type='function'/>
-     <exports symbol='characters' type='function'/>
-     <exports symbol='checkNamespace' type='function'/>
-     <exports symbol='comment' type='function'/>
-     <exports symbol='elementDecl' type='function'/>
-     <exports symbol='endDocument' type='function'/>
-     <exports symbol='endElement' type='function'/>
-     <exports symbol='entityDecl' type='function'/>
-     <exports symbol='externalSubset' type='function'/>
-     <exports symbol='getColumnNumber' type='function'/>
-     <exports symbol='getEntity' type='function'/>
-     <exports symbol='getLineNumber' type='function'/>
-     <exports symbol='getNamespace' type='function'/>
-     <exports symbol='getParameterEntity' type='function'/>
-     <exports symbol='getPublicId' type='function'/>
-     <exports symbol='getSystemId' type='function'/>
-     <exports symbol='globalNamespace' type='function'/>
-     <exports symbol='hasExternalSubset' type='function'/>
-     <exports symbol='hasInternalSubset' type='function'/>
-     <exports symbol='ignorableWhitespace' type='function'/>
-     <exports symbol='inithtmlDefaultSAXHandler' type='function'/>
-     <exports symbol='initxmlDefaultSAXHandler' type='function'/>
-     <exports symbol='internalSubset' type='function'/>
-     <exports symbol='isStandalone' type='function'/>
-     <exports symbol='namespaceDecl' type='function'/>
-     <exports symbol='notationDecl' type='function'/>
-     <exports symbol='processingInstruction' type='function'/>
-     <exports symbol='reference' type='function'/>
-     <exports symbol='resolveEntity' type='function'/>
-     <exports symbol='setDocumentLocator' type='function'/>
-     <exports symbol='setNamespace' type='function'/>
-     <exports symbol='startDocument' type='function'/>
-     <exports symbol='startElement' type='function'/>
-     <exports symbol='unparsedEntityDecl' type='function'/>
     </file>
     <file name='SAX2'>
      <summary>SAX2 parser interface used to build the DOM tree</summary>
@@ -423,12 +387,10 @@
      <exports symbol='xmlAddDocEntity' type='function'/>
      <exports symbol='xmlAddDtdEntity' type='function'/>
      <exports symbol='xmlAddEntity' type='function'/>
-     <exports symbol='xmlCleanupPredefinedEntities' type='function'/>
      <exports symbol='xmlCopyEntitiesTable' type='function'/>
      <exports symbol='xmlCreateEntitiesTable' type='function'/>
      <exports symbol='xmlDumpEntitiesTable' type='function'/>
      <exports symbol='xmlDumpEntityDecl' type='function'/>
-     <exports symbol='xmlEncodeEntities' type='function'/>
      <exports symbol='xmlEncodeEntitiesReentrant' type='function'/>
      <exports symbol='xmlEncodeSpecialChars' type='function'/>
      <exports symbol='xmlFreeEntitiesTable' type='function'/>
@@ -437,7 +399,6 @@
      <exports symbol='xmlGetDtdEntity' type='function'/>
      <exports symbol='xmlGetParameterEntity' type='function'/>
      <exports symbol='xmlGetPredefinedEntity' type='function'/>
-     <exports symbol='xmlInitializePredefinedEntities' type='function'/>
      <exports symbol='xmlNewEntity' type='function'/>
     </file>
     <file name='globals'>
@@ -730,8 +691,6 @@
      <exports symbol='xmlExternalEntityLoader' type='function'/>
      <exports symbol='xmlFreeParserCtxt' type='function'/>
      <exports symbol='xmlGetExternalEntityLoader' type='function'/>
-     <exports symbol='xmlGetFeature' type='function'/>
-     <exports symbol='xmlGetFeaturesList' type='function'/>
      <exports symbol='xmlHasFeature' type='function'/>
      <exports symbol='xmlIOParseDTD' type='function'/>
      <exports symbol='xmlInitGlobals' type='function'/>
@@ -783,7 +742,6 @@
      <exports symbol='xmlSAXUserParseFile' type='function'/>
      <exports symbol='xmlSAXUserParseMemory' type='function'/>
      <exports symbol='xmlSetExternalEntityLoader' type='function'/>
-     <exports symbol='xmlSetFeature' type='function'/>
      <exports symbol='xmlSetupParserForBuffer' type='function'/>
      <exports symbol='xmlStopParser' type='function'/>
      <exports symbol='xmlSubstituteEntitiesDefault' type='function'/>
@@ -853,10 +811,7 @@
      <exports symbol='xmlCreateURLParserCtxt' type='function'/>
      <exports symbol='xmlCtxtErrMemory' type='function'/>
      <exports symbol='xmlCurrentChar' type='function'/>
-     <exports symbol='xmlDecodeEntities' type='function'/>
-     <exports symbol='xmlEntityReferenceFunc' type='function'/>
      <exports symbol='xmlFreeInputStream' type='function'/>
-     <exports symbol='xmlHandleEntity' type='function'/>
      <exports symbol='xmlInputCreateFd' type='function'/>
      <exports symbol='xmlInputCreateIO' type='function'/>
      <exports symbol='xmlInputCreateMemory' type='function'/>
@@ -864,9 +819,6 @@
      <exports symbol='xmlInputCreateUrl' type='function'/>
      <exports symbol='xmlInputSetEncoding' type='function'/>
      <exports symbol='xmlIsLetter' type='function'/>
-     <exports symbol='xmlNamespaceParseNCName' type='function'/>
-     <exports symbol='xmlNamespaceParseNSDef' type='function'/>
-     <exports symbol='xmlNamespaceParseQName' type='function'/>
      <exports symbol='xmlNewEntityInputStream' type='function'/>
      <exports symbol='xmlNewInputFromFile' type='function'/>
      <exports symbol='xmlNewInputStream' type='function'/>
@@ -901,7 +853,6 @@
      <exports symbol='xmlParseMarkupDecl' type='function'/>
      <exports symbol='xmlParseMisc' type='function'/>
      <exports symbol='xmlParseName' type='function'/>
-     <exports symbol='xmlParseNamespace' type='function'/>
      <exports symbol='xmlParseNmtoken' type='function'/>
      <exports symbol='xmlParseNotationDecl' type='function'/>
      <exports symbol='xmlParseNotationType' type='function'/>
@@ -909,7 +860,6 @@
      <exports symbol='xmlParsePI' type='function'/>
      <exports symbol='xmlParsePITarget' type='function'/>
      <exports symbol='xmlParsePubidLiteral' type='function'/>
-     <exports symbol='xmlParseQuotedString' type='function'/>
      <exports symbol='xmlParseReference' type='function'/>
      <exports symbol='xmlParseSDDecl' type='function'/>
      <exports symbol='xmlParseStartTag' type='function'/>
@@ -919,12 +869,9 @@
      <exports symbol='xmlParseVersionNum' type='function'/>
      <exports symbol='xmlParseXMLDecl' type='function'/>
      <exports symbol='xmlParserHandlePEReference' type='function'/>
-     <exports symbol='xmlParserHandleReference' type='function'/>
      <exports symbol='xmlParserInputShrink' type='function'/>
      <exports symbol='xmlPopInput' type='function'/>
      <exports symbol='xmlPushInput' type='function'/>
-     <exports symbol='xmlScanName' type='function'/>
-     <exports symbol='xmlSetEntityReferenceFunc' type='function'/>
      <exports symbol='xmlSkipBlankChars' type='function'/>
      <exports symbol='xmlSplitQName' type='function'/>
      <exports symbol='xmlStringCurrentChar' type='function'/>
@@ -1574,7 +1521,6 @@
      <exports symbol='xmlNewDocText' type='function'/>
      <exports symbol='xmlNewDocTextLen' type='function'/>
      <exports symbol='xmlNewDtd' type='function'/>
-     <exports symbol='xmlNewGlobalNs' type='function'/>
      <exports symbol='xmlNewNode' type='function'/>
      <exports symbol='xmlNewNodeEatName' type='function'/>
      <exports symbol='xmlNewNs' type='function'/>
@@ -6796,26 +6742,6 @@ crash if you try to modify the tree)'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
       <arg name='inlen' type='int *' info='the length of @in'/>
     </function>
-    <function name='attribute' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Handle an attribute that has been read by the parser. The default handling is to convert the attribute into an DOM subtree and past it in a new xmlAttr element added to the element. DEPRECATED: use xmlSAX2Attribute()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='fullname' type='const xmlChar *' info='The attribute name, including namespace prefix'/>
-      <arg name='value' type='const xmlChar *' info='The attribute value'/>
-    </function>
-    <function name='attributeDecl' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>An attribute definition has been parsed DEPRECATED: use xmlSAX2AttributeDecl()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='elem' type='const xmlChar *' info='the name of the element'/>
-      <arg name='fullname' type='const xmlChar *' info='the attribute name'/>
-      <arg name='type' type='int' info='the attribute type'/>
-      <arg name='def' type='int' info='the type of default value'/>
-      <arg name='defaultValue' type='const xmlChar *' info='the attribute default value'/>
-      <arg name='tree' type='xmlEnumerationPtr' info='the tree of enumerated value set'/>
-    </function>
     <functype name='attributeDeclSAXFunc' file='parser' module='parser'>
       <info>An attribute definition has been parsed.</info>
       <return type='void'/>
@@ -6834,14 +6760,6 @@ crash if you try to modify the tree)'/>
       <arg name='name' type='const xmlChar *' info='The attribute name, including namespace prefix'/>
       <arg name='value' type='const xmlChar *' info='The attribute value'/>
     </functype>
-    <function name='cdataBlock' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>called when a pcdata block has been parsed DEPRECATED: use xmlSAX2CDataBlock()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='value' type='const xmlChar *' info='The pcdata content'/>
-      <arg name='len' type='int' info='the block length'/>
-    </function>
     <functype name='cdataBlockSAXFunc' file='parser' module='parser'>
       <info>Called when a pcdata block has been parsed.</info>
       <return type='void'/>
@@ -6849,14 +6767,6 @@ crash if you try to modify the tree)'/>
       <arg name='value' type='const xmlChar *' info='The pcdata content'/>
       <arg name='len' type='int' info='the block length'/>
     </functype>
-    <function name='characters' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>receiving some chars from the parser. DEPRECATED: use xmlSAX2Characters()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='ch' type='const xmlChar *' info='a xmlChar string'/>
-      <arg name='len' type='int' info='the number of xmlChar'/>
-    </function>
     <functype name='charactersSAXFunc' file='parser' module='parser'>
       <info>Receiving some chars from the parser.</info>
       <return type='void'/>
@@ -6864,35 +6774,12 @@ crash if you try to modify the tree)'/>
       <arg name='ch' type='const xmlChar *' info='a xmlChar string'/>
       <arg name='len' type='int' info='the number of xmlChar'/>
     </functype>
-    <function name='checkNamespace' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Check that the current element namespace is the same as the one read upon parsing. DEPRECATED</info>
-      <return type='int' info='1 if true 0 otherwise'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='namespace' type='xmlChar *' info='the namespace to check against'/>
-    </function>
-    <function name='comment' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>A comment has been parsed. DEPRECATED: use xmlSAX2Comment()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='value' type='const xmlChar *' info='the comment content'/>
-    </function>
     <functype name='commentSAXFunc' file='parser' module='parser'>
       <info>A comment has been parsed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='value' type='const xmlChar *' info='the comment content'/>
     </functype>
-    <function name='elementDecl' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>An element definition has been parsed DEPRECATED: use xmlSAX2ElementDecl()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='the element name'/>
-      <arg name='type' type='int' info='the element type'/>
-      <arg name='content' type='xmlElementContentPtr' info='the element value tree'/>
-    </function>
     <functype name='elementDeclSAXFunc' file='parser' module='parser'>
       <info>An element definition has been parsed.</info>
       <return type='void'/>
@@ -6901,24 +6788,11 @@ crash if you try to modify the tree)'/>
       <arg name='type' type='int' info='the element type'/>
       <arg name='content' type='xmlElementContentPtr' info='the element value tree'/>
     </functype>
-    <function name='endDocument' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>called when the document end has been detected. DEPRECATED: use xmlSAX2EndDocument()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
     <functype name='endDocumentSAXFunc' file='parser' module='parser'>
       <info>Called when the document end has been detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </functype>
-    <function name='endElement' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>called when the end of an element has been detected. DEPRECATED: use xmlSAX2EndElement()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='The element name'/>
-    </function>
     <functype name='endElementNsSAX2Func' file='parser' module='parser'>
       <info>SAX2 callback when an element end has been detected by the parser. It provides the namespace information for the element.</info>
       <return type='void'/>
@@ -6933,17 +6807,6 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The element name'/>
     </functype>
-    <function name='entityDecl' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>An entity definition has been parsed DEPRECATED: use xmlSAX2EntityDecl()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='the entity name'/>
-      <arg name='type' type='int' info='the entity type'/>
-      <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
-      <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
-      <arg name='content' type='xmlChar *' info='the entity value (without processing).'/>
-    </function>
     <functype name='entityDeclSAXFunc' file='parser' module='parser'>
       <info>An entity definition has been parsed.</info>
       <return type='void'/>
@@ -6961,15 +6824,6 @@ crash if you try to modify the tree)'/>
       <arg name='msg' type='const char *' info='the message to display/transmit'/>
       <arg name='...' type='...' info='extra parameters for the message display'/>
     </functype>
-    <function name='externalSubset' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Callback on external subset declaration. DEPRECATED: use xmlSAX2ExternalSubset()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='the root element name'/>
-      <arg name='ExternalID' type='const xmlChar *' info='the external ID'/>
-      <arg name='SystemID' type='const xmlChar *' info='the SYSTEM ID (e.g. filename or URL)'/>
-    </function>
     <functype name='externalSubsetSAXFunc' file='parser' module='parser'>
       <info>Callback on external subset declaration.</info>
       <return type='void'/>
@@ -6985,87 +6839,23 @@ crash if you try to modify the tree)'/>
       <arg name='msg' type='const char *' info='the message to display/transmit'/>
       <arg name='...' type='...' info='extra parameters for the message display'/>
     </functype>
-    <function name='getColumnNumber' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Provide the column number of the current parsing point. DEPRECATED: use xmlSAX2GetColumnNumber()</info>
-      <return type='int' info='an int'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
-    <function name='getEntity' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Get an entity by name DEPRECATED: use xmlSAX2GetEntity()</info>
-      <return type='xmlEntityPtr' info='the xmlEntityPtr if found.'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='The entity name'/>
-    </function>
     <functype name='getEntitySAXFunc' file='parser' module='parser'>
       <info>Get an entity by name.</info>
       <return type='xmlEntityPtr' info='the xmlEntityPtr if found.'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The entity name'/>
     </functype>
-    <function name='getLineNumber' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Provide the line number of the current parsing point. DEPRECATED: use xmlSAX2GetLineNumber()</info>
-      <return type='int' info='an int'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
-    <function name='getNamespace' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Get the current element namespace. DEPRECATED</info>
-      <return type='xmlNsPtr' info='the xmlNsPtr or NULL if none'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
-    <function name='getParameterEntity' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Get a parameter entity by name DEPRECATED: use xmlSAX2GetParameterEntity()</info>
-      <return type='xmlEntityPtr' info='the xmlEntityPtr if found.'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='The entity name'/>
-    </function>
     <functype name='getParameterEntitySAXFunc' file='parser' module='parser'>
       <info>Get a parameter entity by name.</info>
       <return type='xmlEntityPtr' info='the xmlEntityPtr if found.'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The entity name'/>
     </functype>
-    <function name='getPublicId' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Provides the public ID e.g. &quot;-//SGMLSOURCE//DTD DEMO//EN&quot; DEPRECATED: use xmlSAX2GetPublicId()</info>
-      <return type='const xmlChar *' info='a xmlChar *'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
-    <function name='getSystemId' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Provides the system ID, basically URL or filename e.g. http://www.sgmlsource.com/dtds/memo.dtd DEPRECATED: use xmlSAX2GetSystemId()</info>
-      <return type='const xmlChar *' info='a xmlChar *'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
-    <function name='globalNamespace' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>An old global namespace has been parsed. DEPRECATED</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='href' type='const xmlChar *' info='the namespace associated URN'/>
-      <arg name='prefix' type='const xmlChar *' info='the namespace prefix'/>
-    </function>
-    <function name='hasExternalSubset' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Does this document has an external subset DEPRECATED: use xmlSAX2HasExternalSubset()</info>
-      <return type='int' info='1 if true'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
     <functype name='hasExternalSubsetSAXFunc' file='parser' module='parser'>
       <info>Does this document has an external subset?</info>
       <return type='int' info='1 if true'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </functype>
-    <function name='hasInternalSubset' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Does this document has an internal subset DEPRECATED: use xmlSAX2HasInternalSubset()</info>
-      <return type='int' info='1 if true'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
     <functype name='hasInternalSubsetSAXFunc' file='parser' module='parser'>
       <info>Does this document has an internal subset.</info>
       <return type='int' info='1 if true'/>
@@ -7536,14 +7326,6 @@ crash if you try to modify the tree)'/>
       <return type='const htmlElemDesc *' info='the related htmlElemDescPtr or NULL if not found.'/>
       <arg name='tag' type='const xmlChar *' info='The tag name in lowercase'/>
     </function>
-    <function name='ignorableWhitespace' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use characters DEPRECATED: use xmlSAX2IgnorableWhitespace()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='ch' type='const xmlChar *' info='a xmlChar string'/>
-      <arg name='len' type='int' info='the number of xmlChar'/>
-    </function>
     <functype name='ignorableWhitespaceSAXFunc' file='parser' module='parser'>
       <info>Receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use characters.</info>
       <return type='void'/>
@@ -7556,19 +7338,6 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
       <arg name='handler' type='xmlGenericErrorFunc *' info='the handler'/>
     </function>
-    <function name='inithtmlDefaultSAXHandler' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Initialize the default HTML SAX version 1 handler DEPRECATED: use xmlSAX2InitHtmlDefaultSAXHandler() for the new SAX2 blocks</info>
-      <return type='void'/>
-      <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>
-    </function>
-    <function name='initxmlDefaultSAXHandler' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Initialize the default XML SAX version 1 handler DEPRECATED: use xmlSAX2InitDefaultSAXHandler() for the new SAX2 blocks</info>
-      <return type='void'/>
-      <arg name='hdlr' type='xmlSAXHandlerV1 *' info='the SAX handler'/>
-      <arg name='warning' type='int' info='flag if non-zero sets the handler warning procedure'/>
-    </function>
     <function name='inputPop' file='parserInternals' module='parser'>
       <info>Pops the top parser input from the input stack</info>
       <return type='xmlParserInputPtr' info='the input just removed'/>
@@ -7580,15 +7349,6 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlParserInputPtr' info='the parser input'/>
     </function>
-    <function name='internalSubset' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Callback on internal subset declaration. DEPRECATED: use xmlSAX2InternalSubset()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='the root element name'/>
-      <arg name='ExternalID' type='const xmlChar *' info='the external ID'/>
-      <arg name='SystemID' type='const xmlChar *' info='the SYSTEM ID (e.g. filename or URL)'/>
-    </function>
     <functype name='internalSubsetSAXFunc' file='parser' module='parser'>
       <info>Callback on internal subset declaration.</info>
       <return type='void'/>
@@ -7597,12 +7357,6 @@ crash if you try to modify the tree)'/>
       <arg name='ExternalID' type='const xmlChar *' info='the external ID'/>
       <arg name='SystemID' type='const xmlChar *' info='the SYSTEM ID (e.g. filename or URL)'/>
     </functype>
-    <function name='isStandalone' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Is this document tagged standalone ? DEPRECATED: use xmlSAX2IsStandalone()</info>
-      <return type='int' info='1 if true'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
     <functype name='isStandaloneSAXFunc' file='parser' module='parser'>
       <info>Is this document tagged standalone?</info>
       <return type='int' info='1 if true'/>
@@ -7627,14 +7381,6 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='const xmlChar *' info='the element name'/>
     </function>
-    <function name='namespaceDecl' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>A namespace has been parsed. DEPRECATED</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='href' type='const xmlChar *' info='the namespace associated URN'/>
-      <arg name='prefix' type='const xmlChar *' info='the namespace prefix'/>
-    </function>
     <function name='nodePop' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, do not use.  Pops the top element node from the node stack</info>
       <return type='xmlNodePtr' info='the node just removed'/>
@@ -7646,15 +7392,6 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='value' type='xmlNodePtr' info='the element node'/>
     </function>
-    <function name='notationDecl' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>What to do when a notation declaration has been parsed. DEPRECATED: use xmlSAX2NotationDecl()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='The name of the notation'/>
-      <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
-      <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
-    </function>
     <functype name='notationDeclSAXFunc' file='parser' module='parser'>
       <info>What to do when a notation declaration has been parsed.</info>
       <return type='void'/>
@@ -7663,14 +7400,6 @@ crash if you try to modify the tree)'/>
       <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
       <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
     </functype>
-    <function name='processingInstruction' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>A processing instruction has been parsed. DEPRECATED: use xmlSAX2ProcessingInstruction()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='target' type='const xmlChar *' info='the target name'/>
-      <arg name='data' type='const xmlChar *' info='the PI data&apos;s'/>
-    </function>
     <functype name='processingInstructionSAXFunc' file='parser' module='parser'>
       <info>A processing instruction has been parsed.</info>
       <return type='void'/>
@@ -7678,27 +7407,12 @@ crash if you try to modify the tree)'/>
       <arg name='target' type='const xmlChar *' info='the target name'/>
       <arg name='data' type='const xmlChar *' info='the PI data&apos;s'/>
     </functype>
-    <function name='reference' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>called when an entity reference is detected. DEPRECATED: use xmlSAX2Reference()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='The entity name'/>
-    </function>
     <functype name='referenceSAXFunc' file='parser' module='parser'>
       <info>Called when an entity reference is detected.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The entity name'/>
     </functype>
-    <function name='resolveEntity' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>The entity loader, to control the loading of external entities, the application can either: - override this resolveEntity() callback in the SAX block - or better use the xmlSetExternalEntityLoader() function to set up it&apos;s own entity resolution routine DEPRECATED: use xmlSAX2ResolveEntity()</info>
-      <return type='xmlParserInputPtr' info='the xmlParserInputPtr if inlined or NULL for DOM behaviour.'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
-      <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
-    </function>
     <functype name='resolveEntitySAXFunc' file='parser' module='parser'>
       <info>Callback: The entity loader, to control the loading of external entities, the application can either: - override this resolveEntity() callback in the SAX block - or better use the xmlSetExternalEntityLoader() function to set up it&apos;s own entity resolution routine</info>
       <return type='xmlParserInputPtr' info='the xmlParserInputPtr if inlined or NULL for DOM behaviour.'/>
@@ -7706,45 +7420,17 @@ crash if you try to modify the tree)'/>
       <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
       <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
     </functype>
-    <function name='setDocumentLocator' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Receive the document locator at startup, actually xmlDefaultSAXLocator Everything is available on the context, so this is useless in our case. DEPRECATED</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='loc' type='xmlSAXLocatorPtr' info='A SAX Locator'/>
-    </function>
     <functype name='setDocumentLocatorSAXFunc' file='parser' module='parser'>
       <info>Receive the document locator at startup, actually xmlDefaultSAXLocator. Everything is available on the context, so this is useless in our case.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='loc' type='xmlSAXLocatorPtr' info='A SAX Locator'/>
     </functype>
-    <function name='setNamespace' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Set the current element namespace. DEPRECATED</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='the namespace prefix'/>
-    </function>
-    <function name='startDocument' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>called when the document start being processed. DEPRECATED: use xmlSAX2StartDocument()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-    </function>
     <functype name='startDocumentSAXFunc' file='parser' module='parser'>
       <info>Called when the document start being processed.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </functype>
-    <function name='startElement' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>called when an opening tag has been processed. DEPRECATED: use xmlSAX2StartElement()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='fullname' type='const xmlChar *' info='The element name, including namespace prefix'/>
-      <arg name='atts' type='const xmlChar **' info='An array of name/value attributes pairs, NULL terminated'/>
-    </function>
     <functype name='startElementNsSAX2Func' file='parser' module='parser'>
       <info>SAX2 callback when an element start has been detected by the parser. It provides the namespace information for the element, as well as the new namespace declarations on the element.</info>
       <return type='void'/>
@@ -7765,16 +7451,6 @@ crash if you try to modify the tree)'/>
       <arg name='name' type='const xmlChar *' info='The element name, including namespace prefix'/>
       <arg name='atts' type='const xmlChar **' info='An array of name/value attributes pairs, NULL terminated'/>
     </functype>
-    <function name='unparsedEntityDecl' file='SAX' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>What to do when an unparsed entity declaration is parsed DEPRECATED: use xmlSAX2UnparsedEntityDecl()</info>
-      <return type='void'/>
-      <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
-      <arg name='name' type='const xmlChar *' info='The name of the entity'/>
-      <arg name='publicId' type='const xmlChar *' info='The public ID of the entity'/>
-      <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
-      <arg name='notationName' type='const xmlChar *' info='the name of the notation'/>
-    </function>
     <functype name='unparsedEntityDeclSAXFunc' file='parser' module='parser'>
       <info>What to do when an unparsed entity declaration is parsed.</info>
       <return type='void'/>
@@ -8721,11 +8397,6 @@ crash if you try to modify the tree)'/>
       <info>This function name is somewhat misleading. It does not clean up parser state, it cleans up memory allocated by the library itself. It is a cleanup function for the XML library. It tries to reclaim all related global memory allocated for the library processing. It doesn&apos;t deallocate any document related memory. One should call xmlCleanupParser() only when the process has finished using the library and all XML/HTML documents built with it. See also xmlInitParser() which has the opposite function of preparing the library for operations.  WARNING: if your application is multithreaded or has plugin support calling this may crash the application if another thread or a plugin is still using libxml2. It&apos;s sometimes very hard to guess if libxml2 is in use in the application, some libraries or plugins may use it without notice. In case of doubt abstain from calling this function or do it just before calling exit() to avoid leak reports from valgrind !</info>
       <return type='void'/>
     </function>
-    <function name='xmlCleanupPredefinedEntities' file='entities' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Cleanup up the predefined entities table. Deprecated call</info>
-      <return type='void'/>
-    </function>
     <function name='xmlCleanupThreads' file='threads' module='threads'>
       <info>DEPRECATED: This function is a no-op. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.</info>
       <return type='void'/>
@@ -9171,17 +8842,6 @@ crash if you try to modify the tree)'/>
       <arg name='output' type='FILE *' info='the FILE * for the output'/>
       <arg name='str' type='const xmlChar *' info='the string'/>
     </function>
-    <function name='xmlDecodeEntities' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>This function is deprecated, we now always process entities content through xmlStringDecodeEntities  TODO: remove it in next major release.  [67] Reference ::= EntityRef | CharRef  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;</info>
-      <return type='xmlChar *' info='A newly allocated string with the substitution done. The caller must deallocate it !'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
-      <arg name='len' type='int' info='the len to decode (in bytes !), -1 for no size limit'/>
-      <arg name='what' type='int' info='combination of XML_SUBSTITUTE_REF and XML_SUBSTITUTE_PEREF'/>
-      <arg name='end' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
-      <arg name='end2' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
-      <arg name='end3' type='xmlChar' info='an end marker xmlChar, 0 if none'/>
-    </function>
     <function name='xmlDefaultSAXHandlerInit' file='SAX2' module='SAX2'>
       <info>DEPRECATED: This function is a no-op. Call xmlInitParser to initialize the library.  Initialize the default SAX2 handler</info>
       <return type='void'/>
@@ -9412,13 +9072,6 @@ crash if you try to modify the tree)'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='cur' type='xmlNodePtr' info='the current node'/>
     </function>
-    <function name='xmlEncodeEntities' file='entities' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>TODO: remove xmlEncodeEntities, once we are not afraid of breaking binary compatibility  People must migrate their code to xmlEncodeEntitiesReentrant ! This routine will issue a warning when encountered.</info>
-      <return type='const xmlChar *' info='NULL'/>
-      <arg name='doc' type='xmlDocPtr' info='the document containing the string'/>
-      <arg name='input' type='const xmlChar *' info='A string to convert to XML.'/>
-    </function>
     <function name='xmlEncodeEntitiesReentrant' file='entities' module='entities'>
       <info>Do a global encoding of a string, replacing the predefined entities and non ASCII values with their entities and CharRef counterparts. Contrary to xmlEncodeEntities, this routine is reentrant, and result must be deallocated.</info>
       <return type='xmlChar *' info='A newly allocated string with the substitution done.'/>
@@ -9431,14 +9084,6 @@ crash if you try to modify the tree)'/>
       <arg name='doc' type='const xmlDoc *' info='the document containing the string'/>
       <arg name='input' type='const xmlChar *' info='A string to convert to XML.'/>
     </function>
-    <functype name='xmlEntityReferenceFunc' file='parserInternals' module='parserInternals'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Callback function used when one needs to be able to track back the provenance of a chunk of nodes inherited from an entity replacement.</info>
-      <return type='void'/>
-      <arg name='ent' type='xmlEntityPtr' info='the entity'/>
-      <arg name='firstNode' type='xmlNodePtr' info='the fist node in the chunk'/>
-      <arg name='lastNode' type='xmlNodePtr' info='the last nod in the chunk'/>
-    </functype>
     <functype name='xmlExternalEntityLoader' file='parser' module='parser'>
       <info>External entity loaders types.</info>
       <return type='xmlParserInputPtr' info='the entity input parser.'/>
@@ -9762,21 +9407,6 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: See xmlSetExternalEntityLoader.  Get the default external entity resolver function for the application</info>
       <return type='xmlExternalEntityLoader' info='the xmlExternalEntityLoader function pointer'/>
     </function>
-    <function name='xmlGetFeature' file='parser' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Read the current value of one feature of this parser instance</info>
-      <return type='int' info='-1 in case or error, 0 otherwise'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML/HTML parser context'/>
-      <arg name='name' type='const char *' info='the feature name'/>
-      <arg name='result' type='void *' info='location to store the result'/>
-    </function>
-    <function name='xmlGetFeaturesList' file='parser' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Copy at most *@len feature names into the @result array</info>
-      <return type='int' info='-1 in case or error, or the total number of features, len is updated with the number of strings copied, strings must not be deallocated'/>
-      <arg name='len' type='int *' info='the length of the features name array (input/output)'/>
-      <arg name='result' type='const char **' info='an array of string to be filled with the features name.'/>
-    </function>
     <function name='xmlGetGlobalState' file='globals' module='globals'>
       <info>DEPRECATED</info>
       <return type='xmlGlobalStatePtr' info='NULL.'/>
@@ -9869,13 +9499,6 @@ crash if you try to modify the tree)'/>
       <return type='int' info='the char value or -1 in case of error, and sets *len to the actual number of bytes consumed (0 in case of error)'/>
       <arg name='utf' type='const unsigned char *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='len' type='int *' info='a pointer to the minimum number of bytes present in the sequence.  This is used to assure the next character is completely contained within the sequence.'/>
-    </function>
-    <function name='xmlHandleEntity' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Default handling of defined entities, when should we define a new input stream ? When do we just handle that as a set of chars ?  OBSOLETE: to be removed at some point.</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='entity' type='xmlEntityPtr' info='an XML entity pointer.'/>
     </function>
     <function name='xmlHasFeature' file='parser' module='parser'>
       <info>Examines if the library has been compiled with a given feature.</info>
@@ -10229,11 +9852,6 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: No-op.</info>
       <return type='void'/>
       <arg name='gs' type='xmlGlobalStatePtr' info='a pointer to a newly allocated global state'/>
-    </function>
-    <function name='xmlInitializePredefinedEntities' file='entities' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Set up the predefined entities. Deprecated call</info>
-      <return type='void'/>
     </function>
     <functype name='xmlInputCloseCallback' file='xmlIO' module='xmlIO'>
       <info>Callback used in the I/O Input API to close the resource</info>
@@ -10734,25 +10352,6 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
       <arg name='tok' type='xmlMutexPtr' info='the simple mutex'/>
     </function>
-    <function name='xmlNamespaceParseNCName' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>parse an XML namespace name.  TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input.  [NS 3] NCName ::= (Letter | &apos;_&apos;) (NCNameChar)*  [NS 4] NCNameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | CombiningChar | Extender</info>
-      <return type='xmlChar *' info='the namespace name or NULL'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-    </function>
-    <function name='xmlNamespaceParseNSDef' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>parse a namespace prefix declaration  TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input.  [NS 1] NSDef ::= PrefixDef Eq SystemLiteral  [NS 2] PrefixDef ::= &apos;xmlns&apos; (&apos;:&apos; NCName)?</info>
-      <return type='xmlChar *' info='the namespace name'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-    </function>
-    <function name='xmlNamespaceParseQName' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input.  parse an XML qualified name  [NS 5] QName ::= (Prefix &apos;:&apos;)? LocalPart  [NS 6] Prefix ::= NCName  [NS 7] LocalPart ::= NCName</info>
-      <return type='xmlChar *' info='the local part, and prefix is updated to get the Prefix if any.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='prefix' type='xmlChar **' info='a xmlChar **'/>
-    </function>
     <function name='xmlNanoHTTPAuthHeader' file='nanohttp' module='nanohttp'>
       <cond>defined(LIBXML_HTTP_ENABLED)</cond>
       <info>Get the authentication header of an HTTP context</info>
@@ -11019,14 +10618,6 @@ crash if you try to modify the tree)'/>
       <return type='xmlParserInputPtr' info='the new input stream or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='ent' type='xmlEntityPtr' info='an Entity pointer'/>
-    </function>
-    <function name='xmlNewGlobalNs' file='tree' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Creation of a Namespace, the old way using PI and without scoping DEPRECATED !!!</info>
-      <return type='xmlNsPtr' info='NULL this functionality had been removed'/>
-      <arg name='doc' type='xmlDocPtr' info='the document carrying the namespace'/>
-      <arg name='href' type='const xmlChar *' info='the URI associated'/>
-      <arg name='prefix' type='const xmlChar *' info='the prefix for the namespace'/>
     </function>
     <function name='xmlNewIOInputStream' file='parser' module='parserInternals'>
       <info>Create a new input stream structure encapsulating the @input into a stream suitable for the parser.</info>
@@ -11767,12 +11358,6 @@ crash if you try to modify the tree)'/>
       <return type='const xmlChar *' info='the Name parsed or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
-    <function name='xmlParseNamespace' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>xmlParseNamespace: parse specific PI &apos;&lt;?namespace ...&apos; constructs.  This is what the older xml-name Working Draft specified, a bunch of other stuff may still rely on it, so support is still here as if it was declared on the root of the Tree:-(  TODO: remove from library  To be removed at next drop of binary compatibility</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-    </function>
     <function name='xmlParseNmtoken' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML Nmtoken.  [7] Nmtoken ::= (NameChar)+  [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*</info>
       <return type='xmlChar *' info='the Nmtoken parsed or NULL'/>
@@ -11806,12 +11391,6 @@ crash if you try to modify the tree)'/>
     <function name='xmlParsePubidLiteral' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, don&apos;t use.  parse an XML public literal  [12] PubidLiteral ::= &apos;&quot;&apos; PubidChar* &apos;&quot;&apos; | &quot;&apos;&quot; (PubidChar - &quot;&apos;&quot;)* &quot;&apos;&quot;</info>
       <return type='xmlChar *' info='the PubidLiteral parsed or NULL.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-    </function>
-    <function name='xmlParseQuotedString' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Parse and return a string between quotes or doublequotes  TODO: Deprecated, to  be removed at next drop of binary compatibility</info>
-      <return type='xmlChar *' info='the string parser or NULL.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseReference' file='parserInternals' module='parser'>
@@ -11910,12 +11489,6 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlParserHandlePEReference' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, do not use.  [69] PEReference ::= &apos;%&apos; Name &apos;;&apos;  [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly.  [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with &quot;standalone=&apos;yes&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ VC: Entity Declared ] In a document with an external subset or external parameter entities with &quot;standalone=&apos;no&apos;&quot;, ...  ... The declaration of a parameter entity must precede any reference to it...  [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.  A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc i.e. - Included in literal in entity values - Included as Parameter Entity reference within DTDs</info>
-      <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
-    </function>
-    <function name='xmlParserHandleReference' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>TODO: Remove, now deprecated ... the test is done directly in the content parsing routines.  [67] Reference ::= EntityRef | CharRef  [68] EntityRef ::= &apos;&amp;&apos; Name &apos;;&apos;  [ WFC: Entity Declared ] the Name given in the entity reference must match that in an entity declaration, except that well-formed documents need not declare any of the following entities: amp, lt, gt, apos, quot.  [ WFC: Parsed Entity ] An entity reference must not contain the name of an unparsed entity  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;  A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
     </function>
@@ -12763,7 +12336,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2EndElement' file='SAX2' module='SAX2'>
-      <info>called when the end of an element has been detected.</info>
+      <info>called when the end of an element has been detected.  Used for HTML and SAX1.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The element name'/>
@@ -12908,7 +12481,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2StartElement' file='SAX2' module='SAX2'>
-      <info>called when an opening tag has been processed.</info>
+      <info>Called when an opening tag has been processed.  Used for HTML and SAX1.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='fullname' type='const xmlChar *' info='The element name, including namespace prefix'/>
@@ -13157,12 +12730,6 @@ crash if you try to modify the tree)'/>
       <info>Save the URI as an escaped string</info>
       <return type='xmlChar *' info='a new string (to be deallocated by caller)'/>
       <arg name='uri' type='xmlURIPtr' info='pointer to an xmlURI'/>
-    </function>
-    <function name='xmlScanName' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Trickery: parse an XML name but without consuming the input flow Needed for rollback cases. Used only when parsing entities references.  TODO: seems deprecated now, only used in the default part of xmlParserHandleReference  [4] NameChar ::= Letter | Digit | &apos;.&apos; | &apos;-&apos; | &apos;_&apos; | &apos;:&apos; | CombiningChar | Extender  [5] Name ::= (Letter | &apos;_&apos; | &apos;:&apos;) (NameChar)*  [6] Names ::= Name (S Name)*</info>
-      <return type='xmlChar *' info='the Name parsed or NULL'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlSchemaCheckFacet' file='xmlschemastypes' module='xmlschemas'>
       <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
@@ -13758,24 +13325,10 @@ crash if you try to modify the tree)'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='mode' type='int' info='the compression ratio'/>
     </function>
-    <function name='xmlSetEntityReferenceFunc' file='parserInternals' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Set the function to call call back when a xml reference has been made</info>
-      <return type='void'/>
-      <arg name='func' type='xmlEntityReferenceFunc' info='A valid function'/>
-    </function>
     <function name='xmlSetExternalEntityLoader' file='parser' module='parserInternals'>
       <info>DEPRECATED: This is a global setting and not thread-safe. Use xmlCtxtSetResourceLoader or similar functions.  Changes the default external entity resolver function for the application.</info>
       <return type='void'/>
       <arg name='f' type='xmlExternalEntityLoader' info='the new entity resolver function'/>
-    </function>
-    <function name='xmlSetFeature' file='parser' module='legacy'>
-      <cond>defined(LIBXML_LEGACY_ENABLED)</cond>
-      <info>Change the current value of one feature of this parser instance</info>
-      <return type='int' info='-1 in case or error, 0 otherwise'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML/HTML parser context'/>
-      <arg name='name' type='const char *' info='the feature name'/>
-      <arg name='value' type='void *' info='pointer to the location of the new value'/>
     </function>
     <function name='xmlSetGenericErrorFunc' file='xmlerror' module='error'>
       <info>DEPRECATED: See xmlSetStructuredErrorFunc for alternatives.  Set the global &quot;generic&quot; handler and context for error messages. The generic error handler will only receive fragments of error messages which should be concatenated or printed to a stream.  If handler is NULL, use the built-in default handler which prints to stderr.  Since this is a global setting, it&apos;s a good idea to reset the error handler to its default value after collecting the errors you&apos;re interested in.  For multi-threaded applications, this must be set separately for each thread.</info>

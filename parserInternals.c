@@ -2414,8 +2414,8 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
         if ((ctxt->options & XML_PARSE_NONET) == 0)
             flags |= XML_INPUT_NETWORK;
 
-        code = ctxt->resourceLoader(ctxt->resourceCtxt, url, publicId, flags,
-                                    type, &ret);
+        code = ctxt->resourceLoader(ctxt->resourceCtxt, url, publicId, type,
+                                    flags, &ret);
         if (code != XML_ERR_OK) {
             xmlCtxtErrIO(ctxt, code, url);
             return(NULL);

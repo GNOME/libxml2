@@ -31,6 +31,8 @@ ignored_files = {
   "testdso.c": "test for dynamid shared libraries",
   "testrecurse.c": "test for entities recursions",
   "timsort.h": "Internal header only for xpath.c 2.9.0",
+  "nanoftp.h": "empty",
+  "SAX.h": "empty",
 }
 
 ignored_words = {

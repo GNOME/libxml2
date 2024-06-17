@@ -112,12 +112,6 @@
      <exports symbol='htmlSaveFileFormat' type='function'/>
      <exports symbol='htmlSetMetaEncoding' type='function'/>
     </file>
-    <file name='SAX'>
-     <summary>Old SAX version 1 handler, deprecated</summary>
-     <description>DEPRECATED set of SAX version 1 interfaces used to build the DOM tree. </description>
-     <author>Daniel Veillard </author>
-     <deprecated/>
-    </file>
     <file name='SAX2'>
      <summary>SAX2 parser interface used to build the DOM tree</summary>
      <description>those are the default SAX2 interfaces used by the library when building DOM tree. </description>
@@ -487,10 +481,6 @@
      <exports symbol='xmlListSort' type='function'/>
      <exports symbol='xmlListWalk' type='function'/>
      <exports symbol='xmlListWalker' type='function'/>
-    </file>
-    <file name='nanoftp'>
-     <summary>Removed legacy symbols for an outdated FTP client </summary>
-     <author>Daniel Veillard </author>
     </file>
     <file name='nanohttp'>
      <summary>minimal HTTP implementation</summary>

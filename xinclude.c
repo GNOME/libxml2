@@ -1701,10 +1701,15 @@ xmlXIncludeIncludeNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
 		nb_elem++;
 	    tmp = tmp->next;
 	}
-	if (nb_elem > 1) {
-	    xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_MULTIPLE_ROOT,
-		       "XInclude error: would result in multiple root nodes\n",
-			   NULL);
+        if (nb_elem != 1) {
+            if (nb_elem > 1)
+                xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_MULTIPLE_ROOT,
+                               "XInclude error: would result in multiple root "
+                               "nodes\n", NULL);
+            else
+                xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_MULTIPLE_ROOT,
+                               "XInclude error: would result in no root "
+                               "node\n", NULL);
             xmlFreeNodeList(list);
 	    return(-1);
 	}

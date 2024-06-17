@@ -79,6 +79,10 @@
 #define URI_HASH_EMPTY  0xD943A04E
 #define URI_HASH_XML    0xF0451F02
 
+#ifndef STDIN_FILENO
+  #define STDIN_FILENO 0
+#endif
+
 struct _xmlStartTag {
     const xmlChar *prefix;
     const xmlChar *URI;
@@ -12744,7 +12748,10 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
         ctxt->recovery = 1;
     }
 
-    input = xmlNewInputURL(ctxt, filename, NULL, NULL, 0);
+    if ((filename != NULL) && (filename[0] == '-') && (filename[1] == 0))
+        input = xmlNewInputFd(ctxt, filename, STDIN_FILENO, NULL, 0);
+    else
+        input = xmlNewInputURL(ctxt, filename, NULL, NULL, 0);
 
     ret = xmlCtxtParseDocument(ctxt, input);
 
@@ -13777,7 +13784,15 @@ xmlReadFile(const char *filename, const char *encoding, int options)
 
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputURL(ctxt, filename, NULL, encoding, 0);
+    /*
+     * Backward compatibility for users of command line utilities like
+     * xmlstarlet expecting "-" to mean stdin. This is dangerous and
+     * should be removed at some point.
+     */
+    if ((filename != NULL) && (filename[0] == '-') && (filename[1] == 0))
+        input = xmlNewInputFd(ctxt, filename, STDIN_FILENO, encoding, 0);
+    else
+        input = xmlNewInputURL(ctxt, filename, NULL, encoding, 0);
 
     doc = xmlCtxtParseDocument(ctxt, input);
 

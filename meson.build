@@ -32,7 +32,7 @@ dir_locale = dir_prefix / get_option('localedir')
 
 host_os = host_machine.system()
 
-bsd = ['freebsd', 'openbsd', 'dragonfly']
+bsd = ['freebsd', 'dragonfly']
 cygwin = 'cygwin'
 windows = 'windows'
 sys_bsd = bsd.contains(host_os)
@@ -575,7 +575,7 @@ xml_deps += icu_dep
 if not get_option('minimum')
 # this is a hack for the BSDs. The iconv dependency works as long as libiconv is not in the include path.
     if sys_bsd and icu_dep.found()
-        iconv_dep = cc.find_library('iconv', dirs: icu_dep.get_variable(pkgconfig: 'includedir'), required: get_option('iconv'))
+        iconv_dep = cc.find_library('iconv', dirs: icu_dep.get_variable(pkgconfig: 'libdir'), required: get_option('iconv'))
     else
         iconv_dep = dependency('iconv', required: get_option('iconv'))
     endif

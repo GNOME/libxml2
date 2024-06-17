@@ -1748,7 +1748,10 @@ xmlTextReaderReadString(xmlTextReaderPtr reader)
     switch (node->type) {
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:
+            break;
         case XML_ELEMENT_NODE:
+            if (xmlTextReaderDoExpand(reader) == -1)
+                return(NULL);
             break;
         case XML_ATTRIBUTE_NODE:
             /* TODO */

@@ -47,7 +47,7 @@
   #define XML_HIDDEN
 #endif
 
-#if __GNUC__ * 100 + __GNUC_MINOR__ >= 207
+#if __GNUC__ * 100 + __GNUC_MINOR__ >= 207 || defined(__clang__)
   #define ATTRIBUTE_UNUSED __attribute__((unused))
 #else
   #define ATTRIBUTE_UNUSED

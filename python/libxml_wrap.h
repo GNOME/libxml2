@@ -50,7 +50,7 @@
  * Repeated here since the definition is not available when
  * compiled outside the libxml2 build tree.
  */
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__clang__)
 #ifdef ATTRIBUTE_UNUSED
 #undef ATTRIBUTE_UNUSED
 #endif

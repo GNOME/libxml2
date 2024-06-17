@@ -2112,6 +2112,46 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
 
 #endif
 
+#ifdef LIBXML_HTTP_ENABLED
+static int
+xmlCheckHTTPInputInternal(xmlParserInputPtr input) {
+    const char *encoding;
+    const char *redir;
+    const char *mime;
+    int code;
+
+    if ((input == NULL) || (input->buf == NULL) ||
+        (input->buf->readcallback != xmlIOHTTPRead) ||
+        (input->buf->context == NULL))
+        return(XML_ERR_OK);
+
+    code = xmlNanoHTTPReturnCode(input->buf->context);
+    if (code >= 400) {
+        /* fatal error */
+        return(XML_IO_LOAD_ERROR);
+    }
+
+    mime = xmlNanoHTTPMimeType(input->buf->context);
+    if ((xmlStrstr(BAD_CAST mime, BAD_CAST "/xml")) ||
+        (xmlStrstr(BAD_CAST mime, BAD_CAST "+xml"))) {
+        encoding = xmlNanoHTTPEncoding(input->buf->context);
+        if (encoding != NULL)
+            xmlInputSetEncoding(input, encoding);
+    }
+
+    redir = xmlNanoHTTPRedir(input->buf->context);
+    if (redir != NULL) {
+        if (input->filename != NULL)
+            xmlFree((xmlChar *) input->filename);
+        input->filename = xmlMemStrdup(redir);
+        if (input->filename == NULL)
+            return(XML_ERR_NO_MEMORY);
+    }
+
+    return(XML_ERR_OK);
+}
+#endif /* LIBXML_HTTP_ENABLED */
+
 /**
  * xmlCheckHTTPInput:
  * @ctxt: an XML parser context
@@ -2132,45 +2172,20 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
     (void) ctxt;
 
 #ifdef LIBXML_HTTP_ENABLED
-    if ((ret != NULL) && (ret->buf != NULL) &&
-        (ret->buf->readcallback == xmlIOHTTPRead) &&
-        (ret->buf->context != NULL)) {
-        const char *encoding;
-        const char *redir;
-        const char *mime;
-        int code;
+    {
+        int code = xmlCheckHTTPInputInternal(ret);
 
-        code = xmlNanoHTTPReturnCode(ret->buf->context);
-        if (code >= 400) {
-            /* fatal error */
-	    if (ret->filename != NULL)
+        if (code != XML_ERR_OK) {
+            if (ret->filename != NULL)
                 xmlCtxtErrIO(ctxt, XML_IO_LOAD_ERROR, ret->filename);
-	    else
+            else
                 xmlCtxtErrIO(ctxt, XML_IO_LOAD_ERROR, "<null>");
             xmlFreeInputStream(ret);
-            ret = NULL;
-        } else {
-
-            mime = xmlNanoHTTPMimeType(ret->buf->context);
-            if ((xmlStrstr(BAD_CAST mime, BAD_CAST "/xml")) ||
-                (xmlStrstr(BAD_CAST mime, BAD_CAST "+xml"))) {
-                encoding = xmlNanoHTTPEncoding(ret->buf->context);
-                if (encoding != NULL)
-                    xmlSwitchEncodingName(ctxt, encoding);
-#if 0
-            } else if (xmlStrstr(BAD_CAST mime, BAD_CAST "html")) {
-#endif
-            }
-            redir = xmlNanoHTTPRedir(ret->buf->context);
-            if (redir != NULL) {
-                if (ret->filename != NULL)
-                    xmlFree((xmlChar *) ret->filename);
-                ret->filename =
-                    (char *) xmlStrdup((const xmlChar *) redir);
-            }
+            return(NULL);
         }
     }
 #endif
+
     return(ret);
 }
 
@@ -2218,7 +2233,13 @@ xmlInputCreateUrl(const char *filename, int flags, xmlParserInputPtr *out) {
     if (input == NULL)
 	return(XML_ERR_NO_MEMORY);
 
-    /*input = xmlCheckHTTPInput(ctxt, input);*/
+#ifdef LIBXML_HTTP_ENABLED
+    code = xmlCheckHTTPInputInternal(input);
+    if (code != XML_ERR_OK) {
+        xmlFreeInputStream(input);
+        return(code);
+    }
+#endif
 
     *out = input;
     return(XML_ERR_OK);
@@ -2252,8 +2273,6 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
         xmlCtxtErrIO(ctxt, code, filename);
         return(NULL);
     }
-
-    input = xmlCheckHTTPInput(ctxt, input);
 
     return(input);
 }

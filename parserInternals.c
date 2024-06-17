@@ -2425,8 +2425,15 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
         return(NULL);
 
     if ((ctxt != NULL) && (ctxt->resourceLoader != NULL)) {
+        char *resource = NULL;
         int flags = 0;
         int code;
+
+#ifdef LIBXML_CATALOGENABLED
+        resource = (char *) xmlResolveResourceFromCatalog(url, publicId, ctxt);
+        if (resource != NULL)
+            url = resource;
+#endif
 
         if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
             flags |= XML_INPUT_UNZIP;
@@ -2435,6 +2442,8 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
 
         code = ctxt->resourceLoader(ctxt->resourceCtxt, url, publicId, type,
                                     flags, &ret);
+        if (resource != NULL)
+            xmlFree(resource);
         if (code != XML_ERR_OK) {
             xmlCtxtErrIO(ctxt, code, url);
             return(NULL);

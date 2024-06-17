@@ -962,12 +962,12 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
         ns = NULL;
         xmlFree(name);
         name = xmlStrdup(fullname);
-        if (name == NULL) {
-            xmlSAX2ErrMemory(ctxt);
-            if (ns != NULL)
-                xmlFree(ns);
-            return;
-        }
+    }
+    if (name == NULL) {
+        xmlSAX2ErrMemory(ctxt);
+        if (ns != NULL)
+            xmlFree(ns);
+        return;
     }
 
     /*

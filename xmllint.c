@@ -1594,7 +1594,8 @@ static void streamFile(const char *filename) {
     if (memory) {
 	if (stat(filename, &info) < 0)
 	    return;
-	if ((fd = open(filename, O_RDONLY)) < 0)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 	    return;
 	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
 	if (base == (void *) MAP_FAILED) {
@@ -2017,7 +2018,8 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	const char *base;
 	if (stat(filename, &info) < 0)
 	    return(NULL);
-	if ((fd = open(filename, O_RDONLY)) < 0)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 	    return(NULL);
 	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
 	if (base == (void *) MAP_FAILED) {
@@ -2147,7 +2149,8 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
             if (stat(filename, &info) < 0)
                 goto error;
-            if ((fd = open(filename, O_RDONLY)) < 0)
+            fd = open(filename, O_RDONLY);
+            if (fd < 0)
                 goto error;
             base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
             if (base == (void *) MAP_FAILED) {
@@ -2528,7 +2531,8 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	} else {
 	    xmlValidCtxtPtr cvp;
 
-	    if ((cvp = xmlNewValidCtxt()) == NULL) {
+	    cvp = xmlNewValidCtxt();
+	    if (cvp == NULL) {
 		fprintf(ERR_STREAM,
 			"Couldn't allocate validation context\n");
                 progresult = XMLLINT_ERR_MEM;
@@ -2559,7 +2563,8 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
     } else if (postvalid) {
 	xmlValidCtxtPtr cvp;
 
-	if ((cvp = xmlNewValidCtxt()) == NULL) {
+	cvp = xmlNewValidCtxt();
+	if (cvp == NULL) {
 	    fprintf(ERR_STREAM,
 		    "Couldn't allocate validation context\n");
             progresult = XMLLINT_ERR_MEM;

@@ -2675,7 +2675,8 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 	}
     }
 
-    if ((out_buff = xmlAllocOutputBuffer(conv_hdlr)) == NULL ) {
+    out_buff = xmlAllocOutputBuffer(conv_hdlr);
+    if (out_buff == NULL ) {
         xmlSaveErrMemory(NULL);
         xmlCharEncCloseFunc(conv_hdlr);
         return;

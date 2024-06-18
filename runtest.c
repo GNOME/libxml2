@@ -480,7 +480,8 @@ static int loadMem(const char *filename, const char **mem, int *size) {
     base = malloc(info.st_size + 1);
     if (base == NULL)
 	return(-1);
-    if ((fd = open(filename, RD_FLAGS)) < 0) {
+    fd = open(filename, RD_FLAGS);
+    if (fd  < 0) {
         free(base);
 	return(-1);
     }

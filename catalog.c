@@ -959,9 +959,11 @@ xmlLoadFileContent(const char *filename)
 #endif
 
 #ifdef HAVE_STAT
-    if ((fd = open(filename, O_RDONLY)) < 0)
+    fd = open(filename, O_RDONLY);
+    if (fd  < 0)
 #else
-    if ((fd = fopen(filename, "rb")) == NULL)
+    fd = fopen(filename, "rb");
+    if (fd == NULL)
 #endif
     {
         return (NULL);

@@ -377,7 +377,8 @@ UTF8Toisolat1(unsigned char* out, int *outlen,
 	for ( ; trailing; trailing--) {
 	    if (in >= inend)
 		break;
-	    if (((d= *in++) & 0xC0) != 0x80) {
+	    d = *in++;
+	    if ((d & 0xC0) != 0x80) {
 		*outlen = out - outstart;
 		*inlen = processed - instart;
 		return(XML_ENC_ERR_INPUT);

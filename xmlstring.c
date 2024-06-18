@@ -994,7 +994,8 @@ xmlUTF8Strsize(const xmlChar *utf, int len) {
     while ( len-- > 0) {
         if ( !*ptr )
             break;
-        if ( (ch = *ptr++) & 0x80)
+        ch = *ptr++;
+        if ((ch & 0x80))
             while ((ch<<=1) & 0x80 ) {
 		if (*ptr == 0) break;
                 ptr++;
@@ -1048,7 +1049,9 @@ xmlUTF8Strpos(const xmlChar *utf, int pos) {
     if (pos < 0)
         return(NULL);
     while (pos--) {
-        if ((ch=*utf++) == 0) return(NULL);
+        ch = *utf++;
+        if (ch == 0)
+            return(NULL);
         if ( ch & 0x80 ) {
             /* if not simple ascii, verify proper format */
             if ( (ch & 0xc0) != 0xc0 )

@@ -673,7 +673,8 @@ done:
 xmlValidCtxtPtr xmlNewValidCtxt(void) {
     xmlValidCtxtPtr ret;
 
-    if ((ret = xmlMalloc(sizeof (xmlValidCtxt))) == NULL)
+    ret = xmlMalloc(sizeof (xmlValidCtxt));
+    if (ret == NULL)
 	return (NULL);
 
     (void) memset(ret, 0, sizeof (xmlValidCtxt));
@@ -2752,10 +2753,12 @@ xmlAddRef(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *value,
      * Return the ref
      */
 
-    if (NULL == (ref_list = xmlHashLookup(table, value))) {
+    ref_list = xmlHashLookup(table, value);
+    if (ref_list == NULL) {
         int res;
 
-        if (NULL == (ref_list = xmlListCreate(xmlFreeRef, xmlDummyCompare)))
+        ref_list = xmlListCreate(xmlFreeRef, xmlDummyCompare);
+        if (ref_list == NULL)
 	    goto failed;
         res = xmlHashAdd(table, value, ref_list);
         if (res <= 0) {

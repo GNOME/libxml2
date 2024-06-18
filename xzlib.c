@@ -101,8 +101,8 @@ xz_error(xz_statep state, int err, const char *msg)
     }
 
     /* construct error message with path */
-    if ((state->msg =
-         xmlMalloc(strlen(state->path) + strlen(msg) + 3)) == NULL) {
+    state->msg = xmlMalloc(strlen(state->path) + strlen(msg) + 3);
+    if (state->msg == NULL) {
         state->err = LZMA_MEM_ERROR;
         state->msg = (char *) "out of memory";
         return;

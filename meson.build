@@ -69,7 +69,6 @@ want_pattern = get_option('pattern')
 want_push = get_option('push')
 want_python = get_option('python')
 want_reader = get_option('reader')
-want_readline = get_option('readline')
 want_regexps = get_option('regexps')
 want_sax1 = get_option('sax1')
 want_schemas = get_option('schemas')
@@ -170,7 +169,6 @@ if get_option('minimum')
     want_push = false
     want_python = false
     want_reader = false
-    want_readline = false
     want_regexps = false
     want_sax1 = false
     want_schemas = false
@@ -410,35 +408,22 @@ want_thread_alloc = threads_dep.found()
 
 ### xmllint shell history
 xmllint_deps = []
-if want_readline == true
-    termlib_lib = ['ncurses', 'curses', 'termcap', 'terminfo', 'termlib']
+if not get_option('minimum')
+    readline_dep = dependency('readline', required: get_option('readline'))
 
-    foreach tl : termlib_lib
-        termlib_dep = cc.find_library(tl, required: false)
-        if (
-            termlib_dep.found()
-            and cc.has_function('tputs', dependencies: termlib_dep)
-        )
-            xmllint_deps += termlib_dep
-            config_h.set10('HAVE_LIB' + tl.underscorify().to_upper(), true)
-            break
-        endif
-    endforeach
-
-    readline_dep = dependency('readline', required: false)
-    if readline_dep.found()
-        xmllint_deps += readline_dep
-        config_h.set10('HAVE_LIBREADLINE', true)
-    endif
-
-    if want_history == true
+    if readline_dep.found() and want_history == true
         history_dep = dependency('history', required: false)
         if history_dep.found()
             xmllint_deps += history_dep
             config_h.set10('HAVE_LIBHISTORY', true)
         endif
     endif
+else
+    readline_dep = dependency('', required: false)
 endif
+
+config_h.set('HAVE_LIBREADLINE', readline_dep.found())
+xmllint_deps += readline_dep
 
 ### crypto
 if sys_windows == true
@@ -793,7 +778,7 @@ summary(
         'push': want_push,
         'python': want_python,
         'reader': want_reader,
-        'readline': want_readline,
+        'readline': readline_dep.found(),
         'regexps': want_regexps,
         'sax1': want_sax1,
         'schemas': want_schemas,

@@ -144,8 +144,7 @@ option('reader',
 )
 
 option('readline',
-  type: 'boolean',
-  value: true,
+  type: 'feature',
   description: 'use readline in DIR (for shell history)'
 )
 

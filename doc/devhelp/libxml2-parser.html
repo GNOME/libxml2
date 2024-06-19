@@ -1557,7 +1557,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCtxtReadFile"></a>xmlCtxtReadFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	xmlCtxtReadFile		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const char * filename, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Parse an XML file from the filesystem, the network or a user-defined resource loader. See xmlNewInputURL and <a href="libxml2-parser.html#xmlCtxtUseOptions">xmlCtxtUseOptions</a> for details.</p>
+<p>Parse an XML file from the filesystem, the network or a user-defined resource loader.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2056,7 +2056,7 @@ The content of this structure is not made public by the API.
 <a name="xmlLoadExternalEntity"></a>xmlLoadExternalEntity ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlLoadExternalEntity	(const char * URL, <br>						 const char * ID, <br>						 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p></p>
+<p>@URL is a filename or URL. If if contains the substring "://", it is assumed to be a Legacy Extended IRI. Otherwise, it is treated as a filesystem path. @ID is an optional XML public ID, typically from a doctype declaration. It is used for catalog lookups. The following resource loaders will be called if they were registered (in order of precedence): - the global external entity loader set with <a href="libxml2-parser.html#xmlSetExternalEntityLoader">xmlSetExternalEntityLoader</a> - the per-thread <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> set with <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameDefault">xmlParserInputBufferCreateFilenameDefault</a> - the default loader which will return - the result from a matching global input callback set with <a href="libxml2-xmlIO.html#xmlRegisterInputCallbacks">xmlRegisterInputCallbacks</a> - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

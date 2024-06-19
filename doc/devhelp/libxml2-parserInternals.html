@@ -798,7 +798,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlCreateEntityParserCtxt"></a>xmlCreateEntityParserCtxt ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlCreateEntityParserCtxt	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URL, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ID, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base)<br>
 </pre>
-<p>DEPRECATED: Use xmlNewInputURL. Create a parser context for an external entity Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
+<p>DEPRECATED: Don't use. Create a parser context for an external entity Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2199,7 +2199,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlPushInput"></a>xmlPushInput ()</h3>
 <pre class="programlisting">int	xmlPushInput			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br>
 </pre>
-<p>Push an input stream onto the stack. This makes the parser use an input returned from advanced functions like xmlNewInputURL or xmlNewInputMemory.</p>
+<p>Push an input stream onto the stack.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

@@ -9053,7 +9053,7 @@ Could we use @subtypes for this?'/>
       <return type='xmlEntitiesTablePtr' info='the xmlEntitiesTablePtr just created or NULL in case of error.'/>
     </function>
     <function name='xmlCreateEntityParserCtxt' file='parserInternals' module='parser'>
-      <info>DEPRECATED: Use xmlNewInputURL.  Create a parser context for an external entity Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
+      <info>DEPRECATED: Don&apos;t use.  Create a parser context for an external entity Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</info>
       <return type='xmlParserCtxtPtr' info='the new parser context or NULL'/>
       <arg name='URL' type='const xmlChar *' info='the entity URL'/>
       <arg name='ID' type='const xmlChar *' info='the entity PUBLIC ID'/>
@@ -9148,7 +9148,7 @@ Could we use @subtypes for this?'/>
       <arg name='options' type='int' info='a combination of xmlParserOption'/>
     </function>
     <function name='xmlCtxtReadFile' file='parser' module='parser'>
-      <info>Parse an XML file from the filesystem, the network or a user-defined resource loader.  See xmlNewInputURL and xmlCtxtUseOptions for details.</info>
+      <info>Parse an XML file from the filesystem, the network or a user-defined resource loader.</info>
       <return type='xmlDocPtr' info='the resulting document tree'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
@@ -10897,7 +10897,7 @@ Could we use @subtypes for this?'/>
       <arg name='pathss' type='const char *' info='a list of directories separated by a colon or a space.'/>
     </function>
     <function name='xmlLoadExternalEntity' file='parser' module='parserInternals'>
-      <info></info>
+      <info>@URL is a filename or URL. If if contains the substring &quot;://&quot;, it is assumed to be a Legacy Extended IRI. Otherwise, it is treated as a filesystem path.  @ID is an optional XML public ID, typically from a doctype declaration. It is used for catalog lookups.  The following resource loaders will be called if they were registered (in order of precedence):  - the global external entity loader set with xmlSetExternalEntityLoader - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.</info>
       <return type='xmlParserInputPtr' info='the xmlParserInputPtr or NULL'/>
       <arg name='URL' type='const char *' info='the URL for the entity to load'/>
       <arg name='ID' type='const char *' info='the Public ID for the entity to load'/>
@@ -12626,7 +12626,7 @@ Could we use @subtypes for this?'/>
       <arg name='uri' type='xmlURIPtr' info='pointer to an xmlURI'/>
     </function>
     <function name='xmlPushInput' file='parserInternals' module='parser'>
-      <info>Push an input stream onto the stack.  This makes the parser use an input returned from advanced functions like xmlNewInputURL or xmlNewInputMemory.</info>
+      <info>Push an input stream onto the stack.</info>
       <return type='int' info='-1 in case of error or the index in the input stack'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='input' type='xmlParserInputPtr' info='an XML parser input fragment (entity, XML fragment ...).'/>

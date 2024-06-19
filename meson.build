@@ -745,6 +745,7 @@ pkgmod.generate(
     description: 'libXML library version2.',
     filebase: 'libxml-2.0',
     name: 'libXML',
+    subdirs:  [meson.project_name()],
     variables: 'modules=' + dl_dep.found().to_string('1', '0'),
 )
 

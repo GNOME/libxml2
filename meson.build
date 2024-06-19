@@ -58,7 +58,6 @@ cc = meson.get_compiler('c')
 want_c14n = get_option('c14n')
 want_catalog = get_option('catalog')
 want_debug = get_option('debuging')
-want_history = get_option('history')
 want_html = get_option('html')
 want_http = get_option('http')
 want_ipv6 = get_option('ipv6')
@@ -159,7 +158,6 @@ if get_option('minimum')
     want_c14n = false
     want_catalog = false
     want_debug = false
-    want_history = false
     want_html = false
     want_http = false
     want_ipv6 = false
@@ -410,20 +408,21 @@ want_thread_alloc = threads_dep.found()
 xmllint_deps = []
 if not get_option('minimum')
     readline_dep = dependency('readline', required: get_option('readline'))
-
-    if readline_dep.found() and want_history == true
-        history_dep = dependency('history', required: false)
-        if history_dep.found()
-            xmllint_deps += history_dep
-            config_h.set10('HAVE_LIBHISTORY', true)
-        endif
-    endif
 else
     readline_dep = dependency('', required: false)
 endif
 
 config_h.set('HAVE_LIBREADLINE', readline_dep.found())
 xmllint_deps += readline_dep
+
+if not get_option('minimum') and readline_dep.found()
+    history_dep = dependency('history', required: get_option('history'))
+else
+    history_dep = dependency('', required: false)
+endif
+
+config_h.set('HAVE_LIBHISTORY', history_dep.found())
+xmllint_deps += history_dep
 
 ### crypto
 if sys_windows == true
@@ -763,7 +762,7 @@ summary(
         'c14n': want_c14n,
         'catalog': want_catalog,
         'debug': want_debug,
-        'history': want_history,
+        'history': history_dep.found(),
         'html': want_html,
         'http': want_http,
         'iconv': iconv_dep.found(),

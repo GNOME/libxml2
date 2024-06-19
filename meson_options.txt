@@ -57,8 +57,7 @@ option('debuging',
 )
 
 option('history',
-  type: 'boolean',
-  value: false,
+  type: 'feature',
   description: 'History support for shell'
 )
 

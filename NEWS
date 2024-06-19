@@ -1,5 +1,32 @@
 NEWS file for libxml2
 
+v2.13.1: Jun 19 2024
+
+### Regressions
+
+- parser: Selectively reenable reading from "-"
+- reader: Fix xmlTextReaderReadString
+- xinclude: Set XPath context doc
+- xinclude: Load included documents with XML_PARSE_DTDLOAD
+- include: Don't redefine ATTRIBUTE_UNUSED
+- include: Readd circular dependency between tree.h and parser.h
+- xinclude: Add missing include (Jan Alexander Steffens (heftig))
+- win32, msvc: fix missing linking against Bcrypt.lib (Miklos Vajna)
+- xinclude: Don't raise error on empty nodeset
+- parser: Make failure to load main document a warning
+- tree: Fix freeing entities via xmlFreeNode
+- parser: Pass global object to sax->setDocumentLocator
+
+### Improvements
+
+- io: Fix resetting xmlParserInputBufferCreateFilename hook
+
+### Documentation
+
+- Fix typo in NEWS (--with-html -> --with-http) (Ryan Carsten Schmidt)
+- doc: Don't mention xmlNewInputURL
+
+
 v2.13.0: Jun 12 2024
 
 ### Major changes

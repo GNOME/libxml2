@@ -2018,6 +2018,18 @@ xmlBuildURISafe(const xmlChar *URI, const xmlChar *base, xmlChar **valPtr) {
 
     if (valPtr == NULL)
         return(1);
+    *valPtr = NULL;
+
+    if (URI == NULL)
+        return(1);
+
+    if (base == NULL) {
+        val = xmlStrdup(URI);
+        if (val == NULL)
+            return(-1);
+        *valPtr = val;
+        return(0);
+    }
 
     /*
      * 1) The URI reference is parsed into the potential four components and
@@ -2027,9 +2039,7 @@ xmlBuildURISafe(const xmlChar *URI, const xmlChar *base, xmlChar **valPtr) {
      *    as a reference to "." rather than as a synonym for the current
      *    URI.  Should we do that here?
      */
-    if (URI == NULL)
-        ret = 1;
-    else if (URI[0] != 0)
+    if (URI[0] != 0)
         ret = xmlParseURISafe((const char *) URI, &ref);
     else
         ret = 0;

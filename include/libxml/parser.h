@@ -1403,6 +1403,8 @@ XMLPUBFUN int
 		xmlCtxtSetOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
 XMLPUBFUN int
+		xmlCtxtGetOptions	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
 		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
 XMLPUBFUN void

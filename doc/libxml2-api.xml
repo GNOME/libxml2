@@ -665,6 +665,7 @@
      <exports symbol='xmlCreateDocParserCtxt' type='function'/>
      <exports symbol='xmlCreateIOParserCtxt' type='function'/>
      <exports symbol='xmlCreatePushParserCtxt' type='function'/>
+     <exports symbol='xmlCtxtGetOptions' type='function'/>
      <exports symbol='xmlCtxtParseDocument' type='function'/>
      <exports symbol='xmlCtxtReadDoc' type='function'/>
      <exports symbol='xmlCtxtReadFd' type='function'/>
@@ -8585,6 +8586,11 @@ crash if you try to modify the tree)'/>
       <info>Get the last parsing error registered.</info>
       <return type='const xmlError *' info='NULL if no error occurred or a pointer to the error'/>
       <arg name='ctx' type='void *' info='an XML parser context'/>
+    </function>
+    <function name='xmlCtxtGetOptions' file='parser' module='parser'>
+      <info>Get the current options of the parser context.  Available since 2.14.0.</info>
+      <return type='int' info='the current options set in the parser context.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtParseDocument' file='parser' module='parser'>
       <info>Parse an XML document and return the resulting document tree. Takes ownership of the input object.  Available since 2.13.0.</info>

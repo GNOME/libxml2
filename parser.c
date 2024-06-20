@@ -13595,6 +13595,25 @@ xmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
 }
 
 /**
+ * xmlCtxtGetOptions:
+ * @ctxt: an XML parser context
+ *
+ * Get the current options of the parser context.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns the current options set in the parser context, or -1 if ctxt is NULL.
+ */
+int
+xmlCtxtGetOptions(xmlParserCtxtPtr ctxt)
+{
+    if (ctxt == NULL)
+        return(-1);
+
+    return(ctxt->options);
+}
+
+/**
  * xmlCtxtUseOptions:
  * @ctxt: an XML parser context
  * @options:  a combination of xmlParserOption

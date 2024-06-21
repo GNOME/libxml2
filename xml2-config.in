@@ -71,9 +71,9 @@ while test $# -gt 0; do
        	;;
 
     --libtool-libs)
-	if [ -r ${libdir}/@XML_LIBTOOLLIBS@ ]
+	if [ -r ${libdir}/libxml2.la ]
 	then
-	    echo ${libdir}/@XML_LIBTOOLLIBS@
+	    echo ${libdir}/libxml2.la
 	fi
         ;;
 

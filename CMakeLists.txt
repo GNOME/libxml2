@@ -153,30 +153,6 @@ if (NOT MSVC)
     check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)
     check_include_files(sys/time.h HAVE_SYS_TIME_H)
     check_include_files(unistd.h HAVE_UNISTD_H)
-    check_c_source_compiles("
-        #include <stddef.h>
-        #include <sys/socket.h>
-        int main() { (void) getsockopt(1, 1, 1, NULL, (socklen_t*) NULL); return 0; }
-    " XML_SOCKLEN_T_SOCKLEN_T)
-    if(XML_SOCKLEN_T_SOCKLEN_T)
-        set(XML_SOCKLEN_T socklen_t)
-    else()
-        check_c_source_compiles("
-            #include <stddef.h>
-            #include <sys/socket.h>
-            int main() { (void) getsockopt(1, 1, 1, NULL, (size_t*) NULL); return 0; }
-        " XML_SOCKLEN_T_SIZE_T)
-        if(XML_SOCKLEN_T_SIZE_T)
-            set(XML_SOCKLEN_T size_t)
-        else()
-            check_c_source_compiles("
-                #include <stddef.h>
-                #include <sys/socket.h>
-                int main() { (void) getsockopt (1, 1, 1, NULL, (int*) NULL); return 0; }
-            " XML_SOCKLEN_T_INT)
-            set(XML_SOCKLEN_T int)
-        endif()
-    endif()
 endif()
 
 if(LIBXML2_WITH_TLS)

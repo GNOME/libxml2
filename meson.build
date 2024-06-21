@@ -382,18 +382,11 @@ if want_http == true
         endif
     endif
 
-    ### socket length
     if sys_windows
         netheader = 'winsock2.h'
     else
         netheader = 'sys/socket.h'
     endif
-    foreach t : ['socklen_t', 'size_t', 'int']
-        if cc.compiles('#include <@0@.h> int main(){getsockopt(1,1,1,0,(@1@*)0);}'.format(netheader, t), dependencies: net_dep)
-            cdata.set('XML_SOCKLEN_T', t)
-            break
-        endif
-    endforeach
 
     if want_ipv6 == true
         config_h.set('SUPPORT_IP6', cc.has_header_symbol(netheader, 'AF_INET6', required: get_option('ipv6')))

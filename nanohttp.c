@@ -54,14 +54,14 @@
 #include <zlib.h>
 #endif
 
-
 #ifdef VMS
-#include <stropts>
-#define XML_SOCKLEN_T unsigned int
-#endif
-
-#if defined(_WIN32)
-#include <wsockcompat.h>
+  #include <stropts>
+  #define XML_SOCKLEN_T unsigned int
+#elif defined(_WIN32)
+  #include <wsockcompat.h>
+  #define XML_SOCKLEN_T int
+#else
+  #define XML_SOCKLEN_T socklen_t
 #endif
 
 #include <libxml/xmlerror.h>
@@ -80,10 +80,6 @@
 #define closesocket(s) close(s)
 #define SOCKET int
 #define INVALID_SOCKET (-1)
-#endif
-
-#ifndef XML_SOCKLEN_T
-#define XML_SOCKLEN_T unsigned int
 #endif
 
 #define GETHOSTBYNAME_ARG_CAST (char *)

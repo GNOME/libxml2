@@ -99,8 +99,5 @@
 /* Version number of package */
 #cmakedefine VERSION "@VERSION@"
 
-/* Determine what socket length (socklen_t) data type is */
-#cmakedefine XML_SOCKLEN_T @XML_SOCKLEN_T@
-
 /* TLS specifier */
 #cmakedefine XML_THREAD_LOCAL @XML_THREAD_LOCAL@

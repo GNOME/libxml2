@@ -328,34 +328,6 @@ if test "$with_http" = "yes"; then
             ;;
     esac
 
-    dnl Determine what socket length (socklen_t) data type is
-    AC_MSG_CHECKING([for type of socket length (socklen_t)])
-    AC_TRY_COMPILE2([
-    #include <stddef.h>
-    #ifdef _WIN32
-      #include <ws2tcpip.h>
-    #else
-      #include <sys/socket.h>
-    #endif],[
-    (void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL)],[
-      AC_MSG_RESULT(socklen_t *)
-      XML_SOCKLEN_T=socklen_t],[
-      AC_TRY_COMPILE2([
-    #include <stddef.h>
-    #include <sys/socket.h>],[
-    (void)getsockopt (1, 1, 1, NULL, (size_t *)NULL)],[
-        AC_MSG_RESULT(size_t *)
-        XML_SOCKLEN_T=size_t],[
-        AC_TRY_COMPILE2([
-    #include <stddef.h>
-    #include <sys/socket.h>],[
-    (void)getsockopt (1, 1, 1, NULL, (int *)NULL)],[
-          AC_MSG_RESULT(int *)
-          XML_SOCKLEN_T=int],[
-          AC_MSG_WARN(could not determine)
-          XML_SOCKLEN_T="int"])])])
-    AC_DEFINE_UNQUOTED(XML_SOCKLEN_T, $XML_SOCKLEN_T, [Determine what socket length (socklen_t) data type is])
-
     dnl
     dnl Checking for availability of IPv6
     dnl

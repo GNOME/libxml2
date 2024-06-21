@@ -123,20 +123,26 @@ directly in various IDEs such as CLion, QtCreator, or Visual Studio.
 
 Libxml can also be built with meson. Without option, simply call
 
-meson setup builddir
-ninja -C builddir
+    meson setup builddir
+    ninja -C builddir
 
 To add options, see the meson_options.txt file. For example:
 
-meson setup -Dprefix=$prefix -Dftp=true -Dhistory=true -Dicu=true -Dhttp=true builddir
+    meson setup \
+        -Dprefix=$prefix \
+        -Dhistory=enabled \
+        -Dhttp=enabled \
+        -Dschematron=disabled \
+        -Dzlib=enabled \
+        builddir
 
 To install libxml:
 
-ninja -C builddir install
+    ninja -C builddir install
 
 To launch tests:
 
-meson test -C builddir
+    meson test -C builddir
 
 ## Dependencies
 

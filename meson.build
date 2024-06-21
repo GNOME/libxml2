@@ -394,72 +394,38 @@ endif
 ### inet
 if want_http == true
     if sys_windows == true
-        ws2_dep = cc.find_library('ws2_32', required: true)
-        xml_deps += ws2_dep
+        net_dep = cc.find_library('ws2_32', required: true)
+        xml_deps += net_dep
     else
+        net_dep = dependency('', required: false)
         has_in_libc = cc.has_function('gethostbyname')
         if has_in_libc == false
-            nsl_dep = cc.find_library('nsl', required: true)
-            if nsl_dep.found()
+            net_dep = cc.find_library('nsl', required: true)
+            if net_dep.found()
                 has_in_nsl = cc.has_function(
                     'gethostbyname',
-                    dependencies: nsl_dep,
+                    dependencies: net_dep,
                     required: false,
                 )
                 if has_in_nsl == true
-                    xml_deps += nsl_dep
+                    xml_deps += net_dep
                 endif
             endif
         endif
     endif
 
     ### socket length
-    socklen_src = '''
-#include <stddef.h>
-#ifdef _WIN32
-  #include <ws2tcpip.h>
-#else
-  #include <sys/socket.h>
-#endif
-int main()
-{
-    (void)getsockopt (1, 1, 1, NULL, (socklen_t *)NULL);
-    return 0;
-}
-    '''
-    res = cc.compiles(socklen_src, name: 'socket length as socklen_t')
-    if res == true
-        config_h.set('XML_SOCKLEN_T', 'socklen_t')
+    if sys_windows
+        netheader = 'winsock2.h'
     else
-        socklen_src = '''
-#include <stddef.h>
-#include <sys/socket.h>
-int main()
-{
-    (void)getsockopt (1, 1, 1, NULL, (size_t *)NULL);
-    return 0;
-}
-        '''
-        res = cc.compiles(socklen_src, name: 'socket length as size_t')
-        if res == true
-            config_h.set('XML_SOCKLEN_T', 'size_t')
-        else
-            socklen_src = '''
-#include <stddef.h>
-#include <sys/socket.h>
-int main()
-{
-    (void)getsockopt (1, 1, 1, NULL, (int *)NULL);
-    return 0;
-}
-            '''
-            res = cc.compiles(socklen_src, name: 'socket length as int')
-            if res == false
-                message('could not determine socket length type, use int')
-            endif
-            config_h.set('XML_SOCKLEN_T', 'int')
-        endif
+        netheader = 'sys/socket.h'
     endif
+    foreach t : ['socklen_t', 'size_t', 'int']
+        if cc.compiles('#include <@0@.h> int main(){getsockopt(1,1,1,0,(@1@*)0);}'.format(netheader, t), dependencies: net_dep)
+            cdata.set('XML_SOCKLEN_T', t)
+            break
+        endif
+    endforeach
 
     if want_ipv6 == true
         ### IPV6 on Windows has been supported since Windows XP SP1 (around 2003)

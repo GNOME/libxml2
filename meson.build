@@ -428,31 +428,7 @@ if want_http == true
     endforeach
 
     if want_ipv6 == true
-        ### IPV6 on Windows has been supported since Windows XP SP1 (around 2003)
-        ### see:
-        ### https://learn.microsoft.com/en-us/windows/win32/winsock/ipv6-support-2
-        ### nevertheless, we check it like autotools
-        ipv6_src = '''
-#ifdef _WIN32
-#include <winsock2.h>
-#else
-#include <sys/socket.h>
-#ifdef HAVE_NETDB_H
-#include <netdb.h>
-#endif
-#endif
-int main()
-{
-    struct sockaddr_storage ss;
-    socket(AF_INET6, SOCK_STREAM, 0);
-    getaddrinfo(0, 0, 0, 0);
-    return 0;
-}
-        '''
-        res = cc.compiles(ipv6_src, name: 'support for IPV6')
-        if res == true
-            config_h.set10('SUPPORT_IP6', true)
-        endif
+        config_h.set('SUPPORT_IP6', cc.has_header_symbol(netheader, 'AF_INET6', required: get_option('ipv6')))
     endif
 endif
 

@@ -403,7 +403,7 @@ struct _xmlParserCtxt {
     /*
      * the complete error information for the last error.
      */
-    xmlError lastError;
+    xmlError lastError XML_DEPRECATED_MEMBER;
     /* the parser mode */
     xmlParserMode parseMode XML_DEPRECATED_MEMBER;
     /* unused */

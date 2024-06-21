@@ -47,7 +47,7 @@ The following options disable or enable code modules and relevant symbols:
     --with-catalog          XML Catalogs support (on)
     --with-debug            debugging module (on)
     --with-history          history support for xmllint shell (off)
-    --with-readline[=DIR]   use readline in DIR for shell (on)
+    --with-readline[=DIR]   use readline in DIR for shell (off)
     --with-html             HTML parser (on)
     --with-http             HTTP support (off)
     --with-iconv[=DIR]      iconv support (on)

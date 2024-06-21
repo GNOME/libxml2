@@ -72,7 +72,7 @@ AC_ARG_WITH(debug,
 AC_ARG_WITH(history,
 [  --with-history          history support for xmllint shell (off)])
 AC_ARG_WITH(readline,
-[  --with-readline[[=DIR]]   use readline in DIR for shell (on)])
+[  --with-readline[[=DIR]]   use readline in DIR for shell (off)])
 AC_ARG_WITH(html,
 [  --with-html             HTML parser (on)])
 AC_ARG_WITH(http,
@@ -205,6 +205,15 @@ if test "$with_xptr" = "yes"; then
         echo WARNING: --with-xptr overrides --without-xpath
     fi
     with_xpath=yes
+fi
+if test "$with_history" = "yes"; then
+    if test "$with_readline" = "no"; then
+        echo WARNING: --with-history overrides --without-readline
+        with_readline=yes
+    fi
+    if test "$with_readline" = ""; then
+        with_readline=yes
+    fi
 fi
 
 if test "$with_minimum" = "yes"; then
@@ -785,48 +794,80 @@ AC_SUBST(WITH_THREADS)
 AC_SUBST(WITH_THREAD_ALLOC)
 
 dnl
-dnl xmllint shell
+dnl Checks for readline and history libraries.
 dnl
-if test "$with_readline" != "no"; then
-    _cppflags=$CPPFLAGS
-    _libs=$LIBS
+if test "$with_readline" != "no" && test "$with_readline" != ""; then
+    WITH_READLINE=0
+    WITH_HISTORY=0
 
-    dnl check for terminal library. this is a very cool solution
-    dnl from octave's configure.in
-    unset tcap
-    for termlib in ncurses curses termcap terminfo termlib; do
-	AC_CHECK_LIB(${termlib}, tputs, [tcap="-l$termlib"])
-	test -n "$tcap" && break
-    done
-
-    if test "$with_readline" != "" && test "$with_readline" != "yes"; then
+    if test "$with_readline" != "yes"; then
         RDL_DIR=$with_readline
-        CPPFLAGS="${CPPFLAGS} -I$RDL_DIR/include"
-        LIBS="${LIBS} -L$RDL_DIR/lib"
     fi
-    AC_CHECK_HEADER(readline/readline.h,
-	AC_CHECK_LIB(readline, readline,[
-	    RDL_LIBS="-lreadline $RDL_LIBS $tcap"
-            if test "x$RDL_DIR" != "x"; then
-                RDL_CFLAGS="-I$RDL_DIR/include"
-                RDL_LIBS="-L$RDL_DIR/lib $RDL_LIBS"
-            fi
-	    AC_DEFINE([HAVE_LIBREADLINE], [], [Define if readline library is there (-lreadline)])], , $tcap))
+
+    if test "$RDL_DIR" == ""; then
+        PKG_CHECK_MODULES([RDL], [readline], [ WITH_READLINE=1 ], [:])
+    fi
+
+    if test "$WITH_READLINE" = "0"; then
+        _cppflags=$CPPFLAGS
+        _libs=$LIBS
+
+        if test "$RDL_DIR" != ""; then
+            CPPFLAGS="${CPPFLAGS} -I$RDL_DIR/include"
+            LIBS="${LIBS} -L$RDL_DIR/lib"
+        fi
+        AC_CHECK_HEADER(readline/readline.h,
+            AC_CHECK_LIB(readline, readline, [
+                WITH_READLINE=1
+                RDL_LIBS="-lreadline"
+            ], [
+                AC_MSG_ERROR([libreadline not found])
+            ]))
+
+        CPPFLAGS=$_cppflags
+        LIBS=$_libs
+    fi
+
+    AC_DEFINE([HAVE_LIBREADLINE], [],
+              [Define if readline library is available])
 
     if test "$with_history" = "yes"; then
-        echo Enabling xmllint shell history
-        AC_CHECK_HEADER(readline/history.h,
-            AC_CHECK_LIB(history, append_history,[
-                RDL_LIBS="-lhistory"
-                if test "x${RDL_DIR}" != "x"; then
-                    RDL_CFLAGS="-I$RDL_DIR/include"
-                    RDL_LIBS="-L$RDL_DIR/lib $RDL_LIBS"
-                fi
-                AC_DEFINE([HAVE_LIBHISTORY], [], [Define if history library is there (-lhistory)])]))
+        if test "$RDL_DIR" == ""; then
+            PKG_CHECK_MODULES([HISTORY], [history], [
+                WITH_HISTORY=1
+                RDL_CFLAGS="$HISTORY_CFLAGS $RDL_CFLAGS"
+                RDL_LIBS="$HISTORY_LIBS $RDL_LIBS"
+            ], [:])
+        fi
+
+        if test "$WITH_HISTORY" = "0"; then
+            _cppflags=$CPPFLAGS
+            _libs=$LIBS
+
+            if test "$RDL_DIR" != ""; then
+                CPPFLAGS="${CPPFLAGS} -I$RDL_DIR/include"
+                LIBS="${LIBS} -L$RDL_DIR/lib"
+            fi
+            AC_CHECK_HEADER(readline/history.h,
+                AC_CHECK_LIB(history, append_history, [
+                    WITH_HISTORY=1
+                    RDL_LIBS="-lhistory $RDL_LIBS"
+                ], [
+                    AC_MSG_ERROR([libhistory not found])
+                ]))
+
+            CPPFLAGS=$_cppflags
+            LIBS=$_libs
+        fi
+
+        AC_DEFINE([HAVE_LIBHISTORY], [],
+                  [Define if history library is available])
     fi
 
-    CPPFLAGS=$_cppflags
-    LIBS=$_libs
+    if test "$RDL_DIR" != ""; then
+        RDL_CFLAGS="-I$RDL_DIR/include"
+        RDL_LIBS="-L$RDL_DIR/lib $RDL_LIBS"
+    fi
 fi
 AC_SUBST(RDL_CFLAGS)
 AC_SUBST(RDL_LIBS)

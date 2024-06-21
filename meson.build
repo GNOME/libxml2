@@ -294,44 +294,12 @@ endif
 
 ### thread local storage
 if want_tls
-    tls_src = '''
-#include <threads.h>
-int main()
-{
-    _Thread_local int v;
-    return 0;
-}
-    '''
-    res = cc.compiles(tls_src, name: '_Thread_local')
-    if res == true
-        config_h.set('XML_THREAD_LOCAL', '_Thread_local')
-    else
-        tls_src = '''
-int main()
-{
-    __thread int v;
-    return 0;
-}
-        '''
-        res = cc.compiles(tls_src, name: '__thread')
-        if res == true
-            config_h.set('XML_THREAD_LOCAL', '__thread')
-        else
-            tls_src = '''
-int main()
-{
-    __declspec(thread) int v;
-    return 0;
-}
-            '''
-            res = cc.compiles(tls_src, name: '__declspec(thread)')
-            if res == true
-                config_h.set('XML_THREAD_LOCAL', '__declspec(thread)')
-            else
-                want_tls = false
-            endif
+    foreach t : ['_Thread_local', '__thread', '__declspec(thread)']
+        if cc.compiles('@0@ int v;'.format(t))
+            config_h.set('XML_THREAD_LOCAL', t)
+            break
         endif
-    endif
+    endforeach
 endif
 
 ### __attribute__((destructor))

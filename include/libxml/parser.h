@@ -213,21 +213,20 @@ struct _xmlParserCtxt {
     xmlDocPtr myDoc;
     /* is the document well formed */
     int wellFormed;
-
     /* shall we replace entities ? */
     int replaceEntities XML_DEPRECATED_MEMBER;
     /* the XML version string */
-    const xmlChar *version XML_DEPRECATED_MEMBER;
+    const xmlChar *version;
     /* the declared encoding, if any */
-    const xmlChar *encoding XML_DEPRECATED_MEMBER;
+    const xmlChar *encoding;
     /* standalone document */
-    int standalone XML_DEPRECATED_MEMBER;
+    int standalone;
 
     /* an HTML(1) document
      * 3 is HTML after <head>
      * 10 is HTML after <body>
      */
-    int html XML_DEPRECATED_MEMBER;
+    int html;
 
     /* Input stream stack */
 

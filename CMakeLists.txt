@@ -654,9 +654,18 @@ if(BUILD_SHARED_LIBS)
     set(XML_PC_LIBS_PRIVATE "
 Libs.private:")
 else()
-    target_compile_definitions(LibXml2 PUBLIC LIBXML_STATIC)
-    set(XML_CFLAGS "-DLIBXML_STATIC")
     set(XML_PRIVATE_LIBS_NO_SHARED "${XML_PRIVATE_LIBS}")
+endif()
+
+if(WIN32)
+    set(XML_STATIC_CFLAGS "-DLIBXML_STATIC")
+    if (BUILD_SHARED_LIBS)
+        set(XML_PC_CFLAGS_PRIVATE "
+Cflags.private:")
+    else()
+        target_compile_definitions(LibXml2 PUBLIC LIBXML_STATIC)
+        set(XML_CFLAGS "${XML_STATIC_CFLAGS}")
+    endif()
 endif()
 
 file(RELATIVE_PATH PACKAGE_RELATIVE_PATH "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig" "${CMAKE_INSTALL_PREFIX}")

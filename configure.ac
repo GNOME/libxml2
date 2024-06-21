@@ -393,6 +393,8 @@ dnl
 XML_LIBDIR='-L${libdir}'
 XML_INCLUDEDIR='-I${includedir}/libxml2'
 XML_CFLAGS=""
+XML_STATIC_CFLAGS=""
+XML_PC_CFLAGS_PRIVATE=""
 
 dnl Thread-local storage
 if test "$with_tls" = "yes"; then
@@ -486,9 +488,13 @@ case ${host} in
         # work properly (without it, xmlexports.h would force the use of
         # DLL imports, which obviously aren't present in a static
         # library).
-        if test "x$enable_shared" = "xno"; then
-            XML_CFLAGS="$XML_CFLAGS -DLIBXML_STATIC"
-            AM_CFLAGS="$AM_CFLAGS -DLIBXML_STATIC"
+        XML_STATIC_CFLAGS="-DLIBXML_STATIC"
+        if test "x$enable_shared" = "xyes"; then
+            XML_PC_CFLAGS_PRIVATE="
+Cflags.private:"
+        else
+            XML_CFLAGS="$XML_STATIC_CFLAGS"
+            AM_CFLAGS="$AM_CFLAGS $XML_STATIC_CFLAGS"
         fi
         ;;
 esac
@@ -1121,9 +1127,11 @@ fi
 AC_SUBST(XML_PRIVATE_LIBS_NO_SHARED)
 AC_SUBST(XML_PC_PRIVATE)
 AC_SUBST(XML_PC_LIBS_PRIVATE)
+AC_SUBST(XML_PC_CFLAGS_PRIVATE)
 AM_SUBST_NOTMAKE(XML_PRIVATE_LIBS_NO_SHARED)
 AM_SUBST_NOTMAKE(XML_PC_PRIVATE)
 AM_SUBST_NOTMAKE(XML_PC_LIBS_PRIVATE)
+AM_SUBST_NOTMAKE(XML_PC_CFLAGS_PRIVATE)
 
 AC_SUBST(XML_PC_LIBS)
 AC_SUBST(XML_PC_REQUIRES)
@@ -1133,6 +1141,7 @@ AM_SUBST_NOTMAKE(XML_PC_REQUIRES)
 AC_SUBST(AM_CFLAGS)
 AC_SUBST(AM_LDFLAGS)
 AC_SUBST(XML_CFLAGS)
+AC_SUBST(XML_STATIC_CFLAGS)
 
 AC_SUBST(XML_LIBDIR)
 AC_SUBST(XML_LIBS)

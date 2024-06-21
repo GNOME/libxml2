@@ -89,7 +89,7 @@ while test $# -gt 0; do
             libs="@XML_LIBS@ @XML_PRIVATE_LIBS@ @LIBS@"
         fi
 
-        if [ "@XML_LIBDIR@" != "-L/usr/lib" -a "@XML_LIBDIR@" != "-L/usr/lib64" ]; then
+        if [ "@libdir@" != "/usr/lib" -a "@libdir@" != "/usr/lib64" ]; then
             libs="@XML_LIBDIR@ $libs"
         fi
         ;;

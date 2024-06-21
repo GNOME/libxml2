@@ -327,36 +327,6 @@ if test "$with_http" = "yes"; then
             LIBS=$_libs
             ;;
     esac
-
-    dnl
-    dnl Checking for availability of IPv6
-    dnl
-    AC_ARG_ENABLE(ipv6, [  --enable-ipv6[[=yes/no]]  enables compilation of IPv6 code [[default=yes]]],, enable_ipv6=yes)
-    if test "$with_minimum" = "yes"
-    then
-        enable_ipv6=no
-    fi
-    if test $enable_ipv6 = yes; then
-        AC_MSG_CHECKING([whether to enable IPv6])
-        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-            #ifdef _WIN32
-              #include <winsock2.h>
-            #else
-              #include <sys/socket.h>
-              #ifdef HAVE_NETDB_H
-                #include <netdb.h>
-              #endif
-            #endif
-            ]], [[
-            struct sockaddr_storage ss;
-            socket(AF_INET6, SOCK_STREAM, 0);
-            getaddrinfo(0, 0, 0, 0);
-            ]])], [
-            AC_DEFINE([SUPPORT_IP6], [], [Support for IPv6])
-            AC_MSG_RESULT([yes])], [
-            AC_MSG_RESULT([no])]
-        )
-    fi
 fi
 
 dnl

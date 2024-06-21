@@ -93,9 +93,6 @@
 /* Define to 1 if you have the <zlib.h> header file. */
 #cmakedefine HAVE_ZLIB_H 1
 
-/* Support for IPv6 */
-#cmakedefine SUPPORT_IP6 1
-
 /* Version number of package */
 #cmakedefine VERSION "@VERSION@"
 

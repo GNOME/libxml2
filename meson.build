@@ -76,9 +76,6 @@ want_html = want_minimum ? feature.enabled() : feature.allowed()
 feature = get_option('iconv')
 want_iconv = want_minimum ? feature.enabled() : feature.allowed()
 
-feature = get_option('ipv6')
-want_ipv6 = want_minimum ? feature.enabled() : feature.allowed()
-
 feature = get_option('iso8859x')
 want_iso8859x = want_minimum ? feature.enabled() : feature.allowed()
 
@@ -381,16 +378,6 @@ if want_http == true
             endif
         endif
     endif
-
-    if sys_windows
-        netheader = 'winsock2.h'
-    else
-        netheader = 'sys/socket.h'
-    endif
-
-    if want_ipv6 == true
-        config_h.set('SUPPORT_IP6', cc.has_header_symbol(netheader, 'AF_INET6', required: get_option('ipv6')))
-    endif
 endif
 
 ### zlib
@@ -611,7 +598,6 @@ summary(
         'http': want_http,
         'iconv': want_iconv,
         'icu': want_icu,
-        'ipv6': want_ipv6,
         'iso8859x': want_iso8859x,
         'legacy': want_legacy,
         'lzma': want_lzma,

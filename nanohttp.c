@@ -36,6 +36,9 @@
 #endif
 #ifdef HAVE_NETDB_H
 #include <netdb.h>
+#ifndef SUPPORT_IP6
+  #define SUPPORT_IP6
+#endif
 #endif
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>

@@ -8,7 +8,6 @@
 # [X] http
 # [X] iconv
 # [X] icu         - not minimum
-# [X] ipv6
 # [X] iso8859x
 # [X] legacy
 # [X] lzma
@@ -34,7 +33,6 @@
 # [X] zlib
 
 # [X] minimum
-# [X] ipv6
 
 option('c14n',
   type: 'feature',
@@ -75,11 +73,6 @@ option('iconv',
 option('icu',
   type: 'feature',
   description: 'ICU support'
-)
-
-option('ipv6',
-  type: 'feature',
-  description: 'Compilation of IPv6 code'
 )
 
 option('iso8859x',

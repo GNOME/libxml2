@@ -241,7 +241,6 @@ endforeach
 #
 # [X] config.h.in
 # [X] include/libxml/xmlversion.h.in
-# [N] libxml-2.0-uninstalled.pc.in
 # [X] libxml-2.0.pc.in
 # [X] libxml2-config.cmake.in
 # [X] python/setup.py.in

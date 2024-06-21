@@ -1140,10 +1140,6 @@ AC_SUBST(XML_PRIVATE_LIBS)
 AC_SUBST(XML_PRIVATE_CFLAGS)
 AC_SUBST(XML_INCLUDEDIR)
 
-dnl for the spec file
-RELDATE=`date +'%a %b %e %Y'`
-AC_SUBST(RELDATE)
-
 # keep on one line for cygwin c.f. #130896
 AC_CONFIG_FILES([Makefile include/Makefile include/libxml/Makefile include/private/Makefile doc/Makefile doc/devhelp/Makefile example/Makefile fuzz/Makefile python/Makefile python/tests/Makefile xstc/Makefile include/libxml/xmlversion.h libxml-2.0.pc libxml-2.0-uninstalled.pc libxml2-config.cmake])
 AC_CONFIG_FILES([python/setup.py], [chmod +x python/setup.py])

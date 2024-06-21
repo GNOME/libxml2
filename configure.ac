@@ -729,13 +729,13 @@ if test "$with_modules" != "no" ; then
         AC_SEARCH_LIBS([dlopen], [dl], [
             WITH_MODULES=1
             if test "$ac_cv_search_dlopen" != "none required"; then
-                MODULE_PLATFORM_LIBS=$ac_cv_search_dlopen
+                MODULE_LIBS=$ac_cv_search_dlopen
             fi
             AC_DEFINE([HAVE_DLOPEN], [], [Have dlopen based dso])], [
             AC_SEARCH_LIBS([shl_load], [dld], [
                 WITH_MODULES=1
                 if test "$ac_cv_search_shl_load" != "none required"; then
-                    MODULE_PLATFORM_LIBS=$ac_cv_search_shl_load
+                    MODULE_LIBS=$ac_cv_search_shl_load
                 fi
                 AC_DEFINE([HAVE_SHLLOAD], [], [Have shl_load based dso])])])
         LIBS=$_libs
@@ -747,7 +747,6 @@ if test "$with_modules" != "no" ; then
 fi
 
 AC_SUBST(WITH_MODULES)
-AC_SUBST(MODULE_PLATFORM_LIBS)
 AC_SUBST(MODULE_EXTENSION)
 AM_CONDITIONAL(WITH_MODULES_SOURCES, test "$WITH_MODULES" = "1")
 
@@ -1101,7 +1100,7 @@ case "$host" in
 esac
 
 XML_LIBS="-lxml2"
-NON_PC_LIBS="${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${NET_LIBS} ${CRYPTO_LIBS}"
+NON_PC_LIBS="${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${NET_LIBS} ${CRYPTO_LIBS} ${MODULE_LIBS}"
 XML_PC_LIBS="${XML_PC_LIBS} ${NON_PC_LIBS}"
 XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${NON_PC_LIBS}"
 XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${ICONV_CFLAGS}"

@@ -35,8 +35,7 @@ libxml2_la_CFLAGS = $(AM_CFLAGS) $(XML_PRIVATE_CFLAGS)
 libxml2_la_LIBADD = $(XML_PRIVATE_LIBS)
 
 libxml2_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined \
-		     -version-info $(LIBXML_VERSION_INFO) \
-		     $(MODULE_PLATFORM_LIBS)
+		     -version-info $(LIBXML_VERSION_INFO)
 if USE_VERSION_SCRIPT
 libxml2_la_LDFLAGS += $(VERSION_SCRIPT_FLAGS)$(srcdir)/libxml2.syms
 endif

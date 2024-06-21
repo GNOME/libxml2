@@ -334,12 +334,12 @@ target_include_directories(
 if(LIBXML2_WITH_MODULES)
     if(HAVE_DLOPEN)
         target_link_libraries(LibXml2 PRIVATE dl)
-        set(MODULE_PLATFORM_LIBS "-ldl")
+        set(MODULE_LIBS "-ldl")
     endif()
 
     if(HAVE_SHLLOAD)
         target_link_libraries(LibXml2 PRIVATE dld)
-        set(MODULE_PLATFORM_LIBS "-ldld")
+        set(MODULE_LIBS "-ldld")
     endif()
 endif()
 
@@ -635,7 +635,7 @@ if(LIBXML2_WITH_PYTHON)
     configure_file(python/setup.py.in setup.py @ONLY)
 endif()
 
-set(NON_PC_LIBS "${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${WINSOCK_LIBS} ${CRYPTO_LIBS}")
+set(NON_PC_LIBS "${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${WINSOCK_LIBS} ${CRYPTO_LIBS} ${MODULE_LIBS}")
 list(APPEND XML_PC_LIBS "${NON_PC_LIBS}")
 list(APPEND XML_PRIVATE_LIBS "${NON_PC_LIBS}")
 list(REMOVE_DUPLICATES XML_PC_LIBS)

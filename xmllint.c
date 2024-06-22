@@ -2990,6 +2990,12 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
     maxAmpl = 0;
 #endif /* XMLLINT_FUZZ */
 
+#ifdef _WIN32
+    _setmode(_fileno(stdin), _O_BINARY);
+    _setmode(_fileno(stdout), _O_BINARY);
+    _setmode(_fileno(stderr), _O_BINARY);
+#endif
+
     if (argc <= 1) {
 	usage(ERR_STREAM, argv[0]);
 	return(XMLLINT_ERR_UNCLASS);

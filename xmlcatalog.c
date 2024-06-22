@@ -13,6 +13,11 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+#ifdef _WIN32
+  #include <fcntl.h>
+  #include <io.h>
+#endif
+
 #ifdef HAVE_LIBREADLINE
 #include <readline/readline.h>
 #ifdef HAVE_LIBHISTORY
@@ -315,6 +320,11 @@ int main(int argc, char **argv) {
     int ret;
     int exit_value = 0;
 
+#ifdef _WIN32
+    _setmode(_fileno(stdin), _O_BINARY);
+    _setmode(_fileno(stdout), _O_BINARY);
+    _setmode(_fileno(stderr), _O_BINARY);
+#endif
 
     if (argc <= 1) {
 	usage(argv[0]);

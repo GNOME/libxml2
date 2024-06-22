@@ -385,22 +385,17 @@ htmlFindOutputEncoder(const char *encoding) {
     xmlCharEncodingHandler *handler = NULL;
 
     if (encoding != NULL) {
-	xmlCharEncoding enc;
+        int res;
 
-	enc = xmlParseCharEncoding(encoding);
-	if (enc != XML_CHAR_ENCODING_UTF8) {
-	    xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-	    if (handler == NULL)
-		htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
-	}
+        res = xmlOpenCharEncodingHandler(encoding, /* output */ 1,
+                                         &handler);
+        if (res != XML_ERR_OK)
+            htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
     } else {
         /*
-         * Fallback to HTML or ASCII when the encoding is unspecified
+         * Fallback to HTML when the encoding is unspecified
          */
-        if (handler == NULL)
-            xmlOpenCharEncodingHandler("HTML", /* output */ 1, &handler);
-        if (handler == NULL)
-            xmlOpenCharEncodingHandler("ascii", /* output */ 1, &handler);
+        xmlOpenCharEncodingHandler("HTML", /* output */ 1, &handler);
     }
 
     return(handler);

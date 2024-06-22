@@ -343,33 +343,29 @@ myStrdupFunc(const char *str)
  *									*
  ************************************************************************/
 
-#ifndef HAVE_GETTIMEOFDAY
-#ifdef HAVE_SYS_TIMEB_H
-#ifdef HAVE_SYS_TIME_H
-#ifdef HAVE_FTIME
+typedef struct {
+   unsigned sec;
+   unsigned usec;
+} xmlTime;
 
-static int
-my_gettimeofday(struct timeval *tvp, void *tzp)
-{
-	struct timeb timebuffer;
+static xmlTime begin, end;
 
-	ftime(&timebuffer);
-	if (tvp) {
-		tvp->tv_sec = timebuffer.time;
-		tvp->tv_usec = timebuffer.millitm * 1000L;
-	}
-	return (0);
+static void
+getTime(xmlTime *time) {
+#ifdef _WIN32
+    struct timeb timebuffer;
+
+    ftime(&timebuffer);
+    time->sec = timebuffer.time;
+    time->usec = timebuffer.millitm * 1000L;
+#else /* _WIN32 */
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+    time->sec = tv.tv_sec;
+    time->usec = tv.tv_usec;
+#endif /* _WIN32 */
 }
-#define HAVE_GETTIMEOFDAY 1
-#define gettimeofday my_gettimeofday
-
-#endif /* HAVE_FTIME */
-#endif /* HAVE_SYS_TIME_H */
-#endif /* HAVE_SYS_TIMEB_H */
-#endif /* !HAVE_GETTIMEOFDAY */
-
-#if defined(HAVE_GETTIMEOFDAY)
-static struct timeval begin, end;
 
 /*
  * startTimer: call where you want to start timing
@@ -377,7 +373,7 @@ static struct timeval begin, end;
 static void
 startTimer(void)
 {
-    gettimeofday(&begin, NULL);
+    getTime(&begin);
 }
 
 /*
@@ -391,10 +387,10 @@ endTimer(const char *fmt, ...)
     long msec;
     va_list ap;
 
-    gettimeofday(&end, NULL);
-    msec = end.tv_sec - begin.tv_sec;
+    getTime(&end);
+    msec = end.sec - begin.sec;
     msec *= 1000;
-    msec += (end.tv_usec - begin.tv_usec) / 1000;
+    msec += (end.usec - begin.usec) / 1000;
 
     va_start(ap, fmt);
     vfprintf(ERR_STREAM, fmt, ap);
@@ -402,37 +398,7 @@ endTimer(const char *fmt, ...)
 
     fprintf(ERR_STREAM, " took %ld ms\n", msec);
 }
-#else
-/*
- * No gettimeofday function, so we have to make do with calling clock.
- * This is obviously less accurate, but there's little we can do about
- * that.
- */
-#ifndef CLOCKS_PER_SEC
-#define CLOCKS_PER_SEC 100
-#endif
 
-static clock_t begin, end;
-static void
-startTimer(void)
-{
-    begin = clock();
-}
-static void LIBXML_ATTR_FORMAT(1,2)
-endTimer(const char *fmt, ...)
-{
-    long msec;
-    va_list ap;
-
-    end = clock();
-    msec = ((end - begin) * 1000) / CLOCKS_PER_SEC;
-
-    va_start(ap, fmt);
-    vfprintf(ERR_STREAM, fmt, ap);
-    va_end(ap);
-    fprintf(ERR_STREAM, " took %ld ms\n", msec);
-}
-#endif
 /************************************************************************
  *									*
  *			HTML output					*

@@ -1469,7 +1469,7 @@ xmlIsPathSeparator(int c, int isFile) {
     if (c == '/')
         return(1);
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
     if (isFile && (c == '\\'))
         return(1);
 #endif
@@ -1511,7 +1511,7 @@ xmlNormalizePath(char *path, int isFile) {
          * Collapse multiple separators first.
          */
         while (xmlIsPathSeparator(*cur, isFile)) {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
             /* Allow two separators at start of path */
             if ((isFile) && (out == path + 1))
                 *out++ = '/';
@@ -1876,7 +1876,7 @@ xmlIsAbsolutePath(const xmlChar *path) {
     if (xmlIsPathSeparator(c, 1))
         return(1);
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
     if ((((c >= 'A') && (c <= 'Z')) ||
          ((c >= 'a') && (c <= 'z'))) &&
         (path[1] == ':'))

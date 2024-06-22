@@ -343,7 +343,7 @@ xmlNewSaveCtxt(const char *encoding, int options)
 
         res = xmlOpenCharEncodingHandler(encoding, /* output */ 1,
                                          &ret->handler);
-	if (ret->handler == NULL) {
+	if (res != XML_ERR_OK) {
 	    xmlSaveErr(NULL, res, NULL, encoding);
             xmlFreeSaveCtxt(ret);
 	    return(NULL);
@@ -801,7 +801,7 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
         int res;
 
 	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-        if (handler == NULL) {
+        if (res != XML_ERR_OK) {
             xmlSaveErr(buf, res, NULL, encoding);
             return(-1);
         }
@@ -2669,7 +2669,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 
 	res = xmlOpenCharEncodingHandler(txt_encoding, /* output */ 1,
                                          &conv_hdlr);
-	if (conv_hdlr == NULL) {
+	if (res != XML_ERR_OK) {
             xmlSaveErr(NULL, res, NULL, txt_encoding);
 	    return;
 	}
@@ -2784,8 +2784,10 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-	xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-	if (handler == NULL) {
+        int res;
+
+	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
+	if (res != XML_ERR_OK) {
 	    xmlFree((char *) cur->encoding);
 	    cur->encoding = NULL;
 	    encoding = NULL;
@@ -2921,8 +2923,10 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 	encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-        xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-        if (handler == NULL)
+        int res;
+
+        res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
+        if (res != XML_ERR_OK)
             return(-1);
     }
 

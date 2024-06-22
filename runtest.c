@@ -3182,21 +3182,12 @@ uriPathTest(const char *filename ATTRIBUTE_UNUSED,
 static int
 schemasOneTest(const char *sch,
                const char *filename,
-               const char *result,
                const char *err,
 	       int options,
 	       xmlSchemaPtr schemas) {
     int ret = 0;
     int i;
-    char *temp;
     int parseErrorsSize = testErrorsSize;
-
-    temp = resultFilename(result, temp_directory, ".res");
-    if (temp == NULL) {
-        fprintf(stderr, "Out of memory\n");
-        fatalError();
-        return(-1);
-    }
 
     /*
      * Test both memory and streaming validation.
@@ -3204,7 +3195,6 @@ schemasOneTest(const char *sch,
     for (i = 0; i < 2; i++) {
         xmlSchemaValidCtxtPtr ctxt;
         int validResult = 0;
-        FILE *schemasOutput;
 
         testErrorsSize = parseErrorsSize;
         testErrors[parseErrorsSize] = 0;
@@ -3215,13 +3205,6 @@ schemasOneTest(const char *sch,
         ctxt = xmlSchemaNewValidCtxt(schemas);
         xmlSchemaSetValidStructuredErrors(ctxt, testStructuredErrorHandler,
                                           NULL);
-
-        schemasOutput = fopen(temp, "wb");
-        if (schemasOutput == NULL) {
-            fprintf(stderr, "failed to open output file %s\n", temp);
-            free(temp);
-            return(-1);
-        }
 
         if (i == 0) {
             xmlDocPtr doc;
@@ -3238,20 +3221,12 @@ schemasOneTest(const char *sch,
         }
 
         if (validResult == 0) {
-            fprintf(schemasOutput, "%s validates\n", filename);
+            testErrorHandler(NULL, "%s validates\n", filename);
         } else if (validResult > 0) {
-            fprintf(schemasOutput, "%s fails to validate\n", filename);
+            testErrorHandler(NULL, "%s fails to validate\n", filename);
         } else {
-            fprintf(schemasOutput, "%s validation generated an internal error\n",
-                   filename);
-        }
-        fclose(schemasOutput);
-
-        if (result) {
-            if (compareFiles(temp, result)) {
-                fprintf(stderr, "Result for %s on %s failed\n", filename, sch);
-                ret = 1;
-            }
+            testErrorHandler(NULL, "%s validation generated an internal "
+                             "error\n", filename);
         }
 
         xmlSchemaFreeValidCtxt(ctxt);
@@ -3261,11 +3236,8 @@ done:
             fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
             ret = 1;
         }
-
-        unlink(temp);
     }
 
-    free(temp);
     return(ret);
 }
 /**
@@ -3293,7 +3265,6 @@ schemasTest(const char *filename,
     int parseErrorsSize;
     char pattern[500];
     char prefix[500];
-    char result[500];
     char err[500];
     glob_t globbuf;
     size_t i;
@@ -3343,10 +3314,6 @@ schemasTest(const char *filename,
 	len = strlen(base2);
 	if ((len > 6) && (base2[len - 6] == '_')) {
 	    count = base2[len - 5];
-	    ret = snprintf(result, 499, "result/schemas/%s_%c",
-		     prefix, count);
-            if (ret >= 499)
-	        result[499] = 0;
 	    ret = snprintf(err, 499, "result/schemas/%s_%c.err",
 		     prefix, count);
             if (ret >= 499)
@@ -3357,8 +3324,7 @@ schemasTest(const char *filename,
 	}
 
         nb_tests++;
-        ret = schemasOneTest(filename, instance, result, err,
-                             options, schemas);
+        ret = schemasOneTest(filename, instance, err, options, schemas);
         if (ret != 0)
             res = ret;
     }

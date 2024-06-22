@@ -6,3 +6,4 @@
 ./test/schemas/decimal-1_0.xml:21: Schemas validity error : Element 'val': '+ 1' is not a valid value of the atomic type 'myDecimal'.
 ./test/schemas/decimal-1_0.xml:22: Schemas validity error : Element 'val': '+ 0' is not a valid value of the atomic type 'myDecimal'.
 ./test/schemas/decimal-1_0.xml:23: Schemas validity error : Element 'val': '- 0' is not a valid value of the atomic type 'myDecimal'.
+./test/schemas/decimal-1_0.xml fails to validate

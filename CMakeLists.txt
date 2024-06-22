@@ -19,13 +19,13 @@ include(CheckLibraryExists)
 include(CheckLinkerFlag)
 include(CheckStructHasMember)
 include(CheckSymbolExists)
+include(CMakeDependentOption)
 include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
 include(GNUInstallDirs)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 set(LIBXML2_WITH_AUTOMATA ON)
-option(LIBXML2_WITH_C14N "Add the Canonicalization support" ON)
 option(LIBXML2_WITH_CATALOG "Add the Catalog support" ON)
 option(LIBXML2_WITH_DEBUG "Add the debugging module" ON)
 set(LIBXML2_WITH_EXPR ON)
@@ -42,22 +42,41 @@ option(LIBXML2_WITH_PATTERN "Add the xmlPattern selection interface" ON)
 option(LIBXML2_WITH_PROGRAMS "Build programs" ON)
 option(LIBXML2_WITH_PUSH "Add the PUSH parser interfaces" ON)
 option(LIBXML2_WITH_PYTHON "Build Python bindings" ON)
-option(LIBXML2_WITH_READER "Add the xmlReader parsing interface" ON)
 option(LIBXML2_WITH_REGEXPS "Add Regular Expressions support" ON)
 option(LIBXML2_WITH_SAX1 "Add the older SAX1 interface" ON)
-option(LIBXML2_WITH_SCHEMAS "Add Relax-NG and Schemas support" ON)
-option(LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON)
 option(LIBXML2_WITH_TESTS "Build tests" ON)
 option(LIBXML2_WITH_THREADS "Add multithread support" ON)
-option(LIBXML2_WITH_THREAD_ALLOC "Add per-thread memory" OFF)
 option(LIBXML2_WITH_TLS "Enable thread-local storage" OFF)
 set(LIBXML2_WITH_UNICODE ON)
 option(LIBXML2_WITH_VALID "Add the DTD validation support" ON)
-option(LIBXML2_WITH_WRITER "Add the xmlWriter saving interface" ON)
-option(LIBXML2_WITH_XINCLUDE "Add the XInclude support" ON)
 option(LIBXML2_WITH_XPATH "Add the XPATH support" ON)
-option(LIBXML2_WITH_XPTR "Add the XPointer support" ON)
 option(LIBXML2_WITH_ZLIB "Use libz" OFF)
+
+cmake_dependent_option(
+    LIBXML2_WITH_C14N "Add the Canonicalization support" ON
+    "LIBXML2_WITH_OUTPUT;LIBXML2_WITH_XPATH" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_READER "Add the xmlReader parsing interface" ON
+    "LIBXML2_WITH_PUSH" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_SCHEMAS "Add Relax-NG and Schemas support" ON
+    "LIBXML2_WITH_PATTERN;LIBXML2_WITH_REGEXPS" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON
+    "LIBXML2_WITH_PATTERN;LIBXML2_WITH_XPATH" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_THREAD_ALLOC "Add per-thread memory" OFF
+    "LIBXML2_WITH_THREADS" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_WRITER "Add the xmlWriter saving interface" ON
+    "LIBXML2_WITH_OUTPUT;LIBXML2_WITH_PUSH" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_XINCLUDE "Add the XInclude support" ON
+    "LIBXML2_WITH_XPATH" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_XPTR "Add the XPointer support" ON
+    "LIBXML2_WITH_XPATH" OFF)
+
 set(LIBXML2_XMLCONF_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH "Working directory for XML Conformance Test Suite")
 
 if(LIBXML2_WITH_PYTHON)

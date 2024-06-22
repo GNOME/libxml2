@@ -198,7 +198,7 @@ asan:
 
 # Old test suite. This should be ported to C.
 
-OLD_TESTS = Timingtests
+OLD_TESTS =
 if WITH_SCHEMAS_SOURCES
 if WITH_PYTHON
 OLD_TESTS += RelaxNGPythonTests SchemasPythonTests
@@ -207,37 +207,8 @@ endif
 if WITH_SCHEMATRON_SOURCES
 OLD_TESTS += Schematrontests
 endif
-if WITH_VALID_SOURCES
-OLD_TESTS += VTimingtests
-endif
 
 tests: $(OLD_TESTS)
-
-dba100000.xml: dbgenattr.pl
-	@echo "## generating dba100000.xml"
-	@($(PERL) $(top_srcdir)/dbgenattr.pl 100000 > dba100000.xml)
-
-Timingtests: xmllint$(EXEEXT) dba100000.xml
-	@echo "## Timing tests to try to detect performance"
-	@echo "## as well a memory usage breakage when streaming"
-	@echo "## 1/ using the file interface"
-	@echo "## 2/ using the memory interface"
-	@echo "## 3/ repeated DOM parsing"
-	@echo "## 4/ repeated DOM validation"
-	-@($(top_builddir)/xmllint --stream --timing dba100000.xml; \
-	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
-	   exit 0)
-	-@($(top_builddir)/xmllint --stream --timing --memory dba100000.xml; \
-	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
-	   exit 0)
-	-@($(top_builddir)/xmllint --noout --timing --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
-	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
-	   exit 0)
-
-VTimingtests: xmllint$(EXEEXT)
-	-@($(top_builddir)/xmllint --noout --timing --valid --repeat $(srcdir)/test/valid/REC-xml-19980210.xml; \
-	   if [ "$$MEM" != "" ] ; then echo Using $$MEM bytes ; fi ; \
-	   exit 0)
 
 Schematrontests: xmllint$(EXEEXT)
 	@echo "## Schematron regression tests"
@@ -306,7 +277,6 @@ EXTRA_DIST = Copyright check-xml-test-suite.py gentest.py \
 	     libxml2-config.cmake.in autogen.sh \
 	     libxml.h \
 	     genUnicode.py \
-	     dbgen.pl dbgenattr.pl \
 	     libxml2.syms timsort.h \
 	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in \

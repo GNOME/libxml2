@@ -196,41 +196,6 @@ asan:
 	@echo '## rebuilding for ASAN'
 	./configure CFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" CXXFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" LDFLAGS="-fsanitize=address,undefined" CC="clang" CXX="clang++" --disable-shared ; OptimOff  ; $(MAKE) clean ; $(MAKE)
 
-# Old test suite. This should be ported to C.
-
-OLD_TESTS =
-if WITH_SCHEMATRON_SOURCES
-OLD_TESTS += Schematrontests
-endif
-
-tests: $(OLD_TESTS)
-
-Schematrontests: xmllint$(EXEEXT)
-	@echo "## Schematron regression tests"
-	-@(for i in $(srcdir)/test/schematron/*.sct ; do \
-	  name=`basename $$i | sed 's+\.sct++'`; \
-	  for j in $(srcdir)/test/schematron/"$$name"_*.xml ; do \
-	      if [ -f $$j ] ; then \
-	      xno=`basename $$j | sed 's+.*_\(.*\).xml+\1+'`; \
-	      if [ ! -f $(srcdir)/result/schematron/"$$name"_"$$xno" ]; \
-	      then \
-		  echo New test file "$$name"_"$$xno" ; \
-		  $(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --schematron $$i $$j \
-		    > $(srcdir)/result/schematron/"$$name"_"$$xno" \
-		    2> $(srcdir)/result/schematron/"$$name"_"$$xno".err; \
-	      else \
-	          log=`$(CHECKER) $(top_builddir)/xmllint$(EXEEXT) --schematron $$i $$j \
-		    > res.$$name 2> err.$$name;\
-	          diff $(srcdir)/result/schematron/"$$name"_"$$xno" \
-		       res.$$name;\
-	          diff $(srcdir)/result/schematron/"$$name"_"$$xno".err \
-		       err.$$name | grep -v "error detected at";\
-		  grep Unimplemented err.$$name`; \
-		  if [ -n "$$log" ] ; then echo "$$name"_"$$xno" result ; echo "$$log" ; fi ; \
-	          rm res.$$name err.$$name ; \
-	       fi ; fi ; \
-	  done; done)
-
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)
 	-@(find . -name \*.gcda -o -name \*.gcno -exec rm -f {} \;)

@@ -177,6 +177,12 @@ check-local:
 	$(CHECKER) ./testModule$(EXEEXT)
 	$(CHECKER) ./runxmlconf$(EXEEXT)
 	$(CHECKER) ./runsuite$(EXEEXT)
+if WITH_DEBUG_SOURCES
+	test/scripts/test.sh ./xmllint$(EXEEXT)
+endif
+if WITH_CATALOG_SOURCES
+	ASAN_OPTIONS=detect_leaks=0 test/catalogs/test.sh ./xmlcatalog$(EXEEXT)
+endif
 
 # Compatibility name of the check target
 runtests: check
@@ -193,12 +199,6 @@ asan:
 # Old test suite. This should be ported to C.
 
 OLD_TESTS = Timingtests
-if WITH_CATALOG_SOURCES
-OLD_TESTS += Catatests
-endif
-if WITH_DEBUG_SOURCES
-OLD_TESTS += Scripttests
-endif
 if WITH_SCHEMAS_SOURCES
 if WITH_PYTHON
 OLD_TESTS += RelaxNGPythonTests SchemasPythonTests
@@ -212,64 +212,6 @@ OLD_TESTS += VTimingtests
 endif
 
 tests: $(OLD_TESTS)
-
-Scripttests : xmllint$(EXEEXT)
-	@echo "## Scripts regression tests"
-	@echo "## Some of the base computations may be different if srcdir != ."
-	-@(for i in $(srcdir)/test/scripts/*.script ; do \
-	  name=`basename $$i .script`; \
-	  xml=$(srcdir)/test/scripts/`basename $$i .script`.xml; \
-	  if [ -f $$xml ] ; then \
-	  if [ ! -f $(srcdir)/result/scripts/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > $(srcdir)/result/scripts/$$name 2> $(srcdir)/result/scripts/$$name.err ; \
-	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmllint --shell $$xml < $$i > result.$$name 2> result.$$name.err ; \
-	      diff $(srcdir)/result/scripts/$$name result.$$name ; \
-	      diff $(srcdir)/result/scripts/$$name.err result.$$name.err` ; \
-	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
-	      rm result.$$name result.$$name.err ; \
-	  fi ; fi ; done)
-
-Catatests : xmlcatalog$(EXEEXT)
-	@echo "## Catalog regression tests"
-	-@(for i in $(srcdir)/test/catalogs/*.script ; do \
-	  name=`basename $$i .script`; \
-	  xml=$(srcdir)/test/catalogs/`basename $$i .script`.xml; \
-	  if [ -f $$xml ] ; then \
-	  if [ ! -f $(srcdir)/result/catalogs/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i 2>&1 > $(srcdir)/result/catalogs/$$name ; \
-	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmlcatalog --shell $$xml < $$i 2>&1 > result.$$name ; \
-	      diff $(srcdir)/result/catalogs/$$name result.$$name` ; \
-	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
-	      rm result.$$name ; \
-	  fi ; fi ; done)
-	-@(for i in $(srcdir)/test/catalogs/*.script ; do \
-	  name=`basename $$i .script`; \
-	  sgml=$(srcdir)/test/catalogs/`basename $$i .script`.sgml; \
-	  if [ -f $$sgml ] ; then \
-	  if [ ! -f $(srcdir)/result/catalogs/$$name ] ; then \
-	      echo New test file $$name ; \
-	      $(CHECKER) $(top_builddir)/xmlcatalog --shell $$sgml < $$i > $(srcdir)/result/catalogs/$$name ; \
-	  else \
-	      log=`$(CHECKER) $(top_builddir)/xmlcatalog --shell $$sgml < $$i > result.$$name ; \
-	      diff $(srcdir)/result/catalogs/$$name result.$$name` ; \
-	      if [ -n "$$log" ] ; then echo $$name result ; echo "$$log" ; fi ; \
-	      rm result.$$name ; \
-	  fi ; fi ; done)
-	@echo "## Add and del operations on XML Catalogs"
-	-@($(CHECKER) $(top_builddir)/xmlcatalog --create --noout $(srcdir)/result/catalogs/mycatalog; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid sysid $(srcdir)/result/catalogs/mycatalog; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid2 sysid2 $(srcdir)/result/catalogs/mycatalog; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --add public Pubid3 sysid3 $(srcdir)/result/catalogs/mycatalog; \
-	diff result/catalogs/mycatalog.full $(srcdir)/result/catalogs/mycatalog; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid $(srcdir)/result/catalogs/mycatalog; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid3 $(srcdir)/result/catalogs/mycatalog; \
-	$(CHECKER) $(top_builddir)/xmlcatalog --noout --del sysid2 $(srcdir)/result/catalogs/mycatalog; \
-	diff result/catalogs/mycatalog.empty $(srcdir)/result/catalogs/mycatalog; \
-	rm -f $(srcdir)/result/catalogs/mycatalog)
 
 dba100000.xml: dbgenattr.pl
 	@echo "## generating dba100000.xml"

@@ -234,21 +234,19 @@ config_h.set_quoted('LOCALEDIR', dir_locale)
 # header files
 xml_check_headers = [
     'stdint.h',
-    'fcntl.h',
-    'unistd.h',
-    'sys/stat.h',
     'sys/mman.h',
+    'sys/random.h',
+    'dl.h',
+    'dlfcn.h',
+    'glob.h',
+
+    # http
     'sys/socket.h',
     'netinet/in.h',
     'arpa/inet.h',
     'netdb.h',
     'sys/select.h',
     'poll.h',
-    'sys/time.h',
-    'sys/timeb.h',
-    'dl.h',
-    'dlfcn.h',
-    'glob.h',
 ]
 
 foreach header : xml_check_headers
@@ -260,9 +258,7 @@ endforeach
 # library functions
 xml_check_functions = [
     # fct             | header
-    ['gettimeofday', 'sys/time.h'],
-    ['ftime', 'sys/timeb.h'],
-    ['stat', 'sys/stat.h'],
+    ['getentropy', 'sys/random.h'],
     ['mmap', 'sys/mman.h'],
     ['munmap', 'sys/mman.h'],
 ]

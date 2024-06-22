@@ -14,17 +14,15 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+  #include <io.h>
+#else
+  #include <unistd.h>
 #endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#elif defined (_WIN32)
-#include <io.h>
-#endif
+
 #ifdef LIBXML_ZLIB_ENABLED
 #include <zlib.h>
 #endif

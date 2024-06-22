@@ -17,29 +17,23 @@
 #include <errno.h>
 #include <limits.h>
 
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
-#ifdef HAVE_SYS_TIMEB_H
-#include <sys/timeb.h>
-#endif
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+  #include <io.h>
+  #include <sys/timeb.h>
+#else
+  #include <sys/time.h>
+  #include <unistd.h>
 #endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#elif defined (_WIN32)
-#include <io.h>
-#endif
+
 #ifdef HAVE_SYS_MMAN_H
-#include <sys/mman.h>
-/* seems needed for Solaris */
-#ifndef MAP_FAILED
-#define MAP_FAILED ((void *) -1)
-#endif
+  #include <sys/mman.h>
+  /* seems needed for Solaris */
+  #ifndef MAP_FAILED
+    #define MAP_FAILED ((void *) -1)
+  #endif
 #endif
 
 #include <libxml/xmlmemory.h>

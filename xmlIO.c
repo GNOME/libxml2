@@ -13,27 +13,23 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
+#include <sys/stat.h>
+
+#if defined(_WIN32)
+  #define WIN32_LEAN_AND_MEAN
+  #include <windows.h>
+  #include <io.h>
+  #include <direct.h>
+#else
+  #include <unistd.h>
 #endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
+
 #ifdef LIBXML_ZLIB_ENABLED
 #include <zlib.h>
 #endif
 #ifdef LIBXML_LZMA_ENABLED
 #include <lzma.h>
-#endif
-
-#if defined(_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <io.h>
-#include <direct.h>
 #endif
 
 #include <libxml/xmlIO.h>
@@ -363,19 +359,16 @@ xmlNormalizeWindowsPath(const xmlChar *path)
 int
 xmlCheckFilename(const char *path)
 {
-#ifdef HAVE_STAT
 #if defined(_WIN32)
     struct _stat stat_buffer;
 #else
     struct stat stat_buffer;
 #endif
     int res;
-#endif
 
     if (path == NULL)
 	return(0);
 
-#ifdef HAVE_STAT
 #if defined(_WIN32)
     {
         wchar_t *wpath;
@@ -405,7 +398,6 @@ xmlCheckFilename(const char *path)
     if (S_ISDIR(stat_buffer.st_mode))
         return 2;
 #endif
-#endif /* HAVE_STAT */
 
     return 1;
 }

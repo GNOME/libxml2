@@ -19,17 +19,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#elif defined (_WIN32)
-#include <io.h>
-#endif
-#ifdef HAVE_FCNTL_H
+
 #include <fcntl.h>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+  #include <io.h>
+#else
+  #include <unistd.h>
 #endif
+
 #include <libxml/xmlmemory.h>
 #include <libxml/hash.h>
 #include <libxml/uri.h>
@@ -937,62 +936,33 @@ xmlParseCatalogFile(const char *filename) {
 static xmlChar *
 xmlLoadFileContent(const char *filename)
 {
-#ifdef HAVE_STAT
     int fd;
-#else
-    FILE *fd;
-#endif
     int len;
     long size;
 
-#ifdef HAVE_STAT
     struct stat info;
-#endif
     xmlChar *content;
 
     if (filename == NULL)
         return (NULL);
 
-#ifdef HAVE_STAT
     if (stat(filename, &info) < 0)
         return (NULL);
-#endif
 
-#ifdef HAVE_STAT
     fd = open(filename, O_RDONLY);
     if (fd  < 0)
-#else
-    fd = fopen(filename, "rb");
-    if (fd == NULL)
-#endif
     {
         return (NULL);
     }
-#ifdef HAVE_STAT
     size = info.st_size;
-#else
-    if (fseek(fd, 0, SEEK_END) || (size = ftell(fd)) == EOF || fseek(fd, 0, SEEK_SET)) {        /* File operations denied? ok, just close and return failure */
-        fclose(fd);
-        return (NULL);
-    }
-#endif
     content = (xmlChar*)xmlMallocAtomic(size + 10);
     if (content == NULL) {
         xmlCatalogErrMemory();
-#ifdef HAVE_STAT
 	close(fd);
-#else
-	fclose(fd);
-#endif
         return (NULL);
     }
-#ifdef HAVE_STAT
     len = read(fd, content, size);
     close(fd);
-#else
-    len = fread(content, 1, size, fd);
-    fclose(fd);
-#endif
     if (len < 0) {
         xmlFree(content);
         return (NULL);

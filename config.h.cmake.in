@@ -16,17 +16,8 @@
 /* Define to 1 if you have the <dl.h> header file. */
 #cmakedefine HAVE_DL_H 1
 
-/* Define to 1 if you have the <fcntl.h> header file. */
-#cmakedefine HAVE_FCNTL_H 1
-
-/* Define to 1 if you have the `ftime' function. */
-#cmakedefine HAVE_FTIME 1
-
 /* Define to 1 if you have the `getentropy' function. */
 #cmakedefine HAVE_GETENTROPY 1
-
-/* Define to 1 if you have the `gettimeofday' function. */
-#cmakedefine HAVE_GETTIMEOFDAY 1
 
 /* Define if history library is there (-lhistory) */
 #cmakedefine HAVE_LIBHISTORY 1
@@ -60,9 +51,6 @@
 /* Have shl_load based dso */
 #cmakedefine HAVE_SHLLOAD 1
 
-/* Define to 1 if you have the `stat' function. */
-#cmakedefine HAVE_STAT 1
-
 /* Define to 1 if you have the <stdint.h> header file. */
 #cmakedefine HAVE_STDINT_H 1
 
@@ -77,18 +65,6 @@
 
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #cmakedefine HAVE_SYS_SOCKET_H 1
-
-/* Define to 1 if you have the <sys/stat.h> header file. */
-#cmakedefine HAVE_SYS_STAT_H 1
-
-/* Define to 1 if you have the <sys/timeb.h> header file. */
-#cmakedefine HAVE_SYS_TIMEB_H 1
-
-/* Define to 1 if you have the <sys/time.h> header file. */
-#cmakedefine HAVE_SYS_TIME_H 1
-
-/* Define to 1 if you have the <unistd.h> header file. */
-#cmakedefine HAVE_UNISTD_H 1
 
 /* Define to 1 if you have the <zlib.h> header file. */
 #cmakedefine HAVE_ZLIB_H 1

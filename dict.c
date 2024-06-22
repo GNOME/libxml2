@@ -929,9 +929,7 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
   #include <windows.h>
   #include <bcrypt.h>
 #elif defined(HAVE_GETENTROPY)
-  #ifdef HAVE_UNISTD_H
-    #include <unistd.h>
-  #endif
+  #include <unistd.h>
   #ifdef HAVE_SYS_RANDOM_H
     #include <sys/random.h>
   #endif

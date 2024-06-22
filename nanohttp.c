@@ -20,11 +20,19 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#elif defined (_WIN32)
+#include <fcntl.h>
+
+#ifdef _WIN32
+
 #include <io.h>
-#endif
+#include <wsockcompat.h>
+#define XML_SOCKLEN_T int
+
+#else /* _WIN32 */
+
+#include <unistd.h>
+#include <sys/time.h>
+
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
 #endif
@@ -40,12 +48,6 @@
   #define SUPPORT_IP6
 #endif
 #endif
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
 #ifndef HAVE_POLL_H
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
@@ -53,18 +55,18 @@
 #else
 #include <poll.h>
 #endif
-#ifdef LIBXML_ZLIB_ENABLED
-#include <zlib.h>
-#endif
 
 #ifdef VMS
   #include <stropts>
   #define XML_SOCKLEN_T unsigned int
-#elif defined(_WIN32)
-  #include <wsockcompat.h>
-  #define XML_SOCKLEN_T int
 #else
   #define XML_SOCKLEN_T socklen_t
+#endif
+
+#endif /* _WIN32 */
+
+#ifdef LIBXML_ZLIB_ENABLED
+#include <zlib.h>
 #endif
 
 #include <libxml/xmlerror.h>

@@ -16,15 +16,17 @@
 
 #include "libxml.h"
 #include <stdio.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#elif defined (_WIN32)
-#include <io.h>
-#endif
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
+
 #include <fcntl.h>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+  #include <io.h>
+#else
+  #include <unistd.h>
+#endif
 
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>

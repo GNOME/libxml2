@@ -199,11 +199,6 @@ asan:
 # Old test suite. This should be ported to C.
 
 OLD_TESTS =
-if WITH_SCHEMAS_SOURCES
-if WITH_PYTHON
-OLD_TESTS += RelaxNGPythonTests SchemasPythonTests
-endif
-endif
 if WITH_SCHEMATRON_SOURCES
 OLD_TESTS += Schematrontests
 endif
@@ -236,30 +231,6 @@ Schematrontests: xmllint$(EXEEXT)
 	       fi ; fi ; \
 	  done; done)
 
-RelaxNGPythonTests:
-	@(if [ -x $(PYTHON) ] ; then \
-	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH ; \
-	    export PYTHONPATH; \
-	    LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
-	    export LD_LIBRARY_PATH; \
-	    echo "## Relax-NG Python based test suite 1" ; \
-	    $(CHECKER) $(PYTHON) $(srcdir)/check-relaxng-test-suite.py ; \
-	    echo "## Relax-NG Python based test suite 2" ; \
-	    $(CHECKER) $(PYTHON) $(srcdir)/check-relaxng-test-suite2.py ; \
-	  fi)
-
-SchemasPythonTests:
-	@(if [ -x $(PYTHON) ] ; then \
-	    PYTHONPATH=$(top_builddir)/python:$(top_builddir)/python/.libs:$$PYTHONPATH; \
-	    export PYTHONPATH; \
-	    LD_LIBRARY_PATH="$(top_builddir)/.libs:$$LD_LIBRARY_PATH" ; \
-	    export LD_LIBRARY_PATH; \
-	    echo "## XML Schemas datatypes Python based test suite" ; \
-	    echo "## It is normal to see 11 errors reported" ; \
-	    $(CHECKER) $(PYTHON) $(srcdir)/check-xsddata-test-suite.py ; \
-	  fi)
-	@(if [ -x $(PYTHON) -a -d xstc ] ; then cd xstc ; $(MAKE) CHECKER="$(CHECKER)" pytests ; fi)
-
 cleanup:
 	-@(find . -name .\#\* -exec rm {} \;)
 	-@(find . -name \*.gcda -o -name \*.gcno -exec rm -f {} \;)
@@ -271,10 +242,7 @@ dist-hook: cleanup
 CLEANFILES = runsuite.log runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst
 
-EXTRA_DIST = Copyright check-xml-test-suite.py gentest.py \
-	     check-relaxng-test-suite.py check-relaxng-test-suite2.py \
-	     check-xsddata-test-suite.py check-xinclude-test-suite.py \
-	     libxml2-config.cmake.in autogen.sh \
+EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     libxml.h \
 	     genUnicode.py \
 	     libxml2.syms timsort.h \

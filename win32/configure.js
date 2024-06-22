@@ -605,7 +605,7 @@ if (f) {
 fso.CopyFile(makefile, new_makefile, true);
 WScript.Echo("Created Makefile.");
 // Create the config.h.
-var confighsrc = "..\\include\\win32config.h";
+var confighsrc = "win32config.h";
 var configh = "..\\config.h";
 var f = fso.FileExists(configh);
 if (f) {

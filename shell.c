@@ -807,7 +807,7 @@ xmllintShellWrite(xmllintShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
         default:{
                 FILE *f;
 
-                f = fopen((char *) filename, "w");
+                f = fopen((char *) filename, "wb");
                 if (f == NULL) {
                     fprintf(ctxt->output,
                                     "Failed to write to %s\n", filename);

@@ -487,7 +487,7 @@ int main(int argc, char **argv) {
 		    if (xmlCatalogIsEmpty(catal)) {
 			remove(argv[i + 1]);
 		    } else {
-			out = fopen(argv[i + 1], "w");
+			out = fopen(argv[i + 1], "wb");
 			if (out == NULL) {
 			    fprintf(stderr, "could not open %s for saving\n",
 				    argv[i + 1]);
@@ -502,7 +502,7 @@ int main(int argc, char **argv) {
 			if (xmlCatalogIsEmpty(super)) {
 			    remove(XML_SGML_DEFAULT_CATALOG);
 			} else {
-			    out = fopen(XML_SGML_DEFAULT_CATALOG, "w");
+			    out = fopen(XML_SGML_DEFAULT_CATALOG, "wb");
 			    if (out == NULL) {
 				fprintf(stderr,
 					"could not open %s for saving\n",
@@ -592,7 +592,7 @@ int main(int argc, char **argv) {
 	if (noout && filename && *filename) {
 	    FILE *out;
 
-	    out = fopen(filename, "w");
+	    out = fopen(filename, "wb");
 	    if (out == NULL) {
 		fprintf(stderr, "could not open %s for saving\n", filename);
 		exit_value = 2;

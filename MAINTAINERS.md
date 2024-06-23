@@ -50,7 +50,8 @@ You can get started by running
 
 ### Bump the version number
 
-Edit the version number in `configure.ac` if you haven't done so already.
+Edit the version numbers in `configure.ac` and `meson.build` if you
+haven't done so already.
 
 ### Build the tarball
 

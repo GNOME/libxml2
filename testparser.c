@@ -415,11 +415,11 @@ testBuildRelativeUri(void) {
         }, {
             "file:///a/b1/c1",
             "/a/b2/c2",
-            "../b1/c1"
+            NULL
         }, {
             "/a/b1/c1",
             "file:///a/b2/c2",
-            "../b1/c1"
+            NULL
         }, {
             "a/b1/c1",
             "/a/b2/c2",
@@ -427,7 +427,7 @@ testBuildRelativeUri(void) {
         }, {
             "/a/b1/c1",
             "a/b2/c2",
-            "file:///a/b1/c1"
+            NULL
         }, {
             "http://example.org/a/b1/c1",
             "http://example.org/a/b2/c2",
@@ -489,11 +489,11 @@ testBuildRelativeUri(void) {
         }, {
             "/a/b1/c1",
             "y:/a/b2/c2",
-            "file:///a/b1/c1"
+            NULL
         }, {
-            "\\server\\a\\b1\\c1",
+            "\\\\server\\a\\b1\\c1",
             "a/b2/c2",
-            "file:///server/a/b1/c1"
+            "file://server/a/b1/c1"
         }
 #endif
     };

@@ -2397,21 +2397,19 @@ xmlParseUriOrPath(const char *str, xmlURIPtr *out, int *drive) {
         if (xmlIsAbsolutePath(BAD_CAST buf)) {
 #if defined(_WIN32) || defined(__CYGWIN__)
             const char *server = NULL;
+            int isFileScheme = 0;
 #endif
-
-            uri->scheme = (char *) xmlStrdup(BAD_CAST "file");
-            if (uri->scheme == NULL) {
-                ret = -1;
-                goto done;
-            }
 
 #if defined(_WIN32) || defined(__CYGWIN__)
             if (strncmp(buf, "//?/UNC/", 8) == 0) {
                 server = buf + 8;
+                isFileScheme = 1;
             } else if (strncmp(buf, "//?/", 4) == 0) {
                 path = buf + 3;
+                isFileScheme = 1;
             } else if (strncmp(buf, "//", 2) == 0) {
                 server = buf + 2;
+                isFileScheme = 1;
             }
 
             if (server != NULL) {
@@ -2433,12 +2431,22 @@ xmlParseUriOrPath(const char *str, xmlURIPtr *out, int *drive) {
 
             if ((((path[0] >= 'A') && (path[0] <= 'Z')) ||
                  ((path[0] >= 'a') && (path[0] <= 'z'))) &&
-                (path[1] == ':'))
+                (path[1] == ':')) {
                 prependSlash = 1;
-#endif
+                isFileScheme = 1;
+            }
 
-            if (uri->server == NULL)
-                uri->port = PORT_EMPTY_SERVER;
+            if (isFileScheme) {
+                uri->scheme = xmlMemStrdup("file");
+                if (uri->scheme == NULL) {
+                    ret = -1;
+                    goto done;
+                }
+
+                if (uri->server == NULL)
+                    uri->port = PORT_EMPTY_SERVER;
+            }
+#endif
         }
 
         pathSize = strlen(path);
@@ -2591,14 +2599,20 @@ xmlBuildRelativeURISafe(const xmlChar * URI, const xmlChar * base,
 	remove_path = 1;
     }
 
+    bptr = (xmlChar *) bas->path;
+    rptr = (xmlChar *) ref->path;
+
+    /*
+     * Return URI if URI and base aren't both absolute or relative.
+     */
+    if ((bptr[0] == '/') != (rptr[0] == '/'))
+        goto done;
+
     /*
      * At this point we can compare the two paths
      */
     {
         int pos = 0;
-
-        bptr = (xmlChar *) bas->path;
-        rptr = (xmlChar *) ref->path;
 
         /*
          * Next we compare the two strings and find where they first differ

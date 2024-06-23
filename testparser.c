@@ -6,6 +6,7 @@
 
 #include "libxml.h"
 #include <libxml/parser.h>
+#include <libxml/uri.h>
 #include <libxml/xmlreader.h>
 #include <libxml/xmlwriter.h>
 #include <libxml/HTMLparser.h>
@@ -387,6 +388,135 @@ testWriterClose(void){
 }
 #endif
 
+typedef struct {
+    const char *uri;
+    const char *base;
+    const char *result;
+} xmlRelativeUriTest;
+
+static int
+testBuildRelativeUri(void) {
+    xmlChar *res;
+    int err = 0;
+    int i;
+
+    static const xmlRelativeUriTest tests[] = {
+        {
+            "/a/b1/c1",
+            "/a/b2/c2",
+            "../b1/c1"
+        }, {
+            "a/b1/c1",
+            "a/b2/c2",
+            "../b1/c1"
+        }, {
+            "a/././b1/x/y/../z/../.././c1",
+            "./a/./b2/././b2",
+            "../b1/c1"
+        }, {
+            "file:///a/b1/c1",
+            "/a/b2/c2",
+            "../b1/c1"
+        }, {
+            "/a/b1/c1",
+            "file:///a/b2/c2",
+            "../b1/c1"
+        }, {
+            "a/b1/c1",
+            "/a/b2/c2",
+            NULL
+        }, {
+            "/a/b1/c1",
+            "a/b2/c2",
+            "file:///a/b1/c1"
+        }, {
+            "http://example.org/a/b1/c1",
+            "http://example.org/a/b2/c2",
+            "../b1/c1"
+        }, {
+            "http://example.org/a/b1/c1",
+            "https://example.org/a/b2/c2",
+            NULL
+        }, {
+            "http://example.org/a/b1/c1",
+            "http://localhost/a/b2/c2",
+            NULL
+        }, {
+            "with space/x x/y y",
+            "with space/b2/c2",
+            "../x%20x/y%20y"
+        }, {
+            "with space/x x/y y",
+            "/b2/c2",
+            "with%20space/x%20x/y%20y"
+        }
+#if defined(_WIN32) || defined(__CYGWIN__)
+        , {
+            "\\a\\b1\\c1",
+            "\\a\\b2\\c2",
+            "../b1/c1"
+        }, {
+            "\\a\\b1\\c1",
+            "/a/b2/c2",
+            "../b1/c1"
+        }, {
+            "a\\b1\\c1",
+            "a/b2/c2",
+            "../b1/c1"
+        }, {
+            "file://server/a/b1/c1",
+            "\\\\?\\UNC\\server\\a\\b2\\c2",
+            "../b1/c1"
+        }, {
+            "file://server/a/b1/c1",
+            "\\\\server\\a\\b2\\c2",
+            "../b1/c1"
+        }, {
+            "file:///x:/a/b1/c1",
+            "x:\\a\\b2\\c2",
+            "../b1/c1"
+        }, {
+            "file:///x:/a/b1/c1",
+            "\\\\?\\x:\\a\\b2\\c2",
+            "../b1/c1"
+        }, {
+            "file:///x:/a/b1/c1",
+            "file:///y:/a/b2/c2",
+            NULL
+        }, {
+            "x:/a/b1/c1",
+            "y:/a/b2/c2",
+            "file:///x:/a/b1/c1"
+        }, {
+            "/a/b1/c1",
+            "y:/a/b2/c2",
+            "file:///a/b1/c1"
+        }, {
+            "\\server\\a\\b1\\c1",
+            "a/b2/c2",
+            "file:///server/a/b1/c1"
+        }
+#endif
+    };
+
+    for (i = 0; (size_t) i < sizeof(tests) / sizeof(tests[0]); i++) {
+        const xmlRelativeUriTest *test = tests + i;
+        const char *expect;
+
+        res = xmlBuildRelativeURI(BAD_CAST test->uri, BAD_CAST test->base);
+        expect = test->result ? test->result : test->uri;
+        if (!xmlStrEqual(res, BAD_CAST expect)) {
+            fprintf(stderr, "xmlBuildRelativeURI failed uri=%s base=%s "
+                    "result=%s expected=%s\n", test->uri, test->base,
+                    res, expect);
+            err = 1;
+        }
+        xmlFree(res);
+    }
+
+    return err;
+}
+
 int
 main(void) {
     int err = 0;
@@ -414,6 +544,7 @@ main(void) {
 #ifdef LIBXML_WRITER_ENABLED
     err |= testWriterClose();
 #endif
+    err |= testBuildRelativeUri();
 
     return err;
 }

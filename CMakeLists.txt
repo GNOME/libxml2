@@ -550,6 +550,7 @@ install(FILES doc/xmlcatalog.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 COMPONEN
 install(FILES doc/xmllint.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 COMPONENT documentation)
 install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation
     PATTERN "Makefile.*" EXCLUDE
+    PATTERN "meson.build" EXCLUDE
     PATTERN "*.1" EXCLUDE
     PATTERN "*.py" EXCLUDE
     PATTERN "*.res" EXCLUDE

@@ -1280,9 +1280,8 @@ DECLARE_ISO_FUNCS(16)
     { (char *) name, in, out EMPTY_ICONV EMPTY_UCONV }
 
 static const xmlCharEncodingHandler defaultHandlers[] = {
-    MAKE_HANDLER("UTF-8", UTF8ToUTF8, UTF8ToUTF8)
 #ifdef LIBXML_OUTPUT_ENABLED
-    ,MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE)
+    MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE)
     ,MAKE_HANDLER("UTF-16BE", UTF16BEToUTF8, UTF8ToUTF16BE)
     ,MAKE_HANDLER("UTF-16", UTF16LEToUTF8, UTF8ToUTF16)
     ,MAKE_HANDLER("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1)
@@ -1292,7 +1291,7 @@ static const xmlCharEncodingHandler defaultHandlers[] = {
     ,MAKE_HANDLER("HTML", NULL, UTF8ToHtml)
 #endif
 #else
-    ,MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, NULL)
+    MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, NULL)
     ,MAKE_HANDLER("UTF-16BE", UTF16BEToUTF8, NULL)
     ,MAKE_HANDLER("UTF-16", UTF16LEToUTF8, NULL)
     ,MAKE_HANDLER("ISO-8859-1", isolat1ToUTF8, NULL)
@@ -1322,10 +1321,13 @@ static const xmlCharEncodingHandler defaultHandlers[] = {
 #define NUM_DEFAULT_HANDLERS \
     (sizeof(defaultHandlers) / sizeof(defaultHandlers[0]))
 
-static const xmlCharEncodingHandler *xmlUTF16LEHandler = &defaultHandlers[1];
-static const xmlCharEncodingHandler *xmlUTF16BEHandler = &defaultHandlers[2];
-static const xmlCharEncodingHandler *xmlLatin1Handler = &defaultHandlers[4];
-static const xmlCharEncodingHandler *xmlAsciiHandler = &defaultHandlers[5];
+static const xmlCharEncodingHandler xmlUTF8Handler =
+    MAKE_HANDLER("UTF-8", UTF8ToUTF8, UTF8ToUTF8);
+
+static const xmlCharEncodingHandler *xmlUTF16LEHandler = &defaultHandlers[0];
+static const xmlCharEncodingHandler *xmlUTF16BEHandler = &defaultHandlers[1];
+static const xmlCharEncodingHandler *xmlLatin1Handler = &defaultHandlers[3];
+static const xmlCharEncodingHandler *xmlAsciiHandler = &defaultHandlers[4];
 
 /* the size should be growable, but it's not a big deal ... */
 #define MAX_ENCODING_HANDLERS 50
@@ -1923,6 +1925,9 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  *
  * The handler must be closed with xmlCharEncCloseFunc.
  *
+ * If the encoding is UTF-8, a NULL handler and no error code will
+ * be returned.
+ *
  * Available since 2.13.0.
  *
  * Returns an xmlParserErrors error code.
@@ -1979,6 +1984,14 @@ xmlOpenCharEncodingHandler(const char *name, int output,
 xmlCharEncodingHandlerPtr
 xmlFindCharEncodingHandler(const char *name) {
     xmlCharEncodingHandler *ret;
+
+    /*
+     * This handler shouldn't be used, but we must return a non-NULL
+     * handler.
+     */
+    if ((xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF-8") == 0) ||
+        (xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF8") == 0))
+        return((xmlCharEncodingHandlerPtr) &xmlUTF8Handler);
 
     xmlOpenCharEncodingHandler(name, 0, &ret);
     return(ret);

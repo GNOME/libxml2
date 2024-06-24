@@ -747,7 +747,7 @@ if test "$with_readline" != "no" && test "$with_readline" != ""; then
         RDL_DIR=$with_readline
     fi
 
-    if test "$RDL_DIR" == ""; then
+    if test "$RDL_DIR" = ""; then
         PKG_CHECK_MODULES([RDL], [readline], [ WITH_READLINE=1 ], [:])
     fi
 
@@ -775,7 +775,7 @@ if test "$with_readline" != "no" && test "$with_readline" != ""; then
               [Define if readline library is available])
 
     if test "$with_history" = "yes"; then
-        if test "$RDL_DIR" == ""; then
+        if test "$RDL_DIR" = ""; then
             PKG_CHECK_MODULES([HISTORY], [history], [
                 WITH_HISTORY=1
                 RDL_CFLAGS="$HISTORY_CFLAGS $RDL_CFLAGS"

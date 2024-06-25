@@ -174,10 +174,10 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
         data = xmlGenericErrorContext;
     }
 
-    res = __xmlRaiseError(schannel, channel, data, ctxt, node,
-                          XML_FROM_XINCLUDE, error, XML_ERR_ERROR,
-                          NULL, 0, (const char *) extra, NULL, NULL, 0, 0,
-		          msg, (const char *) extra);
+    res = xmlRaiseError(schannel, channel, data, ctxt, node,
+                        XML_FROM_XINCLUDE, error, XML_ERR_ERROR,
+                        NULL, 0, (const char *) extra, NULL, NULL, 0, 0,
+                        msg, (const char *) extra);
     if (res < 0) {
         ctxt->errNo = XML_ERR_NO_MEMORY;
         ctxt->fatalErr = 1;

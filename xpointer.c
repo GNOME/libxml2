@@ -99,11 +99,11 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int code,
         node = ctxt->context->debugNode;
     }
 
-    res = __xmlRaiseError(serror, NULL, data, NULL, node,
-                          XML_FROM_XPOINTER, code, XML_ERR_ERROR, NULL, 0,
-                          (const char *) extra, (const char *) ctxt->base,
-                          NULL, ctxt->cur - ctxt->base, 0,
-                          msg, extra);
+    res = xmlRaiseError(serror, NULL, data, NULL, node,
+                        XML_FROM_XPOINTER, code, XML_ERR_ERROR, NULL, 0,
+                        (const char *) extra, (const char *) ctxt->base,
+                        NULL, ctxt->cur - ctxt->base, 0,
+                        msg, extra);
     if (res < 0)
         xmlXPathPErrMemory(ctxt);
 }

@@ -222,11 +222,11 @@ xmlCatalogErr(xmlCatalogEntryPtr catal, xmlNodePtr node, int error,
 {
     int res;
 
-    res = __xmlRaiseError(NULL, NULL, NULL, catal, node,
-                          XML_FROM_CATALOG, error, XML_ERR_ERROR, NULL, 0,
-                          (const char *) str1, (const char *) str2,
-                          (const char *) str3, 0, 0,
-                          msg, str1, str2, str3);
+    res = xmlRaiseError(NULL, NULL, NULL, catal, node,
+                        XML_FROM_CATALOG, error, XML_ERR_ERROR, NULL, 0,
+                        (const char *) str1, (const char *) str2,
+                        (const char *) str3, 0, 0,
+                        msg, str1, str2, str3);
     if (res < 0)
         xmlCatalogErrMemory();
 }

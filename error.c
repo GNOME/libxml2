@@ -746,7 +746,7 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
 }
 
 /**
- * __xmlRaiseError:
+ * xmlRaiseError:
  * @schannel: the structured callback channel
  * @channel: the old callback channel
  * @data: the callback data
@@ -772,12 +772,12 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
  * Returns 0 on success, -1 if a memory allocation failed.
  */
 int
-__xmlRaiseError(xmlStructuredErrorFunc schannel,
-                xmlGenericErrorFunc channel, void *data, void *ctx,
-                xmlNode *node, int domain, int code, xmlErrorLevel level,
-                const char *file, int line, const char *str1,
-                const char *str2, const char *str3, int int1, int col,
-                const char *msg, ...)
+xmlRaiseError(xmlStructuredErrorFunc schannel,
+              xmlGenericErrorFunc channel, void *data, void *ctx,
+              xmlNode *node, int domain, int code, xmlErrorLevel level,
+              const char *file, int line, const char *str1,
+              const char *str2, const char *str3, int int1, int col,
+              const char *msg, ...)
 {
     va_list ap;
     int res;

@@ -271,10 +271,10 @@ xmlSchematronPErr(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr node, int error,
         data = xmlGenericErrorContext;
     }
 
-    res = __xmlRaiseError(schannel, channel, data, ctxt, node,
-                          XML_FROM_SCHEMASP, error, XML_ERR_ERROR, NULL, 0,
-                          (const char *) str1, (const char *) str2, NULL, 0, 0,
-                          msg, str1, str2);
+    res = xmlRaiseError(schannel, channel, data, ctxt, node,
+                        XML_FROM_SCHEMASP, error, XML_ERR_ERROR, NULL, 0,
+                        (const char *) str1, (const char *) str2, NULL, 0, 0,
+                        msg, str1, str2);
     if (res < 0)
         xmlSchematronPErrMemory(ctxt);
 }
@@ -328,10 +328,10 @@ xmlSchematronVErr(xmlSchematronValidCtxtPtr ctxt, int error,
         data = xmlGenericErrorContext;
     }
 
-    res = __xmlRaiseError(schannel, channel, data, ctxt, NULL,
-                          XML_FROM_SCHEMASV, error, XML_ERR_ERROR, NULL, 0,
-                          (const char *) str1, NULL, NULL, 0, 0,
-                          msg, str1);
+    res = xmlRaiseError(schannel, channel, data, ctxt, NULL,
+                        XML_FROM_SCHEMASV, error, XML_ERR_ERROR, NULL, 0,
+                        (const char *) str1, NULL, NULL, 0, 0,
+                        msg, str1);
     if (res < 0)
         xmlSchematronVErrMemory(ctxt);
 }
@@ -1647,17 +1647,17 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
             data = xmlGenericErrorContext;
         }
 
-        res = __xmlRaiseError(schannel, channel, data, NULL, cur,
-                              XML_FROM_SCHEMATRONV,
-                              (test->type == XML_SCHEMATRON_ASSERT) ?
-                                  XML_SCHEMATRONV_ASSERT :
-                                  XML_SCHEMATRONV_REPORT,
-                              XML_ERR_ERROR, NULL, line,
-                              (pattern == NULL) ?
-                                  NULL :
-                                  (const char *) pattern->name,
-                              (const char *) path, (const char *) report, 0, 0,
-                              "%s", msg);
+        res = xmlRaiseError(schannel, channel, data, NULL, cur,
+                            XML_FROM_SCHEMATRONV,
+                            (test->type == XML_SCHEMATRON_ASSERT) ?
+                                XML_SCHEMATRONV_ASSERT :
+                                XML_SCHEMATRONV_REPORT,
+                            XML_ERR_ERROR, NULL, line,
+                            (pattern == NULL) ?
+                                NULL :
+                                (const char *) pattern->name,
+                            (const char *) path, (const char *) report, 0, 0,
+                            "%s", msg);
         if (res < 0)
             xmlSchematronVErrMemory(ctxt);
     } else {

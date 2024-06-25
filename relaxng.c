@@ -491,10 +491,10 @@ xmlRngPErr(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node, int error,
         data = xmlGenericErrorContext;
     }
 
-    res = __xmlRaiseError(schannel, channel, data, NULL, node,
-                          XML_FROM_RELAXNGP, error, XML_ERR_ERROR, NULL, 0,
-                          (const char *) str1, (const char *) str2, NULL, 0, 0,
-                          msg, str1, str2);
+    res = xmlRaiseError(schannel, channel, data, NULL, node,
+                        XML_FROM_RELAXNGP, error, XML_ERR_ERROR, NULL, 0,
+                        (const char *) str1, (const char *) str2, NULL, 0, 0,
+                        msg, str1, str2);
     if (res < 0)
         xmlRngPErrMemory(ctxt);
 }
@@ -533,10 +533,10 @@ xmlRngVErr(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node, int error,
         data = xmlGenericErrorContext;
     }
 
-    res = __xmlRaiseError(schannel, channel, data, NULL, node,
-                          XML_FROM_RELAXNGV, error, XML_ERR_ERROR, NULL, 0,
-                          (const char *) str1, (const char *) str2, NULL, 0, 0,
-                          msg, str1, str2);
+    res = xmlRaiseError(schannel, channel, data, NULL, node,
+                        XML_FROM_RELAXNGV, error, XML_ERR_ERROR, NULL, 0,
+                        (const char *) str1, (const char *) str2, NULL, 0, 0,
+                        msg, str1, str2);
     if (res < 0)
         xmlRngVErrMemory(ctxt);
 }

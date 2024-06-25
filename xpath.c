@@ -703,12 +703,12 @@ xmlXPathErr(xmlXPathParserContextPtr ctxt, int code)
         data = xmlGenericErrorContext;
     }
 
-    res = __xmlRaiseError(schannel, channel, data, NULL, node, XML_FROM_XPATH,
-                          code + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
-                          XML_ERR_ERROR, NULL, 0,
-                          (const char *) ctxt->base, NULL, NULL,
-                          ctxt->cur - ctxt->base, 0,
-                          "%s", xmlXPathErrorMessages[code]);
+    res = xmlRaiseError(schannel, channel, data, NULL, node, XML_FROM_XPATH,
+                        code + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
+                        XML_ERR_ERROR, NULL, 0,
+                        (const char *) ctxt->base, NULL, NULL,
+                        ctxt->cur - ctxt->base, 0,
+                        "%s", xmlXPathErrorMessages[code]);
     if (res < 0)
         xmlXPathPErrMemory(ctxt);
 }

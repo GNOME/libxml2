@@ -123,14 +123,14 @@ static void
 xmlWriterErrMsg(xmlTextWriterPtr ctxt, xmlParserErrors error,
                const char *msg)
 {
-    if (ctxt != NULL) {
-	__xmlRaiseError(NULL, NULL, NULL, ctxt->ctxt,
-	            NULL, XML_FROM_WRITER, error, XML_ERR_FATAL,
-		    NULL, 0, NULL, NULL, NULL, 0, 0, "%s", msg);
-    } else {
-	__xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_WRITER, error,
-                    XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, 0, 0, "%s", msg);
-    }
+    xmlParserCtxtPtr pctxt = NULL;
+
+    if (ctxt != NULL)
+        pctxt = ctxt->ctxt;
+
+    xmlRaiseError(NULL, NULL, NULL, pctxt,
+                  NULL, XML_FROM_WRITER, error, XML_ERR_FATAL,
+                  NULL, 0, NULL, NULL, NULL, 0, 0, "%s", msg);
 }
 
 /**
@@ -146,14 +146,14 @@ static void LIBXML_ATTR_FORMAT(3,0)
 xmlWriterErrMsgInt(xmlTextWriterPtr ctxt, xmlParserErrors error,
                const char *msg, int val)
 {
-    if (ctxt != NULL) {
-	__xmlRaiseError(NULL, NULL, NULL, ctxt->ctxt,
-	            NULL, XML_FROM_WRITER, error, XML_ERR_FATAL,
-		    NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
-    } else {
-	__xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_WRITER, error,
-                    XML_ERR_FATAL, NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
-    }
+    xmlParserCtxtPtr pctxt = NULL;
+
+    if (ctxt != NULL)
+        pctxt = ctxt->ctxt;
+
+    xmlRaiseError(NULL, NULL, NULL, pctxt,
+	          NULL, XML_FROM_WRITER, error, XML_ERR_FATAL,
+		  NULL, 0, NULL, NULL, NULL, val, 0, msg, val);
 }
 
 /**

@@ -385,10 +385,10 @@ xmlRegexpErrCompile(xmlRegParserCtxtPtr ctxt, const char *extra)
 	ctxt->error = XML_REGEXP_COMPILE_ERROR;
     }
 
-    res = __xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
-                          XML_REGEXP_COMPILE_ERROR, XML_ERR_FATAL,
-                          NULL, 0, extra, regexp, NULL, idx, 0,
-                          "failed to compile: %s\n", extra);
+    res = xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_REGEXP,
+                        XML_REGEXP_COMPILE_ERROR, XML_ERR_FATAL,
+                        NULL, 0, extra, regexp, NULL, idx, 0,
+                        "failed to compile: %s\n", extra);
     if (res < 0)
         xmlRegexpErrMemory(ctxt);
 }

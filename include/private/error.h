@@ -19,12 +19,12 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel, xmlGenericErrorFunc channel,
                const char *str2, const char *str3, int int1, int col,
                const char *msg, va_list ap);
 XML_HIDDEN int
-__xmlRaiseError(xmlStructuredErrorFunc schannel, xmlGenericErrorFunc channel,
-                void *data, void *ctx, struct _xmlNode *node,
-                int domain, int code, xmlErrorLevel level,
-                const char *file, int line, const char *str1,
-                const char *str2, const char *str3, int int1, int col,
-	        const char *msg, ...) LIBXML_ATTR_FORMAT(16,17);
+xmlRaiseError(xmlStructuredErrorFunc schannel, xmlGenericErrorFunc channel,
+              void *data, void *ctx, struct _xmlNode *node,
+              int domain, int code, xmlErrorLevel level,
+              const char *file, int line, const char *str1,
+              const char *str2, const char *str3, int int1, int col,
+              const char *msg, ...) LIBXML_ATTR_FORMAT(16,17);
 XML_HIDDEN void
 xmlGenericErrorDefaultFunc(void *ctx, const char *msg,
                            ...) LIBXML_ATTR_FORMAT(2,3);

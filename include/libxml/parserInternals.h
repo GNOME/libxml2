@@ -296,9 +296,7 @@ XMLPUBVAR const xmlChar xmlStringText[];
 XMLPUBVAR const xmlChar xmlStringTextNoenc[];
 XMLPUBVAR const xmlChar xmlStringComment[];
 
-/*
- * Function to finish the work of the macros where needed.
- */
+XML_DEPRECATED
 XMLPUBFUN int                   xmlIsLetter     (int c);
 
 /**

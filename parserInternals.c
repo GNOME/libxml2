@@ -422,6 +422,8 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors code, const char *info)
  * xmlIsLetter:
  * @c:  an unicode character (int)
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Check whether the character is allowed by the production
  * [84] Letter ::= BaseChar | Ideographic
  *

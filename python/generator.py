@@ -312,6 +312,7 @@ deprecated_funcs = {
     'xmlInitializeDict': True,
     'xmlIOFTPMatch': True,
     'xmlIOHTTPMatch': True,
+    'xmlIsLetter': True,
     'xmlIsRef': True,
     'xmlKeepBlanksDefault': True,
     'xmlLineNumbersDefault': True,

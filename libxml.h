@@ -53,6 +53,10 @@
   #define ATTRIBUTE_UNUSED
 #endif
 
+#ifdef HAVE_ATTRIBUTE_DESTRUCTOR
+  #define ATTRIBUTE_DESTRUCTOR __attribute__((destructor))
+#endif
+
 #if defined(__clang__) || \
     (defined(__GNUC__) && (__GNUC__ >= 8) && !defined(__EDG__))
   #define ATTRIBUTE_NO_SANITIZE(arg) __attribute__((no_sanitize(arg)))

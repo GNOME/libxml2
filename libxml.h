@@ -53,7 +53,7 @@
   #define ATTRIBUTE_UNUSED
 #endif
 
-#ifdef HAVE_ATTRIBUTE_DESTRUCTOR
+#ifdef HAVE_FUNC_ATTRIBUTE_DESTRUCTOR
   #define ATTRIBUTE_DESTRUCTOR __attribute__((destructor))
 #endif
 

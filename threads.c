@@ -561,7 +561,7 @@ xmlCleanupParser(void) {
     xmlParserInnerInitialized = 0;
 }
 
-#if defined(HAVE_ATTRIBUTE_DESTRUCTOR) && \
+#if defined(HAVE_FUNC_ATTRIBUTE_DESTRUCTOR) && \
     !defined(LIBXML_THREAD_ALLOC_ENABLED) && \
     !defined(LIBXML_STATIC) && \
     !defined(_WIN32)

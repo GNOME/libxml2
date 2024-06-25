@@ -275,10 +275,21 @@ else
     fi
 fi
 
+dnl
+dnl Extra flags
+dnl
+XML_LIBDIR='-L${libdir}'
+XML_INCLUDEDIR='-I${includedir}/libxml2'
+XML_CFLAGS=""
+XML_STATIC_CFLAGS=""
+XML_PC_CFLAGS_PRIVATE=""
+
 XML_PRIVATE_LIBS=
 XML_PRIVATE_CFLAGS=
 XML_PC_LIBS=
 XML_PC_REQUIRES=
+
+AX_GCC_FUNC_ATTRIBUTE([destructor])
 
 dnl
 dnl Checks for header files.
@@ -325,15 +336,6 @@ if test "$with_http" = "yes"; then
     esac
 fi
 
-dnl
-dnl Extra flags
-dnl
-XML_LIBDIR='-L${libdir}'
-XML_INCLUDEDIR='-I${includedir}/libxml2'
-XML_CFLAGS=""
-XML_STATIC_CFLAGS=""
-XML_PC_CFLAGS_PRIVATE=""
-
 dnl Thread-local storage
 if test "$with_tls" = "yes"; then
     AC_COMPILE_IFELSE([
@@ -347,15 +349,6 @@ if test "$with_tls" = "yes"; then
         AC_DEFINE([XML_THREAD_LOCAL], [__declspec(thread)], [TLS specifier]) ], [
     ])])])
 fi
-
-dnl Checking whether __attribute__((destructor)) is accepted by the compiler
-AC_MSG_CHECKING([whether __attribute__((destructor)) is accepted])
-AC_TRY_COMPILE2([
-void __attribute__((destructor))
-f(void) {}], [], [
-  AC_MSG_RESULT(yes)
-  AC_DEFINE([HAVE_ATTRIBUTE_DESTRUCTOR], [1],[Define if __attribute__((destructor)) is accepted])
-  AC_MSG_RESULT(no)])
 
 dnl
 dnl Linker version scripts for symbol versioning

@@ -297,7 +297,7 @@ endif
 
 ### __attribute__((destructor))
 if cc.has_function_attribute('destructor')
-    config_h.set10('HAVE_ATTRIBUTE_DESTRUCTOR', true)
+    config_h.set10('HAVE_FUNC_ATTRIBUTE_DESTRUCTOR', true)
 endif
 
 ### DSO support

@@ -138,7 +138,7 @@ if (NOT MSVC)
         void __attribute__((destructor))
         f(void) {}
         int main(void) { return 0; }
-    " HAVE_ATTRIBUTE_DESTRUCTOR)
+    " HAVE_FUNC_ATTRIBUTE_DESTRUCTOR)
     check_include_files(arpa/inet.h HAVE_ARPA_INET_H)
     check_function_exists(class HAVE_CLASS)
     check_include_files(dlfcn.h HAVE_DLFCN_H)

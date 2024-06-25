@@ -968,46 +968,6 @@ xmlResetLastError(void)
 }
 
 /**
- * xmlCtxtGetLastError:
- * @ctx:  an XML parser context
- *
- * Get the last parsing error registered.
- *
- * Returns NULL if no error occurred or a pointer to the error
- */
-const xmlError *
-xmlCtxtGetLastError(void *ctx)
-{
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-
-    if (ctxt == NULL)
-        return (NULL);
-    if (ctxt->lastError.code == XML_ERR_OK)
-        return (NULL);
-    return (&ctxt->lastError);
-}
-
-/**
- * xmlCtxtResetLastError:
- * @ctx:  an XML parser context
- *
- * Cleanup the last global error registered. For parsing error
- * this does not change the well-formedness result.
- */
-void
-xmlCtxtResetLastError(void *ctx)
-{
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
-
-    if (ctxt == NULL)
-        return;
-    ctxt->errNo = XML_ERR_OK;
-    if (ctxt->lastError.code == XML_ERR_OK)
-        return;
-    xmlResetError(&ctxt->lastError);
-}
-
-/**
  * xmlCopyError:
  * @from:  a source error
  * @to:  a target error

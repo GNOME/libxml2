@@ -1568,20 +1568,34 @@ typedef struct
 typedef xmlParserCtxtPyCtxt *xmlParserCtxtPyCtxtPtr;
 
 static void
-libxml_xmlParserCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str) 
+libxml_xmlParserCtxtErrorHandler(void *ctx, const xmlError *error)
 {
     PyObject *list;
     PyObject *result;
     xmlParserCtxtPtr ctxt;
     xmlParserCtxtPyCtxtPtr pyCtxt;
+    int severity;
     
     ctxt = (xmlParserCtxtPtr)ctx;
     pyCtxt = (xmlParserCtxtPyCtxtPtr)ctxt->_private;
 
+    if ((error->domain == XML_FROM_VALID) ||
+        (error->domain == XML_FROM_DTD)) {
+        if (error->level == XML_ERR_WARNING)
+            severity = XML_PARSER_SEVERITY_VALIDITY_WARNING;
+        else
+            severity = XML_PARSER_SEVERITY_VALIDITY_ERROR;
+    } else {
+        if (error->level == XML_ERR_WARNING)
+            severity = XML_PARSER_SEVERITY_WARNING;
+        else
+            severity = XML_PARSER_SEVERITY_ERROR;
+    }
+
     list = PyTuple_New(4);
     PyTuple_SetItem(list, 0, pyCtxt->arg);
     Py_XINCREF(pyCtxt->arg);
-    PyTuple_SetItem(list, 1, libxml_charPtrWrap(str));
+    PyTuple_SetItem(list, 1, libxml_constcharPtrWrap(error->message));
     PyTuple_SetItem(list, 2, libxml_intWrap(severity));
     PyTuple_SetItem(list, 3, Py_None);
     Py_INCREF(Py_None);
@@ -1593,46 +1607,6 @@ libxml_xmlParserCtxtGenericErrorFuncHandler(void *ctx, int severity, char *str)
     }
     Py_XDECREF(list);
     Py_XDECREF(result);
-}
-
-static void 
-libxml_xmlParserCtxtErrorFuncHandler(void *ctx, const char *msg, ...) 
-{
-    va_list ap;
-
-    va_start(ap, msg);
-    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_ERROR,libxml_buildMessage(msg,ap));
-    va_end(ap);
-}
-
-static void 
-libxml_xmlParserCtxtWarningFuncHandler(void *ctx, const char *msg, ...) 
-{
-    va_list ap;
-
-    va_start(ap, msg);
-    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_WARNING,libxml_buildMessage(msg,ap));
-    va_end(ap);
-}
-
-static void 
-libxml_xmlParserCtxtValidityErrorFuncHandler(void *ctx, const char *msg, ...) 
-{
-    va_list ap;
-
-    va_start(ap, msg);
-    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_VALIDITY_ERROR,libxml_buildMessage(msg,ap));
-    va_end(ap);
-}
-
-static void 
-libxml_xmlParserCtxtValidityWarningFuncHandler(void *ctx, const char *msg, ...) 
-{
-    va_list ap;
-
-    va_start(ap, msg);
-    libxml_xmlParserCtxtGenericErrorFuncHandler(ctx,XML_PARSER_SEVERITY_VALIDITY_WARNING,libxml_buildMessage(msg,ap));
-    va_end(ap);
 }
 
 static PyObject *
@@ -1670,16 +1644,10 @@ libxml_xmlParserCtxtSetErrorHandler(ATTRIBUTE_UNUSED PyObject *self, PyObject *a
     pyCtxt->arg = pyobj_arg;
 
     if (pyobj_f != Py_None) {
-	ctxt->sax->error = libxml_xmlParserCtxtErrorFuncHandler;
-	ctxt->sax->warning = libxml_xmlParserCtxtWarningFuncHandler;
-	ctxt->vctxt.error = libxml_xmlParserCtxtValidityErrorFuncHandler;
-	ctxt->vctxt.warning = libxml_xmlParserCtxtValidityWarningFuncHandler;
+        xmlCtxtSetErrorHandler(ctxt, libxml_xmlParserCtxtErrorHandler, ctxt);
     }
     else {
-	ctxt->sax->error = xmlParserError;
-	ctxt->vctxt.error = xmlParserValidityError;
-	ctxt->sax->warning = xmlParserWarning;
-	ctxt->vctxt.warning = xmlParserValidityWarning;
+        xmlCtxtSetErrorHandler(ctxt, NULL, NULL);
     }
 
     py_retval = libxml_intWrap(1);

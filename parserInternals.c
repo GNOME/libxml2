@@ -1521,6 +1521,21 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
 }
 
 /**
+ * xmlCtxtGetDeclaredEncoding:
+ * ctxt:  parser context
+ *
+ * Returns the encoding from the encoding declaration. This can differ
+ * from the actual encoding.
+ */
+const xmlChar *
+xmlCtxtGetDeclaredEncoding(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(NULL);
+
+    return(ctxt->encoding);
+}
+
+/**
  * xmlGetActualEncoding:
  * @ctxt:  the parser context
  *

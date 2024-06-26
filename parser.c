@@ -10405,6 +10405,34 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * xmlCtxtGetVersion:
+ * ctxt:  parser context
+ *
+ * Returns the version from the XML declaration.
+ */
+const xmlChar *
+xmlCtxtGetVersion(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(NULL);
+
+    return(ctxt->version);
+}
+
+/**
+ * xmlCtxtGetStandalone:
+ * ctxt:  parser context
+ *
+ * Returns the value from the standalone document declaration.
+ */
+int
+xmlCtxtGetStandalone(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(0);
+
+    return(ctxt->standalone);
+}
+
+/**
  * xmlParseMisc:
  * @ctxt:  an XML parser context
  *

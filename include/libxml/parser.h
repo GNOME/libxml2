@@ -1406,6 +1406,12 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
+XMLPUBFUN const xmlChar *
+		xmlCtxtGetVersion	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN const xmlChar *
+		xmlCtxtGetDeclaredEncoding(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
+		xmlCtxtGetStandalone	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxtPtr ctxt,
 					 xmlStructuredErrorFunc handler,

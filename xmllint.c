@@ -437,9 +437,19 @@ xmlHTMLBufCat(void *data ATTRIBUTE_UNUSED, const char *fmt, ...) {
     }
 }
 
+/**
+ * xmlHTMLError:
+ * @ctx:  an XML parser context
+ * @msg:  the message to display/transmit
+ * @...:  extra parameters for the message display
+ *
+ * Display and format an error messages, gives file, line, position and
+ * extra parameters.
+ */
 static void
-xmlHTMLPrintError(void *ctx, const char *level, const char *msg, va_list ap) {
-    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
+xmlHTMLError(void *vctxt, const xmlError *error)
+{
+    xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) vctxt;
     xmlParserInputPtr input;
     xmlGenericErrorFunc oldError;
     void *oldErrorCtxt;
@@ -458,9 +468,12 @@ xmlHTMLPrintError(void *ctx, const char *level, const char *msg, va_list ap) {
     xmlParserPrintFileInfo(input);
     xmlHTMLEncodeSend();
 
-    fprintf(ERR_STREAM, "<b>%s</b>: ", level);
+    fprintf(ERR_STREAM, "<b>%s%s</b>: ",
+            (error->domain == XML_FROM_VALID) ||
+            (error->domain == XML_FROM_DTD) ? "validity " : "",
+            error->level == XML_ERR_WARNING ? "warning" : "error");
 
-    vsnprintf(buffer, sizeof(buffer), msg, ap);
+    snprintf(buffer, sizeof(buffer), "%s", error->message);
     xmlHTMLEncodeSend();
 
     fprintf(ERR_STREAM, "</p>\n");
@@ -475,84 +488,6 @@ xmlHTMLPrintError(void *ctx, const char *level, const char *msg, va_list ap) {
     }
 
     xmlSetGenericErrorFunc(oldErrorCtxt, oldError);
-}
-
-/**
- * xmlHTMLError:
- * @ctx:  an XML parser context
- * @msg:  the message to display/transmit
- * @...:  extra parameters for the message display
- *
- * Display and format an error messages, gives file, line, position and
- * extra parameters.
- */
-static void LIBXML_ATTR_FORMAT(2,3)
-xmlHTMLError(void *ctx, const char *msg, ...)
-{
-    va_list args;
-
-    va_start(args, msg);
-    xmlHTMLPrintError(ctx, "error", msg, args);
-    va_end(args);
-}
-
-/**
- * xmlHTMLWarning:
- * @ctx:  an XML parser context
- * @msg:  the message to display/transmit
- * @...:  extra parameters for the message display
- *
- * Display and format a warning messages, gives file, line, position and
- * extra parameters.
- */
-static void LIBXML_ATTR_FORMAT(2,3)
-xmlHTMLWarning(void *ctx, const char *msg, ...)
-{
-    va_list args;
-
-    va_start(args, msg);
-    xmlHTMLPrintError(ctx, "warning", msg, args);
-    va_end(args);
-}
-
-/**
- * xmlHTMLValidityError:
- * @ctx:  an XML parser context
- * @msg:  the message to display/transmit
- * @...:  extra parameters for the message display
- *
- * Display and format an validity error messages, gives file,
- * line, position and extra parameters.
- */
-static void LIBXML_ATTR_FORMAT(2,3)
-xmlHTMLValidityError(void *ctx, const char *msg, ...)
-{
-    va_list args;
-
-    va_start(args, msg);
-    xmlHTMLPrintError(ctx, "validity error", msg, args);
-    va_end(args);
-
-    progresult = XMLLINT_ERR_VALID;
-}
-
-/**
- * xmlHTMLValidityWarning:
- * @ctx:  an XML parser context
- * @msg:  the message to display/transmit
- * @...:  extra parameters for the message display
- *
- * Display and format a validity warning messages, gives file, line,
- * position and extra parameters.
- */
-static void LIBXML_ATTR_FORMAT(2,3)
-xmlHTMLValidityWarning(void *ctx, const char *msg, ...)
-{
-    va_list args;
-
-    va_start(args, msg);
-    xmlHTMLPrintError(ctx, "validity warning", msg, args);
-    va_end(args);
 }
 
 /************************************************************************
@@ -2046,12 +1981,8 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
         if (maxAmpl > 0)
             xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
 
-        if (htmlout) {
-            ctxt->sax->error = xmlHTMLError;
-            ctxt->sax->warning = xmlHTMLWarning;
-            ctxt->vctxt.error = xmlHTMLValidityError;
-            ctxt->vctxt.warning = xmlHTMLValidityWarning;
-        }
+        if (htmlout)
+            xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
 
         while ((res = fread(chars, 1, pushsize, f)) > 0) {
             xmlParseChunk(ctxt, chars, res, 0);
@@ -2078,12 +2009,8 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
         if (maxAmpl > 0)
             xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
 
-        if (htmlout) {
-            ctxt->sax->error = xmlHTMLError;
-            ctxt->sax->warning = xmlHTMLWarning;
-            ctxt->vctxt.error = xmlHTMLValidityError;
-            ctxt->vctxt.warning = xmlHTMLValidityWarning;
-        }
+        if (htmlout)
+            xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
 
         if (testIO) {
             FILE *f;

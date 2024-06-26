@@ -95,10 +95,12 @@ XMLPUBFUN void
 		xmlSAX2StartDocument		(void *ctx);
 XMLPUBFUN void
 		xmlSAX2EndDocument		(void *ctx);
+XML_DEPRECATED
 XMLPUBFUN void
 		xmlSAX2StartElement		(void *ctx,
 						 const xmlChar *fullname,
 						 const xmlChar **atts);
+XML_DEPRECATED
 XMLPUBFUN void
 		xmlSAX2EndElement		(void *ctx,
 						 const xmlChar *name);

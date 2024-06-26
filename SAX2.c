@@ -1689,6 +1689,8 @@ xmlSAX2StartHtmlElement(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
  * @fullname:  The element name, including namespace prefix
  * @atts:  An array of name/value attributes pairs, NULL terminated
  *
+ * DEPRECATED: Don't call this function directly.
+ *
  * Called when an opening tag has been processed.
  *
  * Used for HTML and SAX1.
@@ -1721,6 +1723,8 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts) {
  * xmlSAX2EndElement:
  * @ctx: the user data (XML parser context)
  * @name:  The element name
+ *
+ * DEPRECATED: Don't call this function directly.
  *
  * called when the end of an element has been detected.
  *

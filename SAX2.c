@@ -2671,32 +2671,23 @@ xmlSAX2CDataBlock(void *ctx, const xmlChar *value, int len)
     xmlSAX2Text((xmlParserCtxtPtr) ctx, value, len, XML_CDATA_SECTION_NODE);
 }
 
-static int xmlSAX2DefaultVersionValue = 2;
-
 #ifdef LIBXML_SAX1_ENABLED
 /**
  * xmlSAXDefaultVersion:
- * @version:  the version, 1 or 2
+ * @version:  the version, must be 2
  *
  * DEPRECATED: Use parser option XML_PARSE_SAX1.
  *
- * Set the default version of SAX used globally by the library.
- * By default, during initialization the default is set to 2.
- * Note that it is generally a better coding style to use
- * xmlSAXVersion() to set up the version explicitly for a given
- * parsing context.
+ * Has no effect.
  *
- * Returns the previous value in case of success and -1 in case of error.
+ * Returns 2 in case of success and -1 in case of error.
  */
 int
 xmlSAXDefaultVersion(int version)
 {
-    int ret = xmlSAX2DefaultVersionValue;
-
-    if ((version != 1) && (version != 2))
+    if (version != 2)
         return(-1);
-    xmlSAX2DefaultVersionValue = version;
-    return(ret);
+    return(2);
 }
 #endif /* LIBXML_SAX1_ENABLED */
 
@@ -2773,11 +2764,9 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
     if ((hdlr == NULL) || (hdlr->initialized != 0))
 	return;
 
-    xmlSAXVersion(hdlr, xmlSAX2DefaultVersionValue);
+    xmlSAXVersion(hdlr, 2);
     if (warning == 0)
 	hdlr->warning = NULL;
-    else
-	hdlr->warning = xmlParserWarning;
 }
 
 /**

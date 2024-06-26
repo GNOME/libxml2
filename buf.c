@@ -106,7 +106,7 @@ static void
 xmlBufOverflowError(xmlBufPtr buf)
 {
     if (buf->error == 0)
-        buf->error = XML_BUF_OVERFLOW;
+        buf->error = XML_ERR_RESOURCE_LIMIT;
 }
 
 

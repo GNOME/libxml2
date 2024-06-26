@@ -40,6 +40,11 @@ extern "C" {
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
+#define XML_STATUS_NOT_WELL_FORMED          (1 << 0)
+#define XML_STATUS_NOT_NS_WELL_FORMED       (1 << 1)
+#define XML_STATUS_DTD_VALIDATION_FAILED    (1 << 2)
+#define XML_STATUS_CATASTROPHIC_ERROR       (1 << 3)
+
 typedef enum {
     XML_RESOURCE_UNKNOWN = 0,
     XML_RESOURCE_MAIN_DOCUMENT,
@@ -1423,6 +1428,8 @@ XMLPUBFUN const xmlChar *
 		xmlCtxtGetDeclaredEncoding(xmlParserCtxtPtr ctxt);
 XMLPUBFUN int
 		xmlCtxtGetStandalone	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
+		xmlCtxtGetStatus	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxtPtr ctxt,
 					 xmlStructuredErrorFunc handler,

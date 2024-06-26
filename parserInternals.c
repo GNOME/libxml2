@@ -253,6 +253,36 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
                msg, str1, str2);
 }
 
+static int
+xmlCtxtIsCatastrophicError(xmlParserCtxtPtr ctxt) {
+    int fatal = 0;
+    int code;
+
+    if (ctxt == NULL)
+        return(1);
+
+    if (ctxt->lastError.level != XML_ERR_FATAL)
+        return(0);
+
+    code = ctxt->lastError.code;
+
+    switch (code) {
+        case XML_ERR_NO_MEMORY:
+        case XML_ERR_RESOURCE_LIMIT:
+        case XML_ERR_SYSTEM:
+        case XML_ERR_ARGUMENT:
+        case XML_ERR_INTERNAL_ERROR:
+            fatal = 1;
+            break;
+        default:
+            if ((code >= 1500) && (code <= 1599))
+                fatal = 1;
+            break;
+    }
+
+    return(fatal);
+}
+
 /**
  * xmlCtxtVErr:
  * @ctxt:  a parser context
@@ -352,7 +382,10 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
         ctxt->errNo = code;
     if (level == XML_ERR_FATAL) {
         ctxt->wellFormed = 0;
-        if (ctxt->recovery == 0)
+
+        if (xmlCtxtIsCatastrophicError(ctxt))
+            ctxt->disableSAX = 2; /* stop parser */
+        else if (ctxt->recovery == 0)
             ctxt->disableSAX = 1;
     }
 }
@@ -385,6 +418,40 @@ xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
     xmlCtxtVErr(ctxt, node, domain, code, level,
                 str1, str2, str3, int1, msg, ap);
     va_end(ap);
+}
+
+/**
+ * xmlCtxtGetStatus:
+ * @ctxt:  an XML parser context
+ *
+ * Get well-formedness and validation status after parsing. Also
+ * reports catastrophic errors which are not related to parsing
+ * like out-of-memory, I/O or other errors.
+ *
+ * Returns a bitmask of XML_STATUS_* flags ORed together.
+ */
+int
+xmlCtxtGetStatus(xmlParserCtxt *ctxt) {
+    int bits = 0;
+
+    if (xmlCtxtIsCatastrophicError(ctxt)) {
+        bits |= XML_STATUS_CATASTROPHIC_ERROR |
+                XML_STATUS_NOT_WELL_FORMED |
+                XML_STATUS_NOT_NS_WELL_FORMED;
+        if ((ctxt != NULL) && (ctxt->validate))
+            bits |= XML_STATUS_DTD_VALIDATION_FAILED;
+
+        return(bits);
+    }
+
+    if (!ctxt->wellFormed)
+        bits |= XML_STATUS_NOT_WELL_FORMED;
+    if (!ctxt->nsWellFormed)
+        bits |= XML_STATUS_NOT_NS_WELL_FORMED;
+    if ((ctxt->validate) && (!ctxt->valid))
+        bits |= XML_STATUS_DTD_VALIDATION_FAILED;
+
+    return(bits);
 }
 
 /**

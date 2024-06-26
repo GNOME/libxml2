@@ -2867,7 +2867,8 @@ libxml_addLocalCatalog(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
     ctxt = (xmlParserCtxtPtr) PyparserCtxt_Get(pyobj_ctxt);
 
     if (URL != NULL) {
-	ctxt->catalogs = xmlCatalogAddLocal(ctxt->catalogs, URL);
+        void *catalogs = xmlCtxtGetCatalogs(ctxt);
+        xmlCtxtSetCatalogs(ctxt, xmlCatalogAddLocal(catalogs, URL));
     }
 
     Py_INCREF(Py_None);

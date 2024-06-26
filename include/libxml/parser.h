@@ -339,7 +339,7 @@ struct _xmlParserCtxt {
     /* set line number in element content */
     int linenumbers XML_DEPRECATED_MEMBER;
     /* document's own catalog */
-    void *catalogs;
+    void *catalogs XML_DEPRECATED_MEMBER;
     /* run in recovery mode */
     int recovery XML_DEPRECATED_MEMBER;
     /* unused */
@@ -1334,10 +1334,6 @@ XMLPUBFUN void
 		xmlSetExternalEntityLoader(xmlExternalEntityLoader f);
 XMLPUBFUN xmlExternalEntityLoader
 		xmlGetExternalEntityLoader(void);
-XMLPUBFUN void
-		xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt,
-					 xmlResourceLoader loader,
-					 void *vctxt);
 XMLPUBFUN xmlParserInputPtr
 		xmlLoadExternalEntity	(const char *URL,
 					 const char *ID,
@@ -1399,13 +1395,28 @@ XMLPUBFUN int
 					 const char *filename,
 					 const char *encoding);
 XMLPUBFUN int
+		xmlCtxtGetOptions	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
 		xmlCtxtSetOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
 XMLPUBFUN int
-		xmlCtxtGetOptions	(xmlParserCtxtPtr ctxt);
-XMLPUBFUN int
 		xmlCtxtUseOptions	(xmlParserCtxtPtr ctxt,
 					 int options);
+XMLPUBFUN void *
+		xmlCtxtGetPrivate	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN void
+		xmlCtxtSetPrivate	(xmlParserCtxtPtr ctxt,
+					 void *priv);
+XMLPUBFUN void *
+		xmlCtxtGetCatalogs	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN void
+		xmlCtxtSetCatalogs	(xmlParserCtxtPtr ctxt,
+					 void *catalogs);
+XMLPUBFUN xmlDictPtr
+		xmlCtxtGetDict		(xmlParserCtxtPtr ctxt);
+XMLPUBFUN void
+		xmlCtxtSetDict		(xmlParserCtxtPtr ctxt,
+					 xmlDictPtr);
 XMLPUBFUN const xmlChar *
 		xmlCtxtGetVersion	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN const xmlChar *
@@ -1416,6 +1427,10 @@ XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxtPtr ctxt,
 					 xmlStructuredErrorFunc handler,
 					 void *data);
+XMLPUBFUN void
+		xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt,
+					 xmlResourceLoader loader,
+					 void *vctxt);
 XMLPUBFUN void
 		xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt,
 					 unsigned maxAmpl);

@@ -2376,7 +2376,7 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
             return(NULL);
         }
     }
-    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+    if ((xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue((xmlNodePtr)cur);
     return(cur);
 }

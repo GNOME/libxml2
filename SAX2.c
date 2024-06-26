@@ -1836,7 +1836,7 @@ skip:
     } else
 	ret->content = (xmlChar *) intern;
 
-    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+    if ((xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	xmlRegisterNodeDefaultValue(ret);
     return(ret);
 }
@@ -1952,7 +1952,7 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
             xmlSAX2ErrMemory(ctxt);
     }
 
-    if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+    if ((xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
         xmlRegisterNodeDefaultValue((xmlNodePtr)ret);
 
     if ((ctxt->replaceEntities == 0) && (!ctxt->html)) {
@@ -2200,7 +2200,7 @@ xmlSAX2StartElementNs(void *ctx,
 		return;
 	    }
 	}
-	if ((__xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
+	if ((xmlRegisterCallbacks) && (xmlRegisterNodeDefaultValue))
 	    xmlRegisterNodeDefaultValue(ret);
     } else {
 	if (ctxt->dictNames)

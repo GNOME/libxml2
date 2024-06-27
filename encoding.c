@@ -1161,7 +1161,7 @@ xmlParseCharEncoding(const char* name)
     if (!strcmp(upper, "SHIFT_JIS")) return(XML_CHAR_ENCODING_SHIFT_JIS);
     if (!strcmp(upper, "EUC-JP")) return(XML_CHAR_ENCODING_EUC_JP);
 
-    return(XML_CHAR_ENCODING_NONE);
+    return(XML_CHAR_ENCODING_ERROR);
 }
 
 /**
@@ -1936,7 +1936,9 @@ int
 xmlOpenCharEncodingHandler(const char *name, int output,
                            xmlCharEncodingHandler **out) {
     const char *nalias;
+    const char *norig;
     xmlCharEncoding enc;
+    int ret;
 
     if (out == NULL)
         return(XML_ERR_ARGUMENT);
@@ -1945,30 +1947,32 @@ xmlOpenCharEncodingHandler(const char *name, int output,
     if (name == NULL)
         return(XML_ERR_ARGUMENT);
 
+    if ((xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF-8") == 0) ||
+        (xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF8") == 0))
+        return(XML_ERR_OK);
+
     /*
      * Do the alias resolution
      */
+    norig = name;
     nalias = xmlGetEncodingAlias(name);
     if (nalias != NULL)
 	name = nalias;
 
+    ret = xmlFindHandler(name, output, out);
+    if (*out != NULL)
+        return(0);
+    if (ret != XML_ERR_UNSUPPORTED_ENCODING)
+        return(ret);
+
     /*
-     * UTF-16 needs the built-in handler which is only available via
-     * xmlFindHandler.
+     * Fallback using the canonical names
+     *
+     * TODO: We should make sure that the name of the returned
+     * handler equals norig.
      */
-    if (xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF16") == 0) {
-        name = "UTF-16";
-    } else if (xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF-16") != 0) {
-        enc = xmlParseCharEncoding(name);
-        if (enc != XML_CHAR_ENCODING_NONE) {
-            int res = xmlLookupCharEncodingHandler(enc, out);
-
-            if (res != XML_ERR_UNSUPPORTED_ENCODING)
-                return(res);
-        }
-    }
-
-    return(xmlFindHandler(name, output, out));
+    enc = xmlParseCharEncoding(norig);
+    return(xmlLookupCharEncodingHandler(enc, out));
 }
 
 /**

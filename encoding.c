@@ -71,6 +71,216 @@ static int xmlCharEncodingAliasesMax = 0;
 
 static int xmlLittleEndian = 1;
 
+typedef struct {
+    const char *name;
+    xmlCharEncoding enc;
+} xmlEncTableEntry;
+
+static const xmlEncTableEntry xmlEncTable[] = {
+    { "ASCII", XML_CHAR_ENCODING_ASCII },
+    { "EUC-JP", XML_CHAR_ENCODING_EUC_JP },
+    { "HTML", XML_CHAR_ENCODING_HTML },
+    { "ISO LATIN 1", XML_CHAR_ENCODING_8859_1 },
+    { "ISO LATIN 2", XML_CHAR_ENCODING_8859_2 },
+    { "ISO-10646-UCS-2", XML_CHAR_ENCODING_UCS2 },
+    { "ISO-10646-UCS-4", XML_CHAR_ENCODING_UCS4LE },
+    { "ISO-2022-JP", XML_CHAR_ENCODING_2022_JP },
+    { "ISO-8859-1", XML_CHAR_ENCODING_8859_1 },
+    { "ISO-8859-10", XML_CHAR_ENCODING_8859_10 },
+    { "ISO-8859-11", XML_CHAR_ENCODING_8859_11 },
+    { "ISO-8859-13", XML_CHAR_ENCODING_8859_13 },
+    { "ISO-8859-14", XML_CHAR_ENCODING_8859_14 },
+    { "ISO-8859-15", XML_CHAR_ENCODING_8859_15 },
+    { "ISO-8859-16", XML_CHAR_ENCODING_8859_16 },
+    { "ISO-8859-2", XML_CHAR_ENCODING_8859_2 },
+    { "ISO-8859-3", XML_CHAR_ENCODING_8859_3 },
+    { "ISO-8859-4", XML_CHAR_ENCODING_8859_4 },
+    { "ISO-8859-5", XML_CHAR_ENCODING_8859_5 },
+    { "ISO-8859-6", XML_CHAR_ENCODING_8859_6 },
+    { "ISO-8859-7", XML_CHAR_ENCODING_8859_7 },
+    { "ISO-8859-8", XML_CHAR_ENCODING_8859_8 },
+    { "ISO-8859-9", XML_CHAR_ENCODING_8859_9 },
+    { "ISO-LATIN-1", XML_CHAR_ENCODING_8859_1 },
+    { "ISO-LATIN-2", XML_CHAR_ENCODING_8859_2 },
+    { "SHIFT_JIS", XML_CHAR_ENCODING_SHIFT_JIS },
+    { "UCS-2", XML_CHAR_ENCODING_UCS2 },
+    { "UCS-4", XML_CHAR_ENCODING_UCS4LE },
+    { "UCS2", XML_CHAR_ENCODING_UCS2 },
+    { "UCS4", XML_CHAR_ENCODING_UCS4LE },
+    { "US-ASCII", XML_CHAR_ENCODING_ASCII },
+    { "UTF-16", XML_CHAR_ENCODING_UTF16 },
+    { "UTF-16BE", XML_CHAR_ENCODING_UTF16BE },
+    { "UTF-16LE", XML_CHAR_ENCODING_UTF16LE },
+    { "UTF-8", XML_CHAR_ENCODING_UTF8 },
+    { "UTF16", XML_CHAR_ENCODING_UTF16LE },
+    { "UTF8", XML_CHAR_ENCODING_UTF8 }
+};
+
+static int
+asciiToUTF8(unsigned char* out, int *outlen,
+            const unsigned char* in, int *inlen);
+static int
+UTF8ToUTF8(unsigned char* out, int *outlen,
+           const unsigned char* inb, int *inlenb);
+static int
+UTF16LEToUTF8(unsigned char* out, int *outlen,
+              const unsigned char* inb, int *inlenb);
+static int
+UTF16BEToUTF8(unsigned char* out, int *outlen,
+              const unsigned char* inb, int *inlenb);
+
+#ifdef LIBXML_OUTPUT_ENABLED
+
+static int
+UTF8Toascii(unsigned char* out, int *outlen,
+            const unsigned char* in, int *inlen);
+static int
+UTF8ToUTF16(unsigned char* outb, int *outlen,
+            const unsigned char* in, int *inlen);
+static int
+UTF8ToUTF16LE(unsigned char* outb, int *outlen,
+             const unsigned char* in, int *inlen);
+static int
+UTF8ToUTF16BE(unsigned char* outb, int *outlen,
+             const unsigned char* in, int *inlen);
+
+#else /* LIBXML_OUTPUT_ENABLED */
+
+#define UTF8Toascii NULL
+#define UTF8Toisolat1 NULL
+#define UTF8ToUTF16 NULL
+#define UTF8ToUTF16LE NULL
+#define UTF8ToUTF16BE NULL
+
+#endif /* LIBXML_OUTPUT_ENABLED */
+
+#if !defined(LIBXML_OUTPUT_ENABLED) || !defined(LIBXML_HTML_ENABLED)
+  #define UTF8ToHtml NULL
+#endif
+
+#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
+    defined(LIBXML_ISO8859X_ENABLED)
+
+#define DECLARE_ISO_FUNCS(n) \
+    static int ISO8859_##n##ToUTF8(unsigned char* out, int *outlen, \
+                                   const unsigned char* in, int *inlen); \
+    static int UTF8ToISO8859_##n(unsigned char* out, int *outlen, \
+                                 const unsigned char* in, int *inlen);
+
+/** DOC_DISABLE */
+DECLARE_ISO_FUNCS(2)
+DECLARE_ISO_FUNCS(3)
+DECLARE_ISO_FUNCS(4)
+DECLARE_ISO_FUNCS(5)
+DECLARE_ISO_FUNCS(6)
+DECLARE_ISO_FUNCS(7)
+DECLARE_ISO_FUNCS(8)
+DECLARE_ISO_FUNCS(9)
+DECLARE_ISO_FUNCS(10)
+DECLARE_ISO_FUNCS(11)
+DECLARE_ISO_FUNCS(13)
+DECLARE_ISO_FUNCS(14)
+DECLARE_ISO_FUNCS(15)
+DECLARE_ISO_FUNCS(16)
+/** DOC_ENABLE */
+
+#else /* LIBXML_ISO8859X_ENABLED */
+
+#define ISO8859_2ToUTF8 NULL
+#define ISO8859_3ToUTF8 NULL
+#define ISO8859_4ToUTF8 NULL
+#define ISO8859_5ToUTF8 NULL
+#define ISO8859_6ToUTF8 NULL
+#define ISO8859_7ToUTF8 NULL
+#define ISO8859_8ToUTF8 NULL
+#define ISO8859_9ToUTF8 NULL
+#define ISO8859_10ToUTF8 NULL
+#define ISO8859_11ToUTF8 NULL
+#define ISO8859_13ToUTF8 NULL
+#define ISO8859_14ToUTF8 NULL
+#define ISO8859_15ToUTF8 NULL
+#define ISO8859_16ToUTF8 NULL
+
+#define UTF8ToISO8859_2 NULL
+#define UTF8ToISO8859_3 NULL
+#define UTF8ToISO8859_4 NULL
+#define UTF8ToISO8859_5 NULL
+#define UTF8ToISO8859_6 NULL
+#define UTF8ToISO8859_7 NULL
+#define UTF8ToISO8859_8 NULL
+#define UTF8ToISO8859_9 NULL
+#define UTF8ToISO8859_10 NULL
+#define UTF8ToISO8859_11 NULL
+#define UTF8ToISO8859_13 NULL
+#define UTF8ToISO8859_14 NULL
+#define UTF8ToISO8859_15 NULL
+#define UTF8ToISO8859_16 NULL
+
+#endif /* LIBXML_ISO8859X_ENABLED */
+
+#ifdef LIBXML_ICONV_ENABLED
+  #define EMPTY_ICONV , (iconv_t) 0, (iconv_t) 0
+#else
+  #define EMPTY_ICONV
+#endif
+
+#ifdef LIBXML_ICU_ENABLED
+  #define EMPTY_UCONV , NULL, NULL
+#else
+  #define EMPTY_UCONV
+#endif
+
+#define MAKE_HANDLER(name, in, out) \
+    { (char *) name, in, out EMPTY_ICONV EMPTY_UCONV }
+
+/*
+ * The layout must match enum xmlCharEncoding.
+ *
+ * Names should match the IANA registry if possible:
+ * https://www.iana.org/assignments/character-sets/character-sets.xhtml
+ */
+static const xmlCharEncodingHandler defaultHandlers[31] = {
+    MAKE_HANDLER(NULL, NULL, NULL), /* NONE */
+    MAKE_HANDLER("UTF-8", UTF8ToUTF8, UTF8ToUTF8),
+    MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE),
+    MAKE_HANDLER("UTF-16BE", UTF16BEToUTF8, UTF8ToUTF16BE),
+    MAKE_HANDLER("UCS-4LE", NULL, NULL),
+    MAKE_HANDLER("UCS-4BE", NULL, NULL),
+    MAKE_HANDLER("IBM037", NULL, NULL),
+    MAKE_HANDLER("ISO-10646-UCS-4", NULL, NULL), /* UCS4_2143 */
+    MAKE_HANDLER("ISO-10646-UCS-4", NULL, NULL), /* UCS4_2143 */
+    MAKE_HANDLER("ISO-10646-UCS-2", NULL, NULL),
+    MAKE_HANDLER("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1),
+    MAKE_HANDLER("ISO-8859-2", ISO8859_2ToUTF8, UTF8ToISO8859_2),
+    MAKE_HANDLER("ISO-8859-3", ISO8859_3ToUTF8, UTF8ToISO8859_3),
+    MAKE_HANDLER("ISO-8859-4", ISO8859_4ToUTF8, UTF8ToISO8859_4),
+    MAKE_HANDLER("ISO-8859-5", ISO8859_5ToUTF8, UTF8ToISO8859_5),
+    MAKE_HANDLER("ISO-8859-6", ISO8859_6ToUTF8, UTF8ToISO8859_6),
+    MAKE_HANDLER("ISO-8859-7", ISO8859_7ToUTF8, UTF8ToISO8859_7),
+    MAKE_HANDLER("ISO-8859-8", ISO8859_8ToUTF8, UTF8ToISO8859_8),
+    MAKE_HANDLER("ISO-8859-9", ISO8859_9ToUTF8, UTF8ToISO8859_9),
+    MAKE_HANDLER("ISO-2022-JP", NULL, NULL),
+    MAKE_HANDLER("Shift_JIS", NULL, NULL),
+    MAKE_HANDLER("EUC-JP", NULL, NULL),
+    MAKE_HANDLER("US-ASCII", asciiToUTF8, UTF8Toascii),
+    MAKE_HANDLER("UTF-16", UTF16LEToUTF8, UTF8ToUTF16),
+    MAKE_HANDLER("HTML", NULL, UTF8ToHtml),
+    MAKE_HANDLER("ISO-8859-10", ISO8859_10ToUTF8, UTF8ToISO8859_10),
+    MAKE_HANDLER("ISO-8859-11", ISO8859_11ToUTF8, UTF8ToISO8859_11),
+    MAKE_HANDLER("ISO-8859-13", ISO8859_13ToUTF8, UTF8ToISO8859_13),
+    MAKE_HANDLER("ISO-8859-14", ISO8859_14ToUTF8, UTF8ToISO8859_14),
+    MAKE_HANDLER("ISO-8859-15", ISO8859_15ToUTF8, UTF8ToISO8859_15),
+    MAKE_HANDLER("ISO-8859-16", ISO8859_16ToUTF8, UTF8ToISO8859_16)
+};
+
+#define NUM_DEFAULT_HANDLERS \
+    (sizeof(defaultHandlers) / sizeof(defaultHandlers[0]))
+
+/* the size should be growable, but it's not a big deal ... */
+#define MAX_ENCODING_HANDLERS 50
+static xmlCharEncodingHandlerPtr *handlers = NULL;
+static int nbCharEncodingHandler = 0;
+
 /************************************************************************
  *									*
  *		Conversions To/From UTF8 encoding			*
@@ -1083,6 +1293,14 @@ xmlDelEncodingAlias(const char *alias) {
     return(-1);
 }
 
+static int
+xmlCompareEncTableEntries(const void *vkey, const void *ventry) {
+    const char *key = vkey;
+    const xmlEncTableEntry *entry = ventry;
+
+    return(xmlStrcasecmp(BAD_CAST key, BAD_CAST entry->name));
+}
+
 /**
  * xmlParseCharEncoding:
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
@@ -1095,73 +1313,20 @@ xmlDelEncodingAlias(const char *alias) {
  * if not recognized.
  */
 xmlCharEncoding
-xmlParseCharEncoding(const char* name)
+xmlParseCharEncoding(const char *name)
 {
-    const char *alias;
-    char upper[500];
-    int i;
+    const xmlEncTableEntry *entry;
 
     if (name == NULL)
-	return(XML_CHAR_ENCODING_NONE);
+       return(XML_CHAR_ENCODING_NONE);
 
-    /*
-     * Do the alias resolution
-     */
-    alias = xmlGetEncodingAlias(name);
-    if (alias != NULL)
-	name = alias;
+    entry = bsearch(name, xmlEncTable,
+                    sizeof(xmlEncTable) / sizeof(xmlEncTable[0]),
+                    sizeof(xmlEncTable[0]), xmlCompareEncTableEntries);
+    if (entry != NULL)
+        return(entry->enc);
 
-    for (i = 0;i < 499;i++) {
-        upper[i] = (char) toupper((unsigned char) name[i]);
-	if (upper[i] == 0) break;
-    }
-    upper[i] = 0;
-
-    if (!strcmp(upper, "")) return(XML_CHAR_ENCODING_NONE);
-    if (!strcmp(upper, "UTF-8")) return(XML_CHAR_ENCODING_UTF8);
-    if (!strcmp(upper, "UTF8")) return(XML_CHAR_ENCODING_UTF8);
-
-    /*
-     * NOTE: if we were able to parse this, the endianness of UTF16 is
-     *       already found and in use
-     */
-    if (!strcmp(upper, "UTF-16")) return(XML_CHAR_ENCODING_UTF16LE);
-    if (!strcmp(upper, "UTF16")) return(XML_CHAR_ENCODING_UTF16LE);
-
-    if (!strcmp(upper, "ISO-10646-UCS-2")) return(XML_CHAR_ENCODING_UCS2);
-    if (!strcmp(upper, "UCS-2")) return(XML_CHAR_ENCODING_UCS2);
-    if (!strcmp(upper, "UCS2")) return(XML_CHAR_ENCODING_UCS2);
-
-    /*
-     * NOTE: if we were able to parse this, the endianness of UCS4 is
-     *       already found and in use
-     */
-    if (!strcmp(upper, "ISO-10646-UCS-4")) return(XML_CHAR_ENCODING_UCS4LE);
-    if (!strcmp(upper, "UCS-4")) return(XML_CHAR_ENCODING_UCS4LE);
-    if (!strcmp(upper, "UCS4")) return(XML_CHAR_ENCODING_UCS4LE);
-
-
-    if (!strcmp(upper,  "ISO-8859-1")) return(XML_CHAR_ENCODING_8859_1);
-    if (!strcmp(upper,  "ISO-LATIN-1")) return(XML_CHAR_ENCODING_8859_1);
-    if (!strcmp(upper,  "ISO LATIN 1")) return(XML_CHAR_ENCODING_8859_1);
-
-    if (!strcmp(upper,  "ISO-8859-2")) return(XML_CHAR_ENCODING_8859_2);
-    if (!strcmp(upper,  "ISO-LATIN-2")) return(XML_CHAR_ENCODING_8859_2);
-    if (!strcmp(upper,  "ISO LATIN 2")) return(XML_CHAR_ENCODING_8859_2);
-
-    if (!strcmp(upper,  "ISO-8859-3")) return(XML_CHAR_ENCODING_8859_3);
-    if (!strcmp(upper,  "ISO-8859-4")) return(XML_CHAR_ENCODING_8859_4);
-    if (!strcmp(upper,  "ISO-8859-5")) return(XML_CHAR_ENCODING_8859_5);
-    if (!strcmp(upper,  "ISO-8859-6")) return(XML_CHAR_ENCODING_8859_6);
-    if (!strcmp(upper,  "ISO-8859-7")) return(XML_CHAR_ENCODING_8859_7);
-    if (!strcmp(upper,  "ISO-8859-8")) return(XML_CHAR_ENCODING_8859_8);
-    if (!strcmp(upper,  "ISO-8859-9")) return(XML_CHAR_ENCODING_8859_9);
-
-    if (!strcmp(upper, "ISO-2022-JP")) return(XML_CHAR_ENCODING_2022_JP);
-    if (!strcmp(upper, "SHIFT_JIS")) return(XML_CHAR_ENCODING_SHIFT_JIS);
-    if (!strcmp(upper, "EUC-JP")) return(XML_CHAR_ENCODING_EUC_JP);
-
-    return(XML_CHAR_ENCODING_ERROR);
+    return(XML_CHAR_ENCODING_NONE);
 }
 
 /**
@@ -1174,60 +1339,26 @@ xmlParseCharEncoding(const char* name)
  *
  * Returns the canonical name for the given encoding
  */
-
 const char*
 xmlGetCharEncodingName(xmlCharEncoding enc) {
     switch (enc) {
-        case XML_CHAR_ENCODING_ERROR:
-	    return(NULL);
-        case XML_CHAR_ENCODING_NONE:
-	    return(NULL);
-        case XML_CHAR_ENCODING_UTF8:
-	    return("UTF-8");
         case XML_CHAR_ENCODING_UTF16LE:
 	    return("UTF-16");
         case XML_CHAR_ENCODING_UTF16BE:
 	    return("UTF-16");
-        case XML_CHAR_ENCODING_EBCDIC:
-            return("EBCDIC");
         case XML_CHAR_ENCODING_UCS4LE:
             return("ISO-10646-UCS-4");
         case XML_CHAR_ENCODING_UCS4BE:
             return("ISO-10646-UCS-4");
-        case XML_CHAR_ENCODING_UCS4_2143:
-            return("ISO-10646-UCS-4");
-        case XML_CHAR_ENCODING_UCS4_3412:
-            return("ISO-10646-UCS-4");
-        case XML_CHAR_ENCODING_UCS2:
-            return("ISO-10646-UCS-2");
-        case XML_CHAR_ENCODING_8859_1:
-	    return("ISO-8859-1");
-        case XML_CHAR_ENCODING_8859_2:
-	    return("ISO-8859-2");
-        case XML_CHAR_ENCODING_8859_3:
-	    return("ISO-8859-3");
-        case XML_CHAR_ENCODING_8859_4:
-	    return("ISO-8859-4");
-        case XML_CHAR_ENCODING_8859_5:
-	    return("ISO-8859-5");
-        case XML_CHAR_ENCODING_8859_6:
-	    return("ISO-8859-6");
-        case XML_CHAR_ENCODING_8859_7:
-	    return("ISO-8859-7");
-        case XML_CHAR_ENCODING_8859_8:
-	    return("ISO-8859-8");
-        case XML_CHAR_ENCODING_8859_9:
-	    return("ISO-8859-9");
-        case XML_CHAR_ENCODING_2022_JP:
-            return("ISO-2022-JP");
-        case XML_CHAR_ENCODING_SHIFT_JIS:
-            return("Shift-JIS");
-        case XML_CHAR_ENCODING_EUC_JP:
-            return("EUC-JP");
-	case XML_CHAR_ENCODING_ASCII:
-	    return(NULL);
+        default:
+            break;
     }
-    return(NULL);
+
+    if ((enc <= 0) || ((size_t) enc >= NUM_DEFAULT_HANDLERS))
+        return(NULL);
+
+
+    return(defaultHandlers[enc].name);
 }
 
 /************************************************************************
@@ -1235,107 +1366,6 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
  *			Char encoding handlers				*
  *									*
  ************************************************************************/
-
-#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
-    defined(LIBXML_ISO8859X_ENABLED)
-
-#define DECLARE_ISO_FUNCS(n) \
-    static int ISO8859_##n##ToUTF8(unsigned char* out, int *outlen, \
-                                   const unsigned char* in, int *inlen); \
-    static int UTF8ToISO8859_##n(unsigned char* out, int *outlen, \
-                                 const unsigned char* in, int *inlen);
-
-/** DOC_DISABLE */
-DECLARE_ISO_FUNCS(2)
-DECLARE_ISO_FUNCS(3)
-DECLARE_ISO_FUNCS(4)
-DECLARE_ISO_FUNCS(5)
-DECLARE_ISO_FUNCS(6)
-DECLARE_ISO_FUNCS(7)
-DECLARE_ISO_FUNCS(8)
-DECLARE_ISO_FUNCS(9)
-DECLARE_ISO_FUNCS(10)
-DECLARE_ISO_FUNCS(11)
-DECLARE_ISO_FUNCS(13)
-DECLARE_ISO_FUNCS(14)
-DECLARE_ISO_FUNCS(15)
-DECLARE_ISO_FUNCS(16)
-/** DOC_ENABLE */
-
-#endif /* LIBXML_ISO8859X_ENABLED */
-
-#ifdef LIBXML_ICONV_ENABLED
-  #define EMPTY_ICONV , (iconv_t) 0, (iconv_t) 0
-#else
-  #define EMPTY_ICONV
-#endif
-
-#ifdef LIBXML_ICU_ENABLED
-  #define EMPTY_UCONV , NULL, NULL
-#else
-  #define EMPTY_UCONV
-#endif
-
-#define MAKE_HANDLER(name, in, out) \
-    { (char *) name, in, out EMPTY_ICONV EMPTY_UCONV }
-
-static const xmlCharEncodingHandler defaultHandlers[] = {
-#ifdef LIBXML_OUTPUT_ENABLED
-    MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE)
-    ,MAKE_HANDLER("UTF-16BE", UTF16BEToUTF8, UTF8ToUTF16BE)
-    ,MAKE_HANDLER("UTF-16", UTF16LEToUTF8, UTF8ToUTF16)
-    ,MAKE_HANDLER("ISO-8859-1", isolat1ToUTF8, UTF8Toisolat1)
-    ,MAKE_HANDLER("ASCII", asciiToUTF8, UTF8Toascii)
-    ,MAKE_HANDLER("US-ASCII", asciiToUTF8, UTF8Toascii)
-#ifdef LIBXML_HTML_ENABLED
-    ,MAKE_HANDLER("HTML", NULL, UTF8ToHtml)
-#endif
-#else
-    MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, NULL)
-    ,MAKE_HANDLER("UTF-16BE", UTF16BEToUTF8, NULL)
-    ,MAKE_HANDLER("UTF-16", UTF16LEToUTF8, NULL)
-    ,MAKE_HANDLER("ISO-8859-1", isolat1ToUTF8, NULL)
-    ,MAKE_HANDLER("ASCII", asciiToUTF8, NULL)
-    ,MAKE_HANDLER("US-ASCII", asciiToUTF8, NULL)
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
-    defined(LIBXML_ISO8859X_ENABLED)
-    ,MAKE_HANDLER("ISO-8859-2", ISO8859_2ToUTF8, UTF8ToISO8859_2)
-    ,MAKE_HANDLER("ISO-8859-3", ISO8859_3ToUTF8, UTF8ToISO8859_3)
-    ,MAKE_HANDLER("ISO-8859-4", ISO8859_4ToUTF8, UTF8ToISO8859_4)
-    ,MAKE_HANDLER("ISO-8859-5", ISO8859_5ToUTF8, UTF8ToISO8859_5)
-    ,MAKE_HANDLER("ISO-8859-6", ISO8859_6ToUTF8, UTF8ToISO8859_6)
-    ,MAKE_HANDLER("ISO-8859-7", ISO8859_7ToUTF8, UTF8ToISO8859_7)
-    ,MAKE_HANDLER("ISO-8859-8", ISO8859_8ToUTF8, UTF8ToISO8859_8)
-    ,MAKE_HANDLER("ISO-8859-9", ISO8859_9ToUTF8, UTF8ToISO8859_9)
-    ,MAKE_HANDLER("ISO-8859-10", ISO8859_10ToUTF8, UTF8ToISO8859_10)
-    ,MAKE_HANDLER("ISO-8859-11", ISO8859_11ToUTF8, UTF8ToISO8859_11)
-    ,MAKE_HANDLER("ISO-8859-13", ISO8859_13ToUTF8, UTF8ToISO8859_13)
-    ,MAKE_HANDLER("ISO-8859-14", ISO8859_14ToUTF8, UTF8ToISO8859_14)
-    ,MAKE_HANDLER("ISO-8859-15", ISO8859_15ToUTF8, UTF8ToISO8859_15)
-    ,MAKE_HANDLER("ISO-8859-16", ISO8859_16ToUTF8, UTF8ToISO8859_16)
-#endif
-};
-
-#define NUM_DEFAULT_HANDLERS \
-    (sizeof(defaultHandlers) / sizeof(defaultHandlers[0]))
-
-static const xmlCharEncodingHandler xmlUTF8Handler = {
-    (char *) "UTF-8", UTF8ToUTF8, UTF8ToUTF8
-    EMPTY_ICONV
-    EMPTY_UCONV
-};
-
-static const xmlCharEncodingHandler *xmlUTF16LEHandler = &defaultHandlers[0];
-static const xmlCharEncodingHandler *xmlUTF16BEHandler = &defaultHandlers[1];
-static const xmlCharEncodingHandler *xmlLatin1Handler = &defaultHandlers[3];
-static const xmlCharEncodingHandler *xmlAsciiHandler = &defaultHandlers[4];
-
-/* the size should be growable, but it's not a big deal ... */
-#define MAX_ENCODING_HANDLERS 50
-static xmlCharEncodingHandlerPtr *handlers = NULL;
-static int nbCharEncodingHandler = 0;
 
 /**
  * xmlNewCharEncodingHandler:
@@ -1722,51 +1752,6 @@ xmlFindExtraHandler(const char *name, int output,
 }
 
 /**
- * xmlFindHandler:
- * @name:  a string describing the char encoding.
- * @output:  boolean, use handler for output
- * @out:  pointer to resulting handler
- *
- * Search all handlers for an exact match.
- *
- * Returns 0 on success, 1 if no handler was found, -1 if a memory
- * allocation failed.
- */
-static int
-xmlFindHandler(const char *name, int output, xmlCharEncodingHandler **out) {
-    int i;
-
-    /*
-     * Check for default handlers
-     */
-    for (i = 0; i < (int) NUM_DEFAULT_HANDLERS; i++) {
-        xmlCharEncodingHandler *handler;
-
-        handler = (xmlCharEncodingHandler *) &defaultHandlers[i];
-
-        if (xmlStrcasecmp((const xmlChar *) name,
-                          (const xmlChar *) handler->name) == 0) {
-            if (output) {
-                if (handler->output != NULL) {
-                    *out = handler;
-                    return(0);
-                }
-            } else {
-                if (handler->input != NULL) {
-                    *out = handler;
-                    return(0);
-                }
-            }
-        }
-    }
-
-    /*
-     * Check for other handlers
-     */
-    return(xmlFindExtraHandler(name, output, out));
-}
-
-/**
  * xmlLookupCharEncodingHandler:
  * @enc:  an xmlCharEncoding value.
  * @out:  pointer to result
@@ -1784,116 +1769,27 @@ xmlFindHandler(const char *name, int output, xmlCharEncodingHandler **out) {
 int
 xmlLookupCharEncodingHandler(xmlCharEncoding enc,
                              xmlCharEncodingHandler **out) {
-    const char *name = NULL;
-    static const char *const ebcdicNames[] = {
-        "EBCDIC", "ebcdic", "EBCDIC-US", "IBM-037"
-    };
-    static const char *const ucs4Names[] = {
-        "ISO-10646-UCS-4", "UCS-4", "UCS4"
-    };
-    static const char *const ucs2Names[] = {
-        "ISO-10646-UCS-2", "UCS-2", "UCS2"
-    };
-    static const char *const shiftJisNames[] = {
-        "SHIFT-JIS", "SHIFT_JIS", "Shift_JIS",
-    };
-    const char *const *names = NULL;
-    int numNames = 0;
-    int ret;
-    int i;
+    const xmlCharEncodingHandler *handler;
 
     if (out == NULL)
         return(XML_ERR_ARGUMENT);
     *out = NULL;
 
-    switch (enc) {
-        case XML_CHAR_ENCODING_ERROR:
-	    return(XML_ERR_UNSUPPORTED_ENCODING);
-        case XML_CHAR_ENCODING_NONE:
-	    return(0);
-        case XML_CHAR_ENCODING_UTF8:
-	    return(0);
-        case XML_CHAR_ENCODING_UTF16LE:
-	    *out = (xmlCharEncodingHandler *) xmlUTF16LEHandler;
-            return(0);
-        case XML_CHAR_ENCODING_UTF16BE:
-	    *out = (xmlCharEncodingHandler *) xmlUTF16BEHandler;
-            return(0);
-        case XML_CHAR_ENCODING_EBCDIC:
-            names = ebcdicNames;
-            numNames = sizeof(ebcdicNames) / sizeof(ebcdicNames[0]);
-	    break;
-        case XML_CHAR_ENCODING_UCS4BE:
-        case XML_CHAR_ENCODING_UCS4LE:
-            names = ucs4Names;
-            numNames = sizeof(ucs4Names) / sizeof(ucs4Names[0]);
-	    break;
-        case XML_CHAR_ENCODING_UCS4_2143:
-	    break;
-        case XML_CHAR_ENCODING_UCS4_3412:
-	    break;
-        case XML_CHAR_ENCODING_UCS2:
-            names = ucs2Names;
-            numNames = sizeof(ucs2Names) / sizeof(ucs2Names[0]);
-	    break;
+    if ((enc <= 0) || ((size_t) enc >= NUM_DEFAULT_HANDLERS))
+        return(XML_ERR_UNSUPPORTED_ENCODING);
 
-        case XML_CHAR_ENCODING_ASCII:
-	    *out = (xmlCharEncodingHandler *) xmlAsciiHandler;
-            return(0);
-        case XML_CHAR_ENCODING_8859_1:
-	    *out = (xmlCharEncodingHandler *) xmlLatin1Handler;
-            return(0);
-        case XML_CHAR_ENCODING_8859_2:
-	    name = "ISO-8859-2";
-	    break;
-        case XML_CHAR_ENCODING_8859_3:
-	    name = "ISO-8859-3";
-	    break;
-        case XML_CHAR_ENCODING_8859_4:
-	    name = "ISO-8859-4";
-	    break;
-        case XML_CHAR_ENCODING_8859_5:
-	    name = "ISO-8859-5";
-	    break;
-        case XML_CHAR_ENCODING_8859_6:
-	    name = "ISO-8859-6";
-	    break;
-        case XML_CHAR_ENCODING_8859_7:
-	    name = "ISO-8859-7";
-	    break;
-        case XML_CHAR_ENCODING_8859_8:
-	    name = "ISO-8859-8";
-	    break;
-        case XML_CHAR_ENCODING_8859_9:
-	    name = "ISO-8859-9";
-	    break;
+    /* Return NULL handler for UTF-8 */
+    if (enc == XML_CHAR_ENCODING_UTF8)
+        return(XML_ERR_OK);
 
-        case XML_CHAR_ENCODING_2022_JP:
-            name = "ISO-2022-JP";
-	    break;
-        case XML_CHAR_ENCODING_SHIFT_JIS:
-            names = shiftJisNames;
-            numNames = sizeof(shiftJisNames) / sizeof(shiftJisNames[0]);
-	    break;
-        case XML_CHAR_ENCODING_EUC_JP:
-            name = "EUC-JP";
-	    break;
-	default:
-	    break;
+    handler = &defaultHandlers[enc];
+    if ((handler->input != NULL) || (handler->output != NULL)) {
+        *out = (xmlCharEncodingHandler *) handler;
+        return(XML_ERR_OK);
     }
 
-    if (name != NULL)
-        return(xmlFindExtraHandler(name, 0, out));
-
-    if (names != NULL) {
-        for (i = 0; i < numNames; i++) {
-            ret = xmlFindExtraHandler(names[i], 0, out);
-            if (*out != NULL)
-                return(0);
-            if (ret != XML_ERR_UNSUPPORTED_ENCODING)
-                return(ret);
-        }
-    }
+    if (handler->name != NULL)
+        return(xmlFindExtraHandler(handler->name, 0, out));
 
     return(XML_ERR_UNSUPPORTED_ENCODING);
 }
@@ -1938,10 +1834,9 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
 int
 xmlOpenCharEncodingHandler(const char *name, int output,
                            xmlCharEncodingHandler **out) {
+    const xmlCharEncodingHandler *handler;
     const char *nalias;
-    const char *norig;
     xmlCharEncoding enc;
-    int ret;
 
     if (out == NULL)
         return(XML_ERR_ARGUMENT);
@@ -1950,32 +1845,25 @@ xmlOpenCharEncodingHandler(const char *name, int output,
     if (name == NULL)
         return(XML_ERR_ARGUMENT);
 
-    if ((xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF-8") == 0) ||
-        (xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF8") == 0))
-        return(XML_ERR_OK);
-
-    /*
-     * Do the alias resolution
-     */
-    norig = name;
     nalias = xmlGetEncodingAlias(name);
     if (nalias != NULL)
 	name = nalias;
 
-    ret = xmlFindHandler(name, output, out);
-    if (*out != NULL)
-        return(0);
-    if (ret != XML_ERR_UNSUPPORTED_ENCODING)
-        return(ret);
+    enc = xmlParseCharEncoding(name);
 
-    /*
-     * Fallback using the canonical names
-     *
-     * TODO: We should make sure that the name of the returned
-     * handler equals norig.
-     */
-    enc = xmlParseCharEncoding(norig);
-    return(xmlLookupCharEncodingHandler(enc, out));
+    /* Return NULL handler for UTF-8 */
+    if (enc == XML_CHAR_ENCODING_UTF8)
+        return(XML_ERR_OK);
+
+    if ((enc > 0) && ((size_t) enc < NUM_DEFAULT_HANDLERS)) {
+        handler = &defaultHandlers[enc];
+        if ((output ? handler->output : handler->input) != NULL) {
+            *out = (xmlCharEncodingHandler *) handler;
+            return(XML_ERR_OK);
+        }
+    }
+
+    return(xmlFindExtraHandler(name, output, out));
 }
 
 /**
@@ -1998,7 +1886,8 @@ xmlFindCharEncodingHandler(const char *name) {
      */
     if ((xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF-8") == 0) ||
         (xmlStrcasecmp(BAD_CAST name, BAD_CAST "UTF8") == 0))
-        return((xmlCharEncodingHandlerPtr) &xmlUTF8Handler);
+        return((xmlCharEncodingHandlerPtr)
+                &defaultHandlers[XML_CHAR_ENCODING_UTF8]);
 
     xmlOpenCharEncodingHandler(name, 0, &ret);
     return(ret);

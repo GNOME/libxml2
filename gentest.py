@@ -146,6 +146,8 @@ skipped_functions = [
 # Legacy
 "xmlCleanupPredefinedEntities", "xmlInitializePredefinedEntities",
 "xmlSetFeature", "xmlGetFeature", "xmlGetFeaturesList",
+# Shouldn't free result
+"xmlCtxtGetDict",
 ]
 
 #

@@ -1321,8 +1321,11 @@ static const xmlCharEncodingHandler defaultHandlers[] = {
 #define NUM_DEFAULT_HANDLERS \
     (sizeof(defaultHandlers) / sizeof(defaultHandlers[0]))
 
-static const xmlCharEncodingHandler xmlUTF8Handler =
-    MAKE_HANDLER("UTF-8", UTF8ToUTF8, UTF8ToUTF8);
+static const xmlCharEncodingHandler xmlUTF8Handler = {
+    (char *) "UTF-8", UTF8ToUTF8, UTF8ToUTF8
+    EMPTY_ICONV
+    EMPTY_UCONV
+};
 
 static const xmlCharEncodingHandler *xmlUTF16LEHandler = &defaultHandlers[0];
 static const xmlCharEncodingHandler *xmlUTF16BEHandler = &defaultHandlers[1];

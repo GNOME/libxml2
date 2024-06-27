@@ -5299,7 +5299,7 @@ test_xmlSAXDefaultVersion(void) {
 #ifdef LIBXML_SAX1_ENABLED
     int mem_base;
     int ret_val;
-    int version; /* the version, 1 or 2 */
+    int version; /* the version, must be 2 */
     int n_version;
 
     for (n_version = 0;n_version < gen_nb_int;n_version++) {
@@ -11821,6 +11821,70 @@ test_xmlCreatePushParserCtxt(void) {
 
 
 static int
+test_xmlCtxtGetCatalogs(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    void * ret_val;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+
+        ret_val = xmlCtxtGetCatalogs(ctxt);
+        desret_void_ptr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtGetCatalogs",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlCtxtGetDeclaredEncoding(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    const xmlChar * ret_val;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+
+        ret_val = xmlCtxtGetDeclaredEncoding(ctxt);
+        desret_const_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtGetDeclaredEncoding",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlCtxtGetOptions(void) {
     int test_ret = 0;
 
@@ -11840,6 +11904,138 @@ test_xmlCtxtGetOptions(void) {
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlCtxtGetOptions",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlCtxtGetPrivate(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    void * ret_val;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+
+        ret_val = xmlCtxtGetPrivate(ctxt);
+        desret_void_ptr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtGetPrivate",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlCtxtGetStandalone(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+
+        ret_val = xmlCtxtGetStandalone(ctxt);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtGetStandalone",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+#define gen_nb_xmlParserCtxt_ptr 1
+#define gen_xmlParserCtxt_ptr(no, nr) NULL
+#define des_xmlParserCtxt_ptr(no, val, nr)
+
+static int
+test_xmlCtxtGetStatus(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlParserCtxt * ctxt; /* an XML parser context */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxt_ptr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxt_ptr(n_ctxt, 0);
+
+        ret_val = xmlCtxtGetStatus(ctxt);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserCtxt_ptr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtGetStatus",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf("\n");
+        }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlCtxtGetVersion(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    const xmlChar * ret_val;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+
+        ret_val = xmlCtxtGetVersion(ctxt);
+        desret_const_xmlChar_ptr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtGetVersion",
 	           xmlMemBlocks() - mem_base);
 	    test_ret++;
             printf(" %d", n_ctxt);
@@ -12168,6 +12364,80 @@ test_xmlCtxtResetPush(void) {
 
 
 static int
+test_xmlCtxtSetCatalogs(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+    void * catalogs; /*  */
+    int n_catalogs;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_catalogs = 0;n_catalogs < gen_nb_void_ptr;n_catalogs++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+        catalogs = gen_void_ptr(n_catalogs, 1);
+
+        xmlCtxtSetCatalogs(ctxt, catalogs);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_void_ptr(n_catalogs, catalogs, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtSetCatalogs",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_catalogs);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlCtxtSetDict(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+    xmlDictPtr dict; /*  */
+    int n_dict;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_dict = 0;n_dict < gen_nb_xmlDictPtr;n_dict++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+        dict = gen_xmlDictPtr(n_dict, 1);
+
+        xmlCtxtSetDict(ctxt, dict);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlDictPtr(n_dict, dict, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtSetDict",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_dict);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlCtxtSetErrorHandler(void) {
     int test_ret = 0;
 
@@ -12216,6 +12486,43 @@ test_xmlCtxtSetOptions(void) {
 	    test_ret++;
             printf(" %d", n_ctxt);
             printf(" %d", n_options);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlCtxtSetPrivate(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlParserCtxtPtr ctxt; /*  */
+    int n_ctxt;
+    void * priv; /*  */
+    int n_priv;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_priv = 0;n_priv < gen_nb_void_ptr;n_priv++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+        priv = gen_void_ptr(n_priv, 1);
+
+        xmlCtxtSetPrivate(ctxt, priv);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_void_ptr(n_priv, priv, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtSetPrivate",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_priv);
             printf("\n");
         }
     }
@@ -14753,23 +15060,32 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 72 of 84 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 81 of 94 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlCleanupGlobals();
     test_ret += test_xmlClearNodeInfoSeq();
     test_ret += test_xmlClearParserCtxt();
     test_ret += test_xmlCreateDocParserCtxt();
     test_ret += test_xmlCreatePushParserCtxt();
+    test_ret += test_xmlCtxtGetCatalogs();
+    test_ret += test_xmlCtxtGetDeclaredEncoding();
     test_ret += test_xmlCtxtGetOptions();
+    test_ret += test_xmlCtxtGetPrivate();
+    test_ret += test_xmlCtxtGetStandalone();
+    test_ret += test_xmlCtxtGetStatus();
+    test_ret += test_xmlCtxtGetVersion();
     test_ret += test_xmlCtxtParseDocument();
     test_ret += test_xmlCtxtReadDoc();
     test_ret += test_xmlCtxtReadFile();
     test_ret += test_xmlCtxtReadMemory();
     test_ret += test_xmlCtxtReset();
     test_ret += test_xmlCtxtResetPush();
+    test_ret += test_xmlCtxtSetCatalogs();
+    test_ret += test_xmlCtxtSetDict();
     test_ret += test_xmlCtxtSetErrorHandler();
     test_ret += test_xmlCtxtSetMaxAmplification();
     test_ret += test_xmlCtxtSetOptions();
+    test_ret += test_xmlCtxtSetPrivate();
     test_ret += test_xmlCtxtSetResourceLoader();
     test_ret += test_xmlCtxtUseOptions();
     test_ret += test_xmlGetExternalEntityLoader();

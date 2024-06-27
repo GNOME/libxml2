@@ -510,6 +510,10 @@
      <author>Daniel Veillard </author>
      <exports symbol='XML_DEFAULT_VERSION' type='macro'/>
      <exports symbol='XML_SAX2_MAGIC' type='macro'/>
+     <exports symbol='XML_STATUS_CATASTROPHIC_ERROR' type='macro'/>
+     <exports symbol='XML_STATUS_DTD_VALIDATION_FAILED' type='macro'/>
+     <exports symbol='XML_STATUS_NOT_NS_WELL_FORMED' type='macro'/>
+     <exports symbol='XML_STATUS_NOT_WELL_FORMED' type='macro'/>
      <exports symbol='XML_PARSER_ATTRIBUTE_VALUE' type='enum'/>
      <exports symbol='XML_PARSER_CDATA_SECTION' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
@@ -665,7 +669,14 @@
      <exports symbol='xmlCreateDocParserCtxt' type='function'/>
      <exports symbol='xmlCreateIOParserCtxt' type='function'/>
      <exports symbol='xmlCreatePushParserCtxt' type='function'/>
+     <exports symbol='xmlCtxtGetCatalogs' type='function'/>
+     <exports symbol='xmlCtxtGetDeclaredEncoding' type='function'/>
+     <exports symbol='xmlCtxtGetDict' type='function'/>
      <exports symbol='xmlCtxtGetOptions' type='function'/>
+     <exports symbol='xmlCtxtGetPrivate' type='function'/>
+     <exports symbol='xmlCtxtGetStandalone' type='function'/>
+     <exports symbol='xmlCtxtGetStatus' type='function'/>
+     <exports symbol='xmlCtxtGetVersion' type='function'/>
      <exports symbol='xmlCtxtParseDocument' type='function'/>
      <exports symbol='xmlCtxtReadDoc' type='function'/>
      <exports symbol='xmlCtxtReadFd' type='function'/>
@@ -674,9 +685,12 @@
      <exports symbol='xmlCtxtReadMemory' type='function'/>
      <exports symbol='xmlCtxtReset' type='function'/>
      <exports symbol='xmlCtxtResetPush' type='function'/>
+     <exports symbol='xmlCtxtSetCatalogs' type='function'/>
+     <exports symbol='xmlCtxtSetDict' type='function'/>
      <exports symbol='xmlCtxtSetErrorHandler' type='function'/>
      <exports symbol='xmlCtxtSetMaxAmplification' type='function'/>
      <exports symbol='xmlCtxtSetOptions' type='function'/>
+     <exports symbol='xmlCtxtSetPrivate' type='function'/>
      <exports symbol='xmlCtxtSetResourceLoader' type='function'/>
      <exports symbol='xmlCtxtUseOptions' type='function'/>
      <exports symbol='xmlExternalEntityLoader' type='function'/>
@@ -4212,6 +4226,14 @@
     </macro>
     <macro name='XML_SCHEMAS_WILDCARD_COMPLETE' file='schemasInternals'>
       <info>If the wildcard is complete.</info>
+    </macro>
+    <macro name='XML_STATUS_CATASTROPHIC_ERROR' file='parser'>
+    </macro>
+    <macro name='XML_STATUS_DTD_VALIDATION_FAILED' file='parser'>
+    </macro>
+    <macro name='XML_STATUS_NOT_NS_WELL_FORMED' file='parser'>
+    </macro>
+    <macro name='XML_STATUS_NOT_WELL_FORMED' file='parser'>
     </macro>
     <macro name='XML_SUBSTITUTE_BOTH' file='parserInternals'>
       <info>Both general and parameter entities need to be substituted.</info>
@@ -8063,7 +8085,7 @@ crash if you try to modify the tree)'/>
       <arg name='base' type='const xmlChar *' info='the base value'/>
     </function>
     <function name='xmlBuildRelativeURISafe' file='uri' module='uri'>
-      <info>Expresses the URI of the reference in terms relative to the base.  Some examples of this operation include: base = &quot;http://site1.com/docs/book1.html&quot; URI input                        URI returned docs/pic1.gif                    pic1.gif docs/img/pic1.gif                img/pic1.gif img/pic1.gif                     ../img/pic1.gif http://site1.com/docs/pic1.gif   pic1.gif http://site2.com/docs/pic1.gif   http://site2.com/docs/pic1.gif  base = &quot;docs/book1.html&quot; URI input                        URI returned docs/pic1.gif                    pic1.gif docs/img/pic1.gif                img/pic1.gif img/pic1.gif                     ../img/pic1.gif http://site1.com/docs/pic1.gif   http://site1.com/docs/pic1.gif   Note: if the URI reference is really weird or complicated, it may be worthwhile to first convert it into a &quot;nice&quot; one by calling xmlBuildURI (using &apos;base&apos;) before calling this routine, since this routine (for reasonable efficiency) assumes URI has already been through some validation.  Available since 2.13.0.</info>
+      <info>Expresses the URI of the reference in terms relative to the base. Some examples of this operation include:  base = &quot;http://site1.com/docs/book1.html&quot; URI input                        URI returned http://site1.com/docs/pic1.gif   pic1.gif http://site2.com/docs/pic1.gif   http://site2.com/docs/pic1.gif  base = &quot;docs/book1.html&quot; URI input                        URI returned docs/pic1.gif                    pic1.gif docs/img/pic1.gif                img/pic1.gif img/pic1.gif                     ../img/pic1.gif http://site1.com/docs/pic1.gif   http://site1.com/docs/pic1.gif  Available since 2.13.0.</info>
       <return type='int' info='0 on success, -1 if a memory allocation failed or an error code if URI or base are invalid.'/>
       <arg name='URI' type='const xmlChar *' info='the URI reference under consideration'/>
       <arg name='base' type='const xmlChar *' info='the base value'/>
@@ -8582,15 +8604,50 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
-    <function name='xmlCtxtGetLastError' file='xmlerror' module='error'>
+    <function name='xmlCtxtGetCatalogs' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context</info>
+      <return type='void *' info='the local catalogs.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+    </function>
+    <function name='xmlCtxtGetDeclaredEncoding' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context</info>
+      <return type='const xmlChar *' info='the encoding from the encoding declaration. This can differ from the actual encoding.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+    </function>
+    <function name='xmlCtxtGetDict' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context</info>
+      <return type='xmlDictPtr' info='the dictionary.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+    </function>
+    <function name='xmlCtxtGetLastError' file='xmlerror' module='parserInternals'>
       <info>Get the last parsing error registered.</info>
       <return type='const xmlError *' info='NULL if no error occurred or a pointer to the error'/>
       <arg name='ctx' type='void *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetOptions' file='parser' module='parser'>
       <info>Get the current options of the parser context.  Available since 2.14.0.</info>
-      <return type='int' info='the current options set in the parser context.'/>
+      <return type='int' info='the current options set in the parser context, or -1 if ctxt is NULL.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+    </function>
+    <function name='xmlCtxtGetPrivate' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context</info>
+      <return type='void *' info='the private application data.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+    </function>
+    <function name='xmlCtxtGetStandalone' file='parser' module='parser'>
+      <info>ctxt:  parser context</info>
+      <return type='int' info='the value from the standalone document declaration.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+    </function>
+    <function name='xmlCtxtGetStatus' file='parser' module='parserInternals'>
+      <info>Get well-formedness and validation status after parsing. Also reports catastrophic errors which are not related to parsing like out-of-memory, I/O or other errors.</info>
+      <return type='int' info='a bitmask of XML_STATUS_* flags ORed together.'/>
+      <arg name='ctxt' type='xmlParserCtxt *' info='an XML parser context'/>
+    </function>
+    <function name='xmlCtxtGetVersion' file='parser' module='parser'>
+      <info>ctxt:  parser context</info>
+      <return type='const xmlChar *' info='the version from the XML declaration.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
     <function name='xmlCtxtParseDocument' file='parser' module='parser'>
       <info>Parse an XML document and return the resulting document tree. Takes ownership of the input object.  Available since 2.13.0.</info>
@@ -8650,7 +8707,7 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
-    <function name='xmlCtxtResetLastError' file='xmlerror' module='error'>
+    <function name='xmlCtxtResetLastError' file='xmlerror' module='parserInternals'>
       <info>Cleanup the last global error registered. For parsing error this does not change the well-formedness result.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='an XML parser context'/>
@@ -8663,6 +8720,18 @@ crash if you try to modify the tree)'/>
       <arg name='size' type='int' info='number of chars in the array'/>
       <arg name='filename' type='const char *' info='an optional file name or URI'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
+    </function>
+    <function name='xmlCtxtSetCatalogs' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context catalogs:  catalogs pointer  Set the local catalogs.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='catalogs' type='void *' info=''/>
+    </function>
+    <function name='xmlCtxtSetDict' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context dict:  dictionary  Set the dictionary. This should only be done immediately after creating a parser context.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='dict' type='xmlDictPtr' info=''/>
     </function>
     <function name='xmlCtxtSetErrorHandler' file='parser' module='parserInternals'>
       <info>Register a callback function that will be called on errors and warnings. If handler is NULL, the error handler will be deactivated.  This is the recommended way to collect errors from the parser and takes precedence over all other error reporting mechanisms. These are (in order of precedence):  - per-context structured handler (xmlCtxtSetErrorHandler) - per-context structured &quot;serror&quot; SAX handler - global structured handler (xmlSetStructuredErrorFunc) - per-context generic &quot;error&quot; and &quot;warning&quot; SAX handlers - global generic handler (xmlSetGenericErrorFunc) - print to stderr  Available since 2.13.0.</info>
@@ -8682,6 +8751,12 @@ crash if you try to modify the tree)'/>
       <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='options' type='int' info='a bitmask of xmlParserOption values'/>
+    </function>
+    <function name='xmlCtxtSetPrivate' file='parser' module='parserInternals'>
+      <info>ctxt:  parser context priv:  private application data  Set the private application data.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='priv' type='void *' info=''/>
     </function>
     <function name='xmlCtxtSetResourceLoader' file='parser' module='parserInternals'>
       <info>Installs a custom callback to load documents, DTDs or external entities.  Available since 2.14.0.</info>
@@ -9963,7 +10038,7 @@ crash if you try to modify the tree)'/>
       <arg name='ch' type='unsigned int' info='character to validate'/>
     </function>
     <function name='xmlIsLetter' file='parserInternals' module='parserInternals'>
-      <info>Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</info>
       <return type='int' info='0 if not, non-zero otherwise'/>
       <arg name='c' type='int' info='an unicode character (int)'/>
     </function>
@@ -10950,7 +11025,7 @@ crash if you try to modify the tree)'/>
       <arg name='path' type='const xmlChar *' info='the input file path'/>
     </function>
     <function name='xmlOpenCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported.  The handler must be closed with xmlCharEncCloseFunc.  Available since 2.13.0.</info>
+      <info>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported.  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.13.0.</info>
       <return type='int' info='an xmlParserErrors error code.'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
       <arg name='output' type='int' info='boolean, use handler for output'/>
@@ -12332,7 +12407,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2EndElement' file='SAX2' module='SAX2'>
-      <info>called when the end of an element has been detected.  Used for HTML and SAX1.</info>
+      <info>DEPRECATED: Don&apos;t call this function directly.  called when the end of an element has been detected.  Used for HTML and SAX1.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='name' type='const xmlChar *' info='The element name'/>
@@ -12477,7 +12552,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </function>
     <function name='xmlSAX2StartElement' file='SAX2' module='SAX2'>
-      <info>Called when an opening tag has been processed.  Used for HTML and SAX1.</info>
+      <info>DEPRECATED: Don&apos;t call this function directly.  Called when an opening tag has been processed.  Used for HTML and SAX1.</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
       <arg name='fullname' type='const xmlChar *' info='The element name, including namespace prefix'/>
@@ -12507,9 +12582,9 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlSAXDefaultVersion' file='SAX2' module='SAX2'>
       <cond>defined(LIBXML_SAX1_ENABLED)</cond>
-      <info>DEPRECATED: Use parser option XML_PARSE_SAX1.  Set the default version of SAX used globally by the library. By default, during initialization the default is set to 2. Note that it is generally a better coding style to use xmlSAXVersion() to set up the version explicitly for a given parsing context.</info>
-      <return type='int' info='the previous value in case of success and -1 in case of error.'/>
-      <arg name='version' type='int' info='the version, 1 or 2'/>
+      <info>DEPRECATED: Use parser option XML_PARSE_SAX1.  Has no effect.</info>
+      <return type='int' info='2 in case of success and -1 in case of error.'/>
+      <arg name='version' type='int' info='the version, must be 2'/>
     </function>
     <function name='xmlSAXParseDTD' file='parser' module='parser'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>

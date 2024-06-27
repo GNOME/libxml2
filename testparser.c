@@ -49,7 +49,8 @@ testUnsupportedEncoding(void) {
     xmlFreeDoc(doc);
 
     error = xmlGetLastError();
-    if (error->code != XML_ERR_UNSUPPORTED_ENCODING ||
+    if (error == NULL ||
+        error->code != XML_ERR_UNSUPPORTED_ENCODING ||
         error->level != XML_ERR_WARNING ||
         strcmp(error->message, "Unsupported encoding: #unsupported\n") != 0)
     {

@@ -10408,6 +10408,8 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
  * xmlCtxtGetVersion:
  * ctxt:  parser context
  *
+ * Available since 2.14.0.
+ *
  * Returns the version from the XML declaration.
  */
 const xmlChar *
@@ -10421,6 +10423,8 @@ xmlCtxtGetVersion(xmlParserCtxtPtr ctxt) {
 /**
  * xmlCtxtGetStandalone:
  * ctxt:  parser context
+ *
+ * Available since 2.14.0.
  *
  * Returns the value from the standalone document declaration.
  */

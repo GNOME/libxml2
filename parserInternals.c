@@ -428,6 +428,8 @@ xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
  * reports catastrophic errors which are not related to parsing
  * like out-of-memory, I/O or other errors.
  *
+ * Available since 2.14.0.
+ *
  * Returns a bitmask of XML_STATUS_* flags ORed together.
  */
 int
@@ -1590,6 +1592,8 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
 /**
  * xmlCtxtGetDeclaredEncoding:
  * ctxt:  parser context
+ *
+ * Available since 2.14.0.
  *
  * Returns the encoding from the encoding declaration. This can differ
  * from the actual encoding.
@@ -2944,6 +2948,8 @@ xmlNewSAXParserCtxt(const xmlSAXHandler *sax, void *userData)
  * xmlCtxtGetPrivate:
  * ctxt:  parser context
  *
+ * Available since 2.14.0.
+ *
  * Returns the private application data.
  */
 void *
@@ -2959,6 +2965,8 @@ xmlCtxtGetPrivate(xmlParserCtxtPtr ctxt) {
  * ctxt:  parser context
  * priv:  private application data
  *
+ * Available since 2.14.0.
+ *
  * Set the private application data.
  */
 void
@@ -2972,6 +2980,8 @@ xmlCtxtSetPrivate(xmlParserCtxtPtr ctxt, void *priv) {
 /**
  * xmlCtxtGetCatalogs:
  * ctxt:  parser context
+ *
+ * Available since 2.14.0.
  *
  * Returns the local catalogs.
  */
@@ -2988,6 +2998,8 @@ xmlCtxtGetCatalogs(xmlParserCtxtPtr ctxt) {
  * ctxt:  parser context
  * catalogs:  catalogs pointer
  *
+ * Available since 2.14.0.
+ *
  * Set the local catalogs.
  */
 void
@@ -3001,6 +3013,8 @@ xmlCtxtSetCatalogs(xmlParserCtxtPtr ctxt, void *catalogs) {
 /**
  * xmlCtxtGetDict:
  * ctxt:  parser context
+ *
+ * Available since 2.14.0.
  *
  * Returns the dictionary.
  */
@@ -3016,6 +3030,8 @@ xmlCtxtGetDict(xmlParserCtxtPtr ctxt) {
  * xmlCtxtSetDict:
  * ctxt:  parser context
  * dict:  dictionary
+ *
+ * Available since 2.14.0.
  *
  * Set the dictionary. This should only be done immediately after
  * creating a parser context.

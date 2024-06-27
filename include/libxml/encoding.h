@@ -140,14 +140,23 @@ typedef int (* xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
                                           const unsigned char *in, int *inlen);
 
 
+typedef int
+(*xmlCharEncConverter)(void *vctxt, unsigned char *out, int *outlen,
+                       const unsigned char *in, int *inlen);
+
+typedef void
+(*xmlCharEncConvCtxtDtor)(void *vctxt);
+
 /*
  * Block defining the handlers for non UTF-8 encodings.
  * If iconv is supported, there are two extra fields.
+ *
+ * This structure will be made private.
  */
 typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
 typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 struct _xmlCharEncodingHandler {
-    char                       *name;
+    char                       *name XML_DEPRECATED_MEMBER;
     xmlCharEncodingInputFunc   input XML_DEPRECATED_MEMBER;
     xmlCharEncodingOutputFunc  output XML_DEPRECATED_MEMBER;
 #ifdef LIBXML_ICONV_ENABLED
@@ -158,6 +167,11 @@ struct _xmlCharEncodingHandler {
     struct _uconv_t            *uconv_in XML_DEPRECATED_MEMBER;
     struct _uconv_t            *uconv_out XML_DEPRECATED_MEMBER;
 #endif /* LIBXML_ICU_ENABLED */
+
+    xmlCharEncConverter convert XML_DEPRECATED_MEMBER;
+    xmlCharEncConvCtxtDtor ctxtDtor XML_DEPRECATED_MEMBER;
+    void *inputCtxt XML_DEPRECATED_MEMBER;
+    void *outputCtxt XML_DEPRECATED_MEMBER;
 };
 
 /*

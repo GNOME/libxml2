@@ -1209,7 +1209,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
 
 /**
  * xmlSwitchInputEncodingName:
- * @ctxt:  the parser context, only for error reporting
+ * @ctxt:  the parser context
  * @input:  the input strea,
  * @encoding:  the encoding name
  *
@@ -2079,7 +2079,7 @@ xmlNewIOInputStream(xmlParserCtxtPtr ctxt, xmlParserInputBufferPtr buf,
     xmlParserInputPtr input;
     const char *encoding;
 
-    if (buf == NULL)
+    if ((ctxt == NULL) || (buf == NULL))
         return(NULL);
 
     input = xmlNewInputInternal(buf, NULL);

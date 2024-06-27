@@ -1078,9 +1078,34 @@ xmlCopyChar(int len ATTRIBUTE_UNUSED, xmlChar *out, int val) {
  *									*
  ************************************************************************/
 
+/**
+ * xmlCtxtSetCharEncConvImpl:
+ * @ctxt:  parser context
+ * @impl:  callback
+ * @vctxt:  user data
+ *
+ * Installs a custom implementation to convert between character
+ * encodings.
+ *
+ * This bypasses legacy feature like global encoding handlers or
+ * encoding aliases.
+ *
+ * Available since 2.14.0.
+ */
+void
+xmlCtxtSetCharEncConvImpl(xmlParserCtxtPtr ctxt, xmlCharEncConvImpl impl,
+                          void *vctxt) {
+    if (ctxt == NULL)
+        return;
+
+    ctxt->convImpl = impl;
+    ctxt->convCtxt = vctxt;
+}
+
 static int
-xmlDetectEBCDIC(xmlParserInputPtr input, xmlCharEncodingHandlerPtr *hout) {
+xmlDetectEBCDIC(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr *hout) {
     xmlChar out[200];
+    xmlParserInputPtr input = ctxt->input;
     xmlCharEncodingHandlerPtr handler;
     int inlen, outlen, res, i;
 
@@ -1088,9 +1113,10 @@ xmlDetectEBCDIC(xmlParserInputPtr input, xmlCharEncodingHandlerPtr *hout) {
 
     /*
      * To detect the EBCDIC code page, we convert the first 200 bytes
-     * to EBCDIC-US and try to find the encoding declaration.
+     * to IBM037 (EBCDIC-US) and try to find the encoding declaration.
      */
-    res = xmlLookupCharEncodingHandler(XML_CHAR_ENCODING_EBCDIC, &handler);
+    res = xmlCreateCharEncodingHandler("IBM037", /* output */ 0,
+            ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res != 0)
         return(res);
     outlen = sizeof(out) - 1;
@@ -1133,8 +1159,9 @@ xmlDetectEBCDIC(xmlParserInputPtr input, xmlCharEncodingHandlerPtr *hout) {
                 break;
             out[i] = 0;
             xmlCharEncCloseFunc(handler);
-            res = xmlOpenCharEncodingHandler((char *) out + start,
-                                             /* output */ 0, &handler);
+            res = xmlCreateCharEncodingHandler((char *) out + start,
+                    /* output */ 0, ctxt->convImpl, ctxt->convCtxt,
+                    &handler);
             if (res != 0)
                 return(res);
             *hout = handler;
@@ -1147,7 +1174,8 @@ done:
      * Encoding handlers are stateful, so we have to recreate them.
      */
     xmlCharEncCloseFunc(handler);
-    res = xmlLookupCharEncodingHandler(XML_CHAR_ENCODING_EBCDIC, &handler);
+    res = xmlCreateCharEncodingHandler("IBM037", /* output */ 0,
+            ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res != 0)
         return(res);
     *hout = handler;
@@ -1184,7 +1212,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
             res = 0;
             break;
         case XML_CHAR_ENCODING_EBCDIC:
-            res = xmlDetectEBCDIC(ctxt->input, &handler);
+            res = xmlDetectEBCDIC(ctxt, &handler);
             break;
         default:
             res = xmlLookupCharEncodingHandler(enc, &handler);
@@ -1224,7 +1252,8 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (encoding == NULL)
         return(-1);
 
-    res = xmlOpenCharEncodingHandler(encoding, /* output */ 0, &handler);
+    res = xmlCreateCharEncodingHandler(encoding, /* output */ 0,
+            ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res != 0) {
         xmlFatalErr(ctxt, res, encoding);
         return(-1);
@@ -1267,7 +1296,7 @@ xmlSwitchEncodingName(xmlParserCtxtPtr ctxt, const char *encoding) {
  *
  * Returns an xmlParserErrors code.
  */
-static int
+int
 xmlInputSetEncodingHandler(xmlParserInputPtr input,
                            xmlCharEncodingHandlerPtr handler) {
     int nbchars;
@@ -1339,33 +1368,6 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
     }
 
     return(XML_ERR_OK);
-}
-
-/**
- * xmlInputSetEncoding:
- * @input:  the input stream
- * @encoding:  the encoding name
- *
- * Use specified encoding to decode input data. This overrides the
- * encoding found in the XML declaration.
- *
- * Available since 2.14.0.
- *
- * Returns an xmlParserErrors code.
- */
-int
-xmlInputSetEncoding(xmlParserInputPtr input, const char *encoding) {
-    xmlCharEncodingHandlerPtr handler;
-    int res;
-
-    if (encoding == NULL)
-        return(XML_ERR_ARGUMENT);
-
-    res = xmlOpenCharEncodingHandler(encoding, /* output */ 0, &handler);
-    if (res != 0)
-        return(res);
-
-    return(xmlInputSetEncodingHandler(input, handler));
 }
 
 /**
@@ -2260,8 +2262,15 @@ xmlCheckHTTPInputInternal(xmlParserInputPtr input) {
     if ((xmlStrstr(BAD_CAST mime, BAD_CAST "/xml")) ||
         (xmlStrstr(BAD_CAST mime, BAD_CAST "+xml"))) {
         encoding = xmlNanoHTTPEncoding(input->buf->context);
-        if (encoding != NULL)
-            xmlInputSetEncoding(input, encoding);
+        if (encoding != NULL) {
+            xmlCharEncodingHandlerPtr handler;
+            int res;
+
+            res = xmlOpenCharEncodingHandler(encoding, /* output */ 0,
+                                             &handler);
+            if (res == 0)
+                xmlInputSetEncodingHandler(input, handler);
+        }
     }
 
     redir = xmlNanoHTTPRedir(input->buf->context);

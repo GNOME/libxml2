@@ -376,7 +376,8 @@ XMLPUBFUN xmlParserInputPtr
 xmlInputCreateIO(const char *url, xmlInputReadCallback ioRead,
                  xmlInputCloseCallback ioClose, void *ioCtxt, int flags);
 XMLPUBFUN int
-xmlInputSetEncoding(xmlParserInputPtr input, const char *encoding);
+xmlInputSetEncodingHandler(xmlParserInputPtr input,
+                           xmlCharEncodingHandlerPtr handler);
 
 /**
  * Namespaces.

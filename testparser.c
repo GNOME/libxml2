@@ -518,6 +518,89 @@ testBuildRelativeUri(void) {
     return err;
 }
 
+static int charEncConvImplError;
+
+static int
+rot13Convert(void *vctxt, unsigned char *out, int *outlen,
+             const unsigned char *in, int *inlen) {
+    int *ctxt = vctxt;
+    int inSize = *inlen;
+    int outSize = *outlen;
+    int rot, i;
+
+    rot = *ctxt;
+
+    for (i = 0; i < inSize && i < outSize; i++) {
+        int c = in[i];
+
+        if (c >= 'A' && c <= 'Z')
+            c = 'A' + (c - 'A' + rot) % 26;
+        else if (c >= 'a' && c <= 'z')
+            c = 'a' + (c - 'a' + rot) % 26;
+
+        out[i] = c;
+    }
+
+    *inlen = i;
+    *outlen = i;
+
+    return XML_ENC_ERR_SUCCESS;
+}
+
+static void
+rot13ConvCtxtDtor(void *vctxt) {
+    xmlFree(vctxt);
+}
+
+static int
+rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name,
+              xmlCharEncConverter *conv) {
+    int *inputCtxt;
+
+    if (strcmp(name, "rot13") != 0) {
+        fprintf(stderr, "rot13ConvImpl received wrong name\n");
+        charEncConvImplError = 1;
+
+        return XML_ERR_UNSUPPORTED_ENCODING;
+    }
+
+    conv->convert = rot13Convert;
+    conv->ctxtDtor = rot13ConvCtxtDtor;
+    
+    inputCtxt = xmlMalloc(sizeof(*inputCtxt));
+    *inputCtxt = 13;
+    conv->inputCtxt = inputCtxt;
+
+    return XML_ERR_OK;
+}
+
+static int
+testCharEncConvImpl(void) {
+    xmlParserCtxtPtr ctxt;
+    xmlDocPtr doc;
+    xmlNodePtr root;
+    int err = 0;
+
+    ctxt = xmlNewParserCtxt();
+    xmlCtxtSetCharEncConvImpl(ctxt, rot13ConvImpl, NULL);
+    charEncConvImplError = 0;
+    doc = xmlCtxtReadDoc(ctxt, BAD_CAST "<?kzy irefvba='1.0'?><qbp/>", NULL,
+                         "rot13", 0);
+    if (charEncConvImplError)
+        err = 1;
+    xmlFreeParserCtxt(ctxt);
+
+    root = xmlDocGetRootElement(doc);
+    if (root == NULL || strcmp((char *) root->name, "doc") != 0) {
+        fprintf(stderr, "testCharEncConvImpl failed\n");
+        err = 1;
+    }
+
+    xmlFreeDoc(doc);
+
+    return err;
+}
+
 int
 main(void) {
     int err = 0;
@@ -546,6 +629,7 @@ main(void) {
     err |= testWriterClose();
 #endif
     err |= testBuildRelativeUri();
+    err |= testCharEncConvImpl();
 
     return err;
 }

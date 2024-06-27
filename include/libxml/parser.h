@@ -452,6 +452,9 @@ struct _xmlParserCtxt {
 
     xmlResourceLoader resourceLoader XML_DEPRECATED_MEMBER;
     void *resourceCtxt XML_DEPRECATED_MEMBER;
+
+    xmlCharEncConvImpl convImpl XML_DEPRECATED_MEMBER;
+    void *convCtxt XML_DEPRECATED_MEMBER;
 };
 
 /**
@@ -1437,6 +1440,10 @@ XMLPUBFUN void
 XMLPUBFUN void
 		xmlCtxtSetResourceLoader(xmlParserCtxtPtr ctxt,
 					 xmlResourceLoader loader,
+					 void *vctxt);
+XMLPUBFUN void
+		xmlCtxtSetCharEncConvImpl(xmlParserCtxtPtr ctxt,
+					 xmlCharEncConvImpl impl,
 					 void *vctxt);
 XMLPUBFUN void
 		xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt,

@@ -15876,38 +15876,6 @@ test_xmlInputCreateUrl(void) {
 static int
 test_xmlInputSetEncoding(void) {
     int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    xmlParserInputPtr input; /* the input stream */
-    int n_input;
-    const char * encoding; /* the encoding name */
-    int n_encoding;
-
-    for (n_input = 0;n_input < gen_nb_xmlParserInputPtr;n_input++) {
-    for (n_encoding = 0;n_encoding < gen_nb_const_char_ptr;n_encoding++) {
-        mem_base = xmlMemBlocks();
-        input = gen_xmlParserInputPtr(n_input, 0);
-        encoding = gen_const_char_ptr(n_encoding, 1);
-
-        ret_val = xmlInputSetEncoding(input, encoding);
-        desret_int(ret_val);
-        call_tests++;
-        des_xmlParserInputPtr(n_input, input, 0);
-        des_const_char_ptr(n_encoding, encoding, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInputSetEncoding",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_input);
-            printf(" %d", n_encoding);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-
     return(test_ret);
 }
 

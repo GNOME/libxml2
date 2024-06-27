@@ -1,5 +1,14 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
+SAX.comment(
+Copyright (C) Electronic Dictionary Research and Development Group
+Released under Creative Commons Attribution-ShareAlike Licence (V4.0)
+
+This file only contains the kanjidic2 DTD without the actual database.
+
+http://nihongo.monash.edu/kanjidic2/index.html
+http://www.edrdg.org/edrdg/licence.html
+)
 SAX.internalSubset(kanjidic2, , )
 SAX.comment( Version 1.3
 	This is the DTD of the XML-format kanji file combining information from

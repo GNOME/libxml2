@@ -334,6 +334,9 @@ if test "$with_http" = "yes"; then
             LIBS=$_libs
             ;;
     esac
+
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${NET_LIBS}"
+    XML_PC_LIBS="${XML_PC_LIBS} ${NET_LIBS}"
 fi
 
 dnl Thread-local storage
@@ -680,6 +683,9 @@ if test "$with_modules" != "no" ; then
     if test "$WITH_MODULES" = "0"; then
         AC_MSG_ERROR([dlopen or equivalent not found])
     fi
+
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${MODULE_LIBS}"
+    XML_PC_LIBS="${XML_PC_LIBS} ${MODULE_LIBS}"
 fi
 
 AC_SUBST(WITH_MODULES)
@@ -719,6 +725,9 @@ else
     if test "$WITH_THREADS" = "0"; then
         AC_MSG_ERROR([libpthread not found])
     fi
+
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${THREAD_LIBS}"
+    XML_PC_LIBS="${XML_PC_LIBS} ${THREAD_LIBS}"
 fi
 if test "$with_thread_alloc" = "yes" && test "$WITH_THREADS" = "1" ; then
     WITH_THREAD_ALLOC=1
@@ -964,6 +973,10 @@ else
     fi
     CPPFLAGS=$_cppflags
     LIBS=$_libs
+
+    XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${ICONV_CFLAGS}"
+    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${ICONV_LIBS}"
+    XML_PC_LIBS="${XML_PC_LIBS} ${ICONV_LIBS}"
 fi
 AC_SUBST(WITH_ICONV)
 AC_SUBST(ICONV_CFLAGS)
@@ -1032,14 +1045,14 @@ dnl
 case "$host" in
     *-*-mingw*)
         CRYPTO_LIBS="-lbcrypt"
+        XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${CRYPTO_LIBS}"
+        XML_PC_LIBS="${XML_PC_LIBS} ${CRYPTO_LIBS}"
         ;;
 esac
 
 XML_LIBS="-lxml2"
-NON_PC_LIBS="${THREAD_LIBS} ${ICONV_LIBS} ${LIBM} ${NET_LIBS} ${CRYPTO_LIBS} ${MODULE_LIBS}"
-XML_PC_LIBS="${XML_PC_LIBS} ${NON_PC_LIBS}"
-XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${NON_PC_LIBS}"
-XML_PRIVATE_CFLAGS="${XML_PRIVATE_CFLAGS} ${ICONV_CFLAGS}"
+XML_PC_LIBS="${XML_PC_LIBS} ${LIBM}"
+XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${LIBM}"
 
 dnl When static-only:
 dnl * Duplicate xml-config static --libs into --dynamic.

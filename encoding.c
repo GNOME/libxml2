@@ -873,7 +873,8 @@ xmlLookupCharEncodingHandler(xmlCharEncoding enc,
         return(XML_ERR_UNSUPPORTED_ENCODING);
 
     /* Return NULL handler for UTF-8 */
-    if (enc == XML_CHAR_ENCODING_UTF8)
+    if ((enc == XML_CHAR_ENCODING_UTF8) ||
+        (enc == XML_CHAR_ENCODING_NONE))
         return(XML_ERR_OK);
 
     handler = &defaultHandlers[enc];

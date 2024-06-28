@@ -1205,24 +1205,9 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
     if ((ctxt == NULL) || (ctxt->input == NULL))
         return(-1);
 
-    switch (enc) {
-	case XML_CHAR_ENCODING_NONE:
-	case XML_CHAR_ENCODING_UTF8:
-        case XML_CHAR_ENCODING_ASCII:
-            res = 0;
-            break;
-        case XML_CHAR_ENCODING_EBCDIC:
-            res = xmlDetectEBCDIC(ctxt, &handler);
-            break;
-        default:
-            res = xmlLookupCharEncodingHandler(enc, &handler);
-            break;
-    }
-
+    res = xmlLookupCharEncodingHandler(enc, &handler);
     if (res != 0) {
-        const char *name = xmlGetCharEncodingName(enc);
-
-        xmlFatalErr(ctxt, res, (name ? name : "<null>"));
+        xmlFatalErr(ctxt, res, NULL);
         return(-1);
     }
 
@@ -1512,7 +1497,20 @@ xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
 
     if (enc != XML_CHAR_ENCODING_NONE) {
         ctxt->input->flags |= autoFlag;
-        xmlSwitchEncoding(ctxt, enc);
+
+        if (enc == XML_CHAR_ENCODING_EBCDIC) {
+            xmlCharEncodingHandlerPtr handler;
+            int res;
+
+            res = xmlDetectEBCDIC(ctxt, &handler);
+            if (res != XML_ERR_OK) {
+                xmlFatalErr(ctxt, res, "detecting EBCDIC\n");
+            } else {
+                xmlSwitchInputEncoding(ctxt, ctxt->input, handler);
+            }
+        } else {
+            xmlSwitchEncoding(ctxt, enc);
+        }
     }
 }
 

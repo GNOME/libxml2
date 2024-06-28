@@ -138,8 +138,8 @@ typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
  * Returns the number of bytes written or an XML_ENC_ERR code.
  */
 typedef int
-(*xmlCharEncConvFunc)(void *vctxt, unsigned char *out, int *outlen,
-                      const unsigned char *in, int *inlen);
+(*xmlCharEncConvFunc)(unsigned char *out, int *outlen,
+                      const unsigned char *in, int *inlen, void *vctxt);
 
 /**
  * xmlCharEncConvCtxtDtor:
@@ -151,7 +151,8 @@ typedef void
 (*xmlCharEncConvCtxtDtor)(void *vctxt);
 
 typedef struct {
-    xmlCharEncConvFunc convert;
+    xmlCharEncConvFunc input;
+    xmlCharEncConvFunc output;
     xmlCharEncConvCtxtDtor ctxtDtor;
     void *inputCtxt;
     void *outputCtxt;
@@ -181,23 +182,17 @@ typedef int
 typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
 typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 struct _xmlCharEncodingHandler {
-    char                       *name XML_DEPRECATED_MEMBER;
-
-    xmlCharEncodingInputFunc   input XML_DEPRECATED_MEMBER;
-    xmlCharEncodingOutputFunc  output XML_DEPRECATED_MEMBER;
+    char *name XML_DEPRECATED_MEMBER;
+    xmlCharEncodingInputFunc input XML_DEPRECATED_MEMBER;
+    xmlCharEncodingOutputFunc output XML_DEPRECATED_MEMBER;
 #ifdef LIBXML_ICONV_ENABLED
-    iconv_t                    iconv_in XML_DEPRECATED_MEMBER;
-    iconv_t                    iconv_out XML_DEPRECATED_MEMBER;
+    iconv_t iconv_in XML_DEPRECATED_MEMBER;
+    iconv_t iconv_out XML_DEPRECATED_MEMBER;
 #endif /* LIBXML_ICONV_ENABLED */
-#ifdef LIBXML_ICU_ENABLED
-    struct _uconv_t            *uconv_in XML_DEPRECATED_MEMBER;
-    struct _uconv_t            *uconv_out XML_DEPRECATED_MEMBER;
-#endif /* LIBXML_ICU_ENABLED */
-
-    xmlCharEncConvFunc convert XML_DEPRECATED_MEMBER;
-    xmlCharEncConvCtxtDtor ctxtDtor XML_DEPRECATED_MEMBER;
     void *inputCtxt XML_DEPRECATED_MEMBER;
     void *outputCtxt XML_DEPRECATED_MEMBER;
+    xmlCharEncConvCtxtDtor ctxtDtor XML_DEPRECATED_MEMBER;
+    int flags XML_DEPRECATED_MEMBER;
 };
 
 /*

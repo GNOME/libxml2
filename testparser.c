@@ -521,8 +521,8 @@ testBuildRelativeUri(void) {
 static int charEncConvImplError;
 
 static int
-rot13Convert(void *vctxt, unsigned char *out, int *outlen,
-             const unsigned char *in, int *inlen) {
+rot13Convert(unsigned char *out, int *outlen,
+             const unsigned char *in, int *inlen, void *vctxt) {
     int *ctxt = vctxt;
     int inSize = *inlen;
     int outSize = *outlen;
@@ -564,7 +564,8 @@ rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name,
         return XML_ERR_UNSUPPORTED_ENCODING;
     }
 
-    conv->convert = rot13Convert;
+    conv->input = rot13Convert;
+    conv->output = rot13Convert;
     conv->ctxtDtor = rot13ConvCtxtDtor;
     
     inputCtxt = xmlMalloc(sizeof(*inputCtxt));

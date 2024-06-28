@@ -968,8 +968,6 @@ else
     if test "$WITH_ICONV" = "1" && test "$ICONV_DIR" != ""; then
         ICONV_CFLAGS="-I$ICONV_DIR/include"
         ICONV_LIBS="-L$ICONV_DIR/lib $ICONV_LIBS"
-	# Export this since our headers include iconv.h
-	XML_INCLUDEDIR="$XML_INCLUDEDIR -I$ICONV_DIR/include"
     fi
     CPPFLAGS=$_cppflags
     LIBS=$_libs

@@ -24,10 +24,6 @@
 
 #include <libxml/xmlversion.h>
 
-#ifdef LIBXML_ICONV_ENABLED
-#include <iconv.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -181,8 +177,8 @@ struct _xmlCharEncodingHandler {
     xmlCharEncodingInputFunc input XML_DEPRECATED_MEMBER;
     xmlCharEncodingOutputFunc output XML_DEPRECATED_MEMBER;
 #ifdef LIBXML_ICONV_ENABLED
-    iconv_t iconv_in XML_DEPRECATED_MEMBER;
-    iconv_t iconv_out XML_DEPRECATED_MEMBER;
+    void *iconv_in XML_DEPRECATED_MEMBER;
+    void *iconv_out XML_DEPRECATED_MEMBER;
 #endif /* LIBXML_ICONV_ENABLED */
     void *inputCtxt XML_DEPRECATED_MEMBER;
     void *outputCtxt XML_DEPRECATED_MEMBER;

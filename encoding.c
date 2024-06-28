@@ -29,6 +29,7 @@
 #include <stdlib.h>
 
 #ifdef LIBXML_ICONV_ENABLED
+#include <iconv.h>
 #include <errno.h>
 #endif
 

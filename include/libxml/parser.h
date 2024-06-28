@@ -305,13 +305,13 @@ struct _xmlParserCtxt {
     /* SAX callbacks are disabled */
     int disableSAX XML_DEPRECATED_MEMBER;
     /* Parsing is in int 1/ext 2 subset */
-    int inSubset XML_DEPRECATED_MEMBER;
+    int inSubset;
     /* name of subset */
-    const xmlChar *intSubName XML_DEPRECATED_MEMBER;
+    const xmlChar *intSubName;
     /* URI of external subset */
-    xmlChar *extSubURI XML_DEPRECATED_MEMBER;
+    xmlChar *extSubURI;
     /* SYSTEM ID of external subset */
-    xmlChar *extSubSystem XML_DEPRECATED_MEMBER;
+    xmlChar *extSubSystem;
 
     /* xml:space values */
 

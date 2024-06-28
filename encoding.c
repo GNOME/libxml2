@@ -1813,43 +1813,26 @@ retry:
  * xmlCharEncCloseFunc:
  * @handler:	char encoding transformation data structure
  *
- * Generic front-end for encoding handler close function
+ * Releases an xmlCharEncodingHandler. Must be called after
+ * a handler is no longer in use.
  *
- * Returns 0 if success, or -1 in case of error
+ * Returns 0.
  */
 int
 xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
-    int ret = 0;
-    int i = 0;
+    if (handler == NULL)
+        return(0);
 
-    if (handler == NULL) return(-1);
+    if (handler->flags & XML_HANDLER_STATIC)
+        return(0);
 
-    for (i = 0; i < (int) NUM_DEFAULT_HANDLERS; i++) {
-        if (handler == &defaultHandlers[i])
-            return(0);
-    }
-
-    if (globalHandlers != NULL) {
-        for (i = 0;i < nbCharEncodingHandler; i++) {
-            if (handler == globalHandlers[i])
-                return(0);
-	}
-    }
-
+    xmlFree(handler->name);
     if (handler->ctxtDtor != NULL) {
         handler->ctxtDtor(handler->inputCtxt);
         handler->ctxtDtor(handler->outputCtxt);
     }
-
-    if ((handler->flags & XML_HANDLER_STATIC) == 0) {
-        /* free up only dynamic handlers iconv/uconv */
-        if (handler->name != NULL)
-            xmlFree(handler->name);
-        handler->name = NULL;
-        xmlFree(handler);
-    }
-
-    return(ret);
+    xmlFree(handler);
+    return(0);
 }
 
 /**

@@ -107,8 +107,8 @@ static const xmlEncTableEntry xmlEncTable[] = {
 };
 
 static int
-asciiToUTF8(unsigned char* out, int *outlen,
-            const unsigned char* in, int *inlen);
+asciiToAscii(unsigned char* out, int *outlen,
+             const unsigned char* in, int *inlen);
 static int
 UTF8ToUTF8(unsigned char* out, int *outlen,
            const unsigned char* inb, int *inlenb);
@@ -122,9 +122,6 @@ UTF16BEToUTF8(unsigned char* out, int *outlen,
 #ifdef LIBXML_OUTPUT_ENABLED
 
 static int
-UTF8Toascii(unsigned char* out, int *outlen,
-            const unsigned char* in, int *inlen);
-static int
 UTF8ToUTF16(unsigned char* outb, int *outlen,
             const unsigned char* in, int *inlen);
 static int
@@ -136,7 +133,6 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 
 #else /* LIBXML_OUTPUT_ENABLED */
 
-#define UTF8Toascii NULL
 #define UTF8Toisolat1 NULL
 #define UTF8ToUTF16 NULL
 #define UTF8ToUTF16LE NULL
@@ -252,7 +248,7 @@ static const xmlCharEncodingHandler defaultHandlers[31] = {
     MAKE_HANDLER("ISO-2022-JP", NULL, NULL),
     MAKE_HANDLER("Shift_JIS", NULL, NULL),
     MAKE_HANDLER("EUC-JP", NULL, NULL),
-    MAKE_HANDLER("US-ASCII", asciiToUTF8, UTF8Toascii),
+    MAKE_HANDLER("US-ASCII", asciiToAscii, asciiToAscii),
     MAKE_HANDLER("UTF-16", UTF16LEToUTF8, UTF8ToUTF16),
     MAKE_HANDLER("HTML", NULL, UTF8ToHtml),
     MAKE_HANDLER("ISO-8859-10", ISO8859_10ToUTF8, UTF8ToISO8859_10),
@@ -287,336 +283,7 @@ xmlCharEncUconv(void *vctxt, const char *name, xmlCharEncConverter *conv);
  *									*
  ************************************************************************/
 
-/**
- * asciiToUTF8:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of ASCII chars
- * @inlen:  the length of @in
- *
- * Take a block of ASCII chars in and try to convert it to an UTF-8
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- * The value of @inlen after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of octets produced.
- */
-static int
-asciiToUTF8(unsigned char* out, int *outlen,
-              const unsigned char* in, int *inlen) {
-    unsigned char* outstart = out;
-    const unsigned char* base = in;
-    const unsigned char* processed = in;
-    unsigned char* outend = out + *outlen;
-    const unsigned char* inend;
-    unsigned int c;
-
-    inend = in + (*inlen);
-    while ((in < inend) && (out - outstart + 5 < *outlen)) {
-	c= *in++;
-
-        if (out >= outend)
-	    break;
-        if (c < 0x80) {
-	    *out++ = c;
-	} else {
-	    *outlen = out - outstart;
-	    *inlen = processed - base;
-	    return(XML_ENC_ERR_INPUT);
-	}
-
-	processed = (const unsigned char*) in;
-    }
-    *outlen = out - outstart;
-    *inlen = processed - base;
-    return(*outlen);
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * UTF8Toascii:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of UTF-8 chars
- * @inlen:  the length of @in
- *
- * Take a block of UTF-8 chars in and try to convert it to an ASCII
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- * The value of @inlen after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of octets produced.
- */
-static int
-UTF8Toascii(unsigned char* out, int *outlen,
-              const unsigned char* in, int *inlen) {
-    const unsigned char* processed = in;
-    const unsigned char* outend;
-    const unsigned char* outstart = out;
-    const unsigned char* instart = in;
-    const unsigned char* inend;
-    unsigned int c, d;
-    int trailing;
-
-    if ((out == NULL) || (outlen == NULL) || (inlen == NULL))
-        return(XML_ENC_ERR_INTERNAL);
-    if (in == NULL) {
-        /*
-	 * initialization nothing to do
-	 */
-	*outlen = 0;
-	*inlen = 0;
-	return(0);
-    }
-    inend = in + (*inlen);
-    outend = out + (*outlen);
-    while (in < inend) {
-	d = *in++;
-	if      (d < 0x80)  { c= d; trailing= 0; }
-	else if (d < 0xC0) {
-	    /* trailing byte in leading position */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(XML_ENC_ERR_INPUT);
-        } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
-        else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
-        else if (d < 0xF8)  { c= d & 0x07; trailing= 3; }
-	else {
-	    /* no chance for this in Ascii */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(XML_ENC_ERR_INPUT);
-	}
-
-	if (inend - in < trailing) {
-	    break;
-	}
-
-	for ( ; trailing; trailing--) {
-	    if ((in >= inend) || (((d= *in++) & 0xC0) != 0x80))
-		break;
-	    c <<= 6;
-	    c |= d & 0x3F;
-	}
-
-	/* assertion: c is a single UTF-4 value */
-	if (c < 0x80) {
-	    if (out >= outend)
-		break;
-	    *out++ = c;
-	} else {
-	    /* no chance for this in Ascii */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(XML_ENC_ERR_INPUT);
-	}
-	processed = in;
-    }
-    *outlen = out - outstart;
-    *inlen = processed - instart;
-    return(*outlen);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-/**
- * isolat1ToUTF8:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of ISO Latin 1 chars
- * @inlen:  the length of @in
- *
- * Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- * The value of @inlen after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of octets produced.
- */
-int
-isolat1ToUTF8(unsigned char* out, int *outlen,
-              const unsigned char* in, int *inlen) {
-    unsigned char* outstart = out;
-    const unsigned char* base = in;
-    unsigned char* outend;
-    const unsigned char* inend;
-    const unsigned char* instop;
-
-    if ((out == NULL) || (in == NULL) || (outlen == NULL) || (inlen == NULL))
-	return(XML_ENC_ERR_INTERNAL);
-
-    outend = out + *outlen;
-    inend = in + (*inlen);
-    instop = inend;
-
-    while ((in < inend) && (out < outend - 1)) {
-	if (*in >= 0x80) {
-	    *out++ = (((*in) >>  6) & 0x1F) | 0xC0;
-            *out++ = ((*in) & 0x3F) | 0x80;
-	    ++in;
-	}
-	if ((instop - in) > (outend - out)) instop = in + (outend - out);
-	while ((in < instop) && (*in < 0x80)) {
-	    *out++ = *in++;
-	}
-    }
-    if ((in < inend) && (out < outend) && (*in < 0x80)) {
-        *out++ = *in++;
-    }
-    *outlen = out - outstart;
-    *inlen = in - base;
-    return(*outlen);
-}
-
-/**
- * UTF8ToUTF8:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @inb:  a pointer to an array of UTF-8 chars
- * @inlenb:  the length of @in in UTF-8 chars
- *
- * No op copy operation for UTF8 handling.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- *     The value of *inlen after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- */
-static int
-UTF8ToUTF8(unsigned char* out, int *outlen,
-           const unsigned char* inb, int *inlenb)
-{
-    int len;
-
-    if ((out == NULL) || (outlen == NULL) || (inlenb == NULL))
-	return(XML_ENC_ERR_INTERNAL);
-    if (inb == NULL) {
-        /* inb == NULL means output is initialized. */
-        *outlen = 0;
-        *inlenb = 0;
-        return(0);
-    }
-    if (*outlen > *inlenb) {
-	len = *inlenb;
-    } else {
-	len = *outlen;
-    }
-    if (len < 0)
-	return(XML_ENC_ERR_INTERNAL);
-
-    /*
-     * FIXME: Conversion functions must assure valid UTF-8, so we have
-     * to check for UTF-8 validity. Preferably, this converter shouldn't
-     * be used at all.
-     */
-    memcpy(out, inb, len);
-
-    *outlen = len;
-    *inlenb = len;
-    return(*outlen);
-}
-
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * UTF8Toisolat1:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of UTF-8 chars
- * @inlen:  the length of @in
- *
- * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
- * block of chars out.
- *
- * Returns the number of bytes written or an XML_ENC_ERR code.
- *
- * The value of @inlen after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of octets produced.
- */
-int
-UTF8Toisolat1(unsigned char* out, int *outlen,
-              const unsigned char* in, int *inlen) {
-    const unsigned char* processed = in;
-    const unsigned char* outend;
-    const unsigned char* outstart = out;
-    const unsigned char* instart = in;
-    const unsigned char* inend;
-    unsigned int c, d;
-    int trailing;
-
-    if ((out == NULL) || (outlen == NULL) || (inlen == NULL))
-        return(XML_ENC_ERR_INTERNAL);
-    if (in == NULL) {
-        /*
-	 * initialization nothing to do
-	 */
-	*outlen = 0;
-	*inlen = 0;
-	return(0);
-    }
-    inend = in + (*inlen);
-    outend = out + (*outlen);
-    while (in < inend) {
-	d = *in++;
-	if      (d < 0x80)  { c= d; trailing= 0; }
-	else if (d < 0xC0) {
-	    /* trailing byte in leading position */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(XML_ENC_ERR_INPUT);
-        } else if (d < 0xE0)  { c= d & 0x1F; trailing= 1; }
-        else if (d < 0xF0)  { c= d & 0x0F; trailing= 2; }
-        else if (d < 0xF8)  { c= d & 0x07; trailing= 3; }
-	else {
-	    /* no chance for this in IsoLat1 */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(XML_ENC_ERR_INPUT);
-	}
-
-	if (inend - in < trailing) {
-	    break;
-	}
-
-	for ( ; trailing; trailing--) {
-	    if (in >= inend)
-		break;
-	    d = *in++;
-	    if ((d & 0xC0) != 0x80) {
-		*outlen = out - outstart;
-		*inlen = processed - instart;
-		return(XML_ENC_ERR_INPUT);
-	    }
-	    c <<= 6;
-	    c |= d & 0x3F;
-	}
-
-	/* assertion: c is a single UTF-4 value */
-	if (c <= 0xFF) {
-	    if (out >= outend)
-		break;
-	    *out++ = c;
-	} else {
-	    /* no chance for this in IsoLat1 */
-	    *outlen = out - outstart;
-	    *inlen = processed - instart;
-	    return(XML_ENC_ERR_INPUT);
-	}
-	processed = in;
-    }
-    *outlen = out - outstart;
-    *inlen = processed - instart;
-    return(*outlen);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-/**
+/*
  * UTF16LEToUTF8:
  * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
@@ -2718,6 +2385,176 @@ xmlByteConsumed(xmlParserCtxtPtr ctxt) {
     }
     return(in->consumed + (in->cur - in->base));
 }
+
+/************************************************************************
+ *									*
+ *		Conversions To/From UTF8 encoding			*
+ *									*
+ ************************************************************************/
+
+static int
+asciiToAscii(unsigned char* out, int *poutlen,
+             const unsigned char* in, int *pinlen) {
+    const unsigned char *inend;
+    const unsigned char *instart = in;
+    int inlen, outlen, ret;
+
+    if (in == NULL) {
+        *pinlen = 0;
+        *poutlen = 0;
+        return(XML_ENC_ERR_SUCCESS);
+    }
+
+    inlen = *pinlen;
+    outlen = *poutlen;
+
+    if (outlen < inlen) {
+        inlen = outlen;
+        ret = XML_ENC_ERR_SPACE;
+    } else {
+        ret = inlen;
+    }
+
+    inend = in + inlen;
+    *poutlen = inlen;
+    *pinlen = inlen;
+
+    while (in < inend) {
+	unsigned c = *in;
+
+        if (c >= 0x80) {
+	    *poutlen = in - instart;
+	    *pinlen = in - instart;
+	    return(XML_ENC_ERR_INPUT);
+	}
+
+        in++;
+	*out++ = c;
+    }
+
+    return(ret);
+}
+
+int
+isolat1ToUTF8(unsigned char* out, int *outlen,
+              const unsigned char* in, int *inlen) {
+    unsigned char* outstart = out;
+    const unsigned char* instart = in;
+    unsigned char* outend;
+    const unsigned char* inend;
+    int ret = XML_ENC_ERR_SPACE;
+
+    if ((out == NULL) || (in == NULL) || (outlen == NULL) || (inlen == NULL))
+	return(XML_ENC_ERR_INTERNAL);
+
+    outend = out + *outlen;
+    inend = in + *inlen;
+
+    while (in < inend) {
+        unsigned c = *in;
+
+	if (c < 0x80) {
+            if (out >= outend)
+                goto done;
+            *out++ = c;
+	} else {
+            if (outend - out < 2)
+                goto done;
+	    *out++ = (c >> 6) | 0xC0;
+            *out++ = (c & 0x3F) | 0x80;
+        }
+
+        in++;
+    }
+
+    ret = out - outstart;
+
+done:
+    *outlen = out - outstart;
+    *inlen = in - instart;
+    return(ret);
+}
+
+static int
+UTF8ToUTF8(unsigned char* out, int *outlen,
+           const unsigned char* in, int *inlen)
+{
+    int len;
+    int ret;
+
+    if (in == NULL) {
+        *inlen = 0;
+        *outlen = 0;
+        return(XML_ENC_ERR_SUCCESS);
+    }
+
+    if (*outlen < *inlen) {
+	len = *outlen;
+        ret = XML_ENC_ERR_SPACE;
+    } else {
+	len = *inlen;
+        ret = len;
+    }
+
+    memcpy(out, in, len);
+
+    *outlen = len;
+    *inlen = len;
+    return(ret);
+}
+
+
+#ifdef LIBXML_OUTPUT_ENABLED
+int
+UTF8Toisolat1(unsigned char* out, int *outlen,
+              const unsigned char* in, int *inlen) {
+    const unsigned char* outend;
+    const unsigned char* outstart = out;
+    const unsigned char* instart = in;
+    const unsigned char* inend;
+    unsigned c;
+    int ret = XML_ENC_ERR_SPACE;
+
+    if ((out == NULL) || (outlen == NULL) || (inlen == NULL))
+        return(XML_ENC_ERR_INTERNAL);
+
+    if (in == NULL) {
+        *inlen = 0;
+        *outlen = 0;
+        return(XML_ENC_ERR_SUCCESS);
+    }
+
+    inend = in + *inlen;
+    outend = out + *outlen;
+    while (in < inend) {
+        if (out >= outend)
+            goto done;
+
+	c = *in;
+
+        if (c < 0x80) {
+            *out++ = c;
+        } else if (c < 0xC4) {
+            if (inend - in < 2)
+                break;
+            in++;
+            *out++ = (unsigned char) ((c << 6) | (*in & 0x3F));
+        } else {
+            ret = XML_ENC_ERR_INPUT;
+            goto done;
+	}
+
+        in++;
+    }
+
+    ret = out - outstart;
+
+done:
+    *outlen = out - outstart;
+    *inlen = in - instart;
+    return(ret);
+}
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED)
 #ifdef LIBXML_ISO8859X_ENABLED

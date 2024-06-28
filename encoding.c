@@ -1863,8 +1863,12 @@ xmlIconvConvert(void *vctxt, unsigned char *out, int *outlen,
             return(XML_ENC_ERR_INPUT);
         if (errno == E2BIG)
             return(XML_ENC_ERR_SPACE);
+        /*
+         * EINVAL means a truncated multi-byte sequence at the end
+         * of the input buffer. We treat this as success.
+         */
         if (errno == EINVAL)
-            return(XML_ENC_ERR_PARTIAL);
+            return(XML_ENC_ERR_SUCCESS);
         return(XML_ENC_ERR_INTERNAL);
     }
     return(XML_ENC_ERR_SUCCESS);
@@ -2027,7 +2031,7 @@ xmlUconvConvert(void *vctxt, unsigned char *out, int *outlen,
         return(XML_ENC_ERR_SPACE);
     if (err == U_INVALID_CHAR_FOUND || err == U_ILLEGAL_CHAR_FOUND)
         return(XML_ENC_ERR_INPUT);
-    return(XML_ENC_ERR_PARTIAL);
+    return(XML_ENC_ERR_INTERNAL);
 }
 
 static int
@@ -2195,11 +2199,8 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
             /*
              * The built-in converters don't signal XML_ENC_ERR_SPACE.
              */
-            if (*inlen < oldinlen) {
-                if (*outlen > 0)
-                    ret = XML_ENC_ERR_SPACE;
-                else
-                    ret = XML_ENC_ERR_PARTIAL;
+            if ((*inlen < oldinlen) && (*outlen > 0)) {
+                ret = XML_ENC_ERR_SPACE;
             } else {
                 ret = XML_ENC_ERR_SUCCESS;
             }
@@ -2213,10 +2214,6 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
         *inlen = 0;
         ret = XML_ENC_ERR_INTERNAL;
     }
-
-    /* Ignore partial errors when reading. */
-    if (ret == XML_ENC_ERR_PARTIAL)
-        ret = XML_ENC_ERR_SUCCESS;
 
     return(ret);
 }
@@ -2248,11 +2245,8 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
             /*
              * The built-in converters don't signal XML_ENC_ERR_SPACE.
              */
-            if (*inlen < oldinlen) {
-                if (*outlen > 0)
-                    ret = XML_ENC_ERR_SPACE;
-                else
-                    ret = XML_ENC_ERR_PARTIAL;
+            if ((*inlen < oldinlen) && (*outlen > 0)) {
+                ret = XML_ENC_ERR_SPACE;
             } else {
                 ret = XML_ENC_ERR_SUCCESS;
             }
@@ -2266,10 +2260,6 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
         *inlen = 0;
         ret = XML_ENC_ERR_INTERNAL;
     }
-
-    /* We shouldn't generate partial sequences when writing. */
-    if (ret == XML_ENC_ERR_PARTIAL)
-        ret = XML_ENC_ERR_INTERNAL;
 
     return(ret);
 }
@@ -2785,7 +2775,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 /* trailing byte not in input buffer */
                 *outlen = out - outstart;
                 *inlen = processed - instart;
-                return(XML_ENC_ERR_PARTIAL);
+                return(XML_ENC_ERR_SUCCESS);
             }
             c = *in++;
             if ((c & 0xC0) != 0x80) {
@@ -2811,7 +2801,7 @@ UTF8ToISO8859x(unsigned char* out, int *outlen,
                 /* trailing bytes not in input buffer */
                 *outlen = out - outstart;
                 *inlen = processed - instart;
-                return(XML_ENC_ERR_PARTIAL);
+                return(XML_ENC_ERR_SUCCESS);
             }
             c1 = *in++;
             if ((c1 & 0xC0) != 0x80) {

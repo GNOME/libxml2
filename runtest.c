@@ -5027,6 +5027,11 @@ launchTests(testDescPtr tst) {
                 ((eucJpHandler == NULL) &&
                  (strstr(globbuf.gl_pathv[i], "icu_parse_test") != NULL)))
                 continue;
+#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
+    !defined(LIBXML_ISO8859X_ENABLED)
+            if (strstr(globbuf.gl_pathv[i], "iso-8859-5") != NULL)
+                continue;
+#endif
 	    if (tst->suffix != NULL) {
 		result = resultFilename(globbuf.gl_pathv[i], tst->out,
 					tst->suffix);

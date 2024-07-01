@@ -338,8 +338,8 @@ myStrdupFunc(const char *str)
  ************************************************************************/
 
 typedef struct {
-   unsigned sec;
-   unsigned usec;
+   int sec;
+   int usec;
 } xmlTime;
 
 static xmlTime begin, end;

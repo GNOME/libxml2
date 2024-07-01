@@ -387,8 +387,8 @@ endif
 
 # icu
 if want_icu
-    icu_dep = dependency('icu-i18n', method: 'pkg-config')
-    defs = icu_dep.get_variable(pkgconfig: 'DEFS')
+    icu_dep = dependency('icu-i18n', 'ICU', components: 'uc')
+    defs = icu_dep.get_variable(pkgconfig: 'DEFS', cmake: 'ICU_INCLUDE_DIRS')
     if cc.has_argument(defs)
         libxml2_cflags += defs
     endif

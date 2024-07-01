@@ -324,7 +324,7 @@ endif
 ### threads
 if want_threads
     threads_dep = dependency('threads')
-    config_h.set10('HAVE_PTHREAD_H', true)
+    config_h.set10(sys_windows ? 'HAVE_WIN32_THREADS' : 'HAVE_PTHREAD_H', true)
     xml_deps += threads_dep
 else
     threads_dep = dependency('', required: false)

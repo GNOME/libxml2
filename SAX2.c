@@ -31,8 +31,6 @@
 #include "private/parser.h"
 #include "private/tree.h"
 
-#define XML_MAX_URI_LENGTH 2000
-
 /*
  * xmlSAX2ErrMemory:
  * @ctxt:  an XML validation parser context

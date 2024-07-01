@@ -4,6 +4,8 @@
 #include <libxml/parser.h>
 #include <libxml/xmlversion.h>
 
+#define XML_MAX_URI_LENGTH 2000
+
 /**
  * XML_VCTXT_DTD_VALIDATED:
  *

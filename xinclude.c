@@ -418,6 +418,10 @@ xmlXIncludeAddNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur) {
             xmlXIncludeErrMemory(ctxt);
 	    goto error;
         }
+    } else if (xmlStrlen(href) > XML_MAX_URI_LENGTH) {
+        xmlXIncludeErr(ctxt, cur, XML_XINCLUDE_HREF_URI, "URI too long\n",
+                       NULL);
+        goto error;
     }
 
     parse = xmlXIncludeGetProp(ctxt, cur, XINCLUDE_PARSE);
@@ -634,7 +638,14 @@ xmlXIncludeBaseFixup(xmlXIncludeCtxtPtr ctxt, xmlNodePtr cur, xmlNodePtr copy,
         xmlXIncludeErrMemory(ctxt);
 
     if ((base != NULL) && !xmlStrEqual(base, targetBase)) {
-        if (xmlBuildRelativeURISafe(base, targetBase, &relBase) < 0) {
+        if ((xmlStrlen(base) > XML_MAX_URI_LENGTH) ||
+            (xmlStrlen(targetBase) > XML_MAX_URI_LENGTH)) {
+            relBase = xmlStrdup(base);
+            if (relBase == NULL) {
+                xmlXIncludeErrMemory(ctxt);
+                goto done;
+            }
+        } else if (xmlBuildRelativeURISafe(base, targetBase, &relBase) < 0) {
             xmlXIncludeErrMemory(ctxt);
             goto done;
         }

@@ -2596,7 +2596,7 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
         int flags = 0;
         int code;
 
-#ifdef LIBXML_CATALOGENABLED
+#ifdef LIBXML_CATALOG_ENABLED
         resource = (char *) xmlResolveResourceFromCatalog(url, publicId, ctxt);
         if (resource != NULL)
             url = resource;

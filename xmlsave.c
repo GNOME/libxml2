@@ -278,14 +278,16 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
  * Initialize a saving context
  */
 static void
-xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt)
+xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt, int options)
 {
     int i;
     int len;
 
     if (ctxt == NULL) return;
+
     if ((ctxt->encoding == NULL) && (ctxt->escape == NULL))
         ctxt->escape = xmlEscapeEntities;
+
     len = xmlStrlen((xmlChar *)xmlTreeIndentString);
     if ((xmlTreeIndentString == NULL) || (len == 0)) {
         memset(&ctxt->indent[0], 0, MAX_INDENT + 1);
@@ -298,9 +300,16 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt)
         ctxt->indent[ctxt->indent_nr * ctxt->indent_size] = 0;
     }
 
+    ctxt->options = options;
+
     if (xmlSaveNoEmptyTags) {
 	ctxt->options |= XML_SAVE_NO_EMPTY;
     }
+
+    if (options & XML_SAVE_FORMAT)
+        ctxt->format = 1;
+    else if (options & XML_SAVE_WSNONSIG)
+        ctxt->format = 2;
 }
 
 /**
@@ -351,22 +360,8 @@ xmlNewSaveCtxt(const char *encoding, int options)
         ret->encoding = xmlStrdup((const xmlChar *)encoding);
 	ret->escape = NULL;
     }
-    xmlSaveCtxtInit(ret);
 
-    /*
-     * Use the options
-     */
-
-    /* Re-check this option as it may already have been set */
-    if ((ret->options & XML_SAVE_NO_EMPTY) && ! (options & XML_SAVE_NO_EMPTY)) {
-	options |= XML_SAVE_NO_EMPTY;
-    }
-
-    ret->options = options;
-    if (options & XML_SAVE_FORMAT)
-        ret->format = 1;
-    else if (options & XML_SAVE_WSNONSIG)
-        ret->format = 2;
+    xmlSaveCtxtInit(ret, options);
 
     return(ret);
 }
@@ -2574,6 +2569,7 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   int level, int format, const char *encoding)
 {
     xmlSaveCtxt ctxt;
+    int options;
 #ifdef LIBXML_HTML_ENABLED
     xmlDtdPtr dtd;
     int is_xhtml = 0;
@@ -2596,10 +2592,12 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.buf = buf;
     ctxt.level = level;
-    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
-    xmlSaveCtxtInit(&ctxt);
-    ctxt.options |= XML_SAVE_AS_XML;
+
+    options = XML_SAVE_AS_XML;
+    if (format)
+        options |= XML_SAVE_FORMAT;
+    xmlSaveCtxtInit(&ctxt, options);
 
 #ifdef LIBXML_HTML_ENABLED
     dtd = xmlGetIntSubset(doc);
@@ -2636,6 +2634,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 		int * doc_txt_len, const char * txt_encoding,
 		int format) {
     xmlSaveCtxt ctxt;
+    int options;
     int                         dummy = 0;
     xmlOutputBufferPtr          out_buff = NULL;
     xmlCharEncodingHandlerPtr   conv_hdlr = NULL;
@@ -2685,10 +2684,13 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.buf = out_buff;
     ctxt.level = 0;
-    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) txt_encoding;
-    xmlSaveCtxtInit(&ctxt);
-    ctxt.options |= XML_SAVE_AS_XML;
+
+    options = XML_SAVE_AS_XML;
+    if (format)
+        options |= XML_SAVE_FORMAT;
+    xmlSaveCtxtInit(&ctxt, options);
+
     xmlDocContentDumpOutput(&ctxt, out_doc);
     xmlOutputBufferFlush(out_buff);
 
@@ -2777,6 +2779,7 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     const char * encoding;
     xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
+    int options;
 
     if (cur == NULL) {
 	return(-1);
@@ -2798,10 +2801,13 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
-    xmlSaveCtxtInit(&ctxt);
-    ctxt.options |= XML_SAVE_AS_XML;
+
+    options = XML_SAVE_AS_XML;
+    if (format)
+        options |= XML_SAVE_FORMAT;
+    xmlSaveCtxtInit(&ctxt, options);
+
     xmlDocContentDumpOutput(&ctxt, cur);
 
     ret = xmlOutputBufferClose(buf);
@@ -2847,10 +2853,10 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = 0;
     ctxt.encoding = (const xmlChar *) encoding;
-    xmlSaveCtxtInit(&ctxt);
-    ctxt.options |= XML_SAVE_AS_XML;
+
+    xmlSaveCtxtInit(&ctxt, XML_SAVE_AS_XML);
+
     xmlDocContentDumpOutput(&ctxt, cur);
     ret = xmlOutputBufferClose(buf);
     return(ret);
@@ -2875,6 +2881,7 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
 {
     xmlSaveCtxt ctxt;
     int ret;
+    int options;
 
     if (buf == NULL) return(-1);
     if ((cur == NULL) ||
@@ -2886,10 +2893,13 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
-    xmlSaveCtxtInit(&ctxt);
-    ctxt.options |= XML_SAVE_AS_XML;
+
+    options = XML_SAVE_AS_XML;
+    if (format)
+        options |= XML_SAVE_FORMAT;
+    xmlSaveCtxtInit(&ctxt, options);
+
     xmlDocContentDumpOutput(&ctxt, cur);
     ret = xmlOutputBufferClose(buf);
     return (ret);
@@ -2915,6 +2925,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
+    int options;
 
     if (cur == NULL)
 	return(-1);
@@ -2941,10 +2952,12 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
     memset(&ctxt, 0, sizeof(ctxt));
     ctxt.buf = buf;
     ctxt.level = 0;
-    ctxt.format = format ? 1 : 0;
     ctxt.encoding = (const xmlChar *) encoding;
-    xmlSaveCtxtInit(&ctxt);
-    ctxt.options |= XML_SAVE_AS_XML;
+
+    options = XML_SAVE_AS_XML;
+    if (format)
+        options |= XML_SAVE_FORMAT;
+    xmlSaveCtxtInit(&ctxt, options);
 
     xmlDocContentDumpOutput(&ctxt, cur);
 

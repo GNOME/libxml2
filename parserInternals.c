@@ -1659,6 +1659,8 @@ xmlFreeInputStream(xmlParserInputPtr input) {
  * xmlNewInputStream:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Use xmlInputCreateUrl or similar functions.
+ *
  * Create a new input stream structure.
  *
  * Returns the new input stream or NULL
@@ -2143,6 +2145,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
  * @ctxt:  an XML parser context
  * @buffer:  an memory buffer
  *
+ * DEPRECATED: Use xmlInputCreateString.
+ *
  * Create a new input stream based on a memory buffer.
  *
  * Returns the new input stream
@@ -2333,6 +2337,18 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  *
  * The flag XML_INPUT_NETWORK allows network access.
  *
+ * The following resource loaders will be called if they were
+ * registered (in order of precedence):
+ *
+ * - the per-thread xmlParserInputBufferCreateFilenameFunc set with
+ *   xmlParserInputBufferCreateFilenameDefault (deprecated)
+ * - the default loader which will return
+ *   - the result from a matching global input callback set with
+ *     xmlRegisterInputCallbacks (deprecated)
+ *   - a HTTP resource if support is compiled in.
+ *   - a file opened from the filesystem, with automatic detection
+ *     of compressed files if support is compiled in.
+ *
  * Available since 2.14.0.
  *
  * Returns an xmlParserErrors code.
@@ -2381,6 +2397,8 @@ xmlInputCreateUrl(const char *filename, int flags, xmlParserInputPtr *out) {
  * xmlNewInputFromFile:
  * @ctxt:  an XML parser context
  * @filename:  the filename to use as entity
+ *
+ * DEPRECATED: Use xmlInputCreateUrl.
  *
  * Create a new input stream based on a file or an URL.
  *
@@ -2607,17 +2625,20 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
  * @ID is an optional XML public ID, typically from a doctype
  * declaration. It is used for catalog lookups.
  *
- * The following resource loaders will be called if they were
- * registered (in order of precedence):
+ * If catalog lookup is enabled (default is yes) and URL or ID are
+ * found in system or local XML catalogs, URL is replaced with the
+ * result. Then the following resource loaders will be called if
+ * they were registered (in order of precedence):
  *
  * - the resource loader set with xmlCtxtSetResourceLoader
  * - the global external entity loader set with
- *   xmlSetExternalEntityLoader
+ *   xmlSetExternalEntityLoader (without catalog resolution,
+ *   deprecated)
  * - the per-thread xmlParserInputBufferCreateFilenameFunc set with
- *   xmlParserInputBufferCreateFilenameDefault
+ *   xmlParserInputBufferCreateFilenameDefault (deprecated)
  * - the default loader which will return
  *   - the result from a matching global input callback set with
- *     xmlRegisterInputCallbacks
+ *     xmlRegisterInputCallbacks (deprecated)
  *   - a HTTP resource if support is compiled in.
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.

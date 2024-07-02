@@ -331,6 +331,9 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 /**
  * xmlCleanupEncodingAliases:
  *
+ * DEPRECATED: This function modifies global state and is not
+ * thread-safe.
+ *
  * Unregisters all aliases
  */
 void
@@ -355,6 +358,8 @@ xmlCleanupEncodingAliases(void) {
 /**
  * xmlGetEncodingAlias:
  * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
+ *
+ * DEPRECATED: This function is not thread-safe.
  *
  * Lookup an encoding name for the given alias.
  *
@@ -392,6 +397,9 @@ xmlGetEncodingAlias(const char *alias) {
  * xmlAddEncodingAlias:
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
  * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
+ *
+ * DEPRECATED: This function modifies global state and is not
+ * thread-safe.
  *
  * Registers an alias @alias for an encoding named @name. Existing alias
  * will be overwritten.
@@ -464,6 +472,9 @@ xmlAddEncodingAlias(const char *name, const char *alias) {
 /**
  * xmlDelEncodingAlias:
  * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
+ *
+ * DEPRECATED: This function modifies global state and is not
+ * thread-safe.
  *
  * Unregisters an encoding alias @alias
  *
@@ -558,7 +569,6 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
     if ((enc <= 0) || ((size_t) enc >= NUM_DEFAULT_HANDLERS))
         return(NULL);
 
-
     return(defaultHandlers[enc].name);
 }
 
@@ -573,6 +583,9 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
  * @name:  the encoding name, in UTF-8 format (ASCII actually)
  * @input:  the xmlCharEncodingInputFunc to read that encoding
  * @output:  the xmlCharEncodingOutputFunc to write that encoding
+ *
+ * DEPRECATED: This function modifies global state and is not
+ * thread-safe.
  *
  * Create and registers an xmlCharEncodingHandler.
  *
@@ -701,7 +714,10 @@ xmlCleanupCharEncodingHandlers(void) {
  * xmlRegisterCharEncodingHandler:
  * @handler:  the xmlCharEncodingHandlerPtr handler block
  *
- * Register the char encoding handler, surprising, isn't it ?
+ * DEPRECATED: This function modifies global state and is not
+ * thread-safe.
+ *
+ * Register the char encoding handler.
  */
 void
 xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
@@ -850,15 +866,23 @@ done:
  * @enc:  an xmlCharEncoding value.
  * @out:  pointer to result
  *
- * Find or create a handler matching the encoding. If no default or
- * registered handler could be found, try to create a handler using
- * iconv or ICU if supported.
+ * Find or create a handler matching the encoding. The following
+ * converters are looked up in order:
+ *
+ * - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII)
+ * - User-registered global handler (deprecated)
+ * - iconv if enabled
+ * - ICU if enabled
  *
  * The handler must be closed with xmlCharEncCloseFunc.
  *
+ * If the encoding is UTF-8, a NULL handler and no error code will
+ * be returned.
+ *
  * Available since 2.13.0.
  *
- * Returns an xmlParserErrors error code.
+ * Returns XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another
+ * xmlParserErrors error code.
  */
 int
 xmlLookupCharEncodingHandler(xmlCharEncoding enc,
@@ -916,18 +940,24 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  * @implCtxt:  user data for conversion implementation (optional)
  * @out:  pointer to result
  *
- * Find or create a handler matching the encoding. If no default or
- * registered handler could be found, try to create a handler using
- * iconv or ICU if supported.
+ * Find or create a handler matching the encoding. The following
+ * converters are looked up in order:
+ *
+ * - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII)
+ * - Custom implementation if provided
+ * - User-registered global handler (deprecated)
+ * - iconv if enabled
+ * - ICU if enabled
  *
  * The handler must be closed with xmlCharEncCloseFunc.
  *
  * If the encoding is UTF-8, a NULL handler and no error code will
  * be returned.
  *
- * Available since 2.13.0.
+ * Available since 2.14.0.
  *
- * Returns an xmlParserErrors error code.
+ * Returns XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another
+ * xmlParserErrors error code.
  */
 int
 xmlCreateCharEncodingHandler(const char *name, int output,
@@ -972,9 +1002,13 @@ xmlCreateCharEncodingHandler(const char *name, int output,
  * @output:  boolean, use handler for output
  * @out:  pointer to result
  *
- * Find or create a handler matching the encoding. If no default or
- * registered handler could be found, try to create a handler using
- * iconv or ICU if supported.
+ * Find or create a handler matching the encoding. The following
+ * converters are looked up in order:
+ *
+ * - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII)
+ * - User-registered global handler (deprecated)
+ * - iconv if enabled
+ * - ICU if enabled
  *
  * The handler must be closed with xmlCharEncCloseFunc.
  *
@@ -983,7 +1017,8 @@ xmlCreateCharEncodingHandler(const char *name, int output,
  *
  * Available since 2.13.0.
  *
- * Returns an xmlParserErrors error code.
+ * Returns XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another
+ * xmlParserErrors error code.
  */
 int
 xmlOpenCharEncodingHandler(const char *name, int output,
@@ -997,6 +1032,9 @@ xmlOpenCharEncodingHandler(const char *name, int output,
  *
  * DEPRECATED: Use xmlOpenCharEncodingHandler which has better error
  * reporting.
+ *
+ * If the encoding is UTF-8, this will return a no-op handler that
+ * shouldn't be used.
  *
  * Returns the handler or NULL if no handler was found or an error
  * occurred.

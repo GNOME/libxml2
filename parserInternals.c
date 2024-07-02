@@ -2609,12 +2609,12 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
 
         code = ctxt->resourceLoader(ctxt->resourceCtxt, url, publicId, type,
                                     flags, &ret);
-        if (resource != NULL)
-            xmlFree(resource);
         if (code != XML_ERR_OK) {
             xmlCtxtErrIO(ctxt, code, url);
-            return(NULL);
+            ret = NULL;
         }
+        if (resource != NULL)
+            xmlFree(resource);
         return(ret);
     }
 

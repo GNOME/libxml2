@@ -832,6 +832,18 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur);
 static void xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur);
 static int xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur);
 
+static void
+xmlSaveWriteIndent(xmlSaveCtxtPtr ctxt)
+{
+    if (!xmlIndentTreeOutput)
+        return;
+
+    xmlOutputBufferWrite(ctxt->buf, ctxt->indent_size *
+                         (ctxt->level > ctxt->indent_nr ?
+                          ctxt->indent_nr : ctxt->level),
+                         ctxt->indent);
+}
+
 /**
  * xmlOutputBufferWriteWSNonSig:
  * @ctxt:  The save context
@@ -1128,12 +1140,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             break;
 
         case XML_ELEMENT_NODE:
-	    if ((cur != root) && (ctxt->format == 1) &&
-                (xmlIndentTreeOutput))
-		xmlOutputBufferWrite(buf, ctxt->indent_size *
-				     (ctxt->level > ctxt->indent_nr ?
-				      ctxt->indent_nr : ctxt->level),
-				     ctxt->indent);
+	    if ((cur != root) && (ctxt->format == 1))
+                xmlSaveWriteIndent(ctxt);
 
             /*
              * Some users like lxml are known to pass nodes with a corrupted
@@ -1215,11 +1223,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    break;
 
         case XML_PI_NODE:
-	    if ((cur != root) && (ctxt->format == 1) && (xmlIndentTreeOutput))
-		xmlOutputBufferWrite(buf, ctxt->indent_size *
-				     (ctxt->level > ctxt->indent_nr ?
-				      ctxt->indent_nr : ctxt->level),
-				     ctxt->indent);
+	    if ((cur != root) && (ctxt->format == 1))
+                xmlSaveWriteIndent(ctxt);
 
             if (cur->content != NULL) {
                 xmlOutputBufferWrite(buf, 2, "<?");
@@ -1243,11 +1248,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             break;
 
         case XML_COMMENT_NODE:
-	    if ((cur != root) && (ctxt->format == 1) && (xmlIndentTreeOutput))
-		xmlOutputBufferWrite(buf, ctxt->indent_size *
-				     (ctxt->level > ctxt->indent_nr ?
-				      ctxt->indent_nr : ctxt->level),
-				     ctxt->indent);
+	    if ((cur != root) && (ctxt->format == 1))
+                xmlSaveWriteIndent(ctxt);
 
             if (cur->content != NULL) {
                 xmlOutputBufferWrite(buf, 4, "<!--");
@@ -1317,11 +1319,8 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
             if (cur->type == XML_ELEMENT_NODE) {
                 if (ctxt->level > 0) ctxt->level--;
-                if ((xmlIndentTreeOutput) && (ctxt->format == 1))
-                    xmlOutputBufferWrite(buf, ctxt->indent_size *
-                                         (ctxt->level > ctxt->indent_nr ?
-                                          ctxt->indent_nr : ctxt->level),
-                                         ctxt->indent);
+                if (ctxt->format == 1)
+                    xmlSaveWriteIndent(ctxt);
 
                 xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
@@ -1707,11 +1706,8 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         case XML_ELEMENT_NODE:
             addmeta = 0;
 
-	    if ((cur != root) && (ctxt->format == 1) && (xmlIndentTreeOutput))
-		xmlOutputBufferWrite(buf, ctxt->indent_size *
-				     (ctxt->level > ctxt->indent_nr ?
-				      ctxt->indent_nr : ctxt->level),
-				     ctxt->indent);
+	    if ((cur != root) && (ctxt->format == 1))
+                xmlSaveWriteIndent(ctxt);
 
             /*
              * Some users like lxml are known to pass nodes with a corrupted
@@ -1781,11 +1777,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                         xmlOutputBufferWrite(buf, 1, ">");
                         if (ctxt->format == 1) {
                             xmlOutputBufferWrite(buf, 1, "\n");
-                            if (xmlIndentTreeOutput)
-                                xmlOutputBufferWrite(buf, ctxt->indent_size *
-                                    (ctxt->level + 1 > ctxt->indent_nr ?
-                                    ctxt->indent_nr : ctxt->level + 1),
-                                    ctxt->indent);
+                            xmlSaveWriteIndent(ctxt);
                         }
                         xmlOutputBufferWriteString(buf,
                                 "<meta http-equiv=\"Content-Type\" "
@@ -1819,11 +1811,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                 if (addmeta == 1) {
                     if (ctxt->format == 1) {
                         xmlOutputBufferWrite(buf, 1, "\n");
-                        if (xmlIndentTreeOutput)
-                            xmlOutputBufferWrite(buf, ctxt->indent_size *
-                                (ctxt->level + 1 > ctxt->indent_nr ?
-                                ctxt->indent_nr : ctxt->level + 1),
-                                ctxt->indent);
+                        xmlSaveWriteIndent(ctxt);
                     }
                     xmlOutputBufferWriteString(buf,
                             "<meta http-equiv=\"Content-Type\" "
@@ -1953,11 +1941,8 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
             if (cur->type == XML_ELEMENT_NODE) {
                 if (ctxt->level > 0) ctxt->level--;
-                if ((xmlIndentTreeOutput) && (ctxt->format == 1))
-                    xmlOutputBufferWrite(buf, ctxt->indent_size *
-                                         (ctxt->level > ctxt->indent_nr ?
-                                          ctxt->indent_nr : ctxt->level),
-                                         ctxt->indent);
+                if (ctxt->format == 1)
+                    xmlSaveWriteIndent(ctxt);
 
                 xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {

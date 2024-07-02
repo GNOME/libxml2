@@ -3461,6 +3461,8 @@ xmlCatalogSetDefaults(xmlCatalogAllow allow) {
  * xmlCatalogSetDefaultPrefer:
  * @prefer:  the default preference for delegation
  *
+ * DEPRECATED: This setting is global and not thread-safe.
+ *
  * Allows to set the preference between public and system for deletion
  * in XML Catalog resolution. C.f. section 4.1.1 of the spec
  * Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM

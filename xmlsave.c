@@ -852,17 +852,19 @@ static void xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur);
 static int xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur);
 
 static void
-xmlSaveWriteIndent(xmlSaveCtxtPtr ctxt)
+xmlSaveWriteIndent(xmlSaveCtxtPtr ctxt, int extra)
 {
+    int level;
+
     if ((ctxt->options & XML_SAVE_NO_INDENT) ||
         (((ctxt->options & XML_SAVE_INDENT) == 0) &&
          (xmlIndentTreeOutput == 0)))
         return;
 
-    xmlOutputBufferWrite(ctxt->buf, ctxt->indent_size *
-                         (ctxt->level > ctxt->indent_nr ?
-                          ctxt->indent_nr : ctxt->level),
-                         ctxt->indent);
+    level = ctxt->level + extra;
+    if (level > ctxt->indent_nr)
+        level = ctxt->indent_nr;
+    xmlOutputBufferWrite(ctxt->buf, ctxt->indent_size * level, ctxt->indent);
 }
 
 /**
@@ -1162,7 +1164,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
         case XML_ELEMENT_NODE:
 	    if ((cur != root) && (ctxt->format == 1))
-                xmlSaveWriteIndent(ctxt);
+                xmlSaveWriteIndent(ctxt, 0);
 
             /*
              * Some users like lxml are known to pass nodes with a corrupted
@@ -1245,7 +1247,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
         case XML_PI_NODE:
 	    if ((cur != root) && (ctxt->format == 1))
-                xmlSaveWriteIndent(ctxt);
+                xmlSaveWriteIndent(ctxt, 0);
 
             if (cur->content != NULL) {
                 xmlOutputBufferWrite(buf, 2, "<?");
@@ -1270,7 +1272,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
         case XML_COMMENT_NODE:
 	    if ((cur != root) && (ctxt->format == 1))
-                xmlSaveWriteIndent(ctxt);
+                xmlSaveWriteIndent(ctxt, 0);
 
             if (cur->content != NULL) {
                 xmlOutputBufferWrite(buf, 4, "<!--");
@@ -1341,7 +1343,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             if (cur->type == XML_ELEMENT_NODE) {
                 if (ctxt->level > 0) ctxt->level--;
                 if (ctxt->format == 1)
-                    xmlSaveWriteIndent(ctxt);
+                    xmlSaveWriteIndent(ctxt, 0);
 
                 xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
@@ -1728,7 +1730,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             addmeta = 0;
 
 	    if ((cur != root) && (ctxt->format == 1))
-                xmlSaveWriteIndent(ctxt);
+                xmlSaveWriteIndent(ctxt, 0);
 
             /*
              * Some users like lxml are known to pass nodes with a corrupted
@@ -1798,7 +1800,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                         xmlOutputBufferWrite(buf, 1, ">");
                         if (ctxt->format == 1) {
                             xmlOutputBufferWrite(buf, 1, "\n");
-                            xmlSaveWriteIndent(ctxt);
+                            xmlSaveWriteIndent(ctxt, 1);
                         }
                         xmlOutputBufferWriteString(buf,
                                 "<meta http-equiv=\"Content-Type\" "
@@ -1832,7 +1834,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                 if (addmeta == 1) {
                     if (ctxt->format == 1) {
                         xmlOutputBufferWrite(buf, 1, "\n");
-                        xmlSaveWriteIndent(ctxt);
+                        xmlSaveWriteIndent(ctxt, 1);
                     }
                     xmlOutputBufferWriteString(buf,
                             "<meta http-equiv=\"Content-Type\" "
@@ -1963,7 +1965,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             if (cur->type == XML_ELEMENT_NODE) {
                 if (ctxt->level > 0) ctxt->level--;
                 if (ctxt->format == 1)
-                    xmlSaveWriteIndent(ctxt);
+                    xmlSaveWriteIndent(ctxt, 0);
 
                 xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {

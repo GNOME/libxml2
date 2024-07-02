@@ -2199,6 +2199,8 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
                               xmlParserCtxtPtr ctxt) {
     xmlChar *resource = NULL;
     xmlCatalogAllow pref;
+    int allowLocal = 0;
+    int allowGlobal = 0;
 
     /*
      * If the resource doesn't exists as a file,
@@ -2206,13 +2208,22 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
      */
     pref = xmlCatalogGetDefaults();
 
+    if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
+        ((pref == XML_CATA_ALLOW_ALL) ||
+         (pref == XML_CATA_ALLOW_DOCUMENT)))
+        allowLocal = 1;
+
+    if (((ctxt == NULL) ||
+         ((ctxt->options & XML_PARSE_NO_SYS_CATALOG) == 0)) &&
+        ((pref == XML_CATA_ALLOW_ALL) ||
+         (pref == XML_CATA_ALLOW_GLOBAL)))
+        allowGlobal = 1;
+
     if ((pref != XML_CATA_ALLOW_NONE) && (!xmlNoNetExists(URL))) {
 	/*
 	 * Do a local lookup
 	 */
-	if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
-	    ((pref == XML_CATA_ALLOW_ALL) ||
-	     (pref == XML_CATA_ALLOW_DOCUMENT))) {
+        if (allowLocal) {
 	    resource = xmlCatalogLocalResolve(ctxt->catalogs,
 					      (const xmlChar *)ID,
 					      (const xmlChar *)URL);
@@ -2220,9 +2231,7 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
 	/*
 	 * Try a global lookup
 	 */
-	if ((resource == NULL) &&
-	    ((pref == XML_CATA_ALLOW_ALL) ||
-	     (pref == XML_CATA_ALLOW_GLOBAL))) {
+	if ((resource == NULL) && (allowGlobal)) {
 	    resource = xmlCatalogResolve((const xmlChar *)ID,
 					 (const xmlChar *)URL);
 	}
@@ -2235,14 +2244,10 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
 	if ((resource != NULL) && (!xmlNoNetExists((const char *)resource))) {
 	    xmlChar *tmp = NULL;
 
-	    if ((ctxt != NULL) && (ctxt->catalogs != NULL) &&
-		((pref == XML_CATA_ALLOW_ALL) ||
-		 (pref == XML_CATA_ALLOW_DOCUMENT))) {
+	    if (allowLocal) {
 		tmp = xmlCatalogLocalResolveURI(ctxt->catalogs, resource);
 	    }
-	    if ((tmp == NULL) &&
-		((pref == XML_CATA_ALLOW_ALL) ||
-	         (pref == XML_CATA_ALLOW_GLOBAL))) {
+	    if ((tmp == NULL) && (allowGlobal)) {
 		tmp = xmlCatalogResolveURI(resource);
 	    }
 

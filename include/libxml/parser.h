@@ -1391,7 +1391,9 @@ typedef enum {
     /* since 2.13.0 */
     XML_PARSE_NO_XXE    = 1<<23,/* disable loading of external content */
     /* since 2.14.0 */
-    XML_PARSE_NO_UNZIP  = 1<<24 /* disable compressed content */
+    XML_PARSE_NO_UNZIP       = 1<<24,/* disable compressed content */
+    XML_PARSE_NO_SYS_CATALOG = 1<<25,/* disable global system catalog */
+    XML_PARSE_NO_CATALOG_PI  = 1<<26 /* ignore catalog PIs */
 } xmlParserOption;
 
 XMLPUBFUN void

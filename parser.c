@@ -5536,12 +5536,13 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		if ((ctxt->inSubset == 0) &&
 		    (xmlStrEqual(target, XML_CATALOG_PI))) {
 		    xmlCatalogAllow allow = xmlCatalogGetDefaults();
-		    if ((allow == XML_CATA_ALLOW_DOCUMENT) ||
-			(allow == XML_CATA_ALLOW_ALL))
+
+		    if (((ctxt->options & XML_PARSE_NO_CATALOG_PI) == 0) &&
+                        ((allow == XML_CATA_ALLOW_DOCUMENT) ||
+			 (allow == XML_CATA_ALLOW_ALL)))
 			xmlParseCatalogPI(ctxt, buf);
 		}
 #endif
-
 
 		/*
 		 * SAX: PI detected.
@@ -13616,6 +13617,18 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Disables input decompression. Setting this option is recommended
  * to avoid zip bombs.
+ *
+ * Available since 2.14.0.
+ *
+ * XML_PARSE_NO_SYS_CATALOG
+ *
+ * Disables the global system XML catalog.
+ *
+ * Available since 2.14.0.
+ *
+ * XML_PARSE_NO_CATALOG_PI
+ *
+ * Ignore XML catalog processing instructions.
  *
  * Available since 2.14.0.
  *

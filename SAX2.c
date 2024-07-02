@@ -1580,6 +1580,22 @@ xmlSAX2HtmlAttribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
         }
     }
 
+    if (((ctxt->loadsubset & XML_SKIP_IDS) == 0) &&
+        /*
+         * Don't create IDs containing entity references (should
+         * be always the case with HTML)
+         */
+        (ret->children != NULL) &&
+        (ret->children->type == XML_TEXT_NODE) &&
+        (ret->children->next == NULL)) {
+        int res = xmlIsID(ctxt->myDoc, ctxt->node, ret);
+
+        if (res < 0)
+            xmlCtxtErrMemory(ctxt);
+        else if (res > 0)
+            xmlAddID(&ctxt->vctxt, ctxt->myDoc, ret->children->content, ret);
+    }
+
     if (nval != NULL)
         xmlFree(nval);
 }

@@ -166,8 +166,33 @@ testHugeEncodedChunk(void) {
 
     return err;
 }
+#endif
 
 #ifdef LIBXML_HTML_ENABLED
+static int
+testHtmlIds(void) {
+    const char *htmlContent =
+        "<html><body><div id='myId'>Hello, World!</div></body></html>";
+    htmlDocPtr doc;
+    xmlAttrPtr node;
+
+    doc = htmlReadDoc(BAD_CAST htmlContent, NULL, NULL, 0);
+    if (doc == NULL) {
+        fprintf(stderr, "could not parse HTML content\n");
+        return 1;
+    }
+
+    node = xmlGetID(doc, BAD_CAST "myId");
+    if (node == NULL) {
+        fprintf(stderr, "xmlGetID doesn't work on HTML\n");
+        return 1;
+    }
+
+    xmlFreeDoc(doc);
+    return 0;
+}
+
+#ifdef LIBXML_PUSH_ENABLED
 static int
 testHtmlPushWithEncoding(void) {
     htmlParserCtxtPtr ctxt;
@@ -615,7 +640,10 @@ main(void) {
 #ifdef LIBXML_PUSH_ENABLED
     err |= testHugePush();
     err |= testHugeEncodedChunk();
+#endif
 #ifdef LIBXML_HTML_ENABLED
+    err |= testHtmlIds();
+#ifdef LIBXML_PUSH_ENABLED
     err |= testHtmlPushWithEncoding();
 #endif
 #endif

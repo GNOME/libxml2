@@ -2942,6 +2942,8 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
  * @name:  an XML parser context
  * @prefixOut:  a xmlChar **
  *
+ * DEPRECATED: Don't use.
+ *
  * parse an UTF8 encoded XML qualified name string
  *
  * [NS 5] QName ::= (Prefix ':')? LocalPart

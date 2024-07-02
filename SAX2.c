@@ -607,7 +607,8 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlAttributePtr attr;
-    xmlChar *name = NULL, *prefix = NULL;
+    const xmlChar *name = NULL;
+    xmlChar *prefix = NULL;
 
     /* Avoid unused variable warning if features are disabled. */
     (void) attr;
@@ -625,8 +626,7 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 	      "xml:id : attribute type should be ID\n", NULL, NULL);
 	ctxt->valid = tmp;
     }
-    /* TODO: optimize name/prefix allocation */
-    name = xmlSplitQName(ctxt, fullname, &prefix);
+    name = xmlSplitQName4(fullname, &prefix);
     if (name == NULL)
         xmlSAX2ErrMemory(ctxt);
     ctxt->vctxt.valid = 1;
@@ -642,7 +642,6 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
         xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR,
 	     "SAX.xmlSAX2AttributeDecl(%s) called while not in subset\n",
 	               name, NULL);
-	xmlFree(name);
 	xmlFree(prefix);
 	xmlFreeEnumeration(tree);
 	return;
@@ -657,8 +656,6 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 #endif /* LIBXML_VALID_ENABLED */
     if (prefix != NULL)
 	xmlFree(prefix);
-    if (name != NULL)
-	xmlFree(name);
 }
 
 /**
@@ -937,34 +934,16 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
                  const xmlChar *value, const xmlChar *prefix)
 {
     xmlAttrPtr ret;
-    xmlChar *name;
+    const xmlChar *name;
     xmlChar *ns;
     xmlNsPtr namespace;
 
     /*
      * Split the full name into a namespace prefix and the tag name
      */
-    name = xmlSplitQName(ctxt, fullname, &ns);
-    if ((name != NULL) && (name[0] == 0)) {
-        if (xmlStrEqual(ns, BAD_CAST "xmlns")) {
-            xmlNsErrMsg(ctxt, XML_ERR_NS_DECL_ERROR,
-                        "invalid namespace declaration '%s'\n",
-                        fullname, NULL);
-        } else {
-            xmlNsWarnMsg(ctxt, XML_WAR_NS_COLUMN,
-                         "Avoid attribute ending with ':' like '%s'\n",
-                         fullname, NULL);
-        }
-        if (ns != NULL)
-            xmlFree(ns);
-        ns = NULL;
-        xmlFree(name);
-        name = xmlStrdup(fullname);
-    }
+    name = xmlSplitQName4(fullname, &ns);
     if (name == NULL) {
         xmlSAX2ErrMemory(ctxt);
-        if (ns != NULL)
-            xmlFree(ns);
         return;
     }
 
@@ -985,8 +964,6 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 	    val = xmlExpandEntitiesInAttValue(ctxt, value, /* normalize */ 0);
 	    if (val == NULL) {
 	        xmlSAX2ErrMemory(ctxt);
-		if (name != NULL)
-		    xmlFree(name);
 		return;
 	    }
 	} else {
@@ -1027,8 +1004,6 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 					   ctxt->node, prefix, nsret, val);
         }
 #endif /* LIBXML_VALID_ENABLED */
-	if (name != NULL)
-	    xmlFree(name);
 	if (val != value)
 	    xmlFree(val);
 	return;
@@ -1047,8 +1022,6 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 	    if (val == NULL) {
 	        xmlSAX2ErrMemory(ctxt);
 	        xmlFree(ns);
-		if (name != NULL)
-		    xmlFree(name);
 		return;
 	    }
 	} else {
@@ -1094,8 +1067,6 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 					   ctxt->node, prefix, nsret, value);
         }
 #endif /* LIBXML_VALID_ENABLED */
-	if (name != NULL)
-	    xmlFree(name);
 	if (val != value)
 	    xmlFree(val);
 	return;
@@ -1126,8 +1097,6 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
                                    name, NULL, NULL, 0,
                                    "Attribute %s in %s redefined\n",
                                    name, namespace->href);
-                        if (name != NULL)
-                            xmlFree(name);
                         goto error;
                     }
                 }
@@ -1139,7 +1108,7 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
     }
 
     /* !!!!!! <a toto:arg="" xmlns:toto="http://toto.com"> */
-    ret = xmlNewNsPropEatName(ctxt->node, namespace, name, NULL);
+    ret = xmlNewNsProp(ctxt->node, namespace, name, NULL);
     if (ret == NULL) {
         xmlSAX2ErrMemory(ctxt);
         goto error;
@@ -1414,7 +1383,7 @@ xmlSAX1StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     xmlNodePtr ret;
     xmlNodePtr parent;
     xmlNsPtr ns;
-    xmlChar *name;
+    const xmlChar *name;
     xmlChar *prefix;
     const xmlChar *att;
     const xmlChar *value;
@@ -1439,7 +1408,7 @@ xmlSAX1StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
     /*
      * Split the full name into a namespace prefix and the tag name
      */
-    name = xmlSplitQName(ctxt, fullname, &prefix);
+    name = xmlSplitQName4(fullname, &prefix);
     if (name == NULL) {
         xmlSAX2ErrMemory(ctxt);
         return;
@@ -1450,7 +1419,7 @@ xmlSAX1StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
      *        attributes parsing, since local namespace can be defined as
      *        an attribute at this level.
      */
-    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, name, NULL);
+    ret = xmlNewDocNode(ctxt->myDoc, NULL, name, NULL);
     if (ret == NULL) {
 	xmlFree(prefix);
 	xmlSAX2ErrMemory(ctxt);
@@ -1584,16 +1553,9 @@ static void
 xmlSAX2HtmlAttribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
                      const xmlChar *value) {
     xmlAttrPtr ret;
-    xmlChar *name;
     xmlChar *nval = NULL;
 
-    name = xmlStrdup(fullname);
-    if (name == NULL) {
-        xmlSAX2ErrMemory(ctxt);
-	return;
-    }
-
-    ret = xmlNewNsPropEatName(ctxt->node, NULL, name, NULL);
+    ret = xmlNewNsProp(ctxt->node, NULL, fullname, NULL);
     if (ret == NULL) {
         xmlSAX2ErrMemory(ctxt);
         return;
@@ -1635,14 +1597,11 @@ xmlSAX2StartHtmlElement(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
                         const xmlChar **atts) {
     xmlNodePtr ret;
     xmlNodePtr parent;
-    xmlChar *name;
     const xmlChar *att;
     const xmlChar *value;
     int i;
 
-    name = xmlStrdup(fullname);
-
-    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, name, NULL);
+    ret = xmlNewDocNode(ctxt->myDoc, NULL, fullname, NULL);
     if (ret == NULL) {
 	xmlSAX2ErrMemory(ctxt);
         return;
@@ -2207,8 +2166,7 @@ xmlSAX2StartElementNs(void *ctx,
 	else if (lname == NULL)
 	    ret = xmlNewDocNode(ctxt->myDoc, NULL, localname, NULL);
 	else
-	    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL,
-	                               (xmlChar *) lname, NULL);
+	    ret = xmlNewDocNodeEatName(ctxt->myDoc, NULL, lname, NULL);
 	if (ret == NULL) {
 	    xmlSAX2ErrMemory(ctxt);
 	    return;

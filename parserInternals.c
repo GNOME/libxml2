@@ -1211,7 +1211,7 @@ xmlSwitchEncoding(xmlParserCtxtPtr ctxt, xmlCharEncoding enc)
         return(-1);
     }
 
-    ret = xmlSwitchInputEncoding(ctxt, ctxt->input, handler);
+    ret = xmlSwitchToEncoding(ctxt, handler);
 
     if ((ret >= 0) && (enc == XML_CHAR_ENCODING_NONE)) {
         ctxt->input->flags &= ~XML_INPUT_HAS_ENCODING;
@@ -1239,12 +1239,18 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 
     res = xmlCreateCharEncodingHandler(encoding, /* output */ 0,
             ctxt->convImpl, ctxt->convCtxt, &handler);
-    if (res != 0) {
+    if (res != XML_ERR_OK) {
         xmlFatalErr(ctxt, res, encoding);
         return(-1);
     }
 
-    return(xmlSwitchInputEncoding(ctxt, input, handler));
+    res  = xmlInputSetEncodingHandler(input, handler);
+    if (res != XML_ERR_OK) {
+        xmlCtxtErrIO(ctxt, res, NULL);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**
@@ -1395,9 +1401,18 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 int
 xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
 {
+    int code;
+
     if (ctxt == NULL)
         return(-1);
-    return(xmlSwitchInputEncoding(ctxt, ctxt->input, handler));
+
+    code = xmlInputSetEncodingHandler(ctxt->input, handler);
+    if (code != XML_ERR_OK) {
+        xmlCtxtErrIO(ctxt, code, NULL);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**
@@ -1506,7 +1521,7 @@ xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
             if (res != XML_ERR_OK) {
                 xmlFatalErr(ctxt, res, "detecting EBCDIC\n");
             } else {
-                xmlSwitchInputEncoding(ctxt, ctxt->input, handler);
+                xmlSwitchToEncoding(ctxt, handler);
             }
         } else {
             xmlSwitchEncoding(ctxt, enc);

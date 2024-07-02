@@ -241,17 +241,13 @@ static int xmlDefaultBufferSizeThrDef = BASE_BUFFER_SIZE;
 /**
  * oldXMLWDcompatibility:
  *
- * Global setting, DEPRECATED.
+ * DEPRECATED, always 0.
  */
 const int oldXMLWDcompatibility = 0; /* DEPRECATED */
 /**
  * xmlParserDebugEntities:
  *
- * DEPRECATED: Don't use
- *
- * Global setting, asking the parser to print out debugging information.
- * while handling entities.
- * Disabled by default
+ * DEPRECATED, always 0.
  */
 const int xmlParserDebugEntities = 0;
 /**
@@ -369,12 +365,16 @@ static xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValueThrDe
 /**
  * xmlGenericError:
  *
+ * DEPRECATED: Use xmlCtxtSetErrorHandler.
+ *
  * Global setting: function used for generic error callbacks
  */
 xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
 static xmlGenericErrorFunc xmlGenericErrorThrDef = xmlGenericErrorDefaultFunc;
 /**
  * xmlStructuredError:
+ *
+ * DEPRECATED: Use xmlCtxtSetErrorHandler.
  *
  * Global setting: function used for structured error callbacks
  */
@@ -383,12 +383,16 @@ static xmlStructuredErrorFunc xmlStructuredErrorThrDef = NULL;
 /**
  * xmlGenericErrorContext:
  *
+ * DEPRECATED: Use xmlCtxtSetErrorHandler.
+ *
  * Global setting passed to generic error callbacks
  */
 void *xmlGenericErrorContext = NULL;
 static void *xmlGenericErrorContextThrDef = NULL;
 /**
  * xmlStructuredErrorContext:
+ *
+ * DEPRECATED: Use xmlCtxtSetErrorHandler.
  *
  * Global setting passed to structured error callbacks
  */

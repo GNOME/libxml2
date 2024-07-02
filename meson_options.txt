@@ -82,6 +82,7 @@ option('iso8859x',
 
 option('legacy',
   type: 'feature',
+  value: 'disabled',
   description: 'Maximum ABI compatibility'
 )
 
@@ -157,6 +158,7 @@ option('thread-alloc',
 
 option('tls',
   type: 'feature',
+  value: 'disabled',
   description: 'thread-local storage'
 )
 

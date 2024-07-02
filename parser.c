@@ -1940,8 +1940,11 @@ mem_error:
 int
 inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
 {
+    char *directory = NULL;
+
     if ((ctxt == NULL) || (value == NULL))
         return(-1);
+
     if (ctxt->inputNr >= ctxt->inputMax) {
         size_t newSize = ctxt->inputMax * 2;
         xmlParserInputPtr *tmp;
@@ -1955,9 +1958,24 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
         ctxt->inputTab = tmp;
         ctxt->inputMax = newSize;
     }
+
+    if ((ctxt->inputNr == 0) && (value->filename != NULL)) {
+        directory = xmlParserGetDirectory(value->filename);
+        if (directory == NULL) {
+            xmlErrMemory(ctxt);
+            return(-1);
+        }
+    }
+
     ctxt->inputTab[ctxt->inputNr] = value;
     ctxt->input = value;
-    return (ctxt->inputNr++);
+
+    if (ctxt->inputNr == 0) {
+        xmlFree(ctxt->directory);
+        ctxt->directory = directory;
+    }
+
+    return(ctxt->inputNr++);
 }
 /**
  * inputPop:
@@ -13269,6 +13287,12 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
     ctxt->extSubURI = NULL;
     DICT_FREE(ctxt->extSubSystem);
     ctxt->extSubSystem = NULL;
+
+    if (ctxt->directory != NULL) {
+        xmlFree(ctxt->directory);
+        ctxt->directory = NULL;
+    }
+
     if (ctxt->myDoc != NULL)
         xmlFreeDoc(ctxt->myDoc);
     ctxt->myDoc = NULL;

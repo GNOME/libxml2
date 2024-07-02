@@ -6185,6 +6185,12 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->extSubURI = NULL;
     DICT_FREE(ctxt->extSubSystem);
     ctxt->extSubSystem = NULL;
+
+    if (ctxt->directory != NULL) {
+        xmlFree(ctxt->directory);
+        ctxt->directory = NULL;
+    }
+
     if (ctxt->myDoc != NULL)
         xmlFreeDoc(ctxt->myDoc);
     ctxt->myDoc = NULL;

@@ -271,6 +271,38 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
  *			Allocation and deallocation			*
  *									*
  ************************************************************************/
+
+/**
+ * xmlSaveSetIndentString:
+ * @ctxt:  save context
+ * @indent:  indent string
+ *
+ * Sets the indent string.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns 0 on success, -1 if the string is NULL, empty or too long.
+ */
+int
+xmlSaveSetIndentString(xmlSaveCtxtPtr ctxt, const char *indent) {
+    size_t len;
+    int i;
+
+    if (indent == NULL)
+        return(-1);
+
+    len = strlen(indent);
+    if ((len <= 0) || (len > MAX_INDENT))
+        return(-1);
+
+    ctxt->indent_size = len;
+    ctxt->indent_nr = MAX_INDENT / ctxt->indent_size;
+    for (i = 0; i < ctxt->indent_nr; i++)
+        memcpy(&ctxt->indent[i * ctxt->indent_size], indent, len);
+
+    return(0);
+}
+
 /**
  * xmlSaveCtxtInit:
  * @ctxt: the saving context
@@ -280,25 +312,12 @@ xmlEscapeEntities(unsigned char* out, int *outlen,
 static void
 xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt, int options)
 {
-    int i;
-    int len;
-
     if (ctxt == NULL) return;
 
     if ((ctxt->encoding == NULL) && (ctxt->escape == NULL))
         ctxt->escape = xmlEscapeEntities;
 
-    len = xmlStrlen((xmlChar *)xmlTreeIndentString);
-    if ((xmlTreeIndentString == NULL) || (len == 0)) {
-        memset(&ctxt->indent[0], 0, MAX_INDENT + 1);
-    } else {
-	ctxt->indent_size = len;
-	ctxt->indent_nr = MAX_INDENT / ctxt->indent_size;
-	for (i = 0;i < ctxt->indent_nr;i++)
-	    memcpy(&ctxt->indent[i * ctxt->indent_size], xmlTreeIndentString,
-		   ctxt->indent_size);
-        ctxt->indent[ctxt->indent_nr * ctxt->indent_size] = 0;
-    }
+    xmlSaveSetIndentString(ctxt, xmlTreeIndentString);
 
     if (options & XML_SAVE_FORMAT)
         ctxt->format = 1;

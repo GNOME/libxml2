@@ -414,7 +414,10 @@ static int xmlIndentTreeOutputThrDef = 1;
 /**
  * xmlTreeIndentString:
  *
- * The string used to do one-level indent. By default is equal to "  " (two spaces)
+ * DEPRECATED: Use xmlSaveSetIndentString.
+ *
+ * The string used to do one-level indent. By default is equal to
+ * "  " (two spaces)
  */
 const char *xmlTreeIndentString = "  ";
 static const char *xmlTreeIndentStringThrDef = "  ";

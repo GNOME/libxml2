@@ -282,8 +282,8 @@ struct _xmlParserCtxt {
     /* unused */
     int token XML_DEPRECATED_MEMBER;
 
-    /* unused */
-    char *directory XML_DEPRECATED_MEMBER;
+    /* unused internally, still used downstream */
+    char *directory;
 
     /* Node name stack */
 

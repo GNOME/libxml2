@@ -300,16 +300,16 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt, int options)
         ctxt->indent[ctxt->indent_nr * ctxt->indent_size] = 0;
     }
 
-    ctxt->options = options;
-
-    if (xmlSaveNoEmptyTags) {
-	ctxt->options |= XML_SAVE_NO_EMPTY;
-    }
-
     if (options & XML_SAVE_FORMAT)
         ctxt->format = 1;
     else if (options & XML_SAVE_WSNONSIG)
         ctxt->format = 2;
+
+    if (((options & XML_SAVE_EMPTY) == 0) &&
+        (xmlSaveNoEmptyTags))
+	options |= XML_SAVE_NO_EMPTY;
+
+    ctxt->options = options;
 }
 
 /**
@@ -835,7 +835,9 @@ static int xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur);
 static void
 xmlSaveWriteIndent(xmlSaveCtxtPtr ctxt)
 {
-    if (!xmlIndentTreeOutput)
+    if ((ctxt->options & XML_SAVE_NO_INDENT) ||
+        (((ctxt->options & XML_SAVE_INDENT) == 0) &&
+         (xmlIndentTreeOutput == 0)))
         return;
 
     xmlOutputBufferWrite(ctxt->buf, ctxt->indent_size *

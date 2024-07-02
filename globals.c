@@ -403,6 +403,8 @@ xmlError xmlLastError;
 /**
  * xmlIndentTreeOutput:
  *
+ * DEPRECATED: Use XML_SAVE_INDENT and XML_SAVE_NO_INDENT.
+ *
  * Global setting, asking the serializer to indent the output tree by default
  * Enabled by default
  */
@@ -419,6 +421,8 @@ static const char *xmlTreeIndentStringThrDef = "  ";
 
 /**
  * xmlSaveNoEmptyTags:
+ *
+ * DEPRECATED: Use XML_SAVE_EMPTY and XML_SAVE_NO_EMPTY.
  *
  * Global setting, asking the serializer to not output empty tags
  * as <empty/> but <empty></empty>. those two forms are indistinguishable

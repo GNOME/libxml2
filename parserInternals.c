@@ -1056,6 +1056,8 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
  * @out:  pointer to an array of xmlChar
  * @val:  the char value
  *
+ * DEPRECATED: Don't use.
+ *
  * append the char value in the array
  *
  * Returns the number of xmlChar written

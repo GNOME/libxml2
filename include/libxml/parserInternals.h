@@ -620,6 +620,7 @@ XMLPUBFUN int			xmlCurrentChar		(xmlParserCtxtPtr ctxt,
 						 int *len);
 XMLPUBFUN int		xmlCopyCharMultiByte	(xmlChar *out,
 						 int val);
+XML_DEPRECATED
 XMLPUBFUN int			xmlCopyChar		(int len,
 						 xmlChar *out,
 						 int val);

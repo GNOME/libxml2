@@ -303,6 +303,7 @@ deprecated_funcs = {
     'xmlCheckLanguageID': True,
     'xmlCleanupCharEncodingHandlers': True,
     'xmlCleanupGlobals': True,
+    'xmlCopyChar': True,
     'xmlDefaultSAXHandlerInit': True,
     'xmlDictCleanup': True,
     'xmlFileMatch': True,

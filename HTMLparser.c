@@ -289,9 +289,9 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 
 #define CUR_CHAR(l) htmlCurrentChar(ctxt, &l)
 
-#define COPY_BUF(l,b,i,v)						\
-    if (l == 1) b[i++] = v;						\
-    else i += xmlCopyChar(l,&b[i],v)
+#define COPY_BUF(b, i, v)						\
+    if (v < 0x80) b[i++] = v;						\
+    else i += xmlCopyCharMultiByte(&b[i],v)
 
 /**
  * htmlFindEncoding:
@@ -3034,7 +3034,7 @@ htmlParseScript(htmlParserCtxtPtr ctxt) {
             }
 	}
         if (IS_CHAR(cur)) {
-	    COPY_BUF(l,buf,nbchar,cur);
+	    COPY_BUF(buf,nbchar,cur);
         } else {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Invalid char in CDATA 0x%X\n", cur);
@@ -3099,7 +3099,7 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
 	    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
 	                "Invalid char in CDATA 0x%X\n", cur);
 	} else {
-	    COPY_BUF(l,buf,nbchar,cur);
+	    COPY_BUF(buf,nbchar,cur);
 	}
 	NEXTL(l);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
@@ -3298,7 +3298,7 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
 		    buf = tmp;
 		}
                 if (IS_CHAR(cur)) {
-		    COPY_BUF(l,buf,len,cur);
+		    COPY_BUF(buf,len,cur);
                 } else {
                     htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                                     "Invalid char in processing instruction "
@@ -3420,7 +3420,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 	    buf = tmp;
 	}
         if (IS_CHAR(q)) {
-	    COPY_BUF(ql,buf,len,q);
+	    COPY_BUF(buf,len,q);
         } else {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
                             "Invalid char in comment 0x%X\n", q);

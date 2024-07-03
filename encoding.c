@@ -1233,10 +1233,13 @@ xmlUconvConvert(unsigned char *out, int *outlen,
     xmlUconvCtxt *cd = vctxt;
     const char *ucv_in = (const char *) in;
     char *ucv_out = (char *) out;
+    UConverter *target, *source;
     UErrorCode err = U_ZERO_ERROR;
+    int ret;
 
     if ((out == NULL) || (outlen == NULL) || (inlen == NULL) || (in == NULL)) {
-        if (outlen != NULL) *outlen = 0;
+        if (outlen != NULL)
+            *outlen = 0;
         return(XML_ENC_ERR_INTERNAL);
     }
 
@@ -1251,28 +1254,50 @@ xmlUconvConvert(unsigned char *out, int *outlen,
      * U_TRUNCATED_CHAR_FOUND errors.
      */
     if (cd->isInput) {
-        /* encoding => UTF-16 => UTF-8 */
-        ucnv_convertEx(cd->utf8, cd->uconv, &ucv_out, ucv_out + *outlen,
-                       &ucv_in, ucv_in + *inlen, cd->pivot_buf,
-                       &cd->pivot_source, &cd->pivot_target,
-                       cd->pivot_buf + ICU_PIVOT_BUF_SIZE, 0, 0, &err);
+        source = cd->uconv;
+        target = cd->utf8;
     } else {
-        /* UTF-8 => UTF-16 => encoding */
-        ucnv_convertEx(cd->uconv, cd->utf8, &ucv_out, ucv_out + *outlen,
-                       &ucv_in, ucv_in + *inlen, cd->pivot_buf,
-                       &cd->pivot_source, &cd->pivot_target,
-                       cd->pivot_buf + ICU_PIVOT_BUF_SIZE, 0, 0, &err);
+        source = cd->utf8;
+        target = cd->uconv;
     }
+
+    ucnv_convertEx(target, source, &ucv_out, ucv_out + *outlen,
+                   &ucv_in, ucv_in + *inlen, cd->pivot_buf,
+                   &cd->pivot_source, &cd->pivot_target,
+                   cd->pivot_buf + ICU_PIVOT_BUF_SIZE, 0, 0, &err);
+
     *inlen = ucv_in - (const char*) in;
     *outlen = ucv_out - (char *) out;
+
     if (U_SUCCESS(err)) {
-        return(XML_ENC_ERR_SUCCESS);
+        ret = XML_ENC_ERR_SUCCESS;
+    } else {
+        switch (err) {
+            case U_TRUNCATED_CHAR_FOUND:
+                /* Shouldn't happen without flush */
+                ret = XML_ENC_ERR_SUCCESS;
+                break;
+
+            case U_BUFFER_OVERFLOW_ERROR:
+                ret = XML_ENC_ERR_SPACE;
+                break;
+
+            case U_INVALID_CHAR_FOUND:
+            case U_ILLEGAL_CHAR_FOUND:
+                ret = XML_ENC_ERR_INPUT;
+                break;
+
+            case U_MEMORY_ALLOCATION_ERROR:
+                ret = XML_ERR_NO_MEMORY;
+                break;
+
+            default:
+                ret = XML_ENC_ERR_INTERNAL;
+                break;
+        }
     }
-    if (err == U_BUFFER_OVERFLOW_ERROR)
-        return(XML_ENC_ERR_SPACE);
-    if (err == U_INVALID_CHAR_FOUND || err == U_ILLEGAL_CHAR_FOUND)
-        return(XML_ENC_ERR_INPUT);
-    return(XML_ENC_ERR_INTERNAL);
+
+    return(ret);
 }
 
 static int

@@ -2327,9 +2327,6 @@ xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
     if (doc == NULL)
         return(0);
 
-    if (attr->id != NULL)
-        xmlRemoveID(doc, attr);
-
     /*
      * Create the ID table if needed.
      */
@@ -2340,14 +2337,8 @@ xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
             return(-1);
     } else {
         id = xmlHashLookup(table, value);
-        if (id != NULL) {
-            if (id->attr != NULL) {
-                id->attr->id = NULL;
-                id->attr->atype = 0;
-            }
-            ret = 0;
-            goto done;
-        }
+        if (id != NULL)
+            return(0);
     }
 
     id = (xmlIDPtr) xmlMalloc(sizeof(xmlID));
@@ -2365,6 +2356,9 @@ xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
         return(-1);
     }
 
+    if (attr->id != NULL)
+        xmlRemoveID(doc, attr);
+
     if (xmlHashAddEntry(table, value, id) < 0) {
 	xmlFreeID(id);
 	return(-1);
@@ -2374,7 +2368,6 @@ xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
     if (idPtr != NULL)
         *idPtr = id;
 
-done:
     id->attr = attr;
     id->lineno = xmlGetLineNo(attr->parent);
     attr->atype = XML_ATTRIBUTE_ID;

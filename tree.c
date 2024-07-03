@@ -1214,7 +1214,7 @@ xmlNodeParseContentInternal(const xmlDoc *doc, xmlNodePtr parent,
     else
         remaining = len;
 
-    if (value == NULL)
+    if ((value == NULL) || (value[0] == 0))
         goto done;
 
     cur = value;

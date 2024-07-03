@@ -14,6 +14,21 @@
 #include <string.h>
 
 static int
+testNewDocNode(void) {
+    xmlNodePtr node;
+    int err = 0;
+
+    node = xmlNewDocNode(NULL, NULL, BAD_CAST "c", BAD_CAST "");
+    if (node->children != NULL) {
+        fprintf(stderr, "empty node has children\n");
+        err = 1;
+    }
+    xmlFreeNode(node);
+
+    return err;
+}
+
+static int
 testStandaloneWithEncoding(void) {
     xmlDocPtr doc;
     const char *str =
@@ -631,6 +646,7 @@ int
 main(void) {
     int err = 0;
 
+    err |= testNewDocNode();
     err |= testStandaloneWithEncoding();
     err |= testUnsupportedEncoding();
     err |= testNodeGetContent();

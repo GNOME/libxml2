@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.18)
 
-file(STRINGS "configure.ac" CONFIGURE_AC_LINES)
-foreach(line ${CONFIGURE_AC_LINES})
-    if(line MATCHES [[^m4_define\(\[(MAJOR_VERSION|MINOR_VERSION|MICRO_VERSION)\],[ \t]*([0-9]+)\)$]])
-        set(LIBXML_${CMAKE_MATCH_1} ${CMAKE_MATCH_2})
-    elseif(line MATCHES "^(LIBXML_MAJOR_VERSION|LIBXML_MINOR_VERSION|LIBXML_MICRO_VERSION)=([0-9]+)$")
-        set(${CMAKE_MATCH_1} ${CMAKE_MATCH_2})
-    endif()
-endforeach()
-set(VERSION "${LIBXML_MAJOR_VERSION}.${LIBXML_MINOR_VERSION}.${LIBXML_MICRO_VERSION}")
+file(READ "VERSION" VERSION)
+string(STRIP ${VERSION} VERSION)
+if(${VERSION} MATCHES [[([0-9]+)\.([0-9]+)\.([0-9]+)]])
+    set(LIBXML_MAJOR_VERSION ${CMAKE_MATCH_1})
+    set(LIBXML_MINOR_VERSION ${CMAKE_MATCH_2})
+    set(LIBXML_MICRO_VERSION ${CMAKE_MATCH_3})
+endif()
 
 project(libxml2 VERSION ${VERSION} LANGUAGES C)
 

@@ -466,6 +466,7 @@ foreach file : xml_opt_src
     endif
 endforeach
 
+v_min_compat = 0
 xml_lib = library(
     'xml2',
     files(xml_src),
@@ -474,7 +475,7 @@ xml_lib = library(
     include_directories: config_dir,
     install: true,
     version: meson.project_version(),
-    soversion: v_maj,
+    soversion: v_maj + v_min_compat,
 )
 
 dep_inc = include_directories('include')

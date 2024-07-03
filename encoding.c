@@ -2111,6 +2111,7 @@ done:
     *inlen = in - instart;
     return(ret);
 }
+
 /**
  * UTF8Toisolat1:
  * @out:  a pointer to an array of bytes to store the result
@@ -2130,51 +2131,10 @@ done:
 int
 UTF8Toisolat1(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen) {
-    const unsigned char* outend;
-    const unsigned char* outstart = out;
-    const unsigned char* instart = in;
-    const unsigned char* inend;
-    unsigned c;
-    int ret = XML_ENC_ERR_SPACE;
-
-    if ((out == NULL) || (outlen == NULL) || (inlen == NULL))
+    if ((out == NULL) || (outlen == NULL) || (in == NULL) || (inlen == NULL))
         return(XML_ENC_ERR_INTERNAL);
 
-    if (in == NULL) {
-        *inlen = 0;
-        *outlen = 0;
-        return(XML_ENC_ERR_SUCCESS);
-    }
-
-    inend = in + *inlen;
-    outend = out + *outlen;
-    while (in < inend) {
-        if (out >= outend)
-            goto done;
-
-	c = *in;
-
-        if (c < 0x80) {
-            *out++ = c;
-        } else if (c < 0xC4) {
-            if (inend - in < 2)
-                break;
-            in++;
-            *out++ = (unsigned char) ((c << 6) | (*in & 0x3F));
-        } else {
-            ret = XML_ENC_ERR_INPUT;
-            goto done;
-	}
-
-        in++;
-    }
-
-    ret = out - outstart;
-
-done:
-    *outlen = out - outstart;
-    *inlen = in - instart;
-    return(ret);
+    return(UTF8ToLatin1(out, outlen, in, inlen, NULL));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

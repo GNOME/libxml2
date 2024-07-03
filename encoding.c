@@ -641,10 +641,6 @@ xmlNewCharEncodingHandler(const char *name,
     handler->iconv_in = NULL;
     handler->iconv_out = NULL;
 #endif
-#ifdef LIBXML_ICU_ENABLED
-    handler->uconv_in = NULL;
-    handler->uconv_out = NULL;
-#endif
 
     /*
      * registers and returns the handler.
@@ -1348,8 +1344,8 @@ xmlUconvFree(void *vctxt) {
 }
 
 static int
-xmlCharEncUconv(void *vctxt, const char *name, xmlCharEncConverter *conv) {
-    xmlCharEncodingHandler *handler = vctxt;
+xmlCharEncUconv(void *vctxt ATTRIBUTE_UNUSED, const char *name,
+                xmlCharEncConverter *conv) {
     xmlUconvCtxt *ucv_in = NULL;
     xmlUconvCtxt *ucv_out = NULL;
     int ret;
@@ -1366,12 +1362,6 @@ xmlCharEncUconv(void *vctxt, const char *name, xmlCharEncConverter *conv) {
     conv->ctxtDtor = xmlUconvFree;
     conv->inputCtxt = ucv_in;
     conv->outputCtxt = ucv_out;
-
-    /* Backward compatibility */
-    if (handler != NULL) {
-        handler->uconv_in = ucv_in;
-        handler->uconv_out = ucv_out;
-    }
 
     return(XML_ERR_OK);
 

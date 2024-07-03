@@ -79,7 +79,7 @@ want_iconv = want_minimum ? feature.enabled() : feature.allowed()
 feature = get_option('iso8859x')
 want_iso8859x = want_minimum ? feature.enabled() : feature.allowed()
 
-feature = get_option('iso8859x')
+feature = get_option('python')
 want_python = want_minimum ? feature.enabled() : feature.allowed()
 
 feature = get_option('modules')

@@ -298,3 +298,9 @@ pages:
       - public/devhelp/*.xsl
   only:
     - master@GNOME/libxml2
+
+downstream-nokogiri:
+  # owner: @flavorjones
+  image: ghcr.io/sparklemotion/nokogiri-test:upstream-libxml
+  script:
+    - .gitlab-ci/downstream-nokogiri.sh

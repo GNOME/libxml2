@@ -219,19 +219,20 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
     if (ctxt == NULL)
         return;
 
-    /*
-     * Only report a warning if a file could not be found. This should
-     * only be done for external entities, but the external entity loader
-     * of xsltproc can try multiple paths and assumes that ENOENT doesn't
-     * raise an error and aborts parsing.
-     */
     if (((code == XML_IO_ENOENT) ||
-         (code == XML_IO_NETWORK_ATTEMPT) ||
          (code == XML_IO_UNKNOWN))) {
+        /*
+         * Only report a warning if a file could not be found. This should
+         * only be done for external entities, but the external entity loader
+         * of xsltproc can try multiple paths and assumes that ENOENT doesn't
+         * raise an error and aborts parsing.
+         */
         if (ctxt->validate == 0)
             level = XML_ERR_WARNING;
         else
             level = XML_ERR_ERROR;
+    } else if (code == XML_IO_NETWORK_ATTEMPT) {
+        level = XML_ERR_ERROR;
     } else {
         level = XML_ERR_FATAL;
     }

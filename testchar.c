@@ -751,21 +751,20 @@ error:
 static char *
 convert(xmlCharEncodingHandlerPtr handler, const char *utf8, int size,
         int *outSize) {
+    xmlBufferPtr in, out;
     char *ret;
-    int inlen;
-    int res;
 
-    inlen = size;
-    *outSize = size * 2;
-    ret = xmlMalloc(*outSize);
-    if (ret == NULL)
-        return(NULL);
-    res = handler->output(BAD_CAST ret, outSize, BAD_CAST utf8, &inlen);
-    if ((res < 0) || (inlen != size)) {
-        xmlFree(ret);
-        return(NULL);
-    }
+    in = xmlBufferCreate();
+    xmlBufferAdd(in, BAD_CAST utf8, size);
+    out = xmlBufferCreate();
+    xmlCharEncOutFunc(handler, out, in);
 
+    if (outSize)
+        *outSize = out->use;
+    ret = (char *) xmlBufferDetach(out);
+
+    xmlBufferFree(out);
+    xmlBufferFree(in);
     return(ret);
 }
 

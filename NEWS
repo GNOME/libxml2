@@ -1,5 +1,24 @@
 NEWS file for libxml2
 
+v2.13.2: Jul 4 2024
+
+### Regressions
+
+- tree: Fix handling of empty strings in xmlNodeParseContent
+- valid: Restore ID lookup
+- parser: Reenable ctxt->directory
+- uri: Handle filesystem paths in xmlBuildRelativeURISafe
+- encoding: Make xmlFindCharEncodingHandler return UTF-8 handler
+- encoding: Fix encoding lookup with xmlOpenCharEncodingHandler
+- include: Define ATTRIBUTE_UNUSED for clang
+- uri: Fix xmlBuildURI with NULL base
+
+### Improvements
+
+- uri: Enable Windows paths on Cygwin
+- tests: Clarify licence of test/intsubset2.xml
+
+
 v2.13.1: Jun 19 2024
 
 ### Regressions

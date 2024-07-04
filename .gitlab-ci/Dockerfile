@@ -1,7 +1,7 @@
 # The image is also used for libxslt, that's why we need git and
 # libgcrypt-dev.
 
-FROM ubuntu:23.10
+FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -14,3 +14,19 @@ RUN apt-get update && \
         cmake meson
 WORKDIR /tests
 RUN curl https://www.w3.org/XML/Test/xmlts20080827.tar.gz |tar xz
+
+# XML::LibXML uses Alien::Libxml2 which has a huge dependency chain.
+# We try to install most dependencies with apt. We also require
+# libxml2-dev to stop Alien::Libxml2 from downloading and building
+# libxml2 on its own.
+RUN apt-get install -y --no-install-recommends \
+        libperl-dev libxml2-dev cpanminus \
+        libalien-build-perl \
+        libio-socket-ssl-perl \
+        libsort-versions-perl \
+        liburi-perl \
+        libxml-namespacesupport-perl  \
+        libxml-sax-perl \
+        libyaml-perl
+RUN cpanm -n Alien::Libxml2
+RUN apt-get remove -y libxml2-dev

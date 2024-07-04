@@ -304,3 +304,8 @@ downstream-nokogiri:
   image: ghcr.io/sparklemotion/nokogiri-test:upstream-libxml
   script:
     - .gitlab-ci/downstream-nokogiri.sh
+
+downstream-perl:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/downstream-perl.sh

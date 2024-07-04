@@ -513,6 +513,23 @@ xmlCompareEncTableEntries(const void *vkey, const void *ventry) {
     return(xmlStrcasecmp(BAD_CAST key, BAD_CAST entry->name));
 }
 
+static xmlCharEncoding
+xmlParseCharEncodingInternal(const char *name)
+{
+    const xmlEncTableEntry *entry;
+
+    if (name == NULL)
+       return(XML_CHAR_ENCODING_NONE);
+
+    entry = bsearch(name, xmlEncTable,
+                    sizeof(xmlEncTable) / sizeof(xmlEncTable[0]),
+                    sizeof(xmlEncTable[0]), xmlCompareEncTableEntries);
+    if (entry != NULL)
+        return(entry->enc);
+
+    return(XML_CHAR_ENCODING_ERROR);
+}
+
 /**
  * xmlParseCharEncoding:
  * @name:  the encoding name as parsed, in UTF-8 format (ASCII actually)
@@ -527,18 +544,13 @@ xmlCompareEncTableEntries(const void *vkey, const void *ventry) {
 xmlCharEncoding
 xmlParseCharEncoding(const char *name)
 {
-    const xmlEncTableEntry *entry;
+    xmlCharEncoding enc = xmlParseCharEncodingInternal(name);
 
-    if (name == NULL)
-       return(XML_CHAR_ENCODING_NONE);
+    /* Backward compatibility */
+    if (enc == XML_CHAR_ENCODING_UTF16)
+        enc = XML_CHAR_ENCODING_UTF16LE;
 
-    entry = bsearch(name, xmlEncTable,
-                    sizeof(xmlEncTable) / sizeof(xmlEncTable[0]),
-                    sizeof(xmlEncTable[0]), xmlCompareEncTableEntries);
-    if (entry != NULL)
-        return(entry->enc);
-
-    return(XML_CHAR_ENCODING_NONE);
+    return(enc);
 }
 
 /**
@@ -975,7 +987,7 @@ xmlCreateCharEncodingHandler(const char *name, int output,
     if (nalias != NULL)
 	name = nalias;
 
-    enc = xmlParseCharEncoding(name);
+    enc = xmlParseCharEncodingInternal(name);
 
     /* Return NULL handler for UTF-8 */
     if (enc == XML_CHAR_ENCODING_UTF8)

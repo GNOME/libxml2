@@ -2564,7 +2564,8 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 	return(-1);
     }
     ret = inputPush(ctxt, input);
-    GROW;
+    if (ret >= 0)
+        GROW;
     return(ret);
 }
 

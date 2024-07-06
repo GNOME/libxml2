@@ -320,18 +320,13 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
 	if (ctxt->inputTab == NULL) {
 	    xmlSAX2ErrMemory(ctxt);
-            xmlFreeInputStream(input);
-	    ctxt->input = oldinput;
-	    ctxt->inputNr = oldinputNr;
-	    ctxt->inputMax = oldinputMax;
-	    ctxt->inputTab = oldinputTab;
-	    ctxt->encoding = oldencoding;
-	    return;
+            goto error;
 	}
 	ctxt->inputNr = 0;
 	ctxt->inputMax = 5;
 	ctxt->input = NULL;
-	xmlPushInput(ctxt, input);
+	if (xmlPushInput(ctxt, input) < 0)
+            goto error;
 
 	if (input->filename == NULL)
 	    input->filename = (char *) xmlCanonicPath(SystemID);
@@ -364,7 +359,8 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
         else
             ctxt->sizeentities += consumed;
 
-	xmlFreeInputStream(ctxt->input);
+error:
+	xmlFreeInputStream(input);
         xmlFree(ctxt->inputTab);
 
 	/*

@@ -1480,8 +1480,8 @@ xmlNodeParseContent(xmlNodePtr node, const xmlChar *content, int len) {
  *
  * See xmlStringGetNodeList.
  *
- * Returns a pointer to the first child or NULL if a memory
- * allocation failed.
+ * Returns a pointer to the first child or NULL if the value if empty
+ * or a memory allocation failed.
  */
 xmlNodePtr
 xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
@@ -1507,8 +1507,8 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
  * undeclared entities will be ignored silently with unspecified
  * results.
  *
- * Returns a pointer to the first child or NULL if a memory
- * allocation failed.
+ * Returns a pointer to the first child or NULL if the value if empty
+ * or a memory allocation failed.
  */
 xmlNodePtr
 xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {

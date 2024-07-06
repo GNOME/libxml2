@@ -11754,7 +11754,8 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
 
     encoding = xmlGetCharEncodingName(enc);
-    input = xmlNewInputIO(ctxt, NULL, ioread, ioclose, ioctx, encoding, 0);
+    input = xmlCtxtNewInputFromIO(ctxt, NULL, ioread, ioclose, ioctx,
+                                  encoding, 0);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
         return (NULL);
@@ -12518,9 +12519,9 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
     if (ctxt == NULL)
         return(XML_ERR_NO_MEMORY);
 
-    input = xmlNewInputMemory(ctxt, NULL, data, datalen,
-                              (const char *) doc->encoding,
-                              XML_INPUT_BUF_STATIC);
+    input = xmlCtxtNewInputFromMemory(ctxt, NULL, data, datalen,
+                                      (const char *) doc->encoding,
+                                      XML_INPUT_BUF_STATIC);
     if (input == NULL) {
         xmlFreeParserCtxt(ctxt);
         return(XML_ERR_NO_MEMORY);
@@ -12847,9 +12848,9 @@ xmlSAXParseFileWithData(xmlSAXHandlerPtr sax, const char *filename,
     }
 
     if ((filename != NULL) && (filename[0] == '-') && (filename[1] == 0))
-        input = xmlNewInputFd(ctxt, filename, STDIN_FILENO, NULL, 0);
+        input = xmlCtxtNewInputFromFd(ctxt, filename, STDIN_FILENO, NULL, 0);
     else
-        input = xmlNewInputURL(ctxt, filename, NULL, NULL, 0);
+        input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, NULL, 0);
 
     ret = xmlCtxtParseDocument(ctxt, input);
 
@@ -12959,7 +12960,8 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
 
     xmlClearParserCtxt(ctxt);
 
-    input = xmlNewInputString(ctxt, filename, (const char *) buffer, NULL, 0);
+    input = xmlCtxtNewInputFromString(ctxt, filename, (const char *) buffer,
+                                      NULL, 0);
     if (input == NULL)
         return;
     if (inputPush(ctxt, input) < 0)
@@ -13045,7 +13047,7 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
     if (ctxt == NULL)
 	return(NULL);
 
-    input = xmlNewInputMemory(ctxt, NULL, buffer, size, NULL, 0);
+    input = xmlCtxtNewInputFromMemory(ctxt, NULL, buffer, size, NULL, 0);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
@@ -13103,8 +13105,8 @@ xmlSAXParseMemoryWithData(xmlSAXHandlerPtr sax, const char *buffer,
         ctxt->recovery = 1;
     }
 
-    input = xmlNewInputMemory(ctxt, NULL, buffer, size, NULL,
-                              XML_INPUT_BUF_STATIC);
+    input = xmlCtxtNewInputFromMemory(ctxt, NULL, buffer, size, NULL,
+                                      XML_INPUT_BUF_STATIC);
 
     ret = xmlCtxtParseDocument(ctxt, input);
 
@@ -13235,7 +13237,7 @@ xmlCreateDocParserCtxt(const xmlChar *str) {
     if (ctxt == NULL)
 	return(NULL);
 
-    input = xmlNewInputString(ctxt, NULL, (const char *) str, NULL, 0);
+    input = xmlCtxtNewInputFromString(ctxt, NULL, (const char *) str, NULL, 0);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
@@ -13896,8 +13898,8 @@ xmlReadDoc(const xmlChar *cur, const char *URL, const char *encoding,
 
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputString(ctxt, URL, (const char *) cur, encoding,
-                              XML_INPUT_BUF_STATIC);
+    input = xmlCtxtNewInputFromString(ctxt, URL, (const char *) cur, encoding,
+                                      XML_INPUT_BUF_STATIC);
 
     doc = xmlCtxtParseDocument(ctxt, input);
 
@@ -13937,9 +13939,10 @@ xmlReadFile(const char *filename, const char *encoding, int options)
      * should be removed at some point.
      */
     if ((filename != NULL) && (filename[0] == '-') && (filename[1] == 0))
-        input = xmlNewInputFd(ctxt, filename, STDIN_FILENO, encoding, 0);
+        input = xmlCtxtNewInputFromFd(ctxt, filename, STDIN_FILENO,
+                                      encoding, 0);
     else
-        input = xmlNewInputURL(ctxt, filename, NULL, encoding, 0);
+        input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, encoding, 0);
 
     doc = xmlCtxtParseDocument(ctxt, input);
 
@@ -13979,8 +13982,8 @@ xmlReadMemory(const char *buffer, int size, const char *url,
 
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputMemory(ctxt, url, buffer, size, encoding,
-                              XML_INPUT_BUF_STATIC);
+    input = xmlCtxtNewInputFromMemory(ctxt, url, buffer, size, encoding,
+                                      XML_INPUT_BUF_STATIC);
 
     doc = xmlCtxtParseDocument(ctxt, input);
 
@@ -14017,7 +14020,7 @@ xmlReadFd(int fd, const char *URL, const char *encoding, int options)
 
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputFd(ctxt, URL, fd, encoding, 0);
+    input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, 0);
 
     doc = xmlCtxtParseDocument(ctxt, input);
 
@@ -14054,7 +14057,8 @@ xmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputIO(ctxt, URL, ioread, ioclose, ioctx, encoding, 0);
+    input = xmlCtxtNewInputFromIO(ctxt, URL, ioread, ioclose, ioctx,
+                                  encoding, 0);
 
     doc = xmlCtxtParseDocument(ctxt, input);
 
@@ -14091,8 +14095,8 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar *str,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputString(ctxt, URL, (const char *) str, encoding,
-                              XML_INPUT_BUF_STATIC);
+    input = xmlCtxtNewInputFromString(ctxt, URL, (const char *) str, encoding,
+                                      XML_INPUT_BUF_STATIC);
 
     return(xmlCtxtParseDocument(ctxt, input));
 }
@@ -14121,7 +14125,7 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputURL(ctxt, filename, NULL, encoding, 0);
+    input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, encoding, 0);
 
     return(xmlCtxtParseDocument(ctxt, input));
 }
@@ -14157,8 +14161,8 @@ xmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputMemory(ctxt, URL, buffer, size, encoding,
-                              XML_INPUT_BUF_STATIC);
+    input = xmlCtxtNewInputFromMemory(ctxt, URL, buffer, size, encoding,
+                                      XML_INPUT_BUF_STATIC);
 
     return(xmlCtxtParseDocument(ctxt, input));
 }
@@ -14195,7 +14199,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputFd(ctxt, URL, fd, encoding, 0);
+    input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, 0);
 
     return(xmlCtxtParseDocument(ctxt, input));
 }
@@ -14234,7 +14238,8 @@ xmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlNewInputIO(ctxt, URL, ioread, ioclose, ioctx, encoding, 0);
+    input = xmlCtxtNewInputFromIO(ctxt, URL, ioread, ioclose, ioctx,
+                                  encoding, 0);
 
     return(xmlCtxtParseDocument(ctxt, input));
 }

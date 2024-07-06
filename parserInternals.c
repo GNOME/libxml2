@@ -1705,7 +1705,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlNewInputURL:
+ * xmlCtxtNewInputFromUrl:
  * @ctxt:  parser context
  * @url:  filename or URL
  * @publicId:  publid ID from doctype (optional)
@@ -1718,8 +1718,9 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
  * Returns a new parser input.
  */
 xmlParserInputPtr
-xmlNewInputURL(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
-               const char *encoding, int flags ATTRIBUTE_UNUSED) {
+xmlCtxtNewInputFromUrl(xmlParserCtxtPtr ctxt, const char *url,
+                       const char *publicId, const char *encoding,
+                       int flags ATTRIBUTE_UNUSED) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (url == NULL))
@@ -1811,7 +1812,7 @@ xmlInputCreateMemory(const char *url, const void *mem, size_t size,
 }
 
 /**
- * xmlNewInputMemory:
+ * xmlCtxtNewInputFromMemory:
  * @ctxt:  parser context
  * @url:  base URL (optional)
  * @mem:  pointer to char array
@@ -1822,9 +1823,9 @@ xmlInputCreateMemory(const char *url, const void *mem, size_t size,
  * Returns a new parser input or NULL in case of error.
  */
 xmlParserInputPtr
-xmlNewInputMemory(xmlParserCtxtPtr ctxt, const char *url,
-                  const void *mem, size_t size,
-                  const char *encoding, int flags) {
+xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
+                          const void *mem, size_t size,
+                          const char *encoding, int flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (mem == NULL))
@@ -1876,7 +1877,7 @@ xmlInputCreateString(const char *url, const char *str, int flags) {
 }
 
 /**
- * xmlNewInputString:
+ * xmlCtxtNewInputFromString:
  * @ctxt:  parser context
  * @url:  base URL (optional)
  * @str:  zero-terminated string
@@ -1886,8 +1887,8 @@ xmlInputCreateString(const char *url, const char *str, int flags) {
  * Returns a new parser input.
  */
 xmlParserInputPtr
-xmlNewInputString(xmlParserCtxtPtr ctxt, const char *url,
-                  const char *str, const char *encoding, int flags) {
+xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
+                          const char *str, const char *encoding, int flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (str == NULL))
@@ -1937,7 +1938,7 @@ xmlInputCreateFd(const char *url, int fd, int flags ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNewInputFd:
+ * xmlCtxtNewInputFromFd:
  * @ctxt:  parser context
  * @url:  base URL (optional)
  * @fd:  file descriptor
@@ -1947,8 +1948,8 @@ xmlInputCreateFd(const char *url, int fd, int flags ATTRIBUTE_UNUSED) {
  * Returns a new parser input.
  */
 xmlParserInputPtr
-xmlNewInputFd(xmlParserCtxtPtr ctxt, const char *url,
-              int fd, const char *encoding, int flags) {
+xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
+                      int fd, const char *encoding, int flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (fd < 0))
@@ -2016,7 +2017,7 @@ xmlInputCreateIO(const char *url, xmlInputReadCallback ioRead,
 }
 
 /**
- * xmlNewInputIO:
+ * xmlCtxtNewInputFromIO:
  * @ctxt:  parser context
  * @url:  base URL (optional)
  * @ioRead:  read callback
@@ -2028,9 +2029,10 @@ xmlInputCreateIO(const char *url, xmlInputReadCallback ioRead,
  * Returns a new parser input.
  */
 xmlParserInputPtr
-xmlNewInputIO(xmlParserCtxtPtr ctxt, const char *url,
-              xmlInputReadCallback ioRead, xmlInputCloseCallback ioClose,
-              void *ioCtxt, const char *encoding, int flags) {
+xmlCtxtNewInputFromIO(xmlParserCtxtPtr ctxt, const char *url,
+                      xmlInputReadCallback ioRead,
+                      xmlInputCloseCallback ioClose,
+                      void *ioCtxt, const char *encoding, int flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (ioRead == NULL))
@@ -2139,8 +2141,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
 	return(NULL);
 
     if (ent->content != NULL) {
-        input = xmlNewInputString(ctxt, NULL, (const char *) ent->content,
-                                  NULL, XML_INPUT_BUF_STATIC);
+        input = xmlCtxtNewInputFromString(ctxt, NULL,
+                (const char *) ent->content, NULL, XML_INPUT_BUF_STATIC);
     } else if (ent->URI != NULL) {
         xmlResourceType rtype;
 
@@ -2176,7 +2178,8 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
  */
 xmlParserInputPtr
 xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
-    return(xmlNewInputString(ctxt, NULL, (const char *) buffer, NULL, 0));
+    return(xmlCtxtNewInputFromString(ctxt, NULL, (const char *) buffer,
+                                     NULL, 0));
 }
 
 

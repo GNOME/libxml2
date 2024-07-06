@@ -2786,7 +2786,6 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     if (ctxt->spaceTab == NULL)
 	return(-1);
     ctxt->spaceNr = 1;
-    ctxt->spaceMax = 10;
     ctxt->spaceTab[0] = -1;
     ctxt->space = &ctxt->spaceTab[0];
     ctxt->myDoc = NULL;

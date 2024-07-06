@@ -967,7 +967,7 @@ encoding_error:
         ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
     }
     *len = 1;
-    return(0xFFFD); /* U+FFFD Replacement Character */
+    return(XML_INVALID_CHAR);
 
 incomplete_sequence:
     /*

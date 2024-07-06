@@ -4,6 +4,8 @@
 #include <libxml/parser.h>
 #include <libxml/xmlversion.h>
 
+#define XML_INVALID_CHAR 0x200000
+
 #define XML_MAX_URI_LENGTH 2000
 
 /**

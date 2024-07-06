@@ -2268,8 +2268,6 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
  *   NEXTL(l) Skip the current unicode character of l xmlChars long.
- *   CUR_CHAR(l) returns the current unicode character (int), set l
- *           to the number of xmlChars used for the encoding [0-5].
  *   CUR_SCHAR  same but operate on a string instead of the context
  *   COPY_BUF  copy the current unicode char to the target buffer, increment
  *            the index
@@ -2349,12 +2347,21 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
     ctxt->input->cur += l;				\
   } while (0)
 
-#define CUR_CHAR(l) xmlCurrentChar(ctxt, &l)
 #define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(b, i, v)						\
     if (v < 0x80) b[i++] = v;						\
     else i += xmlCopyCharMultiByte(&b[i],v)
+
+static int
+xmlCurrentCharRecover(xmlParserCtxtPtr ctxt, int *len) {
+    int c = xmlCurrentChar(ctxt, len);
+
+    if (c == XML_INVALID_CHAR)
+        c = 0xFFFD; /* replacement character */
+
+    return(c);
+}
 
 /**
  * xmlSkipBlankChars:
@@ -3241,7 +3248,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     /*
      * Handler for more complex cases
      */
-    c = CUR_CHAR(l);
+    c = xmlCurrentChar(ctxt, &l);
     if ((ctxt->options & XML_PARSE_OLD10) == 0) {
         /*
 	 * Use the new checks of production [4] [4a] amd [5] of the
@@ -3267,7 +3274,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	}
 	len += l;
 	NEXTL(l);
-	c = CUR_CHAR(l);
+	c = xmlCurrentChar(ctxt, &l);
 	while ((c != ' ') && (c != '>') && (c != '/') && /* accelerators */
 	       (((c >= 'a') && (c <= 'z')) ||
 	        ((c >= 'A') && (c <= 'Z')) ||
@@ -3292,7 +3299,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
             if (len <= INT_MAX - l)
 	        len += l;
 	    NEXTL(l);
-	    c = CUR_CHAR(l);
+	    c = xmlCurrentChar(ctxt, &l);
 	}
     } else {
 	if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
@@ -3302,7 +3309,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
 	}
 	len += l;
 	NEXTL(l);
-	c = CUR_CHAR(l);
+	c = xmlCurrentChar(ctxt, &l);
 
 	while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
 	       ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
@@ -3313,7 +3320,7 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
             if (len <= INT_MAX - l)
 	        len += l;
 	    NEXTL(l);
-	    c = CUR_CHAR(l);
+	    c = xmlCurrentChar(ctxt, &l);
 	}
     }
     if (len > maxLength) {
@@ -3417,7 +3424,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
      * Handler for more complex cases
      */
     startPosition = CUR_PTR - BASE_PTR;
-    c = CUR_CHAR(l);
+    c = xmlCurrentChar(ctxt, &l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
 	(!xmlIsNameStartChar(ctxt, c) || (c == ':'))) {
 	return(ret);
@@ -3428,7 +3435,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
         if (len <= INT_MAX - l)
 	    len += l;
 	NEXTL(l);
-	c = CUR_CHAR(l);
+	c = xmlCurrentChar(ctxt, &l);
     }
     if (len > maxLength) {
         xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
@@ -3659,12 +3666,12 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
 
-    c = CUR_CHAR(l);
+    c = xmlCurrentChar(ctxt, &l);
 
     while (xmlIsNameChar(ctxt, c)) {
 	COPY_BUF(buf, len, c);
 	NEXTL(l);
-	c = CUR_CHAR(l);
+	c = xmlCurrentChar(ctxt, &l);
 	if (len >= XML_MAX_NAMELEN) {
 	    /*
 	     * Okay someone managed to make a huge token, so he's ready to pay
@@ -3699,7 +3706,7 @@ xmlParseNmtoken(xmlParserCtxtPtr ctxt) {
                     return(NULL);
                 }
 		NEXTL(l);
-		c = CUR_CHAR(l);
+		c = xmlCurrentChar(ctxt, &l);
 	    }
 	    buffer[len] = 0;
 	    return(buffer);
@@ -4597,7 +4604,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
         xmlErrMemory(ctxt);
 	return(NULL);
     }
-    cur = CUR_CHAR(l);
+    cur = xmlCurrentCharRecover(ctxt, &l);
     while ((IS_CHAR(cur)) && (cur != stop)) { /* checked */
 	if (len + 5 >= size) {
 	    xmlChar *tmp;
@@ -4618,7 +4625,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
             return(NULL);
         }
 	NEXTL(l);
-	cur = CUR_CHAR(l);
+	cur = xmlCurrentCharRecover(ctxt, &l);
     }
     buf[len] = 0;
     if (!IS_CHAR(cur)) {
@@ -4911,7 +4918,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     int nbchar = 0;
     int cur, l;
 
-    cur = CUR_CHAR(l);
+    cur = xmlCurrentCharRecover(ctxt, &l);
     while ((cur != '<') && /* checked */
            (cur != '&') &&
 	   (IS_CHAR(cur))) {
@@ -4944,7 +4951,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
 	    nbchar = 0;
             SHRINK;
 	}
-	cur = CUR_CHAR(l);
+	cur = xmlCurrentCharRecover(ctxt, &l);
     }
     if (nbchar != 0) {
         buf[nbchar] = 0;
@@ -5107,7 +5114,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
 	    return;
 	}
     }
-    q = CUR_CHAR(ql);
+    q = xmlCurrentCharRecover(ctxt, &ql);
     if (q == 0)
         goto not_terminated;
     if (!IS_CHAR(q)) {
@@ -5118,7 +5125,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
 	return;
     }
     NEXTL(ql);
-    r = CUR_CHAR(rl);
+    r = xmlCurrentCharRecover(ctxt, &rl);
     if (r == 0)
         goto not_terminated;
     if (!IS_CHAR(r)) {
@@ -5129,7 +5136,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
 	return;
     }
     NEXTL(rl);
-    cur = CUR_CHAR(l);
+    cur = xmlCurrentCharRecover(ctxt, &l);
     if (cur == 0)
         goto not_terminated;
     while (IS_CHAR(cur) && /* checked */
@@ -5166,7 +5173,7 @@ xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
 	rl = l;
 
 	NEXTL(l);
-	cur = CUR_CHAR(l);
+	cur = xmlCurrentCharRecover(ctxt, &l);
 
     }
     buf[len] = 0;
@@ -5518,7 +5525,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		xmlFatalErrMsgStr(ctxt, XML_ERR_SPACE_REQUIRED,
 			  "ParsePI: PI %s space expected\n", target);
 	    }
-	    cur = CUR_CHAR(l);
+	    cur = xmlCurrentCharRecover(ctxt, &l);
 	    while (IS_CHAR(cur) && /* checked */
 		   ((cur != '?') || (NXT(1) != '>'))) {
 		if (len + 5 >= size) {
@@ -5541,7 +5548,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
                     return;
                 }
 		NEXTL(l);
-		cur = CUR_CHAR(l);
+		cur = xmlCurrentCharRecover(ctxt, &l);
 	    }
 	    buf[len] = 0;
 	    if (cur != '?') {
@@ -9586,19 +9593,19 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
         return;
     SKIP(6);
 
-    r = CUR_CHAR(rl);
+    r = xmlCurrentCharRecover(ctxt, &rl);
     if (!IS_CHAR(r)) {
 	xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, NULL);
         goto out;
     }
     NEXTL(rl);
-    s = CUR_CHAR(sl);
+    s = xmlCurrentCharRecover(ctxt, &sl);
     if (!IS_CHAR(s)) {
 	xmlFatalErr(ctxt, XML_ERR_CDATA_NOT_FINISHED, NULL);
         goto out;
     }
     NEXTL(sl);
-    cur = CUR_CHAR(l);
+    cur = xmlCurrentCharRecover(ctxt, &l);
     buf = (xmlChar *) xmlMallocAtomic(size);
     if (buf == NULL) {
 	xmlErrMemory(ctxt);
@@ -9628,7 +9635,7 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
 	s = cur;
 	sl = l;
 	NEXTL(l);
-	cur = CUR_CHAR(l);
+	cur = xmlCurrentCharRecover(ctxt, &l);
     }
     buf[len] = 0;
     if (cur != '>') {

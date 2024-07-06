@@ -234,7 +234,7 @@ xmllintResourceLoader(void *ctxt ATTRIBUTE_UNUSED, const char *URL,
     if (defaultResourceLoader != NULL)
         code = defaultResourceLoader(NULL, URL, ID, type, flags, out);
     else
-        code = xmlInputCreateUrl(URL, flags, out);
+        code = xmlNewInputFromUrl(URL, flags, out);
     if (code != XML_IO_ENOENT) {
         if ((load_trace) && (code == XML_ERR_OK)) {
             fprintf(ERR_STREAM, "Loaded URL=\"%s\" ID=\"%s\"\n",
@@ -254,7 +254,7 @@ xmllintResourceLoader(void *ctxt ATTRIBUTE_UNUSED, const char *URL,
                 code = defaultResourceLoader(NULL, (const char *) newURL, ID,
                                              type, flags, out);
             else
-                code = xmlInputCreateUrl((const char *) newURL, flags, out);
+                code = xmlNewInputFromUrl((const char *) newURL, flags, out);
             if (code != XML_IO_ENOENT) {
                 if ((load_trace) && (code == XML_ERR_OK)) {
                     fprintf(ERR_STREAM, "Loaded URL=\"%s\" ID=\"%s\"\n",

@@ -64,7 +64,7 @@ fuzzResourceRecorder(void *data ATTRIBUTE_UNUSED, const char *URL,
 
     *out = NULL;
 
-    code = xmlInputCreateUrl(URL, flags, &in);
+    code = xmlNewInputFromUrl(URL, flags, &in);
     if (code != XML_ERR_OK)
         return(code);
 
@@ -94,7 +94,7 @@ fuzzResourceRecorder(void *data ATTRIBUTE_UNUSED, const char *URL,
     xmlHashAddEntry(globalData.entities, (const xmlChar *) URL,
                     globalData.entities);
 
-    return(xmlInputCreateUrl(URL, flags, out));
+    return(xmlNewInputFromUrl(URL, flags, out));
 }
 
 static void

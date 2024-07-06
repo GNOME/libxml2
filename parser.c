@@ -11696,7 +11696,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
     ctxt->options &= ~XML_PARSE_NODICT;
     ctxt->dictNames = 1;
 
-    input = xmlInputCreatePush(filename, chunk, size);
+    input = xmlNewPushInput(filename, chunk, size);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
@@ -13461,7 +13461,7 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
 
     xmlCtxtReset(ctxt);
 
-    input = xmlInputCreatePush(filename, chunk, size);
+    input = xmlNewPushInput(filename, chunk, size);
     if (input == NULL)
         return(1);
 

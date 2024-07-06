@@ -1682,7 +1682,7 @@ xmlFreeInputStream(xmlParserInputPtr input) {
  * xmlNewInputStream:
  * @ctxt:  an XML parser context
  *
- * DEPRECATED: Use xmlInputCreateUrl or similar functions.
+ * DEPRECATED: Use xmlNewInputFromUrl or similar functions.
  *
  * Create a new input stream structure.
  *
@@ -1773,7 +1773,7 @@ xmlNewInputInternal(xmlParserInputBufferPtr buf, const char *filename) {
 }
 
 /**
- * xmlInputCreateMemory:
+ * xmlNewInputFromMemory:
  * @url:  base URL (optional)
  * @mem:  pointer to char array
  * @size:  size of array
@@ -1797,8 +1797,8 @@ xmlNewInputInternal(xmlParserInputBufferPtr buf, const char *filename) {
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlInputCreateMemory(const char *url, const void *mem, size_t size,
-                     int flags) {
+xmlNewInputFromMemory(const char *url, const void *mem, size_t size,
+                      int flags) {
     xmlParserInputBufferPtr buf;
 
     if (mem == NULL)
@@ -1831,7 +1831,7 @@ xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
     if ((ctxt == NULL) || (mem == NULL))
 	return(NULL);
 
-    input = xmlInputCreateMemory(url, mem, size, flags);
+    input = xmlNewInputFromMemory(url, mem, size, flags);
     if (input == NULL) {
         xmlCtxtErrMemory(ctxt);
         return(NULL);
@@ -1844,7 +1844,7 @@ xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
 }
 
 /**
- * xmlInputCreateString:
+ * xmlNewInputFromString:
  * @url:  base URL (optional)
  * @str:  zero-terminated string
  * @flags:  optimization hints
@@ -1863,7 +1863,7 @@ xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlInputCreateString(const char *url, const char *str, int flags) {
+xmlNewInputFromString(const char *url, const char *str, int flags) {
     xmlParserInputBufferPtr buf;
 
     if (str == NULL)
@@ -1894,7 +1894,7 @@ xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
     if ((ctxt == NULL) || (str == NULL))
 	return(NULL);
 
-    input = xmlInputCreateString(url, str, flags);
+    input = xmlNewInputFromString(url, str, flags);
     if (input == NULL) {
         xmlCtxtErrMemory(ctxt);
         return(NULL);
@@ -1907,7 +1907,7 @@ xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
 }
 
 /**
- * xmlInputCreateFd:
+ * xmlNewInputFromFd:
  * @url:  base URL (optional)
  * @fd:  file descriptor
  * @flags:  unused, pass 0
@@ -1924,7 +1924,7 @@ xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlInputCreateFd(const char *url, int fd, int flags ATTRIBUTE_UNUSED) {
+xmlNewInputFromFd(const char *url, int fd, int flags ATTRIBUTE_UNUSED) {
     xmlParserInputBufferPtr buf;
 
     if (fd < 0)
@@ -1955,7 +1955,7 @@ xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
     if ((ctxt == NULL) || (fd < 0))
 	return(NULL);
 
-    input = xmlInputCreateFd(url, fd, flags);
+    input = xmlNewInputFromFd(url, fd, flags);
     if (input == NULL) {
 	xmlCtxtErrMemory(ctxt);
         return(NULL);
@@ -1968,7 +1968,7 @@ xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
 }
 
 /**
- * xmlInputCreateIO:
+ * xmlNewInputFromIO:
  * @url:  base URL (optional)
  * @ioRead:  read callback
  * @ioClose:  close callback (optional)
@@ -1994,9 +1994,9 @@ xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlInputCreateIO(const char *url, xmlInputReadCallback ioRead,
-                 xmlInputCloseCallback ioClose, void *ioCtxt,
-                 int flags ATTRIBUTE_UNUSED) {
+xmlNewInputFromIO(const char *url, xmlInputReadCallback ioRead,
+                  xmlInputCloseCallback ioClose, void *ioCtxt,
+                  int flags ATTRIBUTE_UNUSED) {
     xmlParserInputBufferPtr buf;
 
     if (ioRead == NULL)
@@ -2038,7 +2038,7 @@ xmlCtxtNewInputFromIO(xmlParserCtxtPtr ctxt, const char *url,
     if ((ctxt == NULL) || (ioRead == NULL))
 	return(NULL);
 
-    input = xmlInputCreateIO(url, ioRead, ioClose, ioCtxt, flags);
+    input = xmlNewInputFromIO(url, ioRead, ioClose, ioCtxt, flags);
     if (input == NULL) {
         xmlCtxtErrMemory(ctxt);
         return(NULL);
@@ -2051,7 +2051,7 @@ xmlCtxtNewInputFromIO(xmlParserCtxtPtr ctxt, const char *url,
 }
 
 /**
- * xmlInputCreatePush:
+ * xmlNewPushInput:
  * @url:  base URL (optional)
  * @chunk:  pointer to char array
  * @size:  size of array
@@ -2061,7 +2061,7 @@ xmlCtxtNewInputFromIO(xmlParserCtxtPtr ctxt, const char *url,
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlInputCreatePush(const char *url, const char *chunk, int size) {
+xmlNewPushInput(const char *url, const char *chunk, int size) {
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
 
@@ -2170,7 +2170,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
  * @ctxt:  an XML parser context
  * @buffer:  an memory buffer
  *
- * DEPRECATED: Use xmlInputCreateString.
+ * DEPRECATED: Use xmlNewInputFromString.
  *
  * Create a new input stream based on a memory buffer.
  *
@@ -2357,7 +2357,7 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
 }
 
 /**
- * xmlInputCreateUrl:
+ * xmlNewInputFromUrl:
  * @filename:  the filename to use as entity
  * @flags:  XML_INPUT flags
  * @out:  pointer to new parser input
@@ -2385,7 +2385,7 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  * Returns an xmlParserErrors code.
  */
 int
-xmlInputCreateUrl(const char *filename, int flags, xmlParserInputPtr *out) {
+xmlNewInputFromUrl(const char *filename, int flags, xmlParserInputPtr *out) {
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
     int code = XML_ERR_OK;
@@ -2429,7 +2429,7 @@ xmlInputCreateUrl(const char *filename, int flags, xmlParserInputPtr *out) {
  * @ctxt:  an XML parser context
  * @filename:  the filename to use as entity
  *
- * DEPRECATED: Use xmlInputCreateUrl.
+ * DEPRECATED: Use xmlNewInputFromUrl.
  *
  * Create a new input stream based on a file or an URL.
  *
@@ -2449,7 +2449,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     if ((ctxt->options & XML_PARSE_NONET) == 0)
         flags |= XML_INPUT_NETWORK;
 
-    code = xmlInputCreateUrl(filename, flags, &input);
+    code = xmlNewInputFromUrl(filename, flags, &input);
     if (code != XML_ERR_OK) {
         xmlCtxtErrIO(ctxt, code, filename);
         return(NULL);

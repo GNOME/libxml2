@@ -174,8 +174,8 @@ testCtxtParseContent(void) {
 
         for (j = 0; j < 2; j++) {
             if (j == 0) {
-                input = xmlInputCreateString(NULL, content,
-                                             XML_INPUT_BUF_STATIC);
+                input = xmlNewInputFromString(NULL, content,
+                                              XML_INPUT_BUF_STATIC);
                 list = xmlCtxtParseContent(ctxt, input, node, 0);
             } else {
                 xmlParseInNodeContext(node, content, strlen(content), 0,

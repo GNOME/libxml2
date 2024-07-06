@@ -122,14 +122,14 @@ testResourceLoader(void *vctxt ATTRIBUTE_UNUSED, const char *URL,
 
     for (i = 0; i < nb_entities; i++) {
         if (!strcmp(testEntitiesName[i], URL)) {
-	    *out = xmlInputCreateString(testEntitiesName[i],
+	    *out = xmlNewInputFromString(testEntitiesName[i],
                                         testEntitiesValue[i],
                                         XML_INPUT_BUF_STATIC);
 	    return(XML_ERR_OK);
 	}
     }
 
-    return(xmlInputCreateUrl(URL, 0, out));
+    return(xmlNewInputFromUrl(URL, 0, out));
 }
 
 /*

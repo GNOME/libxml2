@@ -12847,6 +12847,45 @@ test_xmlInitParserCtxt(void) {
 
 
 static int
+test_xmlInputSetEncodingHandler(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlParserInputPtr input; /* the input stream */
+    int n_input;
+    xmlCharEncodingHandlerPtr handler; /* the encoding handler */
+    int n_handler;
+
+    for (n_input = 0;n_input < gen_nb_xmlParserInputPtr;n_input++) {
+    for (n_handler = 0;n_handler < gen_nb_xmlCharEncodingHandlerPtr;n_handler++) {
+        mem_base = xmlMemBlocks();
+        input = gen_xmlParserInputPtr(n_input, 0);
+        handler = gen_xmlCharEncodingHandlerPtr(n_handler, 1);
+
+        ret_val = xmlInputSetEncodingHandler(input, handler);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserInputPtr(n_input, input, 0);
+        des_xmlCharEncodingHandlerPtr(n_handler, handler, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlInputSetEncodingHandler",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_input);
+            printf(" %d", n_handler);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlKeepBlanksDefault(void) {
     int test_ret = 0;
 
@@ -12992,6 +13031,168 @@ test_xmlNewIOInputStream(void) {
             printf(" %d", n_ctxt);
             printf(" %d", n_buf);
             printf(" %d", n_enc);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlNewInputFromFd(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlParserInputPtr ret_val;
+    const char * url; /* base URL (optional) */
+    int n_url;
+    int fd; /* file descriptor */
+    int n_fd;
+    int flags; /* unused, pass 0 */
+    int n_flags;
+
+    for (n_url = 0;n_url < gen_nb_filepath;n_url++) {
+    for (n_fd = 0;n_fd < gen_nb_int;n_fd++) {
+    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+        mem_base = xmlMemBlocks();
+        url = gen_filepath(n_url, 0);
+        fd = gen_int(n_fd, 1);
+        flags = gen_int(n_flags, 2);
+
+        ret_val = xmlNewInputFromFd(url, fd, flags);
+        desret_xmlParserInputPtr(ret_val);
+        call_tests++;
+        des_filepath(n_url, url, 0);
+        des_int(n_fd, fd, 1);
+        des_int(n_flags, flags, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewInputFromFd",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_url);
+            printf(" %d", n_fd);
+            printf(" %d", n_flags);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
+test_xmlNewInputFromIO(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlNewInputFromMemory(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
+test_xmlNewInputFromString(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlParserInputPtr ret_val;
+    const char * url; /* base URL (optional) */
+    int n_url;
+    const char * str; /* zero-terminated string */
+    int n_str;
+    int flags; /* optimization hints */
+    int n_flags;
+
+    for (n_url = 0;n_url < gen_nb_filepath;n_url++) {
+    for (n_str = 0;n_str < gen_nb_const_char_ptr;n_str++) {
+    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+        mem_base = xmlMemBlocks();
+        url = gen_filepath(n_url, 0);
+        str = gen_const_char_ptr(n_str, 1);
+        flags = gen_int(n_flags, 2);
+
+        ret_val = xmlNewInputFromString(url, str, flags);
+        desret_xmlParserInputPtr(ret_val);
+        call_tests++;
+        des_filepath(n_url, url, 0);
+        des_const_char_ptr(n_str, str, 1);
+        des_int(n_flags, flags, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewInputFromString",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_url);
+            printf(" %d", n_str);
+            printf(" %d", n_flags);
+            printf("\n");
+        }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+#define gen_nb_xmlParserInputPtr_ptr 1
+#define gen_xmlParserInputPtr_ptr(no, nr) NULL
+#define des_xmlParserInputPtr_ptr(no, val, nr)
+
+static int
+test_xmlNewInputFromUrl(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    const char * filename; /* the filename to use as entity */
+    int n_filename;
+    int flags; /* XML_INPUT flags */
+    int n_flags;
+    xmlParserInputPtr * out; /* pointer to new parser input */
+    int n_out;
+
+    for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
+    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+    for (n_out = 0;n_out < gen_nb_xmlParserInputPtr_ptr;n_out++) {
+        mem_base = xmlMemBlocks();
+        filename = gen_filepath(n_filename, 0);
+        flags = gen_int(n_flags, 1);
+        out = gen_xmlParserInputPtr_ptr(n_out, 2);
+
+        ret_val = xmlNewInputFromUrl(filename, flags, out);
+        desret_int(ret_val);
+        call_tests++;
+        des_filepath(n_filename, filename, 0);
+        des_int(n_flags, flags, 1);
+        des_xmlParserInputPtr_ptr(n_out, out, 2);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlNewInputFromUrl",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_filename);
+            printf(" %d", n_flags);
+            printf(" %d", n_out);
             printf("\n");
         }
     }
@@ -15134,7 +15335,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 82 of 96 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 86 of 102 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlCleanupGlobals();
     test_ret += test_xmlClearNodeInfoSeq();
@@ -15171,10 +15372,16 @@ test_parser(void) {
     test_ret += test_xmlInitNodeInfoSeq();
     test_ret += test_xmlInitParser();
     test_ret += test_xmlInitParserCtxt();
+    test_ret += test_xmlInputSetEncodingHandler();
     test_ret += test_xmlKeepBlanksDefault();
     test_ret += test_xmlLineNumbersDefault();
     test_ret += test_xmlLoadExternalEntity();
     test_ret += test_xmlNewIOInputStream();
+    test_ret += test_xmlNewInputFromFd();
+    test_ret += test_xmlNewInputFromIO();
+    test_ret += test_xmlNewInputFromMemory();
+    test_ret += test_xmlNewInputFromString();
+    test_ret += test_xmlNewInputFromUrl();
     test_ret += test_xmlNewParserCtxt();
     test_ret += test_xmlNewSAXParserCtxt();
     test_ret += test_xmlParseBalancedChunkMemory();
@@ -15777,207 +15984,6 @@ test_xmlCurrentChar(void) {
 	    test_ret++;
             printf(" %d", n_ctxt);
             printf(" %d", n_len);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlInputCreateFd(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlParserInputPtr ret_val;
-    const char * url; /* base URL (optional) */
-    int n_url;
-    int fd; /* file descriptor */
-    int n_fd;
-    int flags; /* unused, pass 0 */
-    int n_flags;
-
-    for (n_url = 0;n_url < gen_nb_fileoutput;n_url++) {
-    for (n_fd = 0;n_fd < gen_nb_int;n_fd++) {
-    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
-        mem_base = xmlMemBlocks();
-        url = gen_fileoutput(n_url, 0);
-        fd = gen_int(n_fd, 1);
-        flags = gen_int(n_flags, 2);
-
-        ret_val = xmlInputCreateFd(url, fd, flags);
-        desret_xmlParserInputPtr(ret_val);
-        call_tests++;
-        des_fileoutput(n_url, url, 0);
-        des_int(n_fd, fd, 1);
-        des_int(n_flags, flags, 2);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInputCreateFd",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_url);
-            printf(" %d", n_fd);
-            printf(" %d", n_flags);
-            printf("\n");
-        }
-    }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlInputCreateIO(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
-static int
-test_xmlInputCreateMemory(void) {
-    int test_ret = 0;
-
-
-    /* missing type support */
-    return(test_ret);
-}
-
-
-static int
-test_xmlInputCreateString(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlParserInputPtr ret_val;
-    const char * url; /* base URL (optional) */
-    int n_url;
-    const char * str; /* zero-terminated string */
-    int n_str;
-    int flags; /* optimization hints */
-    int n_flags;
-
-    for (n_url = 0;n_url < gen_nb_fileoutput;n_url++) {
-    for (n_str = 0;n_str < gen_nb_const_char_ptr;n_str++) {
-    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
-        mem_base = xmlMemBlocks();
-        url = gen_fileoutput(n_url, 0);
-        str = gen_const_char_ptr(n_str, 1);
-        flags = gen_int(n_flags, 2);
-
-        ret_val = xmlInputCreateString(url, str, flags);
-        desret_xmlParserInputPtr(ret_val);
-        call_tests++;
-        des_fileoutput(n_url, url, 0);
-        des_const_char_ptr(n_str, str, 1);
-        des_int(n_flags, flags, 2);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInputCreateString",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_url);
-            printf(" %d", n_str);
-            printf(" %d", n_flags);
-            printf("\n");
-        }
-    }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-#define gen_nb_xmlParserInputPtr_ptr 1
-#define gen_xmlParserInputPtr_ptr(no, nr) NULL
-#define des_xmlParserInputPtr_ptr(no, val, nr)
-
-static int
-test_xmlInputCreateUrl(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    const char * filename; /* the filename to use as entity */
-    int n_filename;
-    int flags; /* XML_INPUT flags */
-    int n_flags;
-    xmlParserInputPtr * out; /* pointer to new parser input */
-    int n_out;
-
-    for (n_filename = 0;n_filename < gen_nb_fileoutput;n_filename++) {
-    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
-    for (n_out = 0;n_out < gen_nb_xmlParserInputPtr_ptr;n_out++) {
-        mem_base = xmlMemBlocks();
-        filename = gen_fileoutput(n_filename, 0);
-        flags = gen_int(n_flags, 1);
-        out = gen_xmlParserInputPtr_ptr(n_out, 2);
-
-        ret_val = xmlInputCreateUrl(filename, flags, out);
-        desret_int(ret_val);
-        call_tests++;
-        des_fileoutput(n_filename, filename, 0);
-        des_int(n_flags, flags, 1);
-        des_xmlParserInputPtr_ptr(n_out, out, 2);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInputCreateUrl",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_filename);
-            printf(" %d", n_flags);
-            printf(" %d", n_out);
-            printf("\n");
-        }
-    }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlInputSetEncodingHandler(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    xmlParserInputPtr input; /* the input stream */
-    int n_input;
-    xmlCharEncodingHandlerPtr handler; /* the encoding handler */
-    int n_handler;
-
-    for (n_input = 0;n_input < gen_nb_xmlParserInputPtr;n_input++) {
-    for (n_handler = 0;n_handler < gen_nb_xmlCharEncodingHandlerPtr;n_handler++) {
-        mem_base = xmlMemBlocks();
-        input = gen_xmlParserInputPtr(n_input, 0);
-        handler = gen_xmlCharEncodingHandlerPtr(n_handler, 1);
-
-        ret_val = xmlInputSetEncodingHandler(input, handler);
-        desret_int(ret_val);
-        call_tests++;
-        des_xmlParserInputPtr(n_input, input, 0);
-        des_xmlCharEncodingHandlerPtr(n_handler, handler, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlInputSetEncodingHandler",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_input);
-            printf(" %d", n_handler);
             printf("\n");
         }
     }
@@ -16702,7 +16708,7 @@ static int
 test_parserInternals(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parserInternals : 36 of 85 functions ...\n");
+    if (quiet == 0) printf("Testing parserInternals : 32 of 79 functions ...\n");
     test_ret += test_inputPop();
     test_ret += test_inputPush();
     test_ret += test_namePop();
@@ -16718,12 +16724,6 @@ test_parserInternals(void) {
     test_ret += test_xmlCreateURLParserCtxt();
     test_ret += test_xmlCtxtErrMemory();
     test_ret += test_xmlCurrentChar();
-    test_ret += test_xmlInputCreateFd();
-    test_ret += test_xmlInputCreateIO();
-    test_ret += test_xmlInputCreateMemory();
-    test_ret += test_xmlInputCreateString();
-    test_ret += test_xmlInputCreateUrl();
-    test_ret += test_xmlInputSetEncodingHandler();
     test_ret += test_xmlIsLetter();
     test_ret += test_xmlNewEntityInputStream();
     test_ret += test_xmlNewInputFromFile();

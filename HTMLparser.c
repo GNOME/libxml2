@@ -5847,7 +5847,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
 
     encoding = xmlGetCharEncodingName(enc);
-    input = xmlInputCreatePush(filename, chunk, size);
+    input = xmlNewPushInput(filename, chunk, size);
     if (input == NULL) {
 	htmlFreeParserCtxt(ctxt);
 	return(NULL);

@@ -521,6 +521,10 @@
      <description>Interfaces, constants and types related to the XML parser </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_DEFAULT_VERSION' type='macro'/>
+     <exports symbol='XML_INPUT_BUF_STATIC' type='macro'/>
+     <exports symbol='XML_INPUT_BUF_ZERO_TERMINATED' type='macro'/>
+     <exports symbol='XML_INPUT_NETWORK' type='macro'/>
+     <exports symbol='XML_INPUT_UNZIP' type='macro'/>
      <exports symbol='XML_SAX2_MAGIC' type='macro'/>
      <exports symbol='XML_STATUS_CATASTROPHIC_ERROR' type='macro'/>
      <exports symbol='XML_STATUS_DTD_VALIDATION_FAILED' type='macro'/>
@@ -718,10 +722,16 @@
      <exports symbol='xmlInitNodeInfoSeq' type='function'/>
      <exports symbol='xmlInitParser' type='function'/>
      <exports symbol='xmlInitParserCtxt' type='function'/>
+     <exports symbol='xmlInputSetEncodingHandler' type='function'/>
      <exports symbol='xmlKeepBlanksDefault' type='function'/>
      <exports symbol='xmlLineNumbersDefault' type='function'/>
      <exports symbol='xmlLoadExternalEntity' type='function'/>
      <exports symbol='xmlNewIOInputStream' type='function'/>
+     <exports symbol='xmlNewInputFromFd' type='function'/>
+     <exports symbol='xmlNewInputFromIO' type='function'/>
+     <exports symbol='xmlNewInputFromMemory' type='function'/>
+     <exports symbol='xmlNewInputFromString' type='function'/>
+     <exports symbol='xmlNewInputFromUrl' type='function'/>
      <exports symbol='xmlNewParserCtxt' type='function'/>
      <exports symbol='xmlNewSAXParserCtxt' type='function'/>
      <exports symbol='xmlParseBalancedChunkMemory' type='function'/>
@@ -799,10 +809,6 @@
      <exports symbol='IS_LETTER_CH' type='macro'/>
      <exports symbol='IS_PUBIDCHAR' type='macro'/>
      <exports symbol='IS_PUBIDCHAR_CH' type='macro'/>
-     <exports symbol='XML_INPUT_BUF_STATIC' type='macro'/>
-     <exports symbol='XML_INPUT_BUF_ZERO_TERMINATED' type='macro'/>
-     <exports symbol='XML_INPUT_NETWORK' type='macro'/>
-     <exports symbol='XML_INPUT_UNZIP' type='macro'/>
      <exports symbol='XML_MAX_DICTIONARY_LIMIT' type='macro'/>
      <exports symbol='XML_MAX_HUGE_LENGTH' type='macro'/>
      <exports symbol='XML_MAX_LOOKUP_LIMIT' type='macro'/>
@@ -833,12 +839,6 @@
      <exports symbol='xmlCtxtErrMemory' type='function'/>
      <exports symbol='xmlCurrentChar' type='function'/>
      <exports symbol='xmlFreeInputStream' type='function'/>
-     <exports symbol='xmlInputCreateFd' type='function'/>
-     <exports symbol='xmlInputCreateIO' type='function'/>
-     <exports symbol='xmlInputCreateMemory' type='function'/>
-     <exports symbol='xmlInputCreateString' type='function'/>
-     <exports symbol='xmlInputCreateUrl' type='function'/>
-     <exports symbol='xmlInputSetEncodingHandler' type='function'/>
      <exports symbol='xmlIsLetter' type='function'/>
      <exports symbol='xmlNewEntityInputStream' type='function'/>
      <exports symbol='xmlNewInputFromFile' type='function'/>
@@ -3969,13 +3969,13 @@
     <macro name='XML_GET_LINE' file='tree'>
       <info>Macro to extract the line number of an element node.</info>
     </macro>
-    <macro name='XML_INPUT_BUF_STATIC' file='parserInternals'>
+    <macro name='XML_INPUT_BUF_STATIC' file='parser'>
     </macro>
-    <macro name='XML_INPUT_BUF_ZERO_TERMINATED' file='parserInternals'>
+    <macro name='XML_INPUT_BUF_ZERO_TERMINATED' file='parser'>
     </macro>
-    <macro name='XML_INPUT_NETWORK' file='parserInternals'>
+    <macro name='XML_INPUT_NETWORK' file='parser'>
     </macro>
-    <macro name='XML_INPUT_UNZIP' file='parserInternals'>
+    <macro name='XML_INPUT_UNZIP' file='parser'>
     </macro>
     <macro name='XML_LOCAL_NAMESPACE' file='tree'>
       <info>A namespace declaration node.</info>
@@ -6980,7 +6980,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlCtxtReadFile' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Parse an HTML file from the filesystem, the network or a user-defined resource loader.  See xmlNewInputURL and htmlCtxtUseOptions for details.</info>
+      <info>Parse an HTML file from the filesystem, the network or a user-defined resource loader.  See htmlCtxtUseOptions for details.</info>
       <return type='htmlDocPtr' info='the resulting document tree'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
       <arg name='filename' type='const char *' info='a file or URL'/>
@@ -6989,7 +6989,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlCtxtReadIO' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Parse an HTML document from I/O functions and source and build a tree.  See xmlNewInputIO and htmlCtxtUseOptions for details.</info>
+      <info>Parse an HTML document from I/O functions and source and build a tree.  See htmlCtxtUseOptions for details.</info>
       <return type='htmlDocPtr' info='the resulting document tree'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
@@ -7163,7 +7163,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlNewParserCtxt' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Allocate and initialize a new HTML parser context.  This can be used to parse HTML documents into DOM trees with functions like xmlCtxtReadFile or xmlCtxtReadMemory.  See htmlCtxtUseOptions for parser options.  See xmlCtxtSetErrorHandler for advanced error handling.  See xmlNewInputURL, xmlNewInputMemory, xmlNewInputIO and similar functions for advanced input control.  See htmlNewSAXParserCtxt for custom SAX parsers.</info>
+      <info>Allocate and initialize a new HTML parser context.  This can be used to parse HTML documents into DOM trees with functions like xmlCtxtReadFile or xmlCtxtReadMemory.  See htmlCtxtUseOptions for parser options.  See xmlCtxtSetErrorHandler for advanced error handling.  See htmlNewSAXParserCtxt for custom SAX parsers.</info>
       <return type='htmlParserCtxtPtr' info='the htmlParserCtxtPtr or NULL in case of allocation error'/>
     </function>
     <function name='htmlNewSAXParserCtxt' file='HTMLparser' module='HTMLparser'>
@@ -7268,7 +7268,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlParseFile' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Parse an HTML file and build a tree.  See xmlNewInputURL for details.</info>
+      <info>Parse an HTML file and build a tree.</info>
       <return type='htmlDocPtr' info='the resulting document tree'/>
       <arg name='filename' type='const char *' info='the filename'/>
       <arg name='encoding' type='const char *' info='encoding (optional)'/>
@@ -10010,44 +10010,6 @@ crash if you try to modify the tree)'/>
       <return type='int' info='0 or -1 in case of error'/>
       <arg name='context' type='void *' info='an Input context'/>
     </functype>
-    <function name='xmlInputCreateFd' file='parserInternals' module='parserInternals'>
-      <info>Creates a new parser input to read from a zero-terminated string.  @url is used as base to resolve external entities and for error reporting.  @fd is closed after parsing has finished.  Available since 2.14.0.</info>
-      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
-      <arg name='url' type='const char *' info='base URL (optional)'/>
-      <arg name='fd' type='int' info='file descriptor'/>
-      <arg name='flags' type='int' info='unused, pass 0'/>
-    </function>
-    <function name='xmlInputCreateIO' file='parserInternals' module='parserInternals'>
-      <info>Creates a new parser input to read from input callbacks and cintext.  @url is used as base to resolve external entities and for error reporting.  @ioRead is called to read new data into a provided buffer. It must return the number of bytes written into the buffer ot a negative xmlParserErrors code on failure.  @ioClose is called after parsing has finished.  @ioCtxt is an opaque pointer passed to the callbacks.  Available since 2.14.0.</info>
-      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
-      <arg name='url' type='const char *' info='base URL (optional)'/>
-      <arg name='ioRead' type='xmlInputReadCallback' info='read callback'/>
-      <arg name='ioClose' type='xmlInputCloseCallback' info='close callback (optional)'/>
-      <arg name='ioCtxt' type='void *' info='IO context'/>
-      <arg name='flags' type='int' info='unused, pass 0'/>
-    </function>
-    <function name='xmlInputCreateMemory' file='parserInternals' module='parserInternals'>
-      <info>Creates a new parser input to read from a memory area.  @url is used as base to resolve external entities and for error reporting.  If the XML_INPUT_BUF_STATIC flag is set, the memory area must stay unchanged until parsing has finished. This can avoid temporary copies.  If the XML_INPUT_BUF_ZERO_TERMINATED flag is set, the memory area must contain a zero byte after the buffer at position @size. This can avoid temporary copies.  Available since 2.14.0.</info>
-      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
-      <arg name='url' type='const char *' info='base URL (optional)'/>
-      <arg name='mem' type='const void *' info='pointer to char array'/>
-      <arg name='size' type='size_t' info='size of array'/>
-      <arg name='flags' type='int' info='optimization hints'/>
-    </function>
-    <function name='xmlInputCreateString' file='parserInternals' module='parserInternals'>
-      <info>Creates a new parser input to read from a zero-terminated string.  @url is used as base to resolve external entities and for error reporting.  If the XML_INPUT_BUF_STATIC flag is set, the string must stay unchanged until parsing has finished. This can avoid temporary copies.  Available since 2.14.0.</info>
-      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
-      <arg name='url' type='const char *' info='base URL (optional)'/>
-      <arg name='str' type='const char *' info='zero-terminated string'/>
-      <arg name='flags' type='int' info='optimization hints'/>
-    </function>
-    <function name='xmlInputCreateUrl' file='parserInternals' module='parserInternals'>
-      <info>Create a new input stream based on a file or a URL.  The flag XML_INPUT_UNZIP allows decompression.  The flag XML_INPUT_NETWORK allows network access.  The following resource loaders will be called if they were registered (in order of precedence):  - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault (deprecated) - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks (deprecated) - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.  Available since 2.14.0.</info>
-      <return type='int' info='an xmlParserErrors code.'/>
-      <arg name='filename' type='const char *' info='the filename to use as entity'/>
-      <arg name='flags' type='int' info='XML_INPUT flags'/>
-      <arg name='out' type='xmlParserInputPtr *' info='pointer to new parser input'/>
-    </function>
     <functype name='xmlInputMatchCallback' file='xmlIO' module='xmlIO'>
       <info>Callback used in the I/O Input API to detect if the current handler can provide input functionality for this resource.</info>
       <return type='int' info='1 if yes and 0 if another Input module should be used'/>
@@ -10065,7 +10027,7 @@ crash if you try to modify the tree)'/>
       <arg name='buffer' type='char *' info='the buffer to store data read'/>
       <arg name='len' type='int' info='the length of the buffer in bytes'/>
     </functype>
-    <function name='xmlInputSetEncodingHandler' file='parserInternals' module='parserInternals'>
+    <function name='xmlInputSetEncodingHandler' file='parser' module='parserInternals'>
       <info>Use encoding handler to decode input data.  Closes the handler on error.</info>
       <return type='int' info='an xmlParserErrors code.'/>
       <arg name='input' type='xmlParserInputPtr' info='the input stream'/>
@@ -10778,14 +10740,52 @@ crash if you try to modify the tree)'/>
       <arg name='buf' type='xmlParserInputBufferPtr' info='an input buffer'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
+    <function name='xmlNewInputFromFd' file='parser' module='parserInternals'>
+      <info>Creates a new parser input to read from a zero-terminated string.  @url is used as base to resolve external entities and for error reporting.  @fd is closed after parsing has finished.  Available since 2.14.0.</info>
+      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
+      <arg name='url' type='const char *' info='base URL (optional)'/>
+      <arg name='fd' type='int' info='file descriptor'/>
+      <arg name='flags' type='int' info='unused, pass 0'/>
+    </function>
     <function name='xmlNewInputFromFile' file='parserInternals' module='parserInternals'>
-      <info>DEPRECATED: Use xmlInputCreateUrl.  Create a new input stream based on a file or an URL.</info>
+      <info>DEPRECATED: Use xmlNewInputFromUrl.  Create a new input stream based on a file or an URL.</info>
       <return type='xmlParserInputPtr' info='the new input stream or NULL in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='filename' type='const char *' info='the filename to use as entity'/>
     </function>
+    <function name='xmlNewInputFromIO' file='parser' module='parserInternals'>
+      <info>Creates a new parser input to read from input callbacks and cintext.  @url is used as base to resolve external entities and for error reporting.  @ioRead is called to read new data into a provided buffer. It must return the number of bytes written into the buffer ot a negative xmlParserErrors code on failure.  @ioClose is called after parsing has finished.  @ioCtxt is an opaque pointer passed to the callbacks.  Available since 2.14.0.</info>
+      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
+      <arg name='url' type='const char *' info='base URL (optional)'/>
+      <arg name='ioRead' type='xmlInputReadCallback' info='read callback'/>
+      <arg name='ioClose' type='xmlInputCloseCallback' info='close callback (optional)'/>
+      <arg name='ioCtxt' type='void *' info='IO context'/>
+      <arg name='flags' type='int' info='unused, pass 0'/>
+    </function>
+    <function name='xmlNewInputFromMemory' file='parser' module='parserInternals'>
+      <info>Creates a new parser input to read from a memory area.  @url is used as base to resolve external entities and for error reporting.  If the XML_INPUT_BUF_STATIC flag is set, the memory area must stay unchanged until parsing has finished. This can avoid temporary copies.  If the XML_INPUT_BUF_ZERO_TERMINATED flag is set, the memory area must contain a zero byte after the buffer at position @size. This can avoid temporary copies.  Available since 2.14.0.</info>
+      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
+      <arg name='url' type='const char *' info='base URL (optional)'/>
+      <arg name='mem' type='const void *' info='pointer to char array'/>
+      <arg name='size' type='size_t' info='size of array'/>
+      <arg name='flags' type='int' info='optimization hints'/>
+    </function>
+    <function name='xmlNewInputFromString' file='parser' module='parserInternals'>
+      <info>Creates a new parser input to read from a zero-terminated string.  @url is used as base to resolve external entities and for error reporting.  If the XML_INPUT_BUF_STATIC flag is set, the string must stay unchanged until parsing has finished. This can avoid temporary copies.  Available since 2.14.0.</info>
+      <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
+      <arg name='url' type='const char *' info='base URL (optional)'/>
+      <arg name='str' type='const char *' info='zero-terminated string'/>
+      <arg name='flags' type='int' info='optimization hints'/>
+    </function>
+    <function name='xmlNewInputFromUrl' file='parser' module='parserInternals'>
+      <info>Create a new input stream based on a file or a URL.  The flag XML_INPUT_UNZIP allows decompression.  The flag XML_INPUT_NETWORK allows network access.  The following resource loaders will be called if they were registered (in order of precedence):  - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault (deprecated) - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks (deprecated) - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.  Available since 2.14.0.</info>
+      <return type='int' info='an xmlParserErrors code.'/>
+      <arg name='filename' type='const char *' info='the filename to use as entity'/>
+      <arg name='flags' type='int' info='XML_INPUT flags'/>
+      <arg name='out' type='xmlParserInputPtr *' info='pointer to new parser input'/>
+    </function>
     <function name='xmlNewInputStream' file='parserInternals' module='parserInternals'>
-      <info>DEPRECATED: Use xmlInputCreateUrl or similar functions.  Create a new input stream structure.</info>
+      <info>DEPRECATED: Use xmlNewInputFromUrl or similar functions.  Create a new input stream structure.</info>
       <return type='xmlParserInputPtr' info='the new input stream or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -10862,7 +10862,7 @@ crash if you try to modify the tree)'/>
       <arg name='userData' type='void *' info='user data'/>
     </function>
     <function name='xmlNewStringInputStream' file='parserInternals' module='parserInternals'>
-      <info>DEPRECATED: Use xmlInputCreateString.  Create a new input stream based on a memory buffer.</info>
+      <info>DEPRECATED: Use xmlNewInputFromString.  Create a new input stream based on a memory buffer.</info>
       <return type='xmlParserInputPtr' info='the new input stream'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='buffer' type='const xmlChar *' info='an memory buffer'/>

@@ -413,9 +413,9 @@ xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
     if (entity == NULL)
         return(XML_IO_ENOENT);
 
-    input = xmlInputCreateMemory(URL, entity->data, entity->size,
-                                 XML_INPUT_BUF_STATIC |
-                                 XML_INPUT_BUF_ZERO_TERMINATED);
+    input = xmlNewInputFromMemory(URL, entity->data, entity->size,
+                                  XML_INPUT_BUF_STATIC |
+                                  XML_INPUT_BUF_ZERO_TERMINATED);
     if (input == NULL)
         return(XML_ERR_NO_MEMORY);
 

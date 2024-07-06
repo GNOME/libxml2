@@ -1518,6 +1518,31 @@ XMLPUBFUN xmlDocPtr
 					 const char *encoding,
 					 int options);
 
+/**
+ * New input API
+ */
+
+#define XML_INPUT_BUF_STATIC		(1 << 1)
+#define XML_INPUT_BUF_ZERO_TERMINATED	(1 << 2)
+#define XML_INPUT_UNZIP                 (1 << 3)
+#define XML_INPUT_NETWORK               (1 << 4)
+
+XMLPUBFUN int
+xmlNewInputFromUrl(const char *url, int flags, xmlParserInputPtr *out);
+XMLPUBFUN xmlParserInputPtr
+xmlNewInputFromMemory(const char *url, const void *mem, size_t size,
+                      int flags);
+XMLPUBFUN xmlParserInputPtr
+xmlNewInputFromString(const char *url, const char *str, int flags);
+XMLPUBFUN xmlParserInputPtr
+xmlNewInputFromFd(const char *url, int fd, int flags);
+XMLPUBFUN xmlParserInputPtr
+xmlNewInputFromIO(const char *url, xmlInputReadCallback ioRead,
+                  xmlInputCloseCallback ioClose, void *ioCtxt, int flags);
+XMLPUBFUN int
+xmlInputSetEncodingHandler(xmlParserInputPtr input,
+                           xmlCharEncodingHandlerPtr handler);
+
 /*
  * Library wide options
  */

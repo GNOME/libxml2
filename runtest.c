@@ -2105,7 +2105,7 @@ testParseContent(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const char *filename) {
 
     content = dumpNodeList(root->children);
 
-    input = xmlInputCreateString(NULL, content, XML_INPUT_BUF_STATIC);
+    input = xmlNewInputFromString(NULL, content, XML_INPUT_BUF_STATIC);
     list = xmlCtxtParseContent(ctxt, input, root, 0);
     roundTrip = dumpNodeList(list);
     if (strcmp(content, roundTrip) != 0) {

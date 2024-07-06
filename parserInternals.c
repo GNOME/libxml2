@@ -2696,6 +2696,11 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
                      void *userData)
 {
     xmlParserInputPtr input;
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    size_t initialNodeTabSize = 1;
+#else
+    size_t initialNodeTabSize = 10;
+#endif
 
     if (ctxt == NULL)
         return(-1);
@@ -2728,9 +2733,14 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     ctxt->atts = NULL;
     /* Allocate the Input stack */
     if (ctxt->inputTab == NULL) {
-	ctxt->inputTab = (xmlParserInputPtr *)
-		    xmlMalloc(5 * sizeof(xmlParserInputPtr));
-	ctxt->inputMax = 5;
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        size_t initialSize = 1;
+#else
+        size_t initialSize = 5;
+#endif
+
+	ctxt->inputTab = xmlMalloc(initialSize * sizeof(xmlParserInputPtr));
+	ctxt->inputMax = initialSize;
     }
     if (ctxt->inputTab == NULL)
 	return(-1);
@@ -2750,8 +2760,8 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
 
     /* Allocate the Node stack */
     if (ctxt->nodeTab == NULL) {
-	ctxt->nodeTab = (xmlNodePtr *) xmlMalloc(10 * sizeof(xmlNodePtr));
-	ctxt->nodeMax = 10;
+	ctxt->nodeTab = xmlMalloc(initialNodeTabSize * sizeof(xmlNodePtr));
+	ctxt->nodeMax = initialNodeTabSize;
     }
     if (ctxt->nodeTab == NULL)
 	return(-1);
@@ -2760,8 +2770,8 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
 
     /* Allocate the Name stack */
     if (ctxt->nameTab == NULL) {
-	ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
-	ctxt->nameMax = 10;
+	ctxt->nameTab = xmlMalloc(initialNodeTabSize * sizeof(xmlChar *));
+	ctxt->nameMax = initialNodeTabSize;
     }
     if (ctxt->nameTab == NULL)
 	return(-1);
@@ -2770,8 +2780,8 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
 
     /* Allocate the space stack */
     if (ctxt->spaceTab == NULL) {
-	ctxt->spaceTab = (int *) xmlMalloc(10 * sizeof(int));
-	ctxt->spaceMax = 10;
+	ctxt->spaceTab = xmlMalloc(initialNodeTabSize * sizeof(int));
+	ctxt->spaceMax = initialNodeTabSize;
     }
     if (ctxt->spaceTab == NULL)
 	return(-1);

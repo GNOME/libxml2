@@ -652,35 +652,27 @@ void
 xmlParserShrink(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr in = ctxt->input;
     xmlParserInputBufferPtr buf = in->buf;
-    size_t used;
+    size_t used, res;
 
     if (buf == NULL)
         return;
-    /* Don't shrink pull parser memory buffers. */
-    if ((!PARSER_PROGRESSIVE(ctxt)) &&
-        (buf->encoder == NULL) &&
-        (buf->readcallback == NULL))
-        return;
 
     used = in->cur - in->base;
-    /*
-     * Do not shrink on large buffers whose only a tiny fraction
-     * was consumed
-     */
-    if (used > INPUT_CHUNK) {
-	size_t res = xmlBufShrink(buf->buffer, used - LINE_LEN);
 
-	if (res > 0) {
+    if (used > LINE_LEN) {
+        res = xmlBufShrink(buf->buffer, used - LINE_LEN);
+
+        if (res > 0) {
             used -= res;
             if ((res > ULONG_MAX) ||
                 (in->consumed > ULONG_MAX - (unsigned long)res))
                 in->consumed = ULONG_MAX;
             else
                 in->consumed += res;
-	}
-    }
+        }
 
-    xmlBufUpdateInput(buf->buffer, in, used);
+        xmlBufUpdateInput(buf->buffer, in, used);
+    }
 }
 
 /**
@@ -703,11 +695,8 @@ xmlParserInputShrink(xmlParserInputPtr in) {
     if (in->buf->buffer == NULL) return;
 
     used = in->cur - in->base;
-    /*
-     * Do not shrink on large buffers whose only a tiny fraction
-     * was consumed
-     */
-    if (used > INPUT_CHUNK) {
+
+    if (used > LINE_LEN) {
 	ret = xmlBufShrink(in->buf->buffer, used - LINE_LEN);
 	if (ret > 0) {
             used -= ret;
@@ -717,22 +706,9 @@ xmlParserInputShrink(xmlParserInputPtr in) {
             else
                 in->consumed += ret;
 	}
-    }
 
-    if (xmlBufUse(in->buf->buffer) <= INPUT_CHUNK) {
-        xmlParserInputBufferRead(in->buf, 2 * INPUT_CHUNK);
+        xmlBufUpdateInput(in->buf->buffer, in, used);
     }
-
-    in->base = xmlBufContent(in->buf->buffer);
-    if (in->base == NULL) {
-        /* TODO: raise error */
-        in->base = BAD_CAST "";
-        in->cur = in->base;
-        in->end = in->base;
-        return;
-    }
-    in->cur = in->base + used;
-    in->end = xmlBufEnd(in->buf->buffer);
 }
 
 /************************************************************************

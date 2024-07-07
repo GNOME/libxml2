@@ -52,7 +52,7 @@ struct _xmlBuf {
 #endif
     xmlChar *mem;		/* Start of the allocation */
     size_t use;		        /* The buffer size used */
-    size_t size;		/* The buffer size */
+    size_t size;		/* The buffer size, excluding terminating 0 */
     size_t maxSize;             /* The maximum buffer size */
     unsigned flags;             /* flags */
 };
@@ -279,6 +279,8 @@ xmlBufEmpty(xmlBufPtr buf) {
  * xmlBufShrink:
  * @buf:  the buffer to dump
  * @len:  the number of xmlChar to remove
+ *
+ * DEPRECATED: Don't use.
  *
  * Remove the beginning of an XML buffer.
  * NOTE that this routine behaviour differs from xmlBufferShrink()
@@ -704,21 +706,21 @@ xmlBufUpdateInput(xmlBufPtr buf, xmlParserInputPtr input, size_t pos) {
  * xmlSetBufferAllocationScheme:
  * @scheme:  allocation method to use
  *
+ * DEPRECATED: Use xmlBufferSetAllocationScheme.
+ *
  * Set the buffer allocation method.  Types are
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
  * XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed,
  *                             improves performance
  */
 void
-xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
-    if ((scheme == XML_BUFFER_ALLOC_EXACT) ||
-        (scheme == XML_BUFFER_ALLOC_DOUBLEIT) ||
-        (scheme == XML_BUFFER_ALLOC_HYBRID))
-	xmlBufferAllocScheme = scheme;
+xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme ATTRIBUTE_UNUSED) {
 }
 
 /**
  * xmlGetBufferAllocationScheme:
+ *
+ * DEPRECATED: Use xmlBufferSetAllocationScheme.
  *
  * Types are
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
@@ -732,7 +734,7 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme) {
  */
 xmlBufferAllocationScheme
 xmlGetBufferAllocationScheme(void) {
-    return(xmlBufferAllocScheme);
+    return(XML_BUFFER_ALLOC_EXACT);
 }
 
 /**
@@ -745,19 +747,21 @@ xmlBufferPtr
 xmlBufferCreate(void) {
     xmlBufferPtr ret;
 
-    ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
+    ret = xmlMalloc(sizeof(*ret));
     if (ret == NULL)
         return(NULL);
+
     ret->use = 0;
-    ret->size = xmlDefaultBufferSize;
-    ret->alloc = xmlBufferAllocScheme;
-    ret->content = (xmlChar *) xmlMallocAtomic(ret->size);
-    if (ret->content == NULL) {
+    ret->size = 256;
+    ret->alloc = XML_BUFFER_ALLOC_IO;
+    ret->contentIO = xmlMalloc(ret->size);
+    if (ret->contentIO == NULL) {
 	xmlFree(ret);
         return(NULL);
     }
+    ret->content = ret->contentIO;
     ret->content[0] = 0;
-    ret->contentIO = NULL;
+
     return(ret);
 }
 
@@ -772,24 +776,30 @@ xmlBufferPtr
 xmlBufferCreateSize(size_t size) {
     xmlBufferPtr ret;
 
-    if (size >= UINT_MAX)
+    if (size >= INT_MAX)
         return(NULL);
-    ret = (xmlBufferPtr) xmlMalloc(sizeof(xmlBuffer));
+
+    ret = xmlMalloc(sizeof(*ret));
     if (ret == NULL)
         return(NULL);
+
     ret->use = 0;
-    ret->alloc = xmlBufferAllocScheme;
+    ret->alloc = XML_BUFFER_ALLOC_IO;
     ret->size = (size ? size + 1 : 0);         /* +1 for ending null */
-    if (ret->size){
-        ret->content = (xmlChar *) xmlMallocAtomic(ret->size);
-        if (ret->content == NULL) {
+
+    if (ret->size) {
+        ret->contentIO = xmlMalloc(ret->size);
+        if (ret->contentIO == NULL) {
             xmlFree(ret);
             return(NULL);
         }
+        ret->content = ret->contentIO;
         ret->content[0] = 0;
-    } else
+    } else {
+        ret->contentIO = NULL;
 	ret->content = NULL;
-    ret->contentIO = NULL;
+    }
+
     return(ret);
 }
 
@@ -810,14 +820,21 @@ xmlBufferDetach(xmlBufferPtr buf) {
     if (buf == NULL)
         return(NULL);
 
-    ret = buf->content;
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) &&
+        (buf->content != buf->contentIO)) {
+        ret = xmlStrndup(buf->content, buf->use);
+        xmlFree(buf->contentIO);
+    } else {
+        ret = buf->content;
+    }
+
+    buf->contentIO = NULL;
     buf->content = NULL;
     buf->size = 0;
     buf->use = 0;
 
     return ret;
 }
-
 
 /**
  * xmlBufferCreateStatic:
@@ -839,19 +856,14 @@ xmlBufferCreateStatic(void *mem, size_t size) {
  * @buf:  the buffer to tune
  * @scheme:  allocation scheme to use
  *
- * Sets the allocation scheme for this buffer
+ * Sets the allocation scheme for this buffer.
+ *
+ * For libxml2 before 2.14, it is recommended to set this to
+ * XML_BUFFER_ALLOC_DOUBLE_IT. Has no effect on 2.14 or later.
  */
 void
-xmlBufferSetAllocationScheme(xmlBufferPtr buf,
-                             xmlBufferAllocationScheme scheme) {
-    if (buf == NULL) {
-        return;
-    }
-    if (buf->alloc == XML_BUFFER_ALLOC_IO) return;
-    if ((scheme == XML_BUFFER_ALLOC_DOUBLEIT) ||
-        (scheme == XML_BUFFER_ALLOC_EXACT) ||
-        (scheme == XML_BUFFER_ALLOC_HYBRID))
-	buf->alloc = scheme;
+xmlBufferSetAllocationScheme(xmlBufferPtr buf ATTRIBUTE_UNUSED,
+                             xmlBufferAllocationScheme scheme ATTRIBUTE_UNUSED) {
 }
 
 /**
@@ -863,16 +875,14 @@ xmlBufferSetAllocationScheme(xmlBufferPtr buf,
  */
 void
 xmlBufferFree(xmlBufferPtr buf) {
-    if (buf == NULL) {
+    if (buf == NULL)
 	return;
-    }
 
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) &&
-        (buf->contentIO != NULL)) {
+    if (buf->alloc == XML_BUFFER_ALLOC_IO)
         xmlFree(buf->contentIO);
-    } else if (buf->content != NULL) {
+    else
         xmlFree(buf->content);
-    }
+
     xmlFree(buf);
 }
 
@@ -884,13 +894,15 @@ xmlBufferFree(xmlBufferPtr buf) {
  */
 void
 xmlBufferEmpty(xmlBufferPtr buf) {
-    if (buf == NULL) return;
-    if (buf->content == NULL) return;
-    buf->use = 0;
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-        size_t start_buf = buf->content - buf->contentIO;
+    if (buf == NULL)
+        return;
+    if (buf->content == NULL)
+        return;
 
-	buf->size += start_buf;
+    buf->use = 0;
+
+    if (buf->alloc == XML_BUFFER_ALLOC_IO) {
+	buf->size += buf->content - buf->contentIO;
         buf->content = buf->contentIO;
         buf->content[0] = 0;
     } else {
@@ -903,42 +915,30 @@ xmlBufferEmpty(xmlBufferPtr buf) {
  * @buf:  the buffer to dump
  * @len:  the number of xmlChar to remove
  *
+ * DEPRECATED: Don't use.
+ *
  * Remove the beginning of an XML buffer.
  *
  * Returns the number of #xmlChar removed, or -1 in case of failure.
  */
 int
 xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
-    if (buf == NULL) return(-1);
-    if (len == 0) return(0);
-    if (len > buf->use) return(-1);
+    if (buf == NULL)
+        return(-1);
+    if (len == 0)
+        return(0);
+    if (len > buf->use)
+        return(-1);
 
     buf->use -= len;
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-	/*
-	 * we just move the content pointer, but also make sure
-	 * the perceived buffer size has shrunk accordingly
-	 */
+
+    if (buf->alloc == XML_BUFFER_ALLOC_IO) {
         buf->content += len;
 	buf->size -= len;
-
-        /*
-	 * sometimes though it maybe be better to really shrink
-	 * on IO buffers
-	 */
-	if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-	    size_t start_buf = buf->content - buf->contentIO;
-	    if (start_buf >= buf->size) {
-		memmove(buf->contentIO, &buf->content[0], buf->use);
-		buf->content = buf->contentIO;
-		buf->content[buf->use] = 0;
-		buf->size += start_buf;
-	    }
-	}
     } else {
-	memmove(buf->content, &buf->content[len], buf->use);
-	buf->content[buf->use] = 0;
+	memmove(buf->content, &buf->content[len], buf->use + 1);
     }
+
     return(len);
 }
 
@@ -946,6 +946,8 @@ xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
  * xmlBufferGrow:
  * @buf:  the buffer
  * @len:  the minimum free size to allocate
+ *
+ * DEPRECATED: Don't use.
  *
  * Grow the available space of an XML buffer.
  *
@@ -956,35 +958,44 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
     unsigned int size;
     xmlChar *newbuf;
 
-    if (buf == NULL) return(-1);
+    if (buf == NULL)
+        return(-1);
 
     if (len < buf->size - buf->use)
         return(0);
-    if (len >= UINT_MAX - buf->use)
+    if (len >= INT_MAX - buf->use)
         return(-1);
 
     if (buf->size > (size_t) len) {
-        size = buf->size > UINT_MAX / 2 ? UINT_MAX : buf->size * 2;
+        if (buf->size <= INT_MAX / 2)
+            size = buf->size * 2;
+        else
+            size = buf->use - len + 1;
     } else {
-        size = buf->use + len;
-        size = size > UINT_MAX - 100 ? UINT_MAX : size + 100;
+        size = buf->use + len + 1;
+        if (size <= INT_MAX - 100)
+            size += 100;
     }
 
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-        size_t start_buf = buf->content - buf->contentIO;
-
-	newbuf = (xmlChar *) xmlRealloc(buf->contentIO, start_buf + size);
-	if (newbuf == NULL)
-	    return(-1);
-	buf->contentIO = newbuf;
-	buf->content = newbuf + start_buf;
+    if ((buf->alloc == XML_BUFFER_ALLOC_IO) &&
+        (buf->content != buf->contentIO)) {
+        newbuf = xmlMalloc(size);
+        if (newbuf == NULL)
+            return(-1);
+        if (buf->content != NULL)
+            memcpy(newbuf, buf->content, buf->use + 1);
+        xmlFree(buf->contentIO);
     } else {
-	newbuf = (xmlChar *) xmlRealloc(buf->content, size);
-	if (newbuf == NULL)
-	    return(-1);
-	buf->content = newbuf;
+        newbuf = xmlRealloc(buf->content, size);
+        if (newbuf == NULL)
+            return(-1);
     }
+
+    if (buf->alloc == XML_BUFFER_ALLOC_IO)
+        buf->contentIO = newbuf;
+    buf->content = newbuf;
     buf->size = size;
+
     return(buf->size - buf->use - 1);
 }
 
@@ -1000,12 +1011,10 @@ int
 xmlBufferDump(FILE *file, xmlBufferPtr buf) {
     size_t ret;
 
-    if (buf == NULL) {
+    if (buf == NULL)
 	return(0);
-    }
-    if (buf->content == NULL) {
+    if (buf->content == NULL)
 	return(0);
-    }
     if (file == NULL)
 	file = stdout;
     ret = fwrite(buf->content, 1, buf->use, file);
@@ -1053,6 +1062,8 @@ xmlBufferLength(const xmlBuffer *buf)
  * @buf:  the buffer to resize
  * @size:  the desired size
  *
+ * DEPRECATED: Don't use.
+
  * Resize a buffer to accommodate minimum size of @size.
  *
  * Returns  0 in case of problems, 1 otherwise
@@ -1060,99 +1071,15 @@ xmlBufferLength(const xmlBuffer *buf)
 int
 xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 {
-    unsigned int newSize;
-    xmlChar* rebuf = NULL;
-    size_t start_buf;
+    int res;
 
     if (buf == NULL)
         return(0);
-
-    /* Don't resize if we don't have to */
     if (size < buf->size)
-        return 1;
+        return(1);
+    res = xmlBufferGrow(buf, size - buf->use);
 
-    if (size > UINT_MAX - 10)
-        return 0;
-
-    /* figure out new size */
-    switch (buf->alloc){
-	case XML_BUFFER_ALLOC_IO:
-	case XML_BUFFER_ALLOC_DOUBLEIT:
-	    /*take care of empty case*/
-            if (buf->size == 0)
-                newSize = size + 10;
-            else
-                newSize = buf->size;
-	    while (size > newSize) {
-	        if (newSize > UINT_MAX / 2)
-	            return 0;
-	        newSize *= 2;
-	    }
-	    break;
-	case XML_BUFFER_ALLOC_EXACT:
-	    newSize = size + 10;
-	    break;
-        case XML_BUFFER_ALLOC_HYBRID:
-            if (buf->use < BASE_BUFFER_SIZE)
-                newSize = size;
-            else {
-                newSize = buf->size;
-                while (size > newSize) {
-                    if (newSize > UINT_MAX / 2)
-                        return 0;
-                    newSize *= 2;
-                }
-            }
-            break;
-
-	default:
-	    newSize = size + 10;
-	    break;
-    }
-
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-        start_buf = buf->content - buf->contentIO;
-
-        if (start_buf > newSize) {
-	    /* move data back to start */
-	    memmove(buf->contentIO, buf->content, buf->use);
-	    buf->content = buf->contentIO;
-	    buf->content[buf->use] = 0;
-	    buf->size += start_buf;
-	} else {
-	    rebuf = (xmlChar *) xmlRealloc(buf->contentIO, start_buf + newSize);
-	    if (rebuf == NULL)
-		return 0;
-	    buf->contentIO = rebuf;
-	    buf->content = rebuf + start_buf;
-	}
-    } else {
-	if (buf->content == NULL) {
-	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
-	    buf->use = 0;
-	    rebuf[buf->use] = 0;
-	} else if (buf->size - buf->use < 100) {
-	    rebuf = (xmlChar *) xmlRealloc(buf->content, newSize);
-        } else {
-	    /*
-	     * if we are reallocating a buffer far from being full, it's
-	     * better to make a new allocation and copy only the used range
-	     * and free the old one.
-	     */
-	    rebuf = (xmlChar *) xmlMallocAtomic(newSize);
-	    if (rebuf != NULL) {
-		memcpy(rebuf, buf->content, buf->use);
-		xmlFree(buf->content);
-		rebuf[buf->use] = 0;
-	    }
-	}
-	if (rebuf == NULL)
-	    return 0;
-	buf->content = rebuf;
-    }
-    buf->size = newSize;
-
-    return 1;
+    return(res < 0 ? 0 : 1);
 }
 
 /**
@@ -1164,40 +1091,27 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
  *
- * Returns 0 successful, a positive error code number otherwise
- *         and -1 in case of internal or API error.
+ * Returns a xmlParserError code.
  */
 int
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
-    unsigned int needSize;
-
-    if ((str == NULL) || (buf == NULL)) {
-	return -1;
-    }
-    if (len < -1) {
-	return -1;
-    }
-    if (len == 0) return 0;
-
+    if ((buf == NULL) || (str == NULL))
+	return(XML_ERR_ARGUMENT);
     if (len < 0)
         len = xmlStrlen(str);
-
-    if (len < 0) return -1;
-    if (len == 0) return 0;
+    if (len == 0)
+        return(XML_ERR_OK);
 
     /* Note that both buf->size and buf->use can be zero here. */
     if ((unsigned) len >= buf->size - buf->use) {
-        if ((unsigned) len >= UINT_MAX - buf->use)
-            return XML_ERR_NO_MEMORY;
-        needSize = buf->use + len + 1;
-        if (!xmlBufferResize(buf, needSize))
-            return XML_ERR_NO_MEMORY;
+        if (xmlBufferGrow(buf, len) < 0)
+            return(XML_ERR_NO_MEMORY);
     }
 
     memmove(&buf->content[buf->use], str, len);
     buf->use += len;
     buf->content[buf->use] = 0;
-    return 0;
+    return(XML_ERR_OK);
 }
 
 /**
@@ -1209,57 +1123,51 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
  * Add a string range to the beginning of an XML buffer.
  * if len == -1, the length of @str is recomputed.
  *
- * Returns 0 successful, a positive error code number otherwise
- *         and -1 in case of internal or API error.
+ * Returns a xmlParserError code.
  */
 int
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
-    unsigned int needSize;
+    unsigned start = 0;
 
-    if (buf == NULL)
-        return(-1);
-    if (str == NULL) {
-	return -1;
-    }
-    if (len < -1) {
-	return -1;
-    }
-    if (len == 0) return 0;
-
+    if ((buf == NULL) || (str == NULL))
+	return(XML_ERR_ARGUMENT);
     if (len < 0)
         len = xmlStrlen(str);
+    if (len == 0)
+        return(XML_ERR_OK);
 
-    if (len <= 0) return -1;
+    if (buf->alloc == XML_BUFFER_ALLOC_IO) {
+        start = buf->content - buf->contentIO;
 
-    if ((buf->alloc == XML_BUFFER_ALLOC_IO) && (buf->contentIO != NULL)) {
-        size_t start_buf = buf->content - buf->contentIO;
-
-	if (start_buf > (unsigned int) len) {
-	    /*
-	     * We can add it in the space previously shrunk
-	     */
-	    buf->content -= len;
+        /*
+         * We can add it in the space previously shrunk
+         */
+        if ((unsigned) len <= start) {
+            buf->content -= len;
             memmove(&buf->content[0], str, len);
-	    buf->use += len;
-	    buf->size += len;
-            buf->content[buf->use] = 0;
-	    return(0);
-	}
+            buf->use += len;
+            buf->size += len;
+            return(0);
+        }
+        if ((unsigned) len < buf->size + start - buf->use) {
+            memmove(&buf->contentIO[len], buf->content, buf->use + 1);
+            memmove(buf->contentIO, str, len);
+            buf->content = buf->contentIO;
+            buf->use += len;
+            buf->size += start;
+            return(0);
+        }
     }
-    /* Note that both buf->size and buf->use can be zero here. */
+
     if ((unsigned) len >= buf->size - buf->use) {
-        if ((unsigned) len >= UINT_MAX - buf->use)
-            return(-1);
-        needSize = buf->use + len + 1;
-        if (!xmlBufferResize(buf, needSize))
+        if (xmlBufferGrow(buf, len) < 0)
             return(-1);
     }
 
-    memmove(&buf->content[len], &buf->content[0], buf->use);
-    memmove(&buf->content[0], str, len);
+    memmove(&buf->content[len], buf->content, buf->use + 1);
+    memmove(buf->content, str, len);
     buf->use += len;
-    buf->content[buf->use] = 0;
-    return 0;
+    return (0);
 }
 
 /**
@@ -1274,10 +1182,7 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
  */
 int
 xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
-    if (buf == NULL)
-        return(-1);
-    if (str == NULL) return -1;
-    return xmlBufferAdd(buf, str, -1);
+    return(xmlBufferAdd(buf, str, -1));
 }
 
 /**
@@ -1292,7 +1197,7 @@ xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
  */
 int
 xmlBufferCCat(xmlBufferPtr buf, const char *str) {
-    return xmlBufferCat(buf, (const xmlChar *) str);
+    return(xmlBufferAdd(buf, (const xmlChar *) str, -1));
 }
 
 /**
@@ -1305,9 +1210,7 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
  */
 void
 xmlBufferWriteCHAR(xmlBufferPtr buf, const xmlChar *string) {
-    if (buf == NULL)
-        return;
-    xmlBufferCat(buf, string);
+    xmlBufferAdd(buf, string, -1);
 }
 
 /**
@@ -1320,9 +1223,7 @@ xmlBufferWriteCHAR(xmlBufferPtr buf, const xmlChar *string) {
  */
 void
 xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
-    if (buf == NULL)
-        return;
-    xmlBufferCCat(buf, string);
+    xmlBufferAdd(buf, (const xmlChar *) string, -1);
 }
 
 

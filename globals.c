@@ -221,8 +221,7 @@ xmlStrdupFunc xmlMemStrdup = xmlPosixStrdup;
  * Global setting, default allocation policy for buffers, default is
  * XML_BUFFER_ALLOC_EXACT
  */
-xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
-static xmlBufferAllocationScheme xmlBufferAllocSchemeThrDef = XML_BUFFER_ALLOC_EXACT;
+const xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
 /**
  * xmlDefaultBufferSize:
  *
@@ -230,8 +229,7 @@ static xmlBufferAllocationScheme xmlBufferAllocSchemeThrDef = XML_BUFFER_ALLOC_E
  *
  * Global setting, default buffer size. Default value is BASE_BUFFER_SIZE
  */
-int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
-static int xmlDefaultBufferSizeThrDef = BASE_BUFFER_SIZE;
+const int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
 
 /*
  * Parser defaults
@@ -730,8 +728,6 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
     gs->localRngState[1] = xmlGlobalRandom();
 #endif
 
-    gs->gs_xmlBufferAllocScheme = xmlBufferAllocSchemeThrDef;
-    gs->gs_xmlDefaultBufferSize = xmlDefaultBufferSizeThrDef;
     gs->gs_xmlDoValidityCheckingDefaultValue =
          xmlDoValidityCheckingDefaultValueThrDef;
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
@@ -1020,22 +1016,14 @@ xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
     xmlMutexUnlock(&xmlThrDefMutex);
 }
 
-xmlBufferAllocationScheme xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v) {
-    xmlBufferAllocationScheme ret;
-    xmlMutexLock(&xmlThrDefMutex);
-    ret = xmlBufferAllocSchemeThrDef;
-    xmlBufferAllocSchemeThrDef = v;
-    xmlMutexUnlock(&xmlThrDefMutex);
-    return ret;
+xmlBufferAllocationScheme
+xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v ATTRIBUTE_UNUSED) {
+    return xmlBufferAllocScheme;
 }
 
-int xmlThrDefDefaultBufferSize(int v) {
-    int ret;
-    xmlMutexLock(&xmlThrDefMutex);
-    ret = xmlDefaultBufferSizeThrDef;
-    xmlDefaultBufferSizeThrDef = v;
-    xmlMutexUnlock(&xmlThrDefMutex);
-    return ret;
+int
+xmlThrDefDefaultBufferSize(int v ATTRIBUTE_UNUSED) {
+    return xmlDefaultBufferSize;
 }
 
 int xmlThrDefDoValidityCheckingDefaultValue(int v) {

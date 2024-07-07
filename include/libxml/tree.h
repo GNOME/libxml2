@@ -678,10 +678,21 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  * Variables.
  */
 
+XML_DEPRECATED
+XMLPUBVAR const xmlBufferAllocationScheme xmlBufferAllocScheme;
+XML_DEPRECATED
+XMLPUBVAR const int xmlDefaultBufferSize;
+
+#ifdef LIBXML_THREAD_ENABLED
+/* backward compatibility */
+XML_DEPRECATED
+XMLPUBFUN const xmlBufferAllocationScheme *__xmlBufferAllocScheme(void);
+XML_DEPRECATED
+XMLPUBFUN const int *__xmlDefaultBufferSize(void);
+#endif
+
 /** DOC_DISABLE */
 #define XML_GLOBALS_TREE \
-  XML_OP(xmlBufferAllocScheme, xmlBufferAllocationScheme, XML_DEPRECATED) \
-  XML_OP(xmlDefaultBufferSize, int, XML_DEPRECATED) \
   XML_OP(xmlRegisterNodeDefaultValue, xmlRegisterNodeFunc, XML_DEPRECATED) \
   XML_OP(xmlDeregisterNodeDefaultValue, xmlDeregisterNodeFunc, \
          XML_DEPRECATED)
@@ -691,8 +702,6 @@ XML_GLOBALS_TREE
 #undef XML_OP
 
 #if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
-  #define xmlBufferAllocScheme XML_GLOBAL_MACRO(xmlBufferAllocScheme)
-  #define xmlDefaultBufferSize XML_GLOBAL_MACRO(xmlDefaultBufferSize)
   #define xmlRegisterNodeDefaultValue \
     XML_GLOBAL_MACRO(xmlRegisterNodeDefaultValue)
   #define xmlDeregisterNodeDefaultValue \
@@ -733,8 +742,10 @@ XMLPUBFUN const xmlChar *
  * Handling Buffers, the old ones see @xmlBuf for the new ones.
  */
 
+XML_DEPRECATED
 XMLPUBFUN void
 		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
+XML_DEPRECATED
 XMLPUBFUN xmlBufferAllocationScheme
 		xmlGetBufferAllocationScheme(void);
 
@@ -745,6 +756,7 @@ XMLPUBFUN xmlBufferPtr
 XMLPUBFUN xmlBufferPtr
 		xmlBufferCreateStatic	(void *mem,
 					 size_t size);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlBufferResize		(xmlBufferPtr buf,
 					 unsigned int size);
@@ -767,9 +779,11 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlBufferCCat		(xmlBufferPtr buf,
 					 const char *str);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlBufferShrink		(xmlBufferPtr buf,
 					 unsigned int len);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlBufferGrow		(xmlBufferPtr buf,
 					 unsigned int len);

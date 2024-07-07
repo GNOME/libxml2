@@ -2140,37 +2140,43 @@ endOfInput (void * context ATTRIBUTE_UNUSED,
  * This routine handle the I18N transcoding to internal UTF-8
  * This routine is used when operating the parser in normal (pull) mode
  *
- * TODO: one should be able to remove one extra copy by copying directly
- *       onto in->buffer or in->raw
- *
  * Returns the number of chars read and stored in the buffer, or -1
  *         in case of error.
  */
 int
 xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
-    xmlBufPtr buf;
     int res = 0;
 
-    if ((in == NULL) || (in->error)) return(-1);
-    if ((len <= MINLEN) && (len != 4))
-        len = MINLEN;
+    if ((in == NULL) || (in->error))
+        return(-1);
 
-    if (in->encoder == NULL) {
-        if (in->readcallback == NULL)
-            return(0);
-        buf = in->buffer;
-    } else {
-        if (in->raw == NULL) {
-	    in->raw = xmlBufCreate(XML_IO_BUFFER_SIZE);
-	}
-        buf = in->raw;
-    }
+    if (len < MINLEN)
+        len = MINLEN;
 
     /*
      * Call the read method for this I/O type.
      */
     if (in->readcallback != NULL) {
-        if (xmlBufGrow(buf, len + 1) < 0) {
+        xmlBufPtr buf;
+
+        if (in->encoder == NULL) {
+            buf = in->buffer;
+        } else {
+            /*
+             * Some users only set 'encoder' and expect us to create
+             * the raw buffer lazily.
+             */
+            if (in->raw == NULL) {
+                in->raw = xmlBufCreate(XML_IO_BUFFER_SIZE);
+                if (in->raw == NULL) {
+                    in->error = XML_ERR_NO_MEMORY;
+                    return(-1);
+                }
+            }
+            buf = in->raw;
+        }
+
+        if (xmlBufGrow(buf, len) < 0) {
             in->error = XML_ERR_NO_MEMORY;
             return(-1);
         }
@@ -2193,15 +2199,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     }
 
     /*
-     * try to establish compressed status of input if not done already
+     * Handle encoding.
      */
-    if (in->compressed == -1) {
-#ifdef LIBXML_LZMA_ENABLED
-	if (in->readcallback == xmlXzfileRead)
-            in->compressed = __libxml2_xzcompressed(in->context);
-#endif
-    }
-
     if (in->encoder != NULL) {
         size_t sizeOut;
 

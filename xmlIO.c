@@ -1748,7 +1748,6 @@ xmlParserInputBufferCreateFd(int fd, xmlCharEncoding enc) {
 }
 
 typedef struct {
-    char *mem;
     const char *cur;
     size_t size;
 } xmlMemIOCtxt;
@@ -1771,8 +1770,6 @@ static int
 xmlMemClose(void *vctxt) {
     xmlMemIOCtxt *ctxt = vctxt;
 
-    if (ctxt->mem != NULL)
-        xmlFree(ctxt->mem);
     xmlFree(ctxt);
     return(0);
 }
@@ -1792,41 +1789,45 @@ xmlParserInputBufferPtr
 xmlNewInputBufferMemory(const void *mem, size_t size, int flags,
                         xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
-    xmlMemIOCtxt *ctxt;
-    char *copy = NULL;
 
-    if ((flags & XML_INPUT_BUF_STATIC) == 0) {
-        if (size + 1 == 0)
+    if ((flags & XML_INPUT_BUF_STATIC) &&
+        ((flags & XML_INPUT_BUF_ZERO_TERMINATED) == 0)) {
+        xmlMemIOCtxt *ctxt;
+
+        /*
+         * Static buffer without zero terminator.
+         * Stream memory to avoid a copy.
+         */
+        ret = xmlAllocParserInputBuffer(enc);
+        if (ret == NULL)
             return(NULL);
-        copy = xmlMalloc(size + 1);
-        if (copy == NULL)
+
+        ctxt = xmlMalloc(sizeof(*ctxt));
+        if (ctxt == NULL) {
+            xmlFreeParserInputBuffer(ret);
             return(NULL);
-        memcpy(copy, mem, size);
-        copy[size] = 0;
+        }
 
-        mem = copy;
+        ctxt->cur = mem;
+        ctxt->size = size;
+
+        ret->context = ctxt;
+        ret->readcallback = xmlMemRead;
+        ret->closecallback = xmlMemClose;
+    } else {
+        ret = xmlMalloc(sizeof(*ret));
+        if (ret == NULL)
+            return(NULL);
+        memset(ret, 0, sizeof(xmlParserInputBuffer));
+        ret->compressed = -1;
+
+        ret->buffer = xmlBufCreateMem((const xmlChar *) mem, size,
+                                      (flags & XML_INPUT_BUF_STATIC ? 1 : 0));
+        if (ret->buffer == NULL) {
+            xmlFree(ret);
+            return(NULL);
+        }
     }
-
-    ret = xmlAllocParserInputBuffer(enc);
-    if (ret == NULL) {
-        xmlFree(copy);
-        return(NULL);
-    }
-
-    ctxt = xmlMalloc(sizeof(*ctxt));
-    if (ctxt == NULL) {
-        xmlFreeParserInputBuffer(ret);
-        xmlFree(copy);
-        return(NULL);
-    }
-
-    ctxt->mem = copy;
-    ctxt->cur = mem;
-    ctxt->size = size;
-
-    ret->context = ctxt;
-    ret->readcallback = xmlMemRead;
-    ret->closecallback = xmlMemClose;
 
     return(ret);
 }
@@ -1889,31 +1890,6 @@ xmlParserInputBufferCreateStatic(const char *mem, int size,
     return(xmlNewInputBufferMemory(mem, size, XML_INPUT_BUF_STATIC, enc));
 }
 
-typedef struct {
-    const char *str;
-} xmlStringIOCtxt;
-
-static int
-xmlStringRead(void *vctxt, char *buf, int size) {
-    xmlStringIOCtxt *ctxt = vctxt;
-    const char *zero;
-    size_t len;
-
-    zero = memchr(ctxt->str, 0, size);
-    len = zero ? zero - ctxt->str : size;
-
-    memcpy(buf, ctxt->str, len);
-    ctxt->str += len;
-
-    return(len);
-}
-
-static int
-xmlStringClose(void *vctxt) {
-    xmlFree(vctxt);
-    return(0);
-}
-
 /**
  * xmlNewInputBufferString:
  * @str:  C string
@@ -1926,27 +1902,19 @@ xmlStringClose(void *vctxt) {
 xmlParserInputBufferPtr
 xmlNewInputBufferString(const char *str, int flags) {
     xmlParserInputBufferPtr ret;
-    xmlStringIOCtxt *ctxt;
 
-    if ((flags & XML_INPUT_BUF_STATIC) == 0)
-        return(xmlNewInputBufferMemory(str, strlen(str), flags,
-                                       XML_CHAR_ENCODING_NONE));
-
-    ret = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
+    ret = xmlMalloc(sizeof(*ret));
     if (ret == NULL)
-        return(NULL);
+	return(NULL);
+    memset(ret, 0, sizeof(xmlParserInputBuffer));
+    ret->compressed = -1;
 
-    ctxt = xmlMalloc(sizeof(*ctxt));
-    if (ctxt == NULL) {
-        xmlFreeParserInputBuffer(ret);
-        return(NULL);
+    ret->buffer = xmlBufCreateMem((const xmlChar *) str, strlen(str),
+                                  (flags & XML_INPUT_BUF_STATIC ? 1 : 0));
+    if (ret->buffer == NULL) {
+        xmlFree(ret);
+	return(NULL);
     }
-
-    ctxt->str = str;
-
-    ret->context = ctxt;
-    ret->readcallback = xmlStringRead;
-    ret->closecallback = xmlStringClose;
 
     return(ret);
 }

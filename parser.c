@@ -7988,9 +7988,13 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     }
 
     length = xmlBufUse(input->buf->buffer);
-    content = xmlBufDetach(input->buf->buffer);
-
     if (length > INT_MAX) {
+        xmlErrMemory(ctxt);
+        goto error;
+    }
+
+    content = xmlStrndup(xmlBufContent(input->buf->buffer), length);
+    if (content == NULL) {
         xmlErrMemory(ctxt);
         goto error;
     }

@@ -7951,7 +7951,10 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 
     xmlBufResetInput(input->buf->buffer, input);
 
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        goto error;
+    }
 
     xmlDetectEncoding(ctxt);
 
@@ -11698,7 +11701,11 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
     return(ctxt);
 }
@@ -11752,7 +11759,11 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserCtxt(ctxt);
         return (NULL);
     }
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
     return(ctxt);
 }
@@ -12686,8 +12697,10 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
     if (input == NULL)
         goto error;
 
-    if (inputPush(ctxt, input) < 0)
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
         goto error;
+    }
 
     xmlFree(uri);
     return(ctxt);
@@ -12735,7 +12748,11 @@ xmlCreateURLParserCtxt(const char *filename, int options)
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
     return(ctxt);
 }
@@ -12915,7 +12932,8 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
     input = xmlNewInputString(ctxt, filename, (const char *) buffer, NULL, 0);
     if (input == NULL)
         return;
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0)
+        xmlFreeInputStream(input);
 }
 
 /**
@@ -13002,7 +13020,11 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
     return(ctxt);
 }
@@ -13188,7 +13210,11 @@ xmlCreateDocParserCtxt(const xmlChar *str) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        xmlFreeParserCtxt(ctxt);
+        return(NULL);
+    }
 
     return(ctxt);
 }
@@ -13407,7 +13433,10 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     if (input == NULL)
         return(1);
 
-    inputPush(ctxt, input);
+    if (inputPush(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        return(1);
+    }
 
     if (encoding != NULL)
         xmlSwitchEncodingName(ctxt, encoding);

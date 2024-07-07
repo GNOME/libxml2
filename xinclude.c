@@ -351,7 +351,10 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
     if (inputStream == NULL)
         goto error;
 
-    inputPush(pctxt, inputStream);
+    if (inputPush(pctxt, inputStream) < 0) {
+        xmlFreeInputStream(inputStream);
+        goto error;
+    }
 
     xmlParseDocument(pctxt);
 

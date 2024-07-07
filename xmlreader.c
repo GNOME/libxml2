@@ -4988,7 +4988,10 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 	    inputStream->buf = buf;
             xmlBufResetInput(buf->buffer, inputStream);
 
-	    inputPush(reader->ctxt, inputStream);
+            if (inputPush(reader->ctxt, inputStream) < 0) {
+                xmlFreeInputStream(inputStream);
+                return(-1);
+            }
 	    reader->cur = 0;
 	}
     }

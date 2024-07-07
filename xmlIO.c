@@ -1205,7 +1205,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlParserInputBuffer));
-    ret->buffer = xmlBufCreate(INPUT_CHUNK + MINLEN + 80 /* LINE_LEN */);
+    ret->buffer = xmlBufCreate(XML_IO_BUFFER_SIZE);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);
@@ -1218,7 +1218,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
         }
     }
     if (ret->encoder != NULL)
-        ret->raw = xmlBufCreate(MINLEN);
+        ret->raw = xmlBufCreate(XML_IO_BUFFER_SIZE);
     else
         ret->raw = NULL;
     ret->readcallback = NULL;
@@ -2161,7 +2161,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         buf = in->buffer;
     } else {
         if (in->raw == NULL) {
-	    in->raw = xmlBufCreate(MINLEN);
+	    in->raw = xmlBufCreate(XML_IO_BUFFER_SIZE);
 	}
         buf = in->raw;
     }

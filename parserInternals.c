@@ -1273,7 +1273,6 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
                            xmlCharEncodingHandlerPtr handler) {
     xmlParserInputBufferPtr in;
     xmlBufPtr buf;
-    int nbchars;
     int code = XML_ERR_OK;
 
     if ((input == NULL) || (input->buf == NULL)) {
@@ -1326,6 +1325,8 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
      */
     if (input->end > input->base) {
         size_t processed;
+        size_t nbchars;
+        int res;
 
         /*
          * Shrink the current input buffer.
@@ -1336,8 +1337,9 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
         input->consumed += processed;
         in->rawconsumed = processed;
 
-        nbchars = xmlCharEncInput(in);
-        if (nbchars < 0)
+        nbchars = 4000 /* MINLEN */;
+        res = xmlCharEncInput(in, &nbchars);
+        if (res < 0)
             code = in->error;
     }
 

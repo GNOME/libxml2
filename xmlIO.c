@@ -48,6 +48,10 @@
 #include "private/error.h"
 #include "private/io.h"
 
+#ifndef SIZE_MAX
+  #define SIZE_MAX ((size_t) -1)
+#endif
+
 /* #define VERBOSE_FAILURE */
 
 #define MINLEN 4000
@@ -2105,7 +2109,7 @@ xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func)
 int
 xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	                 int len, const char *buf) {
-    int nbchars = 0;
+    size_t nbchars = 0;
     int ret;
 
     if (len < 0) return(0);
@@ -2130,9 +2134,11 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	/*
 	 * convert as much as possible to the parser reading buffer.
 	 */
-	nbchars = xmlCharEncInput(in);
-	if (nbchars < 0)
-	    return(-1);
+        nbchars = SIZE_MAX;
+	if (xmlCharEncInput(in, &nbchars) < 0)
+            return(-1);
+        if (nbchars > INT_MAX)
+            nbchars = INT_MAX;
     } else {
 	nbchars = len;
         ret = xmlBufAdd(in->buffer, (xmlChar *) buf, nbchars);
@@ -2229,9 +2235,19 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
     }
 
     if (in->encoder != NULL) {
-	res = xmlCharEncInput(in);
-	if (res < 0)
+        size_t sizeOut;
+
+        /*
+         * Don't convert whole buffer when reading from memory.
+         */
+        if (in->readcallback == NULL)
+            sizeOut = len;
+        else
+            sizeOut = SIZE_MAX;
+
+	if (xmlCharEncInput(in, &sizeOut) < 0)
 	    return(-1);
+        res = sizeOut;
     }
     return(res);
 }

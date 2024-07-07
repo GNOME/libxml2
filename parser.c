@@ -11561,14 +11561,18 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
     size_t curBase;
     size_t maxLength;
+    size_t pos;
     int end_in_lf = 0;
+    int res;
 
     if ((ctxt == NULL) || (size < 0))
         return(XML_ERR_ARGUMENT);
+    if ((chunk == NULL) && (size > 0))
+        return(XML_ERR_ARGUMENT);
+    if ((ctxt->input == NULL) || (ctxt->input->buf == NULL))
+        return(XML_ERR_ARGUMENT);
     if (ctxt->disableSAX != 0)
         return(ctxt->errNo);
-    if (ctxt->input == NULL)
-        return(XML_ERR_INTERNAL_ERROR);
 
     ctxt->input->flags |= XML_INPUT_PROGRESSIVE;
     if (ctxt->instate == XML_PARSER_START)
@@ -11579,18 +11583,17 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
 	size--;
     }
 
-    if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
-        (ctxt->input->buf != NULL))  {
-	size_t pos = ctxt->input->cur - ctxt->input->base;
-	int res;
-
-	res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
-        xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
-	if (res < 0) {
-            xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
-	    xmlHaltParser(ctxt);
-	    return(ctxt->errNo);
-	}
+    /*
+     * Also push an empty chunk to make sure that the raw buffer
+     * will be flushed if there is an encoder.
+     */
+    pos = ctxt->input->cur - ctxt->input->base;
+    res = xmlParserInputBufferPush(ctxt->input->buf, size, chunk);
+    xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
+    if (res < 0) {
+        xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
+        xmlHaltParser(ctxt);
+        return(ctxt->errNo);
     }
 
     xmlParseTryOrFinish(ctxt, terminate);
@@ -11608,11 +11611,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
         return(ctxt->errNo);
 
-    if ((end_in_lf == 1) && (ctxt->input != NULL) &&
-        (ctxt->input->buf != NULL)) {
-	size_t pos = ctxt->input->cur - ctxt->input->base;
-        int res;
-
+    if (end_in_lf == 1) {
+	pos = ctxt->input->cur - ctxt->input->base;
 	res = xmlParserInputBufferPush(ctxt->input->buf, 1, "\r");
 	xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
@@ -11639,8 +11639,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
                 xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
                                "Start tag expected, '<' not found\n");
             }
-        } else if ((ctxt->input->buf != NULL) &&
-                   (ctxt->input->buf->encoder != NULL) &&
+        } else if ((ctxt->input->buf->encoder != NULL) &&
                    (ctxt->input->buf->error == 0) &&
                    (!xmlBufIsEmpty(ctxt->input->buf->raw))) {
             xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,

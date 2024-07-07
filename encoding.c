@@ -1537,75 +1537,104 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
 /**
  * xmlCharEncInput:
  * @input: a parser input buffer
+ * @sizeOut:  pointer to output size
+ *
+ * @sizeOut should be set to the maximum output size (or SIZE_MAX).
+ * After return, it is set to the number of bytes written.
  *
  * Generic front-end for the encoding handler on parser input
  *
- * Returns the number of bytes written or an XML_ENC_ERR code.
+ * Returns an XML_ENC_ERR code.
  */
 int
-xmlCharEncInput(xmlParserInputBufferPtr input)
+xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut)
 {
+    xmlBufPtr out, in;
+    const xmlChar *dataIn;
+    size_t availIn;
+    size_t maxOut;
+    size_t totalIn, totalOut;
     int ret;
-    size_t avail;
-    size_t toconv;
-    int c_in;
-    int c_out;
-    xmlBufPtr in;
-    xmlBufPtr out;
-    const xmlChar *inData;
-    size_t inTotal = 0;
 
-    if ((input == NULL) || (input->encoder == NULL) ||
-        (input->buffer == NULL) || (input->raw == NULL))
-        return(XML_ENC_ERR_INTERNAL);
     out = input->buffer;
     in = input->raw;
 
-    toconv = xmlBufUse(in);
-    if (toconv == 0)
-        return (0);
-    inData = xmlBufContent(in);
-    inTotal = 0;
+    maxOut = *sizeOut;
+    totalOut = 0;
 
-    do {
-        c_in = toconv > INT_MAX / 2 ? INT_MAX / 2 : toconv;
+    *sizeOut = 0;
 
-        avail = xmlBufAvail(out);
-        if (avail > INT_MAX)
-            avail = INT_MAX;
-        if (avail < 4096) {
+    availIn = xmlBufUse(in);
+    if (availIn == 0)
+        return(0);
+    dataIn = xmlBufContent(in);
+    totalIn = 0;
+
+    while (1) {
+        size_t availOut;
+        int completeOut, completeIn;
+        int c_out, c_in;
+
+        availOut = xmlBufAvail(out);
+        if (availOut > INT_MAX / 2)
+            availOut = INT_MAX / 2;
+
+        if (availOut < maxOut) {
+            c_out = availOut;
+            completeOut = 0;
+        } else {
+            c_out = maxOut;
+            completeOut = 1;
+        }
+
+        if (availIn > INT_MAX / 2) {
+            c_in = INT_MAX / 2;
+            completeIn = 0;
+        } else {
+            c_in = availIn;
+            completeIn = 1;
+        }
+
+        ret = xmlEncInputChunk(input->encoder, xmlBufEnd(out), &c_out,
+                               dataIn, &c_in);
+
+        totalIn += c_in;
+        dataIn += c_in;
+        availIn -= c_in;
+
+        totalOut += c_out;
+        maxOut -= c_out;
+        xmlBufAddLen(out, c_out);
+
+        if ((ret != XML_ENC_ERR_SUCCESS) && (ret != XML_ENC_ERR_SPACE)) {
+            input->error = xmlEncConvertError(ret);
+            return(ret);
+        }
+
+        if ((completeOut) && (completeIn))
+            break;
+        if ((completeOut) && (ret == XML_ENC_ERR_SPACE))
+            break;
+        if ((completeIn) && (ret == XML_ENC_ERR_SUCCESS))
+            break;
+
+        if (ret == XML_ENC_ERR_SPACE) {
             if (xmlBufGrow(out, 4096) < 0) {
                 input->error = XML_ERR_NO_MEMORY;
                 return(XML_ENC_ERR_MEMORY);
             }
-            avail = xmlBufAvail(out);
         }
-
-        c_in = toconv;
-        c_out = avail;
-        ret = xmlEncInputChunk(input->encoder, xmlBufEnd(out), &c_out,
-                               inData, &c_in);
-        inTotal += c_in;
-        inData += c_in;
-        toconv -= c_in;
-        xmlBufAddLen(out, c_out);
-    } while (ret == XML_ENC_ERR_SPACE);
-
-    xmlBufShrink(in, inTotal);
-
-    if (input->rawconsumed > ULONG_MAX - (unsigned long)c_in)
-        input->rawconsumed = ULONG_MAX;
-    else
-        input->rawconsumed += c_in;
-
-    if (((ret != 0) && (c_out == 0)) ||
-        (ret == XML_ENC_ERR_MEMORY)) {
-        if (input->error == 0)
-            input->error = xmlEncConvertError(ret);
-        return(ret);
     }
 
-    return (c_out);
+    xmlBufShrink(in, totalIn);
+
+    if (input->rawconsumed > ULONG_MAX - (unsigned long) totalIn)
+        input->rawconsumed = ULONG_MAX;
+    else
+        input->rawconsumed += totalIn;
+
+    *sizeOut = totalOut;
+    return(XML_ERR_OK);
 }
 
 /**

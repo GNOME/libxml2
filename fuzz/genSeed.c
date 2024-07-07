@@ -77,7 +77,7 @@ fuzzResourceRecorder(void *data ATTRIBUTE_UNUSED, const char *URL,
     }
 
     do {
-        len = xmlParserInputBufferGrow(in->buf, chunkSize);
+        len = xmlParserInputGrow(in, chunkSize);
         if (len < 0) {
             fprintf(stderr, "Error reading %s\n", URL);
             xmlFreeInputStream(in);

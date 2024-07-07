@@ -1895,7 +1895,9 @@ xmlParserInputBufferCreateStatic(const char *mem, int size,
  * @str:  C string
  * @flags:  flags
  *
- * Create an input buffer for a null-teriminated C string.
+ * DEPRECATED: Use xmlNewInputFromString.
+ *
+ * Create an input buffer for a null-terminated C string.
  *
  * Returns the new input buffer or NULL.
  */
@@ -2067,6 +2069,8 @@ xmlOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc func)
  * @len:  the size in bytes of the array.
  * @buf:  an char array
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Push the content of the arry in the input buffer
  * This routine handle the I18N transcoding to internal UTF-8
  * This is used when operating the parser in progressive (push) mode.
@@ -2135,6 +2139,8 @@ endOfInput (void * context ATTRIBUTE_UNUSED,
  * xmlParserInputBufferGrow:
  * @in:  a buffered parser input
  * @len:  indicative value of the amount of chars to read
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Grow up the content of the input buffer, the old data are preserved
  * This routine handle the I18N transcoding to internal UTF-8
@@ -2224,9 +2230,9 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
  * @in:  a buffered parser input
  * @len:  indicative value of the amount of chars to read
  *
- * Refresh the content of the input buffer, the old data are considered
- * consumed
- * This routine handle the I18N transcoding to internal UTF-8
+ * DEPRECATED: Internal function, don't use.
+ *
+ * Same as xmlParserInputBufferGrow.
  *
  * Returns the number of chars read and stored in the buffer, or -1
  *         in case of error.

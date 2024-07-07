@@ -229,12 +229,15 @@ XMLPUBFUN xmlParserInputBufferPtr
 						 xmlInputCloseCallback  ioclose,
 						 void *ioctx,
 	                                         xmlCharEncoding enc);
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlParserInputBufferRead		(xmlParserInputBufferPtr in,
 						 int len);
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlParserInputBufferGrow		(xmlParserInputBufferPtr in,
 						 int len);
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlParserInputBufferPush		(xmlParserInputBufferPtr in,
 						 int len,

@@ -1066,7 +1066,6 @@ XML_DEPRECATED
 XMLPUBFUN int
 		xmlParserInputRead	(xmlParserInputPtr in,
 					 int len);
-XML_DEPRECATED
 XMLPUBFUN int
 		xmlParserInputGrow	(xmlParserInputPtr in,
 					 int len);

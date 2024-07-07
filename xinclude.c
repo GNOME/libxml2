@@ -1445,7 +1445,7 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
     }
 
     content = xmlBufContent(buf->buffer);
-    len = xmlBufLength(buf->buffer);
+    len = xmlBufUse(buf->buffer);
     for (i = 0; i < len;) {
         int cur;
         int l;

@@ -783,7 +783,7 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
             xmlSaveErr(buf, res, NULL, encoding);
             return(-1);
         }
-	buf->conv = xmlBufCreate();
+	buf->conv = xmlBufCreate(4000 /* MINLEN */);
 	if (buf->conv == NULL) {
 	    xmlCharEncCloseFunc(handler);
             xmlSaveErrMemory(buf);
@@ -2324,7 +2324,8 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
             int format)
 {
     xmlBufPtr buffer;
-    size_t ret;
+    size_t ret1;
+    int ret2;
 
     if ((buf == NULL) || (cur == NULL))
         return(-1);
@@ -2335,11 +2336,11 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     buffer = xmlBufFromBuffer(buf);
     if (buffer == NULL)
         return(-1);
-    ret = xmlBufNodeDump(buffer, doc, cur, level, format);
-    xmlBufBackToBuffer(buffer);
-    if (ret > INT_MAX)
+    ret1 = xmlBufNodeDump(buffer, doc, cur, level, format);
+    ret2 = xmlBufBackToBuffer(buffer, buf);
+    if ((ret1 == (size_t) -1) || (ret2 < 0))
         return(-1);
-    return(ret);
+    return(ret1 > INT_MAX ? INT_MAX : ret1);
 }
 
 /**
@@ -2365,7 +2366,6 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     size_t use;
     size_t ret;
     xmlOutputBufferPtr outbuf;
-    int oldalloc;
 
     xmlInitParser();
 
@@ -2389,10 +2389,7 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
     outbuf->written = 0;
 
     use = xmlBufUse(buf);
-    oldalloc = xmlBufGetAllocationScheme(buf);
-    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
     xmlNodeDumpOutput(outbuf, doc, cur, level, format, NULL);
-    xmlBufSetAllocationScheme(buf, oldalloc);
     if (outbuf->error)
         ret = (size_t) -1;
     else

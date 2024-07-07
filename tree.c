@@ -1219,10 +1219,9 @@ xmlNodeParseContentInternal(const xmlDoc *doc, xmlNodePtr parent,
 
     cur = value;
 
-    buf = xmlBufCreateSize(64);
+    buf = xmlBufCreate(50);
     if (buf == NULL)
         return(-1);
-    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
 
     q = cur;
     while ((remaining > 0) && (*cur != 0)) {
@@ -1543,7 +1542,7 @@ xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
         return(xmlStrdup(node->content));
     }
 
-    buf = xmlBufCreateSize(64);
+    buf = xmlBufCreate(50);
     if (buf == NULL)
         return(NULL);
 
@@ -5456,13 +5455,13 @@ int
 xmlNodeBufGetContent(xmlBufferPtr buffer, const xmlNode *cur)
 {
     xmlBufPtr buf;
-    int ret;
+    int ret1, ret2;
 
     if ((cur == NULL) || (buffer == NULL)) return(-1);
     buf = xmlBufFromBuffer(buffer);
-    ret = xmlBufGetNodeContent(buf, cur);
-    buffer = xmlBufBackToBuffer(buf);
-    if ((ret < 0) || (buffer == NULL))
+    ret1 = xmlBufGetNodeContent(buf, cur);
+    ret2 = xmlBufBackToBuffer(buf, buffer);
+    if ((ret1 < 0) || (ret2 < 0))
         return(-1);
     return(0);
 }
@@ -5644,10 +5643,9 @@ xmlNodeGetContent(const xmlNode *cur)
             return(NULL);
     }
 
-    buf = xmlBufCreateSize(64);
+    buf = xmlBufCreate(50);
     if (buf == NULL)
         return (NULL);
-    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
     xmlBufGetNodeContent(buf, cur);
     ret = xmlBufDetach(buf);
     xmlBufFree(buf);

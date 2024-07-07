@@ -535,7 +535,7 @@ xmlTextWriterStartDocument(xmlTextWriterPtr writer, const char *version,
     writer->out->encoder = encoder;
     if (encoder != NULL) {
 	if (writer->out->conv == NULL) {
-	    writer->out->conv = xmlBufCreateSize(4000);
+	    writer->out->conv = xmlBufCreate(4000);
 	}
         xmlCharEncOutput(writer->out, 1);
         if ((writer->doc != NULL) && (writer->doc->encoding == NULL))

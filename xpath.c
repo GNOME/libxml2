@@ -8069,7 +8069,7 @@ xmlXPathTranslateFunction(xmlXPathParserContextPtr ctxt, int nargs) {
         }
     }
 
-    target = xmlBufCreateSize(64);
+    target = xmlBufCreate(50);
     if (target == NULL) {
         xmlXPathPErrMemory(ctxt);
         goto error;
@@ -12784,7 +12784,7 @@ xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CAST_TO_STRING;
     str = valuePop(ctxt);
 
-    target = xmlBufCreateSize(64);
+    target = xmlBufCreate(50);
 
     escape[0] = '%';
     escape[3] = 0;

@@ -1335,7 +1335,7 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
         return(XML_ERR_OK);
     }
 
-    buf = xmlBufCreate();
+    buf = xmlBufCreate(INPUT_CHUNK + 4000 /* MINLEN */ + LINE_LEN);
     if (buf == NULL) {
         xmlCharEncCloseFunc(handler);
         return(XML_ERR_NO_MEMORY);

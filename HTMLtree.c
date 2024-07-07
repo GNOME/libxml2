@@ -460,7 +460,8 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
 int
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     xmlBufPtr buffer;
-    size_t ret;
+    size_t ret1;
+    int ret2;
 
     if ((buf == NULL) || (cur == NULL))
         return(-1);
@@ -470,14 +471,13 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
     if (buffer == NULL)
         return(-1);
 
-    xmlBufSetAllocationScheme(buffer, XML_BUFFER_ALLOC_DOUBLEIT);
-    ret = htmlBufNodeDumpFormat(buffer, doc, cur, 1);
+    ret1 = htmlBufNodeDumpFormat(buffer, doc, cur, 1);
 
-    xmlBufBackToBuffer(buffer);
+    ret2 = xmlBufBackToBuffer(buffer, buf);
 
-    if (ret > INT_MAX)
+    if ((ret1 == (size_t) -1) || (ret2 < 0))
         return(-1);
-    return((int) ret);
+    return(ret1 > INT_MAX ? INT_MAX : ret1);
 }
 
 /**

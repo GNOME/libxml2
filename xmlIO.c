@@ -1201,12 +1201,11 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlParserInputBuffer));
-    ret->buffer = xmlBufCreateSize(2 * xmlDefaultBufferSize);
+    ret->buffer = xmlBufCreate(INPUT_CHUNK + MINLEN + 80 /* LINE_LEN */);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);
     }
-    xmlBufSetAllocationScheme(ret->buffer, XML_BUFFER_ALLOC_DOUBLEIT);
     if (enc != XML_CHAR_ENCODING_NONE) {
         if (xmlLookupCharEncodingHandler(enc, &ret->encoder) != 0) {
             /* We can't handle errors properly here. */
@@ -1215,7 +1214,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
         }
     }
     if (ret->encoder != NULL)
-        ret->raw = xmlBufCreateSize(2 * xmlDefaultBufferSize);
+        ret->raw = xmlBufCreate(MINLEN);
     else
         ret->raw = NULL;
     ret->readcallback = NULL;
@@ -1245,16 +1244,15 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlOutputBuffer));
-    ret->buffer = xmlBufCreate();
+    ret->buffer = xmlBufCreate(MINLEN);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);
     }
-    xmlBufSetAllocationScheme(ret->buffer, XML_BUFFER_ALLOC_IO);
 
     ret->encoder = encoder;
     if (encoder != NULL) {
-        ret->conv = xmlBufCreateSize(4000);
+        ret->conv = xmlBufCreate(MINLEN);
 	if (ret->conv == NULL) {
             xmlBufFree(ret->buffer);
 	    xmlFree(ret);
@@ -1292,21 +1290,15 @@ xmlAllocOutputBufferInternal(xmlCharEncodingHandlerPtr encoder) {
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlOutputBuffer));
-    ret->buffer = xmlBufCreate();
+    ret->buffer = xmlBufCreate(MINLEN);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);
     }
 
-
-    /*
-     * For conversion buffers we use the special IO handling
-     */
-    xmlBufSetAllocationScheme(ret->buffer, XML_BUFFER_ALLOC_IO);
-
     ret->encoder = encoder;
     if (encoder != NULL) {
-        ret->conv = xmlBufCreateSize(4000);
+        ret->conv = xmlBufCreate(MINLEN);
 	if (ret->conv == NULL) {
             xmlBufFree(ret->buffer);
 	    xmlFree(ret);
@@ -2123,7 +2115,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	 * Store the data in the incoming raw buffer
 	 */
         if (in->raw == NULL) {
-	    in->raw = xmlBufCreate();
+	    in->raw = xmlBufCreate(50);
             if (in->raw == NULL) {
                 in->error = XML_ERR_NO_MEMORY;
                 return(-1);
@@ -2195,7 +2187,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         buf = in->buffer;
     } else {
         if (in->raw == NULL) {
-	    in->raw = xmlBufCreate();
+	    in->raw = xmlBufCreate(MINLEN);
 	}
         buf = in->raw;
     }
@@ -2308,7 +2300,7 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *data) {
 	     * Store the data in the incoming raw buffer
 	     */
 	    if (out->conv == NULL) {
-		out->conv = xmlBufCreate();
+		out->conv = xmlBufCreate(MINLEN);
                 if (out->conv == NULL) {
                     out->error = XML_ERR_NO_MEMORY;
                     return(-1);

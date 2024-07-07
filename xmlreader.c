@@ -1766,12 +1766,11 @@ xmlTextReaderReadString(xmlTextReaderPtr reader)
             break;
     }
 
-    buf = xmlBufCreateSize(30);
+    buf = xmlBufCreate(50);
     if (buf == NULL) {
         xmlTextReaderErrMemory(reader);
         return(NULL);
     }
-    xmlBufSetAllocationScheme(buf, XML_BUFFER_ALLOC_DOUBLEIT);
 
     cur = node;
     while (cur != NULL) {
@@ -2015,14 +2014,11 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
     ret->entMax = 0;
     ret->entNr = 0;
     ret->input = input;
-    ret->buffer = xmlBufCreateSize(100);
+    ret->buffer = xmlBufCreate(50);
     if (ret->buffer == NULL) {
         xmlFree(ret);
 	return(NULL);
     }
-    /* no operation on a reader should require a huge buffer */
-    xmlBufSetAllocationScheme(ret->buffer,
-			      XML_BUFFER_ALLOC_DOUBLEIT);
     ret->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (ret->sax == NULL) {
 	xmlBufFree(ret->buffer);
@@ -3583,11 +3579,9 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
 		return(attr->children->content);
 	    else {
 		if (reader->buffer == NULL) {
-		    reader->buffer = xmlBufCreateSize(100);
+		    reader->buffer = xmlBufCreate(50);
                     if (reader->buffer == NULL)
                         return (NULL);
-		    xmlBufSetAllocationScheme(reader->buffer,
-		                              XML_BUFFER_ALLOC_DOUBLEIT);
                 } else
                     xmlBufEmpty(reader->buffer);
 	        xmlBufGetNodeContent(reader->buffer, node);
@@ -3596,9 +3590,7 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
                     xmlTextReaderErrMemory(reader);
 		    /* error on the buffer best to reallocate */
 		    xmlBufFree(reader->buffer);
-		    reader->buffer = xmlBufCreateSize(100);
-		    xmlBufSetAllocationScheme(reader->buffer,
-		                              XML_BUFFER_ALLOC_DOUBLEIT);
+		    reader->buffer = xmlBufCreate(50);
 		}
 		return(ret);
 	    }
@@ -4848,13 +4840,10 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 	reader->allocs |= XML_TEXTREADER_INPUT;
     }
     if (reader->buffer == NULL)
-        reader->buffer = xmlBufCreateSize(100);
+        reader->buffer = xmlBufCreate(50);
     if (reader->buffer == NULL) {
         return (-1);
     }
-    /* no operation on a reader should require a huge buffer */
-    xmlBufSetAllocationScheme(reader->buffer,
-			      XML_BUFFER_ALLOC_DOUBLEIT);
     if (reader->sax == NULL)
 	reader->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));
     if (reader->sax == NULL) {

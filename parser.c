@@ -12583,7 +12583,10 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     else
         xmlFreeNodeList(list);
 
-    ret = ctxt->errNo;
+    if (!ctxt->wellFormed)
+        ret = ctxt->errNo;
+    else
+        ret = XML_ERR_OK;
 
     xmlFreeInputStream(input);
     xmlFreeParserCtxt(ctxt);

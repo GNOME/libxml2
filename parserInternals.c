@@ -1293,8 +1293,9 @@ xmlSwitchEncodingName(xmlParserCtxtPtr ctxt, const char *encoding) {
 int
 xmlInputSetEncodingHandler(xmlParserInputPtr input,
                            xmlCharEncodingHandlerPtr handler) {
-    int nbchars;
     xmlParserInputBufferPtr in;
+    xmlBufPtr buf;
+    int nbchars;
 
     if ((input == NULL) || (input->buf == NULL)) {
         xmlCharEncCloseFunc(handler);
@@ -1331,28 +1332,27 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
         return(XML_ERR_OK);
     }
 
+    buf = xmlBufCreate();
+    if (buf == NULL)
+        return(XML_ERR_NO_MEMORY);
+
     in->encoder = handler;
+    in->raw = in->buffer;
+    in->buffer = buf;
 
     /*
      * Is there already some content down the pipe to convert ?
      */
-    if (xmlBufIsEmpty(in->buffer) == 0) {
-        xmlBufPtr buf;
+    if (input->end > input->cur) {
         size_t processed;
-
-        buf = xmlBufCreate();
-        if (buf == NULL)
-            return(XML_ERR_NO_MEMORY);
 
         /*
          * Shrink the current input buffer.
          * Move it as the raw buffer and create a new input buffer
          */
         processed = input->cur - input->base;
-        xmlBufShrink(in->buffer, processed);
+        xmlBufShrink(in->raw, processed);
         input->consumed += processed;
-        in->raw = in->buffer;
-        in->buffer = buf;
         in->rawconsumed = processed;
 
         nbchars = xmlCharEncInput(in);

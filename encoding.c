@@ -1919,39 +1919,45 @@ long
 xmlByteConsumed(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr in;
 
-    if (ctxt == NULL) return(-1);
+    if (ctxt == NULL)
+        return(-1);
     in = ctxt->input;
-    if (in == NULL)  return(-1);
+    if (in == NULL)
+        return(-1);
+
     if ((in->buf != NULL) && (in->buf->encoder != NULL)) {
-        unsigned int unused = 0;
+        int unused = 0;
 	xmlCharEncodingHandler * handler = in->buf->encoder;
+
         /*
 	 * Encoding conversion, compute the number of unused original
 	 * bytes from the input not consumed and subtract that from
 	 * the raw consumed value, this is not a cheap operation
 	 */
         if (in->end - in->cur > 0) {
-	    unsigned char convbuf[32000];
+	    unsigned char *convbuf;
 	    const unsigned char *cur = (const unsigned char *)in->cur;
-	    int toconv = in->end - in->cur, written = 32000;
+	    int toconv, ret;
 
-	    int ret;
+            convbuf = xmlMalloc(32000);
+            if (convbuf == NULL)
+                return(-1);
 
-            do {
-                toconv = in->end - cur;
-                written = 32000;
-                ret = xmlEncOutputChunk(handler, &convbuf[0], &written,
-                                        cur, &toconv);
-                if ((ret != XML_ENC_ERR_SUCCESS) && (ret != XML_ENC_ERR_SPACE))
-                    return(-1);
-                unused += written;
-                cur += toconv;
-            } while (ret == XML_ENC_ERR_SPACE);
+            toconv = in->end - cur;
+            unused = 32000;
+            ret = xmlEncOutputChunk(handler, convbuf, &unused, cur, &toconv);
+
+            xmlFree(convbuf);
+
+            if (ret != XML_ENC_ERR_SUCCESS)
+                return(-1);
 	}
-	if (in->buf->rawconsumed < unused)
+
+	if (in->buf->rawconsumed < (unsigned long) unused)
 	    return(-1);
 	return(in->buf->rawconsumed - unused);
     }
+
     return(in->consumed + (in->cur - in->base));
 }
 

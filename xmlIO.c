@@ -706,7 +706,7 @@ xmlFileRead(void * context, char * buffer, int len) {
     if ((bytes < (size_t) len) && (ferror(file)))
         return(-xmlIOErr(errno));
 
-    return(len);
+    return(bytes);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

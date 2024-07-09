@@ -4,6 +4,8 @@
  * See Copyright for the status of this software.
  */
 
+#define XML_DEPRECATED
+
 #include <libxml/parser.h>
 #include <libxml/uri.h>
 #include <libxml/xmlreader.h>
@@ -91,6 +93,34 @@ testNodeGetContent(void) {
     }
     xmlFree(content);
     xmlFreeDoc(doc);
+
+    return err;
+}
+
+static int
+testCFileIO(void) {
+    xmlDocPtr doc;
+    int err = 0;
+
+    /* Deprecated FILE-based API */
+    xmlRegisterInputCallbacks(xmlFileMatch, xmlFileOpen, xmlFileRead,
+                              xmlFileClose);
+    doc = xmlReadFile("test/ent1", NULL, 0);
+
+    if (doc == NULL) {
+        err = 1;
+    } else {
+        xmlNodePtr root = xmlDocGetRootElement(doc);
+
+        if (root == NULL || !xmlStrEqual(root->name, BAD_CAST "EXAMPLE"))
+            err = 1;
+    }
+
+    xmlFreeDoc(doc);
+    xmlPopInputCallbacks();
+
+    if (err)
+        fprintf(stderr, "xmlReadFile failed with FILE input callbacks\n");
 
     return err;
 }
@@ -540,6 +570,7 @@ main(void) {
     err |= testStandaloneWithEncoding();
     err |= testUnsupportedEncoding();
     err |= testNodeGetContent();
+    err |= testCFileIO();
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();
 #endif

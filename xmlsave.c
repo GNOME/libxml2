@@ -288,7 +288,7 @@ xmlSaveSetIndentString(xmlSaveCtxtPtr ctxt, const char *indent) {
     size_t len;
     int i;
 
-    if (indent == NULL)
+    if ((ctxt == NULL) || (indent == NULL))
         return(-1);
 
     len = strlen(indent);

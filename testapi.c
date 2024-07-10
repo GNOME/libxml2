@@ -8224,6 +8224,16 @@ test_xmlCleanupEncodingAliases(void) {
 
 
 static int
+test_xmlCreateCharEncodingHandler(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlDelEncodingAlias(void) {
     int test_ret = 0;
 
@@ -8492,7 +8502,7 @@ static int
 test_encoding(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing encoding : 16 of 21 functions ...\n");
+    if (quiet == 0) printf("Testing encoding : 16 of 22 functions ...\n");
     test_ret += test_UTF8Toisolat1();
     test_ret += test_isolat1ToUTF8();
     test_ret += test_xmlAddEncodingAlias();
@@ -8502,6 +8512,7 @@ test_encoding(void) {
     test_ret += test_xmlCharEncOutFunc();
     test_ret += test_xmlCleanupCharEncodingHandlers();
     test_ret += test_xmlCleanupEncodingAliases();
+    test_ret += test_xmlCreateCharEncodingHandler();
     test_ret += test_xmlDelEncodingAlias();
     test_ret += test_xmlDetectCharEncoding();
     test_ret += test_xmlFindCharEncodingHandler();
@@ -12401,6 +12412,16 @@ test_xmlCtxtSetCatalogs(void) {
 
 
 static int
+test_xmlCtxtSetCharEncConvImpl(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlCtxtSetDict(void) {
     int test_ret = 0;
 
@@ -15060,7 +15081,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 81 of 94 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 81 of 95 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlCleanupGlobals();
     test_ret += test_xmlClearNodeInfoSeq();
@@ -15081,6 +15102,7 @@ test_parser(void) {
     test_ret += test_xmlCtxtReset();
     test_ret += test_xmlCtxtResetPush();
     test_ret += test_xmlCtxtSetCatalogs();
+    test_ret += test_xmlCtxtSetCharEncConvImpl();
     test_ret += test_xmlCtxtSetDict();
     test_ret += test_xmlCtxtSetErrorHandler();
     test_ret += test_xmlCtxtSetMaxAmplification();
@@ -15874,8 +15896,40 @@ test_xmlInputCreateUrl(void) {
 
 
 static int
-test_xmlInputSetEncoding(void) {
+test_xmlInputSetEncodingHandler(void) {
     int test_ret = 0;
+
+    int mem_base;
+    int ret_val;
+    xmlParserInputPtr input; /* the input stream */
+    int n_input;
+    xmlCharEncodingHandlerPtr handler; /* the encoding handler */
+    int n_handler;
+
+    for (n_input = 0;n_input < gen_nb_xmlParserInputPtr;n_input++) {
+    for (n_handler = 0;n_handler < gen_nb_xmlCharEncodingHandlerPtr;n_handler++) {
+        mem_base = xmlMemBlocks();
+        input = gen_xmlParserInputPtr(n_input, 0);
+        handler = gen_xmlCharEncodingHandlerPtr(n_handler, 1);
+
+        ret_val = xmlInputSetEncodingHandler(input, handler);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlParserInputPtr(n_input, input, 0);
+        des_xmlCharEncodingHandlerPtr(n_handler, handler, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlInputSetEncodingHandler",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_input);
+            printf(" %d", n_handler);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+
     return(test_ret);
 }
 
@@ -16615,7 +16669,7 @@ test_parserInternals(void) {
     test_ret += test_xmlInputCreateMemory();
     test_ret += test_xmlInputCreateString();
     test_ret += test_xmlInputCreateUrl();
-    test_ret += test_xmlInputSetEncoding();
+    test_ret += test_xmlInputSetEncodingHandler();
     test_ret += test_xmlIsLetter();
     test_ret += test_xmlNewEntityInputStream();
     test_ret += test_xmlNewInputFromFile();
@@ -33870,6 +33924,47 @@ test_xmlSaveSetEscape(void) {
 
 
 static int
+test_xmlSaveSetIndentString(void) {
+    int test_ret = 0;
+
+#if defined(LIBXML_OUTPUT_ENABLED)
+    int mem_base;
+    int ret_val;
+    xmlSaveCtxtPtr ctxt; /* save context */
+    int n_ctxt;
+    const char * indent; /* indent string */
+    int n_indent;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlSaveCtxtPtr;n_ctxt++) {
+    for (n_indent = 0;n_indent < gen_nb_const_char_ptr;n_indent++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlSaveCtxtPtr(n_ctxt, 0);
+        indent = gen_const_char_ptr(n_indent, 1);
+
+        ret_val = xmlSaveSetIndentString(ctxt, indent);
+        desret_int(ret_val);
+        call_tests++;
+        des_xmlSaveCtxtPtr(n_ctxt, ctxt, 0);
+        des_const_char_ptr(n_indent, indent, 1);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlSaveSetIndentString",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_indent);
+            printf("\n");
+        }
+    }
+    }
+    function_tests++;
+#endif
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlSaveToBuffer(void) {
     int test_ret = 0;
 
@@ -34045,13 +34140,14 @@ static int
 test_xmlsave(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlsave : 8 of 14 functions ...\n");
+    if (quiet == 0) printf("Testing xmlsave : 9 of 15 functions ...\n");
     test_ret += test_xmlSaveClose();
     test_ret += test_xmlSaveDoc();
     test_ret += test_xmlSaveFinish();
     test_ret += test_xmlSaveFlush();
     test_ret += test_xmlSaveSetAttrEscape();
     test_ret += test_xmlSaveSetEscape();
+    test_ret += test_xmlSaveSetIndentString();
     test_ret += test_xmlSaveToBuffer();
     test_ret += test_xmlSaveToFd();
     test_ret += test_xmlSaveToFilename();

@@ -307,6 +307,12 @@
      <author>Daniel Veillard </author>
      <exports symbol='XML_CHAR_ENCODING_2022_JP' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_8859_1' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_10' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_11' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_13' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_14' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_15' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_8859_16' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_8859_2' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_8859_3' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_8859_4' type='enum'/>
@@ -319,6 +325,7 @@
      <exports symbol='XML_CHAR_ENCODING_EBCDIC' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_ERROR' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_EUC_JP' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_HTML' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_NONE' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_SHIFT_JIS' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_UCS2' type='enum'/>
@@ -326,13 +333,13 @@
      <exports symbol='XML_CHAR_ENCODING_UCS4LE' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_UCS4_2143' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_UCS4_3412' type='enum'/>
+     <exports symbol='XML_CHAR_ENCODING_UTF16' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_UTF16BE' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_UTF16LE' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_UTF8' type='enum'/>
      <exports symbol='XML_ENC_ERR_INPUT' type='enum'/>
      <exports symbol='XML_ENC_ERR_INTERNAL' type='enum'/>
      <exports symbol='XML_ENC_ERR_MEMORY' type='enum'/>
-     <exports symbol='XML_ENC_ERR_PARTIAL' type='enum'/>
      <exports symbol='XML_ENC_ERR_SPACE' type='enum'/>
      <exports symbol='XML_ENC_ERR_SUCCESS' type='enum'/>
      <exports symbol='xmlCharEncError' type='typedef'/>
@@ -340,10 +347,14 @@
      <exports symbol='xmlCharEncodingHandler' type='typedef'/>
      <exports symbol='xmlCharEncodingHandlerPtr' type='typedef'/>
      <exports symbol='_xmlCharEncodingHandler' type='struct'/>
+     <exports symbol='xmlCharEncConverter' type='struct'/>
      <exports symbol='UTF8Toisolat1' type='function'/>
      <exports symbol='isolat1ToUTF8' type='function'/>
      <exports symbol='xmlAddEncodingAlias' type='function'/>
      <exports symbol='xmlCharEncCloseFunc' type='function'/>
+     <exports symbol='xmlCharEncConvCtxtDtor' type='function'/>
+     <exports symbol='xmlCharEncConvFunc' type='function'/>
+     <exports symbol='xmlCharEncConvImpl' type='function'/>
      <exports symbol='xmlCharEncFirstLine' type='function'/>
      <exports symbol='xmlCharEncInFunc' type='function'/>
      <exports symbol='xmlCharEncOutFunc' type='function'/>
@@ -351,6 +362,7 @@
      <exports symbol='xmlCharEncodingOutputFunc' type='function'/>
      <exports symbol='xmlCleanupCharEncodingHandlers' type='function'/>
      <exports symbol='xmlCleanupEncodingAliases' type='function'/>
+     <exports symbol='xmlCreateCharEncodingHandler' type='function'/>
      <exports symbol='xmlDelEncodingAlias' type='function'/>
      <exports symbol='xmlDetectCharEncoding' type='function'/>
      <exports symbol='xmlFindCharEncodingHandler' type='function'/>
@@ -550,6 +562,8 @@
      <exports symbol='XML_PARSE_NONET' type='enum'/>
      <exports symbol='XML_PARSE_NOWARNING' type='enum'/>
      <exports symbol='XML_PARSE_NOXINCNODE' type='enum'/>
+     <exports symbol='XML_PARSE_NO_CATALOG_PI' type='enum'/>
+     <exports symbol='XML_PARSE_NO_SYS_CATALOG' type='enum'/>
      <exports symbol='XML_PARSE_NO_UNZIP' type='enum'/>
      <exports symbol='XML_PARSE_NO_XXE' type='enum'/>
      <exports symbol='XML_PARSE_NSCLEAN' type='enum'/>
@@ -686,6 +700,7 @@
      <exports symbol='xmlCtxtReset' type='function'/>
      <exports symbol='xmlCtxtResetPush' type='function'/>
      <exports symbol='xmlCtxtSetCatalogs' type='function'/>
+     <exports symbol='xmlCtxtSetCharEncConvImpl' type='function'/>
      <exports symbol='xmlCtxtSetDict' type='function'/>
      <exports symbol='xmlCtxtSetErrorHandler' type='function'/>
      <exports symbol='xmlCtxtSetMaxAmplification' type='function'/>
@@ -822,7 +837,7 @@
      <exports symbol='xmlInputCreateMemory' type='function'/>
      <exports symbol='xmlInputCreateString' type='function'/>
      <exports symbol='xmlInputCreateUrl' type='function'/>
-     <exports symbol='xmlInputSetEncoding' type='function'/>
+     <exports symbol='xmlInputSetEncodingHandler' type='function'/>
      <exports symbol='xmlIsLetter' type='function'/>
      <exports symbol='xmlNewEntityInputStream' type='function'/>
      <exports symbol='xmlNewInputFromFile' type='function'/>
@@ -2900,9 +2915,12 @@
      <author>Daniel Veillard </author>
      <exports symbol='XML_SAVE_AS_HTML' type='enum'/>
      <exports symbol='XML_SAVE_AS_XML' type='enum'/>
+     <exports symbol='XML_SAVE_EMPTY' type='enum'/>
      <exports symbol='XML_SAVE_FORMAT' type='enum'/>
+     <exports symbol='XML_SAVE_INDENT' type='enum'/>
      <exports symbol='XML_SAVE_NO_DECL' type='enum'/>
      <exports symbol='XML_SAVE_NO_EMPTY' type='enum'/>
+     <exports symbol='XML_SAVE_NO_INDENT' type='enum'/>
      <exports symbol='XML_SAVE_NO_XHTML' type='enum'/>
      <exports symbol='XML_SAVE_WSNONSIG' type='enum'/>
      <exports symbol='XML_SAVE_XHTML' type='enum'/>
@@ -2915,6 +2933,7 @@
      <exports symbol='xmlSaveFlush' type='function'/>
      <exports symbol='xmlSaveSetAttrEscape' type='function'/>
      <exports symbol='xmlSaveSetEscape' type='function'/>
+     <exports symbol='xmlSaveSetIndentString' type='function'/>
      <exports symbol='xmlSaveToBuffer' type='function'/>
      <exports symbol='xmlSaveToFd' type='function'/>
      <exports symbol='xmlSaveToFilename' type='function'/>
@@ -4516,6 +4535,12 @@
     <enum name='XML_CDATA_SECTION_NODE' file='tree' value='4' type='xmlElementType'/>
     <enum name='XML_CHAR_ENCODING_2022_JP' file='encoding' value='19' type='xmlCharEncoding' info='ISO-2022-JP'/>
     <enum name='XML_CHAR_ENCODING_8859_1' file='encoding' value='10' type='xmlCharEncoding' info='ISO-8859-1 ISO Latin 1'/>
+    <enum name='XML_CHAR_ENCODING_8859_10' file='encoding' value='25' type='xmlCharEncoding' info='ISO-8859-10'/>
+    <enum name='XML_CHAR_ENCODING_8859_11' file='encoding' value='26' type='xmlCharEncoding' info='ISO-8859-11'/>
+    <enum name='XML_CHAR_ENCODING_8859_13' file='encoding' value='27' type='xmlCharEncoding' info='ISO-8859-13'/>
+    <enum name='XML_CHAR_ENCODING_8859_14' file='encoding' value='28' type='xmlCharEncoding' info='ISO-8859-14'/>
+    <enum name='XML_CHAR_ENCODING_8859_15' file='encoding' value='29' type='xmlCharEncoding' info='ISO-8859-15'/>
+    <enum name='XML_CHAR_ENCODING_8859_16' file='encoding' value='30' type='xmlCharEncoding' info=' ISO-8859-16'/>
     <enum name='XML_CHAR_ENCODING_8859_2' file='encoding' value='11' type='xmlCharEncoding' info='ISO-8859-2 ISO Latin 2'/>
     <enum name='XML_CHAR_ENCODING_8859_3' file='encoding' value='12' type='xmlCharEncoding' info='ISO-8859-3'/>
     <enum name='XML_CHAR_ENCODING_8859_4' file='encoding' value='13' type='xmlCharEncoding' info='ISO-8859-4'/>
@@ -4524,10 +4549,11 @@
     <enum name='XML_CHAR_ENCODING_8859_7' file='encoding' value='16' type='xmlCharEncoding' info='ISO-8859-7'/>
     <enum name='XML_CHAR_ENCODING_8859_8' file='encoding' value='17' type='xmlCharEncoding' info='ISO-8859-8'/>
     <enum name='XML_CHAR_ENCODING_8859_9' file='encoding' value='18' type='xmlCharEncoding' info='ISO-8859-9'/>
-    <enum name='XML_CHAR_ENCODING_ASCII' file='encoding' value='22' type='xmlCharEncoding' info=' pure ASCII'/>
+    <enum name='XML_CHAR_ENCODING_ASCII' file='encoding' value='22' type='xmlCharEncoding' info='pure ASCII Available since 2.14.0'/>
     <enum name='XML_CHAR_ENCODING_EBCDIC' file='encoding' value='6' type='xmlCharEncoding' info='EBCDIC uh!'/>
     <enum name='XML_CHAR_ENCODING_ERROR' file='encoding' value='-1' type='xmlCharEncoding' info='No char encoding detected'/>
     <enum name='XML_CHAR_ENCODING_EUC_JP' file='encoding' value='21' type='xmlCharEncoding' info='EUC-JP'/>
+    <enum name='XML_CHAR_ENCODING_HTML' file='encoding' value='24' type='xmlCharEncoding' info='HTML (output only)'/>
     <enum name='XML_CHAR_ENCODING_NONE' file='encoding' value='0' type='xmlCharEncoding' info='No char encoding detected'/>
     <enum name='XML_CHAR_ENCODING_SHIFT_JIS' file='encoding' value='20' type='xmlCharEncoding' info='Shift_JIS'/>
     <enum name='XML_CHAR_ENCODING_UCS2' file='encoding' value='9' type='xmlCharEncoding' info='UCS-2'/>
@@ -4535,6 +4561,7 @@
     <enum name='XML_CHAR_ENCODING_UCS4LE' file='encoding' value='4' type='xmlCharEncoding' info='UCS-4 little endian'/>
     <enum name='XML_CHAR_ENCODING_UCS4_2143' file='encoding' value='7' type='xmlCharEncoding' info='UCS-4 unusual ordering'/>
     <enum name='XML_CHAR_ENCODING_UCS4_3412' file='encoding' value='8' type='xmlCharEncoding' info='UCS-4 unusual ordering'/>
+    <enum name='XML_CHAR_ENCODING_UTF16' file='encoding' value='23' type='xmlCharEncoding' info='UTF-16 native'/>
     <enum name='XML_CHAR_ENCODING_UTF16BE' file='encoding' value='3' type='xmlCharEncoding' info='UTF-16 big endian'/>
     <enum name='XML_CHAR_ENCODING_UTF16LE' file='encoding' value='2' type='xmlCharEncoding' info='UTF-16 little endian'/>
     <enum name='XML_CHAR_ENCODING_UTF8' file='encoding' value='1' type='xmlCharEncoding' info='UTF-8'/>
@@ -4648,10 +4675,9 @@ and not by parsing an instance'/>
     <enum name='XML_ELEMENT_TYPE_MIXED' file='tree' value='3' type='xmlElementTypeVal'/>
     <enum name='XML_ELEMENT_TYPE_UNDEFINED' file='tree' value='0' type='xmlElementTypeVal'/>
     <enum name='XML_ENC_ERR_INPUT' file='encoding' value='-2' type='xmlCharEncError'/>
-    <enum name='XML_ENC_ERR_INTERNAL' file='encoding' value='-4' type='xmlCharEncError'/>
-    <enum name='XML_ENC_ERR_MEMORY' file='encoding' value='-5' type='xmlCharEncError'/>
-    <enum name='XML_ENC_ERR_PARTIAL' file='encoding' value='-3' type='xmlCharEncError'/>
-    <enum name='XML_ENC_ERR_SPACE' file='encoding' value='-1' type='xmlCharEncError'/>
+    <enum name='XML_ENC_ERR_INTERNAL' file='encoding' value='-1' type='xmlCharEncError'/>
+    <enum name='XML_ENC_ERR_MEMORY' file='encoding' value='-4' type='xmlCharEncError'/>
+    <enum name='XML_ENC_ERR_SPACE' file='encoding' value='-3' type='xmlCharEncError'/>
     <enum name='XML_ENC_ERR_SUCCESS' file='encoding' value='0' type='xmlCharEncError'/>
     <enum name='XML_ENTITY_DECL' file='tree' value='17' type='xmlElementType'/>
     <enum name='XML_ENTITY_NODE' file='tree' value='6' type='xmlElementType' info='unused'/>
@@ -4938,7 +4964,9 @@ crash if you try to modify the tree)'/>
     <enum name='XML_PARSE_NONET' file='parser' value='2048' type='xmlParserOption' info='Forbid network access'/>
     <enum name='XML_PARSE_NOWARNING' file='parser' value='64' type='xmlParserOption' info='suppress warning reports'/>
     <enum name='XML_PARSE_NOXINCNODE' file='parser' value='32768' type='xmlParserOption' info='do not generate XINCLUDE START/END nodes'/>
-    <enum name='XML_PARSE_NO_UNZIP' file='parser' value='16777216' type='xmlParserOption' info=' disable compressed content'/>
+    <enum name='XML_PARSE_NO_CATALOG_PI' file='parser' value='67108864' type='xmlParserOption' info=' ignore catalog PIs'/>
+    <enum name='XML_PARSE_NO_SYS_CATALOG' file='parser' value='33554432' type='xmlParserOption' info='disable global system catalog'/>
+    <enum name='XML_PARSE_NO_UNZIP' file='parser' value='16777216' type='xmlParserOption' info='disable compressed content'/>
     <enum name='XML_PARSE_NO_XXE' file='parser' value='8388608' type='xmlParserOption' info='disable loading of external content since 2.14.0'/>
     <enum name='XML_PARSE_NSCLEAN' file='parser' value='8192' type='xmlParserOption' info='remove redundant namespaces declarations'/>
     <enum name='XML_PARSE_OLD10' file='parser' value='131072' type='xmlParserOption' info='parse using XML-1.0 before update 5'/>
@@ -5152,14 +5180,17 @@ crash if you try to modify the tree)'/>
     <enum name='XML_SAVE_AS_HTML' file='xmlsave' value='64' type='xmlSaveOption' info='force HTML serialization on XML doc'/>
     <enum name='XML_SAVE_AS_XML' file='xmlsave' value='32' type='xmlSaveOption' info='force XML serialization on HTML doc'/>
     <enum name='XML_SAVE_CHAR_INVALID' file='xmlerror' value='1401' type='xmlParserErrors' info='1401'/>
+    <enum name='XML_SAVE_EMPTY' file='xmlsave' value='256' type='xmlSaveOption' info='force empty tags, overriding global'/>
     <enum name='XML_SAVE_FORMAT' file='xmlsave' value='1' type='xmlSaveOption' info='format save output'/>
+    <enum name='XML_SAVE_INDENT' file='xmlsave' value='1024' type='xmlSaveOption' info=' force indenting, overriding global'/>
     <enum name='XML_SAVE_NOT_UTF8' file='xmlerror' value='1400' type='xmlParserErrors'/>
     <enum name='XML_SAVE_NO_DECL' file='xmlsave' value='2' type='xmlSaveOption' info='drop the xml declaration'/>
     <enum name='XML_SAVE_NO_DOCTYPE' file='xmlerror' value='1402' type='xmlParserErrors' info='1402'/>
     <enum name='XML_SAVE_NO_EMPTY' file='xmlsave' value='4' type='xmlSaveOption' info='no empty tags'/>
+    <enum name='XML_SAVE_NO_INDENT' file='xmlsave' value='512' type='xmlSaveOption' info='disable indenting'/>
     <enum name='XML_SAVE_NO_XHTML' file='xmlsave' value='8' type='xmlSaveOption' info='disable XHTML1 specific rules'/>
     <enum name='XML_SAVE_UNKNOWN_ENCODING' file='xmlerror' value='1403' type='xmlParserErrors' info='1403'/>
-    <enum name='XML_SAVE_WSNONSIG' file='xmlsave' value='128' type='xmlSaveOption' info=' format with non-significant whitespace'/>
+    <enum name='XML_SAVE_WSNONSIG' file='xmlsave' value='128' type='xmlSaveOption' info='format with non-significant whitespace Available since 2.14.0'/>
     <enum name='XML_SAVE_XHTML' file='xmlsave' value='16' type='xmlSaveOption' info='force XHTML1 specific rules'/>
     <enum name='XML_SCHEMAP_AG_PROPS_CORRECT' file='xmlerror' value='3087' type='xmlParserErrors' info='3086'/>
     <enum name='XML_SCHEMAP_ATTRFORMDEFAULT_VALUE' file='xmlerror' value='1701' type='xmlParserErrors' info='1701'/>
@@ -5844,10 +5875,12 @@ crash if you try to modify the tree)'/>
       <field name='name' type='char *'/>
       <field name='input' type='xmlCharEncodingInputFunc'/>
       <field name='output' type='xmlCharEncodingOutputFunc'/>
-      <field name='iconv_in' type='iconv_t'/>
-      <field name='iconv_out' type='iconv_t'/>
-      <field name='uconv_in' type='struct _uconv_t *'/>
-      <field name='uconv_out' type='struct _uconv_t *'/>
+      <field name='iconv_in' type='void *'/>
+      <field name='iconv_out' type='void *'/>
+      <field name='inputCtxt' type='void *'/>
+      <field name='outputCtxt' type='void *'/>
+      <field name='ctxtDtor' type='xmlCharEncConvCtxtDtor'/>
+      <field name='flags' type='int'/>
     </struct>
     <typedef name='xmlCharEncodingHandlerPtr' file='encoding' type='xmlCharEncodingHandler *'/>
     <struct name='xmlDOMWrapCtxt' file='tree' type='struct _xmlDOMWrapCtxt'>
@@ -6171,6 +6204,8 @@ crash if you try to modify the tree)'/>
       <field name='errorCtxt' type='void *'/>
       <field name='resourceLoader' type='xmlResourceLoader'/>
       <field name='resourceCtxt' type='void *'/>
+      <field name='convImpl' type='xmlCharEncConvImpl'/>
+      <field name='convCtxt' type='void *'/>
     </struct>
     <typedef name='xmlParserCtxtPtr' file='tree' type='xmlParserCtxt *'/>
     <typedef name='xmlParserErrors' file='xmlerror' type='enum'/>
@@ -6692,7 +6727,7 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default old SAX v1 handler for HTML, builds the DOM tree</info>
     </variable>
     <variable name='oldXMLWDcompatibility' file='parser' type='const int'>
-      <info>Global setting, DEPRECATED.</info>
+      <info>DEPRECATED, always 0.</info>
     </variable>
     <variable name='xmlDefaultSAXHandler' file='parser' type='const xmlSAXHandlerV1'>
       <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default SAX version1 handler for XML, builds the DOM tree</info>
@@ -6720,7 +6755,7 @@ crash if you try to modify the tree)'/>
       <info>@str: a zero terminated string  The variable holding the libxml strdup() implementation  Returns the copy of the string or NULL in case of error</info>
     </variable>
     <variable name='xmlParserDebugEntities' file='parser' type='const int'>
-      <info>DEPRECATED: Don&apos;t use  Global setting, asking the parser to print out debugging information. while handling entities. Disabled by default</info>
+      <info>DEPRECATED, always 0.</info>
     </variable>
     <variable name='xmlParserMaxDepth' file='parserInternals' type='const unsigned int'>
       <info>arbitrary depth limit for the XML documents that we allow to process. This is not a limitation of the parser but a safety boundary feature. It can be disabled with the XML_PARSE_HUGE parser option.</info>
@@ -7677,7 +7712,7 @@ crash if you try to modify the tree)'/>
       <arg name='content' type='xmlElementContentPtr' info='the element content tree or NULL'/>
     </function>
     <function name='xmlAddEncodingAlias' file='encoding' module='encoding'>
-      <info>Registers an alias @alias for an encoding named @name. Existing alias will be overwritten.</info>
+      <info>DEPRECATED: This function modifies global state and is not thread-safe.  Registers an alias @alias for an encoding named @name. Existing alias will be overwritten.</info>
       <return type='int' info='0 in case of success, -1 in case of error'/>
       <arg name='name' type='const char *' info='the encoding name as parsed, in UTF-8 format (ASCII actually)'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
@@ -8207,7 +8242,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlCatalogGetDefaults' file='catalog' module='catalog'>
       <cond>defined(LIBXML_CATALOG_ENABLED)</cond>
-      <info>Used to get the user preference w.r.t. to what catalogs should be accepted</info>
+      <info>DEPRECATED: Use XML_PARSE_NO_SYS_CATALOG and XML_PARSE_NO_CATALOG_PI.  Used to get the user preference w.r.t. to what catalogs should be accepted</info>
       <return type='xmlCatalogAllow' info='the current xmlCatalogAllow value'/>
     </function>
     <function name='xmlCatalogGetPublic' file='catalog' module='catalog'>
@@ -8282,21 +8317,42 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlCatalogSetDefaultPrefer' file='catalog' module='catalog'>
       <cond>defined(LIBXML_CATALOG_ENABLED)</cond>
-      <info>Allows to set the preference between public and system for deletion in XML Catalog resolution. C.f. section 4.1.1 of the spec Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM</info>
+      <info>DEPRECATED: This setting is global and not thread-safe.  Allows to set the preference between public and system for deletion in XML Catalog resolution. C.f. section 4.1.1 of the spec Values accepted are XML_CATA_PREFER_PUBLIC or XML_CATA_PREFER_SYSTEM</info>
       <return type='xmlCatalogPrefer' info='the previous value of the default preference for delegation'/>
       <arg name='prefer' type='xmlCatalogPrefer' info='the default preference for delegation'/>
     </function>
     <function name='xmlCatalogSetDefaults' file='catalog' module='catalog'>
       <cond>defined(LIBXML_CATALOG_ENABLED)</cond>
-      <info>Used to set the user preference w.r.t. to what catalogs should be accepted</info>
+      <info>DEPRECATED: Use XML_PARSE_NO_SYS_CATALOG and XML_PARSE_NO_CATALOG_PI.  Used to set the user preference w.r.t. to what catalogs should be accepted</info>
       <return type='void'/>
       <arg name='allow' type='xmlCatalogAllow' info='what catalogs should be accepted'/>
     </function>
     <function name='xmlCharEncCloseFunc' file='encoding' module='encoding'>
-      <info>Generic front-end for encoding handler close function</info>
-      <return type='int' info='0 if success, or -1 in case of error'/>
+      <info>Releases an xmlCharEncodingHandler. Must be called after a handler is no longer in use.</info>
+      <return type='int' info='0.'/>
       <arg name='handler' type='xmlCharEncodingHandler *' info='char encoding transformation data structure'/>
     </function>
+    <functype name='xmlCharEncConvCtxtDtor' file='encoding' module='encoding'>
+      <info>Free a conversion context.</info>
+      <return type='void'/>
+      <arg name='vctxt' type='void *' info='conversion context'/>
+    </functype>
+    <functype name='xmlCharEncConvFunc' file='encoding' module='encoding'>
+      <info>Convert between character encodings.  On success, the value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.</info>
+      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.'/>
+      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
+      <arg name='outlen' type='int *' info='the length of @out'/>
+      <arg name='in' type='const unsigned char *' info='a pointer to an array of input bytes'/>
+      <arg name='inlen' type='int *' info='the length of @in'/>
+      <arg name='vctxt' type='void *' info='conversion context'/>
+    </functype>
+    <functype name='xmlCharEncConvImpl' file='encoding' module='encoding'>
+      <info>vctxt:  user data name:  encoding name conv:  pointer to xmlCharEncConverter struct  If this function returns XML_ERR_OK, it must fill the @conv struct with a conversion function, and optional destructor and optional input and output conversion contexts.</info>
+      <return type='int' info='an xmlParserErrors code.'/>
+      <arg name='vctxt' type='void *' info=''/>
+      <arg name='name' type='const char *' info=''/>
+      <arg name='conv' type='xmlCharEncConverter *' info=''/>
+    </functype>
     <function name='xmlCharEncFirstLine' file='encoding' module='encoding'>
       <info>DEPERECATED: Don&apos;t use.</info>
       <return type='int' info='the number of bytes written or an XML_ENC_ERR code.'/>
@@ -8319,16 +8375,16 @@ crash if you try to modify the tree)'/>
       <arg name='in' type='xmlBufferPtr' info='an xmlBuffer for the input'/>
     </function>
     <functype name='xmlCharEncodingInputFunc' file='encoding' module='encoding'>
-      <info>Take a block of chars in the original encoding and try to convert it to an UTF-8 block of chars out.</info>
-      <return type='int' info='the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets consumed.'/>
+      <info>Convert characters to UTF-8.  On success, the value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.</info>
+      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the UTF-8 result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of chars in the original encoding'/>
       <arg name='inlen' type='int *' info='the length of @in'/>
     </functype>
     <functype name='xmlCharEncodingOutputFunc' file='encoding' module='encoding'>
-      <info>Take a block of UTF-8 chars in and try to convert it to another encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state.</info>
-      <return type='int' info='the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets produced.'/>
+      <info>Convert characters from UTF-8.  On success, the value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.</info>
+      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
@@ -8386,7 +8442,7 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupEncodingAliases' file='encoding' module='encoding'>
-      <info>Unregisters all aliases</info>
+      <info>DEPRECATED: This function modifies global state and is not thread-safe.  Unregisters all aliases</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupGlobals' file='parser' module='globals'>
@@ -8436,7 +8492,7 @@ crash if you try to modify the tree)'/>
       <arg name='table' type='xmlAttributeTablePtr' info='An attribute table'/>
     </function>
     <function name='xmlCopyChar' file='parserInternals' module='parserInternals'>
-      <info>append the char value in the array</info>
+      <info>DEPRECATED: Don&apos;t use.  append the char value in the array</info>
       <return type='int' info='the number of xmlChar written'/>
       <arg name='len' type='int' info='Ignored, compatibility'/>
       <arg name='out' type='xmlChar *' info='pointer to an array of xmlChar'/>
@@ -8529,6 +8585,15 @@ crash if you try to modify the tree)'/>
       <arg name='target' type='xmlNodePtr' info='the element where the attributes will be grafted'/>
       <arg name='cur' type='xmlAttrPtr' info='the first attribute'/>
     </function>
+    <function name='xmlCreateCharEncodingHandler' file='encoding' module='encoding'>
+      <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - Custom implementation if provided - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.14.0.</info>
+      <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
+      <arg name='name' type='const char *' info='a string describing the char encoding.'/>
+      <arg name='output' type='int' info='boolean, use handler for output'/>
+      <arg name='impl' type='xmlCharEncConvImpl' info='a conversion implementation (optional)'/>
+      <arg name='implCtxt' type='void *' info='user data for conversion implementation (optional)'/>
+      <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>
+    </function>
     <function name='xmlCreateDocParserCtxt' file='parser' module='parser'>
       <info>Creates a parser context for an XML in-memory document.</info>
       <return type='xmlParserCtxtPtr' info='the new parser context or NULL'/>
@@ -8605,17 +8670,17 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetCatalogs' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context</info>
+      <info>ctxt:  parser context  Available since 2.14.0.</info>
       <return type='void *' info='the local catalogs.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
     <function name='xmlCtxtGetDeclaredEncoding' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context</info>
+      <info>ctxt:  parser context  Available since 2.14.0.</info>
       <return type='const xmlChar *' info='the encoding from the encoding declaration. This can differ from the actual encoding.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
     <function name='xmlCtxtGetDict' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context</info>
+      <info>ctxt:  parser context  Available since 2.14.0.</info>
       <return type='xmlDictPtr' info='the dictionary.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
@@ -8630,22 +8695,22 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetPrivate' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context</info>
+      <info>ctxt:  parser context  Available since 2.14.0.</info>
       <return type='void *' info='the private application data.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
     <function name='xmlCtxtGetStandalone' file='parser' module='parser'>
-      <info>ctxt:  parser context</info>
+      <info>ctxt:  parser context  Available since 2.14.0.</info>
       <return type='int' info='the value from the standalone document declaration.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
     <function name='xmlCtxtGetStatus' file='parser' module='parserInternals'>
-      <info>Get well-formedness and validation status after parsing. Also reports catastrophic errors which are not related to parsing like out-of-memory, I/O or other errors.</info>
+      <info>Get well-formedness and validation status after parsing. Also reports catastrophic errors which are not related to parsing like out-of-memory, I/O or other errors.  Available since 2.14.0.</info>
       <return type='int' info='a bitmask of XML_STATUS_* flags ORed together.'/>
       <arg name='ctxt' type='xmlParserCtxt *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetVersion' file='parser' module='parser'>
-      <info>ctxt:  parser context</info>
+      <info>ctxt:  parser context  Available since 2.14.0.</info>
       <return type='const xmlChar *' info='the version from the XML declaration.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
@@ -8722,13 +8787,20 @@ crash if you try to modify the tree)'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
     </function>
     <function name='xmlCtxtSetCatalogs' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context catalogs:  catalogs pointer  Set the local catalogs.</info>
+      <info>ctxt:  parser context catalogs:  catalogs pointer  Available since 2.14.0.  Set the local catalogs.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
       <arg name='catalogs' type='void *' info=''/>
     </function>
+    <function name='xmlCtxtSetCharEncConvImpl' file='parser' module='parserInternals'>
+      <info>Installs a custom implementation to convert between character encodings.  This bypasses legacy feature like global encoding handlers or encoding aliases.  Available since 2.14.0.</info>
+      <return type='void'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
+      <arg name='impl' type='xmlCharEncConvImpl' info='callback'/>
+      <arg name='vctxt' type='void *' info='user data'/>
+    </function>
     <function name='xmlCtxtSetDict' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context dict:  dictionary  Set the dictionary. This should only be done immediately after creating a parser context.</info>
+      <info>ctxt:  parser context dict:  dictionary  Available since 2.14.0.  Set the dictionary. This should only be done immediately after creating a parser context.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
       <arg name='dict' type='xmlDictPtr' info=''/>
@@ -8747,13 +8819,13 @@ crash if you try to modify the tree)'/>
       <arg name='maxAmpl' type='unsigned' info='maximum amplification factor'/>
     </function>
     <function name='xmlCtxtSetOptions' file='parser' module='parser'>
-      <info>Applies the options to the parser context. Unset options are cleared.  Available since 2.13.0. With older versions, you can use xmlCtxtUseOptions.  XML_PARSE_RECOVER  Enable &quot;recovery&quot; mode which allows non-wellformed documents. How this mode behaves exactly is unspecified and may change without further notice. Use of this feature is DISCOURAGED.  XML_PARSE_NOENT  Despite the confusing name, this option enables substitution of entities. The resulting tree won&apos;t contain any entity reference nodes.  This option also enables loading of external entities (both general and parameter entities) which is dangerous. If you process untrusted data, it&apos;s recommended to set the XML_PARSE_NO_XXE option to disable loading of external entities.  XML_PARSE_DTDLOAD  Enables loading of an external DTD and the loading and substitution of external parameter entities. Has no effect if XML_PARSE_NO_XXE is set.  XML_PARSE_DTDATTR  Adds default attributes from the DTD to the result document.  Implies XML_PARSE_DTDLOAD, but loading of external content can be disabled with XML_PARSE_NO_XXE.  XML_PARSE_DTDVALID  This option enables DTD validation which requires to load external DTDs and external entities (both general and parameter entities) unless XML_PARSE_NO_XXE was set.  XML_PARSE_NO_XXE  Disables loading of external DTDs or entities.  XML_PARSE_NOERROR  Disable error and warning reports to the error handlers. Errors are still accessible with xmlCtxtGetLastError.  XML_PARSE_NOWARNING  Disable warning reports.  XML_PARSE_PEDANTIC  Enable some pedantic warnings.  XML_PARSE_NOBLANKS  Remove some text nodes containing only whitespace from the result document. Which nodes are removed depends on DTD element declarations or a conservative heuristic. The reindenting feature of the serialization code relies on this option to be set when parsing. Use of this option is DISCOURAGED.  XML_PARSE_SAX1  Always invoke the deprecated SAX1 startElement and endElement handlers. This option is DEPRECATED.  XML_PARSE_NONET  Disable network access with the builtin HTTP client.  XML_PARSE_NODICT  Create a document without interned strings, making all strings separate memory allocations.  XML_PARSE_NSCLEAN  Remove redundant namespace declarations from the result document.  XML_PARSE_NOCDATA  Output normal text nodes instead of CDATA nodes.  XML_PARSE_COMPACT  Store small strings directly in the node struct to save memory.  XML_PARSE_OLD10  Use old Name productions from before XML 1.0 Fifth Edition. This options is DEPRECATED.  XML_PARSE_HUGE  Relax some internal limits.  Maximum size of text nodes, tags, comments, processing instructions, CDATA sections, entity values  normal: 10M huge:    1B  Maximum size of names, system literals, pubid literals  normal: 50K huge:   10M  Maximum nesting depth of elements  normal:  256 huge:   2048  Maximum nesting depth of entities  normal: 20 huge:   40  XML_PARSE_OLDSAX  Enable an unspecified legacy mode for SAX parsers. This option is DEPRECATED.  XML_PARSE_IGNORE_ENC  Ignore the encoding in the XML declaration. This option is mostly unneeded these days. The only effect is to enforce UTF-8 decoding of ASCII-like data.  XML_PARSE_BIG_LINES  Enable reporting of line numbers larger than 65535.  XML_PARSE_NO_UNZIP  Disables input decompression. Setting this option is recommended to avoid zip bombs.  Available since 2.14.0.</info>
+      <info>Applies the options to the parser context. Unset options are cleared.  Available since 2.13.0. With older versions, you can use xmlCtxtUseOptions.  XML_PARSE_RECOVER  Enable &quot;recovery&quot; mode which allows non-wellformed documents. How this mode behaves exactly is unspecified and may change without further notice. Use of this feature is DISCOURAGED.  XML_PARSE_NOENT  Despite the confusing name, this option enables substitution of entities. The resulting tree won&apos;t contain any entity reference nodes.  This option also enables loading of external entities (both general and parameter entities) which is dangerous. If you process untrusted data, it&apos;s recommended to set the XML_PARSE_NO_XXE option to disable loading of external entities.  XML_PARSE_DTDLOAD  Enables loading of an external DTD and the loading and substitution of external parameter entities. Has no effect if XML_PARSE_NO_XXE is set.  XML_PARSE_DTDATTR  Adds default attributes from the DTD to the result document.  Implies XML_PARSE_DTDLOAD, but loading of external content can be disabled with XML_PARSE_NO_XXE.  XML_PARSE_DTDVALID  This option enables DTD validation which requires to load external DTDs and external entities (both general and parameter entities) unless XML_PARSE_NO_XXE was set.  XML_PARSE_NO_XXE  Disables loading of external DTDs or entities.  XML_PARSE_NOERROR  Disable error and warning reports to the error handlers. Errors are still accessible with xmlCtxtGetLastError.  XML_PARSE_NOWARNING  Disable warning reports.  XML_PARSE_PEDANTIC  Enable some pedantic warnings.  XML_PARSE_NOBLANKS  Remove some text nodes containing only whitespace from the result document. Which nodes are removed depends on DTD element declarations or a conservative heuristic. The reindenting feature of the serialization code relies on this option to be set when parsing. Use of this option is DISCOURAGED.  XML_PARSE_SAX1  Always invoke the deprecated SAX1 startElement and endElement handlers. This option is DEPRECATED.  XML_PARSE_NONET  Disable network access with the builtin HTTP client.  XML_PARSE_NODICT  Create a document without interned strings, making all strings separate memory allocations.  XML_PARSE_NSCLEAN  Remove redundant namespace declarations from the result document.  XML_PARSE_NOCDATA  Output normal text nodes instead of CDATA nodes.  XML_PARSE_COMPACT  Store small strings directly in the node struct to save memory.  XML_PARSE_OLD10  Use old Name productions from before XML 1.0 Fifth Edition. This options is DEPRECATED.  XML_PARSE_HUGE  Relax some internal limits.  Maximum size of text nodes, tags, comments, processing instructions, CDATA sections, entity values  normal: 10M huge:    1B  Maximum size of names, system literals, pubid literals  normal: 50K huge:   10M  Maximum nesting depth of elements  normal:  256 huge:   2048  Maximum nesting depth of entities  normal: 20 huge:   40  XML_PARSE_OLDSAX  Enable an unspecified legacy mode for SAX parsers. This option is DEPRECATED.  XML_PARSE_IGNORE_ENC  Ignore the encoding in the XML declaration. This option is mostly unneeded these days. The only effect is to enforce UTF-8 decoding of ASCII-like data.  XML_PARSE_BIG_LINES  Enable reporting of line numbers larger than 65535.  XML_PARSE_NO_UNZIP  Disables input decompression. Setting this option is recommended to avoid zip bombs.  Available since 2.14.0.  XML_PARSE_NO_SYS_CATALOG  Disables the global system XML catalog.  Available since 2.14.0.  XML_PARSE_NO_CATALOG_PI  Ignore XML catalog processing instructions.  Available since 2.14.0.</info>
       <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='options' type='int' info='a bitmask of xmlParserOption values'/>
     </function>
     <function name='xmlCtxtSetPrivate' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context priv:  private application data  Set the private application data.</info>
+      <info>ctxt:  parser context priv:  private application data  Available since 2.14.0.  Set the private application data.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
       <arg name='priv' type='void *' info=''/>
@@ -8918,7 +8990,7 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
     </function>
     <function name='xmlDelEncodingAlias' file='encoding' module='encoding'>
-      <info>Unregisters an encoding alias @alias</info>
+      <info>DEPRECATED: This function modifies global state and is not thread-safe.  Unregisters an encoding alias @alias</info>
       <return type='int' info='0 in case of success, -1 in case of error'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
@@ -9185,7 +9257,7 @@ crash if you try to modify the tree)'/>
       <arg name='len' type='int' info='number of bytes to write'/>
     </function>
     <function name='xmlFindCharEncodingHandler' file='encoding' module='encoding'>
-      <info>DEPRECATED: Use xmlOpenCharEncodingHandler which has better error reporting.</info>
+      <info>DEPRECATED: Use xmlOpenCharEncodingHandler which has better error reporting.  If the encoding is UTF-8, this will return a no-op handler that shouldn&apos;t be used.</info>
       <return type='xmlCharEncodingHandlerPtr' info='the handler or NULL if no handler was found or an error occurred.'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
     </function>
@@ -9470,7 +9542,7 @@ crash if you try to modify the tree)'/>
       <arg name='prefix' type='const xmlChar *' info='the element namespace prefix'/>
     </function>
     <function name='xmlGetEncodingAlias' file='encoding' module='encoding'>
-      <info>Lookup an encoding name for the given alias.</info>
+      <info>DEPRECATED: This function is not thread-safe.  Lookup an encoding name for the given alias.</info>
       <return type='const char *' info='NULL if not found, otherwise the original name'/>
       <arg name='alias' type='const char *' info='the alias name as parsed, in UTF-8 format (ASCII actually)'/>
     </function>
@@ -9961,7 +10033,7 @@ crash if you try to modify the tree)'/>
       <arg name='flags' type='int' info='optimization hints'/>
     </function>
     <function name='xmlInputCreateUrl' file='parserInternals' module='parserInternals'>
-      <info>Create a new input stream based on a file or a URL.  The flag XML_INPUT_UNZIP allows decompression.  The flag XML_INPUT_NETWORK allows network access.  Available since 2.14.0.</info>
+      <info>Create a new input stream based on a file or a URL.  The flag XML_INPUT_UNZIP allows decompression.  The flag XML_INPUT_NETWORK allows network access.  The following resource loaders will be called if they were registered (in order of precedence):  - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault (deprecated) - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks (deprecated) - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.  Available since 2.14.0.</info>
       <return type='int' info='an xmlParserErrors code.'/>
       <arg name='filename' type='const char *' info='the filename to use as entity'/>
       <arg name='flags' type='int' info='XML_INPUT flags'/>
@@ -9984,11 +10056,11 @@ crash if you try to modify the tree)'/>
       <arg name='buffer' type='char *' info='the buffer to store data read'/>
       <arg name='len' type='int' info='the length of the buffer in bytes'/>
     </functype>
-    <function name='xmlInputSetEncoding' file='parserInternals' module='parserInternals'>
-      <info>Use specified encoding to decode input data. This overrides the encoding found in the XML declaration.  Available since 2.14.0.</info>
+    <function name='xmlInputSetEncodingHandler' file='parserInternals' module='parserInternals'>
+      <info>Use encoding handler to decode input data.  Closes the handler on error.</info>
       <return type='int' info='an xmlParserErrors code.'/>
       <arg name='input' type='xmlParserInputPtr' info='the input stream'/>
-      <arg name='encoding' type='const char *' info='the encoding name'/>
+      <arg name='handler' type='xmlCharEncodingHandlerPtr' info='the encoding handler'/>
     </function>
     <function name='xmlIsBaseChar' file='chvalid' module='chvalid'>
       <info>This function is DEPRECATED. Use xmlIsBaseChar_ch or xmlIsBaseCharQ instead</info>
@@ -10267,7 +10339,7 @@ crash if you try to modify the tree)'/>
       <arg name='pathss' type='const char *' info='a list of directories separated by a colon or a space.'/>
     </function>
     <function name='xmlLoadExternalEntity' file='parser' module='parserInternals'>
-      <info>@URL is a filename or URL. If if contains the substring &quot;://&quot;, it is assumed to be a Legacy Extended IRI. Otherwise, it is treated as a filesystem path.  @ID is an optional XML public ID, typically from a doctype declaration. It is used for catalog lookups.  The following resource loaders will be called if they were registered (in order of precedence):  - the resource loader set with xmlCtxtSetResourceLoader - the global external entity loader set with xmlSetExternalEntityLoader - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.</info>
+      <info>@URL is a filename or URL. If if contains the substring &quot;://&quot;, it is assumed to be a Legacy Extended IRI. Otherwise, it is treated as a filesystem path.  @ID is an optional XML public ID, typically from a doctype declaration. It is used for catalog lookups.  If catalog lookup is enabled (default is yes) and URL or ID are found in system or local XML catalogs, URL is replaced with the result. Then the following resource loaders will be called if they were registered (in order of precedence):  - the resource loader set with xmlCtxtSetResourceLoader - the global external entity loader set with xmlSetExternalEntityLoader (without catalog resolution, deprecated) - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault (deprecated) - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks (deprecated) - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.</info>
       <return type='xmlParserInputPtr' info='the xmlParserInputPtr or NULL'/>
       <arg name='URL' type='const char *' info='the URL for the entity to load'/>
       <arg name='ID' type='const char *' info='the Public ID for the entity to load'/>
@@ -10284,8 +10356,8 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
     </function>
     <function name='xmlLookupCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported.  The handler must be closed with xmlCharEncCloseFunc.  Available since 2.13.0.</info>
-      <return type='int' info='an xmlParserErrors error code.'/>
+      <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.13.0.</info>
+      <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
       <arg name='enc' type='xmlCharEncoding' info='an xmlCharEncoding value.'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>
     </function>
@@ -10561,7 +10633,7 @@ crash if you try to modify the tree)'/>
       <arg name='sgml' type='int' info='should this create an SGML catalog'/>
     </function>
     <function name='xmlNewCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Create and registers an xmlCharEncodingHandler.</info>
+      <info>DEPRECATED: This function modifies global state and is not thread-safe.  Create and registers an xmlCharEncodingHandler.</info>
       <return type='xmlCharEncodingHandlerPtr' info='the xmlCharEncodingHandlerPtr created (or NULL in case of error).'/>
       <arg name='name' type='const char *' info='the encoding name, in UTF-8 format (ASCII actually)'/>
       <arg name='input' type='xmlCharEncodingInputFunc' info='the xmlCharEncodingInputFunc to read that encoding'/>
@@ -10698,13 +10770,13 @@ crash if you try to modify the tree)'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
     <function name='xmlNewInputFromFile' file='parserInternals' module='parserInternals'>
-      <info>Create a new input stream based on a file or an URL.</info>
+      <info>DEPRECATED: Use xmlInputCreateUrl.  Create a new input stream based on a file or an URL.</info>
       <return type='xmlParserInputPtr' info='the new input stream or NULL in case of error'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='filename' type='const char *' info='the filename to use as entity'/>
     </function>
     <function name='xmlNewInputStream' file='parserInternals' module='parserInternals'>
-      <info>Create a new input stream structure.</info>
+      <info>DEPRECATED: Use xmlInputCreateUrl or similar functions.  Create a new input stream structure.</info>
       <return type='xmlParserInputPtr' info='the new input stream or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -10781,7 +10853,7 @@ crash if you try to modify the tree)'/>
       <arg name='userData' type='void *' info='user data'/>
     </function>
     <function name='xmlNewStringInputStream' file='parserInternals' module='parserInternals'>
-      <info>Create a new input stream based on a memory buffer.</info>
+      <info>DEPRECATED: Use xmlInputCreateString.  Create a new input stream based on a memory buffer.</info>
       <return type='xmlParserInputPtr' info='the new input stream'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='buffer' type='const xmlChar *' info='an memory buffer'/>
@@ -11025,8 +11097,8 @@ crash if you try to modify the tree)'/>
       <arg name='path' type='const xmlChar *' info='the input file path'/>
     </function>
     <function name='xmlOpenCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported.  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.13.0.</info>
-      <return type='int' info='an xmlParserErrors error code.'/>
+      <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.13.0.</info>
+      <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
       <arg name='output' type='int' info='boolean, use handler for output'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>
@@ -12080,7 +12152,7 @@ crash if you try to modify the tree)'/>
       <arg name='regexp' type='xmlRegexpPtr' info='the compiled regexp'/>
     </function>
     <function name='xmlRegisterCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Register the char encoding handler, surprising, isn&apos;t it ?</info>
+      <info>DEPRECATED: This function modifies global state and is not thread-safe.  Register the char encoding handler.</info>
       <return type='void'/>
       <arg name='handler' type='xmlCharEncodingHandlerPtr' info='the xmlCharEncodingHandlerPtr handler block'/>
     </function>
@@ -12755,6 +12827,13 @@ crash if you try to modify the tree)'/>
       <return type='int' info='0 if successful or -1 in case of error.'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
       <arg name='escape' type='xmlCharEncodingOutputFunc' info='the escaping function'/>
+    </function>
+    <function name='xmlSaveSetIndentString' file='xmlsave' module='xmlsave'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Sets the indent string.  Available since 2.14.0.</info>
+      <return type='int' info='0 on success, -1 if the string is NULL, empty or too long.'/>
+      <arg name='ctxt' type='xmlSaveCtxtPtr' info='save context'/>
+      <arg name='indent' type='const char *' info='indent string'/>
     </function>
     <function name='xmlSaveToBuffer' file='xmlsave' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -13468,7 +13547,7 @@ crash if you try to modify the tree)'/>
       <arg name='englob' type='int' info='1 if one must print the englobing parenthesis, 0 otherwise'/>
     </function>
     <function name='xmlSplitQName' file='parserInternals' module='parser'>
-      <info>parse an UTF8 encoded XML qualified name string  [NS 5] QName ::= (Prefix &apos;:&apos;)? LocalPart  [NS 6] Prefix ::= NCName  [NS 7] LocalPart ::= NCName</info>
+      <info>DEPRECATED: Don&apos;t use.  parse an UTF8 encoded XML qualified name string  [NS 5] QName ::= (Prefix &apos;:&apos;)? LocalPart  [NS 6] Prefix ::= NCName  [NS 7] LocalPart ::= NCName</info>
       <return type='xmlChar *' info='the local part, and prefix is updated to get the Prefix if any.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='name' type='const xmlChar *' info='an XML parser context'/>
@@ -13624,7 +13703,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlStringGetNodeList' file='tree' module='tree'>
       <info>DEPRECATED: Use xmlNodeSetContent.  Parse an attribute value and build a node list containing only text and entity reference nodes. The resulting nodes will be associated with the document if provided. The document is also used to look up entities.  The input is not validated. Syntax errors or references to undeclared entities will be ignored silently with unspecified results.</info>
-      <return type='xmlNodePtr' info='a pointer to the first child or NULL if a memory allocation failed.'/>
+      <return type='xmlNodePtr' info='a pointer to the first child or NULL if the value if empty or a memory allocation failed.'/>
       <arg name='doc' type='const xmlDoc *' info='a document (optional)'/>
       <arg name='value' type='const xmlChar *' info='an attribute value'/>
     </function>
@@ -13641,7 +13720,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlStringLenGetNodeList' file='tree' module='tree'>
       <info>DEPRECATED: Use xmlNodeSetContentLen.  See xmlStringGetNodeList.</info>
-      <return type='xmlNodePtr' info='a pointer to the first child or NULL if a memory allocation failed.'/>
+      <return type='xmlNodePtr' info='a pointer to the first child or NULL if the value if empty or a memory allocation failed.'/>
       <arg name='doc' type='const xmlDoc *' info='a document (optional)'/>
       <arg name='value' type='const xmlChar *' info='an attribute value'/>
       <arg name='len' type='int' info='maximum length of the attribute value'/>

@@ -528,6 +528,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             case OP_BYTE_CONSUMED:
                 startOp("ByteConsumed");
                 xmlTextReaderByteConsumed(reader);
+                oomReport = -1;
                 break;
         }
 

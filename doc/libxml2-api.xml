@@ -691,6 +691,7 @@
      <exports symbol='xmlCtxtGetStandalone' type='function'/>
      <exports symbol='xmlCtxtGetStatus' type='function'/>
      <exports symbol='xmlCtxtGetVersion' type='function'/>
+     <exports symbol='xmlCtxtParseContent' type='function'/>
      <exports symbol='xmlCtxtParseDocument' type='function'/>
      <exports symbol='xmlCtxtReadDoc' type='function'/>
      <exports symbol='xmlCtxtReadFd' type='function'/>
@@ -8714,6 +8715,14 @@ crash if you try to modify the tree)'/>
       <return type='const xmlChar *' info='the version from the XML declaration.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
     </function>
+    <function name='xmlCtxtParseContent' file='parser' module='parser'>
+      <info>Parse a well-balanced chunk of XML matching the &apos;content&apos; production.  Namespaces in scope of @node and entities of @node&apos;s document are recognized. When validating, the DTD of @node&apos;s document is used.  Always consumes @input even in error case.  Available since 2.14.0.</info>
+      <return type='xmlNodePtr' info='a node list or NULL in case of error.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
+      <arg name='input' type='xmlParserInputPtr' info='parser input'/>
+      <arg name='node' type='xmlNodePtr' info='target node or document'/>
+      <arg name='hasTextDecl' type='int' info='whether to parse text declaration'/>
+    </function>
     <function name='xmlCtxtParseDocument' file='parser' module='parser'>
       <info>Parse an XML document and return the resulting document tree. Takes ownership of the input object.  Available since 2.13.0.</info>
       <return type='xmlDocPtr' info='the resulting document tree or NULL'/>
@@ -11314,7 +11323,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseContent' file='parserInternals' module='parser'>
-      <info>Parse XML element content. This is useful if you&apos;re only interested in custom SAX callbacks. If you want a node list, use xmlParseInNodeContext.</info>
+      <info>Parse XML element content. This is useful if you&apos;re only interested in custom SAX callbacks. If you want a node list, use xmlCtxtParseContent.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -11471,13 +11480,13 @@ crash if you try to modify the tree)'/>
       <arg name='filename' type='const char *' info='the filename'/>
     </function>
     <function name='xmlParseInNodeContext' file='parser' module='parser'>
-      <info>Parse a well-balanced chunk of an XML document within the context (DTD, namespaces, etc ...) of the given node.  The allowed sequence for the data is a Well Balanced Chunk defined by the content production in the XML grammar:  [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*</info>
+      <info>Parse a well-balanced chunk of an XML document within the context (DTD, namespaces, etc ...) of the given node.  The allowed sequence for the data is a Well Balanced Chunk defined by the content production in the XML grammar:  [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*  This function assumes the encoding of @node&apos;s document which is typically not what you want. A better alternative is xmlCtxtParseContent.</info>
       <return type='xmlParserErrors' info='XML_ERR_OK if the chunk is well balanced, and the parser error code otherwise'/>
       <arg name='node' type='xmlNodePtr' info='the context node'/>
       <arg name='data' type='const char *' info='the input string'/>
       <arg name='datalen' type='int' info='the input string length in bytes'/>
       <arg name='options' type='int' info='a combination of xmlParserOption'/>
-      <arg name='lst' type='xmlNodePtr *' info='the return value for the set of parsed nodes'/>
+      <arg name='listOut' type='xmlNodePtr *' info='the return value for the set of parsed nodes'/>
     </function>
     <function name='xmlParseMarkupDecl' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, don&apos;t use.  Parse markup declarations. Always consumes &apos;&lt;!&apos; or &apos;&lt;?&apos;.  [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment  [ VC: Proper Declaration/PE Nesting ] Parameter-entity replacement text must be properly nested with markup declarations. That is to say, if either the first character or the last character of a markup declaration (markupdecl above) is contained in the replacement text for a parameter-entity reference, both must be contained in the same replacement text.  [ WFC: PEs in Internal Subset ] In the internal DTD subset, parameter-entity references can occur only where markup declarations can occur, not within markup declarations. (This does not apply to references that occur in external parameter entities or to the external subset.)</info>

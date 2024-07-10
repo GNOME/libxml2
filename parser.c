@@ -7573,7 +7573,7 @@ xmlHandleUndeclaredEntity(xmlParserCtxtPtr ctxt, const xmlChar *name) {
          */
         xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
                          "Entity '%s' not defined\n", name, NULL);
-    } else if ((ctxt->loadsubset) ||
+    } else if ((ctxt->loadsubset & ~XML_SKIP_IDS) ||
                ((ctxt->replaceEntities) &&
                 ((ctxt->options & XML_PARSE_NO_XXE) == 0))) {
         /*
@@ -9774,7 +9774,7 @@ xmlParseContentInternal(xmlParserCtxtPtr ctxt) {
  *
  * Parse XML element content. This is useful if you're only interested
  * in custom SAX callbacks. If you want a node list, use
- * xmlParseInNodeContext.
+ * xmlCtxtParseContent.
  */
 void
 xmlParseContent(xmlParserCtxtPtr ctxt) {
@@ -12000,8 +12000,8 @@ xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
  ************************************************************************/
 
 static xmlNodePtr
-xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
-                    int hasTextDecl, int buildTree) {
+xmlCtxtParseContentInternal(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
+                            int hasTextDecl, int buildTree) {
     xmlNodePtr root = NULL;
     xmlNodePtr list = NULL;
     xmlChar *rootName = BAD_CAST "#root";
@@ -12056,17 +12056,13 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
             xmlNodePtr cur;
 
             /*
-             * Return the newly created nodeset after unlinking it from
-             * its pseudo parent.
+             * Unlink newly created node list.
              */
-            cur = root->children;
-            list = cur;
-            while (cur != NULL) {
-                cur->parent = NULL;
-                cur = cur->next;
-            }
+            list = root->children;
             root->children = NULL;
             root->last = NULL;
+            for (cur = list; cur != NULL; cur = cur->next)
+                cur->parent = NULL;
         }
     }
 
@@ -12143,7 +12139,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      *
      * This initiates a recursive call chain:
      *
-     * - xmlCtxtParseContent
+     * - xmlCtxtParseContentInternal
      * - xmlParseContentInternal
      * - xmlParseReference
      * - xmlCtxtParseEntity
@@ -12157,7 +12153,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
 
     ent->flags |= XML_ENT_EXPANDING;
 
-    list = xmlCtxtParseContent(ctxt, input, isExternal, buildTree);
+    list = xmlCtxtParseContentInternal(ctxt, input, isExternal, buildTree);
 
     ent->flags &= ~XML_ENT_EXPANDING;
 
@@ -12232,7 +12228,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
 
     xmlCtxtInitializeLate(ctxt);
 
-    list = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 1, 1);
+    list = xmlCtxtParseContentInternal(ctxt, input, /* hasTextDecl */ 1, 1);
     if (listOut != NULL)
         *listOut = list;
     else
@@ -12318,12 +12314,163 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
 #endif /* LIBXML_SAX1_ENABLED */
 
 /**
+ * xmlCtxtParseContent:
+ * @ctxt:  parser context
+ * @input:  parser input
+ * @node:  target node or document
+ * @hasTextDecl:  whether to parse text declaration
+ *
+ * Parse a well-balanced chunk of XML matching the 'content' production.
+ *
+ * Namespaces in scope of @node and entities of @node's document are
+ * recognized. When validating, the DTD of @node's document is used.
+ *
+ * Always consumes @input even in error case.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns a node list or NULL in case of error.
+ */
+xmlNodePtr
+xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
+                    xmlNodePtr node, int hasTextDecl) {
+    xmlDocPtr doc;
+    xmlNodePtr cur, list = NULL;
+    int nsnr = 0;
+    xmlDictPtr oldDict;
+    int oldOptions, oldDictNames, oldLoadSubset;
+
+    if ((ctxt == NULL) || (input == NULL) || (node == NULL)) {
+        xmlFatalErr(ctxt, XML_ERR_ARGUMENT, NULL);
+        goto exit;
+    }
+
+    doc = node->doc;
+    if (doc == NULL) {
+        xmlFatalErr(ctxt, XML_ERR_ARGUMENT, NULL);
+        goto exit;
+    }
+
+    switch (node->type) {
+        case XML_ELEMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+            break;
+
+        case XML_ATTRIBUTE_NODE:
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+            for (cur = node->parent; cur != NULL; cur = node->parent) {
+                if ((cur->type == XML_ELEMENT_NODE) ||
+                    (cur->type == XML_DOCUMENT_NODE) ||
+                    (cur->type == XML_HTML_DOCUMENT_NODE)) {
+                    node = cur;
+                    break;
+                }
+            }
+            break;
+
+        default:
+            xmlFatalErr(ctxt, XML_ERR_ARGUMENT, NULL);
+            goto exit;
+    }
+
+#ifdef LIBXML_HTML_ENABLED
+    if (ctxt->html)
+        htmlCtxtReset(ctxt);
+    else
+#endif
+        xmlCtxtReset(ctxt);
+
+    oldDict = ctxt->dict;
+    oldOptions = ctxt->options;
+    oldDictNames = ctxt->dictNames;
+    oldLoadSubset = ctxt->loadsubset;
+
+    /*
+     * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
+     */
+    if (doc->dict != NULL) {
+        ctxt->dict = doc->dict;
+    } else {
+        ctxt->options |= XML_PARSE_NODICT;
+        ctxt->dictNames = 0;
+    }
+
+    /*
+     * Disable IDs
+     */
+    ctxt->loadsubset |= XML_SKIP_IDS;
+
+    ctxt->myDoc = doc;
+
+#ifdef LIBXML_HTML_ENABLED
+    if (ctxt->html) {
+        /*
+         * When parsing in context, it makes no sense to add implied
+         * elements like html/body/etc...
+         */
+        ctxt->options |= HTML_PARSE_NOIMPLIED;
+
+        list = htmlCtxtParseContentInternal(ctxt, input);
+    } else
+#endif
+    {
+        xmlCtxtInitializeLate(ctxt);
+
+        /*
+         * This hack lowers the error level of undeclared entities
+         * from XML_ERR_FATAL (well-formedness error) to XML_ERR_ERROR
+         * or XML_ERR_WARNING.
+         */
+        ctxt->hasExternalSubset = 1;
+
+        /*
+         * initialize the SAX2 namespaces stack
+         */
+        cur = node;
+        while ((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
+            xmlNsPtr ns = cur->nsDef;
+            xmlHashedString hprefix, huri;
+
+            while (ns != NULL) {
+                hprefix = xmlDictLookupHashed(ctxt->dict, ns->prefix, -1);
+                huri = xmlDictLookupHashed(ctxt->dict, ns->href, -1);
+                if (xmlParserNsPush(ctxt, &hprefix, &huri, ns, 1) > 0)
+                    nsnr++;
+                ns = ns->next;
+            }
+            cur = cur->parent;
+        }
+
+        list = xmlCtxtParseContentInternal(ctxt, input, hasTextDecl, 1);
+
+        if (nsnr > 0)
+            xmlParserNsPop(ctxt, nsnr);
+    }
+
+    ctxt->dict = oldDict;
+    ctxt->options = oldOptions;
+    ctxt->dictNames = oldDictNames;
+    ctxt->loadsubset = oldLoadSubset;
+    ctxt->myDoc = NULL;
+    ctxt->node = NULL;
+
+exit:
+    xmlFreeInputStream(input);
+    return(list);
+}
+
+/**
  * xmlParseInNodeContext:
  * @node:  the context node
  * @data:  the input string
  * @datalen:  the input string length in bytes
  * @options:  a combination of xmlParserOption
- * @lst:  the return value for the set of parsed nodes
+ * @listOut:  the return value for the set of parsed nodes
  *
  * Parse a well-balanced chunk of an XML document
  * within the context (DTD, namespaces, etc ...) of the given node.
@@ -12333,188 +12480,65 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
  *
  * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
  *
+ * This function assumes the encoding of @node's document which is
+ * typically not what you want. A better alternative is
+ * xmlCtxtParseContent.
+ *
  * Returns XML_ERR_OK if the chunk is well balanced, and the parser
  * error code otherwise
  */
 xmlParserErrors
 xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
-                      int options, xmlNodePtr *lst) {
+                      int options, xmlNodePtr *listOut) {
     xmlParserCtxtPtr ctxt;
-    xmlDocPtr doc = NULL;
-    xmlNodePtr fake, cur;
-    int nsnr = 0;
+    xmlParserInputPtr input;
+    xmlDocPtr doc;
+    xmlNodePtr list;
+    xmlParserErrors ret;
 
-    xmlParserErrors ret = XML_ERR_OK;
-
-    /*
-     * check all input parameters, grab the document
-     */
-    if ((lst == NULL) || (node == NULL) || (data == NULL) || (datalen < 0))
-        return(XML_ERR_ARGUMENT);
-    switch (node->type) {
-        case XML_ELEMENT_NODE:
-        case XML_ATTRIBUTE_NODE:
-        case XML_TEXT_NODE:
-        case XML_CDATA_SECTION_NODE:
-        case XML_ENTITY_REF_NODE:
-        case XML_PI_NODE:
-        case XML_COMMENT_NODE:
-        case XML_DOCUMENT_NODE:
-        case XML_HTML_DOCUMENT_NODE:
-	    break;
-	default:
-	    return(XML_ERR_INTERNAL_ERROR);
-
-    }
-    while ((node != NULL) && (node->type != XML_ELEMENT_NODE) &&
-           (node->type != XML_DOCUMENT_NODE) &&
-	   (node->type != XML_HTML_DOCUMENT_NODE))
-	node = node->parent;
-    if (node == NULL)
-	return(XML_ERR_INTERNAL_ERROR);
-    if (node->type == XML_ELEMENT_NODE)
-	doc = node->doc;
-    else
-        doc = (xmlDocPtr) node;
-    if (doc == NULL)
-	return(XML_ERR_INTERNAL_ERROR);
-
-    /*
-     * allocate a context and set-up everything not related to the
-     * node position in the tree
-     */
-    if (doc->type == XML_DOCUMENT_NODE)
-	ctxt = xmlCreateMemoryParserCtxt((char *) data, datalen);
-#ifdef LIBXML_HTML_ENABLED
-    else if (doc->type == XML_HTML_DOCUMENT_NODE) {
-	ctxt = htmlCreateMemoryParserCtxt((char *) data, datalen);
-        /*
-         * When parsing in context, it makes no sense to add implied
-         * elements like html/body/etc...
-         */
-        options |= HTML_PARSE_NOIMPLIED;
-    }
-#endif
-    else
+    if (listOut == NULL)
         return(XML_ERR_INTERNAL_ERROR);
+    *listOut = NULL;
+
+    if ((node == NULL) || (data == NULL) || (datalen < 0))
+        return(XML_ERR_INTERNAL_ERROR);
+
+    doc = node->doc;
+    if (doc == NULL)
+        return(XML_ERR_INTERNAL_ERROR);
+
+#ifdef LIBXML_HTML_ENABLED
+    if (doc->type == XML_HTML_DOCUMENT_NODE) {
+        ctxt = htmlNewParserCtxt();
+    }
+    else
+#endif
+        ctxt = xmlNewParserCtxt();
 
     if (ctxt == NULL)
         return(XML_ERR_NO_MEMORY);
 
-    /*
-     * Use input doc's dict if present, else assure XML_PARSE_NODICT is set.
-     * We need a dictionary for xmlCtxtInitializeLate, so if there's no doc dict
-     * we must wait until the last moment to free the original one.
-     */
-    if (doc->dict != NULL) {
-        if (ctxt->dict != NULL)
-	    xmlDictFree(ctxt->dict);
-	ctxt->dict = doc->dict;
-    } else {
-        options |= XML_PARSE_NODICT;
-        ctxt->dictNames = 0;
+    input = xmlNewInputMemory(ctxt, NULL, data, datalen,
+                              (const char *) doc->encoding,
+                              XML_INPUT_BUF_STATIC);
+    if (input == NULL) {
+        xmlFreeParserCtxt(ctxt);
+        return(XML_ERR_NO_MEMORY);
     }
-
-    if (doc->encoding != NULL)
-        xmlSwitchEncodingName(ctxt, (const char *) doc->encoding);
 
     xmlCtxtUseOptions(ctxt, options);
-    xmlCtxtInitializeLate(ctxt);
-    ctxt->myDoc = doc;
-    /* parsing in context, i.e. as within existing content */
-    ctxt->input_id = 2;
 
-    /*
-     * TODO: Use xmlCtxtParseContent
-     */
+    list = xmlCtxtParseContent(ctxt, input, node, /* hasTextDecl */ 0);
 
-    fake = xmlNewDocComment(node->doc, NULL);
-    if (fake == NULL) {
-        xmlFreeParserCtxt(ctxt);
-	return(XML_ERR_NO_MEMORY);
-    }
-    xmlAddChild(node, fake);
-
-    if (node->type == XML_ELEMENT_NODE)
-	nodePush(ctxt, node);
-
-    if ((ctxt->html == 0) && (node->type == XML_ELEMENT_NODE)) {
-	/*
-	 * initialize the SAX2 namespaces stack
-	 */
-	cur = node;
-	while ((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
-	    xmlNsPtr ns = cur->nsDef;
-            xmlHashedString hprefix, huri;
-
-	    while (ns != NULL) {
-                hprefix = xmlDictLookupHashed(ctxt->dict, ns->prefix, -1);
-                huri = xmlDictLookupHashed(ctxt->dict, ns->href, -1);
-                if (xmlParserNsPush(ctxt, &hprefix, &huri, ns, 1) > 0)
-                    nsnr++;
-		ns = ns->next;
-	    }
-	    cur = cur->parent;
-	}
-    }
-
-    if ((ctxt->validate) || (ctxt->replaceEntities != 0)) {
-	/*
-	 * ID/IDREF registration will be done in xmlValidateElement below
-	 */
-	ctxt->loadsubset |= XML_SKIP_IDS;
-    }
-
-#ifdef LIBXML_HTML_ENABLED
-    if (doc->type == XML_HTML_DOCUMENT_NODE)
-        __htmlParseContent(ctxt);
-    else
-#endif
-	xmlParseContentInternal(ctxt);
-
-    if (ctxt->input->cur < ctxt->input->end)
-	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
-
-    xmlParserNsPop(ctxt, nsnr);
-
-    if ((ctxt->wellFormed) ||
-        ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
-        ret = XML_ERR_OK;
+    if (list == NULL) {
+        ret = ctxt->errNo;
+        if (ret == XML_ERR_ARGUMENT)
+            ret = XML_ERR_INTERNAL_ERROR;
     } else {
-	ret = (xmlParserErrors) ctxt->errNo;
+        ret = XML_ERR_OK;
+        *listOut = list;
     }
 
-    /*
-     * Return the newly created nodeset after unlinking it from
-     * the pseudo sibling.
-     */
-
-    cur = fake->next;
-    fake->next = NULL;
-    node->last = fake;
-
-    if (cur != NULL) {
-	cur->prev = NULL;
-    }
-
-    *lst = cur;
-
-    while (cur != NULL) {
-	cur->parent = NULL;
-	cur = cur->next;
-    }
-
-    xmlUnlinkNode(fake);
-    xmlFreeNode(fake);
-
-
-    if (ret != XML_ERR_OK) {
-        xmlFreeNodeList(*lst);
-	*lst = NULL;
-    }
-
-    if (doc->dict != NULL)
-        ctxt->dict = NULL;
     xmlFreeParserCtxt(ctxt);
 
     return(ret);
@@ -12574,10 +12598,12 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     }
 
     input = xmlNewStringInputStream(ctxt, string);
-    if (input == NULL)
-        return(ctxt->errNo);
+    if (input == NULL) {
+        ret = ctxt->errNo;
+        goto error;
+    }
 
-    list = xmlCtxtParseContent(ctxt, input, /* hasTextDecl */ 0, 1);
+    list = xmlCtxtParseContentInternal(ctxt, input, /* hasTextDecl */ 0, 1);
     if (listOut != NULL)
         *listOut = list;
     else
@@ -12588,6 +12614,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     else
         ret = XML_ERR_OK;
 
+error:
     xmlFreeInputStream(input);
     xmlFreeParserCtxt(ctxt);
     return(ret);

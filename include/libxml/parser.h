@@ -1480,6 +1480,11 @@ XMLPUBFUN xmlDocPtr
 XMLPUBFUN xmlDocPtr
 		xmlCtxtParseDocument	(xmlParserCtxtPtr ctxt,
 					 xmlParserInputPtr input);
+XMLPUBFUN xmlNodePtr
+		xmlCtxtParseContent	(xmlParserCtxtPtr ctxt,
+					 xmlParserInputPtr input,
+					 xmlNodePtr node,
+					 int hasTextDecl);
 XMLPUBFUN xmlDocPtr
 		xmlCtxtReadDoc		(xmlParserCtxtPtr ctxt,
 					 const xmlChar *cur,

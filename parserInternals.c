@@ -319,6 +319,9 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
         return;
     }
 
+    if (ctxt == NULL)
+        return;
+
     if (PARSER_STOPPED(ctxt))
 	return;
 

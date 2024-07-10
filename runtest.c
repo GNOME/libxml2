@@ -33,6 +33,7 @@
 #include <libxml/tree.h>
 #include <libxml/uri.h>
 #include <libxml/encoding.h>
+#include <libxml/xmlsave.h>
 
 #ifdef LIBXML_OUTPUT_ENABLED
 #ifdef LIBXML_READER_ENABLED
@@ -2060,6 +2061,78 @@ pushBoundaryTest(const char *filename, const char *result,
 }
 #endif
 
+static char *
+dumpNodeList(xmlNodePtr list) {
+    xmlBufferPtr buffer;
+    xmlSaveCtxtPtr save;
+    xmlNodePtr cur;
+    char *ret;
+
+    buffer = xmlBufferCreate();
+    save = xmlSaveToBuffer(buffer, "UTF-8", 0);
+    for (cur = list; cur != NULL; cur = cur->next)
+        xmlSaveTree(save, cur);
+    xmlSaveClose(save);
+
+    ret = (char *) xmlBufferDetach(buffer);
+    xmlBufferFree(buffer);
+    return(ret);
+}
+
+static int
+testParseContent(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const char *filename) {
+    xmlParserInputPtr input;
+    xmlNodePtr root = NULL, list;
+    char *content, *roundTrip;
+    int ret = 0;
+
+    if (ctxt->html) {
+        xmlNodePtr cur;
+
+        if (doc == NULL || doc->children == NULL)
+            return 0;
+        for (cur = doc->children->children; cur != NULL; cur = cur->next) {
+            if (xmlStrEqual(cur->name, BAD_CAST "body")) {
+                root = cur;
+                break;
+            }
+        }
+    } else {
+        root = xmlDocGetRootElement(doc);
+    }
+    if (root == NULL)
+        return 0;
+
+    content = dumpNodeList(root->children);
+
+    input = xmlInputCreateString(NULL, content, XML_INPUT_BUF_STATIC);
+    list = xmlCtxtParseContent(ctxt, input, root, 0);
+    roundTrip = dumpNodeList(list);
+    if (strcmp(content, roundTrip) != 0) {
+        fprintf(stderr, "xmlCtxtParseContent failed for %s\n", filename);
+        ret = -1;
+    }
+    xmlFree(roundTrip);
+    xmlFreeNodeList(list);
+
+    /* xmlParseInNodeContext uses the document's encoding. */
+    xmlFree((xmlChar *) doc->encoding);
+    doc->encoding = (const xmlChar *) xmlStrdup(BAD_CAST "UTF-8");
+    xmlParseInNodeContext(root, content, strlen(content),
+                          ctxt->options | XML_PARSE_NOERROR,
+                          &list);
+    roundTrip = dumpNodeList(list);
+    if (strcmp(content, roundTrip) != 0) {
+        fprintf(stderr, "xmlParseInNodeContext failed for %s\n", filename);
+        ret = -1;
+    }
+    xmlFree(roundTrip);
+    xmlFreeNodeList(list);
+
+    xmlFree(content);
+    return(ret);
+}
+
 /**
  * memParseTest:
  * @filename: the file to parse
@@ -2075,10 +2148,14 @@ pushBoundaryTest(const char *filename, const char *result,
 static int
 memParseTest(const char *filename, const char *result,
              const char *err ATTRIBUTE_UNUSED,
-	     int options ATTRIBUTE_UNUSED) {
+	     int options) {
+    xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     const char *base;
     int size, res;
+    int ret = 0;
+
+    options |= XML_PARSE_NOWARNING;
 
     nb_tests++;
     /*
@@ -2089,22 +2166,26 @@ memParseTest(const char *filename, const char *result,
 	return(-1);
     }
 
-    doc = xmlReadMemory(base, size, filename, NULL, XML_PARSE_NOWARNING);
+    ctxt = xmlNewParserCtxt();
+    doc = xmlCtxtReadMemory(ctxt, base, size, filename, NULL, options);
     unloadMem(base);
     if (doc == NULL) {
         return(1);
     }
     xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
-    xmlFreeDoc(doc);
     res = compareFileMem(result, base, size);
     if ((base == NULL) || (res != 0)) {
-	if (base != NULL)
-	    xmlFree((char *)base);
         fprintf(stderr, "Result for %s failed in %s\n", filename, result);
-	return(-1);
+	ret = -1;
     }
+
+    if (testParseContent(ctxt, doc, filename) < 0)
+	ret = -1;
+
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
     xmlFree((char *)base);
-    return(0);
+    return(ret);
 }
 
 /**
@@ -2181,8 +2262,8 @@ errParseTest(const char *filename, const char *result, const char *err,
              int options) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
-    const char *base = NULL;
     int size, res = 0;
+    int ret = 0;
 
     nb_tests++;
 #ifdef LIBXML_HTML_ENABLED
@@ -2190,14 +2271,12 @@ errParseTest(const char *filename, const char *result, const char *err,
         ctxt = htmlNewParserCtxt();
         xmlCtxtSetErrorHandler(ctxt, testStructuredErrorHandler, NULL);
         doc = htmlCtxtReadFile(ctxt, filename, NULL, options);
-        htmlFreeParserCtxt(ctxt);
     } else
 #endif
     {
         ctxt = xmlNewParserCtxt();
         xmlCtxtSetErrorHandler(ctxt, testStructuredErrorHandler, NULL);
 	doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
-        xmlFreeParserCtxt(ctxt);
 #ifdef LIBXML_XINCLUDE_ENABLED
         if (options & XML_PARSE_XINCLUDE) {
             xmlXIncludeCtxtPtr xinc = NULL;
@@ -2215,40 +2294,45 @@ errParseTest(const char *filename, const char *result, const char *err,
 #endif
     }
     if (result) {
+        xmlChar *base = NULL;
+
 	if (doc == NULL) {
-	    base = "";
+	    base = xmlStrdup(BAD_CAST "");
 	    size = 0;
 	} else {
 #ifdef LIBXML_HTML_ENABLED
 	    if (options & XML_PARSE_HTML) {
-		htmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+		htmlDocDumpMemory(doc, &base, &size);
 	    } else
 #endif
-	    xmlDocDumpMemory(doc, (xmlChar **) &base, &size);
+	    xmlDocDumpMemory(doc, &base, &size);
 	}
-	res = compareFileMem(result, base, size);
+	res = compareFileMem(result, (char *) base, size);
+	xmlFree(base);
     }
-    if (doc != NULL) {
-	if (base != NULL)
-	    xmlFree((char *)base);
-	xmlFreeDoc(doc);
-    }
+
     if (res != 0) {
         fprintf(stderr, "Result for %s failed in %s\n", filename, result);
-        return(-1);
-    }
-    if (err != NULL) {
+        ret = -1;
+    } else if (err != NULL) {
 	res = compareFileMem(err, testErrors, testErrorsSize);
 	if (res != 0) {
 	    fprintf(stderr, "Error for %s failed\n", filename);
-	    return(-1);
+	    ret = -1;
 	}
     } else if (options & XML_PARSE_DTDVALID) {
-        if (testErrorsSize != 0)
+        if (testErrorsSize != 0) {
 	    fprintf(stderr, "Validation for %s failed\n", filename);
+            ret = -1;
+        }
     }
 
-    return(0);
+    if (testParseContent(ctxt, doc, filename) < 0)
+	ret = -1;
+
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
+    return(ret);
 }
 
 #if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_HTML_ENABLED)

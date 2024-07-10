@@ -12060,6 +12060,59 @@ test_xmlCtxtGetVersion(void) {
 
 
 static int
+test_xmlCtxtParseContent(void) {
+    int test_ret = 0;
+
+    int mem_base;
+    xmlNodePtr ret_val;
+    xmlParserCtxtPtr ctxt; /* parser context */
+    int n_ctxt;
+    xmlParserInputPtr input; /* parser input */
+    int n_input;
+    xmlNodePtr node; /* target node or document */
+    int n_node;
+    int hasTextDecl; /* whether to parse text declaration */
+    int n_hasTextDecl;
+
+    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
+    for (n_input = 0;n_input < gen_nb_xmlParserInputPtr;n_input++) {
+    for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
+    for (n_hasTextDecl = 0;n_hasTextDecl < gen_nb_int;n_hasTextDecl++) {
+        mem_base = xmlMemBlocks();
+        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
+        input = gen_xmlParserInputPtr(n_input, 1);
+        node = gen_xmlNodePtr(n_node, 2);
+        hasTextDecl = gen_int(n_hasTextDecl, 3);
+
+        ret_val = xmlCtxtParseContent(ctxt, input, node, hasTextDecl);
+        desret_xmlNodePtr(ret_val);
+        call_tests++;
+        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
+        des_xmlParserInputPtr(n_input, input, 1);
+        des_xmlNodePtr(n_node, node, 2);
+        des_int(n_hasTextDecl, hasTextDecl, 3);
+        xmlResetLastError();
+        if (mem_base != xmlMemBlocks()) {
+            printf("Leak of %d blocks found in xmlCtxtParseContent",
+	           xmlMemBlocks() - mem_base);
+	    test_ret++;
+            printf(" %d", n_ctxt);
+            printf(" %d", n_input);
+            printf(" %d", n_node);
+            printf(" %d", n_hasTextDecl);
+            printf("\n");
+        }
+    }
+    }
+    }
+    }
+    function_tests++;
+
+    return(test_ret);
+}
+
+
+static int
 test_xmlCtxtParseDocument(void) {
     int test_ret = 0;
 
@@ -13602,29 +13655,29 @@ test_xmlParseInNodeContext(void) {
     int n_datalen;
     int options; /* a combination of xmlParserOption */
     int n_options;
-    xmlNodePtr * lst; /* the return value for the set of parsed nodes */
-    int n_lst;
+    xmlNodePtr * listOut; /* the return value for the set of parsed nodes */
+    int n_listOut;
 
     for (n_node = 0;n_node < gen_nb_xmlNodePtr;n_node++) {
     for (n_data = 0;n_data < gen_nb_const_char_ptr;n_data++) {
     for (n_datalen = 0;n_datalen < gen_nb_int;n_datalen++) {
     for (n_options = 0;n_options < gen_nb_parseroptions;n_options++) {
-    for (n_lst = 0;n_lst < gen_nb_xmlNodePtr_ptr;n_lst++) {
+    for (n_listOut = 0;n_listOut < gen_nb_xmlNodePtr_ptr;n_listOut++) {
         mem_base = xmlMemBlocks();
         node = gen_xmlNodePtr(n_node, 0);
         data = gen_const_char_ptr(n_data, 1);
         datalen = gen_int(n_datalen, 2);
         options = gen_parseroptions(n_options, 3);
-        lst = gen_xmlNodePtr_ptr(n_lst, 4);
+        listOut = gen_xmlNodePtr_ptr(n_listOut, 4);
 
-        ret_val = xmlParseInNodeContext(node, data, datalen, options, lst);
+        ret_val = xmlParseInNodeContext(node, data, datalen, options, listOut);
         desret_xmlParserErrors(ret_val);
         call_tests++;
         des_xmlNodePtr(n_node, node, 0);
         des_const_char_ptr(n_data, data, 1);
         des_int(n_datalen, datalen, 2);
         des_parseroptions(n_options, options, 3);
-        des_xmlNodePtr_ptr(n_lst, lst, 4);
+        des_xmlNodePtr_ptr(n_listOut, listOut, 4);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlParseInNodeContext",
@@ -13634,7 +13687,7 @@ test_xmlParseInNodeContext(void) {
             printf(" %d", n_data);
             printf(" %d", n_datalen);
             printf(" %d", n_options);
-            printf(" %d", n_lst);
+            printf(" %d", n_listOut);
             printf("\n");
         }
     }
@@ -15081,7 +15134,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 81 of 95 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 82 of 96 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlCleanupGlobals();
     test_ret += test_xmlClearNodeInfoSeq();
@@ -15095,6 +15148,7 @@ test_parser(void) {
     test_ret += test_xmlCtxtGetStandalone();
     test_ret += test_xmlCtxtGetStatus();
     test_ret += test_xmlCtxtGetVersion();
+    test_ret += test_xmlCtxtParseContent();
     test_ret += test_xmlCtxtParseDocument();
     test_ret += test_xmlCtxtReadDoc();
     test_ret += test_xmlCtxtReadFile();

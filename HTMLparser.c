@@ -4716,18 +4716,50 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
     if (currentNode != NULL) xmlFree(currentNode);
 }
 
-/**
- * htmlParseContent:
- * @ctxt:  an HTML parser context
- *
- * Parse a content: comment, sub-element, reference or text.
- * This is the entry point when called from parser.c
- */
+xmlNodePtr
+htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
+    xmlNodePtr root;
+    xmlNodePtr list = NULL;
+    xmlChar *rootName = BAD_CAST "#root";
 
-void
-__htmlParseContent(void *ctxt) {
-    if (ctxt != NULL)
-	htmlParseContentInternal((htmlParserCtxtPtr) ctxt);
+    root = xmlNewDocNode(ctxt->myDoc, NULL, rootName, NULL);
+    if (root == NULL) {
+        htmlErrMemory(ctxt);
+        return(NULL);
+    }
+
+    if (xmlPushInput(ctxt, input) < 0) {
+        xmlFreeNode(root);
+        return(NULL);
+    }
+
+    htmlnamePush(ctxt, rootName);
+    nodePush(ctxt, root);
+
+    htmlParseContentInternal(ctxt);
+
+    /* TODO: Use xmlCtxtIsCatastrophicError */
+    if (ctxt->errNo != XML_ERR_NO_MEMORY) {
+        xmlNodePtr cur;
+
+        /*
+         * Unlink newly created node list.
+         */
+        list = root->children;
+        root->children = NULL;
+        root->last = NULL;
+        for (cur = list; cur != NULL; cur = cur->next)
+            cur->parent = NULL;
+    }
+
+    nodePop(ctxt);
+    htmlnamePop(ctxt);
+
+    /* xmlPopInput would free the stream */
+    inputPop(ctxt);
+
+    xmlFreeNode(root);
+    return(list);
 }
 
 /**

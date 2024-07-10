@@ -2134,7 +2134,7 @@ UTF8ToLatin1(unsigned char* out, int *outlen,
 
         if (c < 0x80) {
             *out++ = c;
-        } else if (c < 0xC4) {
+        } else if ((c >= 0xC2) && (c <= 0xC3)) {
             if (inend - in < 2)
                 break;
             in++;
@@ -2272,48 +2272,75 @@ UTF8ToUTF16LE(unsigned char *out, int *outlen,
     inend = in + *inlen;
     outend = out + (*outlen & ~1);
     while (in < inend) {
-        if (out >= outend)
-            goto done;
-
         c = in[0];
 
         if (c < 0x80) {
+            if (out >= outend)
+                goto done;
             out[0] = c;
             out[1] = 0;
             in += 1;
             out += 2;
-        } else if (c < 0xE0) {
-            if (inend - in < 2)
+        } else {
+            int i, len;
+            unsigned min;
+
+            if (c < 0xE0) {
+                if (c < 0xC2) {
+                    ret = XML_ENC_ERR_INPUT;
+                    goto done;
+                }
+                c &= 0x1F;
+                len = 2;
+                min = 0x80;
+            } else if (c < 0xF0) {
+                c &= 0x0F;
+                len = 3;
+                min = 0x800;
+            } else {
+                c &= 0x0F;
+                len = 4;
+                min = 0x10000;
+            }
+
+            if (inend - in < len)
                 break;
-            c = ((c & 0x1F) << 6) | (in[1] & 0x3F);
-            out[0] = c & 0xFF;
-            out[1] = c >> 8;
-            in += 2;
-            out += 2;
-        } else if (c < 0xF0) {
-            if (inend - in < 3)
-                break;
-            c = ((c & 0x0F) << 12) | ((in[1] & 0x3F) << 6) | (in[2] & 0x3F);
-            out[0] = c & 0xFF;
-            out[1] = c >> 8;
-            in += 3;
-            out += 2;
-        } else { /* c >= 0xF0 */
-            if (inend - in < 4)
-                break;
-            if (outend - out < 4)
+
+            for (i = 1; i < len; i++) {
+                if ((in[i] & 0xC0) != 0x80) {
+                    ret = XML_ENC_ERR_INPUT;
+                    goto done;
+                }
+                c = (c << 6) | (in[i] & 0x3F);
+            }
+
+            if ((c < min) ||
+                ((c >= 0xD800) && (c <= 0xDFFF)) ||
+                (c > 0x10FFFF)) {
+                ret = XML_ENC_ERR_INPUT;
                 goto done;
-            c = ((c & 0x0F) << 18) | ((in[1] & 0x3F) << 12) |
-                ((in[2] & 0x3F) << 6) | (in[3] & 0x3F);
-            c -= 0x10000;
-            d = (c & 0x03FF) | 0xDC00;
-            c = (c >> 10)    | 0xD800;
-            out[0] = c & 0xFF;
-            out[1] = c >> 8;
-            out[2] = d & 0xFF;
-            out[3] = d >> 8;
-            in += 4;
-            out += 4;
+            }
+
+            if (c < 0x10000) {
+                if (out >= outend)
+                    goto done;
+                out[0] = c & 0xFF;
+                out[1] = c >> 8;
+                out += 2;
+            } else {
+                if (outend - out < 4)
+                    goto done;
+                c -= 0x10000;
+                d = (c & 0x03FF) | 0xDC00;
+                c = (c >> 10)    | 0xD800;
+                out[0] = c & 0xFF;
+                out[1] = c >> 8;
+                out[2] = d & 0xFF;
+                out[3] = d >> 8;
+                out += 4;
+            }
+
+            in += len;
         }
     }
 
@@ -2438,47 +2465,75 @@ UTF8ToUTF16BE(unsigned char *out, int *outlen,
     inend = in + *inlen;
     outend = out + (*outlen & ~1);
     while (in < inend) {
-        if (out >= outend)
-            goto done;
         c = in[0];
 
         if (c < 0x80) {
+            if (out >= outend)
+                goto done;
             out[0] = 0;
             out[1] = c;
             in += 1;
             out += 2;
-        } else if (c < 0xE0) {
-            if (inend - in < 2)
+        } else {
+            int i, len;
+            unsigned min;
+
+            if (c < 0xE0) {
+                if (c < 0xC2) {
+                    ret = XML_ENC_ERR_INPUT;
+                    goto done;
+                }
+                c &= 0x1F;
+                len = 2;
+                min = 0x80;
+            } else if (c < 0xF0) {
+                c &= 0x0F;
+                len = 3;
+                min = 0x800;
+            } else {
+                c &= 0x0F;
+                len = 4;
+                min = 0x10000;
+            }
+
+            if (inend - in < len)
                 break;
-            c = ((c & 0x1F) << 6) | (in[1] & 0x3F);
-            out[0] = c >> 8;
-            out[1] = c & 0xFF;
-            in += 2;
-            out += 2;
-        } else if (c < 0xF0) {
-            if (inend - in < 3)
-                break;
-            c = ((c & 0x0F) << 12) | ((in[1] & 0x3F) << 6) | (in[2] & 0x3F);
-            out[0] = c >> 8;
-            out[1] = c & 0xFF;
-            in += 3;
-            out += 2;
-        } else { /* c >= 0xF0 */
-            if (inend - in < 4)
-                break;
-            if (outend - out < 4)
+
+            for (i = 1; i < len; i++) {
+                if ((in[i] & 0xC0) != 0x80) {
+                    ret = XML_ENC_ERR_INPUT;
+                    goto done;
+                }
+                c = (c << 6) | (in[i] & 0x3F);
+            }
+
+            if ((c < min) ||
+                ((c >= 0xD800) && (c <= 0xDFFF)) ||
+                (c > 0x10FFFF)) {
+                ret = XML_ENC_ERR_INPUT;
                 goto done;
-            c = ((c & 0x0F) << 18) | ((in[1] & 0x3F) << 12) |
-                ((in[2] & 0x3F) << 6) | (in[3] & 0x3F);
-            c -= 0x10000;
-            d = (c & 0x03FF) | 0xDC00;
-            c = (c >> 10)    | 0xD800;
-            out[0] = c >> 8;
-            out[1] = c & 0xFF;
-            out[2] = d >> 8;
-            out[3] = d & 0xFF;
-            in += 4;
-            out += 4;
+            }
+
+            if (c < 0x10000) {
+                if (out >= outend)
+                    goto done;
+                out[0] = c >> 8;
+                out[1] = c & 0xFF;
+                out += 2;
+            } else {
+                if (outend - out < 4)
+                    goto done;
+                c -= 0x10000;
+                d = (c & 0x03FF) | 0xDC00;
+                c = (c >> 10)    | 0xD800;
+                out[0] = c >> 8;
+                out[1] = c & 0xFF;
+                out[2] = d >> 8;
+                out[3] = d & 0xFF;
+                out += 4;
+            }
+
+            in += len;
         }
     }
 

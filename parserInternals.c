@@ -1333,8 +1333,10 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
     }
 
     buf = xmlBufCreate();
-    if (buf == NULL)
+    if (buf == NULL) {
+        xmlCharEncCloseFunc(handler);
         return(XML_ERR_NO_MEMORY);
+    }
 
     in->encoder = handler;
     in->raw = in->buffer;

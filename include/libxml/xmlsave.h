@@ -82,9 +82,11 @@ XMLPUBFUN int
 XMLPUBFUN int
 		xmlSaveSetIndentString	(xmlSaveCtxtPtr ctxt,
 					 const char *indent);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlSaveSetEscape	(xmlSaveCtxtPtr ctxt,
 					 xmlCharEncodingOutputFunc escape);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlSaveSetAttrEscape	(xmlSaveCtxtPtr ctxt,
 					 xmlCharEncodingOutputFunc escape);

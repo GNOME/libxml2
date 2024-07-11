@@ -46,7 +46,6 @@ struct _xmlSaveCtxt {
     int indent_nr;
     int indent_size;
     xmlCharEncodingOutputFunc escape;	/* used for element content */
-    xmlCharEncodingOutputFunc escapeAttr;/* used for attribute content */
 };
 
 /************************************************************************
@@ -1382,7 +1381,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
     const xmlChar *oldctxtenc = ctxt->encoding;
     const xmlChar *encoding = ctxt->encoding;
     xmlCharEncodingOutputFunc oldescape = ctxt->escape;
-    xmlCharEncodingOutputFunc oldescapeAttr = ctxt->escapeAttr;
     xmlOutputBufferPtr buf = ctxt->buf;
     xmlCharEncoding enc;
     int switched_encoding = 0;
@@ -1452,8 +1450,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 	    }
 	    if (ctxt->escape == xmlEscapeEntities)
 		ctxt->escape = NULL;
-	    if (ctxt->escapeAttr == xmlEscapeEntities)
-		ctxt->escapeAttr = NULL;
 	}
 
 
@@ -1517,7 +1513,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
     if ((switched_encoding) && (oldctxtenc == NULL)) {
 	xmlSaveClearEncoding(ctxt);
 	ctxt->escape = oldescape;
-	ctxt->escapeAttr = oldescapeAttr;
     }
     cur->encoding = oldenc;
     return(0);
@@ -2267,6 +2262,8 @@ xmlSaveFinish(xmlSaveCtxtPtr ctxt)
  * @ctxt:  a document saving context
  * @escape:  the escaping function
  *
+ * DEPRECATED: Don't use.
+ *
  * Set a custom escaping function to be used for text in element content
  *
  * Returns 0 if successful or -1 in case of error.
@@ -2284,15 +2281,17 @@ xmlSaveSetEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
  * @ctxt:  a document saving context
  * @escape:  the escaping function
  *
- * Set a custom escaping function to be used for text in attribute content
+ * DEPRECATED: Don't use.
+ *
+ * Has no effect.
  *
  * Returns 0 if successful or -1 in case of error.
  */
 int
-xmlSaveSetAttrEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
+xmlSaveSetAttrEscape(xmlSaveCtxtPtr ctxt,
+                     xmlCharEncodingOutputFunc escape ATTRIBUTE_UNUSED)
 {
     if (ctxt == NULL) return(-1);
-    ctxt->escapeAttr = escape;
     return(0);
 }
 

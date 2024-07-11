@@ -2265,7 +2265,7 @@ xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
  * xmlOutputBufferWrite:
  * @out:  a buffered parser output
  * @len:  the size in bytes of the array.
- * @buf:  an char array
+ * @data:  an char array
  *
  * Write the content of the array in the output I/O buffer
  * This routine handle the I18N transcoding from internal UTF-8
@@ -2276,20 +2276,28 @@ xmlParserInputBufferRead(xmlParserInputBufferPtr in, int len) {
  *         in case of error.
  */
 int
-xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
-    int nbchars = 0; /* number of chars to output to I/O */
-    int ret;         /* return from function call */
-    int written = 0; /* number of char written to I/O so far */
-    int chunk;       /* number of byte current processed from buf */
+xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *data) {
+    size_t written = 0;
 
-    if ((out == NULL) || (out->error)) return(-1);
-    if (len < 0) return(0);
-    if (out->error) return(-1);
+    if ((out == NULL) || (out->error))
+        return(-1);
+    if (len < 0)
+        return(0);
 
-    do {
+    while (len > 0) {
+        xmlBufPtr buf = NULL;
+        int chunk;
+        int ret;
+
 	chunk = len;
-	if (chunk > 4 * MINLEN)
-	    chunk = 4 * MINLEN;
+	if (chunk > 256 * 1024)
+	    chunk = 256 * 1024;
+
+        ret = xmlBufAdd(out->buffer, (const xmlChar *) data, chunk);
+        if (ret != 0) {
+            out->error = XML_ERR_NO_MEMORY;
+            return(-1);
+        }
 
 	/*
 	 * first handle encoding stuff.
@@ -2305,71 +2313,65 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *buf) {
                     return(-1);
                 }
 	    }
-	    ret = xmlBufAdd(out->buffer, (const xmlChar *) buf, chunk);
-	    if (ret != 0) {
-                out->error = XML_ERR_NO_MEMORY;
-	        return(-1);
-            }
-
-	    if ((xmlBufUse(out->buffer) < MINLEN) && (chunk == len))
-		goto done;
 
 	    /*
 	     * convert as much as possible to the parser reading buffer.
 	     */
-	    ret = xmlCharEncOutput(out, 0);
-	    if (ret < 0)
-		return(-1);
-            if (out->writecallback)
-	        nbchars = xmlBufUse(out->conv);
-            else
-                nbchars = ret >= 0 ? ret : 0;
-	} else {
-	    ret = xmlBufAdd(out->buffer, (const xmlChar *) buf, chunk);
-	    if (ret != 0) {
-                out->error = XML_ERR_NO_MEMORY;
-	        return(-1);
+            if (xmlBufUse(out->buffer) < 256) {
+                ret = 0;
+            } else {
+                ret = xmlCharEncOutput(out, 0);
+                if (ret < 0)
+                    return(-1);
             }
+
             if (out->writecallback)
-	        nbchars = xmlBufUse(out->buffer);
+                buf = out->conv;
             else
-                nbchars = chunk;
+                written += ret;
+	} else {
+            if (out->writecallback)
+	        buf = out->buffer;
+            else
+                written += chunk;
 	}
-	buf += chunk;
+	data += chunk;
 	len -= chunk;
 
-	if (out->writecallback) {
-            if ((nbchars < MINLEN) && (len <= 0))
-                goto done;
-
+	if ((buf != NULL) && (out->writecallback)) {
 	    /*
 	     * second write the stuff to the I/O channel
 	     */
-	    if (out->encoder != NULL) {
-		ret = out->writecallback(out->context,
-                           (const char *)xmlBufContent(out->conv), nbchars);
-		if (ret >= 0)
-		    xmlBufShrink(out->conv, ret);
-	    } else {
-		ret = out->writecallback(out->context,
-                           (const char *)xmlBufContent(out->buffer), nbchars);
-		if (ret >= 0)
-		    xmlBufShrink(out->buffer, ret);
-	    }
-	    if (ret < 0) {
-		out->error = (ret == -1) ? XML_IO_WRITE : -ret;
-		return(ret);
-	    }
-            if (out->written > INT_MAX - ret)
-                out->written = INT_MAX;
-            else
-                out->written += ret;
-	}
-	written += nbchars;
-    } while (len > 0);
+	    while (1) {
+                size_t nbchars = xmlBufUse(buf);
 
-done:
-    return(written);
+                if (nbchars < MINLEN)
+                    break;
+                if (nbchars > 256 * 1024)
+                    nbchars = 256 * 1024;
+
+		ret = out->writecallback(out->context,
+                           (const char *)xmlBufContent(buf), nbchars);
+                if (ret < 0) {
+                    out->error = (ret == -1) ? XML_IO_WRITE : -ret;
+                    return(-1);
+                }
+                if ((ret == 0) || ((size_t) ret > nbchars)) {
+                    out->error = XML_ERR_INTERNAL_ERROR;
+                    return(-1);
+                }
+
+		xmlBufShrink(buf, ret);
+	        written += ret;
+                if (out->written > INT_MAX - ret)
+                    out->written = INT_MAX;
+                else
+                    out->written += ret;
+            }
+	}
+    }
+
+    return(written <= INT_MAX ? written : INT_MAX);
 }
 
 /**

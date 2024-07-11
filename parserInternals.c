@@ -1299,6 +1299,7 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
     xmlParserInputBufferPtr in;
     xmlBufPtr buf;
     int nbchars;
+    int code = XML_ERR_OK;
 
     if ((input == NULL) || (input->buf == NULL)) {
         xmlCharEncCloseFunc(handler);
@@ -1348,7 +1349,7 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
     /*
      * Is there already some content down the pipe to convert ?
      */
-    if (input->end > input->cur) {
+    if (input->end > input->base) {
         size_t processed;
 
         /*
@@ -1361,12 +1362,13 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
         in->rawconsumed = processed;
 
         nbchars = xmlCharEncInput(in);
-        xmlBufResetInput(in->buffer, input);
         if (nbchars < 0)
-            return(in->error);
+            code = in->error;
     }
 
-    return(XML_ERR_OK);
+    xmlBufResetInput(in->buffer, input);
+
+    return(code);
 }
 
 /**

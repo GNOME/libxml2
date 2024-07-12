@@ -27,6 +27,11 @@
 #define XML_ESCAPE_QUOT             (1u << 3)
 #define XML_ESCAPE_ALLOW_INVALID    (1u << 4)
 
+XML_HIDDEN int
+xmlSerializeHexCharRef(char *buf, int val);
+XML_HIDDEN int
+xmlSerializeDecCharRef(char *buf, int val);
+
 XML_HIDDEN xmlChar *
 xmlEscapeText(const xmlChar *text, int flags);
 

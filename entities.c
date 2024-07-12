@@ -512,6 +512,71 @@ xmlGetDocEntity(const xmlDoc *doc, const xmlChar *name) {
     return(xmlGetPredefinedEntity(name));
 }
 
+int
+xmlSerializeHexCharRef(char *buf, int val) {
+    char *out = buf;
+    int shift = 0, bits;
+
+    *out++ = '&';
+    *out++ = '#';
+    *out++ = 'x';
+
+    bits = val;
+    if (bits & 0xFF0000) {
+        shift = 16;
+        bits &= 0xFF0000;
+    } else if (bits & 0x00FF00) {
+        shift = 8;
+        bits &= 0x00FF00;
+    }
+    if (bits & 0xF0F0F0) {
+        shift += 4;
+    }
+
+    do {
+        int d = (val >> shift) & 0x0F;
+
+        if (d < 10)
+            *out++ = '0' + d;
+        else
+            *out++ = 'A' + (d - 10);
+
+	shift -= 4;
+    } while (shift >= 0);
+
+    *out++ = ';';
+
+    return(out - buf);
+}
+
+int
+xmlSerializeDecCharRef(char *buf, int val) {
+    char *out = buf;
+    int len, i;
+
+    *out++ = '&';
+    *out++ = '#';
+
+    if (val < 100) {
+        len = (val < 10) ? 1 : 2;
+    } else if (val < 10000) {
+        len = (val < 1000) ? 3 : 4;
+    } else if (val < 1000000) {
+        len = (val < 100000) ? 5 : 6;
+    } else {
+        len = 7;
+    }
+
+    for (i = len - 1; i >= 0; i--) {
+        out[i] = '0' + val % 10;
+        val /= 10;
+    }
+
+    out[len] = ';';
+
+    return(len + 3);
+}
+
 static const char xmlEscapeSafe[128] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -540,7 +605,7 @@ xmlEscapeText(const xmlChar *text, int flags) {
     unescaped = cur;
 
     while (*cur != '\0') {
-        char buf[13];
+        char buf[12];
 	const xmlChar *end;
         const xmlChar *repl;
         size_t used;
@@ -618,7 +683,7 @@ xmlEscapeText(const xmlChar *text, int flags) {
                 val = 0xFFFD;
             }
 
-            replSize = snprintf(buf, sizeof(buf), "&#x%X;", val);
+            replSize = xmlSerializeHexCharRef(buf, val);
             repl = BAD_CAST buf;
 	} else if ((flags & XML_ESCAPE_ALLOW_INVALID) ||
                    (c >= 0x20) ||

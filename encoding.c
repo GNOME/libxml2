@@ -43,6 +43,7 @@
 
 #include "private/buf.h"
 #include "private/enc.h"
+#include "private/entities.h"
 #include "private/error.h"
 
 #ifdef LIBXML_ICU_ENABLED
@@ -1744,8 +1745,7 @@ retry:
          * and continue the transcoding phase, hoping the error
          * did not mangle the encoder state.
          */
-        charrefLen = snprintf((char *) &charref[0], sizeof(charref),
-                         "&#%d;", cur);
+        charrefLen = xmlSerializeDecCharRef((char *) charref, cur);
         xmlBufGrow(out, charrefLen * 4);
         c_out = xmlBufAvail(out);
         c_in = charrefLen;
@@ -1856,8 +1856,7 @@ retry:
          * and continue the transcoding phase, hoping the error
          * did not mangle the encoder state.
          */
-        charrefLen = snprintf((char *) &charref[0], sizeof(charref),
-                         "&#%d;", cur);
+        charrefLen = xmlSerializeDecCharRef((char *) charref, cur);
         xmlBufferShrink(in, len);
         xmlBufferGrow(out, charrefLen * 4);
         written = out->size - out->use - 1;

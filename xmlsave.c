@@ -125,51 +125,10 @@ xmlSaveErr(xmlOutputBufferPtr out, int code, xmlNodePtr node,
  *			Special escaping routines			*
  *									*
  ************************************************************************/
-static char *
-xmlSerializeHexCharRef(char *out, int val) {
-    char *ptr;
-
-    *out++ = '&';
-    *out++ = '#';
-    *out++ = 'x';
-    if (val < 0x10) ptr = out;
-    else if (val < 0x100) ptr = out + 1;
-    else if (val < 0x1000) ptr = out + 2;
-    else if (val < 0x10000) ptr = out + 3;
-    else if (val < 0x100000) ptr = out + 4;
-    else ptr = out + 5;
-    out = ptr + 1;
-    while (val > 0) {
-	switch (val & 0xF) {
-	    case 0: *ptr-- = '0'; break;
-	    case 1: *ptr-- = '1'; break;
-	    case 2: *ptr-- = '2'; break;
-	    case 3: *ptr-- = '3'; break;
-	    case 4: *ptr-- = '4'; break;
-	    case 5: *ptr-- = '5'; break;
-	    case 6: *ptr-- = '6'; break;
-	    case 7: *ptr-- = '7'; break;
-	    case 8: *ptr-- = '8'; break;
-	    case 9: *ptr-- = '9'; break;
-	    case 0xA: *ptr-- = 'A'; break;
-	    case 0xB: *ptr-- = 'B'; break;
-	    case 0xC: *ptr-- = 'C'; break;
-	    case 0xD: *ptr-- = 'D'; break;
-	    case 0xE: *ptr-- = 'E'; break;
-	    case 0xF: *ptr-- = 'F'; break;
-	    default: *ptr-- = '0'; break;
-	}
-	val >>= 4;
-    }
-    *out++ = ';';
-    *out = 0;
-    return(out);
-}
 
 static void
 xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
                  unsigned flags) {
-    char tmp[12];
     const char *base, *cur;
 
     if (string == NULL)
@@ -178,32 +137,11 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
     base = cur = (const char *) string;
 
     while (*cur != 0) {
+        char tempBuf[12];
         const char *repl = NULL;
         int replSize = 0;
+        int chunkSize = 1;
         int c = (unsigned char) *cur;
-
-        if ((c >= 0x80) && (flags & XML_ESCAPE_NON_ASCII)) {
-            int val = 0, l = 4;
-
-            if (base != cur)
-                xmlOutputBufferWrite(buf, cur - base, base);
-
-            val = xmlGetUTF8Char((const xmlChar *) cur, &l);
-            if (val < 0) {
-                val = 0xFFFD;
-                cur++;
-            } else {
-                if (!IS_CHAR(val))
-                    val = 0xFFFD;
-                cur += l;
-            }
-
-	    xmlSerializeHexCharRef(tmp, val);
-            xmlOutputBufferWriteString(buf, tmp);
-            base = cur;
-
-            continue;
-        }
 
         switch (c) {
             case '\t':
@@ -255,6 +193,20 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
                 if (c < 0x20) {
                     repl = "&#xFFFD;";
                     replSize = 8;
+                } else if ((c >= 0x80) && (flags & XML_ESCAPE_NON_ASCII)) {
+                    int val = 0, l = 4;
+
+                    val = xmlGetUTF8Char((const xmlChar *) cur, &l);
+                    if (val < 0) {
+                        val = 0xFFFD;
+                    } else {
+                        if (!IS_CHAR(val))
+                            val = 0xFFFD;
+                        chunkSize = l;
+                    }
+
+                    replSize = xmlSerializeHexCharRef(tempBuf, val);
+                    repl = tempBuf;
                 }
                 break;
         }
@@ -265,7 +217,7 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
             if (base != cur)
                 xmlOutputBufferWrite(buf, cur - base, base);
             xmlOutputBufferWrite(buf, replSize, repl);
-            cur++;
+            cur += chunkSize;
             base = cur;
         }
     }

@@ -126,100 +126,104 @@ xmlSaveErr(xmlOutputBufferPtr out, int code, xmlNodePtr node,
  *									*
  ************************************************************************/
 
+/*
+ * Tables generated with tools/genEscape.py
+ */
+
+static const char xmlEscapeContent[] = {
+      8, '&', '#', 'x', 'F', 'F', 'F', 'D', ';',   4, '&', '#',
+    '9', ';',   5, '&', '#', '1', '0', ';',   5, '&', '#', '1',
+    '3', ';',   6, '&', 'q', 'u', 'o', 't', ';',   5, '&', 'a',
+    'm', 'p', ';',   4, '&', 'l', 't', ';',   4, '&', 'g', 't',
+    ';',
+};
+
+static const char xmlEscapeTab[128] = {
+     0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1,  0,  0, 20,  0,  0,
+     0,  0,  0,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+static const char xmlEscapeTabAttr[128] = {
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  9, 14,  0,  0, 20,  0,  0,
+     0,  0,  0,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, 26, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
 static void
 xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
                  unsigned flags) {
-    const char *base, *cur;
+    const char *cur;
+    const char *tab;
 
-    if (string == NULL)
-        return;
+    if (flags & XML_ESCAPE_ATTR)
+        tab = xmlEscapeTabAttr;
+    else
+        tab = xmlEscapeTab;
 
-    base = cur = (const char *) string;
+    cur = (const char *) string;
 
     while (*cur != 0) {
-        char tempBuf[12];
-        const char *repl = NULL;
-        int replSize = 0;
-        int chunkSize = 1;
-        int c = (unsigned char) *cur;
+        const char *base;
+        int c;
+        int offset;
 
-        switch (c) {
-            case '\t':
-                if (flags & XML_ESCAPE_ATTR) {
-                    repl = "&#9;";
-                    replSize = 4;
-                }
+        base = cur;
+        offset = -1;
+
+        while (1) {
+            c = (unsigned char) *cur;
+
+            if (c < 0x80) {
+                offset = tab[c];
+                if (offset >= 0)
+                    break;
+            } else if (flags & XML_ESCAPE_NON_ASCII) {
                 break;
+            }
 
-            case '\n':
-                if (flags & XML_ESCAPE_ATTR) {
-                    repl = "&#10;";
-                    replSize = 5;
-                }
-                break;
-
-            case '\r':
-                repl = "&#13;";
-                replSize = 5;
-                break;
-
-            case '"':
-                if (flags & XML_ESCAPE_ATTR) {
-                    repl = "&#quot;";
-                    replSize = 6;
-                }
-                break;
-
-            case '<':
-                repl = "&lt;";
-                replSize = 4;
-                break;
-
-            case '>':
-                repl = "&gt;";
-                replSize = 4;
-                break;
-
-            case '&':
-                repl = "&amp;";
-                replSize = 5;
-                break;
-
-            default:
-                if (c < 0x20) {
-                    repl = "&#xFFFD;";
-                    replSize = 8;
-                } else if ((c >= 0x80) && (flags & XML_ESCAPE_NON_ASCII)) {
-                    int val = 0, l = 4;
-
-                    val = xmlGetUTF8Char((const xmlChar *) cur, &l);
-                    if (val < 0) {
-                        val = 0xFFFD;
-                    } else {
-                        if (!IS_CHAR(val))
-                            val = 0xFFFD;
-                        chunkSize = l;
-                    }
-
-                    replSize = xmlSerializeHexCharRef(tempBuf, val);
-                    repl = tempBuf;
-                }
-                break;
+            cur += 1;
         }
 
-        if (repl == NULL) {
-            cur++;
+        if (cur > base)
+            xmlOutputBufferWrite(buf, cur - base, base);
+
+        if (offset >= 0) {
+            if (c == 0)
+                break;
+
+            xmlOutputBufferWrite(buf, xmlEscapeContent[offset],
+                                 &xmlEscapeContent[offset+1]);
+            cur += 1;
         } else {
-            if (base != cur)
-                xmlOutputBufferWrite(buf, cur - base, base);
-            xmlOutputBufferWrite(buf, replSize, repl);
-            cur += chunkSize;
-            base = cur;
+            char tempBuf[12];
+            int tempSize;
+            int val = 0, len = 4;
+
+            val = xmlGetUTF8Char((const xmlChar *) cur, &len);
+            if (val < 0) {
+                val = 0xFFFD;
+                cur += 1;
+            } else {
+                if (!IS_CHAR(val))
+                    val = 0xFFFD;
+                cur += len;
+            }
+
+            tempSize = xmlSerializeHexCharRef(tempBuf, val);
+            xmlOutputBufferWrite(buf, tempSize, tempBuf);
         }
     }
-
-    if (base != cur)
-        xmlOutputBufferWrite(buf, cur - base, base);
 }
 
 /************************************************************************

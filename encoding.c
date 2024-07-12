@@ -1905,6 +1905,8 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
  * xmlByteConsumed:
  * @ctxt: an XML parser context
  *
+ * DEPRECATED: Don't use.
+ *
  * This function provides the current index of the parser relative
  * to the start of the current entity. This function is computed in
  * bytes from the beginning starting at zero and finishing at the

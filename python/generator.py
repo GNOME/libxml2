@@ -299,6 +299,7 @@ deprecated_funcs = {
     'namePush': True,
     'nodePop': True,
     'nodePush': True,
+    'xmlByteConsumed': True,
     'xmlCheckFilename': True,
     'xmlCheckLanguageID': True,
     'xmlCleanupCharEncodingHandlers': True,

@@ -1347,9 +1347,7 @@ XMLPUBFUN xmlParserInputPtr
 					 const char *ID,
 					 xmlParserCtxtPtr ctxt);
 
-/*
- * Index lookup, actually implemented in the encoding module
- */
+XML_DEPRECATED
 XMLPUBFUN long
 		xmlByteConsumed		(xmlParserCtxtPtr ctxt);
 

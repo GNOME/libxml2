@@ -159,11 +159,7 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
                 break;
 
             case '\r':
-                if ((flags & XML_ESCAPE_NON_ASCII) &&
-                    ((flags & XML_ESCAPE_ATTR) == 0))
-                    repl = "&#xD;";
-                else
-                    repl = "&#13;";
+                repl = "&#13;";
                 replSize = 5;
                 break;
 

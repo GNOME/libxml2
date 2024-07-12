@@ -5098,6 +5098,10 @@ xmlTextReaderGetLastError(xmlTextReaderPtr reader)
  * xmlTextReaderByteConsumed:
  * @reader: an XML reader
  *
+ * DEPRECATED: The returned value is mostly random and useless.
+ * It reflects the parser reading ahead and is in no way related to
+ * the current node.
+ *
  * This function provides the current index of the parser used
  * by the reader, relative to the start of the current entity.
  * This function actually just wraps a call to xmlBytesConsumed()
@@ -5109,9 +5113,14 @@ xmlTextReaderGetLastError(xmlTextReaderPtr reader)
  */
 long
 xmlTextReaderByteConsumed(xmlTextReaderPtr reader) {
+    xmlParserInputPtr in;
+
     if ((reader == NULL) || (reader->ctxt == NULL))
         return(-1);
-    return(xmlByteConsumed(reader->ctxt));
+    in = reader->ctxt->input;
+    if (in == NULL)
+        return(-1);
+    return(in->consumed + (in->cur - in->base));
 }
 
 

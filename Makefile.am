@@ -155,7 +155,7 @@ testdso_la_LDFLAGS = $(AM_LDFLAGS) \
 # that one forces the rebuild when "make rebuild" is run on doc/
 rebuild_testapi:
 	-@(if [ "$(PYTHON)" != "" ] ; then \
-	    $(PYTHON) $(srcdir)/gentest.py $(srcdir) ; fi )
+	    $(PYTHON) $(srcdir)/tools/gentest.py $(srcdir) ; fi )
 
 testapi_SOURCES=testapi.c
 testapi_DEPENDENCIES = $(DEPS)
@@ -209,7 +209,8 @@ DISTCLEANFILES = COPYING missing.lst
 
 EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     libxml.h iso8859x.inc \
-	     genUnicode.py \
+	     tools/gentest.py \
+	     tools/genChRanges tools/genUnicode.py \
 	     libxml2.syms timsort.h \
 	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in \

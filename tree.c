@@ -1557,11 +1557,11 @@ xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
                     xmlChar *encoded;
 
                     if (escMode == 1)
-                        encoded = xmlEncodeEntitiesReentrant(doc,
-                                                             node->content);
+                        encoded = xmlEncodeEntitiesInternal(doc, node->content,
+                                                            0);
                     else if (escMode == 2)
-                        encoded = xmlEncodeAttributeEntities(doc,
-                                                             node->content);
+                        encoded = xmlEncodeEntitiesInternal(doc, node->content,
+                                                            XML_ESCAPE_ATTR);
                     else
                         encoded = xmlEncodeSpecialChars(doc, node->content);
                     if (encoded == NULL)

@@ -23,6 +23,7 @@
 
 #include "private/buf.h"
 #include "private/enc.h"
+#include "private/entities.h"
 #include "private/error.h"
 #include "private/io.h"
 #include "private/save.h"
@@ -30,9 +31,6 @@
 #ifdef LIBXML_OUTPUT_ENABLED
 
 #define XHTML_NS_NAME BAD_CAST "http://www.w3.org/1999/xhtml"
-
-#define XML_ESCAPE_ATTR         (1u << 0)
-#define XML_ESCAPE_NON_ASCII    (1u << 1)
 
 struct _xmlSaveCtxt {
     void *_private;

@@ -44,6 +44,7 @@
 
 #include "private/buf.h"
 #include "private/enc.h"
+#include "private/entities.h"
 #include "private/error.h"
 #include "private/io.h"
 
@@ -2375,66 +2376,6 @@ xmlOutputBufferWrite(xmlOutputBufferPtr out, int len, const char *data) {
 }
 
 /**
- * xmlEscapeContent:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of unescaped UTF-8 bytes
- * @inlen:  the length of @in
- *
- * Take a block of UTF-8 chars in and escape them.
- * Returns 0 if success, or -1 otherwise
- * The value of @inlen after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of @outlen after return is the number of octets consumed.
- */
-static int
-xmlEscapeContent(unsigned char* out, int *outlen,
-                 const xmlChar* in, int *inlen) {
-    unsigned char* outstart = out;
-    const unsigned char* base = in;
-    unsigned char* outend = out + *outlen;
-    const unsigned char* inend;
-
-    inend = in + (*inlen);
-
-    while ((in < inend) && (out < outend)) {
-	if (*in == '<') {
-	    if (outend - out < 4) break;
-	    *out++ = '&';
-	    *out++ = 'l';
-	    *out++ = 't';
-	    *out++ = ';';
-	} else if (*in == '>') {
-	    if (outend - out < 4) break;
-	    *out++ = '&';
-	    *out++ = 'g';
-	    *out++ = 't';
-	    *out++ = ';';
-	} else if (*in == '&') {
-	    if (outend - out < 5) break;
-	    *out++ = '&';
-	    *out++ = 'a';
-	    *out++ = 'm';
-	    *out++ = 'p';
-	    *out++ = ';';
-	} else if (*in == '\r') {
-	    if (outend - out < 5) break;
-	    *out++ = '&';
-	    *out++ = '#';
-	    *out++ = '1';
-	    *out++ = '3';
-	    *out++ = ';';
-	} else {
-	    *out++ = *in;
-	}
-	++in;
-    }
-    *outlen = out - outstart;
-    *inlen = in - base;
-    return(0);
-}
-
-/**
  * xmlOutputBufferWriteEscape:
  * @out:  a buffered parser output
  * @str:  a zero terminated UTF-8 string
@@ -2454,13 +2395,36 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
                            xmlCharEncodingOutputFunc escaping) {
     int ret;
     int written = 0;
-    int len;
+    size_t len;
 
     if ((out == NULL) || (out->error) || (str == NULL))
         return(-1);
-    len = strlen((const char *)str);
-    if (escaping == NULL)
-        escaping = xmlEscapeContent;
+
+    len = strlen((const char *) str);
+    if (len >= INT_MAX) {
+        out->error = XML_ERR_RESOURCE_LIMIT;
+        return(-1);
+    }
+
+    if (escaping == NULL) {
+        char *escaped = (char *) xmlEscapeText(str, XML_ESCAPE_ALLOW_INVALID);
+
+        if (escaped == NULL) {
+            out->error = XML_ERR_NO_MEMORY;
+            return(-1);
+        }
+
+        len = strlen(escaped);
+        if (len >= INT_MAX) {
+            out->error = XML_ERR_RESOURCE_LIMIT;
+            return(-1);
+        }
+
+        ret = xmlOutputBufferWrite(out, len, escaped);
+
+        xmlFree(escaped);
+        return(ret);
+    }
 
     while (len > 0) {
         xmlChar buf[1024];

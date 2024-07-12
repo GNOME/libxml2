@@ -63,7 +63,7 @@ cmake_dependent_option(
     LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_XPATH" OFF)
 cmake_dependent_option(
-    LIBXML2_WITH_THREAD_ALLOC "Add per-thread memory" OFF
+    LIBXML2_WITH_THREAD_ALLOC "Add per-thread malloc hooks" OFF
     "LIBXML2_WITH_THREADS" OFF)
 cmake_dependent_option(
     LIBXML2_WITH_WRITER "Add the xmlWriter saving interface" ON

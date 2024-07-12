@@ -72,6 +72,7 @@ option('iconv',
 
 option('icu',
   type: 'feature',
+  value: 'disabled',
   description: 'ICU support'
 )
 
@@ -153,6 +154,7 @@ option('threads',
 
 option('thread-alloc',
   type: 'feature',
+  value: 'disabled',
   description: 'per-thread malloc hooks'
 )
 

@@ -427,8 +427,12 @@ xmlInitParserWinWrapper(INIT_ONCE *initOnce ATTRIBUTE_UNUSED,
  *
  * Initialization function for the XML parser.
  *
- * Call once from the main thread before using the library in
- * multithreaded programs.
+ * For older versions, it's recommended to call this function once
+ * from the main thread before using the library in multithreaded
+ * programs.
+ *
+ * Since 2.14.0, there's no distinction between threads. It should
+ * be unnecessary to call this function.
  */
 void
 xmlInitParser(void) {
@@ -448,23 +452,29 @@ xmlInitParser(void) {
  * xmlCleanupParser:
  *
  * This function is named somewhat misleadingly. It does not clean up
- * parser state but global memory allocated by the library itself. This
- * function is mainly useful to avoid false positives from memory leak
- * checkers and SHOULD ONLY BE CALLED RIGHT BEFORE THE WHOLE PROCESS
- * EXITS.
+ * parser state but global memory allocated by the library itself.
  *
- * WARNING: If a process is multithreaded or uses other shared or
- * dynamic libraries, calling this function may cause crashes if
- * another thread or library is still using libxml2. It can be very
- * hard to guess if libxml2 is in use by a process. In case of doubt
- * abstain from calling this function.
+ * Since 2.9.11, cleanup is performed automatically if a shared or
+ * dynamic libxml2 library is unloaded. This function should only
+ * be used to avoid false positives from memory leak checkers in
+ * static builds.
+ *
+ * WARNING: xmlCleanupParser assumes that all other threads that called
+ * libxml2 functions have terminated. No library calls must be made
+ * after calling this function. In general, THIS FUNCTION SHOULD ONLY
+ * BE CALLED RIGHT BEFORE THE WHOLE PROCESS EXITS.
  */
 void
 xmlCleanupParser(void) {
+    /*
+     * Unfortunately, some users call this function to fix memory
+     * leaks on unload with versions before 2.9.11. This can result
+     * in the library being reinitialized, so this use case must
+     * be supported.
+     */
     if (!xmlParserInitialized)
         return;
 
-    /* These functions can call xmlFree. */
     xmlCleanupCharEncodingHandlers();
 #ifdef LIBXML_CATALOG_ENABLED
     xmlCatalogCleanup();
@@ -475,14 +485,13 @@ xmlCleanupParser(void) {
     xmlRelaxNGCleanupTypes();
 #endif
 
-    /* These functions should never call xmlFree. */
     xmlCleanupDictInternal();
     xmlCleanupRandom();
     xmlCleanupGlobalsInternal();
     xmlCleanupThreadsInternal();
 
     /*
-     * Must come last. xmlCleanupGlobalsInternal can call xmlFree which
+     * Must come after all cleanup functions that call xmlFree which
      * uses xmlMemMutex in debug mode.
      */
     xmlCleanupMemoryInternal();

@@ -1048,7 +1048,7 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
                 return;
             }
 
-            let = (xmlSchematronLetPtr) malloc(sizeof(xmlSchematronLet));
+            let = (xmlSchematronLetPtr) xmlMalloc(sizeof(xmlSchematronLet));
             let->name = name;
             let->comp = var_comp;
             let->next = NULL;

@@ -17,6 +17,7 @@
 #include <libxml/xmlmemory.h>
 
 #include "private/error.h"
+#include "private/globals.h"
 #include "private/string.h"
 
 /************************************************************************
@@ -635,7 +636,7 @@ void
 xmlRaiseMemoryError(xmlStructuredErrorFunc schannel, xmlGenericErrorFunc channel,
                     void *data, int domain, xmlError *error)
 {
-    xmlError *lastError = &xmlLastError;
+    xmlError *lastError = xmlGetLastErrorInternal();
 
     xmlResetLastError();
     lastError->domain = domain;
@@ -694,7 +695,7 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
 {
     xmlParserCtxtPtr ctxt = NULL;
     /* xmlLastError is a macro retrieving the per-thread global. */
-    xmlErrorPtr lastError = &xmlLastError;
+    xmlErrorPtr lastError = xmlGetLastErrorInternal();
     xmlErrorPtr to = lastError;
 
     if (code == XML_ERR_OK)
@@ -919,9 +920,11 @@ xmlParserValidityWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 const xmlError *
 xmlGetLastError(void)
 {
-    if (xmlLastError.code == XML_ERR_OK)
-        return (NULL);
-    return (&xmlLastError);
+    const xmlError *error = xmlGetLastErrorInternal();
+
+    if (error->code == XML_ERR_OK)
+        return(NULL);
+    return(error);
 }
 
 /**
@@ -960,9 +963,10 @@ xmlResetError(xmlErrorPtr err)
 void
 xmlResetLastError(void)
 {
-    if (xmlLastError.code == XML_ERR_OK)
-        return;
-    xmlResetError(&xmlLastError);
+    xmlError *error = xmlGetLastErrorInternal();
+
+    if (error->code != XML_ERR_OK)
+        xmlResetError(error);
 }
 
 /**

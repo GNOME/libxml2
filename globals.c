@@ -79,6 +79,8 @@ struct _xmlGlobalState {
     unsigned localRngState[2];
 #endif
 
+    xmlError lastError;
+
 #define XML_OP XML_DECLARE_MEMBER
 XML_GLOBALS_ALLOC
 XML_GLOBALS_ERROR
@@ -679,7 +681,7 @@ xmlFreeGlobalState(void *state)
      * But the xmlError struct is fully public and widely used,
      * so changes are dangerous.
      */
-    xmlResetError(&(gs->gs_xmlLastError));
+    xmlResetError(&gs->lastError);
 #ifndef USE_TLS
     free(state);
 #endif
@@ -723,10 +725,10 @@ static void
 xmlInitGlobalState(xmlGlobalStatePtr gs) {
     xmlMutexLock(&xmlThrDefMutex);
 
-#ifdef LIBXML_THREAD_ENABLED
     gs->localRngState[0] = xmlGlobalRandom();
     gs->localRngState[1] = xmlGlobalRandom();
-#endif
+
+    memset(&gs->lastError, 0, sizeof(xmlError));
 
     gs->gs_xmlDoValidityCheckingDefaultValue =
          xmlDoValidityCheckingDefaultValueThrDef;
@@ -761,7 +763,6 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
         xmlParserInputBufferCreateFilenameValueThrDef;
     gs->gs_xmlOutputBufferCreateFilenameValue =
         xmlOutputBufferCreateFilenameValueThrDef;
-    memset(&gs->gs_xmlLastError, 0, sizeof(xmlError));
 
     xmlMutexUnlock(&xmlThrDefMutex);
 
@@ -857,7 +858,14 @@ XML_GLOBALS_PARSER
 XML_GLOBALS_TREE
 #undef XML_OP
 
-#ifdef LIBXML_THREAD_ENABLED
+const xmlError *
+__xmlLastError(void) {
+    if (IS_MAIN_THREAD)
+        return(&xmlLastError);
+    else
+        return(&xmlGetThreadLocalStorage(0)->lastError);
+}
+
 /**
  * xmlGetLocalRngState:
  *
@@ -870,7 +878,6 @@ xmlGetLocalRngState(void) {
     else
         return(xmlGetThreadLocalStorage(0)->localRngState);
 }
-#endif
 
 /* For backward compatibility */
 
@@ -939,6 +946,18 @@ xmlCheckThreadLocalStorage(void) {
         return(-1);
 #endif
     return(0);
+}
+
+xmlError *
+xmlGetLastErrorInternal(void) {
+#ifdef LIBXML_THREAD_ENABLED
+    if (IS_MAIN_THREAD)
+        return(&xmlLastError);
+    else
+        return(&xmlGetThreadLocalStorage(0)->lastError);
+#else
+    return(&xmlLastError);
+#endif
 }
 
 /** DOC_DISABLE */

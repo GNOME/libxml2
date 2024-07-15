@@ -3093,7 +3093,6 @@ xmlFARegExecRollBack(xmlRegExecCtxtPtr exec) {
     exec->transno = exec->rollbacks[exec->nbRollbacks].nextbranch;
     if (exec->comp->nbCounters > 0) {
 	if (exec->rollbacks[exec->nbRollbacks].counts == NULL) {
-	    fprintf(stderr, "exec save: allocation failed");
 	    exec->status = XML_REGEXP_INTERNAL_ERROR;
 	    return;
 	}
@@ -3195,7 +3194,6 @@ xmlFARegExec(xmlRegexpPtr comp, const xmlChar *content) {
 		if ((ret) && (counter->min != counter->max))
 		    deter = 0;
 	    } else if (atom == NULL) {
-		fprintf(stderr, "epsilon transition left at runtime\n");
 		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    } else if (exec->inputString[exec->index] != 0) {
@@ -3805,7 +3803,6 @@ xmlRegExecPushStringInternal(xmlRegExecCtxtPtr exec, const xmlChar *value,
 		counter = &exec->comp->counters[trans->count];
 		ret = ((count >= counter->min) && (count <= counter->max));
 	    } else if (atom == NULL) {
-		fprintf(stderr, "epsilon transition left at runtime\n");
 		exec->status = XML_REGEXP_INTERNAL_ERROR;
 		break;
 	    } else if (value != NULL) {
@@ -7689,7 +7686,6 @@ xmlExpParseOr(xmlExpCtxtPtr ctxt) {
 	ret = xmlExpParseExpr(ctxt);
 	SKIP_BLANKS
 	if (*ctxt->cur != ')') {
-	    fprintf(stderr, "unbalanced '(' : %s\n", base);
 	    xmlExpFree(ctxt, ret);
 	    return(NULL);
 	}
@@ -7897,7 +7893,7 @@ xmlExpDumpInt(xmlBufferPtr buf, xmlExpNodePtr expr, int glob) {
 	    break;
 	}
 	default:
-	    fprintf(stderr, "Error in tree\n");
+            break;
     }
     if (glob)
         xmlBufferWriteChar(buf, ")");

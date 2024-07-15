@@ -21,7 +21,6 @@ debugsym=None
 ignored_files = {
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
-  "rngparser.c": "not yet integrated",
   "testModule.c": "test tool",
   "testapi.c": "generated regression tests",
   "runtest.c": "regression tests program",

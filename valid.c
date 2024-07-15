@@ -4101,13 +4101,6 @@ xmlValidateElementDecl(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     if (elem == NULL) return(1);
 
-#if 0
-#ifdef LIBXML_REGEXP_ENABLED
-    /* Build the regexp associated to the content model */
-    ret = xmlValidBuildContentModel(ctxt, elem);
-#endif
-#endif
-
     /* No Duplicate Types */
     if (elem->etype == XML_ELEMENT_TYPE_MIXED) {
 	xmlElementContentPtr cur, next;
@@ -4498,25 +4491,6 @@ xmlNodePtr elem, const xmlChar *prefix, xmlNsPtr ns, const xmlChar *value) {
 	    ret = 0;
 	}
     }
-
-    /*
-     * Casting ns to xmlAttrPtr is wrong. We'd need separate functions
-     * xmlAddID and xmlAddRef for namespace declarations, but it makes
-     * no practical sense to use ID types anyway.
-     */
-#if 0
-    /* Validity Constraint: ID uniqueness */
-    if (attrDecl->atype == XML_ATTRIBUTE_ID) {
-        if (xmlAddID(ctxt, doc, value, (xmlAttrPtr) ns) == NULL)
-	    ret = 0;
-    }
-
-    if ((attrDecl->atype == XML_ATTRIBUTE_IDREF) ||
-	(attrDecl->atype == XML_ATTRIBUTE_IDREFS)) {
-        if (xmlAddRef(ctxt, doc, value, (xmlAttrPtr) ns) == NULL)
-	    ret = 0;
-    }
-#endif
 
     /* Validity Constraint: Notation Attributes */
     if (attrDecl->atype == XML_ATTRIBUTE_NOTATION) {
@@ -5575,7 +5549,7 @@ xmlValidatePushElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 
     if (ctxt == NULL)
         return(0);
-/* printf("PushElem %s\n", qname); */
+
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
 	xmlValidStatePtr state = ctxt->vstate;
 	xmlElementPtr elemDecl;
@@ -5669,7 +5643,6 @@ int
 xmlValidatePushCData(xmlValidCtxtPtr ctxt, const xmlChar *data, int len) {
     int ret = 1;
 
-/* printf("CDATA %s %d\n", data, len); */
     if (ctxt == NULL)
         return(0);
     if (len <= 0)
@@ -5748,7 +5721,7 @@ xmlValidatePopElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc ATTRIBUTE_UNUSED,
 
     if (ctxt == NULL)
         return(0);
-/* printf("PopElem %s\n", qname); */
+
     if ((ctxt->vstateNr > 0) && (ctxt->vstate != NULL)) {
 	xmlValidStatePtr state = ctxt->vstate;
 	xmlElementPtr elemDecl;

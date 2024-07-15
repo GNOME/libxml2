@@ -90,11 +90,6 @@
 #define GETHOSTBYNAME_ARG_CAST (char *)
 #define SEND_ARG2_CAST (char *)
 
-#ifdef STANDALONE
-#define xmlStrncasecmp(a, b, n) strncasecmp((char *)a, (char *)b, n)
-#define xmlStrcasecmpi(a, b) strcasecmp((char *)a, (char *)b)
-#endif
-
 #define XML_NANO_HTTP_MAX_REDIR	10
 
 #define XML_NANO_HTTP_CHUNK	4096
@@ -1825,33 +1820,4 @@ xmlNanoHTTPFetchContent( void * ctx, char ** ptr, int * len ) {
     return ( rc );
 }
 
-#ifdef STANDALONE
-int main(int argc, char **argv) {
-    char *contentType = NULL;
-
-    if (argv[1] != NULL) {
-	if (argv[2] != NULL)
-	    xmlNanoHTTPFetch(argv[1], argv[2], &contentType);
-        else
-	    xmlNanoHTTPFetch(argv[1], "-", &contentType);
-	if (contentType != NULL) xmlFree(contentType);
-    } else {
-        fprintf(stderr,
-		"%s: minimal HTTP GET implementation\n", argv[0]);
-        fprintf(stderr,
-		"\tusage %s [ URL [ filename ] ]\n", argv[0]);
-    }
-    xmlNanoHTTPCleanup();
-    return(0);
-}
-#endif /* STANDALONE */
-#else /* !LIBXML_HTTP_ENABLED */
-#ifdef STANDALONE
-#include <stdio.h>
-int main(int argc, char **argv) {
-    fprintf(stderr,
-	    "%s : HTTP support not compiled in\n", argv[0]);
-    return(0);
-}
-#endif /* STANDALONE */
 #endif /* LIBXML_HTTP_ENABLED */

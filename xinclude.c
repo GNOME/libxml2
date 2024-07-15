@@ -1817,11 +1817,6 @@ xmlXIncludeTestNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
         (xmlStrEqual(node->ns->href, XINCLUDE_OLD_NS))) {
 	if (xmlStrEqual(node->ns->href, XINCLUDE_OLD_NS)) {
 	    if (ctxt->legacy == 0) {
-#if 0 /* wait for the XML Core Working Group to get something stable ! */
-		xmlXIncludeWarn(ctxt, node, XML_XINCLUDE_DEPRECATED_NS,
-	               "Deprecated XInclude namespace found, use %s",
-		                XINCLUDE_NS);
-#endif
 	        ctxt->legacy = 1;
 	    }
 	}

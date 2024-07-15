@@ -2130,11 +2130,6 @@ xmlXPathPopNodeSet (xmlXPathParserContextPtr ctxt) {
     }
     obj = valuePop(ctxt);
     ret = obj->nodesetval;
-#if 0
-    /* to fix memory leak of not clearing obj->user */
-    if (obj->boolval && obj->user != NULL)
-        xmlFreeNodeList((xmlNodePtr) obj->user);
-#endif
     obj->nodesetval = NULL;
     xmlXPathReleaseObject(ctxt->context, obj);
     return(ret);
@@ -4386,38 +4381,6 @@ xmlXPathObjectCopy(xmlXPathObjectPtr val) {
             }
 	    break;
 	case XPATH_XSLT_TREE:
-#if 0
-/*
-  Removed 11 July 2004 - the current handling of xslt tmpRVT nodes means that
-  this previous handling is no longer correct, and can cause some serious
-  problems (ref. bug 145547)
-*/
-	    if ((val->nodesetval != NULL) &&
-		(val->nodesetval->nodeTab != NULL)) {
-		xmlNodePtr cur, tmp;
-		xmlDocPtr top;
-
-		ret->boolval = 1;
-		top =  xmlNewDoc(NULL);
-		top->name = (char *)
-		    xmlStrdup(val->nodesetval->nodeTab[0]->name);
-		ret->user = top;
-		if (top != NULL) {
-		    top->doc = top;
-		    cur = val->nodesetval->nodeTab[0]->children;
-		    while (cur != NULL) {
-			tmp = xmlDocCopyNode(cur, top, 1);
-			xmlAddChild((xmlNodePtr) top, tmp);
-			cur = cur->next;
-		    }
-		}
-
-		ret->nodesetval = xmlXPathNodeSetCreate((xmlNodePtr) top);
-	    } else
-		ret->nodesetval = xmlXPathNodeSetCreate(NULL);
-	    /* Deallocate the copied tree value */
-	    break;
-#endif
 	case XPATH_NODESET:
 	    ret->nodesetval = xmlXPathNodeSetMerge(NULL, val->nodesetval);
             if (ret->nodesetval == NULL) {
@@ -6553,78 +6516,6 @@ xmlXPathNextChildElement(xmlXPathParserContextPtr ctxt, xmlNodePtr cur) {
     }
     return(NULL);
 }
-
-#if 0
-/**
- * xmlXPathNextDescendantOrSelfElemParent:
- * @ctxt:  the XPath Parser context
- * @cur:  the current node in the traversal
- *
- * Traversal function for the "descendant-or-self" axis.
- * Additionally it returns only nodes which can be parents of
- * element nodes.
- *
- *
- * Returns the next element following that axis
- */
-static xmlNodePtr
-xmlXPathNextDescendantOrSelfElemParent(xmlNodePtr cur,
-				       xmlNodePtr contextNode)
-{
-    if (cur == NULL) {
-	if (contextNode == NULL)
-	    return(NULL);
-	switch (contextNode->type) {
-	    case XML_ELEMENT_NODE:
-	    case XML_XINCLUDE_START:
-	    case XML_DOCUMENT_FRAG_NODE:
-	    case XML_DOCUMENT_NODE:
-	    case XML_HTML_DOCUMENT_NODE:
-		return(contextNode);
-	    default:
-		return(NULL);
-	}
-	return(NULL);
-    } else {
-	xmlNodePtr start = cur;
-
-	while (cur != NULL) {
-	    switch (cur->type) {
-		case XML_ELEMENT_NODE:
-		/* TODO: OK to have XInclude here? */
-		case XML_XINCLUDE_START:
-		case XML_DOCUMENT_FRAG_NODE:
-		    if (cur != start)
-			return(cur);
-		    if (cur->children != NULL) {
-			cur = cur->children;
-			continue;
-		    }
-		    break;
-		/* Not sure if we need those here. */
-		case XML_DOCUMENT_NODE:
-		case XML_HTML_DOCUMENT_NODE:
-		    if (cur != start)
-			return(cur);
-		    return(xmlDocGetRootElement((xmlDocPtr) cur));
-		default:
-		    break;
-	    }
-
-next_sibling:
-	    if ((cur == NULL) || (cur == contextNode))
-		return(NULL);
-	    if (cur->next != NULL) {
-		cur = cur->next;
-	    } else {
-		cur = cur->parent;
-		goto next_sibling;
-	    }
-	}
-    }
-    return(NULL);
-}
-#endif
 
 /**
  * xmlXPathNextDescendant:
@@ -9945,16 +9836,7 @@ xmlXPathCompNodeTest(xmlXPathParserContextPtr ctxt, xmlXPathTestVal *test,
 	 * only at evaluation time. The compilation is done
 	 * outside of any context.
 	 */
-#if 0
-	*prefix = xmlXPathNsLookup(ctxt->context, name);
-	if (name != NULL)
-	    xmlFree(name);
-	if (*prefix == NULL) {
-	    XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
-	}
-#else
 	*prefix = name;
-#endif
 
 	if (CUR == '*') {
 	    /*
@@ -11969,9 +11851,6 @@ xmlXPathRunStreamEval(xmlXPathParserContextPtr pctxt, xmlPatternPtr comp,
     from_root = xmlPatternFromRoot(comp);
     if (from_root < 0)
         return(-1);
-#if 0
-    printf("stream eval: depth %d from root %d\n", max_depth, from_root);
-#endif
 
     if (! toBool) {
 	if (resultSeq == NULL)

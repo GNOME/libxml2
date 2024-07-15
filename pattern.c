@@ -367,35 +367,6 @@ xmlPatternAdd(xmlPatParserContextPtr ctxt, xmlPatternPtr comp,
     return (0);
 }
 
-#if 0
-/**
- * xsltSwapTopPattern:
- * @comp:  the compiled match expression
- *
- * reverse the two top steps.
- */
-static void
-xsltSwapTopPattern(xmlPatternPtr comp) {
-    int i;
-    int j = comp->nbStep - 1;
-
-    if (j > 0) {
-	register const xmlChar *tmp;
-	register xmlPatOp op;
-	i = j - 1;
-	tmp = comp->steps[i].value;
-	comp->steps[i].value = comp->steps[j].value;
-	comp->steps[j].value = tmp;
-	tmp = comp->steps[i].value2;
-	comp->steps[i].value2 = comp->steps[j].value2;
-	comp->steps[j].value2 = tmp;
-	op = comp->steps[i].op;
-	comp->steps[i].op = comp->steps[j].op;
-	comp->steps[j].op = op;
-    }
-}
-#endif
-
 /**
  * xmlReversePattern:
  * @comp:  the compiled match expression
@@ -479,9 +450,6 @@ xmlPatPushState(xmlStepStates *states, int step, xmlNodePtr node) {
     }
     states->states[states->nbstates].step = step;
     states->states[states->nbstates++].node = node;
-#if 0
-    fprintf(stderr, "Push: %d, %s\n", step, node->name);
-#endif
     return(0);
 }
 
@@ -685,9 +653,6 @@ rollback:
     states.nbstates--;
     i = states.states[states.nbstates].step;
     node = states.states[states.nbstates].node;
-#if 0
-    fprintf(stderr, "Pop: %d, %s\n", i, node->name);
-#endif
     goto restart;
 }
 
@@ -712,73 +677,6 @@ rollback:
 
 #define PUSH(op, val, val2)						\
     if (xmlPatternAdd(ctxt, ctxt->comp, (op), (val), (val2))) goto error;
-
-#if 0
-/**
- * xmlPatScanLiteral:
- * @ctxt:  the XPath Parser context
- *
- * Parse an XPath Literal:
- *
- * [29] Literal ::= '"' [^"]* '"'
- *                | "'" [^']* "'"
- *
- * Returns the Literal parsed or NULL
- */
-
-static xmlChar *
-xmlPatScanLiteral(xmlPatParserContextPtr ctxt) {
-    const xmlChar *q, *cur;
-    xmlChar *ret = NULL;
-    int val, len;
-
-    SKIP_BLANKS;
-    if (CUR == '"') {
-        NEXT;
-	cur = q = CUR_PTR;
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	while ((IS_CHAR(val)) && (val != '"')) {
-	    cur += len;
-	    val = xmlStringCurrentChar(NULL, cur, &len);
-	}
-	if (!IS_CHAR(val)) {
-	    ctxt->error = 1;
-	    return(NULL);
-	} else {
-	    if (ctxt->dict)
-		ret = (xmlChar *) xmlDictLookup(ctxt->dict, q, cur - q);
-	    else
-		ret = xmlStrndup(q, cur - q);
-        }
-	cur += len;
-	CUR_PTR = cur;
-    } else if (CUR == '\'') {
-        NEXT;
-	cur = q = CUR_PTR;
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	while ((IS_CHAR(val)) && (val != '\'')) {
-	    cur += len;
-	    val = xmlStringCurrentChar(NULL, cur, &len);
-	}
-	if (!IS_CHAR(val)) {
-	    ctxt->error = 1;
-	    return(NULL);
-	} else {
-	    if (ctxt->dict)
-		ret = (xmlChar *) xmlDictLookup(ctxt->dict, q, cur - q);
-	    else
-		ret = xmlStrndup(q, cur - q);
-        }
-	cur += len;
-	CUR_PTR = cur;
-    } else {
-	/* XP_ERROR(XPATH_START_LITERAL_ERROR); */
-	ctxt->error = 1;
-	return(NULL);
-    }
-    return(ret);
-}
-#endif
 
 /**
  * xmlPatScanName:
@@ -862,32 +760,6 @@ xmlPatScanNCName(xmlPatParserContextPtr ctxt) {
     CUR_PTR = cur;
     return(ret);
 }
-
-#if 0
-/**
- * xmlPatScanQName:
- * @ctxt:  the XPath Parser context
- * @prefix:  the place to store the prefix
- *
- * Parse a qualified name
- *
- * Returns the Name parsed or NULL
- */
-
-static xmlChar *
-xmlPatScanQName(xmlPatParserContextPtr ctxt, xmlChar **prefix) {
-    xmlChar *ret = NULL;
-
-    *prefix = NULL;
-    ret = xmlPatScanNCName(ctxt);
-    if (CUR == ':') {
-        *prefix = ret;
-	NEXT;
-	ret = xmlPatScanNCName(ctxt);
-    }
-    return(ret);
-}
-#endif
 
 /**
  * xmlCompileAttributeTest:
@@ -1950,22 +1822,6 @@ xmlStreamPushInternal(xmlStreamCtxtPtr stream,
 	    {
 		match = 1;
 	    }
-#if 0
-/*
-* TODO: Pointer comparison won't work, since not guaranteed that the given
-*  values are in the same dict; especially if it's the namespace name,
-*  normally coming from ns->href. We need a namespace dict mechanism !
-*/
-	    } else if (comp->dict) {
-		if (step.name == NULL) {
-		    if (step.ns == NULL)
-			match = 1;
-		    else
-			match = (step.ns == ns);
-		} else {
-		    match = ((step.name == name) && (step.ns == ns));
-		}
-#endif /* if 0 ------------------------------------------------------- */
 	    if (match) {
 		final = step.flags & XML_STREAM_STEP_FINAL;
                 if (final) {

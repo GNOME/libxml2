@@ -267,12 +267,6 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
     } else {
 	dict = doc->dict;
 	if ((dict == NULL) && (ctxt->nodict == 0)) {
-#if 0
-            /* deactivated right now as it raises too many errors */
-	    if (doc->type == XML_DOCUMENT_NODE)
-		xmlDebugErr(ctxt, XML_CHECK_NO_DICT,
-			    "Document has no dictionary\n");
-#endif
 	    ctxt->nodict = 1;
 	}
 	if (ctxt->doc == NULL)

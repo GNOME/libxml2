@@ -1007,6 +1007,13 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
             }
 #endif
             break;
+
+#ifndef LIBXML_THREAD_ALLOC_ENABLED
+        case DLL_PROCESS_DETACH:
+            if (xmlFree == free)
+                xmlCleanupParser();
+            break;
+#endif
     }
     return TRUE;
 }

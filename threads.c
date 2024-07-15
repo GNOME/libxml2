@@ -385,13 +385,6 @@ static int onceControl = 0;
 
 static void
 xmlInitParserInternal(void) {
-#if defined(_WIN32) && \
-    !defined(LIBXML_THREAD_ALLOC_ENABLED) && \
-    (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
-    if (xmlFree == free)
-        atexit(xmlCleanupParser);
-#endif
-
     /*
      * Note that the initialization code must not make memory allocations.
      */

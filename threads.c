@@ -44,24 +44,7 @@
  *       be hosted on allocated blocks needing them for the allocation ...
  */
 
-/*
- * xmlRMutex are reentrant mutual exception locks
- */
-struct _xmlRMutex {
-#ifdef HAVE_POSIX_THREADS
-    pthread_mutex_t lock;
-    unsigned int held;
-    unsigned int waiters;
-    pthread_t tid;
-    pthread_cond_t cv;
-#elif defined HAVE_WIN32_THREADS
-    CRITICAL_SECTION cs;
-#else
-    int empty;
-#endif
-};
-
-static xmlRMutexPtr xmlLibraryLock = NULL;
+static xmlRMutex xmlLibraryLock;
 
 /**
  * xmlInitMutex:
@@ -176,6 +159,20 @@ xmlMutexUnlock(xmlMutexPtr tok)
 #endif
 }
 
+void
+xmlInitRMutex(xmlRMutexPtr tok) {
+    (void) tok;
+
+#ifdef HAVE_POSIX_THREADS
+    pthread_mutex_init(&tok->lock, NULL);
+    tok->held = 0;
+    tok->waiters = 0;
+    pthread_cond_init(&tok->cv, NULL);
+#elif defined HAVE_WIN32_THREADS
+    InitializeCriticalSection(&tok->cs);
+#endif
+}
+
 /**
  * xmlNewRMutex:
  *
@@ -194,15 +191,20 @@ xmlNewRMutex(void)
     tok = malloc(sizeof(xmlRMutex));
     if (tok == NULL)
         return (NULL);
-#ifdef HAVE_POSIX_THREADS
-    pthread_mutex_init(&tok->lock, NULL);
-    tok->held = 0;
-    tok->waiters = 0;
-    pthread_cond_init(&tok->cv, NULL);
-#elif defined HAVE_WIN32_THREADS
-    InitializeCriticalSection(&tok->cs);
-#endif
+    xmlInitRMutex(tok);
     return (tok);
+}
+
+void
+xmlCleanupRMutex(xmlRMutexPtr tok) {
+    (void) tok;
+
+#ifdef HAVE_POSIX_THREADS
+    pthread_mutex_destroy(&tok->lock);
+    pthread_cond_destroy(&tok->cv);
+#elif defined HAVE_WIN32_THREADS
+    DeleteCriticalSection(&tok->cs);
+#endif
 }
 
 /**
@@ -213,16 +215,11 @@ xmlNewRMutex(void)
  * reentrant mutex.
  */
 void
-xmlFreeRMutex(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
+xmlFreeRMutex(xmlRMutexPtr tok)
 {
     if (tok == NULL)
         return;
-#ifdef HAVE_POSIX_THREADS
-    pthread_mutex_destroy(&tok->lock);
-    pthread_cond_destroy(&tok->cv);
-#elif defined HAVE_WIN32_THREADS
-    DeleteCriticalSection(&tok->cs);
-#endif
+    xmlCleanupRMutex(tok);
     free(tok);
 }
 
@@ -328,7 +325,7 @@ xmlGetThreadId(void)
 void
 xmlLockLibrary(void)
 {
-    xmlRMutexLock(xmlLibraryLock);
+    xmlRMutexLock(&xmlLibraryLock);
 }
 
 /**
@@ -340,7 +337,7 @@ xmlLockLibrary(void)
 void
 xmlUnlockLibrary(void)
 {
-    xmlRMutexUnlock(xmlLibraryLock);
+    xmlRMutexUnlock(&xmlLibraryLock);
 }
 
 /**
@@ -367,6 +364,16 @@ xmlCleanupThreads(void)
 {
 }
 
+static void
+xmlInitThreadsInternal(void) {
+    xmlInitRMutex(&xmlLibraryLock);
+}
+
+static void
+xmlCleanupThreadsInternal(void) {
+    xmlCleanupRMutex(&xmlLibraryLock);
+}
+
 /************************************************************************
  *									*
  *			Library wide initialization			*
@@ -390,6 +397,7 @@ xmlInitParserInternal(void) {
      */
     xmlInitRandom(); /* Required by xmlInitGlobalsInternal */
     xmlInitMemoryInternal();
+    xmlInitThreadsInternal();
     xmlInitGlobalsInternal();
     xmlInitDictInternal();
     xmlInitEncodingInternal();
@@ -471,6 +479,7 @@ xmlCleanupParser(void) {
     xmlCleanupDictInternal();
     xmlCleanupRandom();
     xmlCleanupGlobalsInternal();
+    xmlCleanupThreadsInternal();
 
     /*
      * Must come last. xmlCleanupGlobalsInternal can call xmlFree which

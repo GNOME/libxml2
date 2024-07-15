@@ -27,9 +27,31 @@ struct _xmlMutex {
 #endif
 };
 
+/*
+ * xmlRMutex are reentrant mutual exception locks
+ */
+struct _xmlRMutex {
+#ifdef HAVE_POSIX_THREADS
+    pthread_mutex_t lock;
+    unsigned int held;
+    unsigned int waiters;
+    pthread_t tid;
+    pthread_cond_t cv;
+#elif defined HAVE_WIN32_THREADS
+    CRITICAL_SECTION cs;
+#else
+    int empty;
+#endif
+};
+
 XML_HIDDEN void
 xmlInitMutex(xmlMutexPtr mutex);
 XML_HIDDEN void
 xmlCleanupMutex(xmlMutexPtr mutex);
+
+XML_HIDDEN void
+xmlInitRMutex(xmlRMutexPtr mutex);
+XML_HIDDEN void
+xmlCleanupRMutex(xmlRMutexPtr mutex);
 
 #endif /* XML_THREADS_H_PRIVATE__ */

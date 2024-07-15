@@ -700,10 +700,8 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
     if (code == XML_ERR_OK)
         return(0);
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-    if (code == XML_ERR_INTERNAL_ERROR) {
-        fprintf(stderr, "Unexpected error: %d\n", code);
-        abort();
-    }
+    if (code == XML_ERR_INTERNAL_ERROR)
+        xmlAbort("Unexpected error: %d\n", code);
 #endif
     if ((xmlGetWarningsDefaultValue == 0) && (level == XML_ERR_WARNING))
         return(0);
@@ -1325,4 +1323,29 @@ xmlErrString(xmlParserErrors code) {
     }
 
     return(errmsg);
+}
+
+void
+xmlVPrintErrorMessage(const char *fmt, va_list ap) {
+    vfprintf(stderr, fmt, ap);
+}
+
+void
+xmlPrintErrorMessage(const char *fmt, ...) {
+    va_list ap;
+
+    va_start(ap, fmt);
+    xmlVPrintErrorMessage(fmt, ap);
+    va_end(ap);
+}
+
+void
+xmlAbort(const char *fmt, ...) {
+    va_list ap;
+
+    va_start(ap, fmt);
+    xmlVPrintErrorMessage(fmt, ap);
+    va_end(ap);
+
+    abort();
 }

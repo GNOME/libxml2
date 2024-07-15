@@ -17,6 +17,7 @@
 #include <libxml/parser.h>
 #include <libxml/threads.h>
 
+#include "private/error.h"
 #include "private/memory.h"
 #include "private/threads.h"
 
@@ -162,7 +163,7 @@ xmlMemRealloc(void *ptr, size_t size) {
 
     p = CLIENT_2_HDR(ptr);
     if (p->mh_tag != MEMTAG) {
-        fprintf(stderr, "xmlMemRealloc: Tag error\n");
+        xmlPrintErrorMessage("xmlMemRealloc: Tag error\n");
         return(NULL);
     }
     oldSize = p->mh_size;
@@ -200,13 +201,13 @@ xmlMemFree(void *ptr)
         return;
 
     if (ptr == (void *) -1) {
-        fprintf(stderr, "xmlMemFree: Pointer from freed area\n");
+        xmlPrintErrorMessage("xmlMemFree: Pointer from freed area\n");
         return;
     }
 
     p = CLIENT_2_HDR(ptr);
     if (p->mh_tag != MEMTAG) {
-        fprintf(stderr, "xmlMemFree: Tag error\n");
+        xmlPrintErrorMessage("xmlMemFree: Tag error\n");
         return;
     }
     p->mh_tag = ~MEMTAG;

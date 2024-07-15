@@ -11,7 +11,6 @@
 #define IN_LIBXML
 #include "libxml.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -809,9 +808,8 @@ xmlNewGlobalState(int allowFailure)
          * sure that global state could be allocated, it's too late to
          * handle the error.
          */
-        fprintf(stderr, "libxml2: Failed to allocate globals for thread\n"
-                        "libxml2: See xmlCheckThreadLocalStorage\n");
-        abort();
+        xmlAbort("libxml2: Failed to allocate globals for thread\n"
+                 "libxml2: See xmlCheckThreadLocalStorage\n");
     }
 
     memset(gs, 0, sizeof(xmlGlobalState));

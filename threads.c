@@ -11,6 +11,7 @@
 #include "libxml.h"
 
 #include <string.h>
+#include <stdarg.h>
 #include <stdlib.h>
 
 #include <libxml/threads.h>
@@ -30,6 +31,7 @@
 #include "private/cata.h"
 #include "private/dict.h"
 #include "private/enc.h"
+#include "private/error.h"
 #include "private/globals.h"
 #include "private/io.h"
 #include "private/memory.h"
@@ -401,10 +403,8 @@ xmlGlobalInitMutexLock(void) {
     /* Create a new critical section */
     if (global_init_lock == NULL) {
         cs = malloc(sizeof(CRITICAL_SECTION));
-        if (cs == NULL) {
-            fprintf(stderr, "libxml2: xmlInitParser: out of memory\n");
-            abort();
-        }
+        if (cs == NULL)
+            xmlAbort("libxml2: xmlInitParser: out of memory\n");
         InitializeCriticalSection(cs);
 
         /* Swap it into the global_init_lock */
@@ -576,4 +576,3 @@ xmlDestructor(void) {
         xmlCleanupParser();
 }
 #endif
-

@@ -1,6 +1,8 @@
 #ifndef XML_ERROR_H_PRIVATE__
 #define XML_ERROR_H_PRIVATE__
 
+#include <stdarg.h>
+
 #include <libxml/xmlerror.h>
 #include <libxml/xmlversion.h>
 
@@ -30,5 +32,12 @@ xmlGenericErrorDefaultFunc(void *ctx, const char *msg,
                            ...) LIBXML_ATTR_FORMAT(2,3);
 XML_HIDDEN const char *
 xmlErrString(xmlParserErrors code);
+
+XML_HIDDEN void
+xmlVPrintErrorMessage(const char *fmt, va_list ap);
+XML_HIDDEN void
+xmlPrintErrorMessage(const char *fmt, ...);
+XML_HIDDEN void
+xmlAbort(const char *fmt, ...);
 
 #endif /* XML_ERROR_H_PRIVATE__ */

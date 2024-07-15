@@ -71,11 +71,11 @@ xmlCheckVersion(int version) {
     xmlInitParser();
 
     if ((myversion / 10000) != (version / 10000)) {
-	fprintf(stderr,
+	xmlPrintErrorMessage(
 		"Fatal: program compiled against libxml %d using libxml %d\n",
 		(version / 10000), (myversion / 10000));
     } else if ((myversion / 100) < (version / 100)) {
-	fprintf(stderr,
+	xmlPrintErrorMessage(
 		"Warning: program compiled against libxml %d using older %d\n",
 		(version / 100), (myversion / 100));
     }
@@ -1041,8 +1041,7 @@ xmlCopyCharMultiByte(xmlChar *out, int val) {
 	else if (val < 0x110000)  { *out++= (val >> 18) | 0xF0;  bits=  12; }
 	else {
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-            fprintf(stderr, "xmlCopyCharMultiByte: codepoint out of range\n");
-            abort();
+            xmlAbort("xmlCopyCharMultiByte: codepoint out of range\n");
 #endif
 	    return(0);
 	}

@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "private/dict.h"
+#include "private/error.h"
 #include "private/globals.h"
 #include "private/threads.h"
 
@@ -958,21 +959,17 @@ xmlInitRandom(void) {
         status = BCryptGenRandom(NULL, (unsigned char *) globalRngState,
                                  sizeof(globalRngState),
                                  BCRYPT_USE_SYSTEM_PREFERRED_RNG);
-        if (!BCRYPT_SUCCESS(status)) {
-            fprintf(stderr, "libxml2: BCryptGenRandom failed with "
-                    "error code %lu\n", GetLastError());
-            abort();
-        }
+        if (!BCRYPT_SUCCESS(status))
+            xmlAbort("libxml2: BCryptGenRandom failed with error code %lu\n",
+                     GetLastError());
 #elif defined(HAVE_GETENTROPY)
         while (1) {
             if (getentropy(globalRngState, sizeof(globalRngState)) == 0)
                 break;
 
-            if (errno != EINTR) {
-                fprintf(stderr, "libxml2: getentropy failed with "
-                        "error code %d\n", errno);
-                abort();
-            }
+            if (errno != EINTR)
+                xmlAbort("libxml2: getentropy failed with error code %d\n",
+                         errno);
         }
 #else
         int var;

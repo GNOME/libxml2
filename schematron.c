@@ -1449,7 +1449,7 @@ xmlSchematronReportOutput(xmlSchematronValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
                           xmlNodePtr cur ATTRIBUTE_UNUSED,
                           const char *msg) {
     /* TODO */
-    fprintf(stderr, "%s", msg);
+    xmlPrintErrorMessage("%s", msg);
 }
 
 /**

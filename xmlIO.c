@@ -1181,6 +1181,8 @@ xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
  * xmlAllocParserInputBuffer:
  * @enc:  the charset encoding if known (deprecated)
  *
+ * DEPRECATED: Use xmlNewInputFrom*.
+ *
  * Create a buffered parser input for progressive parsing.
  *
  * The encoding argument is deprecated and should be set to
@@ -1484,6 +1486,8 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
  * @URI:  a C string containing the URI or filename
  * @enc:  the charset encoding if known
  *
+ * DEPRECATED: Use xmlNewInputFromUrl.
+ *
  * Create a buffered parser input for the progressive parsing of a file
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
@@ -1604,6 +1608,8 @@ xmlOutputBufferCreateFilename(const char *URI,
  * @file:  a FILE*
  * @enc:  the charset encoding if known (deprecated)
  *
+ * DEPRECATED: Don't use.
+ *
  * Create a buffered parser input for the progressive parsing of a FILE *
  * buffered C I/O
  *
@@ -1717,6 +1723,8 @@ xmlOutputBufferGetSize(xmlOutputBufferPtr out) {
  * xmlParserInputBufferCreateFd:
  * @fd:  a file descriptor number
  * @enc:  the charset encoding if known (deprecated)
+ *
+ * DEPRECATED: Use xmlNewInputFromFd.
  *
  * Create a buffered parser input for the progressive parsing for the input
  * from a file descriptor
@@ -1832,6 +1840,8 @@ xmlNewInputBufferMemory(const void *mem, size_t size, int flags,
  * @size:  the length of the memory block
  * @enc:  the charset encoding if known (deprecated)
  *
+ * DEPRECATED: Use xmlNewInputFromMemory.
+ *
  * Create a parser input buffer for parsing from a memory area.
  *
  * This function makes a copy of the whole input buffer. If you are sure
@@ -1858,6 +1868,8 @@ xmlParserInputBufferCreateMem(const char *mem, int size, xmlCharEncoding enc) {
  * @mem:  the memory input
  * @size:  the length of the memory block
  * @enc:  the charset encoding if known
+ *
+ * DEPRECATED: Use xmlNewInputFromMemory.
  *
  * Create a parser input buffer for parsing from a memory area.
  *
@@ -1976,6 +1988,8 @@ xmlOutputBufferCreateFd(int fd, xmlCharEncodingHandlerPtr encoder) {
  * @ioclose:  an I/O close function
  * @ioctx:  an I/O handler
  * @enc:  the charset encoding if known (deprecated)
+ *
+ * DEPRECATED: Use xmlNewInputFromIO.
  *
  * Create a buffered parser input for the progressive parsing for the input
  * from an I/O handler

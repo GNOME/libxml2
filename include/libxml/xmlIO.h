@@ -211,6 +211,7 @@ XMLPUBFUN xmlParserInputBufferPtr
 XMLPUBFUN xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFilename	(const char *URI,
                                                  xmlCharEncoding enc);
+XML_DEPRECATED
 XMLPUBFUN xmlParserInputBufferPtr
 	xmlParserInputBufferCreateFile		(FILE *file,
                                                  xmlCharEncoding enc);

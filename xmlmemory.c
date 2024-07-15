@@ -103,16 +103,12 @@ xmlMemMalloc(size_t size)
 
     xmlInitParser();
 
-    if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
-        fprintf(stderr, "xmlMemMalloc: Unsigned overflow\n");
+    if (size > (MAX_SIZE_T - RESERVE_SIZE))
         return(NULL);
-    }
 
     p = (MEMHDR *) malloc(RESERVE_SIZE + size);
-    if (!p) {
-        fprintf(stderr, "xmlMemMalloc: Out of memory\n");
+    if (!p)
         return(NULL);
-    }
     p->mh_tag = MEMTAG;
     p->mh_size = size;
 
@@ -161,10 +157,8 @@ xmlMemRealloc(void *ptr, size_t size) {
 
     xmlInitParser();
 
-    if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
-        fprintf(stderr, "xmlMemRealloc: Unsigned overflow\n");
+    if (size > (MAX_SIZE_T - RESERVE_SIZE))
         return(NULL);
-    }
 
     p = CLIENT_2_HDR(ptr);
     if (p->mh_tag != MEMTAG) {
@@ -177,7 +171,6 @@ xmlMemRealloc(void *ptr, size_t size) {
     tmp = (MEMHDR *) realloc(p, RESERVE_SIZE + size);
     if (!tmp) {
         p->mh_tag = MEMTAG;
-        fprintf(stderr, "xmlMemRealloc: Out of memory\n");
         return(NULL);
     }
     p = tmp;
@@ -260,16 +253,12 @@ xmlMemoryStrdup(const char *str) {
 
     xmlInitParser();
 
-    if (size > (MAX_SIZE_T - RESERVE_SIZE)) {
-        fprintf(stderr, "xmlMemoryStrdup: Unsigned overflow\n");
+    if (size > (MAX_SIZE_T - RESERVE_SIZE))
         return(NULL);
-    }
 
     p = (MEMHDR *) malloc(RESERVE_SIZE + size);
-    if (!p) {
-        fprintf(stderr, "xmlMemoryStrdup: Out of memory\n");
+    if (!p)
         return(NULL);
-    }
     p->mh_tag = MEMTAG;
     p->mh_size = size;
 

@@ -267,7 +267,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 
     len = xmlStrlen(ctxt->cur);
     len++;
-    buffer = (xmlChar *) xmlMallocAtomic(len);
+    buffer = xmlMalloc(len);
     if (buffer == NULL) {
         xmlXPathPErrMemory(ctxt);
         xmlFree(name);

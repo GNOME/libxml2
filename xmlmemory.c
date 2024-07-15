@@ -497,6 +497,8 @@ xmlMemGet(xmlFreeFunc *freeFunc, xmlMallocFunc *mallocFunc,
  * @reallocFunc: the realloc() function to use
  * @strdupFunc: the strdup() function to use
  *
+ * DEPRECATED: Use xmlMemSetup.
+ *
  * Override the default memory access functions with a new set
  * This has to be called before any other libxml routines !
  * The mallocAtomicFunc is specialized for atomic block
@@ -536,6 +538,8 @@ xmlGcMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
  * @mallocAtomicFunc: place to save the atomic malloc() function in use
  * @reallocFunc: place to save the realloc() function in use
  * @strdupFunc: place to save the strdup() function in use
+ *
+ * DEPRECATED: xmlMemGet.
  *
  * Provides the memory access functions set currently in use
  * The mallocAtomicFunc is specialized for atomic block

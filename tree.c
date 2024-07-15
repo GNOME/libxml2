@@ -186,7 +186,7 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
     lenp = strlen((char *) prefix);
 
     if ((memory == NULL) || (len < lenn + lenp + 2)) {
-	ret = (xmlChar *) xmlMallocAtomic(lenn + lenp + 2);
+	ret = xmlMalloc(lenn + lenp + 2);
 	if (ret == NULL)
 	    return(NULL);
     } else {
@@ -4736,10 +4736,10 @@ xmlGetNodePath(const xmlNode *node)
         return (NULL);
 
     buf_len = 500;
-    buffer = (xmlChar *) xmlMallocAtomic(buf_len);
+    buffer = xmlMalloc(buf_len);
     if (buffer == NULL)
         return (NULL);
-    buf = (xmlChar *) xmlMallocAtomic(buf_len);
+    buf = xmlMalloc(buf_len);
     if (buf == NULL) {
         xmlFree(buffer);
         return (NULL);

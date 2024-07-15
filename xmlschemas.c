@@ -27292,7 +27292,7 @@ xmlSchemaSAXHandleStartElementNs(void *ctx,
 	    * we are forced to work around it.
 	    */
 	    valueLen = attributes[j+4] - attributes[j+3];
-	    value = xmlMallocAtomic(valueLen + 1);
+	    value = xmlMalloc(valueLen + 1);
 	    if (value == NULL) {
 		xmlSchemaVErrMemory(vctxt);
 		goto internal_error;

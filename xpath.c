@@ -8644,7 +8644,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
             if (len > XML_MAX_NAME_LENGTH) {
                 XP_ERRORNULL(XPATH_EXPR_ERROR);
             }
-	    buffer = (xmlChar *) xmlMallocAtomic(max);
+	    buffer = xmlMalloc(max);
 	    if (buffer == NULL) {
                 xmlXPathPErrMemory(ctxt);
                 return(NULL);

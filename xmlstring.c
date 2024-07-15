@@ -54,7 +54,7 @@ xmlStrndup(const xmlChar *cur, int len) {
     xmlChar *ret;
 
     if ((cur == NULL) || (len < 0)) return(NULL);
-    ret = (xmlChar *) xmlMallocAtomic((size_t) len + 1);
+    ret = xmlMalloc((size_t) len + 1);
     if (ret == NULL) {
         return(NULL);
     }
@@ -98,7 +98,7 @@ xmlCharStrndup(const char *cur, int len) {
     xmlChar *ret;
 
     if ((cur == NULL) || (len < 0)) return(NULL);
-    ret = (xmlChar *) xmlMallocAtomic((size_t) len + 1);
+    ret = xmlMalloc((size_t) len + 1);
     if (ret == NULL) {
         return(NULL);
     }
@@ -1022,7 +1022,7 @@ xmlUTF8Strndup(const xmlChar *utf, int len) {
 
     if ((utf == NULL) || (len < 0)) return(NULL);
     i = xmlUTF8Strsize(utf, len);
-    ret = (xmlChar *) xmlMallocAtomic((size_t) i + 1);
+    ret = xmlMalloc((size_t) i + 1);
     if (ret == NULL) {
         return(NULL);
     }
@@ -1178,7 +1178,7 @@ xmlEscapeFormatString(xmlChar **msg)
     if ((count > INT_MAX) || (msgLen > INT_MAX - count))
         return(NULL);
     resultLen = msgLen + count + 1;
-    result = (xmlChar *) xmlMallocAtomic(resultLen);
+    result = xmlMalloc(resultLen);
     if (result == NULL) {
         /* Clear *msg to prevent format string vulnerabilities in
            out-of-memory situations. */

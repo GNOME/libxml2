@@ -500,7 +500,7 @@ xmlNanoHTTPRecv(xmlNanoHTTPCtxtPtr ctxt)
 
     while (ctxt->state & XML_NANO_HTTP_READ) {
         if (ctxt->in == NULL) {
-            ctxt->in = (char *) xmlMallocAtomic(65000);
+            ctxt->in = xmlMalloc(65000);
             if (ctxt->in == NULL) {
                 xmlHTTPErrMemory();
                 ctxt->last = -1;
@@ -1441,7 +1441,7 @@ retry:
 	else
 	    blen += 11;
     }
-    bp = (char*)xmlMallocAtomic(blen);
+    bp = xmlMalloc(blen);
     if ( bp == NULL ) {
         xmlNanoHTTPFreeCtxt( ctxt );
 	xmlHTTPErrMemory();

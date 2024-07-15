@@ -3426,7 +3426,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                     if (v == NULL)
                         goto error;
                     base =
-                        (xmlChar *) xmlMallocAtomic(i + pad + 1);
+                        xmlMalloc(i + pad + 1);
                     if (base == NULL) {
 		        xmlSchemaTypeErrMemory();
                         xmlFree(v);

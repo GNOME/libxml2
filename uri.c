@@ -1132,7 +1132,7 @@ xmlSaveUri(xmlURIPtr uri) {
 
 
     max = 80;
-    ret = (xmlChar *) xmlMallocAtomic(max + 1);
+    ret = xmlMalloc(max + 1);
     if (ret == NULL)
 	return(NULL);
     len = 0;
@@ -1625,7 +1625,7 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
     if (len < 0) return(NULL);
 
     if (target == NULL) {
-	ret = (char *) xmlMallocAtomic(len + 1);
+	ret = xmlMalloc(len + 1);
 	if (ret == NULL)
 	    return(NULL);
     } else
@@ -1687,7 +1687,7 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
     len = xmlStrlen(str);
 
     len += 20;
-    ret = (xmlChar *) xmlMallocAtomic(len);
+    ret = xmlMalloc(len);
     if (ret == NULL)
 	return(NULL);
     in = (const xmlChar *) str;
@@ -2270,7 +2270,7 @@ xmlBuildURISafe(const xmlChar *URI, const xmlChar *base, xmlChar **valPtr) {
 	len += strlen(ref->path);
     if (bas->path != NULL)
 	len += strlen(bas->path);
-    res->path = (char *) xmlMallocAtomic(len);
+    res->path = xmlMalloc(len);
     if (res->path == NULL)
 	goto done;
     res->path[0] = 0;

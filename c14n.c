@@ -2133,7 +2133,7 @@ xmlC11NNormalizeString(const xmlChar * input,
      * allocate an translation buffer.
      */
     buffer_size = 1000;
-    buffer = (xmlChar *) xmlMallocAtomic(buffer_size);
+    buffer = xmlMalloc(buffer_size);
     if (buffer == NULL)
         return (NULL);
     out = buffer;

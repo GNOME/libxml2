@@ -967,7 +967,7 @@ xmlLoadFileContent(const char *filename)
         return (NULL);
     }
     size = info.st_size;
-    content = (xmlChar*)xmlMallocAtomic(size + 10);
+    content = xmlMalloc(size + 10);
     if (content == NULL) {
         xmlCatalogErrMemory();
 	close(fd);
@@ -2158,7 +2158,7 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
     } else {
 	stop = ' ';
     }
-    buf = (xmlChar *) xmlMallocAtomic(size);
+    buf = xmlMalloc(size);
     if (buf == NULL) {
         xmlCatalogErrMemory();
 	return(NULL);

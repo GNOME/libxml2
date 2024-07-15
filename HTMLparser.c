@@ -2636,7 +2636,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
      * allocate a translation buffer.
      */
     buffer_size = HTML_PARSER_BUFFER_SIZE;
-    buffer = (xmlChar *) xmlMallocAtomic(buffer_size);
+    buffer = xmlMalloc(buffer_size);
     if (buffer == NULL) {
 	htmlErrMemory(ctxt);
 	return(NULL);
@@ -3272,7 +3272,7 @@ htmlParsePI(htmlParserCtxtPtr ctxt) {
 		                                     target, NULL);
                 goto done;
 	    }
-	    buf = (xmlChar *) xmlMallocAtomic(size);
+	    buf = xmlMalloc(size);
 	    if (buf == NULL) {
 		htmlErrMemory(ctxt);
 		return;
@@ -3368,7 +3368,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     state = ctxt->instate;
     ctxt->instate = XML_PARSER_COMMENT;
     SKIP(4);
-    buf = (xmlChar *) xmlMallocAtomic(size);
+    buf = xmlMalloc(size);
     if (buf == NULL) {
         htmlErrMemory(ctxt);
 	return;

@@ -90,8 +90,6 @@ XML_GLOBALS_TREE
 #undef XML_OP
 };
 
-static int parserInitialized;
-
 /*
  * Mutex to protect "ForNewThreads" variables
  */
@@ -606,8 +604,6 @@ void xmlCleanupGlobalsInternal(void) {
     }
 #endif
 #endif
-
-    parserInitialized = 0;
 }
 
 /**
@@ -636,10 +632,10 @@ xmlGetGlobalState(void)
 
 static int
 xmlIsMainThreadInternal(void) {
-    if (parserInitialized == 0) {
-        xmlInitParser();
-        parserInitialized = 1;
-    }
+    /*
+     * Make sure that mainthread is initialized.
+     */
+    xmlInitParser();
 
 #ifdef HAVE_POSIX_THREADS
     return (pthread_equal(mainthread, pthread_self()));

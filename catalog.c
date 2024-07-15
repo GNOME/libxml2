@@ -3227,6 +3227,7 @@ xmlCatalogCleanup(void) {
 void
 xmlCleanupCatalogInternal(void) {
     xmlFreeRMutex(xmlCatalogMutex);
+    xmlCatalogMutex = NULL;
 }
 
 /**

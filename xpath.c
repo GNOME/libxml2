@@ -226,13 +226,6 @@ static const xmlNs xmlXPathXMLNamespaceStruct = {
     NULL
 };
 static const xmlNs *const xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
-#ifndef LIBXML_THREAD_ENABLED
-/*
- * Optimizer is disabled only when threaded apps are detected while
- * the library ain't compiled for thread safety.
- */
-static int xmlXPathDisableOptimizer = 0;
-#endif
 
 static void
 xmlXPathNodeSetClear(xmlNodeSetPtr set, int hasNsNodes);
@@ -1013,32 +1006,6 @@ xmlXPathCompExprAdd(xmlXPathParserContextPtr ctxt, int ch1, int ch2,
     }
     comp->steps[comp->nbStep].cache = NULL;
     return(comp->nbStep++);
-}
-
-/**
- * xmlXPathCompSwap:
- * @comp:  the compiled expression
- * @op: operation index
- *
- * Swaps 2 operations in the compiled expression
- */
-static void
-xmlXPathCompSwap(xmlXPathStepOpPtr op) {
-    int tmp;
-
-#ifndef LIBXML_THREAD_ENABLED
-    /*
-     * Since this manipulates possibly shared variables, this is
-     * disabled if one detects that the library is used in a multithreaded
-     * application
-     */
-    if (xmlXPathDisableOptimizer)
-	return;
-#endif
-
-    tmp = op->ch1;
-    op->ch1 = op->ch2;
-    op->ch2 = tmp;
 }
 
 #define PUSH_FULL_EXPR(op, op1, op2, val, val2, val3, val4, val5)	\
@@ -11054,9 +11021,6 @@ xmlXPathCompOpEvalFirst(xmlXPathParserContextPtr ctxt,
             }
             valuePush(ctxt, arg1);
 	    xmlXPathReleaseObject(ctxt->context, arg2);
-            /* optimizer */
-	    if (total > cur)
-		xmlXPathCompSwap(op);
             total += cur;
             break;
         case XPATH_OP_ROOT:
@@ -11196,9 +11160,6 @@ xmlXPathCompOpEvalLast(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op,
             }
             valuePush(ctxt, arg1);
 	    xmlXPathReleaseObject(ctxt->context, arg2);
-            /* optimizer */
-	    if (total > cur)
-		xmlXPathCompSwap(op);
             total += cur;
             break;
         case XPATH_OP_ROOT:
@@ -12481,9 +12442,6 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
 {
     xmlXPathParserContextPtr pctxt;
     xmlXPathObjectPtr resObj = NULL;
-#ifndef LIBXML_THREAD_ENABLED
-    static int reentance = 0;
-#endif
     int res;
 
     if (comp == NULL)
@@ -12491,12 +12449,6 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
     xmlInitParser();
 
     xmlResetError(&ctxt->lastError);
-
-#ifndef LIBXML_THREAD_ENABLED
-    reentance++;
-    if (reentance > 1)
-	xmlXPathDisableOptimizer = 1;
-#endif
 
     pctxt = xmlXPathCompParserContext(comp, ctxt);
     if (pctxt == NULL)
@@ -12517,9 +12469,6 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
 
     pctxt->comp = NULL;
     xmlXPathFreeParserContext(pctxt);
-#ifndef LIBXML_THREAD_ENABLED
-    reentance--;
-#endif
 
     return(res);
 }

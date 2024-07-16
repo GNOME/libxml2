@@ -4,13 +4,13 @@
 #include <libxml/threads.h>
 
 #ifdef LIBXML_THREAD_ENABLED
-  #ifdef HAVE_PTHREAD_H
-    #include <pthread.h>
-    #define HAVE_POSIX_THREADS
-  #elif defined(_WIN32)
+  #ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
     #define HAVE_WIN32_THREADS
+  #else
+    #include <pthread.h>
+    #define HAVE_POSIX_THREADS
   #endif
 #endif
 

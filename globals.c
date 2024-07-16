@@ -50,43 +50,23 @@ static xmlMutex xmlThrDefMutex;
  *     #define xmlError (*__xmlLastError());
  *
  * The code can operate in a multitude of ways depending on the environment.
- * First we support POSIX and Windows threads. Then we support both thread-local
- * storage provided by the compiler and older methods like thread-specific data
- * (pthreads) or TlsAlloc (Windows).
+ * First we support POSIX and Windows threads. Then we support both
+ * thread-local storage provided by the compiler and older methods like
+ * thread-specific data (pthreads) or TlsAlloc (Windows).
  *
  * To clean up thread-local storage, we use thread-specific data on POSIX.
- * On Windows, we either use DllMain when compiling a DLL or a registered wait
- * function for static builds.
+ * On Windows, we either use DllMain when compiling a DLL or a registered
+ * wait function for static builds.
+ *
+ * Compiler TLS isn't really useful. It can make allocation more robust
+ * on some platforms but it also increases the memory consumption of each
+ * thread by ~250 bytes whether it uses libxml2 or not. The main problem
+ * is that be have to deallocate strings in xmlLastError and C offers no
+ * simple way to deallocate dynamic data in _Thread_local variables.
+ * In C++, one could simply use a thread_local variable with a destructor.
  */
 
 #ifdef LIBXML_THREAD_ENABLED
-
-#define XML_DECLARE_MEMBER(name, type, attrs) \
-  type gs_##name;
-
-struct _xmlGlobalState {
-    int initialized;
-
-#if defined(HAVE_WIN32_THREADS) && \
-    defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
-    void *threadHandle;
-    void *waitHandle;
-#endif
-
-#ifdef LIBXML_THREAD_ENABLED
-    unsigned localRngState[2];
-#endif
-
-    xmlError lastError;
-
-#define XML_OP XML_DECLARE_MEMBER
-XML_GLOBALS_ALLOC
-XML_GLOBALS_PARSER
-XML_GLOBALS_ERROR
-XML_GLOBALS_TREE
-XML_GLOBALS_IO
-#undef XML_OP
-};
 
 /*
  * On Darwin, thread-local storage destructors seem to be run before
@@ -98,10 +78,43 @@ XML_GLOBALS_IO
  */
 #if defined(XML_THREAD_LOCAL) && \
     !defined(__APPLE__) && \
-    (!defined(HAVE_WIN32_THREADS) || \
-     !defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+    !defined(USE_WAIT_DTOR)
 #define USE_TLS
 #endif
+
+#ifdef HAVE_WIN32_THREADS
+  #if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+    #define USE_WAIT_DTOR
+  #else
+    #define USE_DLL_MAIN
+  #endif
+#endif
+
+#define XML_DECLARE_MEMBER(name, type, attrs) \
+  type gs_##name;
+
+struct _xmlGlobalState {
+#ifdef USE_TLS
+    int initialized;
+#endif
+
+#ifdef USE_WAIT_DTOR
+    void *threadHandle;
+    void *waitHandle;
+#endif
+
+    unsigned localRngState[2];
+
+    xmlError lastError;
+
+#define XML_OP XML_DECLARE_MEMBER
+XML_GLOBALS_ALLOC
+XML_GLOBALS_PARSER
+XML_GLOBALS_ERROR
+XML_GLOBALS_TREE
+XML_GLOBALS_IO
+#undef XML_OP
+};
 
 #ifdef USE_TLS
 static XML_THREAD_LOCAL xmlGlobalState globalState;
@@ -626,8 +639,7 @@ void xmlCleanupGlobalsInternal(void) {
         xmlFreeGlobalState(gs);
     pthread_key_delete(globalkey);
 #elif defined(HAVE_WIN32_THREADS)
-#if !defined(USE_TLS) && \
-    defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+#if defined(USE_WAIT_DTOR) && !defined(USE_TLS)
     if (globalkey != TLS_OUT_OF_INDEXES) {
         TlsFree(globalkey);
         globalkey = TLS_OUT_OF_INDEXES;
@@ -701,8 +713,7 @@ xmlFreeGlobalState(void *state)
 #endif
 }
 
-#if defined(HAVE_WIN32_THREADS) && \
-    defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+#if defined(USE_WAIT_DTOR)
 static void WINAPI
 xmlGlobalStateDtor(void *ctxt, unsigned char timedOut ATTRIBUTE_UNUSED) {
     xmlGlobalStatePtr gs = ctxt;
@@ -733,7 +744,7 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
     gs->waitHandle = waitHandle;
     return(0);
 }
-#endif /* LIBXML_STATIC */
+#endif /* USE_WAIT_DTOR */
 
 static void
 xmlInitGlobalState(xmlGlobalStatePtr gs) {
@@ -787,18 +798,20 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
 
     xmlMutexUnlock(&xmlThrDefMutex);
 
+#ifdef USE_TLS
+    gs->initialized = 1;
+#endif
+
 #ifdef HAVE_POSIX_THREADS
     pthread_setspecific(globalkey, gs);
 #elif defined HAVE_WIN32_THREADS
 #ifndef USE_TLS
     TlsSetValue(globalkey, gs);
 #endif
-#if defined(LIBXML_STATIC) && !defined(LIBXML_STATIC_FOR_DLL)
+#ifdef USE_WAIT_DTOR
     xmlRegisterGlobalStateDtor(gs);
 #endif
 #endif
-
-    gs->initialized = 1;
 }
 
 #ifndef USE_TLS
@@ -949,13 +962,7 @@ __htmlDefaultSAXHandler(void) {
  * allocation signals a typically fatal and irrecoverable out-of-memory
  * situation. Don't call any library functions in this case.
  *
- * This function never fails if the library is compiled with support
- * for thread-local storage.
- *
- * This function never fails for the "main" thread which is the first
- * thread calling xmlInitParser.
- *
- * Available since v2.12.0.
+ * Available since 2.12.0.
  */
 int
 xmlCheckThreadLocalStorage(void) {
@@ -988,8 +995,7 @@ xmlGetLastErrorInternal(void) {
  *
  * Returns TRUE always
  */
-#if defined(HAVE_WIN32_THREADS) && \
-    (!defined(LIBXML_STATIC) || defined(LIBXML_STATIC_FOR_DLL))
+#ifdef USE_DLL_MAIN
 #if defined(LIBXML_STATIC_FOR_DLL)
 int
 xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
@@ -1040,7 +1046,7 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
     }
     return TRUE;
 }
-#endif
+#endif /* USE_DLL_MAIN */
 
 void
 xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {

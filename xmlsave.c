@@ -166,6 +166,9 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
     const char *cur;
     const char *tab;
 
+    if (string == NULL)
+        return;
+
     if (flags & XML_ESCAPE_ATTR)
         tab = xmlEscapeTabAttr;
     else

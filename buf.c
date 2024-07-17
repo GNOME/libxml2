@@ -558,7 +558,7 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, size_t len) {
 /**
  * xmlBufCat:
  * @buf:  the buffer to add to
- * @str:  the #xmlChar string
+ * @str:  the #xmlChar string (optional)
  *
  * Append a zero terminated string to an XML buffer.
  *
@@ -567,6 +567,8 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, size_t len) {
  */
 int
 xmlBufCat(xmlBufPtr buf, const xmlChar *str) {
+    if (str == NULL)
+        return(0);
     return(xmlBufAdd(buf, str, strlen((const char *) str)));
 }
 

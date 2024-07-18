@@ -135,7 +135,7 @@ xmlBufCreate(size_t size) {
     ret->use = 0;
     ret->flags = 0;
     ret->size = size;
-    ret->maxSize = SIZE_MAX;
+    ret->maxSize = SIZE_MAX - 1;
 
     ret->mem = xmlMalloc(ret->size + 1);
     if (ret->mem == NULL) {
@@ -196,7 +196,7 @@ xmlBufCreateMem(const xmlChar *mem, size_t size, int isStatic) {
 
     ret->use = size;
     ret->size = size;
-    ret->maxSize = SIZE_MAX;
+    ret->maxSize = SIZE_MAX - 1;
     ret->content = ret->mem;
 
     UPDATE_COMPAT(ret);
@@ -335,19 +335,19 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
         return(0);
     }
 
-    if (len >= buf->maxSize - buf->use) {
+    if (len > buf->maxSize - buf->use) {
         xmlBufOverflowError(buf);
         return(-1);
     }
 
     if (buf->size > (size_t) len) {
-        if (buf->size <= SIZE_MAX / 2)
+        if (buf->size <= buf->maxSize / 2)
             size = buf->size * 2;
         else
-            size = buf->use + len;
+            size = buf->maxSize;
     } else {
         size = buf->use + len;
-        if (size < SIZE_MAX - 100)
+        if (size <= buf->maxSize - 100)
             size += 100;
     }
 
@@ -596,7 +596,7 @@ xmlBufFromBuffer(xmlBufferPtr buffer) {
 
     ret->use = buffer->use;
     ret->flags = 0;
-    ret->maxSize = SIZE_MAX;
+    ret->maxSize = SIZE_MAX - 1;
 
     if (buffer->content == NULL) {
         ret->size = 50;
@@ -776,7 +776,7 @@ xmlBufferPtr
 xmlBufferCreateSize(size_t size) {
     xmlBufferPtr ret;
 
-    if (size >= INT_MAX)
+    if (size >= UINT_MAX)
         return(NULL);
 
     ret = xmlMalloc(sizeof(*ret));
@@ -963,17 +963,17 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
 
     if (len < buf->size - buf->use)
         return(0);
-    if (len >= INT_MAX - buf->use)
+    if (len >= UINT_MAX - buf->use)
         return(-1);
 
     if (buf->size > (size_t) len) {
-        if (buf->size <= INT_MAX / 2)
+        if (buf->size <= UINT_MAX / 2)
             size = buf->size * 2;
         else
-            size = buf->use - len + 1;
+            size = UINT_MAX;
     } else {
         size = buf->use + len + 1;
-        if (size <= INT_MAX - 100)
+        if (size <= UINT_MAX - 100)
             size += 100;
     }
 

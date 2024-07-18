@@ -635,12 +635,10 @@ int
 xmlBufBackToBuffer(xmlBufPtr buf, xmlBufferPtr ret) {
     if (ret == NULL)
         return(-1);
-    CHECK_COMPAT(buf)
 
     if ((buf == NULL) || (BUF_ERROR(buf)) || (BUF_STATIC(buf)) ||
         (buf->use >= INT_MAX)) {
-        if (!BUF_STATIC(buf))
-            xmlBufFree(buf);
+        xmlBufFree(buf);
         ret->content = NULL;
         ret->contentIO = NULL;
         ret->use = 0;

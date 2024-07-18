@@ -1653,6 +1653,8 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
         xmlXIncludeErrMemory(ctxt);
         goto error;
     }
+    if (ctxt->errorHandler != NULL)
+        xmlCtxtSetErrorHandler(pctxt, ctxt->errorHandler, ctxt->errorCtxt);
     inputStream = xmlLoadExternalEntity((const char*)url, NULL, pctxt);
     if (inputStream == NULL) {
         /*

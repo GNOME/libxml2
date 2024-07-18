@@ -413,7 +413,7 @@ xmlInitParserInternal(void) {
 }
 
 #if defined(HAVE_WIN32_THREADS)
-static BOOL
+static BOOL WINAPI
 xmlInitParserWinWrapper(INIT_ONCE *initOnce ATTRIBUTE_UNUSED,
                         void *parameter ATTRIBUTE_UNUSED,
                         void **context ATTRIBUTE_UNUSED) {

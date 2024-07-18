@@ -1410,9 +1410,14 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
     inputStream = xmlLoadResource(pctxt, (const char*) url, NULL,
                                   XML_RESOURCE_XINCLUDE_TEXT);
     if (inputStream == NULL) {
+        /*
+         * ENOENT only produces a warning which isn't reflected in errNo.
+         */
         if (pctxt->errNo == XML_ERR_NO_MEMORY)
             xmlXIncludeErrMemory(ctxt);
-        else
+        else if ((pctxt->errNo != XML_ERR_OK) &&
+                 (pctxt->errNo != XML_IO_ENOENT) &&
+                 (pctxt->errNo != XML_IO_UNKNOWN))
             xmlXIncludeErr(ctxt, NULL, pctxt->errNo, "load error", NULL);
 	goto error;
     }

@@ -633,10 +633,10 @@ xmlBufFromBuffer(xmlBufferPtr buffer) {
  */
 int
 xmlBufBackToBuffer(xmlBufPtr buf, xmlBufferPtr ret) {
-    if (ret == NULL)
+    if ((buf == NULL) || (ret == NULL))
         return(-1);
 
-    if ((buf == NULL) || (BUF_ERROR(buf)) || (BUF_STATIC(buf)) ||
+    if ((BUF_ERROR(buf)) || (BUF_STATIC(buf)) ||
         (buf->use >= INT_MAX)) {
         xmlBufFree(buf);
         ret->content = NULL;

@@ -40,6 +40,7 @@ option(LIBXML2_WITH_PATTERN "Add the xmlPattern selection interface" ON)
 option(LIBXML2_WITH_PROGRAMS "Build programs" ON)
 option(LIBXML2_WITH_PUSH "Add the PUSH parser interfaces" ON)
 option(LIBXML2_WITH_PYTHON "Build Python bindings" ON)
+option(LIBXML2_WITH_READLINE "readline support for xmllint shell" OFF)
 option(LIBXML2_WITH_REGEXPS "Add Regular Expressions support" ON)
 option(LIBXML2_WITH_SAX1 "Add the older SAX1 interface" ON)
 option(LIBXML2_WITH_TESTS "Build tests" ON)
@@ -53,6 +54,9 @@ option(LIBXML2_WITH_ZLIB "Use libz" OFF)
 cmake_dependent_option(
     LIBXML2_WITH_C14N "Add the Canonicalization support" ON
     "LIBXML2_WITH_OUTPUT;LIBXML2_WITH_XPATH" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_HISTORY "history support for xmllint shell" OFF
+    "LIBXML2_WITH_READLINE" OFF)
 cmake_dependent_option(
     LIBXML2_WITH_READER "Add the xmlReader parsing interface" ON
     "LIBXML2_WITH_PUSH" OFF)
@@ -137,10 +141,15 @@ check_c_source_compiles("
     int main(void) { return 0; }
 " HAVE_FUNC_ATTRIBUTE_DESTRUCTOR)
 check_symbol_exists(getentropy "sys/random.h" HAVE_DECL_GETENTROPY)
-check_library_exists(history append_history "" HAVE_LIBHISTORY)
-check_library_exists(readline readline "" HAVE_LIBREADLINE)
 check_symbol_exists(mmap "sys/mman.h" HAVE_DECL_MMAP)
 check_include_files(stdint.h HAVE_STDINT_H)
+
+if(LIBXML2_WITH_READLINE)
+    check_library_exists(readline readline "" HAVE_LIBREADLINE)
+    if (LIBXML2_WITH_HISTORY)
+        check_library_exists(history append_history "" HAVE_LIBHISTORY)
+    endif()
+endif()
 
 if(LIBXML2_WITH_HTTP)
     check_include_files(arpa/inet.h HAVE_ARPA_INET_H)

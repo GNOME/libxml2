@@ -136,22 +136,20 @@ check_c_source_compiles("
     f(void) {}
     int main(void) { return 0; }
 " HAVE_FUNC_ATTRIBUTE_DESTRUCTOR)
-check_include_files(arpa/inet.h HAVE_ARPA_INET_H)
-check_function_exists(class HAVE_CLASS)
-check_include_files(dlfcn.h HAVE_DLFCN_H)
-check_library_exists(dl dlopen "" HAVE_DLOPEN)
-check_include_files(dl.h HAVE_DL_H)
 check_symbol_exists(getentropy "sys/random.h" HAVE_DECL_GETENTROPY)
 check_library_exists(history append_history "" HAVE_LIBHISTORY)
 check_library_exists(readline readline "" HAVE_LIBREADLINE)
 check_symbol_exists(mmap "sys/mman.h" HAVE_DECL_MMAP)
-check_include_files(netdb.h HAVE_NETDB_H)
-check_include_files(netinet/in.h HAVE_NETINET_IN_H)
-check_include_files(poll.h HAVE_POLL_H)
-check_library_exists(dld shl_load "" HAVE_SHLLOAD)
 check_include_files(stdint.h HAVE_STDINT_H)
-check_include_files(sys/select.h HAVE_SYS_SELECT_H)
-check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
+
+if(LIBXML2_WITH_HTTP)
+    check_include_files(arpa/inet.h HAVE_ARPA_INET_H)
+    check_include_files(netdb.h HAVE_NETDB_H)
+    check_include_files(netinet/in.h HAVE_NETINET_IN_H)
+    check_include_files(poll.h HAVE_POLL_H)
+    check_include_files(sys/select.h HAVE_SYS_SELECT_H)
+    check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
+endif()
 
 if(LIBXML2_WITH_TLS)
     check_c_source_compiles(
@@ -306,6 +304,11 @@ target_include_directories(
 )
 
 if(LIBXML2_WITH_MODULES)
+    check_include_files(dlfcn.h HAVE_DLFCN_H)
+    check_library_exists(dl dlopen "" HAVE_DLOPEN)
+    check_include_files(dl.h HAVE_DL_H)
+    check_library_exists(dld shl_load "" HAVE_SHLLOAD)
+
     if(HAVE_DLOPEN)
         target_link_libraries(LibXml2 PRIVATE dl)
         set(MODULE_LIBS "-ldl")

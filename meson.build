@@ -233,23 +233,23 @@ config_h.set_quoted('LOCALEDIR', dir_locale)
 
 # header files
 xml_check_headers = [
-    'stdint.h',
-    'dl.h',
-    'dlfcn.h',
-    'glob.h',
+    [ 'stdint.h', true ],
+    [ 'glob.h', true ],
 
-    # http
-    'sys/socket.h',
-    'netinet/in.h',
-    'arpa/inet.h',
-    'netdb.h',
-    'sys/select.h',
-    'poll.h',
+    [ 'dl.h', want_modules ],
+    [ 'dlfcn.h', want_modules ],
+
+    [ 'sys/socket.h', want_http ],
+    [ 'netinet/in.h', want_http ],
+    [ 'arpa/inet.h', want_http ],
+    [ 'netdb.h', want_http ],
+    [ 'sys/select.h', want_http ],
+    [ 'poll.h', want_http ],
 ]
 
 foreach header : xml_check_headers
-    if cc.has_header(header)
-        config_h.set10('HAVE_' + header.underscorify().to_upper(), true)
+    if header[1] and cc.has_header(header[0])
+        config_h.set10('HAVE_' + header[0].underscorify().to_upper(), true)
     endif
 endforeach
 

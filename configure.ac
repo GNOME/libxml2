@@ -298,7 +298,6 @@ dnl
 dnl Checks for header files.
 dnl
 AC_CHECK_HEADERS([stdint.h])
-AC_CHECK_HEADERS([dl.h dlfcn.h])
 AC_CHECK_HEADERS([glob.h])
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
@@ -662,6 +661,8 @@ if test "$with_modules" != "no" ; then
     esac
 
     if test "$WITH_MODULES" = "0"; then
+        AC_CHECK_HEADERS([dl.h dlfcn.h])
+
         _libs=$LIBS
         AC_SEARCH_LIBS([dlopen], [dl], [
             WITH_MODULES=1

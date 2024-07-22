@@ -21,9 +21,6 @@
 /* Define to 1 if you have the <poll.h> header file. */
 #cmakedefine HAVE_POLL_H 1
 
-/* Define to 1 if you have the <pthread.h> header file. */
-#cmakedefine HAVE_PTHREAD_H 1
-
 /* Have shl_load based dso */
 #cmakedefine HAVE_SHLLOAD 1
 

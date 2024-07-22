@@ -293,12 +293,6 @@ add_library(LibXml2::LibXml2 ALIAS LibXml2)
 
 target_compile_definitions(LibXml2 PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
 
-if(LIBXML2_WITH_THREADS)
-    if(NOT WIN32)
-        check_include_files(pthread.h HAVE_PTHREAD_H)
-    endif()
-endif()
-
 target_include_directories(
     LibXml2
     PUBLIC

@@ -4420,7 +4420,7 @@ testThread(void)
     return (res);
 }
 
-#elif defined HAVE_PTHREAD_H
+#else
 #include <pthread.h>
 
 static pthread_t tid[MAX_ARGC];
@@ -4468,15 +4468,6 @@ testThread(void)
             }
     }
     return (res);
-}
-
-#else
-static int
-testThread(void)
-{
-    fprintf(stderr,
-            "Specific platform thread support not detected\n");
-    return (-1);
 }
 #endif
 static int

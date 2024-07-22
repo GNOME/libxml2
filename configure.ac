@@ -711,9 +711,7 @@ else
                     WITH_THREADS="1"
                     if test "$ac_cv_search_pthread_create" != "none required"; then
                         THREAD_LIBS=$ac_cv_search_pthread_create
-                    fi
-                    AC_DEFINE([HAVE_PTHREAD_H], [],
-                              [Define if <pthread.h> is there])]))
+                    fi]))
             LIBS=$_libs
             ;;
     esac

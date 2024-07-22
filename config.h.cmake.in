@@ -1,6 +1,14 @@
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #cmakedefine HAVE_ARPA_INET_H 1
 
+/* Define to 1 if you have the declaration of 'getentropy', and to 0 if you
+   don't. */
+#cmakedefine01 HAVE_DECL_GETENTROPY
+
+/* Define to 1 if you have the declaration of 'mmap', and to 0 if you don't.
+   */
+#cmakedefine01 HAVE_DECL_MMAP
+
 /* Define if __attribute__((destructor)) is accepted */
 #cmakedefine HAVE_FUNC_ATTRIBUTE_DESTRUCTOR 1
 
@@ -13,17 +21,11 @@
 /* Define to 1 if you have the <dl.h> header file. */
 #cmakedefine HAVE_DL_H 1
 
-/* Define to 1 if you have the `getentropy' function. */
-#cmakedefine HAVE_DECL_GETENTROPY 1
-
 /* Define if history library is there (-lhistory) */
 #cmakedefine HAVE_LIBHISTORY 1
 
 /* Define if readline library is there (-lreadline) */
 #cmakedefine HAVE_LIBREADLINE 1
-
-/* Define to 1 if you have the `mmap' function. */
-#cmakedefine HAVE_DECL_MMAP 1
 
 /* Define to 1 if you have the <netdb.h> header file. */
 #cmakedefine HAVE_NETDB_H 1

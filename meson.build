@@ -261,9 +261,7 @@ xml_check_functions = [
 ]
 
 foreach function : xml_check_functions
-    if cc.has_header_symbol(function[1], function[0])
-        config_h.set10(function[2], true)
-    endif
+    config_h.set10(function[2], cc.has_header_symbol(function[1], function[0]))
 endforeach
 
 # library

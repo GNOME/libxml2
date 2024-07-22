@@ -235,12 +235,6 @@ config_h.set_quoted('LOCALEDIR', dir_locale)
 xml_check_headers = [
     [ 'stdint.h', true ],
     [ 'glob.h', true ],
-
-    [ 'sys/socket.h', want_http ],
-    [ 'netinet/in.h', want_http ],
-    [ 'arpa/inet.h', want_http ],
-    [ 'netdb.h', want_http ],
-    [ 'sys/select.h', want_http ],
     [ 'poll.h', want_http ],
 ]
 

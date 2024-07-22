@@ -30,38 +30,21 @@
 
 #else /* _WIN32 */
 
-#include <unistd.h>
-#include <sys/time.h>
-
-#ifdef HAVE_SYS_SOCKET_H
-#include <sys/socket.h>
-#endif
-#ifdef HAVE_NETINET_IN_H
-#include <netinet/in.h>
-#endif
-#ifdef HAVE_ARPA_INET_H
-#include <arpa/inet.h>
-#endif
-#ifdef HAVE_NETDB_H
 #include <netdb.h>
-#ifndef SUPPORT_IP6
-  #define SUPPORT_IP6
-#endif
-#endif
-#ifndef HAVE_POLL_H
-#ifdef HAVE_SYS_SELECT_H
-#include <sys/select.h>
-#endif
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <unistd.h>
+
+#ifdef HAVE_POLL_H
+  #include <poll.h>
 #else
-#include <poll.h>
+  #include <sys/select.h>
 #endif
 
-#ifdef VMS
-  #include <stropts>
-  #define XML_SOCKLEN_T unsigned int
-#else
-  #define XML_SOCKLEN_T socklen_t
-#endif
+/* This can be disabled if you don't have getaddrinfo */
+#define SUPPORT_IP6
+#define XML_SOCKLEN_T socklen_t
 
 #endif /* _WIN32 */
 
@@ -1060,7 +1043,7 @@ xmlNanoHTTPConnectHost(const char *host, int port)
  * extraction code. it work on Linux, if it work on your platform
  * and one want to enable it, send me the defined(foobar) needed
  */
-#if defined(HAVE_NETDB_H) && defined(HOST_NOT_FOUND) && defined(__linux__)
+#if defined(HOST_NOT_FOUND) && defined(__linux__)
 	    const char *h_err_txt = "";
 
 	    switch (h_errno) {

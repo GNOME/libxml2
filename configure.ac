@@ -309,8 +309,7 @@ dnl
 dnl Checks for inet libraries
 dnl
 if test "$with_http" = "yes"; then
-    AC_CHECK_HEADERS([sys/socket.h netinet/in.h arpa/inet.h netdb.h])
-    AC_CHECK_HEADERS([sys/select.h poll.h])
+    AC_CHECK_HEADERS([poll.h])
 
     case "$host" in
         *-*-mingw*)

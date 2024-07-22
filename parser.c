@@ -973,6 +973,11 @@ xmlCtxtInitializeLate(xmlParserCtxtPtr ctxt) {
 		(ctxt->str_xml_ns == NULL)) {
         xmlErrMemory(ctxt);
     }
+
+    xmlDictSetLimit(ctxt->dict,
+                    (ctxt->options & XML_PARSE_HUGE) ?
+                        0 :
+                        XML_MAX_DICTIONARY_LIMIT);
 }
 
 typedef struct {

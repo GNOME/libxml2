@@ -71,7 +71,7 @@ XMLPUBVAR const unsigned int xmlParserMaxDepth;
  * use XML_PARSE_HUGE option to override it.
  * Introduced in 2.9.0
  */
-#define XML_MAX_DICTIONARY_LIMIT 10000000
+#define XML_MAX_DICTIONARY_LIMIT 100000000
 
 /**
  * XML_MAX_LOOKUP_LIMIT:

@@ -2696,7 +2696,6 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
 	ctxt->dict = xmlDictCreate();
     if (ctxt->dict == NULL)
 	return(-1);
-    xmlDictSetLimit(ctxt->dict, XML_MAX_DICTIONARY_LIMIT);
 
     if (ctxt->sax == NULL)
 	ctxt->sax = (xmlSAXHandler *) xmlMalloc(sizeof(xmlSAXHandler));

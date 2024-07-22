@@ -313,19 +313,16 @@ target_include_directories(
 )
 
 if(LIBXML2_WITH_MODULES)
-    check_include_files(dlfcn.h HAVE_DLFCN_H)
     check_library_exists(dl dlopen "" HAVE_DLOPEN)
-    check_include_files(dl.h HAVE_DL_H)
-    check_library_exists(dld shl_load "" HAVE_SHLLOAD)
-
     if(HAVE_DLOPEN)
         target_link_libraries(LibXml2 PRIVATE dl)
         set(MODULE_LIBS "-ldl")
-    endif()
-
-    if(HAVE_SHLLOAD)
-        target_link_libraries(LibXml2 PRIVATE dld)
-        set(MODULE_LIBS "-ldld")
+    else()
+        check_library_exists(dld shl_load "" HAVE_SHLLOAD)
+        if(HAVE_SHLLOAD)
+            target_link_libraries(LibXml2 PRIVATE dld)
+            set(MODULE_LIBS "-ldld")
+        endif()
     endif()
 endif()
 

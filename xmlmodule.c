@@ -157,9 +157,7 @@ xmlModuleFree(xmlModulePtr module)
 }
 
 #if defined(HAVE_DLOPEN) && !defined(_WIN32)
-#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
-#endif
 
 #ifndef RTLD_GLOBAL            /* For Tru64 UNIX 4.0 */
 #define RTLD_GLOBAL 0
@@ -210,9 +208,7 @@ xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 #else /* ! HAVE_DLOPEN */
 
 #ifdef HAVE_SHLLOAD             /* HAVE_SHLLOAD */
-#ifdef HAVE_DL_H
 #include <dl.h>
-#endif
 /*
  * xmlModulePlatformOpen:
  * returns a handle on success, and zero on error.

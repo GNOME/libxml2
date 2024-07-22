@@ -661,8 +661,6 @@ if test "$with_modules" != "no" ; then
     esac
 
     if test "$WITH_MODULES" = "0"; then
-        AC_CHECK_HEADERS([dl.h dlfcn.h])
-
         _libs=$LIBS
         AC_SEARCH_LIBS([dlopen], [dl], [
             WITH_MODULES=1

@@ -236,9 +236,6 @@ xml_check_headers = [
     [ 'stdint.h', true ],
     [ 'glob.h', true ],
 
-    [ 'dl.h', want_modules ],
-    [ 'dlfcn.h', want_modules ],
-
     [ 'sys/socket.h', want_http ],
     [ 'netinet/in.h', want_http ],
     [ 'arpa/inet.h', want_http ],

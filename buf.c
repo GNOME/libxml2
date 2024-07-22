@@ -776,7 +776,7 @@ xmlBufferPtr
 xmlBufferCreateSize(size_t size) {
     xmlBufferPtr ret;
 
-    if (size >= UINT_MAX)
+    if (size >= INT_MAX)
         return(NULL);
 
     ret = xmlMalloc(sizeof(*ret));
@@ -963,17 +963,17 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
 
     if (len < buf->size - buf->use)
         return(0);
-    if (len >= UINT_MAX - buf->use)
+    if (len >= INT_MAX - buf->use)
         return(-1);
 
     if (buf->size > (size_t) len) {
-        if (buf->size <= UINT_MAX / 2)
+        if (buf->size <= INT_MAX / 2)
             size = buf->size * 2;
         else
-            size = UINT_MAX;
+            size = INT_MAX;
     } else {
         size = buf->use + len + 1;
-        if (size <= UINT_MAX - 100)
+        if (size <= INT_MAX - 100)
             size += 100;
     }
 

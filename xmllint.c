@@ -28,7 +28,7 @@
   #include <unistd.h>
 #endif
 
-#ifdef HAVE_SYS_MMAN_H
+#if HAVE_DECL_MMAP
   #include <sys/mman.h>
   /* seems needed for Solaris */
   #ifndef MAP_FAILED
@@ -140,7 +140,7 @@ static int htmlout = 0;
 static int push = 0;
 static int pushsize = 4096;
 #endif /* LIBXML_PUSH_ENABLED */
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
 static int memory = 0;
 #endif
 static int testIO = 0;
@@ -1481,7 +1481,7 @@ static void processNode(xmlTextReaderPtr reader) {
 static void streamFile(const char *filename) {
     xmlTextReaderPtr reader;
     int ret;
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
     int fd = -1;
     struct stat info;
     const char *base = NULL;
@@ -1630,7 +1630,7 @@ static void streamFile(const char *filename) {
 	patstream = NULL;
     }
 #endif
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
     if (memory) {
 	munmap((char *) base, info.st_size);
 	close(fd);
@@ -1906,7 +1906,7 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
     }
 #endif /* LIBXML_PUSH_ENABLED */
 
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
     if ((html) && (memory)) {
 	int fd;
 	struct stat info;
@@ -2028,7 +2028,7 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
             doc = xmlCtxtReadIO(ctxt, myRead, myClose, f, filename, NULL,
                                 options);
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
         } else if (memory) {
             int fd;
             struct stat info;
@@ -2304,7 +2304,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 		}
 	    } else
 #endif
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
 	    if (memory) {
 		xmlChar *result;
 		int len;
@@ -2332,7 +2332,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 		}
 
 	    } else
-#endif /* HAVE_MMAP */
+#endif /* HAVE_DECL_MMAP */
 	    if (compress) {
 		xmlSaveFile(output ? output : "-", doc);
 	    } else {
@@ -2692,7 +2692,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--push : use the push mode of the parser\n");
     fprintf(f, "\t--pushsmall : use the push mode of the parser using tiny increments\n");
 #endif /* LIBXML_PUSH_ENABLED */
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
     fprintf(f, "\t--memory : parse from memory\n");
 #endif
     fprintf(f, "\t--maxmem nbbytes : limits memory allocation to nbbytes bytes\n");
@@ -2884,7 +2884,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
     push = 0;
     pushsize = 4096;
 #endif /* LIBXML_PUSH_ENABLED */
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
     memory = 0;
 #endif
     testIO = 0;
@@ -3069,7 +3069,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
             pushsize = 10;
         }
 #endif /* LIBXML_PUSH_ENABLED */
-#ifdef HAVE_MMAP
+#if HAVE_DECL_MMAP
 	else if ((!strcmp(argv[i], "-memory")) ||
 	         (!strcmp(argv[i], "--memory")))
 	    memory++;

@@ -234,7 +234,6 @@ config_h.set_quoted('LOCALEDIR', dir_locale)
 # header files
 xml_check_headers = [
     'stdint.h',
-    'sys/mman.h',
     'dl.h',
     'dlfcn.h',
     'glob.h',
@@ -258,8 +257,7 @@ endforeach
 xml_check_functions = [
     # fct             | header
     ['getentropy', 'sys/random.h', 'HAVE_DECL_GETENTROPY'],
-    ['mmap', 'sys/mman.h', 'HAVE_MMAP'],
-    ['munmap', 'sys/mman.h', 'HAVE_MUNMAP'],
+    ['mmap', 'sys/mman.h', 'HAVE_DECL_MMAP'],
 ]
 
 foreach function : xml_check_functions

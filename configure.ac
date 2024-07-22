@@ -298,20 +298,12 @@ dnl
 dnl Checks for header files.
 dnl
 AC_CHECK_HEADERS([stdint.h])
-AC_CHECK_HEADERS([sys/mman.h])
 AC_CHECK_HEADERS([dl.h dlfcn.h])
 AC_CHECK_HEADERS([glob.h])
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
 dnl Checks for library functions.
-
-AC_CHECK_FUNCS([mmap munmap])
-
-AH_VERBATIM([HAVE_MUNMAP_AFTER],[/* mmap() is no good without munmap() */
-#if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)
-#  undef /**/ HAVE_MMAP
-#endif])
-
+AC_CHECK_DECLS([mmap], [], [], [#include <sys/mman.h>])
 AC_CHECK_DECLS([getentropy], [], [], [#include <sys/random.h>])
 
 dnl

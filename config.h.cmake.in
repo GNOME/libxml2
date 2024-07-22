@@ -23,15 +23,7 @@
 #cmakedefine HAVE_LIBREADLINE 1
 
 /* Define to 1 if you have the `mmap' function. */
-#cmakedefine HAVE_MMAP 1
-
-/* Define to 1 if you have the `munmap' function. */
-#cmakedefine HAVE_MUNMAP 1
-
-/* mmap() is no good without munmap() */
-#if defined(HAVE_MMAP) && !defined(HAVE_MUNMAP)
-#  undef /**/ HAVE_MMAP
-#endif
+#cmakedefine HAVE_DECL_MMAP 1
 
 /* Define to 1 if you have the <netdb.h> header file. */
 #cmakedefine HAVE_NETDB_H 1
@@ -50,9 +42,6 @@
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #cmakedefine HAVE_STDINT_H 1
-
-/* Define to 1 if you have the <sys/mman.h> header file. */
-#cmakedefine HAVE_SYS_MMAN_H 1
 
 /* Define to 1 if you have the <sys/select.h> header file. */
 #cmakedefine HAVE_SYS_SELECT_H 1

@@ -929,11 +929,9 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <bcrypt.h>
-#elif defined(HAVE_GETENTROPY)
+#elif HAVE_DECL_GETENTROPY
   #include <unistd.h>
-  #ifdef HAVE_SYS_RANDOM_H
-    #include <sys/random.h>
-  #endif
+  #include <sys/random.h>
 #else
   #include <time.h>
 #endif
@@ -962,7 +960,7 @@ xmlInitRandom(void) {
         if (!BCRYPT_SUCCESS(status))
             xmlAbort("libxml2: BCryptGenRandom failed with error code %lu\n",
                      GetLastError());
-#elif defined(HAVE_GETENTROPY)
+#elif HAVE_DECL_GETENTROPY
         while (1) {
             if (getentropy(globalRngState, sizeof(globalRngState)) == 0)
                 break;

@@ -6,6 +6,8 @@
  * joelwreed@comcast.net
  */
 
+#define XML_DEPRECATED
+
 #include "libxml.h"
 #include <stdio.h>
 #include <libxml/xmlversion.h>

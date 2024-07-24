@@ -774,13 +774,6 @@ xmllintShellWrite(xmllintShellCtxtPtr ctxt, char *filename, xmlNodePtr node,
     if ((filename == NULL) || (filename[0] == 0)) {
         return (-1);
     }
-#ifdef W_OK
-    if (access((char *) filename, W_OK)) {
-        fprintf(ctxt->output,
-                        "Cannot write to %s\n", filename);
-        return (-1);
-    }
-#endif
     switch (node->type) {
         case XML_DOCUMENT_NODE:
             if (xmlSaveFile((char *) filename, ctxt->doc) < -1) {
@@ -843,13 +836,6 @@ xmllintShellSave(xmllintShellCtxtPtr ctxt, char *filename,
         filename = ctxt->filename;
     if (filename == NULL)
         return (-1);
-#ifdef W_OK
-    if (access((char *) filename, W_OK)) {
-        fprintf(ctxt->output,
-                        "Cannot save to %s\n", filename);
-        return (-1);
-    }
-#endif
     switch (ctxt->doc->type) {
         case XML_DOCUMENT_NODE:
             if (xmlSaveFile((char *) filename, ctxt->doc) < 0) {

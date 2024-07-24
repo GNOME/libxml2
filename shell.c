@@ -12,6 +12,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+  #include <io.h>
+#else
+  #include <unistd.h>
+#endif
+
 #ifdef HAVE_LIBREADLINE
 #include <readline/readline.h>
 #ifdef HAVE_LIBHISTORY
@@ -30,6 +36,10 @@
 #endif
 
 #include "private/shell.h"
+
+#ifndef STDIN_FILENO
+  #define STDIN_FILENO 0
+#endif
 
 /*
  * TODO: Improvement/cleanups for the XML shell
@@ -1047,37 +1057,39 @@ xmllintShellPwd(xmllintShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
  */
 static char *
 xmllintShellReadline(char *prompt) {
-#ifdef HAVE_LIBREADLINE
-    char *line_read;
-
-    /* Get a line from the user. */
-    line_read = readline (prompt);
-
-#ifdef HAVE_LIBHISTORY
-    /* If the line has any text in it, save it on the history. */
-    if (line_read && *line_read)
-       add_history (line_read);
-#endif
-
-    return (line_read);
-#else
-    char line_read[501];
+    char buf[501];
     char *ret;
     int len;
+
+#ifdef HAVE_LIBREADLINE
+    if (isatty(STDIN_FILENO)) {
+        char *line_read;
+
+        /* Get a line from the user. */
+        line_read = readline (prompt);
+
+#ifdef HAVE_LIBHISTORY
+        /* If the line has any text in it, save it on the history. */
+        if (line_read && *line_read)
+           add_history (line_read);
+#endif
+
+        return (line_read);
+    }
+#endif
 
     if (prompt != NULL)
        fprintf(stdout, "%s", prompt);
     fflush(stdout);
-    if (!fgets(line_read, 500, stdin))
+    if (!fgets(buf, 500, stdin))
         return(NULL);
-    line_read[500] = 0;
-    len = strlen(line_read);
+    buf[500] = 0;
+    len = strlen(buf);
     ret = (char *) malloc(len + 1);
     if (ret != NULL) {
-       memcpy (ret, line_read, len + 1);
+       memcpy (ret, buf, len + 1);
     }
     return(ret);
-#endif
 }
 
 /**

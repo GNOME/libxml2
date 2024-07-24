@@ -1,5 +1,16 @@
 NEWS file for libxml2
 
+v2.12.9: Jul 24 2024
+
+### Security
+
+- [CVE-2024-40896] Fix XXE protection in downstream code
+
+### Improvements
+
+- Undeprecate xmlKeepBlanksDefault
+
+
 v2.12.8: Jun 12 2024
 
 ### Regressions

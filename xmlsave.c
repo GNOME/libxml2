@@ -95,21 +95,11 @@ xmlSaveErr(xmlOutputBufferPtr out, int code, xmlNodePtr node,
     if (out != NULL)
         out->error = code;
 
-    switch(code) {
-        case XML_SAVE_NOT_UTF8:
-	    msg = "string is not in UTF-8\n";
-	    break;
-	case XML_SAVE_CHAR_INVALID:
-	    msg = "invalid character value\n";
-	    break;
-	case XML_SAVE_UNKNOWN_ENCODING:
-	    msg = "unknown encoding %s\n";
-	    break;
-	case XML_SAVE_NO_DOCTYPE:
-	    msg = "document has no DOCTYPE\n";
-	    break;
-	default:
-	    msg = "unexpected error number\n";
+    if (code == XML_ERR_UNSUPPORTED_ENCODING) {
+        msg = "Unsupported encoding: %s";
+    } else {
+        msg = xmlErrString(code);
+        extra = NULL;
     }
 
     res = xmlRaiseError(NULL, NULL, NULL, NULL, node,

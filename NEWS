@@ -1,5 +1,25 @@
 NEWS file for libxml2
 
+v2.13.3: Jul 24 2024
+
+### Security
+
+- [CVE-2024-40896] Fix XXE protection in downstream code
+
+### Regressions
+
+- autotools: Use AC_CHECK_DECL to check for getentropy
+- xinclude: Fix fallback for text includes
+- io: Don't call getcwd in xmlParserGetDirectory
+- io: Fix return value of xmlFileRead
+- parser: Fix error return of xmlParseBalancedChunkMemory
+
+### Improvements
+
+- xinclude: Set error handler when parsing text
+- Undeprecate xmlKeepBlanksDefault
+
+
 v2.13.2: Jul 4 2024
 
 ### Regressions

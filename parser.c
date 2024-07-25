@@ -11625,7 +11625,7 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
         xmlHaltParser(ctxt);
     }
 
-    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX == 1))
+    if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX != 0))
         return(ctxt->errNo);
 
     if (end_in_lf == 1) {

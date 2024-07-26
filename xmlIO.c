@@ -1523,11 +1523,12 @@ __xmlOutputBufferCreateFilename(const char *URI,
          */
         if (puri->scheme == NULL) {
             unescaped = xmlURIUnescapeString(URI, 0, NULL);
-             if (unescaped == NULL) {
-                 xmlFreeURI(puri);
-                 return(NULL);
-             }
-             URI = unescaped;
+            if (unescaped == NULL) {
+                xmlFreeURI(puri);
+                xmlCharEncCloseFunc(encoder);
+                return(NULL);
+            }
+            URI = unescaped;
         }
         xmlFreeURI(puri);
     }
@@ -1538,6 +1539,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
     ret = xmlAllocOutputBufferInternal(encoder);
     if (ret == NULL) {
         xmlFree(unescaped);
+        xmlCharEncCloseFunc(encoder);
         return(NULL);
     }
 

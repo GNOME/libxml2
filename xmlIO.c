@@ -1237,6 +1237,8 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
  *
  * Create a buffered parser output
  *
+ * Consumes @encoder even in error case.
+ *
  * Returns the new parser output or NULL
  */
 xmlOutputBufferPtr
@@ -1245,11 +1247,13 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
 
     ret = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
     if (ret == NULL) {
+        xmlCharEncCloseFunc(encoder);
 	return(NULL);
     }
     memset(ret, 0, sizeof(xmlOutputBuffer));
     ret->buffer = xmlBufCreate(MINLEN);
     if (ret->buffer == NULL) {
+        xmlCharEncCloseFunc(encoder);
         xmlFree(ret);
 	return(NULL);
     }
@@ -1258,8 +1262,7 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
     if (encoder != NULL) {
         ret->conv = xmlBufCreate(MINLEN);
 	if (ret->conv == NULL) {
-            xmlBufFree(ret->buffer);
-	    xmlFree(ret);
+            xmlOutputBufferClose(ret);
 	    return(NULL);
 	}
 
@@ -1276,53 +1279,6 @@ xmlAllocOutputBuffer(xmlCharEncodingHandlerPtr encoder) {
 
     return(ret);
 }
-
-/**
- * xmlAllocOutputBufferInternal:
- * @encoder:  the encoding converter or NULL
- *
- * Create a buffered parser output
- *
- * Returns the new parser output or NULL
- */
-xmlOutputBufferPtr
-xmlAllocOutputBufferInternal(xmlCharEncodingHandlerPtr encoder) {
-    xmlOutputBufferPtr ret;
-
-    ret = (xmlOutputBufferPtr) xmlMalloc(sizeof(xmlOutputBuffer));
-    if (ret == NULL) {
-	return(NULL);
-    }
-    memset(ret, 0, sizeof(xmlOutputBuffer));
-    ret->buffer = xmlBufCreate(MINLEN);
-    if (ret->buffer == NULL) {
-        xmlFree(ret);
-	return(NULL);
-    }
-
-    ret->encoder = encoder;
-    if (encoder != NULL) {
-        ret->conv = xmlBufCreate(MINLEN);
-	if (ret->conv == NULL) {
-            xmlBufFree(ret->buffer);
-	    xmlFree(ret);
-	    return(NULL);
-	}
-
-	/*
-	 * This call is designed to initiate the encoder state
-	 */
-        xmlCharEncOutput(ret, 1);
-    } else
-        ret->conv = NULL;
-    ret->writecallback = NULL;
-    ret->closecallback = NULL;
-    ret->context = NULL;
-    ret->written = 0;
-
-    return(ret);
-}
-
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
@@ -1536,10 +1492,9 @@ __xmlOutputBufferCreateFilename(const char *URI,
     /*
      * Allocate the Output buffer front-end.
      */
-    ret = xmlAllocOutputBufferInternal(encoder);
+    ret = xmlAllocOutputBuffer(encoder);
     if (ret == NULL) {
         xmlFree(unescaped);
-        xmlCharEncCloseFunc(encoder);
         return(NULL);
     }
 
@@ -1588,6 +1543,8 @@ __xmlOutputBufferCreateFilename(const char *URI,
  * by default if found at compile-time.
  * TODO: currently if compression is set, the library only support
  *       writing to a local file.
+ *
+ * Consumes @encoder even in error case.
  *
  * Returns the new output or NULL
  */
@@ -1643,6 +1600,8 @@ xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
  * Create a buffered output for the progressive saving to a FILE *
  * buffered C I/O
  *
+ * Consumes @encoder even in error case.
+ *
  * Returns the new parser output or NULL
  */
 xmlOutputBufferPtr
@@ -1651,7 +1610,7 @@ xmlOutputBufferCreateFile(FILE *file, xmlCharEncodingHandlerPtr encoder) {
 
     if (file == NULL) return(NULL);
 
-    ret = xmlAllocOutputBufferInternal(encoder);
+    ret = xmlAllocOutputBuffer(encoder);
     if (ret != NULL) {
         ret->context = file;
 	ret->writecallback = xmlFileWrite;
@@ -1667,6 +1626,8 @@ xmlOutputBufferCreateFile(FILE *file, xmlCharEncodingHandlerPtr encoder) {
  * @encoder:  the encoding converter or NULL
  *
  * Create a buffered output for the progressive saving to a xmlBuffer
+ *
+ * Consumes @encoder even in error case.
  *
  * Returns the new parser output or NULL
  */
@@ -1932,6 +1893,8 @@ xmlNewInputBufferString(const char *str, int flags) {
  * Create a buffered output for the progressive saving
  * to a file descriptor
  *
+ * Consumes @encoder even in error case.
+ *
  * Returns the new parser output or NULL
  */
 xmlOutputBufferPtr
@@ -1940,7 +1903,7 @@ xmlOutputBufferCreateFd(int fd, xmlCharEncodingHandlerPtr encoder) {
 
     if (fd < 0) return(NULL);
 
-    ret = xmlAllocOutputBufferInternal(encoder);
+    ret = xmlAllocOutputBuffer(encoder);
     if (ret != NULL) {
         ret->context = (void *) (ptrdiff_t) fd;
 	ret->writecallback = xmlFdWrite;
@@ -1997,6 +1960,8 @@ xmlParserInputBufferCreateIO(xmlInputReadCallback   ioread,
  * Create a buffered output for the progressive saving
  * to an I/O handler
  *
+ * Consumes @encoder even in error case.
+ *
  * Returns the new parser output or NULL
  */
 xmlOutputBufferPtr
@@ -2005,9 +1970,12 @@ xmlOutputBufferCreateIO(xmlOutputWriteCallback   iowrite,
 	 xmlCharEncodingHandlerPtr encoder) {
     xmlOutputBufferPtr ret;
 
-    if (iowrite == NULL) return(NULL);
+    if (iowrite == NULL) {
+        xmlCharEncCloseFunc(encoder);
+        return(NULL);
+    }
 
-    ret = xmlAllocOutputBufferInternal(encoder);
+    ret = xmlAllocOutputBuffer(encoder);
     if (ret != NULL) {
         ret->context = (void *) ioctx;
 	ret->writecallback = iowrite;

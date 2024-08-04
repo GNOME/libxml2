@@ -433,16 +433,11 @@ xmlReversePattern(xmlPatternPtr comp) {
 
 static int
 xmlPatPushState(xmlStepStates *states, int step, xmlNodePtr node) {
-    if ((states->states == NULL) || (states->maxstates <= 0)) {
-        states->maxstates = 4;
-	states->nbstates = 0;
-	states->states = xmlMalloc(4 * sizeof(xmlStepState));
-    }
-    else if (states->maxstates <= states->nbstates) {
+    if (states->maxstates <= states->nbstates) {
+        size_t newSize = states->maxstates ? states->maxstates * 2 : 4;
         xmlStepState *tmp;
 
-	tmp = (xmlStepStatePtr) xmlRealloc(states->states,
-			       2 * states->maxstates * sizeof(xmlStepState));
+	tmp = xmlRealloc(states->states, newSize * sizeof(tmp[0]));
 	if (tmp == NULL)
 	    return(-1);
 	states->states = tmp;

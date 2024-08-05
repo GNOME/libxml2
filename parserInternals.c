@@ -253,11 +253,11 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
 
     if (level == XML_ERR_WARNING) {
         if (ctxt->nbWarnings >= XML_MAX_ERRORS)
-            return;
+            goto done;
         ctxt->nbWarnings += 1;
     } else {
         if (ctxt->nbErrors >= XML_MAX_ERRORS)
-            return;
+            goto done;
         ctxt->nbErrors += 1;
     }
 
@@ -308,6 +308,7 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
         return;
     }
 
+done:
     if (level >= XML_ERR_ERROR)
         ctxt->errNo = code;
     if (level == XML_ERR_FATAL) {

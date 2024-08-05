@@ -330,7 +330,9 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
             goto done;
         ctxt->nbWarnings += 1;
     } else {
-        if (ctxt->nbErrors >= XML_MAX_ERRORS)
+        /* Report at least one fatal error. */
+        if ((ctxt->nbErrors >= XML_MAX_ERRORS) &&
+            ((level < XML_ERR_FATAL) || (ctxt->wellFormed == 0)))
             goto done;
         ctxt->nbErrors += 1;
     }

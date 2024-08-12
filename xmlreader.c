@@ -2340,6 +2340,8 @@ xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
     }
     /* TODO walk the DTD if present */
 
+    if (cur->children == NULL)
+        return(NULL);
     ret = xmlNodeListGetString(reader->node->doc, cur->children, 1);
     if (ret == NULL)
         xmlTextReaderErrMemory(reader);
@@ -3585,6 +3587,8 @@ xmlTextReaderValue(xmlTextReaderPtr reader) {
             xmlDocPtr doc = NULL;
             xmlChar *ret;
 
+            if (attr->children == NULL)
+                return(NULL);
 	    if (attr->parent != NULL)
                 doc = attr->parent->doc;
 	    ret = xmlNodeListGetString(doc, attr->children, 1);

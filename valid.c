@@ -6224,7 +6224,10 @@ xmlValidateElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlNodePtr root) {
         if (elem->type == XML_ELEMENT_NODE) {
             attr = elem->properties;
             while (attr != NULL) {
-                value = xmlNodeListGetString(doc, attr->children, 0);
+                if (attr->children == NULL)
+                    value = xmlStrdup(BAD_CAST "");
+                else
+                    value = xmlNodeListGetString(doc, attr->children, 0);
                 if (value == NULL) {
                     xmlVErrMemory(ctxt);
                     ret = 0;

@@ -1559,11 +1559,11 @@ error:
 /**
  * xmlNodeListGetString:
  * @doc:  a document (optional)
- * @list:  a node list of attribute children (optional)
+ * @list:  a node list of attribute children
  * @inLine:  whether entity references are substituted
  *
  * Serializes attribute children (text and entity reference nodes)
- * into a string. An empty list produces an empty string.
+ * into a string.
  *
  * If @inLine is true, entity references will be substituted.
  * Otherwise, entity references will be kept and special characters
@@ -1577,11 +1577,14 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
 {
     int escMode;
 
+    /* backward compatibility */
+    if (list == NULL)
+        return(NULL);
+
     if (inLine) {
         escMode = 0;
     } else {
-        if ((list != NULL) &&
-            (list->parent != NULL) &&
+        if ((list->parent != NULL) &&
             (list->parent->type == XML_ATTRIBUTE_NODE))
             escMode = 2;
         else
@@ -1594,11 +1597,11 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
 /**
  * xmlNodeListGetRawString:
  * @doc:  a document (optional)
- * @list:  a node list of attribute children (optional)
+ * @list:  a node list of attribute children
  * @inLine:  whether entity references are substituted
  *
  * Serializes attribute children (text and entity reference nodes)
- * into a string. An empty list produces an empty string.
+ * into a string.
  *
  * If @inLine is true, entity references will be substituted.
  * Otherwise, entity references will be kept and special characters
@@ -1610,6 +1613,11 @@ xmlChar *
 xmlNodeListGetRawString(const xmlDoc *doc, const xmlNode *list, int inLine)
 {
     int escMode = inLine ? 0 : 3;
+
+    /* backward compatibility */
+    if (list == NULL)
+        return(NULL);
+
     return(xmlNodeListGetStringInternal((xmlDocPtr) doc, list, escMode));
 }
 

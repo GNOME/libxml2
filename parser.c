@@ -7609,7 +7609,7 @@ xmlHandleUndeclaredEntity(xmlParserCtxtPtr ctxt, const xmlChar *name) {
 
 static xmlEntityPtr
 xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
-    xmlEntityPtr ent;
+    xmlEntityPtr ent = NULL;
 
     /*
      * Predefined entities override any extra definition
@@ -9372,8 +9372,8 @@ next_attr:
 	if (defaults != NULL) {
 	    for (i = 0; i < defaults->nbAttrs; i++) {
                 xmlDefAttr *attr = &defaults->attrs[i];
-                const xmlChar *nsuri;
-                unsigned hashValue, uriHashValue;
+                const xmlChar *nsuri = NULL;
+                unsigned hashValue, uriHashValue = 0;
                 int res;
 
 	        attname = attr->name.name;

@@ -191,6 +191,7 @@ if cc.get_argument_syntax() == 'gcc'
         '-Wmissing-prototypes',
         '-Wno-long-long',
         '-Wno-format-extra-args',
+        '-Wno-array-bounds',
     ]
 
     if host_machine.cpu_family() == 'alpha'

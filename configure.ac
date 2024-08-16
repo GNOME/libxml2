@@ -397,7 +397,7 @@ else
     # warnings we'd like to see
     AM_CFLAGS="${AM_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes"
     # warnings we'd like to suppress
-    AM_CFLAGS="${AM_CFLAGS} -Wno-long-long -Wno-format-extra-args"
+    AM_CFLAGS="${AM_CFLAGS} -Wno-long-long -Wno-format-extra-args -Wno-array-bounds"
     case "${host}" in
           alpha*-*-linux* )
 	       AM_CFLAGS="${AM_CFLAGS} -mieee"

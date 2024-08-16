@@ -383,7 +383,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra -Wshadow \
 -Wpointer-arith -Wcast-align -Wwrite-strings \
 -Wstrict-prototypes -Wmissing-prototypes \
--Wno-long-long -Wno-format-extra-args")
+-Wno-long-long -Wno-format-extra-args -Wno-array-bounds")
 
     if(LIBXML2_WITH_LEGACY AND BUILD_SHARED_LIBS AND UNIX AND NOT APPLE)
         check_linker_flag(C "LINKER:--undefined-version" FLAG_UNDEFINED_VERSION)

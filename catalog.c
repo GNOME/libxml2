@@ -60,6 +60,9 @@
 #define XML_SGML_DEFAULT_CATALOG "file://" SYSCONFDIR "/sgml/catalog"
 #endif
 
+static xmlChar *xmlCatalogNormalizePublic(const xmlChar *pubID);
+static int xmlExpandCatalog(xmlCatalogPtr catal, const char *filename);
+
 /************************************************************************
  *									*
  *			Types, all private				*
@@ -173,21 +176,6 @@ static xmlRMutex xmlCatalogMutex;
  * Whether the default system catalog was initialized.
  */
 static int xmlCatalogInitialized = 0;
-
-/************************************************************************
- *									*
- *			Forward declarations				*
- *									*
- ************************************************************************/
-
-static xmlChar *
-xmlCatalogNormalizePublic(const xmlChar *pubID);
-
-static int
-xmlExpandCatalog(xmlCatalogPtr catal, const char *filename);
-
-static int
-xmlFetchXMLCatalogFile(xmlCatalogEntryPtr catal);
 
 /************************************************************************
  *									*
@@ -547,9 +535,6 @@ static void xmlDumpXMLCatalogNode(xmlCatalogEntryPtr catal, xmlNodePtr catalog,
 	        case XML_CATA_BROKEN_CATALOG:
 	        case XML_CATA_CATALOG:
 		    if (cur == catal) {
-                        if (cur->children == NULL) {
-                            xmlFetchXMLCatalogFile(cur);
-                        }
 			cur = cur->children;
 		        continue;
 		    }

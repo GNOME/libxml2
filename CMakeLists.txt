@@ -141,6 +141,7 @@ check_c_source_compiles("
     int main(void) { return 0; }
 " HAVE_FUNC_ATTRIBUTE_DESTRUCTOR)
 check_symbol_exists(getentropy "sys/random.h" HAVE_DECL_GETENTROPY)
+check_symbol_exists(glob "glob.h" HAVE_DECL_GLOB)
 check_symbol_exists(mmap "sys/mman.h" HAVE_DECL_MMAP)
 check_include_files(stdint.h HAVE_STDINT_H)
 

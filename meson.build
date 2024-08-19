@@ -235,7 +235,6 @@ config_h.set_quoted('LOCALEDIR', dir_locale)
 # header files
 xml_check_headers = [
     [ 'stdint.h', true ],
-    [ 'glob.h', true ],
     [ 'poll.h', want_http ],
 ]
 
@@ -248,12 +247,14 @@ endforeach
 # library functions
 xml_check_functions = [
     # fct             | header
-    ['getentropy', 'sys/random.h', 'HAVE_DECL_GETENTROPY'],
-    ['mmap', 'sys/mman.h', 'HAVE_DECL_MMAP'],
+    ['getentropy', 'sys/random.h'],
+    ['glob', 'glob.h'],
+    ['mmap', 'sys/mman.h'],
 ]
 
 foreach function : xml_check_functions
-    config_h.set10(function[2], cc.has_header_symbol(function[1], function[0]))
+    config_h.set10('HAVE_DECL_' + function[0].underscorify().to_upper(),
+                   cc.has_header_symbol(function[1], function[0]))
 endforeach
 
 # library

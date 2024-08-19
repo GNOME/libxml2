@@ -298,12 +298,13 @@ dnl
 dnl Checks for header files.
 dnl
 AC_CHECK_HEADERS([stdint.h])
-AC_CHECK_HEADERS([glob.h])
-AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_header_glob_h" = "yes")
 
 dnl Checks for library functions.
-AC_CHECK_DECLS([mmap], [], [], [#include <sys/mman.h>])
 AC_CHECK_DECLS([getentropy], [], [], [#include <sys/random.h>])
+AC_CHECK_DECLS([glob], [], [], [#include <glob.h>])
+AC_CHECK_DECLS([mmap], [], [], [#include <sys/mman.h>])
+
+AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_have_decl_glob" = "yes")
 
 dnl
 dnl Checks for inet libraries

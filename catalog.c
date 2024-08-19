@@ -3347,8 +3347,7 @@ int
 xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) {
     int res = -1;
 
-    if (!xmlCatalogInitialized)
-	xmlInitializeCatalog();
+    xmlInitParser();
 
     xmlRMutexLock(&xmlCatalogMutex);
     /*

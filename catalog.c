@@ -3128,6 +3128,7 @@ xmlLoadCatalog(const char *filename)
 
 	xmlDefaultCatalog = catal;
 	xmlRMutexUnlock(&xmlCatalogMutex);
+        xmlCatalogInitialized = 1;
 	return(0);
     }
 
@@ -3348,6 +3349,7 @@ xmlCatalogAdd(const xmlChar *type, const xmlChar *orig, const xmlChar *replace) 
 				    orig, NULL,  xmlCatalogDefaultPrefer, NULL);
 	}
 	xmlRMutexUnlock(&xmlCatalogMutex);
+        xmlCatalogInitialized = 1;
 	return(0);
     }
 

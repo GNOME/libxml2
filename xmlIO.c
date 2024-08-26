@@ -475,7 +475,7 @@ xmlFdOpen(const char *filename, int write, int *out) {
             flags = _O_WRONLY | _O_CREAT | _O_TRUNC;
         else
             flags = _O_RDONLY;
-	fd = _wopen(wpath, flags | _O_BINARY, 0777);
+	fd = _wopen(wpath, flags | _O_BINARY, 0666);
         xmlFree(wpath);
     }
 #else
@@ -483,7 +483,7 @@ xmlFdOpen(const char *filename, int write, int *out) {
         flags = O_WRONLY | O_CREAT | O_TRUNC;
     else
         flags = O_RDONLY;
-    fd = open(filename, flags, 0777);
+    fd = open(filename, flags, 0666);
 #endif /* WIN32 */
 
     if (fd < 0) {

@@ -146,7 +146,10 @@ class LibXml2Reader(xmlreader.XMLReader):
                 reader = libxml2.newTextReaderFilename(source)
             else:
                 source = saxutils.prepare_input_source(source)
-                input = libxml2.inputBuffer(source.getByteStream())
+                stream = source.getCharacterStream()
+                if stream is None:
+                    stream = source.getByteStream()
+                input = libxml2.inputBuffer(stream)
                 reader = input.newTextReader(source.getSystemId())
             reader.SetErrorHandler(self._errorHandler,None)
             # configure reader

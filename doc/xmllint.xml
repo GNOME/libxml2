@@ -72,8 +72,13 @@
             <arg choice="plain"><option>--debugent</option></arg>
             <arg choice="plain"><option>--copy</option></arg>
             <arg choice="plain"><option>--recover</option></arg>
+            <arg choice="plain"><option>--huge</option></arg>
+            <arg choice="plain"><option>--nocompact</option></arg>
+            <arg choice="plain"><option>--nodefdtd</option></arg>
             <arg choice="plain"><option>--nodict</option></arg>
+            <arg choice="plain"><option>--noenc</option></arg>
             <arg choice="plain"><option>--noent</option></arg>
+            <arg choice="plain"><option>--nofixup-base-uris</option></arg>
             <arg choice="plain"><option>--noout</option></arg>
             <arg choice="plain"><option>--nonet</option></arg>
             <arg choice="plain"><option>--path "<replaceable class="option">PATH(S)</replaceable>"</option></arg>
@@ -99,6 +104,7 @@
             <arg choice="plain"><option>--noblanks</option></arg>
             <arg choice="plain"><option>--nocdata</option></arg>
             <arg choice="plain"><option>--format</option></arg>
+            <arg choice="plain"><option>--pretty <replaceable class="option">INTEGER</replaceable></option></arg>
             <arg choice="plain"><option>--encode <replaceable class="option">ENCODING</replaceable></option></arg>
             <arg choice="plain"><option>--dropdtd</option></arg>
             <arg choice="plain"><option>--nsclean</option></arg>
@@ -115,17 +121,19 @@
             <arg choice="plain"><option>--pattern <replaceable class="option">PATTERNVALUE</replaceable></option></arg>
             <arg choice="plain"><option>--relaxng <replaceable class="option">SCHEMA</replaceable></option></arg>
             <arg choice="plain"><option>--schema <replaceable class="option">SCHEMA</replaceable></option></arg>
+            <arg choice="plain"><option>--schematron <replaceable class="option">SCHEMA</replaceable></option></arg>
             <arg choice="plain"><option>--c14n</option></arg>
+            <arg choice="plain"><option>--c14n11</option></arg>
+            <arg choice="plain"><option>--exc-c14n</option></arg>
             <arg choice="plain"><option>--pedantic</option></arg>
+            <arg choice="plain"><option>--sax</option></arg>
+            <arg choice="plain"><option>--sax1</option></arg>
+            <arg choice="plain"><option>--oldxml10</option></arg>
         </group>
         <group choice="req">
             <arg choice="plain" rep="repeat"><replaceable>XML-FILE(S)</replaceable></arg>
             <arg choice="plain" rep="norepeat">-</arg>
         </group>
-    </cmdsynopsis>
-    <cmdsynopsis>
-        <command>xmllint</command>
-        <arg choice="plain"><option>--help</option></arg>
     </cmdsynopsis>
 </refsynopsisdiv>
 
@@ -194,6 +202,8 @@
 
         <varlistentry>
             <term><option>--c14n</option></term>
+            <term><option>--c14n11</option></term>
+            <term><option>--exc-c14n</option></term>
             <listitem>
                 <para>
                     Use the W3C <acronym>XML</acronym> Canonicalisation (<acronym>C14N</acronym>) to
@@ -277,13 +287,6 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--help</option></term>
-            <listitem>
-                <para>Print out a short usage summary for &xmllint;.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--html</option></term>
             <listitem>
                 <para>Use the <acronym>HTML</acronym> parser.</para>
@@ -299,6 +302,13 @@
                     tags surrounding the result tree output so the results can be
                     displayed/viewed in a browser.
                 </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--huge</option></term>
+            <listitem>
+                <para>Ignore some hardcoded parser limits.</para>
             </listitem>
         </varlistentry>
 
@@ -380,6 +390,26 @@
         </varlistentry>
 
         <varlistentry>
+            <term><option>--nocompact</option></term>
+            <listitem>
+                <para>
+                    Do not generate compact text nodes (parser option
+                    XML_PARSE_COMPACT). Only for debugging.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--nodefdtd</option></term>
+            <listitem>
+                <para>
+                    Do not set default HTML doctype (parser option
+                    HTML_PARSE_NODEFDTD).
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
             <term><option>--nodict</option></term>
             <listitem>
                 <para>
@@ -390,11 +420,31 @@
         </varlistentry>
 
         <varlistentry>
+            <term><option>--noenc</option></term>
+            <listitem>
+                <para>
+                    Ignore encoding declaration (parser option
+                    XML_PARSE_IGNORE_ENC).
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
             <term><option>--noent</option></term>
             <listitem>
                 <para>
                     Substitute entity values for entity references. By default, &xmllint;
                     leaves entity references in place.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--nofixup-base-uris</option></term>
+            <listitem>
+                <para>
+                    Don't fix xml:base URIs when processing XIncludes
+                    (parser option XML_PARSE_NOBASEFIX).
                 </para>
             </listitem>
         </varlistentry>
@@ -448,6 +498,16 @@
         </varlistentry>
 
         <varlistentry>
+            <term><option>--oldxml10</option></term>
+            <listitem>
+                <para>
+                    Use deprecated parsing rules before XML 1.0,
+                    5th edition.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
             <term><option>--output <replaceable class="option">FILE</replaceable></option></term>
             <listitem>
                 <para>
@@ -497,6 +557,16 @@
         </varlistentry>
 
         <varlistentry>
+            <term><option>--pretty <replaceable class="option">INTEGER</replaceable></option></term>
+            <listitem>
+                <para>
+                    Value 0 means no formatting, 1 means XML_SAVE_FORMAT
+                    (same as --format), 2 means XML_SAVE_WSNONSIG.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
             <term><option>--push</option></term>
             <listitem>
                 <para>Use the push mode of the parser.</para>
@@ -535,10 +605,34 @@
         </varlistentry>
 
         <varlistentry>
+            <term><option>--sax</option></term>
+            <listitem>
+                <para>Print SAX callbacks (only for debugging).</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--sax1</option></term>
+            <listitem>
+                <para>Use deprecated SAX1 interface (only for debugging).</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
             <term><option>--schema <replaceable>SCHEMA</replaceable></option></term>
             <listitem>
                 <para>
                     Use a W3C <acronym>XML</acronym> Schema file
+                    named <replaceable>SCHEMA</replaceable> for validation.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--schematron <replaceable>SCHEMA</replaceable></option></term>
+            <listitem>
+                <para>
+                    Use a Schematron file
                     named <replaceable>SCHEMA</replaceable> for validation.
                 </para>
             </listitem>

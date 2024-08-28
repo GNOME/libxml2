@@ -138,7 +138,7 @@ static int xmlout = 0;
 static int htmlout = 0;
 #ifdef LIBXML_PUSH_ENABLED
 static int push = 0;
-static int pushsize = 4096;
+static const int pushsize = 4096;
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
 static int memory = 0;
@@ -2690,7 +2690,6 @@ static void usage(FILE *f, const char *name) {
 #endif
 #ifdef LIBXML_PUSH_ENABLED
     fprintf(f, "\t--push : use the push mode of the parser\n");
-    fprintf(f, "\t--pushsmall : use the push mode of the parser using tiny increments\n");
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
     fprintf(f, "\t--memory : parse from memory\n");
@@ -2699,6 +2698,8 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--nowarning : do not emit warnings from parser/validator\n");
     fprintf(f, "\t--noblanks : drop (ignorable?) blanks spaces\n");
     fprintf(f, "\t--nocdata : replace cdata section with text nodes\n");
+    fprintf(f, "\t--nodict : create document without dictionary\n");
+    fprintf(f, "\t--pedantic : enable additional warnings\n");
 #ifdef LIBXML_OUTPUT_ENABLED
     fprintf(f, "\t--output file or -o file: save to a given file\n");
     fprintf(f, "\t--format : reformat/reindent the output\n");
@@ -2882,7 +2883,6 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
     htmlout = 0;
 #ifdef LIBXML_PUSH_ENABLED
     push = 0;
-    pushsize = 4096;
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
     memory = 0;
@@ -3063,11 +3063,6 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	else if ((!strcmp(argv[i], "-push")) ||
 	         (!strcmp(argv[i], "--push")))
 	    push++;
-	else if ((!strcmp(argv[i], "-pushsmall")) ||
-	         (!strcmp(argv[i], "--pushsmall"))) {
-	    push++;
-            pushsize = 10;
-        }
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
 	else if ((!strcmp(argv[i], "-memory")) ||

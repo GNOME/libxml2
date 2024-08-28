@@ -1959,6 +1959,11 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
         }
     }
 
+    if (ctxt->input_id >= INT_MAX) {
+        xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT, "Input ID overflow\n");
+        return(-1);
+    }
+
     ctxt->inputTab[ctxt->inputNr] = value;
     ctxt->input = value;
 
@@ -1966,6 +1971,13 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
         xmlFree(ctxt->directory);
         ctxt->directory = directory;
     }
+
+    /*
+     * Internally, the input ID is only used to detect parameter entity
+     * boundaries. But there are entity loaders in downstream code that
+     * detect the main document by checking for "input_id == 1".
+     */
+    value->id = ctxt->input_id++;
 
     return(ctxt->inputNr++);
 }
@@ -7877,19 +7889,11 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
                 return;
             }
 
-            if (ctxt->input_id >= INT_MAX) {
-                xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
-                            "Input ID overflow\n");
-                return;
-            }
-
 	    input = xmlNewEntityInputStream(ctxt, entity);
 	    if (xmlPushInput(ctxt, input) < 0) {
                 xmlFreeInputStream(input);
 		return;
             }
-
-            input->id = ++ctxt->input_id;
 
             entity->flags |= XML_ENT_EXPANDING;
 

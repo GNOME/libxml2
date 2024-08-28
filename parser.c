@@ -13624,6 +13624,8 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Disables loading of external DTDs or entities.
  *
+ * Available since 2.13.0.
+ *
  * XML_PARSE_NOERROR
  *
  * Disable error and warning reports to the error handlers.

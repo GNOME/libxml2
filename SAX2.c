@@ -2471,7 +2471,7 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
     } else {
 	int coalesceText = (lastChild != NULL) &&
 	    (lastChild->type == type) &&
-	    ((type != XML_TEXT_NODE) ||
+	    (((ctxt->html) && (type != XML_TEXT_NODE)) ||
              (lastChild->name == xmlStringText));
 	if ((coalesceText) && (ctxt->nodemem != 0)) {
             int maxLength = (ctxt->options & XML_PARSE_HUGE) ?

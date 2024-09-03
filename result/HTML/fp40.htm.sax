@@ -422,7 +422,6 @@ SAX.characters(
 , 2)
 SAX.startElement(p)
 SAX.characters(For further technical informat, 254)
-SAX.error: htmlParseEntityRef: no name
 SAX.characters(&amp;, 1)
 SAX.characters( troubleshooters to find 
 fast, 302)

@@ -2620,6 +2620,111 @@ htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     return(ret);
 }
 
+#include "html5ent.inc"
+
+#define ENT_F_SEMICOLON 0x80u
+#define ENT_F_SUBTABLE  0x40u
+#define ENT_F_ALL       0xC0u
+
+static const xmlChar *
+htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
+                     int *nlen, int *rlen) {
+    const xmlChar *match = NULL;
+    unsigned left, right;
+    int first = string[0];
+    size_t matchLen = 0;
+    size_t soff = 1;
+
+    if (slen < 2)
+        return(NULL);
+    if (((first < 'A') || (first > 'Z')) &&
+        ((first < 'a') || (first > 'z')))
+        return(NULL);
+
+    /*
+     * Look up range by first character
+     */
+    first &= 63;
+    left = htmlEntAlpha[first*3] | htmlEntAlpha[first*3+1] << 8;
+    right = left + htmlEntAlpha[first*3+2];
+
+    /*
+     * Binary search
+     */
+    while (left < right) {
+        const xmlChar *bytes;
+        unsigned mid;
+        size_t len;
+        int cmp;
+
+        mid = left + (right - left) / 2;
+        bytes = htmlEntStrings + htmlEntValues[mid];
+        len = bytes[0] & ~ENT_F_ALL;
+
+        cmp = string[soff] - bytes[1];
+
+        if (cmp == 0) {
+            if (slen < len) {
+                cmp = strncmp((const char *) string + soff + 1,
+                              (const char *) bytes + 2,
+                              slen - 1);
+                /* Prefix can never match */
+                if (cmp == 0)
+                    break;
+            } else {
+                cmp = strncmp((const char *) string + soff + 1,
+                              (const char *) bytes + 2,
+                              len - 1);
+            }
+        }
+
+        if (cmp < 0) {
+            right = mid;
+        } else if (cmp > 0) {
+            left = mid + 1;
+        } else {
+            int term = soff + len < slen ? string[soff + len] : 0;
+            int isAlnum, isTerm;
+
+            isAlnum = (((term >= 'A') && (term <= 'Z')) ||
+                       ((term >= 'a') && (term <= 'z')) ||
+                       ((term >= '0') && (term <= '9')));
+            isTerm = ((term == ';') ||
+                      ((bytes[0] & ENT_F_SEMICOLON) &&
+                       ((!isAttr) ||
+                        ((!isAlnum) && (term != '=')))));
+
+            if (isTerm) {
+                match = bytes + len + 1;
+                matchLen = soff + len;
+                if (term == ';')
+                    matchLen += 1;
+            }
+
+            if (bytes[0] & ENT_F_SUBTABLE) {
+                if (isTerm)
+                    match += 2;
+
+                if ((isAlnum) && (soff + len < slen)) {
+                    left = mid + bytes[len + 1];
+                    right = left + bytes[len + 2];
+                    soff += len;
+                    continue;
+                }
+            }
+
+            break;
+        }
+    }
+
+    if (match == NULL)
+        return(NULL);
+
+    *nlen = matchLen;
+    *rlen = match[0];
+    return(match + 1);
+}
+
 
 /**
  * htmlParseHTMLAttribute:
@@ -2640,9 +2745,6 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
                     XML_MAX_HUGE_LENGTH :
                     XML_MAX_TEXT_LENGTH;
     xmlChar *out = NULL;
-    const xmlChar *name = NULL;
-    const xmlChar *cur = NULL;
-    const htmlEntityDesc * ent;
 
     /*
      * allocate a translation buffer.
@@ -2662,6 +2764,16 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
            (CUR != 0) && (CUR != stop)) {
 	if ((stop == 0) && (CUR == '>')) break;
 	if ((stop == 0) && (IS_BLANK_CH(CUR))) break;
+
+        if (out - buffer > buffer_size - 100) {
+            int indx = out - buffer;
+
+            growBuffer(buffer);
+            out = &buffer[indx];
+        }
+
+        GROW;
+
         if (CUR == '&') {
 	    if (NXT(1) == '#') {
 		unsigned int c;
@@ -2680,70 +2792,28 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
 		for ( ; bits >= 0; bits-= 6) {
 		    *out++  = ((c >> bits) & 0x3F) | 0x80;
 		}
-
-		if (out - buffer > buffer_size - 100) {
-			int indx = out - buffer;
-
-			growBuffer(buffer);
-			out = &buffer[indx];
-		}
 	    } else {
-		ent = htmlParseEntityRef(ctxt, &name);
-		if (name == NULL) {
-		    *out++ = '&';
-		    if (out - buffer > buffer_size - 100) {
-			int indx = out - buffer;
+                const xmlChar *repl;
+                int nameLen, replLen;
 
-			growBuffer(buffer);
-			out = &buffer[indx];
-		    }
-		} else if (ent == NULL) {
-		    *out++ = '&';
-		    cur = name;
-		    while (*cur != 0) {
-			if (out - buffer > buffer_size - 100) {
-			    int indx = out - buffer;
+                SKIP(1);
+                repl = htmlFindEntityPrefix(CUR_PTR,
+                                            ctxt->input->end - CUR_PTR,
+                                            /* isAttr */ 1,
+                                            &nameLen, &replLen);
 
-			    growBuffer(buffer);
-			    out = &buffer[indx];
-			}
-			*out++ = *cur++;
-		    }
+		if (repl == NULL) {
+		    *out++ = '&';
 		} else {
-		    unsigned int c;
-		    int bits;
-
-		    if (out - buffer > buffer_size - 100) {
-			int indx = out - buffer;
-
-			growBuffer(buffer);
-			out = &buffer[indx];
-		    }
-		    c = ent->value;
-		    if      (c <    0x80)
-			{ *out++  = c;                bits= -6; }
-		    else if (c <   0x800)
-			{ *out++  =((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-		    else if (c < 0x10000)
-			{ *out++  =((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-		    else
-			{ *out++  =((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-		    for ( ; bits >= 0; bits-= 6) {
-			*out++  = ((c >> bits) & 0x3F) | 0x80;
-		    }
+                    memcpy(out, repl, replLen);
+                    out += replLen;
+                    SKIP(nameLen);
 		}
 	    }
 	} else {
 	    unsigned int c;
 	    int bits, l;
 
-	    if (out - buffer > buffer_size - 100) {
-		int indx = out - buffer;
-
-		growBuffer(buffer);
-		out = &buffer[indx];
-	    }
 	    c = CUR_CHAR(l);
 	    if      (c <    0x80)
 		    { *out++  = c;                bits= -6; }
@@ -4086,9 +4156,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
  */
 static void
 htmlParseReference(htmlParserCtxtPtr ctxt) {
-    const htmlEntityDesc * ent;
     xmlChar out[6];
-    const xmlChar *name;
     if (CUR != '&') return;
 
     if (NXT(1) == '#') {
@@ -4113,43 +4181,25 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 	if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
 	    ctxt->sax->characters(ctxt->userData, out, i);
     } else {
-	ent = htmlParseEntityRef(ctxt, &name);
-	if (name == NULL) {
-	    htmlCheckParagraph(ctxt);
+        const xmlChar *repl;
+        int nameLen, replLen;
+
+	htmlCheckParagraph(ctxt);
+
+        SKIP(1);
+        repl = htmlFindEntityPrefix(CUR_PTR,
+                                    ctxt->input->end - CUR_PTR,
+                                    /* isAttr */ 0,
+                                    &nameLen, &replLen);
+
+        if (repl == NULL) {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-	        ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
-	    return;
-	}
-	if ((ent == NULL) || !(ent->value > 0)) {
-	    htmlCheckParagraph(ctxt);
-	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL)) {
 		ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
-		ctxt->sax->characters(ctxt->userData, name, xmlStrlen(name));
-		/* ctxt->sax->characters(ctxt->userData, BAD_CAST ";", 1); */
-	    }
-	} else {
-	    unsigned int c;
-	    int bits, i = 0;
-
-	    c = ent->value;
-	    if      (c <    0x80)
-	            { out[i++]= c;                bits= -6; }
-	    else if (c <   0x800)
-	            { out[i++]=((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-	    else if (c < 0x10000)
-	            { out[i++]=((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-	    else
-	            { out[i++]=((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-	    for ( ; bits >= 0; bits-= 6) {
-		out[i++]= ((c >> bits) & 0x3F) | 0x80;
-	    }
-	    out[i] = 0;
-
-	    htmlCheckParagraph(ctxt);
+        } else {
 	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-		ctxt->sax->characters(ctxt->userData, out, i);
-	}
+		ctxt->sax->characters(ctxt->userData, repl, replLen);
+            SKIP(nameLen);
+        }
     }
 }
 

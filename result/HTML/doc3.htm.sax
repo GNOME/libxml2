@@ -85,10 +85,7 @@ SAX.comment( © 2000 GameSquad.net All Rights Reserved. )
 SAX.startElement(iframe, border='0', frameborder='no', height='60', marginheight='0', marginwidth='0', scrolling='no', src='doc3_files/adcycle.htm', width='468')
 SAX.characters(
 , 1)
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(a, href='http://ads.gamesquad.net/addclick.exe/adclick.cgi?REGION=game|tech|ent&amp;id=1', target='_top')
-SAX.error: htmlParseEntityRef: expecting ';'
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(img, src='http://ads.gamesquad.net/addclick.exe/adcycle.cgi?group=52&amp;media=1&amp;id=1', width='468', height='60', border='0', alt='GSN ROS Ad')
 SAX.endElement(img)
 SAX.endElement(a)
@@ -2567,8 +2564,6 @@ SAX.endElement(font)
 SAX.startElement(center)
 SAX.startElement(iframe, frameborder='0', height='60', marginheight='0', marginwidth='0', noresize, scrolling='no', src='doc3_files/ad_iframe.htm', width='468')
 SAX.startElement(a, href='http://ads.adflight.com/go_static.asp?asid=7708', target='_top')
-SAX.error: htmlParseEntityRef: expecting ';'
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(img, width='468', height='60', border='0', alt='Advertisement', src='http://ads.adflight.com/ad_static.asp?pid=2097&amp;sid=1881&amp;asid=7708')
 SAX.endElement(img)
 SAX.endElement(a)

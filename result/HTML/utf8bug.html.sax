@@ -146,7 +146,6 @@ SAX.startElement(a, href='RSS2.asp')
 SAX.characters(
 
 , 2)
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(img, src='showimage.aspx?path=Files_Upload\192.png&amp;width=%&gt;', border='0')
 SAX.endElement(img)
 SAX.characters(
@@ -400,11 +399,9 @@ SAX.startElement(div, class='Image')
 SAX.characters(
 				
 				, 10)
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(a, href='showimage.aspx?path=Files_Upload\302.JPG&amp;Width=', rel='lightbox', title='&#1588;&#1607;&#1610;&#1585; &#1576;&#1604;&#1575;&#1711;')
 SAX.characters(
 				, 5)
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.startElement(img, src='showimage.aspx?path=Files_Upload\302.JPG&amp;Width=220', align='left', border='1')
 SAX.endElement(img)
 SAX.characters(
@@ -665,10 +662,8 @@ SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(&#1587;&#1604;&#1575;&#1605; , 834)
-SAX.error: htmlParseEntityRef: expecting ';'
 SAX.characters(&amp;, 1)
-SAX.characters(paste, 5)
-SAX.characters( , 1)
+SAX.characters(paste , 6)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(

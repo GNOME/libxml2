@@ -67,7 +67,7 @@
     #define XML_DEPRECATED
   #elif __GNUC__ * 100 + __GNUC_MINOR__ >= 301
     #define XML_DEPRECATED __attribute__((deprecated))
-  #elif _MSC_VER >= 1400
+  #elif defined(_MSC_VER) && _MSC_VER >= 1400
     /* Available since Visual Studio 2005 */
     #define XML_DEPRECATED __declspec(deprecated)
   #else
@@ -100,7 +100,7 @@
   #define XML_POP_WARNINGS \
     _Pragma("GCC diagnostic pop")
 
-#elif _MSC_VER >= 1400
+#elif defined(_MSC_VER) && _MSC_VER >= 1400
 
   #define XML_IGNORE_FPTR_CAST_WARNINGS __pragma(warning(push))
   #define XML_POP_WARNINGS __pragma(warning(pop))

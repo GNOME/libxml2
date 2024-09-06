@@ -67,6 +67,8 @@ struct _htmlElemDesc {
     const char** attrs_opt;		/* Optional Attributes */
     const char** attrs_depr;		/* Additional deprecated attributes */
     const char** attrs_req;		/* Required attributes */
+
+    int dataMode;
 };
 
 /*

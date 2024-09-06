@@ -2024,8 +2024,13 @@ pushBoundaryTest(const char *filename, const char *result,
             } else if (isText) {
                 int c = *ctxt->input->cur;
 
-                /* 3 bytes for partial UTF-8 */
-                max = ((c == '<') || (c == '&')) ? 1 : 3;
+                if ((options & XML_PARSE_HTML) &&
+                    (ctxt->endCheckState)) {
+                    max = strlen((const char *) ctxt->name) + 2;
+                } else {
+                    /* 3 bytes for partial UTF-8 */
+                    max = ((c == '<') || (c == '&')) ? 1 : 3;
+                }
             } else if (ctxt->instate == XML_PARSER_CDATA_SECTION) {
                 /* 2 bytes for terminator, 3 bytes for UTF-8 */
                 max = 5;

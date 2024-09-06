@@ -691,285 +691,396 @@ static const char* const li_elt[] = { "li", NULL } ;
 static const char* const ul_depr[] = { "type", "compact", NULL} ;
 static const char* const dir_attr[] = { "dir", NULL} ;
 
+#define DATA_RCDATA         1
+#define DATA_RAWTEXT        2
+#define DATA_PLAINTEXT      3
+#define DATA_SCRIPT         4
+#define DATA_SCRIPT_ESC1    5
+#define DATA_SCRIPT_ESC2    6
+
 #define DECL (const char**)
 
 static const htmlElemDesc
 html40ElementTable[] = {
 { "a",		0, 0, 0, 0, 0, 0, 1, "anchor ",
-	DECL html_inline , NULL , DECL a_attrs , DECL target_attr, NULL
+	DECL html_inline , NULL , DECL a_attrs , DECL target_attr, NULL,
+	0
 },
 { "abbr",	0, 0, 0, 0, 0, 0, 1, "abbreviated form",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "acronym",	0, 0, 0, 0, 0, 0, 1, "",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "address",	0, 0, 0, 0, 0, 0, 0, "information on author ",
-	DECL inline_p  , NULL , DECL html_attrs, NULL, NULL
+	DECL inline_p  , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "applet",	0, 0, 0, 0, 1, 1, 2, "java applet ",
-	DECL flow_param , NULL , NULL , DECL applet_attrs, NULL
+	DECL flow_param , NULL , NULL , DECL applet_attrs, NULL,
+	0
 },
 { "area",	0, 2, 2, 1, 0, 0, 0, "client-side image map area ",
-	EMPTY ,  NULL , DECL area_attrs , DECL target_attr, DECL alt_attr
+	EMPTY ,  NULL , DECL area_attrs , DECL target_attr, DECL alt_attr,
+	0
 },
 { "b",		0, 3, 0, 0, 0, 0, 1, "bold text style",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "base",	0, 2, 2, 1, 0, 0, 0, "document base uri ",
-	EMPTY , NULL , NULL , DECL target_attr, DECL href_attrs
+	EMPTY , NULL , NULL , DECL target_attr, DECL href_attrs,
+	0
 },
 { "basefont",	0, 2, 2, 1, 1, 1, 1, "base font size " ,
-	EMPTY , NULL , NULL, DECL basefont_attrs, NULL
+	EMPTY , NULL , NULL, DECL basefont_attrs, NULL,
+	0
 },
 { "bdo",	0, 0, 0, 0, 0, 0, 1, "i18n bidi over-ride ",
-	DECL html_inline , NULL , DECL core_i18n_attrs, NULL, DECL dir_attr
+	DECL html_inline , NULL , DECL core_i18n_attrs, NULL, DECL dir_attr,
+	0
 },
 { "big",	0, 3, 0, 0, 0, 0, 1, "large text style",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "blockquote",	0, 0, 0, 0, 0, 0, 0, "long quotation ",
-	DECL html_flow , NULL , DECL quote_attrs , NULL, NULL
+	DECL html_flow , NULL , DECL quote_attrs , NULL, NULL,
+	0
 },
 { "body",	1, 1, 0, 0, 0, 0, 0, "document body ",
-	DECL body_contents , "div" , DECL body_attrs, DECL body_depr, NULL
+	DECL body_contents , "div" , DECL body_attrs, DECL body_depr, NULL,
+	0
 },
 { "br",		0, 2, 2, 1, 0, 0, 1, "forced line break ",
-	EMPTY , NULL , DECL core_attrs, DECL clear_attrs , NULL
+	EMPTY , NULL , DECL core_attrs, DECL clear_attrs , NULL,
+	0
 },
 { "button",	0, 0, 0, 0, 0, 0, 2, "push button ",
-	DECL html_flow MODIFIER , NULL , DECL button_attrs, NULL, NULL
+	DECL html_flow MODIFIER , NULL , DECL button_attrs, NULL, NULL,
+	0
 },
 { "caption",	0, 0, 0, 0, 0, 0, 0, "table caption ",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "center",	0, 3, 0, 0, 1, 1, 0, "shorthand for div align=center ",
-	DECL html_flow , NULL , NULL, DECL html_attrs, NULL
+	DECL html_flow , NULL , NULL, DECL html_attrs, NULL,
+	0
 },
 { "cite",	0, 0, 0, 0, 0, 0, 1, "citation",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "code",	0, 0, 0, 0, 0, 0, 1, "computer code fragment",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "col",	0, 2, 2, 1, 0, 0, 0, "table column ",
-	EMPTY , NULL , DECL col_attrs , NULL, NULL
+	EMPTY , NULL , DECL col_attrs , NULL, NULL,
+	0
 },
 { "colgroup",	0, 1, 0, 0, 0, 0, 0, "table column group ",
-	DECL col_elt , "col" , DECL col_attrs , NULL, NULL
+	DECL col_elt , "col" , DECL col_attrs , NULL, NULL,
+	0
 },
 { "dd",		0, 1, 0, 0, 0, 0, 0, "definition description ",
-	DECL html_flow , NULL , DECL html_attrs, NULL, NULL
+	DECL html_flow , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "del",	0, 0, 0, 0, 0, 0, 2, "deleted text ",
-	DECL html_flow , NULL , DECL edit_attrs , NULL, NULL
+	DECL html_flow , NULL , DECL edit_attrs , NULL, NULL,
+	0
 },
 { "dfn",	0, 0, 0, 0, 0, 0, 1, "instance definition",
-	DECL html_inline , NULL , DECL html_attrs, NULL, NULL
+	DECL html_inline , NULL , DECL html_attrs, NULL, NULL,
+	0
 },
 { "dir",	0, 0, 0, 0, 1, 1, 0, "directory list",
-	DECL blockli_elt, "li" , NULL, DECL compact_attrs, NULL
+	DECL blockli_elt, "li" , NULL, DECL compact_attrs, NULL,
+	0
 },
 { "div",	0, 0, 0, 0, 0, 0, 0, "generic language/style container",
-	DECL html_flow, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_flow, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "dl",		0, 0, 0, 0, 0, 0, 0, "definition list ",
-	DECL dl_contents , "dd" , DECL html_attrs, DECL compact_attr, NULL
+	DECL dl_contents , "dd" , DECL html_attrs, DECL compact_attr, NULL,
+	0
 },
 { "dt",		0, 1, 0, 0, 0, 0, 0, "definition term ",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "em",		0, 3, 0, 0, 0, 0, 1, "emphasis",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "embed",	0, 1, 0, 0, 1, 1, 1, "generic embedded object ",
-	EMPTY, NULL, DECL embed_attrs, NULL, NULL
+	EMPTY, NULL, DECL embed_attrs, NULL, NULL,
+	0
 },
 { "fieldset",	0, 0, 0, 0, 0, 0, 0, "form control group ",
-	DECL fieldset_contents , NULL, DECL html_attrs, NULL, NULL
+	DECL fieldset_contents , NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "font",	0, 3, 0, 0, 1, 1, 1, "local change to font ",
-	DECL html_inline, NULL, NULL, DECL font_attrs, NULL
+	DECL html_inline, NULL, NULL, DECL font_attrs, NULL,
+	0
 },
 { "form",	0, 0, 0, 0, 0, 0, 0, "interactive form ",
-	DECL form_contents, "fieldset", DECL form_attrs , DECL target_attr, DECL action_attr
+	DECL form_contents, "fieldset", DECL form_attrs , DECL target_attr, DECL action_attr,
+	0
 },
 { "frame",	0, 2, 2, 1, 0, 2, 0, "subwindow " ,
-	EMPTY, NULL, NULL, DECL frame_attrs, NULL
+	EMPTY, NULL, NULL, DECL frame_attrs, NULL,
+	0
 },
 { "frameset",	0, 0, 0, 0, 0, 2, 0, "window subdivision" ,
-	DECL frameset_contents, "noframes" , NULL , DECL frameset_attrs, NULL
+	DECL frameset_contents, "noframes" , NULL , DECL frameset_attrs, NULL,
+	0
 },
 { "h1",		0, 0, 0, 0, 0, 0, 0, "heading ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "h2",		0, 0, 0, 0, 0, 0, 0, "heading ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "h3",		0, 0, 0, 0, 0, 0, 0, "heading ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "h4",		0, 0, 0, 0, 0, 0, 0, "heading ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "h5",		0, 0, 0, 0, 0, 0, 0, "heading ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "h6",		0, 0, 0, 0, 0, 0, 0, "heading ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "head",	1, 1, 0, 0, 0, 0, 0, "document head ",
-	DECL head_contents, NULL, DECL head_attrs, NULL, NULL
+	DECL head_contents, NULL, DECL head_attrs, NULL, NULL,
+	0
 },
 { "hr",		0, 2, 2, 1, 0, 0, 0, "horizontal rule " ,
-	EMPTY, NULL, DECL html_attrs, DECL hr_depr, NULL
+	EMPTY, NULL, DECL html_attrs, DECL hr_depr, NULL,
+	0
 },
 { "html",	1, 1, 0, 0, 0, 0, 0, "document root element ",
-	DECL html_content , NULL , DECL i18n_attrs, DECL version_attr, NULL
+	DECL html_content , NULL , DECL i18n_attrs, DECL version_attr, NULL,
+	0
 },
 { "i",		0, 3, 0, 0, 0, 0, 1, "italic text style",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "iframe",	0, 0, 0, 0, 0, 1, 2, "inline subwindow ",
-	DECL html_flow, NULL, NULL, DECL iframe_attrs, NULL
+	DECL html_flow, NULL, NULL, DECL iframe_attrs, NULL,
+	DATA_RAWTEXT
 },
 { "img",	0, 2, 2, 1, 0, 0, 1, "embedded image ",
-	EMPTY, NULL, DECL img_attrs, DECL align_attr, DECL src_alt_attrs
+	EMPTY, NULL, DECL img_attrs, DECL align_attr, DECL src_alt_attrs,
+	0
 },
 { "input",	0, 2, 2, 1, 0, 0, 1, "form control ",
-	EMPTY, NULL, DECL input_attrs , DECL align_attr, NULL
+	EMPTY, NULL, DECL input_attrs , DECL align_attr, NULL,
+	0
 },
 { "ins",	0, 0, 0, 0, 0, 0, 2, "inserted text",
-	DECL html_flow, NULL, DECL edit_attrs, NULL, NULL
+	DECL html_flow, NULL, DECL edit_attrs, NULL, NULL,
+	0
 },
 { "isindex",	0, 2, 2, 1, 1, 1, 0, "single line prompt ",
-	EMPTY, NULL, NULL, DECL prompt_attrs, NULL
+	EMPTY, NULL, NULL, DECL prompt_attrs, NULL,
+	0
 },
 { "kbd",	0, 0, 0, 0, 0, 0, 1, "text to be entered by the user",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "label",	0, 0, 0, 0, 0, 0, 1, "form field label text ",
-	DECL html_inline MODIFIER, NULL, DECL label_attrs , NULL, NULL
+	DECL html_inline MODIFIER, NULL, DECL label_attrs , NULL, NULL,
+	0
 },
 { "legend",	0, 0, 0, 0, 0, 0, 0, "fieldset legend ",
-	DECL html_inline, NULL, DECL legend_attrs , DECL align_attr, NULL
+	DECL html_inline, NULL, DECL legend_attrs , DECL align_attr, NULL,
+	0
 },
 { "li",		0, 1, 1, 0, 0, 0, 0, "list item ",
-	DECL html_flow, NULL, DECL html_attrs, NULL, NULL
+	DECL html_flow, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "link",	0, 2, 2, 1, 0, 0, 0, "a media-independent link ",
-	EMPTY, NULL, DECL link_attrs, DECL target_attr, NULL
+	EMPTY, NULL, DECL link_attrs, DECL target_attr, NULL,
+	0
 },
 { "map",	0, 0, 0, 0, 0, 0, 2, "client-side image map ",
-	DECL map_contents , NULL, DECL html_attrs , NULL, DECL name_attr
+	DECL map_contents , NULL, DECL html_attrs , NULL, DECL name_attr,
+	0
 },
 { "menu",	0, 0, 0, 0, 1, 1, 0, "menu list ",
-	DECL blockli_elt , NULL, NULL, DECL compact_attrs, NULL
+	DECL blockli_elt , NULL, NULL, DECL compact_attrs, NULL,
+	0
 },
 { "meta",	0, 2, 2, 1, 0, 0, 0, "generic metainformation ",
-	EMPTY, NULL, DECL meta_attrs , NULL , DECL content_attr
+	EMPTY, NULL, DECL meta_attrs , NULL , DECL content_attr,
+	0
+},
+{ "noembed",	0, 0, 0, 0, 0, 0, 0, "",
+	EMPTY, NULL, NULL, NULL, NULL,
+	DATA_RAWTEXT
 },
 { "noframes",	0, 0, 0, 0, 0, 2, 0, "alternate content container for non frame-based rendering ",
-	DECL noframes_content, "body" , DECL html_attrs, NULL, NULL
+	DECL noframes_content, "body" , DECL html_attrs, NULL, NULL,
+	DATA_RAWTEXT
 },
 { "noscript",	0, 0, 0, 0, 0, 0, 0, "alternate content container for non script-based rendering ",
-	DECL html_flow, "div", DECL html_attrs, NULL, NULL
+	DECL html_flow, "div", DECL html_attrs, NULL, NULL,
+	0
 },
 { "object",	0, 0, 0, 0, 0, 0, 2, "generic embedded object ",
-	DECL object_contents , "div" , DECL object_attrs, DECL object_depr, NULL
+	DECL object_contents , "div" , DECL object_attrs, DECL object_depr, NULL,
+	0
 },
 { "ol",		0, 0, 0, 0, 0, 0, 0, "ordered list ",
-	DECL li_elt , "li" , DECL html_attrs, DECL ol_attrs, NULL
+	DECL li_elt , "li" , DECL html_attrs, DECL ol_attrs, NULL,
+	0
 },
 { "optgroup",	0, 0, 0, 0, 0, 0, 0, "option group ",
-	DECL option_elt , "option", DECL optgroup_attrs, NULL, DECL label_attr
+	DECL option_elt , "option", DECL optgroup_attrs, NULL, DECL label_attr,
+	0
 },
 { "option",	0, 1, 0, 0, 0, 0, 0, "selectable choice " ,
-	DECL html_pcdata, NULL, DECL option_attrs, NULL, NULL
+	DECL html_pcdata, NULL, DECL option_attrs, NULL, NULL,
+	0
 },
 { "p",		0, 1, 0, 0, 0, 0, 0, "paragraph ",
-	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL
+	DECL html_inline, NULL, DECL html_attrs, DECL align_attr, NULL,
+	0
 },
 { "param",	0, 2, 2, 1, 0, 0, 0, "named property value ",
-	EMPTY, NULL, DECL param_attrs, NULL, DECL name_attr
+	EMPTY, NULL, DECL param_attrs, NULL, DECL name_attr,
+	0
+},
+{ "plaintext",	0, 0, 0, 0, 0, 0, 0, "",
+	EMPTY, NULL, NULL, NULL, NULL,
+	DATA_PLAINTEXT
 },
 { "pre",	0, 0, 0, 0, 0, 0, 0, "preformatted text ",
-	DECL pre_content, NULL, DECL html_attrs, DECL width_attr, NULL
+	DECL pre_content, NULL, DECL html_attrs, DECL width_attr, NULL,
+	0
 },
 { "q",		0, 0, 0, 0, 0, 0, 1, "short inline quotation ",
-	DECL html_inline, NULL, DECL quote_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL quote_attrs, NULL, NULL,
+	0
 },
 { "s",		0, 3, 0, 0, 1, 1, 1, "strike-through text style",
-	DECL html_inline, NULL, NULL, DECL html_attrs, NULL
+	DECL html_inline, NULL, NULL, DECL html_attrs, NULL,
+	0
 },
 { "samp",	0, 0, 0, 0, 0, 0, 1, "sample program output, scripts, etc.",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "script",	0, 0, 0, 0, 0, 0, 2, "script statements ",
-	DECL html_cdata, NULL, DECL script_attrs, DECL language_attr, DECL type_attr
+	DECL html_cdata, NULL, DECL script_attrs, DECL language_attr, DECL type_attr,
+	DATA_SCRIPT
 },
 { "select",	0, 0, 0, 0, 0, 0, 1, "option selector ",
-	DECL select_content, NULL, DECL select_attrs, NULL, NULL
+	DECL select_content, NULL, DECL select_attrs, NULL, NULL,
+	0
 },
 { "small",	0, 3, 0, 0, 0, 0, 1, "small text style",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "span",	0, 0, 0, 0, 0, 0, 1, "generic language/style container ",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "strike",	0, 3, 0, 0, 1, 1, 1, "strike-through text",
-	DECL html_inline, NULL, NULL, DECL html_attrs, NULL
+	DECL html_inline, NULL, NULL, DECL html_attrs, NULL,
+	0
 },
 { "strong",	0, 3, 0, 0, 0, 0, 1, "strong emphasis",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "style",	0, 0, 0, 0, 0, 0, 0, "style info ",
-	DECL html_cdata, NULL, DECL style_attrs, NULL, DECL type_attr
+	DECL html_cdata, NULL, DECL style_attrs, NULL, DECL type_attr,
+	DATA_RAWTEXT
 },
 { "sub",	0, 3, 0, 0, 0, 0, 1, "subscript",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "sup",	0, 3, 0, 0, 0, 0, 1, "superscript ",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "table",	0, 0, 0, 0, 0, 0, 0, "",
-	DECL table_contents , "tr" , DECL table_attrs , DECL table_depr, NULL
+	DECL table_contents , "tr" , DECL table_attrs , DECL table_depr, NULL,
+	0
 },
 { "tbody",	1, 0, 0, 0, 0, 0, 0, "table body ",
-	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL
+	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL,
+	0
 },
 { "td",		0, 0, 0, 0, 0, 0, 0, "table data cell",
-	DECL html_flow, NULL, DECL th_td_attr, DECL th_td_depr, NULL
+	DECL html_flow, NULL, DECL th_td_attr, DECL th_td_depr, NULL,
+	0
 },
 { "textarea",	0, 0, 0, 0, 0, 0, 1, "multi-line text field ",
-	DECL html_pcdata, NULL, DECL textarea_attrs, NULL, DECL rows_cols_attr
+	DECL html_pcdata, NULL, DECL textarea_attrs, NULL, DECL rows_cols_attr,
+	DATA_RCDATA
 },
 { "tfoot",	0, 1, 0, 0, 0, 0, 0, "table footer ",
-	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL
+	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL,
+	0
 },
 { "th",		0, 1, 0, 0, 0, 0, 0, "table header cell",
-	DECL html_flow, NULL, DECL th_td_attr, DECL th_td_depr, NULL
+	DECL html_flow, NULL, DECL th_td_attr, DECL th_td_depr, NULL,
+	0
 },
 { "thead",	0, 1, 0, 0, 0, 0, 0, "table header ",
-	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL
+	DECL tr_elt , "tr" , DECL talign_attrs, NULL, NULL,
+	0
 },
 { "title",	0, 0, 0, 0, 0, 0, 0, "document title ",
-	DECL html_pcdata, NULL, DECL i18n_attrs, NULL, NULL
+	DECL html_pcdata, NULL, DECL i18n_attrs, NULL, NULL,
+	DATA_RCDATA
 },
 { "tr",		0, 0, 0, 0, 0, 0, 0, "table row ",
-	DECL tr_contents , "td" , DECL talign_attrs, DECL bgcolor_attr, NULL
+	DECL tr_contents , "td" , DECL talign_attrs, DECL bgcolor_attr, NULL,
+	0
 },
 { "tt",		0, 3, 0, 0, 0, 0, 1, "teletype or monospaced text style",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
 },
 { "u",		0, 3, 0, 0, 1, 1, 1, "underlined text style",
-	DECL html_inline, NULL, NULL, DECL html_attrs, NULL
+	DECL html_inline, NULL, NULL, DECL html_attrs, NULL,
+	0
 },
 { "ul",		0, 0, 0, 0, 0, 0, 0, "unordered list ",
-	DECL li_elt , "li" , DECL html_attrs, DECL ul_depr, NULL
+	DECL li_elt , "li" , DECL html_attrs, DECL ul_depr, NULL,
+	0
 },
 { "var",	0, 0, 0, 0, 0, 0, 1, "instance of a variable or program argument",
-	DECL html_inline, NULL, DECL html_attrs, NULL, NULL
+	DECL html_inline, NULL, DECL html_attrs, NULL, NULL,
+	0
+},
+{ "xmp",	0, 0, 0, 0, 0, 0, 1, "",
+	EMPTY, NULL, NULL, NULL, NULL,
+	DATA_RAWTEXT
 }
 };
 
@@ -3056,156 +3167,155 @@ htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
     return(ret);
 }
 
-/**
- * htmlParseScript:
- * @ctxt:  an HTML parser context
- *
- * parse the content of an HTML SCRIPT or STYLE element
- * http://www.w3.org/TR/html4/sgml/dtd.html#Script
- * http://www.w3.org/TR/html4/sgml/dtd.html#StyleSheet
- * http://www.w3.org/TR/html4/types.html#type-script
- * http://www.w3.org/TR/html4/types.html#h-6.15
- * http://www.w3.org/TR/html4/appendix/notes.html#h-B.3.2.1
- *
- * Script data ( %Script; in the DTD) can be the content of the SCRIPT
- * element and the value of intrinsic event attributes. User agents must
- * not evaluate script data as HTML markup but instead must pass it on as
- * data to a script engine.
- * NOTES:
- * - The content is passed like CDATA
- * - the attributes for style and scripting "onXXX" are also described
- *   as CDATA but SGML allows entities references in attributes so their
- *   processing is identical as other attributes
- */
 static void
-htmlParseScript(htmlParserCtxtPtr ctxt) {
-    xmlChar buf[HTML_PARSER_BIG_BUFFER_SIZE + 5];
-    int nbchar = 0;
-    int cur,l;
+htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
+                        int size, int mode) {
+    if ((ctxt->sax == NULL) || (ctxt->disableSAX))
+        return;
 
-    cur = CUR_CHAR(l);
-    while (cur != 0) {
-	if ((cur == '<') && (NXT(1) == '/')) {
-            /*
-             * One should break here, the specification is clear:
-             * Authors should therefore escape "</" within the content.
-             * Escape mechanisms are specific to each scripting or
-             * style sheet language.
-             *
-             * In recovery mode, only break if end tag match the
-             * current tag, effectively ignoring all tags inside the
-             * script/style block and treating the entire block as
-             * CDATA.
-             */
-            if (ctxt->recovery) {
-                if (xmlStrncasecmp(ctxt->name, ctxt->input->cur+2,
-				   xmlStrlen(ctxt->name)) == 0)
-                {
-                    break; /* while */
-                } else {
-		    htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
-				 "Element %s embeds close tag\n",
-		                 ctxt->name, NULL);
-		}
+    if ((mode == 0) || (mode == DATA_RCDATA)) {
+        if (areBlanks(ctxt, buf, size)) {
+            if (ctxt->keepBlanks) {
+                if (ctxt->sax->characters != NULL)
+                    ctxt->sax->characters(ctxt->userData, buf, size);
             } else {
-                if (((NXT(2) >= 'A') && (NXT(2) <= 'Z')) ||
-                    ((NXT(2) >= 'a') && (NXT(2) <= 'z')))
-                {
-                    break; /* while */
-                }
+                if (ctxt->sax->ignorableWhitespace != NULL)
+                    ctxt->sax->ignorableWhitespace(ctxt->userData,
+                                                   buf, size);
             }
-	}
-        if (IS_CHAR(cur)) {
-	    COPY_BUF(buf,nbchar,cur);
         } else {
-            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                            "Invalid char in CDATA 0x%X\n", cur);
+            htmlCheckParagraph(ctxt);
+            if (ctxt->sax->characters != NULL)
+                ctxt->sax->characters(ctxt->userData, buf, size);
         }
-	NEXTL(l);
-	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
-            buf[nbchar] = 0;
-	    if (ctxt->sax->cdataBlock!= NULL) {
-		/*
-		 * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
-		 */
-		ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
-	    } else if (ctxt->sax->characters != NULL) {
-		ctxt->sax->characters(ctxt->userData, buf, nbchar);
-	    }
-	    nbchar = 0;
-            SHRINK;
-	}
-	cur = CUR_CHAR(l);
-    }
-
-    if ((nbchar != 0) && (ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-        buf[nbchar] = 0;
-	if (ctxt->sax->cdataBlock!= NULL) {
-	    /*
-	     * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
-	     */
-	    ctxt->sax->cdataBlock(ctxt->userData, buf, nbchar);
-	} else if (ctxt->sax->characters != NULL) {
-	    ctxt->sax->characters(ctxt->userData, buf, nbchar);
-	}
+    } else {
+        if (ctxt->sax->cdataBlock != NULL) {
+            /*
+             * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
+             */
+            ctxt->sax->cdataBlock(ctxt->userData, buf, size);
+        } else if (ctxt->sax->characters != NULL) {
+            ctxt->sax->characters(ctxt->userData, buf, size);
+        }
     }
 }
 
-
 /**
- * htmlParseCharDataInternal:
+ * htmlParseCharData:
  * @ctxt:  an HTML parser context
- * @readahead: optional read ahead character in ascii range
+ * @terminate: true if the input buffer is complete
  *
- * parse a CharData section.
- * if we are within a CDATA section ']]>' marks an end of section.
- *
- * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
+ * Parse character data and references.
  */
 
-static void
-htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
+static int
+htmlParseCharData(htmlParserCtxtPtr ctxt, int terminate) {
     xmlChar buf[HTML_PARSER_BIG_BUFFER_SIZE + 6];
     int nbchar = 0;
-    int cur, l;
+    int stop = 0;
+    int complete = 0;
+    int res = 0;
+    int cur, l, mode;
 
-    if (readahead)
-        buf[nbchar++] = readahead;
+    mode = ctxt->endCheckState;
+    if ((mode == 0) || (mode == DATA_RCDATA))
+        stop = '&';
 
     cur = CUR_CHAR(l);
-    while ((cur != '<') &&
-           (cur != '&') &&
+    while ((cur != stop) &&
 	   (cur != 0) &&
            (!PARSER_STOPPED(ctxt))) {
-	if (!(IS_CHAR(cur))) {
-	    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-	                "Invalid char in CDATA 0x%X\n", cur);
-	} else {
-	    COPY_BUF(buf,nbchar,cur);
-	}
+        /*
+         * Check for end of text data
+         */
+        if ((cur == '<') && (mode != DATA_PLAINTEXT)) {
+            int j, len;
+
+            if (mode == 0)
+                break;
+
+            j = 1;
+            len = ctxt->input->end - ctxt->input->cur;
+            if (j < len) {
+                if ((mode == DATA_SCRIPT) && (NXT(j) == '!')) {
+                    /* Check for comment start */
+
+                    j += 1;
+                    if ((j < len) && (NXT(j) == '-')) {
+                        j += 1;
+                        if ((j < len) && (NXT(j) == '-'))
+                            mode = DATA_SCRIPT_ESC1;
+                    }
+                } else {
+                    int i = 0;
+                    int solidus = 0;
+
+                    /* Check for tag */
+
+                    if (NXT(j) == '/') {
+                        j += 1;
+                        solidus = 1;
+                    }
+
+                    if ((solidus) || (mode == DATA_SCRIPT_ESC1)) {
+                        while ((j < len) &&
+                               (ctxt->name[i] != 0) &&
+                               (ctxt->name[i] == (NXT(j) | 32))) {
+                            i += 1;
+                            j += 1;
+                        }
+
+                        if ((ctxt->name[i] == 0) && (j < len)) {
+                            int c = NXT(j);
+
+                            if ((c == '>') || (c == '/') || (IS_BLANK_CH(c))) {
+                                if ((mode == DATA_SCRIPT_ESC1) && (!solidus)) {
+                                    mode = DATA_SCRIPT_ESC2;
+                                } else if (mode == DATA_SCRIPT_ESC2) {
+                                    mode = DATA_SCRIPT_ESC1;
+                                } else {
+                                    complete = 1;
+                                    res = 1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Push parser */
+            if ((!terminate) && (j >= len)) {
+                res = 1;
+                break;
+            }
+        } else if ((cur == '-') &&
+                   ((mode == DATA_SCRIPT_ESC1) ||
+                    (mode == DATA_SCRIPT_ESC2))) {
+            int len = ctxt->input->end - ctxt->input->cur;
+            int j = 1;
+
+            /* Check for comment end */
+
+            if ((j < len) && (NXT(j) == '-')) {
+                j += 1;
+                if ((j < len) && (NXT(j) == '>'))
+                    mode = DATA_SCRIPT;
+            }
+
+            /* Push parser */
+            if ((!terminate) && (j >= len)) {
+                res = 1;
+                break;
+            }
+        }
+
+	COPY_BUF(buf,nbchar,cur);
 	NEXTL(l);
 	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
             buf[nbchar] = 0;
+            htmlCharDataSAXCallback(ctxt, buf, nbchar, mode);
 
-	    /*
-	     * Ok the segment is to be consumed as chars.
-	     */
-	    if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-		if (areBlanks(ctxt, buf, nbchar)) {
-		    if (ctxt->keepBlanks) {
-			if (ctxt->sax->characters != NULL)
-			    ctxt->sax->characters(ctxt->userData, buf, nbchar);
-		    } else {
-			if (ctxt->sax->ignorableWhitespace != NULL)
-			    ctxt->sax->ignorableWhitespace(ctxt->userData,
-			                                   buf, nbchar);
-		    }
-		} else {
-		    htmlCheckParagraph(ctxt);
-		    if (ctxt->sax->characters != NULL)
-			ctxt->sax->characters(ctxt->userData, buf, nbchar);
-		}
-	    }
 	    nbchar = 0;
             SHRINK;
 	}
@@ -3213,42 +3323,15 @@ htmlParseCharDataInternal(htmlParserCtxtPtr ctxt, int readahead) {
     }
     if (nbchar != 0) {
         buf[nbchar] = 0;
-
-	/*
-	 * Ok the segment is to be consumed as chars.
-	 */
-	if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-	    if (areBlanks(ctxt, buf, nbchar)) {
-		if (ctxt->keepBlanks) {
-		    if (ctxt->sax->characters != NULL)
-			ctxt->sax->characters(ctxt->userData, buf, nbchar);
-		} else {
-		    if (ctxt->sax->ignorableWhitespace != NULL)
-			ctxt->sax->ignorableWhitespace(ctxt->userData,
-			                               buf, nbchar);
-		}
-	    } else {
-		htmlCheckParagraph(ctxt);
-		if (ctxt->sax->characters != NULL)
-		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
-	    }
-	}
+        htmlCharDataSAXCallback(ctxt, buf, nbchar, mode);
     }
-}
 
-/**
- * htmlParseCharData:
- * @ctxt:  an HTML parser context
- *
- * parse a CharData section.
- * if we are within a CDATA section ']]>' marks an end of section.
- *
- * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
- */
+    if (complete)
+        ctxt->endCheckState = 0;
+    else
+        ctxt->endCheckState = mode;
 
-static void
-htmlParseCharData(htmlParserCtxtPtr ctxt) {
-    htmlParseCharDataInternal(ctxt, 0);
+    return(res);
 }
 
 /**
@@ -4220,7 +4303,23 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
     while (!PARSER_STOPPED(ctxt)) {
+        int mode;
+
         GROW;
+
+        /*
+         * Handle character data states first
+         */
+        mode = ctxt->endCheckState;
+        if ((mode != 0) && (CUR != 0)) {
+            if ((CUR == '&') && (mode == DATA_RCDATA)) {
+                htmlParseReference(ctxt);
+            }
+            else {
+                htmlParseCharData(ctxt, /* terminate */ 1);
+            }
+            goto done;
+        }
 
 	/*
 	 * Our tag or one of it's parent or children is ending.
@@ -4267,15 +4366,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    return;
 	}
 
-	if ((CUR != 0) && ((xmlStrEqual(currentNode, BAD_CAST"script")) ||
-	    (xmlStrEqual(currentNode, BAD_CAST"style")))) {
-	    /*
-	     * Handle SCRIPT/STYLE separately
-	     */
-	    htmlParseScript(ctxt);
-	}
-
-        else if ((CUR == '<') && (NXT(1) == '!')) {
+        if ((CUR == '<') && (NXT(1) == '!')) {
             /*
              * Sometimes DOCTYPE arrives in the middle of the document
              */
@@ -4339,9 +4430,10 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
          * Last case, text. Note that References are handled directly.
          */
         else {
-            htmlParseCharData(ctxt);
+            htmlParseCharData(ctxt, /* terminate */ 1);
         }
 
+done:
         SHRINK;
         GROW;
     }
@@ -4397,6 +4489,8 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     if (info == NULL) {
 	htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
 	             "Tag %s invalid\n", name, NULL);
+    } else {
+        ctxt->endCheckState = info->dataMode;
     }
 
     /*
@@ -4538,6 +4632,8 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     if (info == NULL) {
 	htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
 	             "Tag %s invalid\n", name, NULL);
+    } else {
+        ctxt->endCheckState = info->dataMode;
     }
 
     /*
@@ -4610,7 +4706,23 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
         }
     }
     while (PARSER_STOPPED(ctxt) == 0) {
+        int mode;
+
         GROW;
+
+        /*
+         * Handle character data states first
+         */
+        mode = ctxt->endCheckState;
+        if ((mode != 0) && (CUR != 0)) {
+            if ((CUR == '&') && (mode == DATA_RCDATA)) {
+                htmlParseReference(ctxt);
+            }
+            else {
+                htmlParseCharData(ctxt, /* terminate */ 1);
+            }
+            goto done;
+        }
 
 	/*
 	 * Our tag or one of it's parent or children is ending.
@@ -4692,15 +4804,7 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	    continue;
 	}
 
-	if ((CUR != 0) && ((xmlStrEqual(currentNode, BAD_CAST"script")) ||
-	    (xmlStrEqual(currentNode, BAD_CAST"style")))) {
-	    /*
-	     * Handle SCRIPT/STYLE separately
-	     */
-	    htmlParseScript(ctxt);
-	}
-
-        else if ((CUR == '<') && (NXT(1) == '!')) {
+        if ((CUR == '<') && (NXT(1) == '!')) {
             /*
              * Sometimes DOCTYPE arrives in the middle of the document
              */
@@ -4776,9 +4880,10 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
          * Last case, text. Note that References are handled directly.
          */
         else {
-            htmlParseCharData(ctxt);
+            htmlParseCharData(ctxt, /* terminate */ 1);
         }
 
+done:
         SHRINK;
         GROW;
     }
@@ -5325,8 +5430,10 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
  */
 static int
 htmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
-                      const char *str, size_t strLen) {
+                      const char *str, size_t strLen, size_t extraLen) {
+    const xmlChar *end = ctxt->input->end;
     const xmlChar *cur, *term;
+    size_t index, rescan;
     int ret;
 
     if (ctxt->checkIndex == 0) {
@@ -5336,30 +5443,31 @@ htmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
     }
 
     term = BAD_CAST strstr((const char *) cur, str);
-    if (term == NULL) {
-        const xmlChar *end = ctxt->input->end;
-        size_t index;
-
-        /* Rescan (strLen - 1) characters. */
-        if ((size_t) (end - cur) < strLen)
-            end = cur;
-        else
-            end -= strLen - 1;
-        index = end - ctxt->input->cur;
-        if (index > INT_MAX / 2) {
-            ctxt->checkIndex = 0;
-            ret = INT_MAX / 2;
-        } else {
-            ctxt->checkIndex = index;
-            ret = -1;
-        }
-    } else {
+    if ((term != NULL) &&
+        ((size_t) (ctxt->input->end - term) >= extraLen + 1)) {
         ctxt->checkIndex = 0;
 
         if (term - ctxt->input->cur > INT_MAX / 2)
             ret = INT_MAX / 2;
         else
             ret = term - ctxt->input->cur;
+
+        return(ret);
+    }
+
+    /* Rescan (strLen + extraLen - 1) characters. */
+    rescan = strLen + extraLen - 1;
+    if ((size_t) (end - cur) <= rescan)
+        end = cur;
+    else
+        end -= rescan;
+    index = end - ctxt->input->cur;
+    if (index > INT_MAX / 2) {
+        ctxt->checkIndex = 0;
+        ret = INT_MAX / 2;
+    } else {
+        ctxt->checkIndex = index;
+        ret = -1;
     }
 
     return(ret);
@@ -5385,7 +5493,7 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
     int offset;
 
     while (1) {
-	mark = htmlParseLookupString(ctxt, 2, "--", 2);
+	mark = htmlParseLookupString(ctxt, 2, "--", 2, 0);
 	if (mark < 0)
             break;
         if ((NXT(mark+2) == '>') ||
@@ -5493,7 +5601,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupString(ctxt, 9, ">", 1) < 0))
+		        (htmlParseLookupString(ctxt, 9, ">", 1, 0) < 0))
 			goto done;
 		    htmlParseDocTypeDecl(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5529,7 +5637,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_MISC;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
+		        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_MISC;
@@ -5539,7 +5647,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
 		    (UPP(8) == 'E')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupString(ctxt, 9, ">", 1) < 0))
+		        (htmlParseLookupString(ctxt, 9, ">", 1, 0) < 0))
 			goto done;
 		    htmlParseDocTypeDecl(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5565,7 +5673,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_PROLOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
+		        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_PROLOG;
@@ -5582,7 +5690,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		cur = in->cur[0];
 		if (IS_BLANK_CH(cur)) {
-		    htmlParseCharData(ctxt);
+		    htmlParseCharData(ctxt, terminate);
 		    goto done;
 		}
 		if (avail < 2)
@@ -5596,7 +5704,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    ctxt->instate = XML_PARSER_EPILOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
-		        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
+		        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
 			goto done;
 		    htmlParsePI(ctxt);
 		    ctxt->instate = XML_PARSER_EPILOG;
@@ -5671,6 +5779,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (info == NULL) {
 		    htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
 		                 "Tag %s invalid\n", name, NULL);
+                } else {
+                    ctxt->endCheckState = info->dataMode;
 		}
 
 		/*
@@ -5724,6 +5834,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	    }
             case XML_PARSER_CONTENT: {
 		xmlChar chr[2] = { 0, 0 };
+                int mode;
 
                 /*
 		 * Handle preparsed entities and charRef
@@ -5759,34 +5870,34 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    goto done;
 		cur = in->cur[0];
 		next = in->cur[1];
-		if ((xmlStrEqual(ctxt->name, BAD_CAST"script")) ||
-		    (xmlStrEqual(ctxt->name, BAD_CAST"style"))) {
-		    /*
-		     * Handle SCRIPT/STYLE separately
-		     */
-		    if (!terminate) {
-		        int idx;
-			xmlChar val;
+                mode = ctxt->endCheckState;
 
-			idx = htmlParseLookupString(ctxt, 0, "</", 2);
-			if (idx < 0)
-			    goto done;
-		        val = in->cur[idx + 2];
-			if (val == 0) { /* bad cut of input */
-                            /*
-                             * FIXME: htmlParseScript checks for additional
-                             * characters after '</'.
-                             */
-                            ctxt->checkIndex = idx;
-			    goto done;
+                if (mode != 0) {
+                    int done = 0;
+
+                    while ((PARSER_STOPPED(ctxt) == 0) &&
+                           (!done) &&
+                           (in->cur < in->end)) {
+                        size_t extra;
+
+                        extra = strlen((const char *) ctxt->name) + 2;
+
+                        if ((!terminate) &&
+                            (htmlParseLookupString(ctxt, 0, "<", 1,
+                                                   extra) < 0))
+                            goto done;
+                        ctxt->checkIndex = 0;
+
+                        if ((cur == '&') && (mode == DATA_RCDATA)) {
+                            htmlParseReference(ctxt);
+                        } else {
+                            done = htmlParseCharData(ctxt, terminate);
                         }
-		    }
-		    htmlParseScript(ctxt);
-		    if ((cur == '<') && (next == '/')) {
-			ctxt->instate = XML_PARSER_END_TAG;
-			ctxt->checkIndex = 0;
-			break;
-		    }
+
+                        cur = in->cur[0];
+                    }
+
+                    break;
 		} else if ((cur == '<') && (next == '!')) {
                     if (avail < 4)
                         goto done;
@@ -5798,7 +5909,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         (UPP(6) == 'Y') && (UPP(7) == 'P') &&
                         (UPP(8) == 'E')) {
                         if ((!terminate) &&
-                            (htmlParseLookupString(ctxt, 9, ">", 1) < 0))
+                            (htmlParseLookupString(ctxt, 9, ">", 1, 0) < 0))
                             goto done;
                         htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
                                      "Misplaced DOCTYPE declaration\n",
@@ -5812,13 +5923,13 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         ctxt->instate = XML_PARSER_CONTENT;
                     } else {
                         if ((!terminate) &&
-                            (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
+                            (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
                             goto done;
                         htmlSkipBogusComment(ctxt);
                     }
                 } else if ((cur == '<') && (next == '?')) {
                     if ((!terminate) &&
-                        (htmlParseLookupString(ctxt, 2, ">", 1) < 0))
+                        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
                         goto done;
                     htmlParsePI(ctxt);
                     ctxt->instate = XML_PARSER_CONTENT;
@@ -5846,7 +5957,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                      * data detection.
                      */
                     if ((!terminate) &&
-                        (htmlParseLookupString(ctxt, 0, "<", 1) < 0))
+                        (htmlParseLookupString(ctxt, 0, "<", 1, 0) < 0))
                         goto done;
                     ctxt->checkIndex = 0;
                     while ((PARSER_STOPPED(ctxt) == 0) &&
@@ -5854,7 +5965,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         if (cur == '&') {
                             htmlParseReference(ctxt);
                         } else {
-                            htmlParseCharData(ctxt);
+                            htmlParseCharData(ctxt, terminate);
                         }
                         cur = in->cur[0];
                     }

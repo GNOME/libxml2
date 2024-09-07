@@ -4303,6 +4303,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
             } else if (IS_ASCII_LETTER(NXT(1))) {
                 htmlParseElementInternal(ctxt);
             } else {
+                htmlCheckParagraph(ctxt);
                 if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
                     (ctxt->sax->characters != NULL))
                     ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
@@ -5513,6 +5514,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                     ctxt->checkIndex = 0;
                     break;
                 } else if (cur == '<') {
+                    htmlCheckParagraph(ctxt);
                     if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
                         (ctxt->sax->characters != NULL))
                         ctxt->sax->characters(ctxt->userData,

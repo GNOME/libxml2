@@ -40,8 +40,6 @@
 
 static int htmlOmittedDefaultValue = 1;
 
-static void htmlParseComment(htmlParserCtxtPtr ctxt);
-
 static int
 htmlParseElementInternal(htmlParserCtxtPtr ctxt);
 
@@ -2545,23 +2543,6 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
 
 static const xmlChar * htmlParseNameComplex(xmlParserCtxtPtr ctxt);
 
-static void
-htmlSkipBogusComment(htmlParserCtxtPtr ctxt) {
-    int c;
-
-    htmlParseErr(ctxt, XML_HTML_INCORRECTLY_OPENED_COMMENT,
-                 "Incorrectly opened comment\n", NULL, NULL);
-
-    while (PARSER_STOPPED(ctxt) == 0) {
-        c = CUR;
-        if (c == 0)
-            break;
-        NEXT;
-        if (c == '>')
-            break;
-    }
-}
-
 /**
  * htmlParseHTMLName:
  * @ctxt:  an HTML parser context
@@ -3369,146 +3350,26 @@ htmlParseExternalID(htmlParserCtxtPtr ctxt, xmlChar **publicID) {
 }
 
 /**
- * htmlParsePI:
- * @ctxt:  an HTML parser context
- *
- * Parse an XML Processing Instruction. HTML5 doesn't allow processing
- * instructions, so this will be removed at some point.
- */
-static void
-htmlParsePI(htmlParserCtxtPtr ctxt) {
-    xmlChar *buf = NULL;
-    int len = 0;
-    int size = HTML_PARSER_BUFFER_SIZE;
-    int cur, l;
-    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
-                    XML_MAX_HUGE_LENGTH :
-                    XML_MAX_TEXT_LENGTH;
-    const xmlChar *target;
-    xmlParserInputState state;
-
-    if ((RAW == '<') && (NXT(1) == '?')) {
-	state = ctxt->instate;
-        ctxt->instate = XML_PARSER_PI;
-	/*
-	 * this is a Processing Instruction.
-	 */
-	SKIP(2);
-
-	/*
-	 * Parse the target name and check for special support like
-	 * namespace.
-	 */
-        target = htmlParseName(ctxt);
-	if (target != NULL) {
-	    if (RAW == '>') {
-		SKIP(1);
-
-		/*
-		 * SAX: PI detected.
-		 */
-		if ((ctxt->sax) && (!ctxt->disableSAX) &&
-		    (ctxt->sax->processingInstruction != NULL))
-		    ctxt->sax->processingInstruction(ctxt->userData,
-		                                     target, NULL);
-                goto done;
-	    }
-	    buf = xmlMalloc(size);
-	    if (buf == NULL) {
-		htmlErrMemory(ctxt);
-		return;
-	    }
-	    cur = CUR;
-	    if (!IS_BLANK(cur)) {
-		htmlParseErr(ctxt, XML_ERR_SPACE_REQUIRED,
-			  "ParsePI: PI %s space expected\n", target, NULL);
-	    }
-            SKIP_BLANKS;
-	    cur = CUR_CHAR(l);
-	    while ((cur != 0) && (cur != '>')) {
-		if (len + 5 >= size) {
-		    xmlChar *tmp;
-
-		    size *= 2;
-		    tmp = (xmlChar *) xmlRealloc(buf, size);
-		    if (tmp == NULL) {
-			htmlErrMemory(ctxt);
-			xmlFree(buf);
-			return;
-		    }
-		    buf = tmp;
-		}
-                if (IS_CHAR(cur)) {
-		    COPY_BUF(buf,len,cur);
-                } else {
-                    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                                    "Invalid char in processing instruction "
-                                    "0x%X\n", cur);
-                }
-                if (len > maxLength) {
-                    htmlParseErr(ctxt, XML_ERR_PI_NOT_FINISHED,
-                                 "PI %s too long", target, NULL);
-                    xmlFree(buf);
-                    goto done;
-                }
-		NEXTL(l);
-		cur = CUR_CHAR(l);
-	    }
-	    buf[len] = 0;
-	    if (cur != '>') {
-		htmlParseErr(ctxt, XML_ERR_PI_NOT_FINISHED,
-		      "ParsePI: PI %s never end ...\n", target, NULL);
-	    } else {
-		SKIP(1);
-
-		/*
-		 * SAX: PI detected.
-		 */
-		if ((ctxt->sax) && (!ctxt->disableSAX) &&
-		    (ctxt->sax->processingInstruction != NULL))
-		    ctxt->sax->processingInstruction(ctxt->userData,
-		                                     target, buf);
-	    }
-	    xmlFree(buf);
-	} else {
-	    htmlParseErr(ctxt, XML_ERR_PI_NOT_STARTED,
-                         "PI is not started correctly", NULL, NULL);
-	}
-
-done:
-	ctxt->instate = state;
-    }
-}
-
-/**
  * htmlParseComment:
  * @ctxt:  an HTML parser context
+ * @bogus:  true if this is a bogus comment
  *
  * Parse an HTML comment
  */
 static void
-htmlParseComment(htmlParserCtxtPtr ctxt) {
+htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
     xmlChar *buf = NULL;
     int len;
     int size = HTML_PARSER_BUFFER_SIZE;
-    int q, ql;
-    int r, rl;
     int cur, l;
-    int next, nl;
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_HUGE_LENGTH :
                     XML_MAX_TEXT_LENGTH;
     xmlParserInputState state;
 
-    /*
-     * Check that there is a comment right here.
-     */
-    if ((RAW != '<') || (NXT(1) != '!') ||
-        (NXT(2) != '-') || (NXT(3) != '-')) return;
-
     state = ctxt->instate;
     ctxt->instate = XML_PARSER_COMMENT;
-    SKIP(4);
+
     buf = xmlMalloc(size);
     if (buf == NULL) {
         htmlErrMemory(ctxt);
@@ -3516,36 +3377,34 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
     }
     len = 0;
     buf[len] = 0;
-    q = CUR_CHAR(ql);
-    if (q == 0)
-        goto unfinished;
-    if (q == '>') {
-        htmlParseErr(ctxt, XML_ERR_COMMENT_ABRUPTLY_ENDED, "Comment abruptly ended", NULL, NULL);
-        cur = '>';
-        goto finished;
-    }
-    NEXTL(ql);
-    r = CUR_CHAR(rl);
-    if (r == 0)
-        goto unfinished;
-    if (q == '-' && r == '>') {
-        htmlParseErr(ctxt, XML_ERR_COMMENT_ABRUPTLY_ENDED, "Comment abruptly ended", NULL, NULL);
-        cur = '>';
-        goto finished;
-    }
-    NEXTL(rl);
-    cur = CUR_CHAR(l);
-    while ((cur != 0) &&
-           ((cur != '>') ||
-	    (r != '-') || (q != '-'))) {
-	NEXTL(l);
-	next = CUR_CHAR(nl);
 
-	if ((q == '-') && (r == '-') && (cur == '!') && (next == '>')) {
-	  htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
-		       "Comment incorrectly closed by '--!>'", NULL, NULL);
-	  cur = '>';
-	  break;
+    cur = CUR_CHAR(l);
+    if (!bogus) {
+        if (cur == '>') {
+            SKIP(1);
+            goto done;
+        } else if ((cur == '-') && (NXT(1) == '>')) {
+            SKIP(2);
+            goto done;
+        }
+    }
+
+    while (cur != 0) {
+        if (bogus) {
+            if (cur == '>') {
+                SKIP(1);
+                break;
+            }
+        } else {
+	    if ((cur == '-') && (NXT(1) == '-')) {
+                if (NXT(2) == '>') {
+                    SKIP(3);
+                    break;
+                } else if ((NXT(2) == '!') && (NXT(3) == '>')) {
+                    SKIP(4);
+                    break;
+                }
+            }
 	}
 
 	if (len + 5 >= size) {
@@ -3556,15 +3415,16 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
 	    if (tmp == NULL) {
 	        xmlFree(buf);
 	        htmlErrMemory(ctxt);
+                ctxt->instate = state;
 		return;
 	    }
 	    buf = tmp;
 	}
-        if (IS_CHAR(q)) {
-	    COPY_BUF(buf,len,q);
+        if (IS_CHAR(cur)) {
+	    COPY_BUF(buf,len,cur);
         } else {
             htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                            "Invalid char in comment 0x%X\n", q);
+                            "Invalid char in comment 0x%X\n", cur);
         }
         if (len > maxLength) {
             htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
@@ -3574,29 +3434,19 @@ htmlParseComment(htmlParserCtxtPtr ctxt) {
             return;
         }
 
-	q = r;
-	ql = rl;
-	r = cur;
-	rl = l;
-	cur = next;
-	l = nl;
-    }
-finished:
-    buf[len] = 0;
-    if (cur == '>') {
-        SKIP(1);
-	if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
-	    (!ctxt->disableSAX))
-	    ctxt->sax->comment(ctxt->userData, buf);
-	xmlFree(buf);
-	ctxt->instate = state;
-	return;
+        NEXTL(l);
+	cur = CUR_CHAR(l);
     }
 
-unfinished:
-    htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
-		 "Comment not terminated \n<!--%.50s\n", buf, NULL);
+done:
+    buf[len] = 0;
+    if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
+        (!ctxt->disableSAX))
+        ctxt->sax->comment(ctxt->userData, buf);
     xmlFree(buf);
+
+    ctxt->instate = state;
+    return;
 }
 
 /**
@@ -4294,12 +4144,15 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
                                  BAD_CAST "DOCTYPE" , NULL);
                     htmlParseDocTypeDecl(ctxt);
                 } else if ((NXT(2) == '-') && (NXT(3) == '-')) {
-                    htmlParseComment(ctxt);
+                    SKIP(4);
+                    htmlParseComment(ctxt, /* bogus */ 0);
                 } else {
-                    htmlSkipBogusComment(ctxt);
+                    SKIP(2);
+                    htmlParseComment(ctxt, /* bogus */ 1);
                 }
             } else if (NXT(1) == '?') {
-                htmlParsePI(ctxt);
+                SKIP(1);
+                htmlParseComment(ctxt, /* bogus */ 1);
             } else if (IS_ASCII_LETTER(NXT(1))) {
                 htmlParseElementInternal(ctxt);
             } else {
@@ -4551,14 +4404,18 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Parse possible comments and PIs before any content
      */
-    while (((CUR == '<') && (NXT(1) == '!') &&
-            (NXT(2) == '-') && (NXT(3) == '-')) ||
-	   ((CUR == '<') && (NXT(1) == '?'))) {
-        htmlParseComment(ctxt);
-        htmlParsePI(ctxt);
+    while (CUR == '<') {
+        if ((NXT(1) == '!') && (NXT(2) == '-') && (NXT(3) == '-')) {
+            SKIP(4);
+            htmlParseComment(ctxt, /* bogus */ 0);
+        } else if (NXT(1) == '?') {
+            SKIP(1);
+            htmlParseComment(ctxt, /* bogus */ 1);
+        } else {
+            break;
+        }
 	SKIP_BLANKS;
     }
-
 
     /*
      * Then possibly doc type declaration(s) and more Misc
@@ -4576,12 +4433,16 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Parse possible comments and PIs before any content
      */
-    while ((PARSER_STOPPED(ctxt) == 0) &&
-           (((CUR == '<') && (NXT(1) == '!') &&
-             (NXT(2) == '-') && (NXT(3) == '-')) ||
-	    ((CUR == '<') && (NXT(1) == '?')))) {
-        htmlParseComment(ctxt);
-        htmlParsePI(ctxt);
+    while (CUR == '<') {
+        if ((NXT(1) == '!') && (NXT(2) == '-') && (NXT(3) == '-')) {
+            SKIP(4);
+            htmlParseComment(ctxt, /* bogus */ 0);
+        } else if (NXT(1) == '?') {
+            SKIP(1);
+            htmlParseComment(ctxt, /* bogus */ 1);
+        } else {
+            break;
+        }
 	SKIP_BLANKS;
     }
 
@@ -5200,13 +5061,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) && (htmlParseLookupCommentEnd(ctxt) < 0))
 			goto done;
-		    htmlParseComment(ctxt);
+                    SKIP(4);
+		    htmlParseComment(ctxt, /* bogus */ 0);
 		    ctxt->instate = XML_PARSER_MISC;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
 		        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
 			goto done;
-		    htmlParsePI(ctxt);
+                    SKIP(1);
+		    htmlParseComment(ctxt, /* bogus */ 1);
 		    ctxt->instate = XML_PARSER_MISC;
 		} else if ((cur == '<') && (next == '!') &&
 		    (UPP(2) == 'D') && (UPP(3) == 'O') &&
@@ -5236,13 +5099,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) && (htmlParseLookupCommentEnd(ctxt) < 0))
 			goto done;
-		    htmlParseComment(ctxt);
+                    SKIP(4);
+		    htmlParseComment(ctxt, /* bogus */ 0);
 		    ctxt->instate = XML_PARSER_PROLOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
 		        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
 			goto done;
-		    htmlParsePI(ctxt);
+                    SKIP(1);
+		    htmlParseComment(ctxt, /* bogus */ 1);
 		    ctxt->instate = XML_PARSER_PROLOG;
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 4)) {
@@ -5267,13 +5132,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (in->cur[2] == '-') && (in->cur[3] == '-')) {
 		    if ((!terminate) && (htmlParseLookupCommentEnd(ctxt) < 0))
 			goto done;
-		    htmlParseComment(ctxt);
+                    SKIP(4);
+		    htmlParseComment(ctxt, /* bogus */ 0);
 		    ctxt->instate = XML_PARSER_EPILOG;
 	        } else if ((cur == '<') && (next == '?')) {
 		    if ((!terminate) &&
 		        (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
 			goto done;
-		    htmlParsePI(ctxt);
+                    SKIP(1);
+		    htmlParseComment(ctxt, /* bogus */ 1);
 		    ctxt->instate = XML_PARSER_EPILOG;
 		} else if ((cur == '<') && (next == '!') &&
 		           (avail < 4)) {
@@ -5489,19 +5356,23 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         if ((!terminate) &&
                             (htmlParseLookupCommentEnd(ctxt) < 0))
                             goto done;
-                        htmlParseComment(ctxt);
+                        SKIP(4);
+                        htmlParseComment(ctxt, /* bogus */ 0);
                         ctxt->instate = XML_PARSER_CONTENT;
                     } else {
                         if ((!terminate) &&
                             (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
                             goto done;
-                        htmlSkipBogusComment(ctxt);
+                        SKIP(2);
+                        htmlParseComment(ctxt, /* bogus */ 1);
+                        ctxt->instate = XML_PARSER_CONTENT;
                     }
                 } else if ((cur == '<') && (next == '?')) {
                     if ((!terminate) &&
                         (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
                         goto done;
-                    htmlParsePI(ctxt);
+                    SKIP(1);
+                    htmlParseComment(ctxt, /* bogus */ 1);
                     ctxt->instate = XML_PARSER_CONTENT;
                 } else if ((cur == '<') && (next == '/')) {
                     ctxt->instate = XML_PARSER_END_TAG;

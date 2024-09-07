@@ -24,7 +24,7 @@ SAX.characters(
 SAX.startElement(div)
 SAX.characters(
         , 9)
-SAX.error: Comment abruptly endedSAX.comment()
+SAX.comment()
 SAX.characters(the previous node should be an, 86)
 SAX.endElement(div)
 SAX.characters(
@@ -32,7 +32,7 @@ SAX.characters(
 SAX.startElement(div)
 SAX.characters(
         , 9)
-SAX.error: Comment abruptly endedSAX.comment()
+SAX.comment()
 SAX.characters(the previous node should be an, 86)
 SAX.endElement(div)
 SAX.characters(

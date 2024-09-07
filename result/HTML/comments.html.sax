@@ -24,7 +24,7 @@ SAX.characters(
 SAX.startElement(div)
 SAX.characters(
         , 9)
-SAX.error: Comment incorrectly closed by '--!>'SAX.comment(incorrectly closed comment)
+SAX.comment(incorrectly closed comment)
 SAX.startElement(span, id='under-test')
 SAX.characters(whatwg guidance is that this s, 49)
 SAX.endElement(span)

@@ -1,7 +1,7 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(html, -//W3C//DTD HTML 4.01 Transitional//EN, http://www.w3.org/TR/html4/loose.dtd)
-SAX.processingInstruction(xml-stylesheet, href="./css/ht2html.css" type="text/css"?)
+SAX.comment(?xml-stylesheet href="./css/ht2html.css" type="text/css"?)
 SAX.startElement(html)
 SAX.characters(
 , 1)

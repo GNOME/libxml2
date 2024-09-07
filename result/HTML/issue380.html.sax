@@ -6,9 +6,9 @@ SAX.characters(
 SAX.startElement(body)
 SAX.characters(
     , 5)
-SAX.error: Incorrectly opened comment
+SAX.comment([if !supportLists])
 SAX.characters(..., 3)
-SAX.error: Incorrectly opened comment
+SAX.comment([endif])
 SAX.characters(
   , 3)
 SAX.endElement(body)

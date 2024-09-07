@@ -42,6 +42,9 @@ static int htmlOmittedDefaultValue = 1;
 
 static void htmlParseComment(htmlParserCtxtPtr ctxt);
 
+static int
+htmlParseElementInternal(htmlParserCtxtPtr ctxt);
+
 /************************************************************************
  *									*
  *		Some factorized error routines				*
@@ -4264,109 +4267,152 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
  * @ctxt:  an HTML parser context
  *
  * Parse a content: comment, sub-element, reference or text.
- * Kept for compatibility with old code
+ * New version for non recursive htmlParseElementInternal
  */
 
 static void
 htmlParseContent(htmlParserCtxtPtr ctxt) {
-    while (!PARSER_STOPPED(ctxt)) {
+    while (PARSER_STOPPED(ctxt) == 0) {
         int mode;
 
         GROW;
-
-        /*
-         * Handle character data states first
-         */
         mode = ctxt->endCheckState;
-        if ((mode != 0) && (CUR != 0)) {
-            if ((CUR == '&') && (mode == DATA_RCDATA)) {
-                htmlParseReference(ctxt);
-            }
-            else {
-                htmlParseCharData(ctxt, /* terminate */ 1);
-            }
-            goto done;
-        }
 
-	/*
-	 * Our tag or one of it's parent or children is ending.
-	 */
-        if ((CUR == '<') && (NXT(1) == '/')) {
-	    htmlParseEndTag(ctxt);
-	    continue; /* while */
-        }
-
-        if ((CUR == '<') && (NXT(1) == '!')) {
-            /*
-             * Sometimes DOCTYPE arrives in the middle of the document
-             */
-            if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
-                (UPP(4) == 'C') && (UPP(5) == 'T') &&
-                (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-                (UPP(8) == 'E')) {
-                htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-                             "Misplaced DOCTYPE declaration\n",
-                             BAD_CAST "DOCTYPE" , NULL);
-                htmlParseDocTypeDecl(ctxt);
+        if ((mode == 0) && (CUR == '<')) {
+            if (NXT(1) == '/') {
+	        htmlParseEndTag(ctxt);
+            } else if (NXT(1) == '!') {
+                /*
+                 * Sometimes DOCTYPE arrives in the middle of the document
+                 */
+                if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
+                    (UPP(4) == 'C') && (UPP(5) == 'T') &&
+                    (UPP(6) == 'Y') && (UPP(7) == 'P') &&
+                    (UPP(8) == 'E')) {
+                    htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                                 "Misplaced DOCTYPE declaration\n",
+                                 BAD_CAST "DOCTYPE" , NULL);
+                    htmlParseDocTypeDecl(ctxt);
+                } else if ((NXT(2) == '-') && (NXT(3) == '-')) {
+                    htmlParseComment(ctxt);
+                } else {
+                    htmlSkipBogusComment(ctxt);
+                }
+            } else if (NXT(1) == '?') {
+                htmlParsePI(ctxt);
+            } else if (IS_ASCII_LETTER(NXT(1))) {
+                htmlParseElementInternal(ctxt);
+            } else {
+                if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
+                    (ctxt->sax->characters != NULL))
+                    ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
+                SKIP(1);
             }
-            /*
-             * First case :  a comment
-             */
-            else if ((NXT(2) == '-') && (NXT(3) == '-')) {
-                htmlParseComment(ctxt);
-            }
-            else {
-                htmlSkipBogusComment(ctxt);
-            }
-        }
-
-        /*
-         * Second case : a Processing Instruction.
-         */
-        else if ((CUR == '<') && (NXT(1) == '?')) {
-            htmlParsePI(ctxt);
-        }
-
-        /*
-         * Third case :  a sub-element.
-         */
-        else if ((CUR == '<') && IS_ASCII_LETTER(NXT(1))) {
-            htmlParseElement(ctxt);
-        }
-        else if (CUR == '<') {
-            if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-                (ctxt->sax->characters != NULL))
-                ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
-            SKIP(1);
-        }
-
-        /*
-         * Fourth case : a reference. If if has not been resolved,
-         *    parsing returns it's Name, create the node
-         */
-        else if (CUR == '&') {
+        } else if ((CUR == '&') && ((mode == 0) || (mode == DATA_RCDATA))) {
             htmlParseReference(ctxt);
-        }
-
-        /*
-         * Fifth case : end of the resource
-         */
-        else if (CUR == 0) {
+        } else if (CUR == 0) {
             htmlAutoCloseOnEnd(ctxt);
             break;
-        }
-
-        /*
-         * Last case, text. Note that References are handled directly.
-         */
-        else {
+        } else {
             htmlParseCharData(ctxt, /* terminate */ 1);
         }
 
-done:
         SHRINK;
         GROW;
     }
+}
+
+/**
+ * htmlParseElementInternal:
+ * @ctxt:  an HTML parser context
+ *
+ * parse an HTML element, new version, non recursive
+ *
+ * [39] element ::= EmptyElemTag | STag content ETag
+ *
+ * [41] Attribute ::= Name Eq AttValue
+ */
+
+static int
+htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
+    const xmlChar *name;
+    const htmlElemDesc * info;
+    htmlParserNodeInfo node_info = { NULL, 0, 0, 0, 0 };
+    int failed;
+
+    if ((ctxt == NULL) || (ctxt->input == NULL))
+	return(0);
+
+    /* Capture start position */
+    if (ctxt->record_info) {
+        node_info.begin_pos = ctxt->input->consumed +
+                          (CUR_PTR - ctxt->input->base);
+	node_info.begin_line = ctxt->input->line;
+    }
+
+    failed = htmlParseStartTag(ctxt);
+    name = ctxt->name;
+    if ((failed == -1) || (name == NULL)) {
+	if (CUR == '>')
+	    SKIP(1);
+        return(0);
+    }
+
+    /*
+     * Lookup the info for that element.
+     */
+    info = htmlTagLookup(name);
+    if (info == NULL) {
+	htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
+	             "Tag %s invalid\n", name, NULL);
+    } else {
+        ctxt->endCheckState = info->dataMode;
+    }
+
+    if (ctxt->record_info)
+        htmlNodeInfoPush(ctxt, &node_info);
+
+    /*
+     * Check for an Empty Element labeled the XML/SGML way
+     */
+    if ((CUR == '/') && (NXT(1) == '>')) {
+        SKIP(2);
+        htmlParserFinishElementParsing(ctxt);
+	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+	    ctxt->sax->endElement(ctxt->userData, name);
+	htmlnamePop(ctxt);
+	return(0);
+    }
+
+    if (CUR == '>') {
+        SKIP(1);
+    } else {
+	htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
+	             "Couldn't find end of Start Tag %s\n", name, NULL);
+
+	/*
+	 * end of parsing of this node.
+	 */
+	if (xmlStrEqual(name, ctxt->name)) {
+            htmlParserFinishElementParsing(ctxt);
+	    nodePop(ctxt);
+	    htmlnamePop(ctxt);
+	}
+	return(0);
+    }
+
+    /*
+     * Check for an Empty Element from DTD definition
+     */
+    if ((info != NULL) && (info->empty)) {
+        htmlParserFinishElementParsing(ctxt);
+	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+	    ctxt->sax->endElement(ctxt->userData, name);
+	htmlnamePop(ctxt);
+	return(0);
+    }
+
+    return(1);
 }
 
 /**
@@ -4385,91 +4431,18 @@ done:
 
 void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
-    const xmlChar *name;
-    xmlChar *currentNode = NULL;
-    const htmlElemDesc * info;
-    htmlParserNodeInfo node_info;
-    int failed;
-    int depth;
     const xmlChar *oldptr;
+    int depth;
 
     if ((ctxt == NULL) || (ctxt->input == NULL))
 	return;
 
-    /* Capture start position */
-    if (ctxt->record_info) {
-        node_info.begin_pos = ctxt->input->consumed +
-                          (CUR_PTR - ctxt->input->base);
-	node_info.begin_line = ctxt->input->line;
-    }
-
-    failed = htmlParseStartTag(ctxt);
-    name = ctxt->name;
-    if ((failed == -1) || (name == NULL)) {
-	if (CUR == '>')
-	    SKIP(1);
+    if (htmlParseElementInternal(ctxt) == 0)
         return;
-    }
-
-    /*
-     * Lookup the info for that element.
-     */
-    info = htmlTagLookup(name);
-    if (info == NULL) {
-	htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
-	             "Tag %s invalid\n", name, NULL);
-    } else {
-        ctxt->endCheckState = info->dataMode;
-    }
-
-    if (ctxt->record_info)
-        htmlNodeInfoPush(ctxt, &node_info);
-
-    /*
-     * Check for an Empty Element labeled the XML/SGML way
-     */
-    if ((CUR == '/') && (NXT(1) == '>')) {
-        SKIP(2);
-	htmlParserFinishElementParsing(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, name);
-	htmlnamePop(ctxt);
-	return;
-    }
-
-    if (CUR == '>') {
-        SKIP(1);
-    } else {
-	htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
-	             "Couldn't find end of Start Tag %s\n", name, NULL);
-
-	/*
-	 * end of parsing of this node.
-	 */
-	if (xmlStrEqual(name, ctxt->name)) {
-	    htmlParserFinishElementParsing(ctxt);
-	    nodePop(ctxt);
-	    htmlnamePop(ctxt);
-	}
-
-	return;
-    }
-
-    /*
-     * Check for an Empty Element from DTD definition
-     */
-    if ((info != NULL) && (info->empty)) {
-        htmlParserFinishElementParsing(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, name);
-	htmlnamePop(ctxt);
-	return;
-    }
 
     /*
      * Parse the content of the element:
      */
-    currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
     while (CUR != 0) {
 	oldptr = ctxt->input->cur;
@@ -4478,222 +4451,8 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	if (ctxt->nameNr < depth) break;
     }
 
-    /*
-     * Capture end position and add node
-     */
-    if ( currentNode != NULL && ctxt->record_info ) {
-       node_info.end_pos = ctxt->input->consumed +
-                          (CUR_PTR - ctxt->input->base);
-       node_info.end_line = ctxt->input->line;
-       node_info.node = ctxt->node;
-       xmlParserAddNodeInfo(ctxt, &node_info);
-    }
     if (CUR == 0) {
 	htmlAutoCloseOnEnd(ctxt);
-    }
-
-    if (currentNode != NULL)
-	xmlFree(currentNode);
-}
-
-/**
- * htmlParseElementInternal:
- * @ctxt:  an HTML parser context
- *
- * parse an HTML element, new version, non recursive
- *
- * [39] element ::= EmptyElemTag | STag content ETag
- *
- * [41] Attribute ::= Name Eq AttValue
- */
-
-static void
-htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
-    const xmlChar *name;
-    const htmlElemDesc * info;
-    htmlParserNodeInfo node_info = { NULL, 0, 0, 0, 0 };
-    int failed;
-
-    if ((ctxt == NULL) || (ctxt->input == NULL))
-	return;
-
-    /* Capture start position */
-    if (ctxt->record_info) {
-        node_info.begin_pos = ctxt->input->consumed +
-                          (CUR_PTR - ctxt->input->base);
-	node_info.begin_line = ctxt->input->line;
-    }
-
-    failed = htmlParseStartTag(ctxt);
-    name = ctxt->name;
-    if ((failed == -1) || (name == NULL)) {
-	if (CUR == '>')
-	    SKIP(1);
-        return;
-    }
-
-    /*
-     * Lookup the info for that element.
-     */
-    info = htmlTagLookup(name);
-    if (info == NULL) {
-	htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
-	             "Tag %s invalid\n", name, NULL);
-    } else {
-        ctxt->endCheckState = info->dataMode;
-    }
-
-    if (ctxt->record_info)
-        htmlNodeInfoPush(ctxt, &node_info);
-
-    /*
-     * Check for an Empty Element labeled the XML/SGML way
-     */
-    if ((CUR == '/') && (NXT(1) == '>')) {
-        SKIP(2);
-        htmlParserFinishElementParsing(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, name);
-	htmlnamePop(ctxt);
-	return;
-    }
-
-    if (CUR == '>') {
-        SKIP(1);
-    } else {
-	htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
-	             "Couldn't find end of Start Tag %s\n", name, NULL);
-
-	/*
-	 * end of parsing of this node.
-	 */
-	if (xmlStrEqual(name, ctxt->name)) {
-            htmlParserFinishElementParsing(ctxt);
-	    nodePop(ctxt);
-	    htmlnamePop(ctxt);
-	}
-	return;
-    }
-
-    /*
-     * Check for an Empty Element from DTD definition
-     */
-    if ((info != NULL) && (info->empty)) {
-        htmlParserFinishElementParsing(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, name);
-	htmlnamePop(ctxt);
-	return;
-    }
-}
-
-/**
- * htmlParseContentInternal:
- * @ctxt:  an HTML parser context
- *
- * Parse a content: comment, sub-element, reference or text.
- * New version for non recursive htmlParseElementInternal
- */
-
-static void
-htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
-    while (PARSER_STOPPED(ctxt) == 0) {
-        int mode;
-
-        GROW;
-
-        /*
-         * Handle character data states first
-         */
-        mode = ctxt->endCheckState;
-        if ((mode != 0) && (CUR != 0)) {
-            if ((CUR == '&') && (mode == DATA_RCDATA)) {
-                htmlParseReference(ctxt);
-            }
-            else {
-                htmlParseCharData(ctxt, /* terminate */ 1);
-            }
-            goto done;
-        }
-
-	/*
-	 * Our tag or one of it's parent or children is ending.
-	 */
-        if ((CUR == '<') && (NXT(1) == '/')) {
-	    htmlParseEndTag(ctxt);
-	    continue; /* while */
-        }
-
-        if ((CUR == '<') && (NXT(1) == '!')) {
-            /*
-             * Sometimes DOCTYPE arrives in the middle of the document
-             */
-            if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
-                (UPP(4) == 'C') && (UPP(5) == 'T') &&
-                (UPP(6) == 'Y') && (UPP(7) == 'P') &&
-                (UPP(8) == 'E')) {
-                htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-                             "Misplaced DOCTYPE declaration\n",
-                             BAD_CAST "DOCTYPE" , NULL);
-                htmlParseDocTypeDecl(ctxt);
-            }
-            /*
-             * First case :  a comment
-             */
-            else if ((NXT(2) == '-') && (NXT(3) == '-')) {
-                htmlParseComment(ctxt);
-            }
-            else {
-                htmlSkipBogusComment(ctxt);
-            }
-        }
-
-        /*
-         * Second case : a Processing Instruction.
-         */
-        else if ((CUR == '<') && (NXT(1) == '?')) {
-            htmlParsePI(ctxt);
-        }
-
-        /*
-         * Third case :  a sub-element.
-         */
-        else if ((CUR == '<') && IS_ASCII_LETTER(NXT(1))) {
-            htmlParseElementInternal(ctxt);
-        }
-        else if (CUR == '<') {
-            if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-                (ctxt->sax->characters != NULL))
-                ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
-            SKIP(1);
-        }
-
-        /*
-         * Fourth case : a reference. If if has not been resolved,
-         *    parsing returns it's Name, create the node
-         */
-        else if (CUR == '&') {
-            htmlParseReference(ctxt);
-        }
-
-        /*
-         * Fifth case : end of the resource
-         */
-        else if (CUR == 0) {
-            htmlAutoCloseOnEnd(ctxt);
-            break;
-        }
-
-        /*
-         * Last case, text. Note that References are handled directly.
-         */
-        else {
-            htmlParseCharData(ctxt, /* terminate */ 1);
-        }
-
-done:
-        SHRINK;
-        GROW;
     }
 }
 
@@ -4717,7 +4476,7 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
     htmlnamePush(ctxt, rootName);
     nodePush(ctxt, root);
 
-    htmlParseContentInternal(ctxt);
+    htmlParseContent(ctxt);
 
     /* TODO: Use xmlCtxtIsCatastrophicError */
     if (ctxt->errNo != XML_ERR_NO_MEMORY) {
@@ -4828,7 +4587,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Time to start parsing the tree itself
      */
-    htmlParseContentInternal(ctxt);
+    htmlParseContent(ctxt);
 
     /*
      * autoclose

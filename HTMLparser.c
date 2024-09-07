@@ -1417,6 +1417,21 @@ static const elementPriority htmlEndPriority[] = {
  *									*
  ************************************************************************/
 
+static void
+htmlParserFinishElementParsing(htmlParserCtxtPtr ctxt) {
+    /*
+     * Capture end position and add node
+     */
+    if ( ctxt->node != NULL && ctxt->record_info ) {
+       ctxt->nodeInfo->end_pos = ctxt->input->consumed +
+                                (CUR_PTR - ctxt->input->base);
+       ctxt->nodeInfo->end_line = ctxt->input->line;
+       ctxt->nodeInfo->node = ctxt->node;
+       xmlParserAddNodeInfo(ctxt, ctxt->nodeInfo);
+       htmlNodeInfoPop(ctxt);
+    }
+}
+
 /**
  * htmlInitAutoClose:
  *
@@ -1546,6 +1561,7 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 	                 "Opening and ending tag mismatch: %s and %s\n",
 			 newtag, ctxt->name);
         }
+	htmlParserFinishElementParsing(ctxt);
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
 	htmlnamePop(ctxt);
@@ -1566,6 +1582,7 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
     if (ctxt->nameNr == 0)
         return;
     for (i = (ctxt->nameNr - 1); i >= 0; i--) {
+	htmlParserFinishElementParsing(ctxt);
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
 	htmlnamePop(ctxt);
@@ -1592,6 +1609,7 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 
     while ((ctxt->name != NULL) &&
            (htmlCheckAutoClose(newtag, ctxt->name))) {
+	htmlParserFinishElementParsing(ctxt);
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, ctxt->name);
 	htmlnamePop(ctxt);
@@ -4171,9 +4189,9 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
      */
     oldname = ctxt->name;
     if ((oldname != NULL) && (xmlStrEqual(oldname, name))) {
+	htmlParserFinishElementParsing(ctxt);
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, name);
-	htmlNodeInfoPop(ctxt);
         htmlnamePop(ctxt);
         ret = 1;
     } else {
@@ -4251,11 +4269,6 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
 
 static void
 htmlParseContent(htmlParserCtxtPtr ctxt) {
-    xmlChar *currentNode;
-    int depth;
-
-    currentNode = xmlStrdup(ctxt->name);
-    depth = ctxt->nameNr;
     while (!PARSER_STOPPED(ctxt)) {
         int mode;
 
@@ -4279,25 +4292,9 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	 * Our tag or one of it's parent or children is ending.
 	 */
         if ((CUR == '<') && (NXT(1) == '/')) {
-	    if (htmlParseEndTag(ctxt) &&
-		((currentNode != NULL) || (ctxt->nameNr == 0))) {
-		if (currentNode != NULL)
-		    xmlFree(currentNode);
-		return;
-	    }
+	    htmlParseEndTag(ctxt);
 	    continue; /* while */
         }
-
-	/*
-	 * Has this node been popped out during parsing of
-	 * the next element
-	 */
-        if ((ctxt->nameNr > 0) && (depth >= ctxt->nameNr) &&
-	    (!xmlStrEqual(currentNode, ctxt->name)))
-	     {
-	    if (currentNode != NULL) xmlFree(currentNode);
-	    return;
-	}
 
         if ((CUR == '<') && (NXT(1) == '!')) {
             /*
@@ -4370,7 +4367,6 @@ done:
         SHRINK;
         GROW;
     }
-    if (currentNode != NULL) xmlFree(currentNode);
 }
 
 /**
@@ -4426,11 +4422,15 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
         ctxt->endCheckState = info->dataMode;
     }
 
+    if (ctxt->record_info)
+        htmlNodeInfoPush(ctxt, &node_info);
+
     /*
      * Check for an Empty Element labeled the XML/SGML way
      */
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
+	htmlParserFinishElementParsing(ctxt);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
 	htmlnamePop(ctxt);
@@ -4447,20 +4447,11 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	if (xmlStrEqual(name, ctxt->name)) {
+	    htmlParserFinishElementParsing(ctxt);
 	    nodePop(ctxt);
 	    htmlnamePop(ctxt);
 	}
 
-	/*
-	 * Capture end position and add node
-	 */
-	if (ctxt->record_info) {
-	   node_info.end_pos = ctxt->input->consumed +
-			      (CUR_PTR - ctxt->input->base);
-	   node_info.end_line = ctxt->input->line;
-	   node_info.node = ctxt->node;
-	   xmlParserAddNodeInfo(ctxt, &node_info);
-	}
 	return;
     }
 
@@ -4468,6 +4459,7 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
      * Check for an Empty Element from DTD definition
      */
     if ((info != NULL) && (info->empty)) {
+        htmlParserFinishElementParsing(ctxt);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
 	htmlnamePop(ctxt);
@@ -4502,24 +4494,6 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 
     if (currentNode != NULL)
 	xmlFree(currentNode);
-}
-
-static void
-htmlParserFinishElementParsing(htmlParserCtxtPtr ctxt) {
-    /*
-     * Capture end position and add node
-     */
-    if ( ctxt->node != NULL && ctxt->record_info ) {
-       ctxt->nodeInfo->end_pos = ctxt->input->consumed +
-                                (CUR_PTR - ctxt->input->base);
-       ctxt->nodeInfo->end_line = ctxt->input->line;
-       ctxt->nodeInfo->node = ctxt->node;
-       xmlParserAddNodeInfo(ctxt, ctxt->nodeInfo);
-       htmlNodeInfoPop(ctxt);
-    }
-    if (CUR == 0) {
-       htmlAutoCloseOnEnd(ctxt);
-    }
 }
 
 /**
@@ -4569,11 +4543,15 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
         ctxt->endCheckState = info->dataMode;
     }
 
+    if (ctxt->record_info)
+        htmlNodeInfoPush(ctxt, &node_info);
+
     /*
      * Check for an Empty Element labeled the XML/SGML way
      */
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
+        htmlParserFinishElementParsing(ctxt);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
 	htmlnamePop(ctxt);
@@ -4590,13 +4568,10 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
 	 * end of parsing of this node.
 	 */
 	if (xmlStrEqual(name, ctxt->name)) {
+            htmlParserFinishElementParsing(ctxt);
 	    nodePop(ctxt);
 	    htmlnamePop(ctxt);
 	}
-
-        if (ctxt->record_info)
-            htmlNodeInfoPush(ctxt, &node_info);
-        htmlParserFinishElementParsing(ctxt);
 	return;
     }
 
@@ -4604,14 +4579,12 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
      * Check for an Empty Element from DTD definition
      */
     if ((info != NULL) && (info->empty)) {
+        htmlParserFinishElementParsing(ctxt);
 	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 	    ctxt->sax->endElement(ctxt->userData, name);
 	htmlnamePop(ctxt);
 	return;
     }
-
-    if (ctxt->record_info)
-        htmlNodeInfoPush(ctxt, &node_info);
 }
 
 /**
@@ -4624,19 +4597,6 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
 
 static void
 htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
-    xmlChar *currentNode;
-    int depth;
-
-    depth = ctxt->nameNr;
-    if (depth <= 0) {
-        currentNode = NULL;
-    } else {
-        currentNode = xmlStrdup(ctxt->name);
-        if (currentNode == NULL) {
-            htmlErrMemory(ctxt);
-            return;
-        }
-    }
     while (PARSER_STOPPED(ctxt) == 0) {
         int mode;
 
@@ -4660,47 +4620,9 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	 * Our tag or one of it's parent or children is ending.
 	 */
         if ((CUR == '<') && (NXT(1) == '/')) {
-	    if (htmlParseEndTag(ctxt) &&
-		((currentNode != NULL) || (ctxt->nameNr == 0))) {
-		if (currentNode != NULL)
-		    xmlFree(currentNode);
-
-	        depth = ctxt->nameNr;
-                if (depth <= 0) {
-                    currentNode = NULL;
-                } else {
-                    currentNode = xmlStrdup(ctxt->name);
-                    if (currentNode == NULL) {
-                        htmlErrMemory(ctxt);
-                        break;
-                    }
-                }
-	    }
+	    htmlParseEndTag(ctxt);
 	    continue; /* while */
         }
-
-	/*
-	 * Has this node been popped out during parsing of
-	 * the next element
-	 */
-        if ((ctxt->nameNr > 0) && (depth >= ctxt->nameNr) &&
-	    (!xmlStrEqual(currentNode, ctxt->name)))
-	     {
-	    htmlParserFinishElementParsing(ctxt);
-	    if (currentNode != NULL) xmlFree(currentNode);
-
-            if (ctxt->name == NULL) {
-                currentNode = NULL;
-            } else {
-                currentNode = xmlStrdup(ctxt->name);
-                if (currentNode == NULL) {
-                    htmlErrMemory(ctxt);
-                    break;
-                }
-            }
-	    depth = ctxt->nameNr;
-	    continue;
-	}
 
         if ((CUR == '<') && (NXT(1) == '!')) {
             /*
@@ -4738,18 +4660,6 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
          */
         else if ((CUR == '<') && IS_ASCII_LETTER(NXT(1))) {
             htmlParseElementInternal(ctxt);
-            if (currentNode != NULL) xmlFree(currentNode);
-
-            if (ctxt->name == NULL) {
-                currentNode = NULL;
-            } else {
-                currentNode = xmlStrdup(ctxt->name);
-                if (currentNode == NULL) {
-                    htmlErrMemory(ctxt);
-                    break;
-                }
-            }
-            depth = ctxt->nameNr;
         }
         else if (CUR == '<') {
             if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
@@ -4785,7 +4695,6 @@ done:
         SHRINK;
         GROW;
     }
-    if (currentNode != NULL) xmlFree(currentNode);
 }
 
 xmlNodePtr
@@ -5686,6 +5595,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 */
 		if ((CUR == '/') && (NXT(1) == '>')) {
 		    SKIP(2);
+                    htmlParserFinishElementParsing(ctxt);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 			ctxt->sax->endElement(ctxt->userData, name);
 		    htmlnamePop(ctxt);
@@ -5704,6 +5614,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		     * end of parsing of this node.
 		     */
 		    if (xmlStrEqual(name, ctxt->name)) {
+                        htmlParserFinishElementParsing(ctxt);
 			nodePop(ctxt);
 			htmlnamePop(ctxt);
 		    }
@@ -5719,6 +5630,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 * Check for an Empty Element from DTD definition
 		 */
 		if ((info != NULL) && (info->empty)) {
+                    htmlParserFinishElementParsing(ctxt);
 		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
 			ctxt->sax->endElement(ctxt->userData, name);
 		    htmlnamePop(ctxt);

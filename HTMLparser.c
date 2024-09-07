@@ -2583,51 +2583,6 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
 }
 
 /**
- * htmlParseHTMLName_nonInvasive:
- * @ctxt:  an HTML parser context
- *
- * parse an HTML tag or attribute name, note that we convert it to lowercase
- * since HTML names are not case-sensitive, this doesn't consume the data
- * from the stream, it's a look-ahead
- *
- * Returns the Tag Name parsed or NULL
- */
-
-static const xmlChar *
-htmlParseHTMLName_nonInvasive(htmlParserCtxtPtr ctxt) {
-    int nbchar = 0;
-    int i = 0;
-    int c, l;
-    xmlChar buf[HTML_PARSER_BUFFER_SIZE];
-    const xmlChar *ret;
-    size_t avail = ctxt->input->end - ctxt->input->cur;
-
-    l = avail - i;
-    c = xmlGetUTF8Char(CUR_PTR + i, &l);
-    while ((c > 0) && (c != '/') && (c != '>') &&
-           (!IS_BLANK_CH(c))) {
-        if (nbchar + l <= HTML_PARSER_BUFFER_SIZE) {
-            if ((c >= 'A') && (c <= 'Z'))  {
-                buf[nbchar++] = c + 0x20;
-            } else {
-	        COPY_BUF(buf, nbchar, c);
-            }
-        }
-
-	i += l;
-        l = avail - i;
-        c = xmlGetUTF8Char(CUR_PTR + i, &l);
-    }
-
-    ret = xmlDictLookup(ctxt->dict, buf, nbchar);
-    if (ret == NULL)
-        htmlErrMemory(ctxt);
-
-    return(ret);
-}
-
-
-/**
  * htmlParseName:
  * @ctxt:  an HTML parser context
  *
@@ -4298,7 +4253,6 @@ static void
 htmlParseContent(htmlParserCtxtPtr ctxt) {
     xmlChar *currentNode;
     int depth;
-    const xmlChar *name;
 
     currentNode = xmlStrdup(ctxt->name);
     depth = ctxt->nameNr;
@@ -4333,27 +4287,6 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 	    }
 	    continue; /* while */
         }
-
-	else if ((CUR == '<') &&
-	         ((IS_ASCII_LETTER(NXT(1))) ||
-		  (NXT(1) == '_') || (NXT(1) == ':'))) {
-	    name = htmlParseHTMLName_nonInvasive(ctxt);
-	    if (name == NULL) {
-	        htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-			 "htmlParseStartTag: invalid element name\n",
-			 NULL, NULL);
-	        if (currentNode != NULL)
-	            xmlFree(currentNode);
-	        return;
-	    }
-
-	    if (ctxt->name != NULL) {
-	        if (htmlCheckAutoClose(name, ctxt->name) == 1) {
-	            htmlAutoClose(ctxt, name);
-	            continue;
-	        }
-	    }
-	}
 
 	/*
 	 * Has this node been popped out during parsing of
@@ -4693,7 +4626,6 @@ static void
 htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
     xmlChar *currentNode;
     int depth;
-    const xmlChar *name;
 
     depth = ctxt->nameNr;
     if (depth <= 0) {
@@ -4746,40 +4678,6 @@ htmlParseContentInternal(htmlParserCtxtPtr ctxt) {
 	    }
 	    continue; /* while */
         }
-
-	else if ((CUR == '<') &&
-	         ((IS_ASCII_LETTER(NXT(1))) ||
-		  (NXT(1) == '_') || (NXT(1) == ':'))) {
-	    name = htmlParseHTMLName_nonInvasive(ctxt);
-	    if (name == NULL) {
-	        htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-			 "htmlParseStartTag: invalid element name\n",
-			 NULL, NULL);
-
-	        htmlParserFinishElementParsing(ctxt);
-	        if (currentNode != NULL)
-	            xmlFree(currentNode);
-
-                if (ctxt->name == NULL) {
-                    currentNode = NULL;
-                } else {
-                    currentNode = xmlStrdup(ctxt->name);
-                    if (currentNode == NULL) {
-                        htmlErrMemory(ctxt);
-                        break;
-                    }
-                }
-	        depth = ctxt->nameNr;
-	        continue;
-	    }
-
-	    if (ctxt->name != NULL) {
-	        if (htmlCheckAutoClose(name, ctxt->name) == 1) {
-	            htmlAutoClose(ctxt, name);
-	            continue;
-	        }
-	    }
-	}
 
 	/*
 	 * Has this node been popped out during parsing of

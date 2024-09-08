@@ -206,6 +206,7 @@ XMLPUBFUN void
  */
 typedef enum {
     HTML_PARSE_RECOVER  = 1<<0, /* Relaxed parsing */
+    HTML_PARSE_HTML5    = 1<<1, /* HTML5 support */
     HTML_PARSE_NODEFDTD = 1<<2, /* do not default a doctype if not found */
     HTML_PARSE_NOERROR	= 1<<5,	/* suppress error reports */
     HTML_PARSE_NOWARNING= 1<<6,	/* suppress warning reports */

@@ -1522,6 +1522,9 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
     const htmlElemDesc *info;
     int i, priority;
 
+    if (ctxt->options & HTML_PARSE_HTML5)
+        return;
+
     priority = htmlGetEndPriority(newtag);
 
     for (i = (ctxt->nameNr - 1); i >= 0; i--) {
@@ -1565,6 +1568,9 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
 {
     int i;
 
+    if (ctxt->options & HTML_PARSE_HTML5)
+        return;
+
     if (ctxt->nameNr == 0)
         return;
     for (i = (ctxt->nameNr - 1); i >= 0; i--) {
@@ -1590,6 +1596,9 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
 static void
 htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 {
+    if (ctxt->options & HTML_PARSE_HTML5)
+        return;
+
     if (newtag == NULL)
         return;
 
@@ -1667,7 +1676,7 @@ static void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
     int i;
 
-    if (ctxt->options & HTML_PARSE_NOIMPLIED)
+    if (ctxt->options & (HTML_PARSE_NOIMPLIED | HTML_PARSE_HTML5))
         return;
     if (!htmlOmittedDefaultValue)
 	return;
@@ -1738,6 +1747,9 @@ htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
 
     if (ctxt == NULL)
 	return(-1);
+    if (ctxt->options & HTML_PARSE_HTML5)
+        return(0);
+
     tag = ctxt->name;
     if (tag == NULL) {
 	htmlAutoClose(ctxt, BAD_CAST"p");
@@ -3893,6 +3905,11 @@ failed:
      * SAX: Start of Element !
      */
     if (!discardtag) {
+        if (ctxt->options & HTML_PARSE_HTML5) {
+            if (ctxt->nameNr > 0)
+                htmlnamePop(ctxt);
+        }
+
 	htmlnamePush(ctxt, name);
 	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL)) {
 	    if (nbatts != 0)
@@ -3976,6 +3993,12 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     } else {
         htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
 	             "End tag : expected '>'\n", NULL, NULL);
+    }
+
+    if (ctxt->options & HTML_PARSE_HTML5) {
+        if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+            ctxt->sax->endElement(ctxt->userData, name);
+        return(0);
     }
 
     /*
@@ -4217,8 +4240,10 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
         htmlParserFinishElementParsing(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, name);
+        if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
+            if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+                ctxt->sax->endElement(ctxt->userData, name);
+        }
 	htmlnamePop(ctxt);
 	return(0);
     }
@@ -4245,8 +4270,10 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
      */
     if ((info != NULL) && (info->empty)) {
         htmlParserFinishElementParsing(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-	    ctxt->sax->endElement(ctxt->userData, name);
+        if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
+            if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
+                ctxt->sax->endElement(ctxt->userData, name);
+        }
 	htmlnamePop(ctxt);
 	return(0);
     }
@@ -5208,8 +5235,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if ((CUR == '/') && (NXT(1) == '>')) {
 		    SKIP(2);
                     htmlParserFinishElementParsing(ctxt);
-		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-			ctxt->sax->endElement(ctxt->userData, name);
+                    if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
+                        if ((ctxt->sax != NULL) &&
+                            (ctxt->sax->endElement != NULL))
+                            ctxt->sax->endElement(ctxt->userData, name);
+                    }
 		    htmlnamePop(ctxt);
 		    ctxt->instate = XML_PARSER_CONTENT;
 		    break;
@@ -5243,8 +5273,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 */
 		if ((info != NULL) && (info->empty)) {
                     htmlParserFinishElementParsing(ctxt);
-		    if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
-			ctxt->sax->endElement(ctxt->userData, name);
+                    if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
+                        if ((ctxt->sax != NULL) &&
+                            (ctxt->sax->endElement != NULL))
+                            ctxt->sax->endElement(ctxt->userData, name);
+                    }
 		    htmlnamePop(ctxt);
 		}
 
@@ -6031,6 +6064,10 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
     if (options & HTML_PARSE_NOIMPLIED) {
         ctxt->options |= HTML_PARSE_NOIMPLIED;
         options -= HTML_PARSE_NOIMPLIED;
+    }
+    if (options & HTML_PARSE_HTML5) {
+        ctxt->options |= HTML_PARSE_HTML5;
+        options -= HTML_PARSE_HTML5;
     }
     ctxt->dictNames = 0;
     ctxt->linenumbers = 1;

@@ -3443,6 +3443,13 @@ done:
     return;
 }
 
+static const short htmlC1Remap[32] = {
+    0x20AC, 0x0081, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021,
+    0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0x008D, 0x017D, 0x008F,
+    0x0090, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014,
+    0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x009D, 0x017E, 0x0178
+};
+
 /**
  * htmlParseCharRef:
  * @ctxt:  an HTML parser context
@@ -3462,63 +3469,57 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 
     if ((ctxt == NULL) || (ctxt->input == NULL))
         return(0);
+
     if ((CUR == '&') && (NXT(1) == '#') &&
         ((NXT(2) == 'x') || NXT(2) == 'X')) {
 	SKIP(3);
-	while (CUR != ';') {
-	    if ((CUR >= '0') && (CUR <= '9')) {
-                if (val < 0x110000)
-	            val = val * 16 + (CUR - '0');
-            } else if ((CUR >= 'a') && (CUR <= 'f')) {
-                if (val < 0x110000)
-	            val = val * 16 + (CUR - 'a') + 10;
-            } else if ((CUR >= 'A') && (CUR <= 'F')) {
-                if (val < 0x110000)
-	            val = val * 16 + (CUR - 'A') + 10;
+	while (1) {
+            int c = CUR;
+
+	    if ((c >= '0') && (c <= '9')) {
+	        c -= '0';
+            } else if ((c >= 'a') && (c <= 'f')) {
+	        c = (c - 'a') + 10;
+            } else if ((c >= 'A') && (c <= 'F')) {
+	        c = (c - 'A') + 10;
             } else {
-	        htmlParseErr(ctxt, XML_ERR_INVALID_HEX_CHARREF,
-		             "htmlParseCharRef: missing semicolon\n",
-			     NULL, NULL);
 		break;
 	    }
+            val = val * 16 + c;
+            if (val >= 0x110000)
+                val = 0x110000;
 	    NEXT;
 	}
 	if (CUR == ';')
 	    SKIP(1);
     } else if  ((CUR == '&') && (NXT(1) == '#')) {
 	SKIP(2);
-	while (CUR != ';') {
-	    if ((CUR >= '0') && (CUR <= '9')) {
-                if (val < 0x110000)
-	            val = val * 10 + (CUR - '0');
-            } else {
-	        htmlParseErr(ctxt, XML_ERR_INVALID_DEC_CHARREF,
-		             "htmlParseCharRef: missing semicolon\n",
-			     NULL, NULL);
-		break;
-	    }
+	while (1) {
+            int c = CUR;
+
+	    if ((c < '0') || (c > '9'))
+                break;
+	    val = val * 10 + (c - '0');
+            if (val >= 0x110000)
+                val = 0x110000;
 	    NEXT;
 	}
 	if (CUR == ';')
 	    SKIP(1);
-    } else {
-	htmlParseErr(ctxt, XML_ERR_INVALID_CHARREF,
-	             "htmlParseCharRef: invalid value\n", NULL, NULL);
     }
+
     /*
-     * Check the value IS_CHAR ...
+     * Remap C1 control characters
      */
-    if (IS_CHAR(val)) {
-        return(val);
-    } else if (val >= 0x110000) {
-	htmlParseErr(ctxt, XML_ERR_INVALID_CHAR,
-		     "htmlParseCharRef: value too large\n", NULL, NULL);
-    } else {
-	htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-			"htmlParseCharRef: invalid xmlChar value %d\n",
-			val);
+    if ((val >= 0x80) && (val < 0xA0)) {
+        val = htmlC1Remap[val - 0x80];
+    } else if ((val <= 0) ||
+               ((val >= 0xD800) && (val < 0xE000)) ||
+               (val > 0x10FFFF)) {
+        val = 0xFFFD;
     }
-    return(0);
+
+    return(val);
 }
 
 
@@ -4070,10 +4071,15 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
  */
 static void
 htmlParseReference(htmlParserCtxtPtr ctxt) {
+    const xmlChar *repl = NULL;
+    int replLen = 0;
     xmlChar out[6];
-    if (CUR != '&') return;
 
-    if (NXT(1) == '#') {
+    if ((NXT(1) == '#') &&
+        ((IS_ASCII_DIGIT(NXT(2))) ||
+         ((UPP(2) == 'X') &&
+          ((IS_ASCII_DIGIT(NXT(3))) ||
+           ((UPP(3) >= 'A') && (UPP(3) <= 'F')))))) {
 	unsigned int c;
 	int bits, i = 0;
 
@@ -4091,30 +4097,29 @@ htmlParseReference(htmlParserCtxtPtr ctxt) {
         }
 	out[i] = 0;
 
-	htmlCheckParagraph(ctxt);
-	if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-	    ctxt->sax->characters(ctxt->userData, out, i);
-    } else {
-        const xmlChar *repl;
-        int nameLen, replLen;
+        repl = out;
+        replLen = i;
+    } else if (IS_ASCII_LETTER(NXT(1))) {
+        int nameLen;
 
-	htmlCheckParagraph(ctxt);
-
-        SKIP(1);
-        repl = htmlFindEntityPrefix(CUR_PTR,
-                                    ctxt->input->end - CUR_PTR,
+        repl = htmlFindEntityPrefix(CUR_PTR + 1,
+                                    ctxt->input->end - CUR_PTR - 1,
                                     /* isAttr */ 0,
                                     &nameLen, &replLen);
 
-        if (repl == NULL) {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-		ctxt->sax->characters(ctxt->userData, BAD_CAST "&", 1);
-        } else {
-	    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-		ctxt->sax->characters(ctxt->userData, repl, replLen);
-            SKIP(nameLen);
-        }
+        if (repl != NULL)
+            SKIP(nameLen + 1);
     }
+
+    if (repl == NULL) {
+        repl = BAD_CAST "&";
+        replLen = 1;
+        SKIP(1);
+    }
+
+    htmlCheckParagraph(ctxt);
+    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
+        ctxt->sax->characters(ctxt->userData, repl, replLen);
 }
 
 /**

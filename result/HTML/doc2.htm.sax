@@ -17,7 +17,6 @@ SAX.endElement(script)
 SAX.characters(
 , 1)
 SAX.comment( END Naviscope Javascript )
-SAX.error: Misplaced DOCTYPE declaration
 SAX.internalSubset(HTML, -//W3C//DTD HTML 4.0 Transitional//EN, )
 SAX.comment( saved from url=(0027)http://www.agents-tech.com/ )
 SAX.characters(

@@ -1,6 +1,3 @@
-./test/HTML/doc3.htm:3: HTML parser error : Misplaced DOCTYPE declaration
-<!-- END Naviscope Javascript --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN
-                                 ^
 ./test/HTML/doc3.htm:81: HTML parser error : Unexpected end tag : p
   </P></TD></TR></TBODY></TABLE></CENTER></TD></TR></TBODY></TABLE></CENTER></P>
                                                                                ^

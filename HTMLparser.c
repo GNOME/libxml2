@@ -396,6 +396,12 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                 *len = 0;
                 return(0);
             }
+        } else if (c == 0x0D) {
+            if (cur[1] == 0x0A)
+                *len = 2;
+            else
+                *len = 1;
+            return(0x0A);
         }
 
         *len = 1;

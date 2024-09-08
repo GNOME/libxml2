@@ -372,43 +372,6 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
     if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)
         xmlParserGrow(ctxt);
 
-    if ((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) {
-        xmlChar * guess;
-
-        /*
-         * Assume it's a fixed length encoding (1) with
-         * a compatible encoding for the ASCII set, since
-         * HTML constructs only use < 128 chars
-         */
-        if (*ctxt->input->cur < 0x80) {
-            if (*ctxt->input->cur == 0) {
-                if (ctxt->input->cur < ctxt->input->end) {
-                    htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                                    "Char 0x%X out of allowed range\n", 0);
-                    *len = 1;
-                    return(' ');
-                } else {
-                    *len = 0;
-                    return(0);
-                }
-            }
-            *len = 1;
-            return(*ctxt->input->cur);
-        }
-
-        /*
-         * Humm this is bad, do an automatic flow conversion
-         */
-        guess = htmlFindEncoding(ctxt);
-        if (guess == NULL) {
-            xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
-        } else {
-            xmlSwitchEncodingName(ctxt, (const char *) guess);
-            xmlFree(guess);
-        }
-        ctxt->input->flags |= XML_INPUT_HAS_ENCODING;
-    }
-
     /*
      * We are supposed to handle UTF8, check it's valid
      * From rfc2044: encoding of the Unicode values on UTF-8:
@@ -422,8 +385,39 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
      */
     cur = ctxt->input->cur;
     c = *cur;
-    if (c & 0x80) {
+    if (c < 0x80) {
+        if (c == 0) {
+            if (ctxt->input->cur < ctxt->input->end) {
+                htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
+                                "Char 0x%X out of allowed range\n", 0);
+                *len = 1;
+                return(' ');
+            } else {
+                *len = 0;
+                return(0);
+            }
+        }
+
+        *len = 1;
+        return(c);
+    } else {
         size_t avail;
+
+        if ((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) {
+            xmlChar * guess;
+
+            guess = htmlFindEncoding(ctxt);
+            if (guess == NULL) {
+                xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
+            } else {
+                xmlSwitchEncodingName(ctxt, (const char *) guess);
+                xmlFree(guess);
+            }
+            ctxt->input->flags |= XML_INPUT_HAS_ENCODING;
+
+            cur = ctxt->input->cur;
+            c = *cur;
+        }
 
         if ((c & 0x40) == 0)
             goto encoding_error;
@@ -469,21 +463,6 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
                             "Char 0x%X out of allowed range\n", val);
         }
         return(val);
-    } else {
-        if (*ctxt->input->cur == 0) {
-            if (ctxt->input->cur < ctxt->input->end) {
-                htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                                "Char 0x%X out of allowed range\n", 0);
-                *len = 1;
-                return(' ');
-            } else {
-                *len = 0;
-                return(0);
-            }
-        }
-        /* 1-byte code */
-        *len = 1;
-        return(*ctxt->input->cur);
     }
 
 encoding_error:

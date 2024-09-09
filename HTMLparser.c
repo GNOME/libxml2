@@ -80,23 +80,6 @@ htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                str1, str2, NULL, 0, msg, str1, str2);
 }
 
-/**
- * htmlParseErrInt:
- * @ctxt:  an HTML parser context
- * @error:  the error number
- * @msg:  the error message
- * @val:  integer info
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
- */
-static void LIBXML_ATTR_FORMAT(3,0)
-htmlParseErrInt(xmlParserCtxtPtr ctxt, xmlParserErrors error,
-             const char *msg, int val)
-{
-    xmlCtxtErr(ctxt, NULL, XML_FROM_HTML, error, XML_ERR_ERROR,
-               NULL, NULL, NULL, val, msg, val);
-}
-
 /************************************************************************
  *									*
  *	Parser stacks related functions and macros		*
@@ -2996,125 +2979,6 @@ htmlParseAttValue(htmlParserCtxtPtr ctxt) {
     return(ret);
 }
 
-/**
- * htmlParseSystemLiteral:
- * @ctxt:  an HTML parser context
- *
- * parse an HTML Literal
- *
- * [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
- *
- * Returns the SystemLiteral parsed or NULL
- */
-
-static xmlChar *
-htmlParseSystemLiteral(htmlParserCtxtPtr ctxt) {
-    size_t len = 0, startPosition = 0;
-    int err = 0;
-    int quote;
-    xmlChar *ret = NULL;
-
-    if ((CUR != '"') && (CUR != '\'')) {
-	htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_STARTED,
-	             "SystemLiteral \" or ' expected\n", NULL, NULL);
-        return(NULL);
-    }
-    quote = CUR;
-    NEXT;
-
-    if (CUR_PTR < BASE_PTR)
-        return(ret);
-    startPosition = CUR_PTR - BASE_PTR;
-
-    while ((PARSER_STOPPED(ctxt) == 0) &&
-           (CUR != 0) && (CUR != quote) && (CUR != '>')) {
-        /* TODO: Handle UTF-8 */
-        if (!IS_CHAR_CH(CUR)) {
-            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                            "Invalid char in SystemLiteral 0x%X\n", CUR);
-            err = 1;
-        }
-        NEXT;
-        len++;
-    }
-    if (CUR != quote) {
-        htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
-                     "Unfinished SystemLiteral\n", NULL, NULL);
-    } else {
-        if (err == 0) {
-            ret = xmlStrndup((BASE_PTR+startPosition), len);
-            if (ret == NULL) {
-                htmlErrMemory(ctxt);
-                return(NULL);
-            }
-        }
-        NEXT;
-    }
-
-    return(ret);
-}
-
-/**
- * htmlParsePubidLiteral:
- * @ctxt:  an HTML parser context
- *
- * parse an HTML public literal
- *
- * [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
- *
- * Returns the PubidLiteral parsed or NULL.
- */
-
-static xmlChar *
-htmlParsePubidLiteral(htmlParserCtxtPtr ctxt) {
-    size_t len = 0, startPosition = 0;
-    int err = 0;
-    int quote;
-    xmlChar *ret = NULL;
-
-    if ((CUR != '"') && (CUR != '\'')) {
-	htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_STARTED,
-	             "PubidLiteral \" or ' expected\n", NULL, NULL);
-        return(NULL);
-    }
-    quote = CUR;
-    NEXT;
-
-    /*
-     * Name ::= (Letter | '_') (NameChar)*
-     */
-    if (CUR_PTR < BASE_PTR)
-        return(ret);
-    startPosition = CUR_PTR - BASE_PTR;
-
-    while ((PARSER_STOPPED(ctxt) == 0) &&
-           (CUR != 0) && (CUR != quote) && (CUR != '>')) {
-        if (!IS_PUBIDCHAR_CH(CUR)) {
-            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                            "Invalid char in PubidLiteral 0x%X\n", CUR);
-            err = 1;
-        }
-        len++;
-        NEXT;
-    }
-
-    if (CUR != quote) {
-        htmlParseErr(ctxt, XML_ERR_LITERAL_NOT_FINISHED,
-                     "Unfinished PubidLiteral\n", NULL, NULL);
-    } else {
-        if (err == 0) {
-            ret = xmlStrndup((BASE_PTR + startPosition), len);
-            if (ret == NULL) {
-                htmlErrMemory(ctxt);
-                return(NULL);
-            }
-        }
-        NEXT;
-    }
-
-    return(ret);
-}
-
 static void
 htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
                         int size, int mode) {
@@ -3279,64 +3143,6 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int terminate) {
         ctxt->endCheckState = mode;
 
     return(res);
-}
-
-/**
- * htmlParseExternalID:
- * @ctxt:  an HTML parser context
- * @publicID:  a xmlChar** receiving PubidLiteral
- *
- * Parse an External ID or a Public ID
- *
- * [75] ExternalID ::= 'SYSTEM' S SystemLiteral
- *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
- *
- * [83] PublicID ::= 'PUBLIC' S PubidLiteral
- *
- * Returns the function returns SystemLiteral and in the second
- *                case publicID receives PubidLiteral, is strict is off
- *                it is possible to return NULL and have publicID set.
- */
-
-static xmlChar *
-htmlParseExternalID(htmlParserCtxtPtr ctxt, xmlChar **publicID) {
-    xmlChar *URI = NULL;
-
-    if ((UPPER == 'S') && (UPP(1) == 'Y') &&
-         (UPP(2) == 'S') && (UPP(3) == 'T') &&
-	 (UPP(4) == 'E') && (UPP(5) == 'M')) {
-        SKIP(6);
-	if (!IS_BLANK_CH(CUR)) {
-	    htmlParseErr(ctxt, XML_ERR_SPACE_REQUIRED,
-	                 "Space required after 'SYSTEM'\n", NULL, NULL);
-	}
-        SKIP_BLANKS;
-	URI = htmlParseSystemLiteral(ctxt);
-	if (URI == NULL) {
-	    htmlParseErr(ctxt, XML_ERR_URI_REQUIRED,
-	                 "htmlParseExternalID: SYSTEM, no URI\n", NULL, NULL);
-        }
-    } else if ((UPPER == 'P') && (UPP(1) == 'U') &&
-	       (UPP(2) == 'B') && (UPP(3) == 'L') &&
-	       (UPP(4) == 'I') && (UPP(5) == 'C')) {
-        SKIP(6);
-	if (!IS_BLANK_CH(CUR)) {
-	    htmlParseErr(ctxt, XML_ERR_SPACE_REQUIRED,
-	                 "Space required after 'PUBLIC'\n", NULL, NULL);
-	}
-        SKIP_BLANKS;
-	*publicID = htmlParsePubidLiteral(ctxt);
-	if (*publicID == NULL) {
-	    htmlParseErr(ctxt, XML_ERR_PUBID_REQUIRED,
-	                 "htmlParseExternalID: PUBLIC, no Public Identifier\n",
-			 NULL, NULL);
-	}
-        SKIP_BLANKS;
-        if ((CUR == '"') || (CUR == '\'')) {
-	    URI = htmlParseSystemLiteral(ctxt);
-	}
-    }
-    return(URI);
 }
 
 /**
@@ -3516,20 +3322,91 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 
 
 /**
+ * htmlParseDoctypeLiteral:
+ * @ctxt:  an HTML parser context
+ *
+ * Parse a DOCTYPE SYTSTEM or PUBLIC literal.
+ *
+ * Returns the literal or NULL in case of error.
+ */
+
+static xmlChar *
+htmlParseDoctypeLiteral(htmlParserCtxtPtr ctxt) {
+    xmlChar *buf = NULL;
+    int len;
+    int size = HTML_PARSER_BUFFER_SIZE;
+    int quote, cur, l;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_TEXT_LENGTH :
+                    XML_MAX_NAME_LENGTH;
+
+    if ((CUR != '"') && (CUR != '\''))
+        return(NULL);
+    quote = CUR;
+    NEXT;
+
+    buf = xmlMalloc(size);
+    if (buf == NULL) {
+        htmlErrMemory(ctxt);
+	return(NULL);
+    }
+    len = 0;
+
+    while (ctxt->input->cur < ctxt->input->end) {
+        cur = CUR_CHAR(l);
+
+        if (cur == '>')
+            break;
+
+        if (cur == quote) {
+            SKIP(1);
+            break;
+        }
+
+	if (len + 5 >= size) {
+	    xmlChar *tmp;
+
+	    size *= 2;
+	    tmp = (xmlChar *) xmlRealloc(buf, size);
+	    if (tmp == NULL) {
+	        xmlFree(buf);
+	        htmlErrMemory(ctxt);
+		return(NULL);
+	    }
+	    buf = tmp;
+	}
+
+	COPY_BUF(buf,len,cur);
+        if (len > maxLength) {
+            htmlParseErr(ctxt, XML_ERR_RESOURCE_LIMIT,
+                         "identifier too long", NULL, NULL);
+            xmlFree(buf);
+            return(NULL);
+        }
+
+        NEXTL(l);
+    }
+
+    buf[len] = 0;
+    return(buf);
+}
+
+/**
  * htmlParseDocTypeDecl:
  * @ctxt:  an HTML parser context
  *
- * parse a DOCTYPE declaration
- *
- * [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
- *                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
+ * Parse a DOCTYPE declaration.
  */
 
 static void
 htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
-    const xmlChar *name;
-    xmlChar *ExternalID = NULL;
+    xmlChar *name = NULL;
+    xmlChar *publicId = NULL;
     xmlChar *URI = NULL;
+    int nameCap, nameSize;
+    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+                    XML_MAX_TEXT_LENGTH :
+                    XML_MAX_NAME_LENGTH;
 
     /*
      * We know that '<!DOCTYPE' has been detected.
@@ -3538,15 +3415,54 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
 
     SKIP_BLANKS;
 
-    /*
-     * Parse the DOCTYPE name.
-     */
-    name = htmlParseName(ctxt);
-    if (name == NULL) {
-	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-	             "htmlParseDocTypeDecl : no DOCTYPE name !\n",
-		     NULL, NULL);
+    nameCap = 0;
+    nameSize = 0;
+    while (ctxt->input->cur < ctxt->input->end) {
+        int l;
+        int c = CUR_CHAR(l);
+
+        if (c == '>')
+            break;
+
+        if (nameSize + 5 > nameCap) {
+            size_t newCap = nameCap ? nameCap * 2 : 32;
+            xmlChar *tmp = xmlRealloc(name, newCap);
+
+            if (tmp == NULL) {
+                htmlErrMemory(ctxt);
+                xmlFree(name);
+                return;
+            }
+
+            name = tmp;
+            nameCap = newCap;
+        }
+
+        if (c < 0x80) {
+            if (IS_WS_HTML(c))
+                break;
+
+            if ((ctxt->options & HTML_PARSE_HTML5) &&
+                (c >= 'A') && (c <= 'Z'))
+                c += 32;
+
+            name[nameSize++] = c;
+        } else {
+            COPY_BUF(name, nameSize, c);
+        }
+
+        if (nameSize > maxLength) {
+            htmlParseErr(ctxt, XML_ERR_RESOURCE_LIMIT,
+                         "identifier too long", NULL, NULL);
+            goto bogus;
+        }
+
+        NEXTL(l);
     }
+
+    if (name != NULL)
+        name[nameSize] = 0;
+
     /*
      * Check that upper(name) == "HTML" !!!!!!!!!!!!!
      */
@@ -3554,37 +3470,46 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     SKIP_BLANKS;
 
     /*
-     * Check for SystemID and ExternalID
+     * Check for SystemID and publicId
      */
-    URI = htmlParseExternalID(ctxt, &ExternalID);
-    SKIP_BLANKS;
-
-    /*
-     * We should be at the end of the DOCTYPE declaration.
-     */
-    if (CUR != '>') {
-	htmlParseErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED,
-	             "DOCTYPE improperly terminated\n", NULL, NULL);
-        /* Ignore bogus content */
-        while ((CUR != 0) && (CUR != '>') &&
-               (PARSER_STOPPED(ctxt) == 0))
-            NEXT;
+    if ((UPPER == 'P') && (UPP(1) == 'U') &&
+	(UPP(2) == 'B') && (UPP(3) == 'L') &&
+	(UPP(4) == 'I') && (UPP(5) == 'C')) {
+        SKIP(6);
+        SKIP_BLANKS;
+	publicId = htmlParseDoctypeLiteral(ctxt);
+	if (publicId == NULL)
+            goto bogus;
+        SKIP_BLANKS;
+	URI = htmlParseDoctypeLiteral(ctxt);
+    } else if ((UPPER == 'S') && (UPP(1) == 'Y') &&
+               (UPP(2) == 'S') && (UPP(3) == 'T') &&
+	       (UPP(4) == 'E') && (UPP(5) == 'M')) {
+        SKIP(6);
+        SKIP_BLANKS;
+	URI = htmlParseDoctypeLiteral(ctxt);
     }
-    if (CUR == '>')
-        SKIP(1);
+
+bogus:
+    /* Ignore bogus content */
+    while (ctxt->input->cur < ctxt->input->end) {
+        int c = CUR;
+
+        NEXT;
+        if (c == '>')
+            break;
+    }
 
     /*
      * Create or update the document accordingly to the DOCTYPE
      */
     if ((ctxt->sax != NULL) && (ctxt->sax->internalSubset != NULL) &&
 	(!ctxt->disableSAX))
-	ctxt->sax->internalSubset(ctxt->userData, name, ExternalID, URI);
+	ctxt->sax->internalSubset(ctxt->userData, name, publicId, URI);
 
-    /*
-     * Cleanup, since we don't use all those identifiers
-     */
-    if (URI != NULL) xmlFree(URI);
-    if (ExternalID != NULL) xmlFree(ExternalID);
+    xmlFree(name);
+    xmlFree(URI);
+    xmlFree(publicId);
 }
 
 /**

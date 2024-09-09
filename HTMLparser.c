@@ -462,10 +462,6 @@ htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
             if (val < 0x80)
                 goto encoding_error;
         }
-        if (!IS_CHAR(val)) {
-            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                            "Char 0x%X out of allowed range\n", val);
-        }
         return(val);
     }
 
@@ -3414,12 +3410,8 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
 	    }
 	    buf = tmp;
 	}
-        if (IS_CHAR(cur)) {
-	    COPY_BUF(buf,len,cur);
-        } else {
-            htmlParseErrInt(ctxt, XML_ERR_INVALID_CHAR,
-                            "Invalid char in comment 0x%X\n", cur);
-        }
+
+	COPY_BUF(buf,len,cur);
         if (len > maxLength) {
             htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
                          "comment too long", NULL, NULL);

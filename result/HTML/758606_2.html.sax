@@ -1,6 +1,5 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.error: Invalid char in comment 0xC
-SAX.comment(<!dOctYPE
+SAX.comment(<!dOctYPE
 )
 SAX.endDocument()

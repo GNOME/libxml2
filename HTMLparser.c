@@ -3877,6 +3877,11 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     }
     SKIP(2);
 
+    if (!IS_ASCII_LETTER(CUR)) {
+        htmlParseComment(ctxt, /* bogus */ 1);
+        return(0);
+    }
+
     name = htmlParseHTMLName(ctxt, 0);
     if (name == NULL)
         return (0);

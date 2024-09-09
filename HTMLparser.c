@@ -38,6 +38,10 @@
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000
 #define HTML_PARSER_BUFFER_SIZE 100
 
+#define IS_WS_HTML(c) \
+    (((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0C) || ((c) == 0x0D) || \
+     ((c) == 0x20))
+
 static int htmlOmittedDefaultValue = 1;
 
 static int
@@ -470,7 +474,7 @@ static int
 htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     int res = 0;
 
-    while (IS_BLANK_CH(*(ctxt->input->cur))) {
+    while (IS_WS_HTML(*(ctxt->input->cur))) {
         if (*(ctxt->input->cur) == '\n') {
             ctxt->input->line++; ctxt->input->col = 1;
         } else ctxt->input->col++;
@@ -2380,7 +2384,7 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     xmlDtdPtr dtd;
 
     for (j = 0;j < len;j++)
-        if (!(IS_BLANK_CH(str[j]))) return(0);
+        if (!(IS_WS_HTML(str[j]))) return(0);
 
     if (CUR == 0) return(1);
     if (CUR != '<') return(0);
@@ -2538,7 +2542,7 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
     c = CUR_CHAR(l);
     while ((c != 0) && (c != '/') && (c != '>') &&
            ((nbchar == 0) || (c != stop)) &&
-           (!IS_BLANK_CH(c))) {
+           (!IS_WS_HTML(c))) {
         if (nbchar + l <= HTML_PARSER_BUFFER_SIZE) {
             if ((c >= 'A') && (c <= 'Z'))  {
                 buf[nbchar++] = c + 0x20;
@@ -2805,7 +2809,7 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
     while ((PARSER_STOPPED(ctxt) == 0) &&
            (CUR != 0) && (CUR != stop)) {
 	if ((stop == 0) && (CUR == '>')) break;
-	if ((stop == 0) && (IS_BLANK_CH(CUR))) break;
+	if ((stop == 0) && (IS_WS_HTML(CUR))) break;
 
         if (out - buffer > buffer_size - 100) {
             int indx = out - buffer;
@@ -3077,7 +3081,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int terminate) {
                         if ((ctxt->name[i] == 0) && (j < len)) {
                             int c = NXT(j);
 
-                            if ((c == '>') || (c == '/') || (IS_BLANK_CH(c))) {
+                            if ((c == '>') || (c == '/') || (IS_WS_HTML(c))) {
                                 if ((mode == DATA_SCRIPT_ESC1) && (!solidus)) {
                                     mode = DATA_SCRIPT_ESC2;
                                 } else if (mode == DATA_SCRIPT_ESC2) {
@@ -3585,7 +3589,7 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
     /*
      * skip blank
      */
-    if (encoding && IS_BLANK_CH(*encoding))
+    if (encoding && IS_WS_HTML(*encoding))
 	encoding = xmlStrcasestr(attvalue, BAD_CAST"=");
     if (encoding && *encoding == '=') {
 	encoding ++;
@@ -4716,26 +4720,26 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
 
         switch (state) {
             case LSTATE_TAG_NAME:
-                if (IS_BLANK_CH(c))
+                if (IS_WS_HTML(c))
                     state = LSTATE_BEFORE_ATTR_NAME;
                 break;
 
             case LSTATE_BEFORE_ATTR_NAME:
-                if (!IS_BLANK_CH(c))
+                if (!IS_WS_HTML(c))
                     state = LSTATE_ATTR_NAME;
                 break;
 
             case LSTATE_ATTR_NAME:
                 if (c == '=')
                     state = LSTATE_BEFORE_ATTR_VALUE;
-                else if (IS_BLANK(c))
+                else if (IS_WS_HTML(c))
                     state = LSTATE_AFTER_ATTR_NAME;
                 break;
 
             case LSTATE_AFTER_ATTR_NAME:
                 if (c == '=')
                     state = LSTATE_BEFORE_ATTR_VALUE;
-                else if (!IS_BLANK(c))
+                else if (!IS_WS_HTML(c))
                     state = LSTATE_ATTR_NAME;
                 break;
 
@@ -4744,7 +4748,7 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
                     state = LSTATE_ATTR_VALUE_DQUOTED;
                 else if (c == '\'')
                     state = LSTATE_ATTR_VALUE_SQUOTED;
-                else if (!IS_BLANK(c))
+                else if (!IS_WS_HTML(c))
                     state = LSTATE_ATTR_VALUE_UNQUOTED;
                 break;
 
@@ -4759,7 +4763,7 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
                 break;
 
             case LSTATE_ATTR_VALUE_UNQUOTED:
-                if (IS_BLANK_CH(c))
+                if (IS_WS_HTML(c))
                     state = LSTATE_BEFORE_ATTR_NAME;
                 break;
         }

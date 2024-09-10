@@ -1301,7 +1301,7 @@ xmlUconvConvert(unsigned char *out, int *outlen,
                 break;
 
             case U_MEMORY_ALLOCATION_ERROR:
-                ret = XML_ERR_NO_MEMORY;
+                ret = XML_ENC_ERR_MEMORY;
                 break;
 
             default:

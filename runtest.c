@@ -87,7 +87,7 @@
 /*
  * pseudo flag for the unification of HTML and XML tests
  */
-#define XML_PARSE_HTML 1 << 24
+#define XML_PARSE_HTML 1 << 30
 
 /*
  * O_BINARY is just for Windows compatibility - if it isn't defined

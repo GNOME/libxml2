@@ -3667,7 +3667,7 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
  * Returns 0 in case of success, -1 in case of error and 1 if discarded
  */
 
-static int
+static void
 htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     const xmlChar *name;
     const xmlChar *attname;
@@ -3679,9 +3679,6 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     int i;
     int discardtag = 0;
 
-    if ((ctxt == NULL) || (ctxt->input == NULL))
-	return -1;
-    if (CUR != '<') return -1;
     SKIP(1);
 
     atts = ctxt->atts;
@@ -3690,7 +3687,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     GROW;
     name = htmlParseHTMLName(ctxt, 0);
     if (name == NULL)
-        return -1;
+        return;
     if (xmlStrEqual(name, BAD_CAST"meta"))
 	meta = 1;
 
@@ -3850,8 +3847,6 @@ done:
 		xmlFree((xmlChar *) atts[i]);
 	}
     }
-
-    return(discardtag);
 }
 
 /**
@@ -3869,31 +3864,28 @@ done:
  * Returns 1 if the current level should be closed.
  */
 
-static int
+static void
 htmlParseEndTag(htmlParserCtxtPtr ctxt)
 {
     const xmlChar *name;
     const xmlChar *oldname;
-    int i, ret;
+    int i;
 
-    if ((CUR != '<') || (NXT(1) != '/')) {
-        return (0);
-    }
     SKIP(2);
 
     if (CUR == '>') {
         SKIP(1);
-        return(0);
+        return;
     }
 
     if (!IS_ASCII_LETTER(CUR)) {
         htmlParseComment(ctxt, /* bogus */ 1);
-        return(0);
+        return;
     }
 
     name = htmlParseHTMLName(ctxt, 0);
     if (name == NULL)
-        return (0);
+        return;
 
     /*
      * Parse and ignore attributes.
@@ -3924,13 +3916,13 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     } else if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
     } else {
-        return(0);
+        return;
     }
 
     if (ctxt->options & HTML_PARSE_HTML5) {
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, name);
-        return(0);
+        return;
     }
 
     /*
@@ -3942,7 +3934,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
          xmlStrEqual(name, BAD_CAST "body") ||
 	 xmlStrEqual(name, BAD_CAST "head"))) {
 	ctxt->depth--;
-	return (0);
+	return;
     }
 
     /*
@@ -3956,7 +3948,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     if (i < 0) {
         htmlParseErr(ctxt, XML_ERR_TAG_NAME_MISMATCH,
 	             "Unexpected end tag : %s\n", name, NULL);
-        return (0);
+        return;
     }
 
 
@@ -3986,12 +3978,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
         if ((ctxt->sax != NULL) && (ctxt->sax->endElement != NULL))
             ctxt->sax->endElement(ctxt->userData, name);
         htmlnamePop(ctxt);
-        ret = 1;
-    } else {
-        ret = 0;
     }
-
-    return (ret);
 }
 
 
@@ -4134,7 +4121,6 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     const xmlChar *name;
     const htmlElemDesc * info;
     htmlParserNodeInfo node_info = { NULL, 0, 0, 0, 0 };
-    int failed;
 
     if ((ctxt == NULL) || (ctxt->input == NULL))
 	return(0);
@@ -4146,13 +4132,10 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
 	node_info.begin_line = ctxt->input->line;
     }
 
-    failed = htmlParseStartTag(ctxt);
+    htmlParseStartTag(ctxt);
     name = ctxt->name;
-    if ((failed == -1) || (name == NULL)) {
-	if (CUR == '>')
-	    SKIP(1);
+    if (name == NULL)
         return(0);
-    }
 
     /*
      * Lookup the info for that element.
@@ -4934,7 +4917,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		break;
             case XML_PARSER_START_TAG: {
 	        const xmlChar *name;
-		int failed, next;
+		int next;
 		const htmlElemDesc * info;
 
 		/*
@@ -4965,14 +4948,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	        }
 
 
-		failed = htmlParseStartTag(ctxt);
+		htmlParseStartTag(ctxt);
 		name = ctxt->name;
-		if ((failed == -1) ||
-		    (name == NULL)) {
-		    if (CUR == '>')
-			SKIP(1);
+		if (name == NULL)
 		    break;
-		}
 
 		/*
 		 * Lookup the info for that element.

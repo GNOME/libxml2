@@ -13376,7 +13376,10 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
               XML_PARSE_OLDSAX |
               XML_PARSE_IGNORE_ENC |
               XML_PARSE_BIG_LINES |
-              XML_PARSE_NO_XXE;
+              XML_PARSE_NO_XXE |
+              XML_PARSE_NO_UNZIP |
+              XML_PARSE_NO_SYS_CATALOG |
+              XML_PARSE_NO_CATALOG_PI;
 
     ctxt->options = (ctxt->options & keepMask) | (options & allMask);
 

@@ -2623,7 +2623,7 @@ static const xmlChar *
 htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     int len = 0, l;
     int c;
-    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
     const xmlChar *base = ctxt->input->base;
@@ -2796,7 +2796,7 @@ static xmlChar *
 htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, int stop) {
     xmlChar *buffer = NULL;
     int buffer_size = 0;
-    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_HUGE_LENGTH :
                     XML_MAX_TEXT_LENGTH;
     xmlChar *out = NULL;
@@ -3162,7 +3162,7 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
     int len;
     int size = HTML_PARSER_BUFFER_SIZE;
     int cur, l;
-    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_HUGE_LENGTH :
                     XML_MAX_TEXT_LENGTH;
     xmlParserInputState state;
@@ -3356,7 +3356,7 @@ htmlParseDoctypeLiteral(htmlParserCtxtPtr ctxt) {
     int len;
     int size = HTML_PARSER_BUFFER_SIZE;
     int quote, cur, l;
-    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
 
@@ -3424,7 +3424,7 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     xmlChar *publicId = NULL;
     xmlChar *URI = NULL;
     int nameCap, nameSize;
-    int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
+    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
 
@@ -5714,12 +5714,178 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
         xmlResetError(&ctxt->lastError);
 }
 
+static int
+htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
+{
+    int allMask;
+
+    if (ctxt == NULL)
+        return(-1);
+
+    allMask = HTML_PARSE_RECOVER |
+              HTML_PARSE_HTML5 |
+              HTML_PARSE_NODEFDTD |
+              HTML_PARSE_NOERROR |
+              HTML_PARSE_NOWARNING |
+              HTML_PARSE_PEDANTIC |
+              HTML_PARSE_NOBLANKS |
+              HTML_PARSE_NONET |
+              HTML_PARSE_NOIMPLIED |
+              HTML_PARSE_COMPACT |
+              HTML_PARSE_HUGE |
+              HTML_PARSE_IGNORE_ENC |
+              HTML_PARSE_BIG_LINES;
+
+    ctxt->options = (ctxt->options & keepMask) | (options & allMask);
+
+    /*
+     * For some options, struct members are historically the source
+     * of truth. See xmlCtxtSetOptionsInternal.
+     */
+    ctxt->keepBlanks = (options & HTML_PARSE_NOBLANKS) ? 0 : 1;
+
+    /*
+     * Changing SAX callbacks is a bad idea. This should be fixed.
+     */
+    if (options & HTML_PARSE_NOBLANKS) {
+        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
+    }
+    if (options & HTML_PARSE_HUGE) {
+        if (ctxt->dict != NULL)
+            xmlDictSetLimit(ctxt->dict, 0);
+    }
+
+    /*
+     * It would be useful to allow this feature.
+     */
+    ctxt->dictNames = 0;
+
+    ctxt->linenumbers = 1;
+
+    return(options & ~allMask);
+}
+
+/**
+ * htmlCtxtSetOptions:
+ * @ctxt: an HTML parser context
+ * @options:  a bitmask of xmlParserOption values
+ *
+ * Applies the options to the parser context. Unset options are
+ * cleared.
+ *
+ * Available since 2.14.0. With older versions, you can use
+ * htmlCtxtUseOptions.
+ *
+ * HTML_PARSE_RECOVER
+ *
+ * No effect as of 2.14.0.
+ *
+ * HTML_PARSE_HTML5
+ *
+ * Make the tokenizer emit a SAX callback for each token. This results
+ * in unbalanced invocations of startElement and endElement.
+ *
+ * For now, this is only usable with custom SAX callbacks.
+ *
+ * HTML_PARSE_NODEFDTD
+ *
+ * Do not default to a doctype if none was found.
+ *
+ * HTML_PARSE_NOERROR
+ *
+ * Disable error and warning reports to the error handlers.
+ * Errors are still accessible with xmlCtxtGetLastError.
+ *
+ * HTML_PARSE_NOWARNING
+ *
+ * Disable warning reports.
+ *
+ * HTML_PARSE_PEDANTIC
+ *
+ * No effect.
+ *
+ * HTML_PARSE_NOBLANKS
+ *
+ * Remove some text nodes containing only whitespace from the
+ * result document. Which nodes are removed depends on a conservative
+ * heuristic. The reindenting feature of the serialization code relies
+ * on this option to be set when parsing. Use of this option is
+ * DISCOURAGED.
+ *
+ * HTML_PARSE_NONET
+ *
+ * No effect.
+ *
+ * HTML_PARSE_NOIMPLIED
+ *
+ * Do not add implied html, head or body elements.
+ *
+ * HTML_PARSE_COMPACT
+ *
+ * Store small strings directly in the node struct to save
+ * memory.
+ *
+ * HTML_PARSE_HUGE
+ *
+ * Relax some internal limits.
+ *
+ * Available since 2.14.0. Use XML_PARSE_HUGE works with older
+ * versions.
+ *
+ * Maximum size of text nodes, tags, comments, CDATA sections
+ *
+ * normal: 10M
+ * huge:    1B
+ *
+ * Maximum size of names, system literals, pubid literals
+ *
+ * normal: 50K
+ * huge:   10M
+ *
+ * Maximum nesting depth of elements
+ *
+ * normal:  256
+ * huge:   2048
+ *
+ * HTML_PARSE_IGNORE_ENC
+ *
+ * Ignore the encoding in the HTML declaration. This option is
+ * mostly unneeded these days. The only effect is to enforce
+ * UTF-8 decoding of ASCII-like data.
+ *
+ * HTML_PARSE_BIG_LINES
+ *
+ * Enable reporting of line numbers larger than 65535.
+ *
+ * Available since 2.14.0.
+ *
+ * Returns 0 in case of success, the set of unknown or unimplemented options
+ *         in case of error.
+ */
+int
+htmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
+{
+    return(htmlCtxtSetOptionsInternal(ctxt, options, 0));
+}
+
 /**
  * htmlCtxtUseOptions:
  * @ctxt: an HTML parser context
  * @options:  a combination of htmlParserOption(s)
  *
- * Applies the options to the parser context
+ * DEPRECATED: Use htmlCtxtSetOptions.
+ *
+ * Applies the options to the parser context. The following options
+ * are never cleared and can only be enabled:
+ *
+ * HTML_PARSE_NODEFDTD
+ * HTML_PARSE_NOERROR
+ * HTML_PARSE_NOWARNING
+ * HTML_PARSE_NOIMPLIED
+ * HTML_PARSE_COMPACT
+ * HTML_PARSE_HUGE
+ * HTML_PARSE_IGNORE_ENC
+ * HTML_PARSE_BIG_LINES
  *
  * Returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -5727,67 +5893,21 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
 int
 htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 {
-    if (ctxt == NULL)
-        return(-1);
+    int keepMask;
 
-    if (options & HTML_PARSE_NOWARNING) {
-        ctxt->sax->warning = NULL;
-        ctxt->vctxt.warning = NULL;
-        options -= XML_PARSE_NOWARNING;
-	ctxt->options |= XML_PARSE_NOWARNING;
-    }
-    if (options & HTML_PARSE_NOERROR) {
-        ctxt->sax->error = NULL;
-        ctxt->vctxt.error = NULL;
-        ctxt->sax->fatalError = NULL;
-        options -= XML_PARSE_NOERROR;
-	ctxt->options |= XML_PARSE_NOERROR;
-    }
-    if (options & HTML_PARSE_PEDANTIC) {
-        ctxt->pedantic = 1;
-        options -= XML_PARSE_PEDANTIC;
-	ctxt->options |= XML_PARSE_PEDANTIC;
-    } else
-        ctxt->pedantic = 0;
-    if (options & XML_PARSE_NOBLANKS) {
-        ctxt->keepBlanks = 0;
-        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
-        options -= XML_PARSE_NOBLANKS;
-	ctxt->options |= XML_PARSE_NOBLANKS;
-    } else
-        ctxt->keepBlanks = 1;
-    if (options & HTML_PARSE_RECOVER) {
-        ctxt->recovery = 1;
-	options -= HTML_PARSE_RECOVER;
-    } else
-        ctxt->recovery = 0;
-    if (options & HTML_PARSE_COMPACT) {
-	ctxt->options |= HTML_PARSE_COMPACT;
-        options -= HTML_PARSE_COMPACT;
-    }
-    if (options & XML_PARSE_HUGE) {
-	ctxt->options |= XML_PARSE_HUGE;
-        options -= XML_PARSE_HUGE;
-    }
-    if (options & HTML_PARSE_NODEFDTD) {
-	ctxt->options |= HTML_PARSE_NODEFDTD;
-        options -= HTML_PARSE_NODEFDTD;
-    }
-    if (options & HTML_PARSE_IGNORE_ENC) {
-	ctxt->options |= HTML_PARSE_IGNORE_ENC;
-        options -= HTML_PARSE_IGNORE_ENC;
-    }
-    if (options & HTML_PARSE_NOIMPLIED) {
-        ctxt->options |= HTML_PARSE_NOIMPLIED;
-        options -= HTML_PARSE_NOIMPLIED;
-    }
-    if (options & HTML_PARSE_HTML5) {
-        ctxt->options |= HTML_PARSE_HTML5;
-        options -= HTML_PARSE_HTML5;
-    }
-    ctxt->dictNames = 0;
-    ctxt->linenumbers = 1;
-    return (options);
+    /*
+     * For historic reasons, some options can only be enabled.
+     */
+    keepMask = HTML_PARSE_NODEFDTD |
+               HTML_PARSE_NOERROR |
+               HTML_PARSE_NOWARNING |
+               HTML_PARSE_NOIMPLIED |
+               HTML_PARSE_COMPACT |
+               HTML_PARSE_HUGE |
+               HTML_PARSE_IGNORE_ENC |
+               HTML_PARSE_BIG_LINES;
+
+    return(htmlCtxtSetOptionsInternal(ctxt, options, keepMask));
 }
 
 /**

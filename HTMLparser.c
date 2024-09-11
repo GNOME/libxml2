@@ -2784,7 +2784,7 @@ htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
  */
 
 static xmlChar *
-htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
+htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, int stop) {
     xmlChar *buffer = NULL;
     int buffer_size = 0;
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
@@ -2807,7 +2807,8 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, const xmlChar stop) {
      * Ok loop until we reach one of the ending chars
      */
     while ((PARSER_STOPPED(ctxt) == 0) &&
-           (CUR != 0) && (CUR != stop)) {
+           (ctxt->input->cur < ctxt->input->end) &&
+           ((stop == 0) || (CUR != stop))) {
 	if ((stop == 0) && (CUR == '>')) break;
 	if ((stop == 0) && (IS_WS_HTML(CUR))) break;
 
@@ -3758,7 +3759,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
      * (S Attribute)* S?
      */
     SKIP_BLANKS;
-    while ((CUR != 0) &&
+    while ((ctxt->input->cur < ctxt->input->end) &&
            (CUR != '>') &&
 	   ((CUR != '/') || (NXT(1) != '>')) &&
            (PARSER_STOPPED(ctxt) == 0)) {
@@ -3830,6 +3831,11 @@ failed:
 	SKIP_BLANKS;
     }
 
+    if (ctxt->input->cur >= ctxt->input->end) {
+        discardtag = 1;
+        goto done;
+    }
+
     /*
      * Handle specific association to the META tag
      */
@@ -3854,6 +3860,7 @@ failed:
 	}
     }
 
+done:
     if (atts != NULL) {
         for (i = 1;i < nbatts;i += 2) {
 	    if (atts[i] != NULL)

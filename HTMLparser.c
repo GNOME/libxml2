@@ -1,5 +1,14 @@
 /*
- * HTMLparser.c : an HTML 4.0 non-verifying parser
+ * HTMLparser.c : an HTML parser
+ *
+ * References:
+ *   HTML Living Standard
+ *     https://html.spec.whatwg.org/multipage/parsing.html
+ *
+ * Tokenization now conforms to HTML5. Tree construction still follows
+ * a custom, non-standard implementation. See:
+ *
+ *     https://gitlab.gnome.org/GNOME/libxml2/-/issues/211
  *
  * See Copyright for the status of this software.
  *

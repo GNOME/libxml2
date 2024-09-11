@@ -3196,13 +3196,29 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
                 break;
             }
         } else {
-	    if ((cur == '-') && (NXT(1) == '-')) {
-                if (NXT(2) == '>') {
-                    SKIP(3);
+	    if (cur == '-') {
+                size_t avail = ctxt->input->end - ctxt->input->cur;
+
+                if (avail < 2) {
+                    SKIP(1);
                     break;
-                } else if ((NXT(2) == '!') && (NXT(3) == '>')) {
-                    SKIP(4);
-                    break;
+                } else if (NXT(1) == '-') {
+                    if (avail < 3) {
+                        SKIP(2);
+                        break;
+                    } else if (NXT(2) == '>') {
+                        SKIP(3);
+                        break;
+                    } else if (NXT(2) == '!') {
+                        if (avail < 4) {
+                            SKIP(3);
+                            break;
+
+                        } else if (NXT(3) == '>') {
+                            SKIP(4);
+                            break;
+                        }
+                    }
                 }
             }
 	}

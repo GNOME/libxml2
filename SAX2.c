@@ -245,10 +245,10 @@ xmlSAX2InternalSubset(void *ctx, const xmlChar *name,
 
     if (ctxt->myDoc == NULL)
 	return;
+    if ((ctxt->html) && (ctxt->instate != XML_PARSER_MISC))
+        return;
     dtd = xmlGetIntSubset(ctxt->myDoc);
     if (dtd != NULL) {
-	if (ctxt->html)
-	    return;
 	xmlUnlinkNode((xmlNodePtr) dtd);
 	xmlFreeDtd(dtd);
 	ctxt->myDoc->intSubset = NULL;

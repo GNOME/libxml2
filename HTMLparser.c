@@ -4343,6 +4343,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
 	(UPP(4) == 'C') && (UPP(5) == 'T') &&
 	(UPP(6) == 'Y') && (UPP(7) == 'P') &&
 	(UPP(8) == 'E')) {
+        ctxt->instate = XML_PARSER_MISC;
 	htmlParseDocTypeDecl(ctxt);
     }
     SKIP_BLANKS;
@@ -4350,6 +4351,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Parse possible comments and PIs before any content
      */
+    ctxt->instate = XML_PARSER_PROLOG;
     while (CUR == '<') {
         if ((NXT(1) == '!') && (NXT(2) == '-') && (NXT(3) == '-')) {
             SKIP(4);
@@ -4366,6 +4368,7 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     /*
      * Time to start parsing the tree itself
      */
+    ctxt->instate = XML_PARSER_CONTENT;
     htmlParseContent(ctxt);
 
     /*

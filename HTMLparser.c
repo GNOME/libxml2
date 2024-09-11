@@ -272,7 +272,7 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 
 
 #define NEXTL(l) do {							\
-    if (*(ctxt->input->cur) == '\n') {					\
+    if ((CUR == '\n') || ((CUR == '\r') && (NXT(1) == '\n'))) {		\
 	ctxt->input->line++; ctxt->input->col = 1;			\
     } else ctxt->input->col++;						\
     ctxt->input->cur += l;						\

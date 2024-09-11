@@ -53,9 +53,13 @@ SAX.characters(Note , 5)
 SAX.endElement(b)
 SAX.endElement(dt)
 SAX.startElement(dd)
-SAX.characters(The Problem Domain package is , 58)
+SAX.characters(The Problem Domain package is , 57)
+SAX.characters(
+, 1)
 SAX.startElement(dd)
-SAX.characters(Interface, thats stores and ma, 57)
+SAX.characters(Interface, thats stores and ma, 56)
+SAX.characters(
+, 1)
 SAX.endElement(dd)
 SAX.endElement(dd)
 SAX.endElement(dl)
@@ -70,8 +74,9 @@ SAX.characters(
 , 1)
 SAX.startElement(dl)
 SAX.characters(
-
-, 2)
+, 1)
+SAX.characters(
+, 1)
 SAX.startElement(dt)
 SAX.startElement(h4)
 SAX.characters(Class , 6)
@@ -164,8 +169,9 @@ SAX.characters(
 , 1)
 SAX.endElement(dl)
 SAX.characters(
-
-, 2)
+, 1)
+SAX.characters(
+, 1)
 SAX.startElement(h4)
 SAX.startElement(b)
 SAX.characters(Links, 5)

@@ -421,10 +421,7 @@ SAX.characters(
 
 , 2)
 SAX.startElement(p)
-SAX.characters(For further technical informat, 254)
-SAX.characters(&amp;, 1)
-SAX.characters( troubleshooters to find 
-fast, 302)
+SAX.characters(For further technical informat, 557)
 SAX.startElement(a, href='http://support.microsoft.com/support/')
 SAX.characters(http://support.microsoft.com/s, 37)
 SAX.endElement(a)

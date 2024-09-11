@@ -18,11 +18,7 @@ SAX.startElement(p)
 SAX.characters(
 Filler bytes follow:
 
-      1, 1000)
-SAX.characters(89 123456789 123456789
-      1, 1000)
-SAX.characters(89 123456789 123456789
-      1, 827)
+      1, 2827)
 SAX.endElement(p)
 SAX.characters(
 , 1)

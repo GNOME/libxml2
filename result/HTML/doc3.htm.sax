@@ -12,7 +12,15 @@ SAX.characters(
 , 1)
 SAX.startElement(script, language='javascript')
 SAX.cdata(
-          NS_ActualOpen=windo, 194)
+          NS_ActualOpen=windo, 37)
+SAX.cdata(
+          function NS_NullWin, 49)
+SAX.cdata(
+          function NS_NewOpen, 73)
+SAX.cdata(
+          window.open=NS_NewO, 34)
+SAX.cdata(
+, 1)
 SAX.endElement(script)
 SAX.characters(
 , 1)
@@ -30,19 +38,32 @@ SAX.endElement(meta)
 SAX.characters(
 , 1)
 SAX.startElement(style, type='text/css')
-SAX.cdata(A.nav {
-	COLOR: #003399; TEXT-, 109)
+SAX.cdata(A.nav {, 7)
+SAX.cdata(
+	COLOR: #003399; TEXT-DECORAT, 39)
+SAX.cdata(
+}, 2)
+SAX.cdata(
+A.nav:hover {, 14)
+SAX.cdata(
+	COLOR: #3366cc; TEXT-DECORAT, 44)
+SAX.cdata(
+}, 2)
+SAX.cdata(
+, 1)
 SAX.endElement(style)
 SAX.characters(
-
-, 2)
+, 1)
+SAX.characters(
+, 1)
 SAX.startElement(script, language='JavaScript')
 SAX.cdata(
 &lt;!-- Idea by:  Nic Wolfe (, 476)
 SAX.endElement(script)
 SAX.characters(
-
-, 2)
+, 1)
+SAX.characters(
+, 1)
 SAX.startElement(meta, content='MSHTML 5.00.3103.1000', name='GENERATOR')
 SAX.endElement(meta)
 SAX.endElement(head)
@@ -183,8 +204,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(BP6 Specs, 9)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                      , 24)
+SAX.characters( , 1)
+SAX.characters(
+                      , 23)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
@@ -206,8 +228,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(BX Cooling, 10)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                        , 26)
+SAX.characters( , 1)
+SAX.characters(
+                        , 25)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
@@ -229,8 +252,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(UGM Contest, 11)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                        , 26)
+SAX.characters( , 1)
+SAX.characters(
+                        , 25)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
@@ -252,8 +276,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(Heatsinks, 9)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                      , 24)
+SAX.characters( , 1)
+SAX.characters(
+                      , 23)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
@@ -275,8 +300,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(BP6 101, 7)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                      , 24)
+SAX.characters( , 1)
+SAX.characters(
+                      , 23)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
@@ -298,8 +324,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(Win2k Install, 13)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                        , 26)
+SAX.characters( , 1)
+SAX.characters(
+                        , 25)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.characters(
@@ -319,8 +346,9 @@ SAX.startElement(font, color='white', face='Verdana', size='1')
 SAX.characters(Gentus, 6)
 SAX.endElement(font)
 SAX.endElement(a)
-SAX.characters( 
-                  , 20)
+SAX.characters( , 1)
+SAX.characters(
+                  , 19)
 SAX.endElement(p)
 SAX.endElement(td)
 SAX.endElement(tr)
@@ -482,8 +510,9 @@ SAX.characters(NAVIGATE, 8)
 SAX.endElement(font)
 SAX.endElement(b)
 SAX.startElement(font, color='yellow', face='Verdana', size='2')
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.startElement(hr, align='center')
 SAX.endElement(hr)
 SAX.characters(
@@ -587,9 +616,11 @@ SAX.characters(OTHER STUFF, 11)
 SAX.endElement(font)
 SAX.endElement(b)
 SAX.startElement(font, color='yellow', face='Verdana', size='2')
-SAX.characters( 
-
-            , 15)
+SAX.characters( , 1)
+SAX.characters(
+, 1)
+SAX.characters(
+            , 13)
 SAX.startElement(hr, align='center')
 SAX.endElement(hr)
 SAX.characters(
@@ -644,8 +675,9 @@ SAX.characters(PC SPECIALS, 11)
 SAX.endElement(font)
 SAX.endElement(b)
 SAX.startElement(font, color='yellow', face='Verdana', size='2')
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.startElement(hr, align='center')
 SAX.endElement(hr)
 SAX.characters(
@@ -653,8 +685,9 @@ SAX.characters(
 SAX.endElement(font)
 SAX.startElement(a, href='http://bp6.gamesquad.net/specials.phtml')
 SAX.startElement(font, color='white', face='Verdana', size='1')
-SAX.characters(Vendor 
-            Specials, 28)
+SAX.characters(Vendor , 7)
+SAX.characters(
+            Specials, 21)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -675,8 +708,9 @@ SAX.characters(
 SAX.startElement(hr)
 SAX.endElement(hr)
 SAX.characters(
-             
-            , 27)
+             , 14)
+SAX.characters(
+            , 13)
 SAX.startElement(center)
 SAX.characters(
             , 13)
@@ -737,8 +771,9 @@ SAX.startElement(a, href='http://www.encounter2001.com/', target='_blank')
 SAX.startElement(img, border='0', height='60', src='doc3_files/banner2.gif', width='468')
 SAX.endElement(img)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.endElement(center)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -753,80 +788,92 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem965012956,78924,')
-SAX.characters(Chat 
-            with ABIT - , 40)
+SAX.characters(Chat , 5)
+SAX.characters(
+            with ABIT - 8:09P, 35)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964766837,26344,')
-SAX.characters(Fixed 
-            wallpaper -, 42)
+SAX.characters(Fixed , 6)
+SAX.characters(
+            wallpaper - 11:47, 36)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964762841,25865,')
-SAX.characters(Seti 
-            update - 10:, 38)
+SAX.characters(Seti , 5)
+SAX.characters(
+            update - 10:40PM , 33)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964732235,45502,')
-SAX.characters(Judge 
-            gives Napst, 56)
+SAX.characters(Judge , 6)
+SAX.characters(
+            gives Napster the, 50)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964713289,83675,')
-SAX.characters(Ram 
-            Sinks.. more , 81)
+SAX.characters(Ram , 4)
+SAX.characters(
+            Sinks.. more cool, 61)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964671589,7831,')
-SAX.characters(is 
-            it [H]ard? - 9, 39)
+SAX.characters(is , 3)
+SAX.characters(
+            it [H]ard? - 9:19, 36)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964644047,60218,')
-SAX.characters(WiLd 
-            CaSe!! - 1:4, 37)
+SAX.characters(WiLd , 5)
+SAX.characters(
+            CaSe!! - 1:40PM P, 32)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964631110,84122,')
-SAX.characters(What 
-            the heck is , 57)
+SAX.characters(What , 5)
+SAX.characters(
+            the heck is a Pel, 52)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964587833,74573,')
-SAX.characters(HELLO 
-            EVERYONE!!!, 44)
+SAX.characters(HELLO , 6)
+SAX.characters(
+            EVERYONE!!! - 10:, 38)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, face='arial', size='1')
 SAX.startElement(a, class='nav', href='http://bp6.gamesquad.net/index.phtml#newsitem964429577,13375,')
-SAX.characters(BP6 
-            Q3 server up , 56)
+SAX.characters(BP6 , 4)
+SAX.characters(
+            Q3 server up and , 52)
 SAX.endElement(a)
 SAX.endElement(font)
 SAX.startElement(br)
@@ -850,8 +897,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Sunday, 
-                  Jul, 40)
+SAX.characters(Sunday, , 8)
+SAX.characters(
+                  July 30, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -864,8 +912,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Chat with 
-            ABIT, 27)
+SAX.characters(Chat with , 10)
+SAX.characters(
+            ABIT, 17)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -877,8 +926,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 8:09PM 
-            PDT, 26)
+SAX.characters( @ 8:09PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -887,8 +937,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(0 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -902,20 +953,27 @@ SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
 SAX.characters(I, 1)
 SAX.characters(&rsquo;, 3)
-SAX.characters(m slacking a little. All game , 82)
+SAX.characters(m slacking a little. All game , 33)
+SAX.characters(
+            work makes Holode, 49)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Wallpaper update: I got 
-     , 128)
+SAX.characters(Wallpaper update: I got , 24)
+SAX.characters(
+            off my lazy ass a, 82)
+SAX.characters(
+            celerons., 22)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(b)
 SAX.startElement(a, href='http://fullon3d.com/chat/abit/', target='3d')
-SAX.characters(Fullon3d had a live chat with , 68)
+SAX.characters(Fullon3d had a live chat with , 55)
+SAX.characters(
+            , 13)
 SAX.endElement(a)
 SAX.endElement(b)
 SAX.characters(Submitted by: MJS, 17)
@@ -928,18 +986,22 @@ SAX.characters(&rsquo;, 3)
 SAX.characters(s a little clip:, 16)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters([Falcon] 
-            BP6-2??, 29)
+SAX.characters([Falcon] , 9)
+SAX.characters(
+            BP6-2??, 20)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters([EricBoeing] We already have a, 74)
+SAX.characters([EricBoeing] We already have a, 56)
+SAX.characters(
+            board, 18)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters([EricBoeing] but it's OEM only, 30)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters([EricBoeing] the full ATX 
-   , 73)
+SAX.characters([EricBoeing] the full ATX , 26)
+SAX.characters(
+            version should be, 47)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
@@ -963,8 +1025,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Thursday, 
-                  J, 42)
+SAX.characters(Thursday, , 10)
+SAX.characters(
+                  July 27, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -977,8 +1040,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Fixed 
-            wallpaper, 28)
+SAX.characters(Fixed , 6)
+SAX.characters(
+            wallpaper, 22)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -990,8 +1054,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 11:47PM 
-            PDT, 27)
+SAX.characters( @ 11:47PM , 11)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1000,8 +1065,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(5 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1018,37 +1084,52 @@ SAX.characters(Get them now!!, 14)
 SAX.endElement(b)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(This is a 
-            fixed b, 104)
+SAX.characters(This is a , 10)
+SAX.characters(
+            fixed bp6 wallpap, 69)
+SAX.characters(
+            resolutions., 25)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(img, height='180', src='doc3_files/3-800.jpg', width='240')
 SAX.endElement(img)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(It's still the Intels Inside o, 103)
+SAX.characters(It's still the Intels Inside o, 49)
+SAX.characters(
+            change; from "Mot, 54)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Thanks to Matt for 
-          , 56)
+SAX.characters(Thanks to Matt for , 19)
+SAX.characters(
+            pointing that out, 37)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(I would also like to thank Kev, 131)
+SAX.characters(I would also like to thank Kev, 37)
+SAX.characters(
+            hosting my last b, 75)
+SAX.characters(
+            error., 19)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(And 1 more person, THANK YOU T, 89)
+SAX.characters(And 1 more person, THANK YOU T, 55)
+SAX.characters(
+            your server space, 34)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(If you need a weird resolution, 58)
+SAX.characters(If you need a weird resolution, 37)
+SAX.characters(
+            free to , 21)
 SAX.startElement(a, href='mailto:Holodeck2@home.com')
 SAX.characters(e-mail, 6)
 SAX.endElement(a)
-SAX.characters( me requesting 
-            fo, 36)
+SAX.characters( me requesting , 15)
+SAX.characters(
+            for one., 21)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(If you have ideas or more erro, 47)
@@ -1099,8 +1180,9 @@ SAX.characters(Holodeck2,, 10)
 SAX.endElement(a)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters([H]ard at 
-            work on, 64)
+SAX.characters([H]ard at , 10)
+SAX.characters(
+            work on the Brand, 54)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(p)
@@ -1126,8 +1208,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 10:40PM 
-            PDT, 27)
+SAX.characters( @ 10:40PM , 11)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1136,8 +1219,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(5 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1153,8 +1237,9 @@ SAX.startElement(img, height='54', src='doc3_files/setiupdate.jpg', width='400')
 SAX.endElement(img)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(You like the 
-            pic?, 30)
+SAX.characters(You like the , 13)
+SAX.characters(
+            pic?, 17)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1162,27 +1247,32 @@ SAX.endElement(br)
 SAX.characters(Bp6 User Group Update:, 22)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Completed 61531 
-            u, 36)
+SAX.characters(Completed 61531 , 16)
+SAX.characters(
+            units!!, 20)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(b)
 SAX.characters(#168 on Top 200 All Groups, 26)
 SAX.endElement(b)
-SAX.characters( (Going to pass CLRC in 
-     , 48)
+SAX.characters( (Going to pass CLRC in , 24)
+SAX.characters(
+            a few days), 24)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(b)
 SAX.characters(#74 on Top 200 Teams, 20)
 SAX.endElement(b)
-SAX.characters( (Gaining fast on 
-           , 41)
+SAX.characters( (Gaining fast on , 18)
+SAX.characters(
+            Starfleet), 23)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(We are flying though at the sp, 81)
+SAX.characters(We are flying though at the sp, 51)
+SAX.characters(
+            a little slower)., 30)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(Good job everyone!!, 19)
@@ -1190,8 +1280,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Check this page at 
-          , 66)
+SAX.characters(Check this page at , 19)
+SAX.characters(
+            least once a day , 47)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
@@ -1204,8 +1295,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Judge gives Napster the 
-     , 43)
+SAX.characters(Judge gives Napster the , 24)
+SAX.characters(
+            Boot!!, 19)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1217,8 +1309,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 2:10PM 
-            PDT, 26)
+SAX.characters( @ 2:10PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1227,8 +1320,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(0 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1240,17 +1334,34 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Good afternoon for everyone li, 133)
+SAX.characters(Good afternoon for everyone li, 38)
+SAX.characters(
+            EST. I was going , 76)
+SAX.characters(
+            story:, 19)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(I woke up and thought about po, 482)
+SAX.characters(I woke up and thought about po, 52)
+SAX.characters(
+            decided to wax my, 73)
+SAX.characters(
+            conclusions), wax, 78)
+SAX.characters(
+            hour. Then I saw , 80)
+SAX.characters(
+            front of my comp , 79)
+SAX.characters(
+            that a stoopid ju, 82)
+SAX.characters(
+            cry. and now I'm , 38)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(a, href='http://www.msnbc.com/news/437532.asp', target='Judge vs Napster')
-SAX.characters(Judge shuts Napster down
-     , 37)
+SAX.characters(Judge shuts Napster down, 24)
+SAX.characters(
+            , 13)
 SAX.startElement(p)
 SAX.startElement(img, height='143', src='doc3_files/669915.jpg', width='200')
 SAX.endElement(img)
@@ -1261,8 +1372,9 @@ SAX.endElement(br)
 SAX.characters(Check out the Goofy guy in the, 35)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(He's Sean 
-            Fanning, 51)
+SAX.characters(He's Sean , 10)
+SAX.characters(
+            Fanning, founder , 41)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1283,7 +1395,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Ram Sinks.. more cooling for s, 55)
+SAX.characters(Ram Sinks.. more cooling for s, 35)
+SAX.characters(
+            places., 20)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1304,8 +1418,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(0 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1317,12 +1432,15 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Need some cooling for your Vid, 105)
+SAX.characters(Need some cooling for your Vid, 37)
+SAX.characters(
+            memory to get a l, 68)
 SAX.startElement(a, href='http://www.overclockershideout.com/RamSinks.html', target='_BLANK')
 SAX.characters(Overclockers Hiedout Ram Sinks, 30)
 SAX.endElement(a)
-SAX.characters( They just notified 
-         , 56)
+SAX.characters( They just notified , 20)
+SAX.characters(
+            me of their new d, 36)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(img, border='1', src='doc3_files/ramsink.jpg')
@@ -1348,8 +1466,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Wednesday, July 26, 
-         , 37)
+SAX.characters(Wednesday, July 26, , 20)
+SAX.characters(
+            2000, 17)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -1362,8 +1481,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(is it 
-            [H]ard?, 26)
+SAX.characters(is it , 6)
+SAX.characters(
+            [H]ard?, 20)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1375,8 +1495,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 9:19PM 
-            PDT, 26)
+SAX.characters( @ 9:19PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1385,8 +1506,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(0 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1398,10 +1520,14 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Big heatsinks are good, very g, 70)
+SAX.characters(Big heatsinks are good, very g, 39)
+SAX.characters(
+            bigger the better, 31)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(You can never can have a too b, 98)
+SAX.characters(You can never can have a too b, 45)
+SAX.characters(
+            on a small chip (, 53)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1410,15 +1536,19 @@ SAX.startElement(img, height='173', src='doc3_files/voodooside2.jpg', width='230
 SAX.endElement(img)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(My overclocked 
-            Vo, 73)
+SAX.characters(My overclocked , 15)
+SAX.characters(
+            Voodoo3 2000 with, 58)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Peltier and 
-            water, 49)
+SAX.characters(Peltier and , 12)
+SAX.characters(
+            watercooling next, 37)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters((if you pry off the heatsink y, 65)
+SAX.characters((if you pry off the heatsink y, 38)
+SAX.characters(
+            the warranty ), 27)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1431,8 +1561,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(I, 1)
 SAX.characters(&rsquo;, 3)
-SAX.characters(m not only a 
-            BP6e, 54)
+SAX.characters(m not only a , 13)
+SAX.characters(
+            BP6er but also a , 41)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
@@ -1457,8 +1588,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 1:40PM 
-            PDT, 26)
+SAX.characters( @ 1:40PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1467,8 +1599,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(8 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1480,7 +1613,9 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Now this person really knows h, 69)
+SAX.characters(Now this person really knows h, 36)
+SAX.characters(
+            keep his case coo, 33)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(Addin an 18" Fan!! WOW!!, 24)
@@ -1494,8 +1629,9 @@ SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Click to go to his 
-          , 37)
+SAX.characters(Click to go to his , 19)
+SAX.characters(
+            site., 18)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
@@ -1508,8 +1644,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(What the heck is a 
-          , 43)
+SAX.characters(What the heck is a , 19)
+SAX.characters(
+            Peltier?!?!, 24)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1521,8 +1658,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 10:05AM 
-            PDT, 27)
+SAX.characters( @ 10:05AM , 11)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1531,8 +1669,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(6 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1544,13 +1683,16 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(This is for all you people who, 77)
+SAX.characters(This is for all you people who, 38)
+SAX.characters(
+            to know what a pe, 39)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(The quest fo the Perfect 
-    , 45)
+SAX.characters(The quest fo the Perfect , 25)
+SAX.characters(
+            Peltier, 20)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(a, href='http://www.tweakmax.com/html/peltier/peltier-1.cfm', target='_blank')
@@ -1560,24 +1702,37 @@ SAX.endElement(a)
 SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Thanks to 
-            , 23)
+SAX.characters(Thanks to , 10)
+SAX.characters(
+            , 13)
 SAX.startElement(a, href='http://www.tweakmax.com/', target='_blank')
 SAX.characters(TweakMax.com, 12)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Note: Today morning when I wok, 392)
+SAX.characters(Note: Today morning when I wok, 57)
+SAX.characters(
+            cluttered with a , 78)
+SAX.characters(
+            live somewhere el, 80)
+SAX.characters(
+            If you live in Eu, 81)
+SAX.characters(
+            sleeping it would, 78)
+SAX.characters(
+            know , 18)
 SAX.startElement(img, src='doc3_files/smile.gif')
 SAX.endElement(img)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(I'm not angry at anyone... 
-  , 70)
+SAX.characters(I'm not angry at anyone... , 27)
+SAX.characters(
+            good thing I have, 43)
 SAX.startElement(img, src='doc3_files/tongue.gif')
 SAX.endElement(img)
 SAX.startElement(br)
@@ -1603,8 +1758,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Tuesday, 
-                  Ju, 41)
+SAX.characters(Tuesday, , 9)
+SAX.characters(
+                  July 25, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -1617,8 +1773,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(HELLO 
-            EVERYONE!!!, 30)
+SAX.characters(HELLO , 6)
+SAX.characters(
+            EVERYONE!!!, 24)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1630,66 +1787,86 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:Holodeck@bp6.com')
 SAX.characters(Holodeck2, 9)
 SAX.endElement(a)
-SAX.characters( @ 10:03PM 
-            PDT, 27)
+SAX.characters( @ 10:03PM , 11)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Hello 
-            everyone, W, 46)
+SAX.characters(Hello , 6)
+SAX.characters(
+            everyone, Woohoo!, 40)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Who is this Holodeck2 person 
-, 65)
-SAX.startElement(br)
-SAX.endElement(br)
-SAX.characters(I, 1)
-SAX.characters(&rsquo;, 3)
-SAX.characters(m a regular on the bp6 message, 96)
+SAX.characters(Who is this Holodeck2 person , 29)
+SAX.characters(
+            anyways?!?! Read , 36)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(I, 1)
 SAX.characters(&rsquo;, 3)
-SAX.characters(m the 
-            self-procla, 84)
+SAX.characters(m a regular on the bp6 message, 37)
+SAX.characters(
+            trying to help pe, 59)
+SAX.startElement(br)
+SAX.endElement(br)
+SAX.characters(I, 1)
 SAX.characters(&rsquo;, 3)
-SAX.characters(ve 
-            probably alrea, 67)
+SAX.characters(m the , 6)
+SAX.characters(
+            self-proclaimed b, 78)
+SAX.characters(&rsquo;, 3)
+SAX.characters(ve , 3)
+SAX.characters(
+            probably already , 64)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(My computer 
-            is al, 197)
+SAX.characters(My computer , 12)
+SAX.characters(
+            is always on so y, 80)
+SAX.characters(
+            always in front o, 74)
+SAX.characters(
+            everyone happy :-, 31)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Any Questions or comments, you, 97)
+SAX.characters(Any Questions or comments, you, 42)
+SAX.characters(
+            contact me or pos, 55)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Ways to contact 
-            m, 32)
+SAX.characters(Ways to contact , 16)
+SAX.characters(
+            me., 16)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(E-mail: , 8)
 SAX.startElement(a, href='mailto:Holodeck2@home.com')
 SAX.characters(Holodeck2@home.com, 18)
 SAX.endElement(a)
-SAX.characters( (All E-mails 
-            wil, 81)
+SAX.characters( (All E-mails , 14)
+SAX.characters(
+            will be answered , 67)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(When you 
-            write me, 161)
+SAX.characters(When you , 9)
+SAX.characters(
+            write me an e-mai, 78)
+SAX.characters(
+            rest of your subj, 74)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(a, href='http://www.aol.com/aim')
 SAX.characters(AIM: , 5)
 SAX.endElement(a)
-SAX.characters(Holodeck2 (instant response 
- , 45)
+SAX.characters(Holodeck2 (instant response , 28)
+SAX.characters(
+            if I, 17)
 SAX.characters(&rsquo;, 3)
 SAX.characters(m in front of my comp and not , 53)
 SAX.startElement(br)
@@ -1697,8 +1874,9 @@ SAX.endElement(br)
 SAX.startElement(a, href='http://www.icq.com/download')
 SAX.characters(ICQ: , 5)
 SAX.endElement(a)
-SAX.characters(82640218 (rarely 
-            , 33)
+SAX.characters(82640218 (rarely , 17)
+SAX.characters(
+            on), 16)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1707,8 +1885,9 @@ SAX.characters(P.S. If someone named , 22)
 SAX.characters(&ldquo;, 3)
 SAX.characters(Digital Vortex, 14)
 SAX.characters(&rdquo;, 3)
-SAX.characters( on either Quake 3 
-          , 50)
+SAX.characters( on either Quake 3 , 19)
+SAX.characters(
+            or 2 frags you, i, 31)
 SAX.characters(&rsquo;, 3)
 SAX.characters(s probably me. ;-), 18)
 SAX.startElement(br)
@@ -1734,8 +1913,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Monday, 
-                  Jul, 40)
+SAX.characters(Monday, , 8)
+SAX.characters(
+                  July 24, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -1748,8 +1928,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(BP6 Q3 server up and 
-        , 43)
+SAX.characters(BP6 Q3 server up and , 21)
+SAX.characters(
+            running.., 22)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1770,8 +1951,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(3 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1783,11 +1965,20 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Setup a Q3 server for anyone w, 351)
+SAX.characters(Setup a Q3 server for anyone w, 37)
+SAX.characters(
+            to practice in pr, 81)
+SAX.characters(
+            default port. (SE, 80)
+SAX.characters(
+            connection)... Wi, 81)
+SAX.characters(
+            is only a tempora, 72)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters((BTW- 
-            there are a, 67)
+SAX.characters((BTW- , 6)
+SAX.characters(
+            there are a few b, 61)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -1798,8 +1989,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(BIOS Savior to the 
-          , 42)
+SAX.characters(BIOS Savior to the , 19)
+SAX.characters(
+            rescue...., 23)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1820,8 +2012,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(2 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1833,12 +2026,29 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Do you sweat during the BIOS f, 165)
+SAX.characters(Do you sweat during the BIOS f, 38)
+SAX.characters(
+            procedure on your, 77)
+SAX.characters(
+            worth a first loo, 50)
 SAX.startElement(b)
 SAX.characters(RD1 BIOS Savior, 15)
 SAX.endElement(b)
-SAX.characters(" and it 
-            plugs in, 513)
+SAX.characters(" and it , 9)
+SAX.characters(
+            plugs in between , 82)
+SAX.characters(
+            This device will , 81)
+SAX.characters(
+            BIOS in the event, 77)
+SAX.characters(
+            event of a bad fl, 82)
+SAX.characters(
+            system, and flash, 82)
+SAX.characters(
+            don't believe in , 82)
+SAX.characters(
+            link), 18)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(a, href='http://www.ioss.com.tw/eg/rd1/RD1info0004.PDF', target='_NEW')
@@ -1882,8 +2092,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Monday, 
-                  Jul, 40)
+SAX.characters(Monday, , 8)
+SAX.characters(
+                  July 17, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -1896,8 +2107,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(How To 
-            Overclock, 29)
+SAX.characters(How To , 7)
+SAX.characters(
+            Overclock, 22)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1909,8 +2121,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 4:17PM 
-            PDT, 26)
+SAX.characters( @ 4:17PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1919,8 +2132,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(3 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1932,7 +2146,13 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(For those of you who are new t, 206)
+SAX.characters(For those of you who are new t, 32)
+SAX.characters(
+            overclocking, thi, 80)
+SAX.characters(
+            what some of the , 77)
+SAX.characters(
+            :0)), 17)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -1951,8 +2171,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(The Cardcooler 
-            XT, 30)
+SAX.characters(The Cardcooler , 15)
+SAX.characters(
+            XT, 15)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -1964,8 +2185,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 4:11PM 
-            PDT, 26)
+SAX.characters( @ 4:11PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -1974,8 +2196,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(1 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -1987,14 +2210,25 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Wow! I am impressed! Nevermind, 97)
+SAX.characters(Wow! I am impressed! Nevermind, 39)
+SAX.characters(
+            the CPU's cool..., 58)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(i)
-SAX.characters(Even if your 
-            not , 340)
+SAX.characters(Even if your , 13)
+SAX.characters(
+            not overclocking , 78)
+SAX.characters(
+            provide system st, 82)
+SAX.characters(
+            your GeForce or C, 75)
+SAX.characters(
+            cooling unit as a, 72)
+SAX.characters(
+            system., 20)
 SAX.endElement(i)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2008,8 +2242,9 @@ SAX.endElement(br)
 SAX.startElement(a, href='http://www.brokenpixel.com/articles/coolerXT/cardcoolerXT_1.shtml', target='_blank')
 SAX.characters(http://www.brokenpixel.com/art, 65)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2020,8 +2255,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters('Nerd 
-            Inside', 26)
+SAX.characters('Nerd , 6)
+SAX.characters(
+            Inside', 20)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -2033,8 +2269,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 11:53AM 
-            PDT, 27)
+SAX.characters( @ 11:53AM , 11)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -2043,8 +2280,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(1 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2056,8 +2294,11 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(We all need to have some fun 
-, 179)
+SAX.characters(We all need to have some fun , 29)
+SAX.characters(
+            sometimes! Check , 82)
+SAX.characters(
+            ;) (I like the bi, 68)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2080,7 +2321,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Dual PSU Wiring diagram... (pr, 80)
+SAX.characters(Dual PSU Wiring diagram... (pr, 39)
+SAX.characters(
+            Part 1 Watercooli, 41)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -2101,8 +2344,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(11 comments, 11)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2114,7 +2358,29 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(When is comes to overclocking , 837)
+SAX.characters(When is comes to overclocking , 35)
+SAX.characters(
+            system, cooling p, 82)
+SAX.characters(
+            system can cause , 78)
+SAX.characters(
+            Depending on the , 82)
+SAX.characters(
+            powerfull PSU or , 72)
+SAX.characters(
+            watercooling and , 79)
+SAX.characters(
+            the Peltiers (TEC, 77)
+SAX.characters(
+            diagrams on how I, 82)
+SAX.characters(
+            Blizzard BP6 wate, 78)
+SAX.characters(
+            More will follow , 77)
+SAX.characters(
+            dangerous and is , 82)
+SAX.characters(
+            , 13)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2135,7 +2401,11 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(I used Tap-In Squeeze Connecto, 148)
+SAX.characters(I used Tap-In Squeeze Connecto, 37)
+SAX.characters(
+            22 guage wire to , 81)
+SAX.characters(
+            Part# 64-3053 or , 30)
 SAX.startElement(a, href='http://www.radioshack.com/ProductCatalog/ProductDetail/Index/1,2098,,00.html?SKUString1=64&amp;SKUString2=3053', target='_blank')
 SAX.characters(click here, 10)
 SAX.endElement(a)
@@ -2161,8 +2431,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Sunday, 
-                  Jul, 40)
+SAX.characters(Sunday, , 8)
+SAX.characters(
+                  July 16, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -2175,8 +2446,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(RAM Overclocking? 
-           , 38)
+SAX.characters(RAM Overclocking? , 18)
+SAX.characters(
+            Hmmmmm., 20)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -2188,8 +2460,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 9:57AM 
-            PDT, 26)
+SAX.characters( @ 9:57AM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -2198,8 +2471,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(3 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2211,18 +2485,46 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(I know we're pretty big overcl, 628)
+SAX.characters(I know we're pretty big overcl, 37)
+SAX.characters(
+            here at BP6.Com s, 76)
+SAX.characters(
+            question in the m, 81)
+SAX.characters(
+            Well, it's not al, 81)
+SAX.characters(
+            things need to be, 75)
+SAX.characters(
+            devices (can they, 81)
+SAX.characters(
+            your RAM. I'm not, 80)
+SAX.characters(
+            will enable you t, 82)
+SAX.characters(
+            will certainly he, 35)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Extreme Overclocking has teste, 143)
+SAX.characters(Extreme Overclocking has teste, 32)
+SAX.characters(
+            (overclocked) PC1, 79)
+SAX.characters(
+            found and the lin, 32)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(i)
-SAX.characters(Well, the guys at Extreme Over, 340)
+SAX.characters(Well, the guys at Extreme Over, 39)
+SAX.characters(
+            have been hard at, 78)
+SAX.characters(
+            they have put sev, 80)
+SAX.characters(
+            tests to determin, 82)
+SAX.characters(
+            came out on top? , 61)
 SAX.endElement(i)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2235,8 +2537,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(The 
-            &ETH;&ETH;., 22)
+SAX.characters(The , 4)
+SAX.characters(
+            &ETH;&ETH;., 18)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2247,8 +2550,9 @@ SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(CPU 
-            Guide, 22)
+SAX.characters(CPU , 4)
+SAX.characters(
+            Guide, 18)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -2260,8 +2564,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 9:17AM 
-            PDT, 26)
+SAX.characters( @ 9:17AM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -2270,8 +2575,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(0 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2283,7 +2589,13 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(A follow up on the 'Weekly CPU, 200)
+SAX.characters(A follow up on the 'Weekly CPU, 31)
+SAX.characters(
+            Prices', this gui, 79)
+SAX.characters(
+            you (and your boa, 72)
+SAX.characters(
+            link:, 18)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2316,8 +2628,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Saturday, 
-                  J, 42)
+SAX.characters(Saturday, , 10)
+SAX.characters(
+                  July 15, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -2330,8 +2643,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Weekly CPU 
-            Prices, 30)
+SAX.characters(Weekly CPU , 11)
+SAX.characters(
+            Prices, 19)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -2343,8 +2657,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 11:29AM 
-            PDT, 27)
+SAX.characters( @ 11:29AM , 11)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -2353,8 +2668,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(2 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2366,7 +2682,9 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Wow, found this very useful! W, 103)
+SAX.characters(Wow, found this very useful! W, 37)
+SAX.characters(
+            to buy a new CPU?, 66)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2379,8 +2697,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Thanks Sharky 
-            Ext, 35)
+SAX.characters(Thanks Sharky , 14)
+SAX.characters(
+            Extreme!, 21)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2403,8 +2722,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 9:51AM 
-            PDT, 26)
+SAX.characters( @ 9:51AM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -2413,8 +2733,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(0 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2426,26 +2747,44 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(FAST-MHz has released some wal, 52)
+SAX.characters(FAST-MHz has released some wal, 39)
+SAX.characters(
+            , 13)
 SAX.startElement(a, href='http://64.29.18.111/wallpaper/index.html', target='_blank')
 SAX.characters(Click here, 10)
 SAX.endElement(a)
-SAX.characters( to view them. They come in si, 238)
+SAX.characters( to view them. They come in si, 34)
+SAX.characters(
+            800x600 1024x768 , 78)
+SAX.characters(
+            larger size, just, 80)
+SAX.characters(
+            instead of 'cente, 46)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(In other news, we want to 
-   , 133)
+SAX.characters(In other news, we want to , 26)
+SAX.characters(
+            finnish off all t, 82)
+SAX.characters(
+            work on the , 25)
 SAX.startElement(a, href='http://bp6.gamesquad.net/uc.phtml', target='_blank')
 SAX.characters(Picture Gallery, 15)
 SAX.endElement(a)
-SAX.characters(. To help us out, you can send, 102)
+SAX.characters(. To help us out, you can send, 34)
+SAX.characters(
+            all your cool, wi, 68)
 SAX.startElement(a, href='mailto:thedaredevil@bp6.com')
 SAX.characters(thedaredevil@bp6.com, 20)
 SAX.endElement(a)
-SAX.characters(. (The 
-            topic bein, 183)
+SAX.characters(. (The , 7)
+SAX.characters(
+            topic being compu, 79)
+SAX.characters(
+            any porno piccies, 79)
+SAX.characters(
+            guys., 18)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2455,8 +2794,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(The 
-            &ETH;&ETH;., 22)
+SAX.characters(The , 4)
+SAX.characters(
+            &ETH;&ETH;., 18)
 SAX.endElement(font)
 SAX.startElement(br)
 SAX.endElement(br)
@@ -2478,8 +2818,9 @@ SAX.characters(
 SAX.startElement(td)
 SAX.startElement(font, color='#ffffff', face='Verdana,arial', size='2')
 SAX.startElement(b)
-SAX.characters(Friday, 
-                  Jul, 40)
+SAX.characters(Friday, , 8)
+SAX.characters(
+                  July 14, 20, 32)
 SAX.endElement(b)
 SAX.endElement(font)
 SAX.endElement(td)
@@ -2492,8 +2833,9 @@ SAX.comment(<hr noshade width=100%>)
 SAX.startElement(b)
 SAX.startElement(u)
 SAX.startElement(font, color='#003366', face='Verdana, Arial', size='2')
-SAX.characters(Hey 
-            There!, 23)
+SAX.characters(Hey , 4)
+SAX.characters(
+            There!, 19)
 SAX.endElement(font)
 SAX.endElement(u)
 SAX.endElement(b)
@@ -2505,8 +2847,9 @@ SAX.characters(Posted by , 10)
 SAX.startElement(a, class='nav', href='mailto:killz@i82hq.com')
 SAX.characters(DareDevil, 9)
 SAX.endElement(a)
-SAX.characters( @ 5:05PM 
-            PDT, 26)
+SAX.characters( @ 5:05PM , 10)
+SAX.characters(
+            PDT, 16)
 SAX.endElement(small)
 SAX.characters(&nbsp;, 2)
 SAX.characters( , 1)
@@ -2515,8 +2858,9 @@ SAX.startElement(img, border='0', src='doc3_files/comments.gif')
 SAX.endElement(img)
 SAX.characters(7 comments, 10)
 SAX.endElement(a)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.characters(&nbsp;, 2)
 SAX.characters(|, 1)
 SAX.characters(&nbsp;, 2)
@@ -2528,7 +2872,15 @@ SAX.characters( , 1)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(font, color='black', face='Arial', size='2')
-SAX.characters(Hey guys, just wanted to intro, 308)
+SAX.characters(Hey guys, just wanted to intro, 35)
+SAX.characters(
+            myself, some of y, 79)
+SAX.characters(
+            I'll be posting u, 82)
+SAX.characters(
+            may send me some , 80)
+SAX.characters(
+            to flood Tim ;-) , 32)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2541,8 +2893,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(Ciao for 
-            now., 26)
+SAX.characters(Ciao for , 9)
+SAX.characters(
+            now., 17)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(br)
@@ -2640,8 +2993,9 @@ SAX.endElement(input)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(a, href='http://bp6.gamesquad.net/cgi-bin/news/viewnews.cgi?newsall')
-SAX.characters(News 
-            archive, 25)
+SAX.characters(News , 5)
+SAX.characters(
+            archive, 20)
 SAX.endElement(a)
 SAX.endElement(form)
 SAX.endElement(font)
@@ -2678,10 +3032,63 @@ SAX.characters(
             , 13)
 SAX.startElement(script, language='javascript', type='text/javascript')
 SAX.cdata(
-							&lt;!--
-							if ((pa, 1000)
-SAX.cdata(	document.write("RIPT&gt;");
-	, 381)
+							&lt;!--, 12)
+SAX.cdata(
+							if ((parseInt(navigato, 49)
+SAX.cdata(
+							&amp;&amp; (navigator., 47)
+SAX.cdata(
+							document.write("&lt;IF, 64)
+SAX.cdata(
+							document.write("margin, 70)
+SAX.cdata(
+							document.write("=90 "), 31)
+SAX.cdata(
+							document.write("SRC=ht, 70)
+SAX.cdata(
+							document.write("ype=ht, 70)
+SAX.cdata(
+							document.write("m/d/se, 70)
+SAX.cdata(
+							document.write("42DF84, 51)
+SAX.cdata(
+							} else if ((parseInt(n, 55)
+SAX.cdata(
+							&amp;&amp; (navigator., 47)
+SAX.cdata(
+							document.write("&lt;SC, 70)
+SAX.cdata(
+							document.write("cript , 33)
+SAX.cdata(
+							document.write("SRC=ht, 70)
+SAX.cdata(
+							document.write("ype=js, 70)
+SAX.cdata(
+							document.write("d/sear, 70)
+SAX.cdata(
+							document.write("DF8478, 44)
+SAX.cdata(
+							document.write("RIPT, 32)
+SAX.cdata(
+							} else {, 16)
+SAX.cdata(
+							document.write("&lt;A , 44)
+SAX.cdata(
+							document.write("HREF=h, 70)
+SAX.cdata(
+							document.write("GIF=tr, 36)
+SAX.cdata(
+							document.write("&lt;IM, 38)
+SAX.cdata(
+							document.write("SRC=ht, 70)
+SAX.cdata(
+							document.write("ype=gi, 51)
+SAX.cdata(
+							}, 9)
+SAX.cdata(
+							// --&gt;, 14)
+SAX.cdata(
+							, 8)
 SAX.endElement(script)
 SAX.characters(
             , 13)
@@ -2695,8 +3102,9 @@ SAX.endElement(img)
 SAX.endElement(a)
 SAX.startElement(b)
 SAX.startElement(a, href='http://www.goto.com/d/search/ssn/?fromGIF=true', target='_blank')
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.endElement(a)
 SAX.error: Unexpected end tag : a
 SAX.endElement(b)
@@ -2718,8 +3126,9 @@ SAX.characters(
 SAX.startElement(p)
 SAX.startElement(b)
 SAX.startElement(font, color='white', face='ARIAL, HELVETICA', size='1')
-SAX.characters(PC Price 
-            Search, 28)
+SAX.characters(PC Price , 9)
+SAX.characters(
+            Search, 19)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.endElement(font)
@@ -2730,8 +3139,9 @@ SAX.startElement(br)
 SAX.endElement(br)
 SAX.startElement(input, name='submit', style='BACKGROUND-COLOR: #000000; COLOR: #ffffff; FONT-FAMILY: Verdana; FONT-SIZE: xx-small; FONT-WEIGHT: bold', type='submit', value='Search')
 SAX.endElement(input)
-SAX.characters( 
-            , 14)
+SAX.characters( , 1)
+SAX.characters(
+            , 13)
 SAX.endElement(p)
 SAX.error: Opening and ending tag mismatch: form and center
 SAX.endElement(center)
@@ -2755,8 +3165,9 @@ SAX.endElement(img)
 SAX.startElement(font, size='1')
 SAX.startElement(br)
 SAX.endElement(br)
-SAX.characters(BP6.COM 
-            Special, 28)
+SAX.characters(BP6.COM , 8)
+SAX.characters(
+            Special, 20)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(Code:BP6-hd, 11)
@@ -2822,8 +3233,9 @@ SAX.characters(
       , 7)
 SAX.startElement(p, align='center')
 SAX.startElement(font, color='#999999', face='verdana,arial', size='1')
-SAX.characters(Copyright 
-      &copy;1999-20, 58)
+SAX.characters(Copyright , 10)
+SAX.characters(
+      &copy;1999-2000 BP6.com, 48)
 SAX.startElement(br)
 SAX.endElement(br)
 SAX.characters(Got news? Send it to , 21)

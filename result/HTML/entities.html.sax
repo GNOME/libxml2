@@ -7,13 +7,9 @@ SAX.characters(
 a, 2)
 SAX.characters(&amp;, 1)
 SAX.characters(b
-a, 3)
-SAX.characters(&amp;, 1)
-SAX.characters(b
-a , 4)
-SAX.characters(&amp;, 1)
-SAX.characters( b
-, 3)
+a&amp;b
+a &amp; b
+, 12)
 SAX.endElement(p)
 SAX.characters(
 , 1)

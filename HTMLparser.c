@@ -51,6 +51,11 @@
     (((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0C) || ((c) == 0x0D) || \
      ((c) == 0x20))
 
+#define IS_HEX_DIGIT(c) \
+    ((IS_ASCII_DIGIT(c)) || \
+     (((c) >= 'A') && ((c) <= 'F')) || \
+     (((c) >= 'a') && ((c) <= 'f')))
+
 static int htmlOmittedDefaultValue = 1;
 
 static int
@@ -468,6 +473,65 @@ encoding_error:
         xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
     *len = 1;
     return(*ctxt->input->cur);
+}
+
+static int
+htmlValidateUtf8(xmlParserCtxtPtr ctxt, const xmlChar *str, size_t len) {
+    unsigned c = str[0];
+    int size;
+
+    if (c < 0xC2) {
+        goto invalid;
+    } else if (c < 0xE0) {
+        if (len < 2)
+            goto incomplete;
+        if ((str[1] & 0xC0) != 0x80)
+            goto invalid;
+        size = 2;
+    } else if (c < 0xF0) {
+        unsigned v;
+
+        if (len < 3)
+            goto incomplete;
+
+        v = str[1] << 8 | str[2]; /* hint to generate 16-bit load */
+        v |= c << 16;
+
+        if (((v & 0x00C0C0) != 0x008080) ||
+            ((v & 0x0F2000) == 0x000000) ||
+            ((v & 0x0F2000) == 0x0D2000))
+            goto invalid;
+
+        size = 3;
+    } else {
+        unsigned v;
+
+        if (len < 4)
+            goto incomplete;
+
+        v = c << 24 | str[1] << 16 | str[2] << 8 | str[3];
+
+        if (((v & 0x00C0C0C0) != 0x00808080) ||
+            (v < 0xF0900000) || (v >= 0xF4900000))
+            goto invalid;
+
+        size = 4;
+    }
+
+    return(size);
+
+incomplete:
+    return(0);
+
+invalid:
+    /* Only report the first error */
+    if ((ctxt->input->flags & XML_INPUT_ENCODING_ERROR) == 0) {
+        htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
+                     "Invalid bytes in character encoding", NULL, NULL);
+        ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
+    }
+
+    return(-1);
 }
 
 /**
@@ -2234,7 +2298,7 @@ static const char *allowPCData[] = {
  *
  * Is this a sequence of blank chars that one can ignore ?
  *
- * Returns 1 if ignorable 0 otherwise.
+ * Returns 1 if ignorable 0 if whitespace, -1 otherwise.
  */
 
 static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
@@ -2244,7 +2308,7 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     xmlDtdPtr dtd;
 
     for (j = 0;j < len;j++)
-        if (!(IS_WS_HTML(str[j]))) return(0);
+        if (!(IS_WS_HTML(str[j]))) return(-1);
 
     if (CUR == 0) return(1);
     if (CUR != '<') return(0);
@@ -2474,6 +2538,109 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
         htmlErrMemory(ctxt);
 
     return(ret);
+}
+
+static const short htmlC1Remap[32] = {
+    0x20AC, 0x0081, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021,
+    0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0x008D, 0x017D, 0x008F,
+    0x0090, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014,
+    0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x009D, 0x017E, 0x0178
+};
+
+static int
+htmlParseNCR(const xmlChar *string, size_t slen, int *dlen) {
+    const xmlChar *in = string;
+    const xmlChar *end = string + slen;
+    unsigned val = 0;
+
+    while (in < end) {
+        int c = *in;
+
+        if ((c < '0') || (c > '9'))
+            break;
+        val = val * 10 + (c - '0');
+        if (val >= 0x110000)
+            val = 0x110000;
+
+        in += 1;
+    }
+
+    if (*in == ';')
+        in += 1;
+
+    if ((val >= 0x80) && (val < 0xA0)) {
+        val = htmlC1Remap[val - 0x80];
+    } else if ((val <= 0) ||
+               ((val >= 0xD800) && (val < 0xE000)) ||
+               (val > 0x10FFFF)) {
+        val = 0xFFFD;
+    }
+
+    *dlen = in - string;
+
+    return(val);
+}
+
+static int
+htmlParseNCRHex(const xmlChar *string, size_t slen, int *dlen) {
+    const xmlChar *in = string;
+    const xmlChar *end = string + slen;
+    unsigned val = 0;
+
+    while (in < end) {
+        int c = *in;
+
+        if ((c >= '0') && (c <= '9')) {
+            c -= '0';
+        } else if ((c >= 'a') && (c <= 'f')) {
+            c = (c - 'a') + 10;
+        } else if ((c >= 'A') && (c <= 'F')) {
+            c = (c - 'A') + 10;
+        } else {
+            break;
+        }
+        val = val * 16 + c;
+        if (val >= 0x110000)
+            val = 0x110000;
+
+        in += 1;
+    }
+
+    if (*in == ';')
+        in += 1;
+
+    if ((val >= 0x80) && (val < 0xA0)) {
+        val = htmlC1Remap[val - 0x80];
+    } else if ((val <= 0) ||
+               ((val >= 0xD800) && (val < 0xE000)) ||
+               (val > 0x10FFFF)) {
+        val = 0xFFFD;
+    }
+
+    *dlen = in - string;
+
+    return(val);
+}
+
+static const xmlChar *
+htmlCodePointToUtf8(int c, xmlChar *out, int *osize) {
+    int i = 0;
+    int bits, hi;
+
+    if      (c <    0x80) { bits =  0; hi = 0x00; }
+    else if (c <   0x800) { bits =  6; hi = 0xC0; }
+    else if (c < 0x10000) { bits = 12; hi = 0xE0; }
+    else                  { bits = 18; hi = 0xF0; }
+
+    out[i++] = (c >> bits) | hi;
+
+    while (bits > 0) {
+        bits -= 6;
+        out[i++] = ((c >> bits) & 0x3F) | 0x80;
+    }
+
+    *osize = i;
+    return(out);
 }
 
 #include "html5ent.inc"
@@ -2753,30 +2920,26 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
     if ((ctxt->sax == NULL) || (ctxt->disableSAX))
         return;
 
-    if ((mode == 0) || (mode == DATA_RCDATA)) {
-        if (areBlanks(ctxt, buf, size)) {
-            if (ctxt->keepBlanks) {
-                if (ctxt->sax->characters != NULL)
-                    ctxt->sax->characters(ctxt->userData, buf, size);
-            } else {
-                if (ctxt->sax->ignorableWhitespace != NULL)
-                    ctxt->sax->ignorableWhitespace(ctxt->userData,
-                                                   buf, size);
-            }
+    if ((mode == 0) || (mode == DATA_RCDATA) ||
+        (ctxt->sax->cdataBlock == NULL)) {
+        int blank = areBlanks(ctxt, buf, size);
+
+        if ((mode == 0) && (blank > 0) && (!ctxt->keepBlanks)) {
+            if (ctxt->sax->ignorableWhitespace != NULL)
+                ctxt->sax->ignorableWhitespace(ctxt->userData,
+                                               buf, size);
         } else {
-            htmlCheckParagraph(ctxt);
+            if ((mode == 0) && (blank < 0))
+                htmlCheckParagraph(ctxt);
+
             if (ctxt->sax->characters != NULL)
                 ctxt->sax->characters(ctxt->userData, buf, size);
         }
     } else {
-        if (ctxt->sax->cdataBlock != NULL) {
-            /*
-             * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
-             */
-            ctxt->sax->cdataBlock(ctxt->userData, buf, size);
-        } else if (ctxt->sax->characters != NULL) {
-            ctxt->sax->characters(ctxt->userData, buf, size);
-        }
+        /*
+         * Insert as CDATA, which is the same as HTML_PRESERVE_NODE
+         */
+        ctxt->sax->cdataBlock(ctxt->userData, buf, size);
     }
 }
 
@@ -2789,128 +2952,273 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
  */
 
 static int
-htmlParseCharData(htmlParserCtxtPtr ctxt, int terminate) {
-    xmlChar buf[HTML_PARSER_BIG_BUFFER_SIZE + 6];
-    int nbchar = 0;
+htmlParseCharData(htmlParserCtxtPtr ctxt) {
+    xmlParserInputPtr input = ctxt->input;
+    xmlChar utf8Char[4];
     int complete = 0;
-    int res = 0;
-    int cur, l, mode;
+    int done = 0;
+    int mode;
+    int eof = PARSER_PROGRESSIVE(ctxt);
+    int line, col;
 
     mode = ctxt->endCheckState;
 
-    while ((!PARSER_STOPPED(ctxt)) &&
-           (ctxt->input->cur < ctxt->input->end)) {
-        cur = CUR_CHAR(l);
+    line = input->line;
+    col = input->col;
 
-        /*
-         * Check for end of text data
-         */
-        if ((cur == '<') && (mode != DATA_PLAINTEXT)) {
-            int j, len;
+    while (!PARSER_STOPPED(ctxt)) {
+        const xmlChar *chunk, *in, *repl;
+        size_t avail;
+        int replSize;
+        int skip = 0;
 
-            if (mode == 0)
-                break;
+        chunk = input->cur;
+        avail = input->end - chunk;
+        in = chunk;
 
-            j = 1;
-            len = ctxt->input->end - ctxt->input->cur;
-            if (j < len) {
-                if ((mode == DATA_SCRIPT) && (NXT(j) == '!')) {
-                    /* Check for comment start */
+        repl = BAD_CAST "";
+        replSize = 0;
 
-                    j += 1;
-                    if ((j < len) && (NXT(j) == '-')) {
+        while (!PARSER_STOPPED(ctxt)) {
+            size_t j;
+            int cur, size, cp;
+
+            if (avail <= 64) {
+                if (!eof) {
+                    size_t oldAvail = avail;
+                    size_t off = in - chunk;
+
+                    input->cur = in;
+
+                    xmlParserGrow(ctxt);
+
+                    in = input->cur;
+                    chunk = in - off;
+                    input->cur = chunk;
+                    avail = input->end - in;
+
+                    if (oldAvail == avail)
+                        eof = 1;
+                }
+
+                if (avail == 0) {
+                    done = 1;
+                    break;
+                }
+            }
+
+            cur = *in;
+            size = 1;
+            col += 1;
+
+            switch (cur) {
+            case '<':
+                if (mode == 0) {
+                    done = 1;
+                    goto next_chunk;
+                }
+                if (mode == DATA_PLAINTEXT)
+                    break;
+
+                j = 1;
+                if (j < avail) {
+                    if ((mode == DATA_SCRIPT) && (in[j] == '!')) {
+                        /* Check for comment start */
+
                         j += 1;
-                        if ((j < len) && (NXT(j) == '-'))
-                            mode = DATA_SCRIPT_ESC1;
-                    }
-                } else {
-                    int i = 0;
-                    int solidus = 0;
-
-                    /* Check for tag */
-
-                    if (NXT(j) == '/') {
-                        j += 1;
-                        solidus = 1;
-                    }
-
-                    if ((solidus) || (mode == DATA_SCRIPT_ESC1)) {
-                        while ((j < len) &&
-                               (ctxt->name[i] != 0) &&
-                               (ctxt->name[i] == (NXT(j) | 32))) {
-                            i += 1;
+                        if ((j < avail) && (in[j] == '-')) {
                             j += 1;
+                            if ((j < avail) && (in[j] == '-'))
+                                mode = DATA_SCRIPT_ESC1;
+                        }
+                    } else {
+                        int i = 0;
+                        int solidus = 0;
+
+                        /* Check for tag */
+
+                        if (in[j] == '/') {
+                            j += 1;
+                            solidus = 1;
                         }
 
-                        if ((ctxt->name[i] == 0) && (j < len)) {
-                            int c = NXT(j);
+                        if ((solidus) || (mode == DATA_SCRIPT_ESC1)) {
+                            while ((j < avail) &&
+                                   (ctxt->name[i] != 0) &&
+                                   (ctxt->name[i] == (in[j] | 32))) {
+                                i += 1;
+                                j += 1;
+                            }
 
-                            if ((c == '>') || (c == '/') || (IS_WS_HTML(c))) {
-                                if ((mode == DATA_SCRIPT_ESC1) && (!solidus)) {
-                                    mode = DATA_SCRIPT_ESC2;
-                                } else if (mode == DATA_SCRIPT_ESC2) {
-                                    mode = DATA_SCRIPT_ESC1;
-                                } else {
-                                    complete = 1;
-                                    res = 1;
-                                    break;
+                            if ((ctxt->name[i] == 0) && (j < avail)) {
+                                int c = in[j];
+
+                                if ((c == '>') || (c == '/') ||
+                                    (IS_WS_HTML(c))) {
+                                    if ((mode == DATA_SCRIPT_ESC1) &&
+                                        (!solidus)) {
+                                        mode = DATA_SCRIPT_ESC2;
+                                    } else if (mode == DATA_SCRIPT_ESC2) {
+                                        mode = DATA_SCRIPT_ESC1;
+                                    } else {
+                                        complete = 1;
+                                        done = 1;
+                                        goto next_chunk;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            /* Push parser */
-            if ((!terminate) && (j >= len)) {
-                res = 1;
+                if ((mode != 0) && (PARSER_PROGRESSIVE(ctxt))) {
+                    in += 1;
+                    done = 1;
+                    goto next_chunk;
+                }
+
+                break;
+
+            case '-':
+                if ((mode != DATA_SCRIPT_ESC1) && (mode != DATA_SCRIPT_ESC2))
+                    break;
+
+                /* Check for comment end */
+
+                j = 1;
+                if ((j < avail) && (in[j] == '-')) {
+                    j += 1;
+                    if ((j < avail) && (in[j] == '>'))
+                        mode = DATA_SCRIPT;
+                }
+
+                break;
+
+            case '&':
+                if ((mode != 0) && (mode != DATA_RCDATA))
+                    break;
+
+                cp = 0;
+                j = 1;
+
+                if ((j < avail) && (in[j] == '#')) {
+                    j += 1;
+                    if (j < avail) {
+                        if ((in[j] | 0x20) == 'x') {
+                            j += 1;
+                            if ((j < avail) && (IS_HEX_DIGIT(in[j]))) {
+                                cp = htmlParseNCRHex(in + j, avail - j, &skip);
+                                skip += 3;
+                            }
+                        } else if (IS_ASCII_DIGIT(in[j])) {
+                            cp = htmlParseNCR(in + j, avail - j, &skip);
+                            skip += 2;
+                        }
+                    }
+
+                    if (cp > 0) {
+                        repl = htmlCodePointToUtf8(cp, utf8Char, &replSize);
+                        goto next_chunk;
+                    }
+
+                    skip = 0;
+                } else {
+                    repl = htmlFindEntityPrefix(in + j,
+                                                avail - j,
+                                                /* isAttr */ 0,
+                                                &skip, &replSize);
+                    if (repl != NULL) {
+                        skip += 1;
+                        goto next_chunk;
+                    }
+
+                    skip = 0;
+                }
+
+                break;
+
+            case '\0':
+                skip = 1;
+                repl = BAD_CAST "\xEF\xBF\xBD";
+                replSize = 3;
+                goto next_chunk;
+
+            case '\n':
+                line += 1;
+                col = 1;
+                break;
+
+            case '\r':
+                skip = 1;
+                if (in[1] != 0x0A) {
+                    repl = BAD_CAST "\x0A";
+                    replSize = 1;
+                }
+                goto next_chunk;
+
+            default:
+                if (cur < 0x80)
+                    break;
+
+                if ((input->flags & XML_INPUT_HAS_ENCODING) == 0) {
+                    xmlChar * guess;
+
+                    guess = htmlFindEncoding(ctxt);
+                    if (guess == NULL) {
+                        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
+                    } else {
+                        xmlSwitchEncodingName(ctxt, (const char *) guess);
+                        xmlFree(guess);
+                    }
+                    input->flags |= XML_INPUT_HAS_ENCODING;
+
+                    goto restart;
+                }
+
+                size = htmlValidateUtf8(ctxt, in, avail);
+
+                if (size <= 0) {
+                    skip = 1;
+                    repl = BAD_CAST "\xEF\xBF\xBD";
+                    replSize = 3;
+                    goto next_chunk;
+                }
+
                 break;
             }
-        } else if ((cur == '-') &&
-                   ((mode == DATA_SCRIPT_ESC1) ||
-                    (mode == DATA_SCRIPT_ESC2))) {
-            int len = ctxt->input->end - ctxt->input->cur;
-            int j = 1;
 
-            /* Check for comment end */
-
-            if ((j < len) && (NXT(j) == '-')) {
-                j += 1;
-                if ((j < len) && (NXT(j) == '>'))
-                    mode = DATA_SCRIPT;
-            }
-
-            /* Push parser */
-            if ((!terminate) && (j >= len)) {
-                res = 1;
-                break;
-            }
-        } else if ((cur == '&') &&
-                   ((mode == 0) || (mode == DATA_RCDATA))) {
-            break;
+            in += size;
+            avail -= size;
         }
 
-	COPY_BUF(buf,nbchar,cur);
-	NEXTL(l);
-	if (nbchar >= HTML_PARSER_BIG_BUFFER_SIZE) {
-            buf[nbchar] = 0;
-            htmlCharDataSAXCallback(ctxt, buf, nbchar, mode);
+next_chunk:
+        if (in > chunk) {
+            input->cur += in - chunk;
+            htmlCharDataSAXCallback(ctxt, chunk, in - chunk, mode);
+        }
 
-	    nbchar = 0;
-            SHRINK;
-	}
+        input->cur += skip;
+        if (replSize > 0)
+            htmlCharDataSAXCallback(ctxt, repl, replSize, mode);
+
+        SHRINK;
+
+        if (done)
+            break;
+
+restart:
+        ;
     }
-    if (nbchar != 0) {
-        buf[nbchar] = 0;
-        htmlCharDataSAXCallback(ctxt, buf, nbchar, mode);
-    }
+
+    input->line = line;
+    input->col = col;
 
     if (complete)
         ctxt->endCheckState = 0;
     else
         ctxt->endCheckState = mode;
 
-    return(res);
+    return(complete);
 }
 
 /**
@@ -3024,13 +3332,6 @@ done:
     ctxt->instate = state;
     return;
 }
-
-static const short htmlC1Remap[32] = {
-    0x20AC, 0x0081, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021,
-    0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0x008D, 0x017D, 0x008F,
-    0x0090, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014,
-    0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x009D, 0x017E, 0x0178
-};
 
 /**
  * htmlParseCharRef:
@@ -3754,68 +4055,6 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     }
 }
 
-
-/**
- * htmlParseReference:
- * @ctxt:  an HTML parser context
- *
- * parse and handle entity references in content,
- * this will end-up in a call to character() since this is either a
- * CharRef, or a predefined entity.
- */
-static void
-htmlParseReference(htmlParserCtxtPtr ctxt) {
-    const xmlChar *repl = NULL;
-    int replLen = 0;
-    xmlChar out[6];
-
-    if ((NXT(1) == '#') &&
-        ((IS_ASCII_DIGIT(NXT(2))) ||
-         ((UPP(2) == 'X') &&
-          ((IS_ASCII_DIGIT(NXT(3))) ||
-           ((UPP(3) >= 'A') && (UPP(3) <= 'F')))))) {
-	unsigned int c;
-	int bits, i = 0;
-
-	c = htmlParseCharRef(ctxt);
-	if (c == 0)
-	    return;
-
-        if      (c <    0x80) { out[i++]= c;                bits= -6; }
-        else if (c <   0x800) { out[i++]=((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-        else if (c < 0x10000) { out[i++]=((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-        else                  { out[i++]=((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-        for ( ; bits >= 0; bits-= 6) {
-            out[i++]= ((c >> bits) & 0x3F) | 0x80;
-        }
-	out[i] = 0;
-
-        repl = out;
-        replLen = i;
-    } else if (IS_ASCII_LETTER(NXT(1))) {
-        int nameLen;
-
-        repl = htmlFindEntityPrefix(CUR_PTR + 1,
-                                    ctxt->input->end - CUR_PTR - 1,
-                                    /* isAttr */ 0,
-                                    &nameLen, &replLen);
-
-        if (repl != NULL)
-            SKIP(nameLen + 1);
-    }
-
-    if (repl == NULL) {
-        repl = BAD_CAST "&";
-        replLen = 1;
-        SKIP(1);
-    }
-
-    htmlCheckParagraph(ctxt);
-    if ((ctxt->sax != NULL) && (ctxt->sax->characters != NULL))
-        ctxt->sax->characters(ctxt->userData, repl, replLen);
-}
-
 /**
  * htmlParseContent:
  * @ctxt:  an HTML parser context
@@ -3864,10 +4103,8 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
                     ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
                 SKIP(1);
             }
-        } else if ((CUR == '&') && ((mode == 0) || (mode == DATA_RCDATA))) {
-            htmlParseReference(ctxt);
         } else {
-            htmlParseCharData(ctxt, /* terminate */ 1);
+            htmlParseCharData(ctxt);
         }
 
         SHRINK;
@@ -4793,10 +5030,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 mode = ctxt->endCheckState;
 
                 if (mode != 0) {
-                    int done = 0;
-
                     while ((PARSER_STOPPED(ctxt) == 0) &&
-                           (!done) &&
                            (in->cur < in->end)) {
                         size_t extra;
 
@@ -4808,13 +5042,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                             goto done;
                         ctxt->checkIndex = 0;
 
-                        if ((cur == '&') && (mode == DATA_RCDATA)) {
-                            htmlParseReference(ctxt);
-                        } else {
-                            done = htmlParseCharData(ctxt, terminate);
-                        }
-
-                        cur = in->cur[0];
+                        if (htmlParseCharData(ctxt))
+                            break;
                     }
 
                     break;
@@ -4897,15 +5126,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         (htmlParseLookupString(ctxt, 0, "<", 1, 0) < 0))
                         goto done;
                     ctxt->checkIndex = 0;
-                    while ((PARSER_STOPPED(ctxt) == 0) &&
-                           (cur != '<') && (in->cur < in->end)) {
-                        if (cur == '&') {
-                            htmlParseReference(ctxt);
-                        } else {
-                            htmlParseCharData(ctxt, terminate);
-                        }
-                        cur = in->cur[0];
-                    }
+                    htmlParseCharData(ctxt);
 		}
 
 		break;

@@ -2177,9 +2177,11 @@ pushBoundaryTest(const char *filename, const char *result,
                             *ctxt->input->cur :
                             base[cur];
 
-            if ((firstChar != '<') &&
-                ((options & XML_PARSE_HTML) || (firstChar != '&')))
-                isText = 1;
+            if (options & XML_PARSE_HTML) {
+                isText = ((ctxt->endCheckState) || (firstChar != '<'));
+            } else {
+                isText = ((firstChar != '<') && (firstChar != '&'));
+            }
         }
 
         oldConsumed = ctxt->input->consumed +

@@ -357,7 +357,6 @@ SAX.characters(
 , 3)
 SAX.startElement(td, bgcolor='#FF0000', align='left', valign='center')
 SAX.startElement(nobr)
-SAX.error: Tag nobr invalid
 SAX.startElement(img, src='http://static.wired.com/news/images/spacer.gif', width='344', height='1')
 SAX.endElement(img)
 SAX.startElement(br)

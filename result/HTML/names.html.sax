@@ -7,7 +7,6 @@ SAX.startElement(body)
 SAX.characters(
   , 3)
 SAX.startElement(o:p)
-SAX.error: Tag o:p invalid
 SAX.endElement(o:p)
 SAX.characters(
 , 1)

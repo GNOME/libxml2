@@ -2958,28 +2958,18 @@ htmlParseAttValue(htmlParserCtxtPtr ctxt) {
     if (CUR == '"') {
         SKIP(1);
 	ret = htmlParseHTMLAttribute(ctxt, '"');
-        if (CUR != '"') {
-	    htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-	                 "AttValue: \" expected\n", NULL, NULL);
-	} else
+        if (CUR == '"')
 	    SKIP(1);
     } else if (CUR == '\'') {
         SKIP(1);
 	ret = htmlParseHTMLAttribute(ctxt, '\'');
-        if (CUR != '\'') {
-	    htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-	                 "AttValue: ' expected\n", NULL, NULL);
-	} else
+        if (CUR == '\'')
 	    SKIP(1);
     } else {
         /*
 	 * That's an HTMLism, the attribute value may not be quoted
 	 */
 	ret = htmlParseHTMLAttribute(ctxt, 0);
-	if (ret == NULL) {
-	    htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
-	                 "AttValue: no value found\n", NULL, NULL);
-	}
     }
     return(ret);
 }
@@ -3561,11 +3551,8 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
 
     *value = NULL;
     name = htmlParseHTMLName(ctxt, 1);
-    if (name == NULL) {
-	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-	             "error parsing attribute name\n", NULL, NULL);
+    if (name == NULL)
         return(NULL);
-    }
 
     /*
      * read the value
@@ -3702,55 +3689,53 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 
     GROW;
     name = htmlParseHTMLName(ctxt, 0);
-    if (name == NULL) {
-	htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-	             "htmlParseStartTag: invalid element name\n",
-		     NULL, NULL);
+    if (name == NULL)
         return -1;
-    }
     if (xmlStrEqual(name, BAD_CAST"meta"))
 	meta = 1;
 
-    /*
-     * Check for auto-closure of HTML elements.
-     */
-    htmlAutoClose(ctxt, name);
+    if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
+        /*
+         * Check for auto-closure of HTML elements.
+         */
+        htmlAutoClose(ctxt, name);
 
-    /*
-     * Check for implied HTML elements.
-     */
-    htmlCheckImplied(ctxt, name);
+        /*
+         * Check for implied HTML elements.
+         */
+        htmlCheckImplied(ctxt, name);
 
-    /*
-     * Avoid html at any level > 0, head at any level != 1
-     * or any attempt to recurse body
-     */
-    if ((ctxt->nameNr > 0) && (xmlStrEqual(name, BAD_CAST"html"))) {
-	htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-	             "htmlParseStartTag: misplaced <html> tag\n",
-		     name, NULL);
-	discardtag = 1;
-	ctxt->depth++;
-    }
-    if ((ctxt->nameNr != 1) &&
-	(xmlStrEqual(name, BAD_CAST"head"))) {
-	htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-	             "htmlParseStartTag: misplaced <head> tag\n",
-		     name, NULL);
-	discardtag = 1;
-	ctxt->depth++;
-    }
-    if (xmlStrEqual(name, BAD_CAST"body")) {
-	int indx;
-	for (indx = 0;indx < ctxt->nameNr;indx++) {
-	    if (xmlStrEqual(ctxt->nameTab[indx], BAD_CAST"body")) {
-		htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
-		             "htmlParseStartTag: misplaced <body> tag\n",
-			     name, NULL);
-		discardtag = 1;
-		ctxt->depth++;
-	    }
-	}
+        /*
+         * Avoid html at any level > 0, head at any level != 1
+         * or any attempt to recurse body
+         */
+        if ((ctxt->nameNr > 0) && (xmlStrEqual(name, BAD_CAST"html"))) {
+            htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                         "htmlParseStartTag: misplaced <html> tag\n",
+                         name, NULL);
+            discardtag = 1;
+            ctxt->depth++;
+        }
+        if ((ctxt->nameNr != 1) &&
+            (xmlStrEqual(name, BAD_CAST"head"))) {
+            htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                         "htmlParseStartTag: misplaced <head> tag\n",
+                         name, NULL);
+            discardtag = 1;
+            ctxt->depth++;
+        }
+        if (xmlStrEqual(name, BAD_CAST"body")) {
+            int indx;
+            for (indx = 0;indx < ctxt->nameNr;indx++) {
+                if (xmlStrEqual(ctxt->nameTab[indx], BAD_CAST"body")) {
+                    htmlParseErr(ctxt, XML_HTML_STRUCURE_ERROR,
+                                 "htmlParseStartTag: misplaced <body> tag\n",
+                                 name, NULL);
+                    discardtag = 1;
+                    ctxt->depth++;
+                }
+            }
+        }
     }
 
     /*
@@ -3778,8 +3763,6 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	     */
 	    for (i = 0; i < nbatts;i += 2) {
 	        if (xmlStrEqual(atts[i], attname)) {
-		    htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_REDEFINED,
-		                 "Attribute %s redefined\n", attname, NULL);
 		    if (attvalue != NULL)
 			xmlFree(attvalue);
 		    goto failed;
@@ -3894,8 +3877,6 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     int i, ret;
 
     if ((CUR != '<') || (NXT(1) != '/')) {
-        htmlParseErr(ctxt, XML_ERR_LTSLASH_REQUIRED,
-	             "htmlParseEndTag: '</' not found\n", NULL, NULL);
         return (0);
     }
     SKIP(2);
@@ -4177,12 +4158,8 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
      * Lookup the info for that element.
      */
     info = htmlTagLookup(name);
-    if (info == NULL) {
-	htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
-	             "Tag %s invalid\n", name, NULL);
-    } else {
+    if (info != NULL)
         ctxt->endCheckState = info->dataMode;
-    }
 
     if (ctxt->record_info)
         htmlNodeInfoPush(ctxt, &node_info);
@@ -4201,22 +4178,9 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
 	return(0);
     }
 
-    if (CUR == '>') {
-        SKIP(1);
-    } else {
-	htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
-	             "Couldn't find end of Start Tag %s\n", name, NULL);
-
-	/*
-	 * end of parsing of this node.
-	 */
-	if (xmlStrEqual(name, ctxt->name)) {
-            htmlParserFinishElementParsing(ctxt);
-	    nodePop(ctxt);
-	    htmlnamePop(ctxt);
-	}
-	return(0);
-    }
+    if (CUR != '>')
+        return(0);
+    SKIP(1);
 
     /*
      * Check for an Empty Element from DTD definition
@@ -4358,10 +4322,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
      * Wipe out everything which is before the first '<'
      */
     SKIP_BLANKS;
-    if (ctxt->input->cur >= ctxt->input->end) {
-	htmlParseErr(ctxt, XML_ERR_DOCUMENT_EMPTY,
-	             "Document is empty\n", NULL, NULL);
-    }
 
     if ((ctxt->sax) && (ctxt->sax->startDocument) && (!ctxt->disableSAX))
 	ctxt->sax->startDocument(ctxt->userData);
@@ -5018,12 +4978,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 * Lookup the info for that element.
 		 */
 		info = htmlTagLookup(name);
-		if (info == NULL) {
-		    htmlParseErr(ctxt, XML_HTML_UNKNOWN_TAG,
-		                 "Tag %s invalid\n", name, NULL);
-                } else {
+		if (info != NULL)
                     ctxt->endCheckState = info->dataMode;
-		}
 
 		/*
 		 * Check for an Empty Element labeled the XML/SGML way
@@ -5041,28 +4997,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    break;
 		}
 
-		if (CUR == '>') {
-		    SKIP(1);
-		} else {
-		    htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
-		                 "Couldn't find end of Start Tag %s\n",
-				 name, NULL);
-
-		    /*
-		     * end of parsing of this node.
-		     */
-		    if (xmlStrEqual(name, ctxt->name)) {
-                        htmlParserFinishElementParsing(ctxt);
-			nodePop(ctxt);
-			htmlnamePop(ctxt);
-		    }
-
-		    if (ctxt->record_info)
-		        htmlNodeInfoPush(ctxt, &node_info);
-
-		    ctxt->instate = XML_PARSER_CONTENT;
-		    break;
-		}
+		if (CUR != '>')
+                    break;
+		SKIP(1);
 
 		/*
 		 * Check for an Empty Element from DTD definition

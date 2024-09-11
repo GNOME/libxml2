@@ -422,7 +422,6 @@ SAX.endElement(font)
 SAX.endElement(font)
 SAX.endElement(strong)
 SAX.startElement(s1)
-SAX.error: Tag s1 invalid
 SAX.characters(  , 2)
 SAX.endElement(s1)
 SAX.endElement(div)

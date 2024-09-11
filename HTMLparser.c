@@ -3877,6 +3877,11 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     }
     SKIP(2);
 
+    if (CUR == '>') {
+        SKIP(1);
+        return(0);
+    }
+
     if (!IS_ASCII_LETTER(CUR)) {
         htmlParseComment(ctxt, /* bogus */ 1);
         return(0);
@@ -3890,7 +3895,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
      * Parse and ignore attributes.
      */
     SKIP_BLANKS;
-    while ((CUR != 0) &&
+    while ((ctxt->input->cur < ctxt->input->end) &&
            (CUR != '>') &&
 	   ((CUR != '/') || (NXT(1) != '>')) &&
            (ctxt->instate != XML_PARSER_EOF)) {
@@ -3915,8 +3920,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     } else if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
     } else {
-        htmlParseErr(ctxt, XML_ERR_GT_REQUIRED,
-	             "End tag : expected '>'\n", NULL, NULL);
+        return(0);
     }
 
     if (ctxt->options & HTML_PARSE_HTML5) {
@@ -5192,8 +5196,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		break;
 	    }
             case XML_PARSER_END_TAG:
-		if (avail < 2)
+		if ((terminate) && (avail == 2)) {
+                    htmlCheckParagraph(ctxt);
+                    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
+                        (ctxt->sax->characters != NULL))
+                        ctxt->sax->characters(ctxt->userData,
+                                              BAD_CAST "</", 2);
 		    goto done;
+                }
 		if ((!terminate) &&
 		    (htmlParseLookupGt(ctxt) < 0))
 		    goto done;

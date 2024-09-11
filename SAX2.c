@@ -1773,7 +1773,7 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
      * intern the formatting blanks found between tags, or the
      * very short strings
      */
-    if (ctxt->dictNames) {
+    if ((!ctxt->html) && (ctxt->dictNames)) {
         xmlChar cur = str[len];
 
 	if ((len < (int) (2 * sizeof(void *))) &&

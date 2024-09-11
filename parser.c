@@ -62,6 +62,7 @@
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
 #include <libxml/SAX2.h>
+#include <libxml/HTMLparser.h>
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
 #endif
@@ -13599,6 +13600,11 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
 int
 xmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
 {
+#ifdef LIBXML_HTML_ENABLED
+    if ((ctxt != NULL) && (ctxt->html))
+        return(htmlCtxtSetOptions(ctxt, options));
+#endif
+
     return(xmlCtxtSetOptionsInternal(ctxt, options, 0));
 }
 
@@ -13650,6 +13656,11 @@ int
 xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 {
     int keepMask;
+
+#ifdef LIBXML_HTML_ENABLED
+    if ((ctxt != NULL) && (ctxt->html))
+        return(htmlCtxtUseOptions(ctxt, options));
+#endif
 
     /*
      * For historic reasons, some options can only be enabled.

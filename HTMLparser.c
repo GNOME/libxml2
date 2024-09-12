@@ -2391,27 +2391,83 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
 
 static const xmlChar *
 htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
-    const xmlChar *ret;
-    int nbchar = 0;
-    int c, l;
-    int stop = attr ? '=' : 0;
     xmlChar buf[HTML_PARSER_BUFFER_SIZE];
+    const xmlChar *ret, *in;
+    size_t avail;
+    int eof = PARSER_PROGRESSIVE(ctxt);
+    int nbchar = 0;
+    int stop = attr ? '=' : ' ';
 
-    c = CUR_CHAR(l);
-    while ((c != 0) && (c != '/') && (c != '>') &&
-           ((nbchar == 0) || (c != stop)) &&
-           (!IS_WS_HTML(c))) {
-        if (nbchar + l <= HTML_PARSER_BUFFER_SIZE) {
-            if ((c >= 'A') && (c <= 'Z'))  {
-                buf[nbchar++] = c + 0x20;
+    in = ctxt->input->cur;
+    avail = ctxt->input->end - in;
+
+    while (1) {
+        int c, size;
+
+        if ((!eof) && (avail < 32)) {
+            size_t oldAvail = avail;
+
+            ctxt->input->cur = in;
+
+            SHRINK;
+            xmlParserGrow(ctxt);
+
+            in = ctxt->input->cur;
+            avail = ctxt->input->end - in;
+
+            if (oldAvail == avail)
+                eof = 1;
+        }
+
+        if (avail == 0)
+            break;
+
+        c = *in;
+        size = 1;
+
+        if ((nbchar != 0) &&
+            ((c == '/') || (c == '>') || (c == stop) ||
+             (IS_WS_HTML(c))))
+            break;
+
+        if (c == 0) {
+            if (nbchar + 3 <= HTML_PARSER_BUFFER_SIZE) {
+                buf[nbchar++] = 0xEF;
+                buf[nbchar++] = 0xBF;
+                buf[nbchar++] = 0xBD;
+            }
+        } else if (c < 0x80) {
+            if (nbchar < HTML_PARSER_BUFFER_SIZE) {
+                if ((c >= 'A') && (c <= 'Z'))
+                    c += 0x20;
+                buf[nbchar++] = c;
+            }
+        } else {
+            size = htmlValidateUtf8(ctxt, in, avail);
+
+            if (size > 0) {
+                if (nbchar + size <= HTML_PARSER_BUFFER_SIZE) {
+                    memcpy(buf + nbchar, in, size);
+                    nbchar += size;
+                }
             } else {
-	        COPY_BUF(buf, nbchar, c);
+                size = 1;
+
+                if (nbchar + 3 <= HTML_PARSER_BUFFER_SIZE) {
+                    buf[nbchar++] = 0xEF;
+                    buf[nbchar++] = 0xBF;
+                    buf[nbchar++] = 0xBD;
+                }
             }
         }
 
-	NEXTL(l);
-        c = CUR_CHAR(l);
+        in += size;
+        avail -= size;
     }
+
+    ctxt->input->cur = in;
+
+    SHRINK;
 
     ret = xmlDictLookup(ctxt->dict, buf, nbchar);
     if (ret == NULL)

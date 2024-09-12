@@ -295,6 +295,7 @@ deprecated_funcs = {
     'htmlHandleOmittedElem': True,
     'htmlInitAutoClose': True,
     'htmlIsAutoClosed': True,
+    'htmlIsBooleanAttr': True,
     'htmlParseCharRef': True,
     'htmlParseElement': True,
     'namePop': True,

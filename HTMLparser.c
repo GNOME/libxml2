@@ -2528,8 +2528,6 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
  *									*
  ************************************************************************/
 
-static const xmlChar * htmlParseNameComplex(xmlParserCtxtPtr ctxt);
-
 /**
  * htmlParseHTMLName:
  * @ctxt:  an HTML parser context
@@ -2565,110 +2563,6 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
     }
 
     ret = xmlDictLookup(ctxt->dict, buf, nbchar);
-    if (ret == NULL)
-        htmlErrMemory(ctxt);
-
-    return(ret);
-}
-
-/**
- * htmlParseName:
- * @ctxt:  an HTML parser context
- *
- * parse an HTML name, this routine is case sensitive.
- *
- * Returns the Name parsed or NULL
- */
-
-static const xmlChar *
-htmlParseName(htmlParserCtxtPtr ctxt) {
-    const xmlChar *in;
-    const xmlChar *ret;
-    int count = 0;
-
-    GROW;
-
-    /*
-     * Accelerator for simple ASCII names
-     */
-    in = ctxt->input->cur;
-    if (((*in >= 0x61) && (*in <= 0x7A)) ||
-	((*in >= 0x41) && (*in <= 0x5A)) ||
-	(*in == '_') || (*in == ':')) {
-	in++;
-	while (((*in >= 0x61) && (*in <= 0x7A)) ||
-	       ((*in >= 0x41) && (*in <= 0x5A)) ||
-	       ((*in >= 0x30) && (*in <= 0x39)) ||
-	       (*in == '_') || (*in == '-') ||
-	       (*in == ':') || (*in == '.'))
-	    in++;
-
-	if (in == ctxt->input->end)
-	    return(NULL);
-
-	if ((*in > 0) && (*in < 0x80)) {
-	    count = in - ctxt->input->cur;
-	    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur, count);
-            if (ret == NULL)
-                htmlErrMemory(ctxt);
-	    ctxt->input->cur = in;
-	    ctxt->input->col += count;
-	    return(ret);
-	}
-    }
-    return(htmlParseNameComplex(ctxt));
-}
-
-static const xmlChar *
-htmlParseNameComplex(xmlParserCtxtPtr ctxt) {
-    int len = 0, l;
-    int c;
-    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
-                    XML_MAX_TEXT_LENGTH :
-                    XML_MAX_NAME_LENGTH;
-    const xmlChar *base = ctxt->input->base;
-    const xmlChar *ret;
-
-    /*
-     * Handler for more complex cases
-     */
-    c = CUR_CHAR(l);
-    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-	(!IS_LETTER(c) && (c != '_') &&
-         (c != ':'))) {
-	return(NULL);
-    }
-
-    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') ||
-	    (c == '_') || (c == ':') ||
-	    (IS_COMBINING(c)) ||
-	    (IS_EXTENDER(c)))) {
-	len += l;
-        if (len > maxLength) {
-            htmlParseErr(ctxt, XML_ERR_NAME_TOO_LONG, "name too long", NULL, NULL);
-            return(NULL);
-        }
-	NEXTL(l);
-	c = CUR_CHAR(l);
-	if (ctxt->input->base != base) {
-	    /*
-	     * We changed encoding from an unknown encoding
-	     * Input buffer changed location, so we better start again
-	     */
-	    return(htmlParseNameComplex(ctxt));
-	}
-    }
-
-    if (ctxt->input->cur - ctxt->input->base < len) {
-        /* Sanity check */
-	htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
-                     "unexpected change of input buffer", NULL, NULL);
-        return (NULL);
-    }
-
-    ret = xmlDictLookup(ctxt->dict, ctxt->input->cur - len, len);
     if (ret == NULL)
         htmlErrMemory(ctxt);
 
@@ -2903,49 +2797,12 @@ htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, int stop) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse an HTML ENTITY references
- *
- * [68] EntityRef ::= '&' Name ';'
- *
- * Returns the associated htmlEntityDescPtr if found, or NULL otherwise,
- *         if non-NULL *str will have to be freed by the caller.
+ * Returns NULL.
  */
 const htmlEntityDesc *
-htmlParseEntityRef(htmlParserCtxtPtr ctxt, const xmlChar **str) {
-    const xmlChar *name;
-    const htmlEntityDesc * ent = NULL;
-
-    if (str != NULL) *str = NULL;
-    if ((ctxt == NULL) || (ctxt->input == NULL)) return(NULL);
-
-    if (CUR == '&') {
-        SKIP(1);
-        name = htmlParseName(ctxt);
-	if (name == NULL) {
-	    htmlParseErr(ctxt, XML_ERR_NAME_REQUIRED,
-	                 "htmlParseEntityRef: no name\n", NULL, NULL);
-	} else {
-	    GROW;
-	    if (CUR == ';') {
-	        if (str != NULL)
-		    *str = name;
-
-		/*
-		 * Lookup the entity in the table.
-		 */
-		ent = htmlEntityLookup(name);
-		if (ent != NULL) /* OK that's ugly !!! */
-		    SKIP(1);
-	    } else {
-		htmlParseErr(ctxt, XML_ERR_ENTITYREF_SEMICOL_MISSING,
-		             "htmlParseEntityRef: expecting ';'\n",
-			     NULL, NULL);
-	        if (str != NULL)
-		    *str = name;
-	    }
-	}
-    }
-    return(ent);
+htmlParseEntityRef(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                   const xmlChar **str ATTRIBUTE_UNUSED) {
+    return(NULL);
 }
 
 /**

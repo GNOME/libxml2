@@ -42,31 +42,20 @@ typedef struct _htmlElemDesc htmlElemDesc;
 typedef htmlElemDesc *htmlElemDescPtr;
 struct _htmlElemDesc {
     const char *name;	/* The tag name */
-    char startTag;      /* Whether the start tag can be implied */
+    char startTag;      /* unused */
     char endTag;        /* Whether the end tag can be implied */
     char saveEndTag;    /* Whether the end tag should be saved */
     char empty;         /* Is this an empty element ? */
-    char depr;          /* Is this a deprecated element ? */
-    char dtd;           /* 1: only in Loose DTD, 2: only Frameset one */
+    char depr;          /* unused */
+    char dtd;           /* unused */
     char isinline;      /* is this a block 0 or inline 1 element */
     const char *desc;   /* the description */
 
-/* NRK Jan.2003
- * New fields encapsulating HTML structure
- *
- * Bugs:
- *	This is a very limited representation.  It fails to tell us when
- *	an element *requires* subelements (we only have whether they're
- *	allowed or not), and it doesn't tell us where CDATA and PCDATA
- *	are allowed.  Some element relationships are not fully represented:
- *	these are flagged with the word MODIFIER
- */
-    const char** subelts;		/* allowed sub-elements of this element */
-    const char* defaultsubelt;	/* subelement for suggested auto-repair
-					   if necessary or NULL */
-    const char** attrs_opt;		/* Optional Attributes */
-    const char** attrs_depr;		/* Additional deprecated attributes */
-    const char** attrs_req;		/* Required attributes */
+    const char** subelts XML_DEPRECATED_MEMBER;
+    const char* defaultsubelt XML_DEPRECATED_MEMBER;
+    const char** attrs_opt XML_DEPRECATED_MEMBER;
+    const char** attrs_depr XML_DEPRECATED_MEMBER;
+    const char** attrs_req XML_DEPRECATED_MEMBER;
 
     int dataMode;
 };
@@ -291,7 +280,7 @@ XMLPUBFUN htmlDocPtr
 					 const char *encoding,
 					 int options);
 
-/* NRK/Jan2003: further knowledge of HTML structure
+/* deprecated content model
  */
 typedef enum {
   HTML_NA = 0 ,		/* something we don't check at all */
@@ -304,9 +293,13 @@ typedef enum {
 /* Using htmlElemDesc rather than name here, to emphasise the fact
    that otherwise there's a lookup overhead
 */
+XML_DEPRECATED
 XMLPUBFUN htmlStatus htmlAttrAllowed(const htmlElemDesc*, const xmlChar*, int) ;
+XML_DEPRECATED
 XMLPUBFUN int htmlElementAllowedHere(const htmlElemDesc*, const xmlChar*) ;
+XML_DEPRECATED
 XMLPUBFUN htmlStatus htmlElementStatusHere(const htmlElemDesc*, const htmlElemDesc*) ;
+XML_DEPRECATED
 XMLPUBFUN htmlStatus htmlNodeStatus(htmlNodePtr, int) ;
 /**
  * htmlDefaultSubelement:

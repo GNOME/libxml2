@@ -56,6 +56,37 @@
      (((c) >= 'A') && ((c) <= 'F')) || \
      (((c) >= 'a') && ((c) <= 'f')))
 
+typedef const unsigned htmlAsciiMask[2];
+
+static htmlAsciiMask MASK_DQ = {
+    0,
+    1u << ('"' - 32),
+};
+static htmlAsciiMask MASK_SQ = {
+    0,
+    1u << ('\'' - 32),
+};
+static htmlAsciiMask MASK_GT = {
+    0,
+    1u << ('>' - 32),
+};
+static htmlAsciiMask MASK_DASH = {
+    0,
+    1u << ('-' - 32),
+};
+static htmlAsciiMask MASK_WS_GT = {
+    1u << 0x09 | 1u << 0x0A | 1u << 0x0C | 1u << 0x0D,
+    1u << (' ' - 32) | 1u << ('>' - 32),
+};
+static htmlAsciiMask MASK_DQ_GT = {
+    0,
+    1u << ('"' - 32) | 1u << ('>' - 32),
+};
+static htmlAsciiMask MASK_SQ_GT = {
+    0,
+    1u << ('\'' - 32) | 1u << ('>' - 32),
+};
+
 static int htmlOmittedDefaultValue = 1;
 
 static int
@@ -238,9 +269,6 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
  *
  * Clean macros, not dependent of an ASCII context, expect UTF-8 encoding
  *
- *   NEXT    Skip to the next character, this does the proper decoding
- *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
- *   NEXTL(l) Skip the current unicode character of l xmlChars long.
  *   COPY(to) copy one char to *to, increment CUR_PTR and to accordingly
  */
 
@@ -271,29 +299,6 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 /* Imported from XML */
 
 #define CUR (*ctxt->input->cur)
-#define NEXT xmlNextChar(ctxt)
-
-#define RAW (*ctxt->input->cur)
-
-
-#define NEXTL(l) do {							\
-    if ((CUR == '\n') || ((CUR == '\r') && (NXT(1) == '\n'))) {		\
-	ctxt->input->line++; ctxt->input->col = 1;			\
-    } else ctxt->input->col++;						\
-    ctxt->input->cur += l;						\
-  } while (0)
-
-/************
-    \
-    if (*ctxt->input->cur == '%') xmlParserHandlePEReference(ctxt);	\
-    if (*ctxt->input->cur == '&') xmlParserHandleReference(ctxt);
- ************/
-
-#define CUR_CHAR(l) htmlCurrentChar(ctxt, &l)
-
-#define COPY_BUF(b, i, v)						\
-    if (v < 0x80) b[i++] = v;						\
-    else i += xmlCopyCharMultiByte(&b[i],v)
 
 /**
  * htmlFindEncoding:
@@ -350,129 +355,11 @@ htmlFindEncoding(xmlParserCtxtPtr ctxt) {
     return(ret);
 }
 
-/**
- * htmlCurrentChar:
- * @ctxt:  the HTML parser context
- * @len:  pointer to the length of the char read
- *
- * The current char value, if using UTF-8 this may actually span multiple
- * bytes in the input buffer. Implement the end of line normalization:
- * 2.11 End-of-Line Handling
- * If the encoding is unspecified, in the case we find an ISO-Latin-1
- * char, then the encoding converter is plugged in automatically.
- *
- * Returns the current char value and its length
- */
-
 static int
-htmlCurrentChar(xmlParserCtxtPtr ctxt, int *len) {
-    const unsigned char *cur;
-    unsigned char c;
-    unsigned int val;
-
-    if (ctxt->input->end - ctxt->input->cur < INPUT_CHUNK)
-        xmlParserGrow(ctxt);
-
-    /*
-     * We are supposed to handle UTF8, check it's valid
-     * From rfc2044: encoding of the Unicode values on UTF-8:
-     *
-     * UCS-4 range (hex.)           UTF-8 octet sequence (binary)
-     * 0000 0000-0000 007F   0xxxxxxx
-     * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
-     * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx
-     *
-     * Check for the 0x110000 limit too
-     */
-    cur = ctxt->input->cur;
-    c = *cur;
-    if (c < 0x80) {
-        if (c == 0) {
-            if (ctxt->input->cur < ctxt->input->end) {
-                *len = 1;
-                return(0xFFFD);
-            } else {
-                *len = 0;
-                return(0);
-            }
-        } else if (c == 0x0D) {
-            if (cur[1] == 0x0A)
-                *len = 2;
-            else
-                *len = 1;
-            return(0x0A);
-        }
-
-        *len = 1;
-        return(c);
-    } else {
-        size_t avail;
-
-        if ((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) {
-            xmlChar * guess;
-
-            guess = htmlFindEncoding(ctxt);
-            if (guess == NULL) {
-                xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
-            } else {
-                xmlSwitchEncodingName(ctxt, (const char *) guess);
-                xmlFree(guess);
-            }
-            ctxt->input->flags |= XML_INPUT_HAS_ENCODING;
-
-            cur = ctxt->input->cur;
-            c = *cur;
-        }
-
-        if ((c & 0x40) == 0)
-            goto encoding_error;
-
-        avail = ctxt->input->end - ctxt->input->cur;
-
-        if ((avail < 2) || ((cur[1] & 0xc0) != 0x80))
-            goto encoding_error;
-        if ((c & 0xe0) == 0xe0) {
-            if ((avail < 3) || ((cur[2] & 0xc0) != 0x80))
-                goto encoding_error;
-            if ((c & 0xf0) == 0xf0) {
-                if (((c & 0xf8) != 0xf0) ||
-                    (avail < 4) || ((cur[3] & 0xc0) != 0x80))
-                    goto encoding_error;
-                /* 4-byte code */
-                *len = 4;
-                val = (cur[0] & 0x7) << 18;
-                val |= (cur[1] & 0x3f) << 12;
-                val |= (cur[2] & 0x3f) << 6;
-                val |= cur[3] & 0x3f;
-                if (val < 0x10000)
-                    goto encoding_error;
-            } else {
-              /* 3-byte code */
-                *len = 3;
-                val = (cur[0] & 0xf) << 12;
-                val |= (cur[1] & 0x3f) << 6;
-                val |= cur[2] & 0x3f;
-                if (val < 0x800)
-                    goto encoding_error;
-            }
-        } else {
-          /* 2-byte code */
-            *len = 2;
-            val = (cur[0] & 0x1f) << 6;
-            val |= cur[1] & 0x3f;
-            if (val < 0x80)
-                goto encoding_error;
-        }
-        return(val);
-    }
-
-encoding_error:
-    xmlCtxtErrIO(ctxt, XML_ERR_INVALID_ENCODING, NULL);
-
-    if ((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0)
-        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
-    *len = 1;
-    return(*ctxt->input->cur);
+htmlMaskMatch(htmlAsciiMask mask, unsigned c) {
+    if (c >= 64)
+        return(0);
+    return((mask[c/32] >> (c & 31)) & 1);
 }
 
 static int
@@ -545,18 +432,46 @@ invalid:
 
 static int
 htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
+    const xmlChar *cur = ctxt->input->cur;
+    size_t avail = ctxt->input->end - cur;
     int res = 0;
+    int line = ctxt->input->line;
+    int col = ctxt->input->col;
 
-    while (IS_WS_HTML(*(ctxt->input->cur))) {
-        if (*(ctxt->input->cur) == '\n') {
-            ctxt->input->line++; ctxt->input->col = 1;
-        } else ctxt->input->col++;
-        ctxt->input->cur++;
-        if (*ctxt->input->cur == 0)
-            xmlParserGrow(ctxt);
+    while (!PARSER_STOPPED(ctxt)) {
+        if (avail == 0) {
+            ctxt->input->cur = cur;
+            GROW;
+            cur = ctxt->input->cur;
+            avail = ctxt->input->end - cur;
+
+            if (avail == 0)
+                break;
+        }
+
+        if (*cur == '\n') {
+            line++;
+            col = 1;
+        } else if (IS_WS_HTML(*cur)) {
+            col++;
+        } else {
+            break;
+        }
+
+        cur += 1;
+        avail -= 1;
+
 	if (res < INT_MAX)
 	    res++;
     }
+
+    ctxt->input->cur = cur;
+    ctxt->input->line = line;
+    ctxt->input->col = col;
+
+    if (res > 8)
+        GROW;
+
     return(res);
 }
 
@@ -2003,21 +1918,6 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
  *									*
  ************************************************************************/
 
-/*
- * Macro used to grow the current buffer.
- */
-#define growBuffer(buffer) {						\
-    xmlChar *tmp;							\
-    buffer##_size *= 2;							\
-    tmp = (xmlChar *) xmlRealloc(buffer, buffer##_size); 		\
-    if (tmp == NULL) {							\
-	htmlErrMemory(ctxt);			\
-	xmlFree(buffer);						\
-	return(NULL);							\
-    }									\
-    buffer = tmp;							\
-}
-
 /**
  * htmlEntityLookup:
  * @name: the entity name
@@ -2748,120 +2648,277 @@ htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
     return(match + 1);
 }
 
-
 /**
- * htmlParseHTMLAttribute:
+ * htmlParseData:
  * @ctxt:  an HTML parser context
- * @stop:  a char stop value
+ * @mask:  mask of terminating characters
+ * @comment:  true if parsing a comment
+ * @refs:  true if references are allowed
+ * @maxLength:  maximum output length
  *
- * parse an HTML attribute value till the stop (quote), if
- * stop is 0 then it stops at the first space
+ * Parse data until callback signals to stop.
  *
- * Returns the attribute parsed or NULL
+ * Returns the parsed string or NULL in case of errors.
  */
 
 static xmlChar *
-htmlParseHTMLAttribute(htmlParserCtxtPtr ctxt, int stop) {
-    xmlChar *buffer = NULL;
-    int buffer_size = 0;
-    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
-                    XML_MAX_HUGE_LENGTH :
-                    XML_MAX_TEXT_LENGTH;
-    xmlChar *out = NULL;
+htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
+              int comment, int refs, int maxLength) {
+    xmlParserInputPtr input = ctxt->input;
+    xmlChar *ret = NULL;
+    xmlChar *buffer;
+    xmlChar utf8Char[4];
+    size_t buffer_size;
+    size_t used;
+    int eof = PARSER_PROGRESSIVE(ctxt);
+    int line, col;
+    int termSkip = -1;
 
-    /*
-     * allocate a translation buffer.
-     */
-    buffer_size = HTML_PARSER_BUFFER_SIZE;
-    buffer = xmlMalloc(buffer_size);
+    used = 0;
+    buffer_size = ctxt->spaceMax;
+    buffer = (xmlChar *) ctxt->spaceTab;
     if (buffer == NULL) {
-	htmlErrMemory(ctxt);
-	return(NULL);
-    }
-    out = buffer;
-
-    /*
-     * Ok loop until we reach one of the ending chars
-     */
-    while ((PARSER_STOPPED(ctxt) == 0) &&
-           (ctxt->input->cur < ctxt->input->end) &&
-           ((stop == 0) || (CUR != stop))) {
-	if ((stop == 0) && (CUR == '>')) break;
-	if ((stop == 0) && (IS_WS_HTML(CUR))) break;
-
-        if (out - buffer > buffer_size - 100) {
-            int indx = out - buffer;
-
-            growBuffer(buffer);
-            out = &buffer[indx];
-        }
-
-        GROW;
-
-        if (CUR == '&') {
-	    if (NXT(1) == '#') {
-		unsigned int c;
-		int bits;
-
-		c = htmlParseCharRef(ctxt);
-		if      (c <    0x80)
-		        { *out++  = c;                bits= -6; }
-		else if (c <   0x800)
-		        { *out++  =((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-		else if (c < 0x10000)
-		        { *out++  =((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-		else
-		        { *out++  =((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-		for ( ; bits >= 0; bits-= 6) {
-		    *out++  = ((c >> bits) & 0x3F) | 0x80;
-		}
-	    } else {
-                const xmlChar *repl;
-                int nameLen, replLen;
-
-                SKIP(1);
-                repl = htmlFindEntityPrefix(CUR_PTR,
-                                            ctxt->input->end - CUR_PTR,
-                                            /* isAttr */ 1,
-                                            &nameLen, &replLen);
-
-		if (repl == NULL) {
-		    *out++ = '&';
-		} else {
-                    memcpy(out, repl, replLen);
-                    out += replLen;
-                    SKIP(nameLen);
-		}
-	    }
-	} else {
-	    unsigned int c;
-	    int bits, l;
-
-	    c = CUR_CHAR(l);
-	    if      (c <    0x80)
-		    { *out++  = c;                bits= -6; }
-	    else if (c <   0x800)
-		    { *out++  =((c >>  6) & 0x1F) | 0xC0;  bits=  0; }
-	    else if (c < 0x10000)
-		    { *out++  =((c >> 12) & 0x0F) | 0xE0;  bits=  6; }
-	    else
-		    { *out++  =((c >> 18) & 0x07) | 0xF0;  bits= 12; }
-
-	    for ( ; bits >= 0; bits-= 6) {
-		*out++  = ((c >> bits) & 0x3F) | 0x80;
-	    }
-	    NEXTL(l);
-	}
-        if (out - buffer > maxLength) {
-            htmlParseErr(ctxt, XML_ERR_ATTRIBUTE_NOT_FINISHED,
-                         "attribute value too long\n", NULL, NULL);
-            xmlFree(buffer);
+        buffer_size = 500;
+        buffer = xmlMalloc(buffer_size + 1);
+        if (buffer == NULL) {
+            htmlErrMemory(ctxt);
             return(NULL);
         }
     }
-    *out = 0;
-    return(buffer);
+
+    line = input->line;
+    col = input->col;
+
+    while (!PARSER_STOPPED(ctxt)) {
+        const xmlChar *chunk, *in, *repl;
+        size_t avail, chunkSize, extraSize;
+        int replSize;
+        int skip = 0;
+
+        chunk = input->cur;
+        avail = input->end - chunk;
+        in = chunk;
+
+        repl = BAD_CAST "";
+        replSize = 0;
+
+        while (!PARSER_STOPPED(ctxt)) {
+            size_t j;
+            int cur, size, cp;
+
+            if ((!eof) && (avail <= 64)) {
+                size_t oldAvail = avail;
+                size_t off = in - chunk;
+
+                input->cur = in;
+
+                xmlParserGrow(ctxt);
+
+                in = input->cur;
+                chunk = in - off;
+                input->cur = chunk;
+                avail = input->end - in;
+
+                if (oldAvail == avail)
+                    eof = 1;
+            }
+
+            if (avail == 0) {
+                termSkip = 0;
+                break;
+            }
+
+            cur = *in;
+            size = 1;
+            col += 1;
+
+            if (htmlMaskMatch(mask, cur)) {
+                if (comment) {
+                    if (avail < 2) {
+                        termSkip = 1;
+                    } else if (in[1] == '-') {
+                        if  (avail < 3) {
+                            termSkip = 2;
+                        } else if (in[2] == '>') {
+                            termSkip = 3;
+                        } else if (in[2] == '!') {
+                            if (avail < 4)
+                                termSkip = 3;
+                            else if (in[3] == '>')
+                                termSkip = 4;
+                        }
+                    }
+
+                    if (termSkip >= 0)
+                        break;
+                } else {
+                    termSkip = 0;
+                    break;
+                }
+            }
+
+            switch (cur) {
+            case '&':
+                if (!refs)
+                    break;
+
+                cp = 0;
+                j = 1;
+
+                if ((j < avail) && (in[j] == '#')) {
+                    j += 1;
+                    if (j < avail) {
+                        if ((in[j] | 0x20) == 'x') {
+                            j += 1;
+                            if ((j < avail) && (IS_HEX_DIGIT(in[j]))) {
+                                cp = htmlParseNCRHex(in + j, avail - j, &skip);
+                                skip += 3;
+                            }
+                        } else if (IS_ASCII_DIGIT(in[j])) {
+                            cp = htmlParseNCR(in + j, avail - j, &skip);
+                            skip += 2;
+                        }
+                    }
+
+                    if (cp > 0) {
+                        repl = htmlCodePointToUtf8(cp, utf8Char, &replSize);
+                        goto next_chunk;
+                    }
+
+                    skip = 0;
+                } else {
+                    repl = htmlFindEntityPrefix(in + j,
+                                                avail - j,
+                                                /* isAttr */ 1,
+                                                &skip, &replSize);
+                    if (repl != NULL) {
+                        skip += 1;
+                        goto next_chunk;
+                    }
+
+                    skip = 0;
+                }
+
+                break;
+
+            case '\0':
+                skip = 1;
+                repl = BAD_CAST "\xEF\xBF\xBD";
+                replSize = 3;
+                goto next_chunk;
+
+            case '\n':
+                line += 1;
+                col = 1;
+                break;
+
+            case '\r':
+                skip = 1;
+                if (in[1] != 0x0A) {
+                    repl = BAD_CAST "\x0A";
+                    replSize = 1;
+                }
+                goto next_chunk;
+
+            default:
+                if (cur < 0x80)
+                    break;
+
+                if ((input->flags & XML_INPUT_HAS_ENCODING) == 0) {
+                    xmlChar * guess;
+
+                    guess = htmlFindEncoding(ctxt);
+                    if (guess == NULL) {
+                        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
+                    } else {
+                        xmlSwitchEncodingName(ctxt, (const char *) guess);
+                        xmlFree(guess);
+                    }
+                    input->flags |= XML_INPUT_HAS_ENCODING;
+
+                    goto restart;
+                }
+
+                size = htmlValidateUtf8(ctxt, in, avail);
+
+                if (size <= 0) {
+                    skip = 1;
+                    repl = BAD_CAST "\xEF\xBF\xBD";
+                    replSize = 3;
+                    goto next_chunk;
+                }
+
+                break;
+            }
+
+            in += size;
+            avail -= size;
+        }
+
+next_chunk:
+        chunkSize = in - chunk;
+        extraSize = chunkSize + replSize;
+
+        if (extraSize > maxLength - used) {
+            htmlParseErr(ctxt, XML_ERR_RESOURCE_LIMIT,
+                         "value too long\n", NULL, NULL);
+            goto error;
+        }
+
+        if (extraSize > buffer_size - used) {
+            size_t newSize = (used + extraSize) * 2;
+            xmlChar *tmp = (xmlChar *) xmlRealloc(buffer, newSize + 1);
+
+            if (tmp == NULL) {
+                htmlErrMemory(ctxt);
+                goto error;
+            }
+            buffer = tmp;
+            buffer_size = newSize;
+        }
+
+        if (chunkSize > 0) {
+            input->cur += chunkSize;
+            memcpy(buffer + used, chunk, chunkSize);
+            used += chunkSize;
+        }
+
+        input->cur += skip;
+        if (replSize > 0) {
+            memcpy(buffer + used, repl, replSize);
+            used += replSize;
+        }
+
+        SHRINK;
+
+        if (termSkip >= 0)
+            break;
+
+restart:
+        ;
+    }
+
+    if (termSkip > 0) {
+        input->cur += termSkip;
+        col += termSkip;
+    }
+
+    input->line = line;
+    input->col = col;
+
+    ret = xmlMalloc(used + 1);
+    if (ret == NULL) {
+        htmlErrMemory(ctxt);
+    } else {
+        memcpy(ret, buffer, used);
+        ret[used] = 0;
+    }
+
+error:
+    ctxt->spaceTab = (void *) buffer;
+    ctxt->spaceMax = buffer_size;
+
+    return(ret);
 }
 
 /**
@@ -2894,22 +2951,22 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 static xmlChar *
 htmlParseAttValue(htmlParserCtxtPtr ctxt) {
     xmlChar *ret = NULL;
+    int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
+                    XML_MAX_HUGE_LENGTH :
+                    XML_MAX_TEXT_LENGTH;
 
     if (CUR == '"') {
         SKIP(1);
-	ret = htmlParseHTMLAttribute(ctxt, '"');
+	ret = htmlParseData(ctxt, MASK_DQ, 0, 1, maxLength);
         if (CUR == '"')
-	    SKIP(1);
+            SKIP(1);
     } else if (CUR == '\'') {
         SKIP(1);
-	ret = htmlParseHTMLAttribute(ctxt, '\'');
+	ret = htmlParseData(ctxt, MASK_SQ, 0, 1, maxLength);
         if (CUR == '\'')
-	    SKIP(1);
+            SKIP(1);
     } else {
-        /*
-	 * That's an HTMLism, the attribute value may not be quoted
-	 */
-	ret = htmlParseHTMLAttribute(ctxt, 0);
+	ret = htmlParseData(ctxt, MASK_WS_GT, 0, 1, maxLength);
     }
     return(ret);
 }
@@ -3230,107 +3287,36 @@ restart:
  */
 static void
 htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
+    const xmlChar *comment = BAD_CAST "";
     xmlChar *buf = NULL;
-    int len;
-    int size = HTML_PARSER_BUFFER_SIZE;
-    int cur, l;
     int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_HUGE_LENGTH :
                     XML_MAX_TEXT_LENGTH;
-    xmlParserInputState state;
 
-    state = ctxt->instate;
-    ctxt->instate = XML_PARSER_COMMENT;
-
-    buf = xmlMalloc(size);
-    if (buf == NULL) {
-        htmlErrMemory(ctxt);
-	return;
-    }
-    len = 0;
-    buf[len] = 0;
-
-    cur = CUR_CHAR(l);
-    if (!bogus) {
-        if (cur == '>') {
+    if (bogus) {
+        buf = htmlParseData(ctxt, MASK_GT, 0, 0, maxLength);
+        if (CUR == '>')
             SKIP(1);
-            goto done;
-        } else if ((cur == '-') && (NXT(1) == '>')) {
+        comment = buf;
+    } else {
+        if (CUR == '>') {
+            SKIP(1);
+        } else if ((CUR == '-') && (NXT(1) == '>')) {
             SKIP(2);
-            goto done;
-        }
-    }
-
-    while (cur != 0) {
-        if (bogus) {
-            if (cur == '>') {
-                SKIP(1);
-                break;
-            }
         } else {
-	    if (cur == '-') {
-                size_t avail = ctxt->input->end - ctxt->input->cur;
-
-                if (avail < 2) {
-                    SKIP(1);
-                    break;
-                } else if (NXT(1) == '-') {
-                    if (avail < 3) {
-                        SKIP(2);
-                        break;
-                    } else if (NXT(2) == '>') {
-                        SKIP(3);
-                        break;
-                    } else if (NXT(2) == '!') {
-                        if (avail < 4) {
-                            SKIP(3);
-                            break;
-
-                        } else if (NXT(3) == '>') {
-                            SKIP(4);
-                            break;
-                        }
-                    }
-                }
-            }
-	}
-
-	if (len + 5 >= size) {
-	    xmlChar *tmp;
-
-	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size);
-	    if (tmp == NULL) {
-	        xmlFree(buf);
-	        htmlErrMemory(ctxt);
-                ctxt->instate = state;
-		return;
-	    }
-	    buf = tmp;
-	}
-
-	COPY_BUF(buf,len,cur);
-        if (len > maxLength) {
-            htmlParseErr(ctxt, XML_ERR_COMMENT_NOT_FINISHED,
-                         "comment too long", NULL, NULL);
-            xmlFree(buf);
-            ctxt->instate = state;
-            return;
+            buf = htmlParseData(ctxt, MASK_DASH, 1, 0, maxLength);
+            comment = buf;
         }
-
-        NEXTL(l);
-	cur = CUR_CHAR(l);
     }
 
-done:
-    buf[len] = 0;
+    if (comment == NULL)
+        return;
+
     if ((ctxt->sax != NULL) && (ctxt->sax->comment != NULL) &&
         (!ctxt->disableSAX))
-        ctxt->sax->comment(ctxt->userData, buf);
-    xmlFree(buf);
+        ctxt->sax->comment(ctxt->userData, comment);
 
-    ctxt->instate = state;
-    return;
+    xmlFree(buf);
 }
 
 /**
@@ -3339,70 +3325,11 @@ done:
  *
  * DEPRECATED: Internal function, don't use.
  *
- * parse Reference declarations
- *
- * [66] CharRef ::= '&#' [0-9]+ ';' |
- *                  '&#x' [0-9a-fA-F]+ ';'
- *
- * Returns the value parsed (as an int)
+ * Returns 0
  */
 int
-htmlParseCharRef(htmlParserCtxtPtr ctxt) {
-    int val = 0;
-
-    if ((ctxt == NULL) || (ctxt->input == NULL))
-        return(0);
-
-    if ((CUR == '&') && (NXT(1) == '#') &&
-        ((NXT(2) == 'x') || NXT(2) == 'X')) {
-	SKIP(3);
-	while (1) {
-            int c = CUR;
-
-	    if ((c >= '0') && (c <= '9')) {
-	        c -= '0';
-            } else if ((c >= 'a') && (c <= 'f')) {
-	        c = (c - 'a') + 10;
-            } else if ((c >= 'A') && (c <= 'F')) {
-	        c = (c - 'A') + 10;
-            } else {
-		break;
-	    }
-            val = val * 16 + c;
-            if (val >= 0x110000)
-                val = 0x110000;
-	    NEXT;
-	}
-	if (CUR == ';')
-	    SKIP(1);
-    } else if  ((CUR == '&') && (NXT(1) == '#')) {
-	SKIP(2);
-	while (1) {
-            int c = CUR;
-
-	    if ((c < '0') || (c > '9'))
-                break;
-	    val = val * 10 + (c - '0');
-            if (val >= 0x110000)
-                val = 0x110000;
-	    NEXT;
-	}
-	if (CUR == ';')
-	    SKIP(1);
-    }
-
-    /*
-     * Remap C1 control characters
-     */
-    if ((val >= 0x80) && (val < 0xA0)) {
-        val = htmlC1Remap[val - 0x80];
-    } else if ((val <= 0) ||
-               ((val >= 0xD800) && (val < 0xE000)) ||
-               (val > 0x10FFFF)) {
-        val = 0xFFFD;
-    }
-
-    return(val);
+htmlParseCharRef(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
+    return(0);
 }
 
 
@@ -3417,63 +3344,81 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt) {
 
 static xmlChar *
 htmlParseDoctypeLiteral(htmlParserCtxtPtr ctxt) {
-    xmlChar *buf = NULL;
-    int len;
-    int size = HTML_PARSER_BUFFER_SIZE;
-    int quote, cur, l;
+    xmlChar *ret;
     int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
 
-    if ((CUR != '"') && (CUR != '\''))
-        return(NULL);
-    quote = CUR;
-    NEXT;
-
-    buf = xmlMalloc(size);
-    if (buf == NULL) {
-        htmlErrMemory(ctxt);
-	return(NULL);
-    }
-    len = 0;
-
-    while (ctxt->input->cur < ctxt->input->end) {
-        cur = CUR_CHAR(l);
-
-        if (cur == '>')
-            break;
-
-        if (cur == quote) {
+    if (CUR == '"') {
+        SKIP(1);
+        ret = htmlParseData(ctxt, MASK_DQ_GT, 0, 0, maxLength);
+        if (CUR == '"')
             SKIP(1);
-            break;
-        }
-
-	if (len + 5 >= size) {
-	    xmlChar *tmp;
-
-	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size);
-	    if (tmp == NULL) {
-	        xmlFree(buf);
-	        htmlErrMemory(ctxt);
-		return(NULL);
-	    }
-	    buf = tmp;
-	}
-
-	COPY_BUF(buf,len,cur);
-        if (len > maxLength) {
-            htmlParseErr(ctxt, XML_ERR_RESOURCE_LIMIT,
-                         "identifier too long", NULL, NULL);
-            xmlFree(buf);
-            return(NULL);
-        }
-
-        NEXTL(l);
+    } else if (CUR == '\'') {
+        SKIP(1);
+        ret = htmlParseData(ctxt, MASK_SQ_GT, 0, 0, maxLength);
+        if (CUR == '\'')
+            SKIP(1);
+    } else {
+        return(NULL);
     }
 
-    buf[len] = 0;
-    return(buf);
+    return(ret);
+}
+
+static void
+htmlSkipBogusDoctype(htmlParserCtxtPtr ctxt) {
+    const xmlChar *in;
+    size_t avail;
+    int eof = PARSER_PROGRESSIVE(ctxt);
+    int line, col;
+
+    line = ctxt->input->line;
+    col = ctxt->input->col;
+
+    in = ctxt->input->cur;
+    avail = ctxt->input->end - in;
+
+    while (!PARSER_STOPPED(ctxt)) {
+        int cur;
+
+        if ((!eof) && (avail <= 64)) {
+            size_t oldAvail = avail;
+
+            ctxt->input->cur = in;
+
+            xmlParserGrow(ctxt);
+
+            in = ctxt->input->cur;
+            avail = ctxt->input->end - in;
+
+            if (oldAvail == avail)
+                eof = 1;
+        }
+
+        if (avail == 0)
+            break;
+
+        col += 1;
+
+        cur = *in;
+        if (cur == '>') {
+            in += 1;
+            break;
+        } else if (cur == 0x0A) {
+            line += 1;
+            col = 1;
+        }
+
+        in += 1;
+        avail -= 1;
+
+        SHRINK;
+    }
+
+    ctxt->input->cur = in;
+    ctxt->input->line = line;
+    ctxt->input->col = col;
 }
 
 /**
@@ -3488,7 +3433,6 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     xmlChar *name = NULL;
     xmlChar *publicId = NULL;
     xmlChar *URI = NULL;
-    int nameCap, nameSize;
     int maxLength = (ctxt->options & HTML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
@@ -3500,59 +3444,20 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
 
     SKIP_BLANKS;
 
-    nameCap = 0;
-    nameSize = 0;
-    while (ctxt->input->cur < ctxt->input->end) {
-        int l;
-        int c = CUR_CHAR(l);
+    if ((ctxt->input->cur < ctxt->input->end) && (CUR != '>')) {
+        name = htmlParseData(ctxt, MASK_WS_GT, 0, 0, maxLength);
 
-        if (c == '>')
-            break;
+        if ((ctxt->options & HTML_PARSE_HTML5) && (name != NULL)) {
+            xmlChar *cur;
 
-        if (nameSize + 5 > nameCap) {
-            size_t newCap = nameCap ? nameCap * 2 : 32;
-            xmlChar *tmp = xmlRealloc(name, newCap);
-
-            if (tmp == NULL) {
-                htmlErrMemory(ctxt);
-                xmlFree(name);
-                return;
+            for (cur = name; *cur; cur++) {
+                if ((*cur >= 'A') && (*cur <= 'Z'))
+                    *cur += 0x20;
             }
-
-            name = tmp;
-            nameCap = newCap;
         }
 
-        if (c < 0x80) {
-            if (IS_WS_HTML(c))
-                break;
-
-            if ((ctxt->options & HTML_PARSE_HTML5) &&
-                (c >= 'A') && (c <= 'Z'))
-                c += 32;
-
-            name[nameSize++] = c;
-        } else {
-            COPY_BUF(name, nameSize, c);
-        }
-
-        if (nameSize > maxLength) {
-            htmlParseErr(ctxt, XML_ERR_RESOURCE_LIMIT,
-                         "identifier too long", NULL, NULL);
-            goto bogus;
-        }
-
-        NEXTL(l);
+        SKIP_BLANKS;
     }
-
-    if (name != NULL)
-        name[nameSize] = 0;
-
-    /*
-     * Check that upper(name) == "HTML" !!!!!!!!!!!!!
-     */
-
-    SKIP_BLANKS;
 
     /*
      * Check for SystemID and publicId
@@ -3576,14 +3481,7 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
     }
 
 bogus:
-    /* Ignore bogus content */
-    while (ctxt->input->cur < ctxt->input->end) {
-        int c = CUR;
-
-        NEXT;
-        if (c == '>')
-            break;
-    }
+    htmlSkipBogusDoctype(ctxt);
 
     /*
      * Create or update the document accordingly to the DOCTYPE
@@ -3821,7 +3719,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
            (PARSER_STOPPED(ctxt) == 0)) {
         /*  unexpected-solidus-in-tag */
         if (CUR == '/') {
-            NEXT;
+            SKIP(1);
             SKIP_BLANKS;
             continue;
         }
@@ -3973,7 +3871,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
 
         /*  unexpected-solidus-in-tag */
         if (CUR == '/') {
-            NEXT;
+            SKIP(1);
             SKIP_BLANKS;
             continue;
         }
@@ -3986,7 +3884,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     }
 
     if (CUR == '>') {
-        NEXT;
+        SKIP(1);
     } else if ((CUR == '/') && (NXT(1) == '>')) {
         SKIP(2);
     } else {

@@ -96,9 +96,11 @@ XMLPUBFUN const htmlEntityDesc *
 XMLPUBFUN const htmlEntityDesc *
 			htmlEntityValueLookup(unsigned int value);
 
+XML_DEPRECATED
 XMLPUBFUN int
 			htmlIsAutoClosed(htmlDocPtr doc,
 					 htmlNodePtr elem);
+XML_DEPRECATED
 XMLPUBFUN int
 			htmlAutoCloseTag(htmlDocPtr doc,
 					 const xmlChar *name,

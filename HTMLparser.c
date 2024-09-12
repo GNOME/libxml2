@@ -1454,6 +1454,8 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
  * @name:  The tag name
  * @elem:  the HTML element
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function checks
  * if the element or one of it's children would autoclose the
@@ -1480,6 +1482,8 @@ htmlAutoCloseTag(htmlDocPtr doc, const xmlChar *name, htmlNodePtr elem) {
  * htmlIsAutoClosed:
  * @doc:  the HTML document
  * @elem:  the HTML element
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function checks

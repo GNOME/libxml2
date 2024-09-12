@@ -290,9 +290,11 @@ skip_impl = (
 )
 
 deprecated_funcs = {
+    'htmlAutoCloseTag': True,
     'htmlDefaultSAXHandlerInit': True,
     'htmlHandleOmittedElem': True,
     'htmlInitAutoClose': True,
+    'htmlIsAutoClosed': True,
     'htmlParseCharRef': True,
     'htmlParseElement': True,
     'namePop': True,

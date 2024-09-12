@@ -48,13 +48,18 @@
 #define HTML_PARSER_BUFFER_SIZE 100
 
 #define IS_WS_HTML(c) \
-    (((c) == 0x09) || ((c) == 0x0A) || ((c) == 0x0C) || ((c) == 0x0D) || \
-     ((c) == 0x20))
+    (((c) == 0x20) || \
+     (((c) >= 0x09) && ((c) <= 0x0D) && ((c) != 0x0B)))
 
 #define IS_HEX_DIGIT(c) \
     ((IS_ASCII_DIGIT(c)) || \
-     (((c) >= 'A') && ((c) <= 'F')) || \
-     (((c) >= 'a') && ((c) <= 'f')))
+     ((((c) | 0x20) >= 'a') && (((c) | 0x20) <= 'f')))
+
+#define IS_UPPER(c) \
+    (((c) >= 'A') && ((c) <= 'Z'))
+
+#define IS_ALNUM(c) \
+    (IS_ASCII_LETTER(c) || IS_ASCII_DIGIT(c))
 
 typedef const unsigned htmlAsciiMask[2];
 
@@ -342,9 +347,7 @@ htmlFindEncoding(xmlParserCtxtPtr ctxt) {
         return(NULL);
     cur += 8;
     start = cur;
-    while (((*cur >= 'A') && (*cur <= 'Z')) ||
-           ((*cur >= 'a') && (*cur <= 'z')) ||
-           ((*cur >= '0') && (*cur <= '9')) ||
+    while ((IS_ALNUM(*cur)) ||
            (*cur == '-') || (*cur == '_') || (*cur == ':') || (*cur == '/'))
            cur++;
     if (cur == start)
@@ -2402,7 +2405,7 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
             }
         } else if (c < 0x80) {
             if (nbchar < HTML_PARSER_BUFFER_SIZE) {
-                if ((c >= 'A') && (c <= 'Z'))
+                if (IS_UPPER(c))
                     c += 0x20;
                 buf[nbchar++] = c;
             }
@@ -2488,14 +2491,12 @@ htmlParseNCRHex(const xmlChar *string, size_t slen, int *dlen) {
     unsigned val = 0;
 
     while (in < end) {
-        int c = *in;
+        int c = *in | 0x20;
 
         if ((c >= '0') && (c <= '9')) {
             c -= '0';
         } else if ((c >= 'a') && (c <= 'f')) {
             c = (c - 'a') + 10;
-        } else if ((c >= 'A') && (c <= 'F')) {
-            c = (c - 'A') + 10;
         } else {
             break;
         }
@@ -2560,8 +2561,7 @@ htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
 
     if (slen < 2)
         return(NULL);
-    if (((first < 'A') || (first > 'Z')) &&
-        ((first < 'a') || (first > 'z')))
+    if (!IS_ASCII_LETTER(first))
         return(NULL);
 
     /*
@@ -2609,9 +2609,7 @@ htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
             int term = soff + len < slen ? string[soff + len] : 0;
             int isAlnum, isTerm;
 
-            isAlnum = (((term >= 'A') && (term <= 'Z')) ||
-                       ((term >= 'a') && (term <= 'z')) ||
-                       ((term >= '0') && (term <= '9')));
+            isAlnum = IS_ALNUM(term);
             isTerm = ((term == ';') ||
                       ((bytes[0] & ENT_F_SEMICOLON) &&
                        ((!isAttr) ||
@@ -3102,7 +3100,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                         if ((solidus) || (mode == DATA_SCRIPT_ESC1)) {
                             while ((j < avail) &&
                                    (ctxt->name[i] != 0) &&
-                                   (ctxt->name[i] == (in[j] | 32))) {
+                                   (ctxt->name[i] == (in[j] | 0x20))) {
                                 i += 1;
                                 j += 1;
                             }
@@ -3451,7 +3449,7 @@ htmlParseDocTypeDecl(htmlParserCtxtPtr ctxt) {
             xmlChar *cur;
 
             for (cur = name; *cur; cur++) {
-                if ((*cur >= 'A') && (*cur <= 'Z'))
+                if (IS_UPPER(*cur))
                     *cur += 0x20;
             }
         }

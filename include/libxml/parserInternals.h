@@ -258,8 +258,8 @@ XMLPUBVAR const unsigned int xmlParserMaxDepth;
  * Macro to check [a-zA-Z]
  *
  */
-#define IS_ASCII_LETTER(c)	(((0x41 <= (c)) && ((c) <= 0x5a)) || \
-				 ((0x61 <= (c)) && ((c) <= 0x7a)))
+#define IS_ASCII_LETTER(c)	((0x61 <= ((c) | 0x20)) && \
+                                 (((c) | 0x20) <= 0x7a))
 
 /**
  * IS_ASCII_DIGIT:

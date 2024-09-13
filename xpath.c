@@ -12531,6 +12531,8 @@ xmlXPathCompiledEvalToBoolean(xmlXPathCompExprPtr comp,
  * xmlXPathEvalExpr:
  * @ctxt:  the XPath Parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Parse and evaluate an XPath expression in the given context,
  * then push the result on the context stack
  */
@@ -12541,7 +12543,7 @@ xmlXPathEvalExpr(xmlXPathParserContextPtr ctxt) {
 #endif
     int oldDepth = 0;
 
-    if (ctxt == NULL)
+    if ((ctxt == NULL) || (ctxt->context == NULL))
         return;
     if (ctxt->context->lastError.code != 0)
         return;

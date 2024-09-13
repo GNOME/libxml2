@@ -407,6 +407,7 @@ deprecated_funcs = {
     'xmlValidatePushElement': True,
     'xmlValidateRoot': True,
     'xmlValidate': True,
+    'xmlXPathEvalExpr': True,
     'xmlXPathInit': True,
     'xmlXPtrEvalRangePredicate': True,
     'xmlXPtrNewCollapsedRange': True,

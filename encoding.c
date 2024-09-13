@@ -106,7 +106,7 @@ static const xmlEncTableEntry xmlEncTable[] = {
     { "UTF-16BE", XML_CHAR_ENCODING_UTF16BE },
     { "UTF-16LE", XML_CHAR_ENCODING_UTF16LE },
     { "UTF-8", XML_CHAR_ENCODING_UTF8 },
-    { "UTF16", XML_CHAR_ENCODING_UTF16LE },
+    { "UTF16", XML_CHAR_ENCODING_UTF16 },
     { "UTF8", XML_CHAR_ENCODING_UTF8 }
 };
 

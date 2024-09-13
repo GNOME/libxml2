@@ -13030,6 +13030,7 @@ xmlXPathOptimizeExpression(xmlXPathParserContextPtr pctxt,
 xmlXPathCompExprPtr
 xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
     xmlXPathParserContextPtr pctxt;
+    xmlXPathContextPtr tmpctxt = NULL;
     xmlXPathCompExprPtr comp;
     int oldDepth = 0;
 
@@ -13041,18 +13042,32 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 
     xmlInitParser();
 
+    /*
+     * We need an xmlXPathContext for the depth check.
+     */
+    if (ctxt == NULL) {
+        tmpctxt = xmlXPathNewContext(NULL);
+        if (tmpctxt == NULL)
+            return(NULL);
+        ctxt = tmpctxt;
+    }
+
     pctxt = xmlXPathNewParserContext(str, ctxt);
-    if (pctxt == NULL)
+    if (pctxt == NULL) {
+        if (tmpctxt != NULL)
+            xmlXPathFreeContext(tmpctxt);
         return NULL;
-    if (ctxt != NULL)
-        oldDepth = ctxt->depth;
+    }
+
+    oldDepth = ctxt->depth;
     xmlXPathCompileExpr(pctxt, 1);
-    if (ctxt != NULL)
-        ctxt->depth = oldDepth;
+    ctxt->depth = oldDepth;
 
     if( pctxt->error != XPATH_EXPRESSION_OK )
     {
         xmlXPathFreeParserContext(pctxt);
+        if (tmpctxt != NULL)
+            xmlXPathFreeContext(tmpctxt);
         return(NULL);
     }
 
@@ -13077,6 +13092,8 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
 	pctxt->comp = NULL;
     }
     xmlXPathFreeParserContext(pctxt);
+    if (tmpctxt != NULL)
+        xmlXPathFreeContext(tmpctxt);
 
     if (comp != NULL) {
 	comp->expr = xmlStrdup(str);

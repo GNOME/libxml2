@@ -46,6 +46,10 @@
      (((ctxt)->input->entity != NULL) && \
       ((ctxt)->input->entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)))
 
+struct _xmlAttrHashBucket {
+    int index;
+};
+
 XML_HIDDEN void
 xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
             xmlParserErrors code, xmlErrorLevel level,

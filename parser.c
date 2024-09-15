@@ -116,10 +116,6 @@ struct _xmlParserNsData {
     int minNsIndex;
 };
 
-struct _xmlAttrHashBucket {
-    int index;
-};
-
 static int
 xmlParseElementStart(xmlParserCtxtPtr ctxt);
 

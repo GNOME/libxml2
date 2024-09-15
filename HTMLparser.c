@@ -36,6 +36,7 @@
 #include <libxml/uri.h>
 
 #include "private/buf.h"
+#include "private/dict.h"
 #include "private/enc.h"
 #include "private/error.h"
 #include "private/html.h"
@@ -2356,10 +2357,11 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
  * Returns the Tag Name parsed or NULL
  */
 
-static const xmlChar *
+static xmlHashedString
 htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
+    xmlHashedString ret;
     xmlChar buf[HTML_PARSER_BUFFER_SIZE];
-    const xmlChar *ret, *in;
+    const xmlChar *in;
     size_t avail;
     int eof = PARSER_PROGRESSIVE(ctxt);
     int nbchar = 0;
@@ -2436,8 +2438,8 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
 
     SHRINK;
 
-    ret = xmlDictLookup(ctxt->dict, buf, nbchar);
-    if (ret == NULL)
+    ret = xmlDictLookupHashed(ctxt->dict, buf, nbchar);
+    if (ret.name == NULL)
         htmlErrMemory(ctxt);
 
     return(ret);
@@ -3514,15 +3516,15 @@ bogus:
  * Returns the attribute name, and the value in *value.
  */
 
-static const xmlChar *
+static xmlHashedString
 htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
-    const xmlChar *name;
+    xmlHashedString hname;
     xmlChar *val = NULL;
 
     *value = NULL;
-    name = htmlParseHTMLName(ctxt, 1);
-    if (name == NULL)
-        return(NULL);
+    hname = htmlParseHTMLName(ctxt, 1);
+    if (hname.name == NULL)
+        return(hname);
 
     /*
      * read the value
@@ -3535,7 +3537,7 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
     }
 
     *value = val;
-    return(name);
+    return(hname);
 }
 
 /**
@@ -3618,6 +3620,48 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
 }
 
 /**
+ * htmlAttrHashInsert:
+ * @ctxt: parser context
+ * @size: size of the hash table
+ * @name: attribute name
+ * @hashValue: hash value of name
+ * @aindex: attribute index (this is a multiple of 5)
+ *
+ * Inserts a new attribute into the hash table.
+ *
+ * Returns INT_MAX if no existing attribute was found, the attribute
+ * index if an attribute was found, -1 if a memory allocation failed.
+ */
+static int
+htmlAttrHashInsert(xmlParserCtxtPtr ctxt, unsigned size, const xmlChar *name,
+                   unsigned hashValue, int aindex) {
+    xmlAttrHashBucket *table = ctxt->attrHash;
+    xmlAttrHashBucket *bucket;
+    unsigned hindex;
+
+    hindex = hashValue & (size - 1);
+    bucket = &table[hindex];
+
+    while (bucket->index >= 0) {
+        const xmlChar **atts = &ctxt->atts[bucket->index];
+
+        if (name == atts[0])
+            return(bucket->index);
+
+        hindex++;
+        bucket++;
+        if (hindex >= size) {
+            hindex = 0;
+            bucket = table;
+        }
+    }
+
+    bucket->index = aindex;
+
+    return(INT_MAX);
+}
+
+/**
  * htmlParseStartTag:
  * @ctxt:  an HTML parser context
  *
@@ -3657,7 +3701,7 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     maxatts = ctxt->maxatts;
 
     GROW;
-    name = htmlParseHTMLName(ctxt, 0);
+    name = htmlParseHTMLName(ctxt, 0).name;
     if (name == NULL)
         return;
     if (xmlStrEqual(name, BAD_CAST"meta"))
@@ -3717,6 +3761,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
            (CUR != '>') &&
 	   ((CUR != '/') || (NXT(1) != '>')) &&
            (PARSER_STOPPED(ctxt) == 0)) {
+        xmlHashedString hattname;
+
         /*  unexpected-solidus-in-tag */
         if (CUR == '/') {
             SKIP(1);
@@ -3724,55 +3770,50 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
             continue;
         }
 	GROW;
-	attname = htmlParseAttribute(ctxt, &attvalue);
+	hattname = htmlParseAttribute(ctxt, &attvalue);
+        attname = hattname.name;
+
         if (attname != NULL) {
-
-	    /*
-	     * Well formedness requires at most one declaration of an attribute
-	     */
-	    for (i = 0; i < nbatts;i += 2) {
-	        if (xmlStrEqual(atts[i], attname)) {
-		    if (attvalue != NULL)
-			xmlFree(attvalue);
-		    goto failed;
-		}
-	    }
-
 	    /*
 	     * Add the pair to atts
 	     */
-	    if (atts == NULL) {
-	        maxatts = 22; /* allow for 10 attrs by default */
-	        atts = (const xmlChar **)
-		       xmlMalloc(maxatts * sizeof(xmlChar *));
-		if (atts == NULL) {
-		    htmlErrMemory(ctxt);
-		    if (attvalue != NULL)
-			xmlFree(attvalue);
-		    goto failed;
-		}
-		ctxt->atts = atts;
-		ctxt->maxatts = maxatts;
-	    } else if (nbatts + 4 > maxatts) {
-	        const xmlChar **n;
+	    if (nbatts + 4 > maxatts) {
+	        const xmlChar **tmp;
+                unsigned *utmp;
+                size_t newSize = maxatts ? maxatts * 2 : 22;
 
-	        maxatts *= 2;
-	        n = (const xmlChar **) xmlRealloc((void *) atts,
-					     maxatts * sizeof(const xmlChar *));
-		if (n == NULL) {
+	        tmp = xmlMalloc(newSize * sizeof(tmp[0]));
+		if (tmp == NULL) {
 		    htmlErrMemory(ctxt);
 		    if (attvalue != NULL)
 			xmlFree(attvalue);
 		    goto failed;
 		}
-		atts = n;
+
+	        utmp = xmlRealloc(ctxt->attallocs,
+                                  newSize / 2 * sizeof(utmp[0]));
+		if (utmp == NULL) {
+		    htmlErrMemory(ctxt);
+		    if (attvalue != NULL)
+			xmlFree(attvalue);
+                    xmlFree(tmp);
+		    goto failed;
+		}
+
+                if (maxatts > 0)
+                    memcpy(tmp, atts, maxatts * sizeof(tmp[0]));
+                xmlFree(atts);
+
+                atts = tmp;
+                maxatts = newSize;
 		ctxt->atts = atts;
+                ctxt->attallocs = utmp;
 		ctxt->maxatts = maxatts;
 	    }
+
+            ctxt->attallocs[nbatts/2] = hattname.hashValue;
 	    atts[nbatts++] = attname;
 	    atts[nbatts++] = attvalue;
-	    atts[nbatts] = NULL;
-	    atts[nbatts + 1] = NULL;
 	}
 	else {
 	    if (attvalue != NULL)
@@ -3789,10 +3830,65 @@ failed:
     }
 
     /*
-     * Handle specific association to the META tag
+     * Verify that attribute names are unique.
      */
-    if (meta && (nbatts != 0))
-	htmlCheckMeta(ctxt, atts);
+    if (nbatts > 2) {
+        unsigned attrHashSize;
+        int j, k;
+
+        attrHashSize = 4;
+        while (attrHashSize / 2 < (unsigned) nbatts / 2)
+            attrHashSize *= 2;
+
+        if (attrHashSize > ctxt->attrHashMax) {
+            xmlAttrHashBucket *tmp;
+
+            tmp = xmlRealloc(ctxt->attrHash, attrHashSize * sizeof(tmp[0]));
+            if (tmp == NULL) {
+                htmlErrMemory(ctxt);
+                goto done;
+            }
+
+            ctxt->attrHash = tmp;
+            ctxt->attrHashMax = attrHashSize;
+        }
+
+        memset(ctxt->attrHash, -1, attrHashSize * sizeof(ctxt->attrHash[0]));
+
+        for (i = 0, j = 0, k = 0; i < nbatts; i += 2, k++) {
+            unsigned hashValue;
+            int res;
+
+            attname = atts[i];
+            hashValue = ctxt->attallocs[k] | 0x80000000;
+
+            res = htmlAttrHashInsert(ctxt, attrHashSize, attname,
+                                    hashValue, j);
+            if (res < 0)
+                continue;
+
+            if (res == INT_MAX) {
+                atts[j] = atts[i];
+                atts[j+1] = atts[i+1];
+                j += 2;
+            } else {
+                xmlFree((xmlChar *) atts[i+1]);
+            }
+        }
+
+        nbatts = j;
+    }
+
+    if (nbatts > 0) {
+        atts[nbatts] = NULL;
+        atts[nbatts + 1] = NULL;
+
+        /*
+         * Handle specific association to the META tag
+         */
+        if (meta)
+            htmlCheckMeta(ctxt, atts);
+    }
 
     /*
      * SAX: Start of Element !
@@ -3857,7 +3953,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
         return;
     }
 
-    name = htmlParseHTMLName(ctxt, 0);
+    name = htmlParseHTMLName(ctxt, 0).name;
     if (name == NULL)
         return;
 

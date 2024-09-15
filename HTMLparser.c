@@ -3649,6 +3649,8 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     int i;
     int discardtag = 0;
 
+    ctxt->endCheckState = 0;
+
     SKIP(1);
 
     atts = ctxt->atts;
@@ -3840,6 +3842,8 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     const xmlChar *name;
     const xmlChar *oldname;
     int i;
+
+    ctxt->endCheckState = 0;
 
     SKIP(2);
 
@@ -4043,13 +4047,6 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     if (name == NULL)
         return(0);
 
-    /*
-     * Lookup the info for that element.
-     */
-    info = htmlTagLookup(name);
-    if (info != NULL)
-        ctxt->endCheckState = info->dataMode;
-
     if (ctxt->record_info)
         htmlNodeInfoPush(ctxt, &node_info);
 
@@ -4072,6 +4069,11 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     SKIP(1);
 
     /*
+     * Lookup the info for that element.
+     */
+    info = htmlTagLookup(name);
+
+    /*
      * Check for an Empty Element from DTD definition
      */
     if ((info != NULL) && (info->empty)) {
@@ -4083,6 +4085,9 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
 	htmlnamePop(ctxt);
 	return(0);
     }
+
+    if (info != NULL)
+        ctxt->endCheckState = info->dataMode;
 
     return(1);
 }
@@ -4863,13 +4868,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    break;
 
 		/*
-		 * Lookup the info for that element.
-		 */
-		info = htmlTagLookup(name);
-		if (info != NULL)
-                    ctxt->endCheckState = info->dataMode;
-
-		/*
 		 * Check for an Empty Element labeled the XML/SGML way
 		 */
 		if ((CUR == '/') && (NXT(1) == '>')) {
@@ -4890,6 +4888,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		SKIP(1);
 
 		/*
+		 * Lookup the info for that element.
+		 */
+		info = htmlTagLookup(name);
+
+		/*
 		 * Check for an Empty Element from DTD definition
 		 */
 		if ((info != NULL) && (info->empty)) {
@@ -4901,6 +4904,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                     }
 		    htmlnamePop(ctxt);
 		}
+
+		if (info != NULL)
+                    ctxt->endCheckState = info->dataMode;
 
                 if (ctxt->record_info)
 	            htmlNodeInfoPush(ctxt, &node_info);

@@ -1,5 +1,32 @@
 NEWS file for libxml2
 
+v2.13.4: Sep 18 2024
+
+### Regressions
+
+- parser: Make unsupported encodings an error in declarations
+- io: don't set the executable bit when creating files (triallax)
+- xmlcatalog: Improved fix for #699
+- Revert "catalog: Fetch XML catalog before dumping"
+- io: Add missing calls to xmlInitParser
+- tree: Restore return value of xmlNodeListGetString with NULL list
+- parser: Fix error handling after reaching limit
+- parser: Make xmlParseChunk return an error if parser was stopped
+
+### Bug fixes
+
+- python: Fix SAX driver with character streams
+
+### Improvements
+
+- xpath: Make recursion check work with xmlXPathCompile
+- parser: Report at least one fatal error
+
+### Portability
+
+- include: Check whether _MSC_VER is defined
+
+
 v2.13.3: Jul 24 2024
 
 ### Security

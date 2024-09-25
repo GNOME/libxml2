@@ -56,6 +56,6 @@ html_modules = files(
 
 extra_files = files('home.png', 'left.png', 'right.png', 'style.css', 'up.png')
 
-devhelp = [files('libxml2.devhelp2'), html_files, html_modules, extra_files]
+devhelp = [html_files, html_modules, extra_files]
 
 install_data(devhelp, install_dir: dir_data / 'gtk-doc' / 'html' / 'libxml2')

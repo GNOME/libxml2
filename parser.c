@@ -9389,11 +9389,11 @@ next_attr:
                     nsIndex = NS_INDEX_EMPTY;
                     nsuri = NULL;
                     uriHashValue = URI_HASH_EMPTY;
-                } if (aprefix == ctxt->str_xml) {
+                } else if (aprefix == ctxt->str_xml) {
                     nsIndex = NS_INDEX_XML;
                     nsuri = ctxt->str_xml_ns;
                     uriHashValue = URI_HASH_XML;
-                } else if (aprefix != NULL) {
+                } else {
                     nsIndex = xmlParserNsLookup(ctxt, &attr->prefix, NULL);
                     if ((nsIndex == INT_MAX) ||
                         (nsIndex < ctxt->nsdb->minNsIndex)) {

@@ -3035,6 +3035,29 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                 }
             }
 
+            /* Accelerator */
+            if (!ncr) {
+                while (avail > 0) {
+                    static const unsigned mask[8] = {
+                        0x00002401, 0x10002040,
+                        0x00000000, 0x00000000,
+                        0xFFFFFFFF, 0xFFFFFFFF,
+                        0xFFFFFFFF, 0xFFFFFFFF
+                    };
+                    cur = *in;
+                    if ((1u << (cur & 0x1F)) & mask[cur >> 5])
+                        break;
+                    col += 1;
+                    in += 1;
+                    avail -= 1;
+                }
+
+                if ((!eof) && (avail <= 64))
+                    continue;
+                if (avail == 0)
+                    continue;
+            }
+
             cur = *in;
             size = 1;
             col += 1;

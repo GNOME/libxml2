@@ -2452,83 +2452,18 @@ static const short htmlC1Remap[32] = {
     0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0x009D, 0x017E, 0x0178
 };
 
-static int
-htmlParseNCR(const xmlChar *string, size_t slen, int *dlen) {
-    const xmlChar *in = string;
-    const xmlChar *end = string + slen;
-    unsigned val = 0;
-
-    while (in < end) {
-        int c = *in;
-
-        if ((c < '0') || (c > '9'))
-            break;
-        val = val * 10 + (c - '0');
-        if (val >= 0x110000)
-            val = 0x110000;
-
-        in += 1;
-    }
-
-    if (*in == ';')
-        in += 1;
-
-    if ((val >= 0x80) && (val < 0xA0)) {
-        val = htmlC1Remap[val - 0x80];
-    } else if ((val <= 0) ||
-               ((val >= 0xD800) && (val < 0xE000)) ||
-               (val > 0x10FFFF)) {
-        val = 0xFFFD;
-    }
-
-    *dlen = in - string;
-
-    return(val);
-}
-
-static int
-htmlParseNCRHex(const xmlChar *string, size_t slen, int *dlen) {
-    const xmlChar *in = string;
-    const xmlChar *end = string + slen;
-    unsigned val = 0;
-
-    while (in < end) {
-        int c = *in | 0x20;
-
-        if ((c >= '0') && (c <= '9')) {
-            c -= '0';
-        } else if ((c >= 'a') && (c <= 'f')) {
-            c = (c - 'a') + 10;
-        } else {
-            break;
-        }
-        val = val * 16 + c;
-        if (val >= 0x110000)
-            val = 0x110000;
-
-        in += 1;
-    }
-
-    if (*in == ';')
-        in += 1;
-
-    if ((val >= 0x80) && (val < 0xA0)) {
-        val = htmlC1Remap[val - 0x80];
-    } else if ((val <= 0) ||
-               ((val >= 0xD800) && (val < 0xE000)) ||
-               (val > 0x10FFFF)) {
-        val = 0xFFFD;
-    }
-
-    *dlen = in - string;
-
-    return(val);
-}
-
 static const xmlChar *
 htmlCodePointToUtf8(int c, xmlChar *out, int *osize) {
     int i = 0;
     int bits, hi;
+
+    if ((c >= 0x80) && (c < 0xA0)) {
+        c = htmlC1Remap[c - 0x80];
+    } else if ((c <= 0) ||
+               ((c >= 0xD800) && (c < 0xE000)) ||
+               (c > 0x10FFFF)) {
+        c = 0xFFFD;
+    }
 
     if      (c <    0x80) { bits =  0; hi = 0x00; }
     else if (c <   0x800) { bits =  6; hi = 0xC0; }
@@ -2656,7 +2591,7 @@ htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
  * @refs:  true if references are allowed
  * @maxLength:  maximum output length
  *
- * Parse data until callback signals to stop.
+ * Parse data until terminator is reached.
  *
  * Returns the parsed string or NULL in case of errors.
  */
@@ -2694,6 +2629,9 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
         size_t avail, chunkSize, extraSize;
         int replSize;
         int skip = 0;
+        int ncr = 0;
+        int ncrSize = 0;
+        int cp = 0;
 
         chunk = input->cur;
         avail = input->end - chunk;
@@ -2704,7 +2642,7 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
 
         while (!PARSER_STOPPED(ctxt)) {
             size_t j;
-            int cur, size, cp;
+            int cur, size;
 
             if ((!eof) && (avail <= 64)) {
                 size_t oldAvail = avail;
@@ -2757,12 +2695,37 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                 }
             }
 
+            if (ncr) {
+                int lc = cur | 0x20;
+                int digit;
+
+                if ((cur >= '0') && (cur <= '9')) {
+                    digit = cur - '0';
+                } else if ((ncr == 16) && (lc >= 'a') && (lc <= 'f')) {
+                    digit = (lc - 'a') + 10;
+                } else {
+                    if (cur == ';') {
+                        in += 1;
+                        size += 1;
+                        ncrSize += 1;
+                    }
+                    goto next_chunk;
+                }
+
+                cp = cp * ncr + digit;
+                if (cp >= 0x110000)
+                    cp = 0x110000;
+
+                ncrSize += 1;
+
+                goto next_char;
+            }
+
             switch (cur) {
             case '&':
                 if (!refs)
                     break;
 
-                cp = 0;
                 j = 1;
 
                 if ((j < avail) && (in[j] == '#')) {
@@ -2771,21 +2734,18 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                         if ((in[j] | 0x20) == 'x') {
                             j += 1;
                             if ((j < avail) && (IS_HEX_DIGIT(in[j]))) {
-                                cp = htmlParseNCRHex(in + j, avail - j, &skip);
-                                skip += 3;
+                                ncr = 16;
+                                size = 3;
+                                ncrSize = 3;
+                                cp = 0;
                             }
                         } else if (IS_ASCII_DIGIT(in[j])) {
-                            cp = htmlParseNCR(in + j, avail - j, &skip);
-                            skip += 2;
+                            ncr = 10;
+                            size = 2;
+                            ncrSize = 2;
+                            cp = 0;
                         }
                     }
-
-                    if (cp > 0) {
-                        repl = htmlCodePointToUtf8(cp, utf8Char, &replSize);
-                        goto next_chunk;
-                    }
-
-                    skip = 0;
                 } else {
                     repl = htmlFindEntityPrefix(in + j,
                                                 avail - j,
@@ -2851,11 +2811,19 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                 break;
             }
 
+next_char:
             in += size;
             avail -= size;
         }
 
 next_chunk:
+        if (ncrSize > 0) {
+            skip = ncrSize;
+            in -= ncrSize;
+
+            repl = htmlCodePointToUtf8(cp, utf8Char, &replSize);
+        }
+
         chunkSize = in - chunk;
         extraSize = chunkSize + replSize;
 
@@ -3028,6 +2996,9 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
         size_t avail;
         int replSize;
         int skip = 0;
+        int ncr = 0;
+        int ncrSize = 0;
+        int cp = 0;
 
         chunk = input->cur;
         avail = input->end - chunk;
@@ -3038,7 +3009,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
 
         while (!PARSER_STOPPED(ctxt)) {
             size_t j;
-            int cur, size, cp;
+            int cur, size;
 
             if (avail <= 64) {
                 if (!eof) {
@@ -3067,6 +3038,32 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
             cur = *in;
             size = 1;
             col += 1;
+
+            if (ncr) {
+                int lc = cur | 0x20;
+                int digit;
+
+                if ((cur >= '0') && (cur <= '9')) {
+                    digit = cur - '0';
+                } else if ((ncr == 16) && (lc >= 'a') && (lc <= 'f')) {
+                    digit = (lc - 'a') + 10;
+                } else {
+                    if (cur == ';') {
+                        in += 1;
+                        size += 1;
+                        ncrSize += 1;
+                    }
+                    goto next_chunk;
+                }
+
+                cp = cp * ncr + digit;
+                if (cp >= 0x110000)
+                    cp = 0x110000;
+
+                ncrSize += 1;
+
+                goto next_char;
+            }
 
             switch (cur) {
             case '<':
@@ -3155,7 +3152,6 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                 if ((mode != 0) && (mode != DATA_RCDATA))
                     break;
 
-                cp = 0;
                 j = 1;
 
                 if ((j < avail) && (in[j] == '#')) {
@@ -3164,21 +3160,18 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                         if ((in[j] | 0x20) == 'x') {
                             j += 1;
                             if ((j < avail) && (IS_HEX_DIGIT(in[j]))) {
-                                cp = htmlParseNCRHex(in + j, avail - j, &skip);
-                                skip += 3;
+                                ncr = 16;
+                                size = 3;
+                                ncrSize = 3;
+                                cp = 0;
                             }
                         } else if (IS_ASCII_DIGIT(in[j])) {
-                            cp = htmlParseNCR(in + j, avail - j, &skip);
-                            skip += 2;
+                            ncr = 10;
+                            size = 2;
+                            ncrSize = 2;
+                            cp = 0;
                         }
                     }
-
-                    if (cp > 0) {
-                        repl = htmlCodePointToUtf8(cp, utf8Char, &replSize);
-                        goto next_chunk;
-                    }
-
-                    skip = 0;
                 } else {
                     repl = htmlFindEntityPrefix(in + j,
                                                 avail - j,
@@ -3244,11 +3237,19 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                 break;
             }
 
+next_char:
             in += size;
             avail -= size;
         }
 
 next_chunk:
+        if (ncrSize > 0) {
+            skip = ncrSize;
+            in -= ncrSize;
+
+            repl = htmlCodePointToUtf8(cp, utf8Char, &replSize);
+        }
+
         if (in > chunk) {
             input->cur += in - chunk;
             htmlCharDataSAXCallback(ctxt, chunk, in - chunk, mode);

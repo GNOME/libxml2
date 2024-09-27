@@ -142,6 +142,8 @@ static const int pushsize = 4096;
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
 static int memory = 0;
+static char *memoryData;
+static size_t memorySize;
 #endif
 static int testIO = 0;
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -269,6 +271,105 @@ xmllintResourceLoader(void *ctxt ATTRIBUTE_UNUSED, const char *URL,
 
     return(XML_IO_ENOENT);
 }
+
+/************************************************************************
+ *									*
+ *		 	Core parsing functions				*
+ *									*
+ ************************************************************************/
+
+static int
+myRead(void *f, char *buf, int len) {
+    return(fread(buf, 1, len, (FILE *) f));
+}
+
+static int
+myClose(void *context) {
+    FILE *f = (FILE *) context;
+    if (f == stdin)
+        return(0);
+    return(fclose(f));
+}
+
+static xmlDocPtr
+parseXml(xmlParserCtxtPtr ctxt, const char *filename) {
+    xmlDocPtr doc;
+
+    xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, NULL);
+    if (maxAmpl > 0)
+        xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
+
+#if HAVE_DECL_MMAP
+    if (memory) {
+        xmlParserInputPtr input;
+
+        input = xmlNewInputFromMemory(filename, memoryData, memorySize,
+                                      XML_INPUT_BUF_STATIC |
+                                      XML_INPUT_BUF_ZERO_TERMINATED);
+        if (input == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            return(NULL);
+        }
+        doc = xmlCtxtParseDocument(ctxt, input);
+        return(doc);
+    }
+#endif
+
+    if (testIO) {
+        FILE *f;
+
+        if ((filename[0] == '-') && (filename[1] == 0)) {
+            f = stdin;
+        } else {
+            f = fopen(filename, "rb");
+            if (f == NULL) {
+                fprintf(ERR_STREAM, "Can't open %s\n", filename);
+                progresult = XMLLINT_ERR_RDFILE;
+                return(NULL);
+            }
+        }
+
+        doc = xmlCtxtReadIO(ctxt, myRead, myClose, f, filename, NULL,
+                            options);
+    } else {
+        if (strcmp(filename, "-") == 0)
+            doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
+        else
+            doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
+    }
+
+    return(doc);
+}
+
+#ifdef LIBXML_HTML_ENABLED
+static xmlDocPtr
+parseHtml(htmlParserCtxtPtr ctxt, const char *filename) {
+    xmlDocPtr doc;
+
+#if HAVE_DECL_MMAP
+    if (memory) {
+        xmlParserInputPtr input;
+
+        input = xmlNewInputFromMemory(filename, memoryData, memorySize,
+                                      XML_INPUT_BUF_STATIC |
+                                      XML_INPUT_BUF_ZERO_TERMINATED);
+        if (input == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            return(NULL);
+        }
+        doc = htmlCtxtParseDocument(ctxt, input);
+        return(doc);
+    }
+#endif
+
+    if (strcmp(filename, "-") == 0)
+        doc = htmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
+    else
+        doc = htmlCtxtReadFile(ctxt, filename, NULL, options);
+
+    return(doc);
+}
+#endif /* LIBXML_HTML_ENABLED */
 
 /************************************************************************
  *									*
@@ -494,22 +595,6 @@ xmlHTMLError(void *vctxt, const xmlError *error)
     }
 
     xmlSetGenericErrorFunc(oldErrorCtxt, oldError);
-}
-
-/************************************************************************
- *									*
- *			I/O Interfaces					*
- *									*
- ************************************************************************/
-
-static int myRead(void *f, char *buf, int len) {
-    return(fread(buf, 1, len, (FILE *) f));
-}
-static int myClose(void *context) {
-    FILE *f = (FILE *) context;
-    if (f == stdin)
-        return(0);
-    return(fclose(f));
 }
 
 /************************************************************************
@@ -1374,10 +1459,7 @@ testSAX(const char *filename) {
 	    return;
 	}
 
-        if (strcmp(filename, "-") == 0)
-            htmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
-        else
-            htmlCtxtReadFile(ctxt, filename, NULL, options);
+        parseHtml(ctxt, filename);
 
         htmlFreeParserCtxt(ctxt);
     } else
@@ -1385,23 +1467,13 @@ testSAX(const char *filename) {
     {
         xmlParserCtxtPtr ctxt = NULL;
 
-	/*
-	 * Create the parser context amd hook the input
-	 */
 	ctxt = xmlNewSAXParserCtxt(handler, (void *) user_data);
 	if (ctxt == NULL) {
             progresult = XMLLINT_ERR_MEM;
 	    return;
 	}
 
-        xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, NULL);
-        if (maxAmpl > 0)
-            xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-
-        if (strcmp(filename, "-") == 0)
-            xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
-        else
-            xmlCtxtReadFile(ctxt, filename, NULL, options);
+        parseXml(ctxt, filename);
 
 	if (ctxt->myDoc != NULL) {
 	    fprintf(ERR_STREAM, "SAX generated a doc !\n");
@@ -1506,25 +1578,8 @@ static void streamFile(const char *filename) {
     xmlTextReaderPtr reader;
     int ret;
 #if HAVE_DECL_MMAP
-    int fd = -1;
-    struct stat info;
-    const char *base = NULL;
-
     if (memory) {
-	if (stat(filename, &info) < 0)
-	    return;
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	    return;
-	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	if (base == (void *) MAP_FAILED) {
-	    close(fd);
-	    fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
-	    progresult = XMLLINT_ERR_RDFILE;
-	    return;
-	}
-
-	reader = xmlReaderForMemory(base, info.st_size, filename,
+	reader = xmlReaderForMemory(memoryData, memorySize, filename,
 	                            NULL, options);
     } else
 #endif
@@ -1652,12 +1707,6 @@ static void streamFile(const char *filename) {
     if (patstream != NULL) {
 	xmlFreeStreamCtxt(patstream);
 	patstream = NULL;
-    }
-#endif
-#if HAVE_DECL_MMAP
-    if (memory) {
-	munmap((char *) base, info.st_size);
-	close(fd);
     }
 #endif
 }
@@ -1930,45 +1979,10 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
     }
 #endif /* LIBXML_PUSH_ENABLED */
 
-#if HAVE_DECL_MMAP
-    if ((html) && (memory)) {
-	int fd;
-	struct stat info;
-	const char *base;
-	if (stat(filename, &info) < 0)
-	    return(NULL);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	    return(NULL);
-	base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-	if (base == (void *) MAP_FAILED) {
-	    close(fd);
-	    fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
-	    progresult = XMLLINT_ERR_RDFILE;
-	    return(NULL);
-	}
-
-	doc = htmlReadMemory((char *) base, info.st_size, filename,
-	                     NULL, options);
-
-	munmap((char *) base, info.st_size);
-	close(fd);
-
-        return(doc);
-    }
-#endif
-
     if (html) {
         ctxt = htmlNewParserCtxt();
-        xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, NULL);
-
-        if (strcmp(filename, "-") == 0)
-            doc = htmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
-        else
-            doc = htmlCtxtReadFile(ctxt, filename, NULL, options);
-
+        doc = parseHtml(ctxt, filename);
         htmlFreeParserCtxt(ctxt);
-
         return(doc);
     }
 #endif /* LIBXML_HTML_ENABLED */
@@ -2029,60 +2043,10 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
             ctxt = rectxt;
         }
 
-        xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, NULL);
-        if (maxAmpl > 0)
-            xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
+        doc = parseXml(ctxt, filename);
 
         if (htmlout)
             xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
-
-        if (testIO) {
-            FILE *f;
-
-            if ((filename[0] == '-') && (filename[1] == 0)) {
-                f = stdin;
-            } else {
-                f = fopen(filename, "rb");
-                if (f == NULL) {
-                    fprintf(ERR_STREAM, "Can't open %s\n", filename);
-                    progresult = XMLLINT_ERR_RDFILE;
-                    goto error;
-                }
-            }
-
-            doc = xmlCtxtReadIO(ctxt, myRead, myClose, f, filename, NULL,
-                                options);
-#if HAVE_DECL_MMAP
-        } else if (memory) {
-            int fd;
-            struct stat info;
-            const char *base;
-
-            if (stat(filename, &info) < 0)
-                goto error;
-            fd = open(filename, O_RDONLY);
-            if (fd < 0)
-                goto error;
-            base = mmap(NULL, info.st_size, PROT_READ, MAP_SHARED, fd, 0) ;
-            if (base == (void *) MAP_FAILED) {
-                close(fd);
-                fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
-                progresult = XMLLINT_ERR_RDFILE;
-                goto error;
-            }
-
-            doc = xmlCtxtReadMemory(ctxt, base, info.st_size, filename, NULL,
-                                    options);
-
-            munmap((char *) base, info.st_size);
-            close(fd);
-#endif
-        } else {
-            if (strcmp(filename, "-") == 0)
-                doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
-            else
-                doc = xmlCtxtReadFile(ctxt, filename, NULL, options);
-        }
     }
 
     if (doc == NULL) {
@@ -2097,7 +2061,6 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_VALID_ENABLED */
     }
 
-error:
     if (ctxt != rectxt)
         xmlFreeParserCtxt(ctxt);
 
@@ -2910,6 +2873,8 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
     memory = 0;
+    memoryData = NULL;
+    memorySize = 0;
 #endif
     testIO = 0;
     encoding = NULL;
@@ -3426,11 +3391,42 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	}
     }
 #endif /* LIBXML_READER_ENABLED && LIBXML_PATTERN_ENABLED */
+
     for (i = 1; i < argc ; i++) {
-	if ((argv[i][0] == '-') && (strcmp(argv[i], "-") != 0)) {
-            i += skipArgs(argv[i]);
+        const char *filename = argv[i];
+#if HAVE_DECL_MMAP
+        int memoryFd = -1;
+#endif
+
+	if ((filename[0] == '-') && (strcmp(filename, "-") != 0)) {
+            i += skipArgs(filename);
             continue;
         }
+
+#if HAVE_DECL_MMAP
+        if (memory) {
+            struct stat info;
+            if (stat(filename, &info) < 0) {
+                progresult = XMLLINT_ERR_RDFILE;
+                break;
+            }
+            memoryFd = open(filename, O_RDONLY);
+            if (memoryFd < 0) {
+                progresult = XMLLINT_ERR_RDFILE;
+                break;
+            }
+            memoryData = mmap(NULL, info.st_size + 1, PROT_READ, MAP_SHARED,
+                              memoryFd, 0);
+            if (memoryData == (void *) MAP_FAILED) {
+                close(memoryFd);
+                fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
+                progresult = XMLLINT_ERR_RDFILE;
+                break;
+            }
+            memorySize = info.st_size;
+        }
+#endif /* HAVE_DECL_MMAP */
+
 	if ((timing) && (repeat))
 	    startTimer();
         if (repeat) {
@@ -3442,20 +3438,16 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
                 goto error;
             }
 
-            xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, NULL);
-            if (maxAmpl > 0)
-                xmlCtxtSetMaxAmplification(ctxt, maxAmpl);
-
             for (acount = 0;acount < repeat;acount++) {
 #ifdef LIBXML_READER_ENABLED
                 if (stream != 0) {
-                    streamFile(argv[i]);
+                    streamFile(filename);
                 } else {
 #endif /* LIBXML_READER_ENABLED */
                     if (sax) {
-                        testSAX(argv[i]);
+                        testSAX(filename);
                     } else {
-                        parseAndPrintFile(argv[i], ctxt);
+                        parseAndPrintFile(filename, ctxt);
                     }
 #ifdef LIBXML_READER_ENABLED
                 }
@@ -3466,19 +3458,26 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         } else {
 #ifdef LIBXML_READER_ENABLED
             if (stream != 0)
-                streamFile(argv[i]);
+                streamFile(filename);
             else
 #endif /* LIBXML_READER_ENABLED */
             if (sax) {
-                testSAX(argv[i]);
+                testSAX(filename);
             } else {
-                parseAndPrintFile(argv[i], NULL);
+                parseAndPrintFile(filename, NULL);
             }
         }
         files ++;
         if ((timing) && (repeat)) {
             endTimer("%d iterations", repeat);
         }
+
+#if HAVE_DECL_MMAP
+        if (memory) {
+            munmap(memoryData, memorySize);
+            close(memoryFd);
+        }
+#endif
     }
     if (generate)
 	parseAndPrintFile(NULL, NULL);

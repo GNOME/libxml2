@@ -1364,6 +1364,24 @@ testSAX(const char *filename) {
 	xmlSchemaFreeValidCtxt(vctxt);
     } else
 #endif
+#ifdef LIBXML_HTML_ENABLED
+    if (html) {
+        htmlParserCtxtPtr ctxt = NULL;
+
+	ctxt = htmlNewSAXParserCtxt(handler, (void *) user_data);
+	if (ctxt == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+	    return;
+	}
+
+        if (strcmp(filename, "-") == 0)
+            htmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, options);
+        else
+            htmlCtxtReadFile(ctxt, filename, NULL, options);
+
+        htmlFreeParserCtxt(ctxt);
+    } else
+#endif
     {
         xmlParserCtxtPtr ctxt = NULL;
 

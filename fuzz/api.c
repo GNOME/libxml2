@@ -2287,7 +2287,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
             case OP_XML_REPLACE_NODE: {
                 xmlNodePtr old, oldParent, node, oldNodeParent, result;
-                xmlDocPtr oldNodeDoc;
+                xmlDocPtr oldDoc, oldNodeDoc;
 
                 startOp("xmlReplaceNode");
                 old = getNode(0);
@@ -2296,8 +2296,18 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 /*
                  * Unlinking DTD children can cause invalid references
                  * which would be expensive to fix.
+                 *
+                 * Don't unlink DTD if it is the internal or external
+                 * subset of the document.
                  */
-                if (isDtdChild(old))
+                old = old ? old->parent : NULL;
+                oldDoc = old ? old->doc : NULL;
+                if (old != NULL &&
+                    (isDtdChild(old) ||
+                     (old->type == XML_DTD_NODE &&
+                      oldDoc != NULL &&
+                      ((xmlDtdPtr) old == oldDoc->intSubset ||
+                       (xmlDtdPtr) old == oldDoc->extSubset))))
                     old = NULL;
                 if (old != NULL && !isValidChild(old->parent, node))
                     node = NULL;

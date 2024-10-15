@@ -40,7 +40,7 @@ def test(expectedLineNumbersDefault):
         failed = 1
         print("FAILED to obtain correct value for " \
               "lineNumbersDefault in thread %d" % get_ident())
-    # check ther global error handler 
+    # check the global error handler 
     # (which is NOT per-thread in the python bindings)
     try:
         doc = libxml2.parseFile("bad.xml")

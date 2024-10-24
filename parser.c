@@ -993,7 +993,7 @@ struct _xmlDefAttrs {
     int maxAttrs;       /* the size of the array */
 #if __STDC_VERSION__ >= 199901L
     /* Using a C99 flexible array member avoids UBSan errors. */
-    xmlDefAttr attrs[]; /* array of localname/prefix/values/external */
+    xmlDefAttr attrs[] ATTRIBUTE_COUNTED_BY(maxAttrs);
 #else
     xmlDefAttr attrs[1];
 #endif

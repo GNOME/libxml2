@@ -57,6 +57,13 @@
   #define ATTRIBUTE_DESTRUCTOR __attribute__((destructor))
 #endif
 
+#if (defined(__clang__) && __clang_major__ >= 18) || \
+    (defined(__GNUC__) && __GNUC__ >= 15)
+  #define ATTRIBUTE_COUNTED_BY(c) __attribute__((__counted_by__(c)))
+#else
+  #define ATTRIBUTE_COUNTED_BY(c)
+#endif
+
 #if defined(__clang__) || \
     (defined(__GNUC__) && (__GNUC__ >= 8) && !defined(__EDG__))
   #define ATTRIBUTE_NO_SANITIZE(arg) __attribute__((no_sanitize(arg)))

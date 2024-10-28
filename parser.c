@@ -84,6 +84,10 @@
   #define STDIN_FILENO 0
 #endif
 
+#ifndef SIZE_MAX
+  #define SIZE_MAX ((size_t) -1)
+#endif
+
 struct _xmlStartTag {
     const xmlChar *prefix;
     const xmlChar *URI;
@@ -1888,30 +1892,39 @@ xmlParserNsPop(xmlParserCtxtPtr ctxt, int nr)
 }
 
 static int
-xmlCtxtGrowAttrs(xmlParserCtxtPtr ctxt, int nr) {
+xmlCtxtGrowAttrs(xmlParserCtxtPtr ctxt) {
     const xmlChar **atts;
     unsigned *attallocs;
-    int maxatts;
+    int maxatts = ctxt->maxatts;
 
-    if (nr + 5 > ctxt->maxatts) {
-	maxatts = ctxt->maxatts == 0 ? 55 : (nr + 5) * 2;
-	atts = (const xmlChar **) xmlMalloc(
-				     maxatts * sizeof(const xmlChar *));
-	if (atts == NULL) goto mem_error;
-	attallocs = xmlRealloc(ctxt->attallocs,
-                               (maxatts / 5) * sizeof(attallocs[0]));
-	if (attallocs == NULL) {
-            xmlFree(atts);
+    if (maxatts == 0) {
+        maxatts = 50;
+    } else {
+        if ((maxatts > INT_MAX / 2 - 5) ||
+            ((size_t) maxatts > SIZE_MAX / 2 / sizeof(const xmlChar *)))
             goto mem_error;
-        }
-        if (ctxt->maxatts > 0)
-            memcpy(atts, ctxt->atts, ctxt->maxatts * sizeof(const xmlChar *));
-        xmlFree(ctxt->atts);
-	ctxt->atts = atts;
-	ctxt->attallocs = attallocs;
-	ctxt->maxatts = maxatts;
+	maxatts *= 2;
     }
-    return(ctxt->maxatts);
+
+    atts = xmlMalloc(maxatts * sizeof(const xmlChar *));
+    if (atts == NULL)
+        goto mem_error;
+    attallocs = xmlRealloc(ctxt->attallocs,
+                           (maxatts / 5) * sizeof(attallocs[0]));
+    if (attallocs == NULL) {
+        xmlFree(atts);
+        goto mem_error;
+    }
+    if (ctxt->maxatts > 0)
+        memcpy(atts, ctxt->atts, ctxt->maxatts * sizeof(const xmlChar *));
+    xmlFree(ctxt->atts);
+
+    ctxt->atts = atts;
+    ctxt->attallocs = attallocs;
+    ctxt->maxatts = maxatts;
+
+    return(maxatts);
+
 mem_error:
     xmlErrMemory(ctxt);
     return(-1);
@@ -9203,7 +9216,7 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
              * of xmlChar pointers.
              */
             if ((atts == NULL) || (nbatts + 5 > maxatts)) {
-                if (xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0) {
+                if (xmlCtxtGrowAttrs(ctxt) < 0) {
                     goto next_attr;
                 }
                 maxatts = ctxt->maxatts;
@@ -9465,7 +9478,7 @@ next_attr:
                 xmlParserEntityCheck(ctxt, attr->expandedSize);
 
                 if ((atts == NULL) || (nbatts + 5 > maxatts)) {
-                    if (xmlCtxtGrowAttrs(ctxt, nbatts + 5) < 0) {
+                    if (xmlCtxtGrowAttrs(ctxt) < 0) {
                         localname = NULL;
                         goto done;
                     }

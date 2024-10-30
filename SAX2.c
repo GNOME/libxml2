@@ -2129,12 +2129,14 @@ xmlSAX2StartElementNs(void *ctx,
     /*
      * First check on validity:
      */
-    if (ctxt->validate && (ctxt->myDoc->extSubset == NULL) &&
-        ((ctxt->myDoc->intSubset == NULL) ||
-	 ((ctxt->myDoc->intSubset->notations == NULL) &&
-	  (ctxt->myDoc->intSubset->elements == NULL) &&
-	  (ctxt->myDoc->intSubset->attributes == NULL) &&
-	  (ctxt->myDoc->intSubset->entities == NULL)))) {
+    if (ctxt->validate &&
+        ((ctxt->myDoc == NULL) ||
+         ((ctxt->myDoc->extSubset == NULL) &&
+          ((ctxt->myDoc->intSubset == NULL) ||
+	   ((ctxt->myDoc->intSubset->notations == NULL) &&
+	    (ctxt->myDoc->intSubset->elements == NULL) &&
+	    (ctxt->myDoc->intSubset->attributes == NULL) &&
+	    (ctxt->myDoc->intSubset->entities == NULL)))))) {
 	xmlErrValid(ctxt, XML_DTD_NO_DTD,
 	  "Validation failed: no DTD found !", NULL, NULL);
 	ctxt->validate = 0;

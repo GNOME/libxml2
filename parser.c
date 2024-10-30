@@ -12127,6 +12127,15 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
 
         while (list != NULL) {
             list->parent = (xmlNodePtr) ent;
+
+            /*
+             * Downstream code like the nginx xslt module can set
+             * ctxt->myDoc->extSubset to a separate DTD, so the entity
+             * might have a different or a NULL document.
+             */
+            if (list->doc != ent->doc)
+                xmlSetTreeDoc(list, ent->doc);
+
             if (list->next == NULL)
                 ent->last = list;
             list = list->next;

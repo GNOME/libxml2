@@ -11749,6 +11749,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
         xmlFreeParserInputBuffer(input);
 	return(NULL);
     }
+    xmlCtxtSetOptions(ctxt, XML_PARSE_DTDLOAD);
 
     /*
      * generate a parser input from the I/O handler
@@ -11839,6 +11840,7 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
     if (ctxt == NULL) {
 	return(NULL);
     }
+    xmlCtxtSetOptions(ctxt, XML_PARSE_DTDLOAD);
 
     /*
      * Canonicalise the system ID

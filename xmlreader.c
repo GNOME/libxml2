@@ -1750,7 +1750,8 @@ xmlTextReaderReadString(xmlTextReaderPtr reader)
         case XML_CDATA_SECTION_NODE:
             break;
         case XML_ELEMENT_NODE:
-            if (xmlTextReaderDoExpand(reader) == -1)
+            if ((xmlTextReaderDoExpand(reader) == -1) ||
+                (node->children == NULL))
                 return(NULL);
             break;
         case XML_ATTRIBUTE_NODE:

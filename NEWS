@@ -1,5 +1,21 @@
 NEWS file for libxml2
 
+v2.13.5: Nov 12 2024
+
+### Regressions
+
+- xmlIO: Fix reading from non-regular files like pipes (Nick Wellnhofer)
+- xmlreader: Fix return value of xmlTextReaderReadString (Nick Wellnhofer)
+- parser: Fix loading of parameter entities in external DTDs (Nick Wellnhofer)
+- parser: Fix downstream code that swaps DTDs (Nick Wellnhofer)
+- parser: Fix detection of duplicate attributes (Nick Wellnhofer)
+- string: Fix va_copy fallback (Nick Wellnhofer)
+
+### Bug fixes
+
+- xpath: Fix parsing of non-ASCII names (Nick Wellnhofer)
+
+
 v2.13.4: Sep 18 2024
 
 ### Regressions

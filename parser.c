@@ -8804,10 +8804,7 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
         return(hname);
     }
     name = hname.name;
-    if (hprefix->name != NULL)
-        prefix = hprefix->name;
-    else
-        prefix = NULL;
+    prefix = hprefix->name;
 
     /*
      * get the type if needed

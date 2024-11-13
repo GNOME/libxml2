@@ -55,7 +55,8 @@
 #endif
 
 #ifdef __clang__
-  #if __clang_major__ >= 12
+  #if (!defined(__apple_build_version__) && __clang_major__ >= 12) || \
+      (defined(__apple_build_version__) && __clang_major__ >= 13)
     #define ATTRIBUTE_NO_SANITIZE_INTEGER \
       ATTRIBUTE_NO_SANITIZE("unsigned-integer-overflow") \
       ATTRIBUTE_NO_SANITIZE("unsigned-shift-base")

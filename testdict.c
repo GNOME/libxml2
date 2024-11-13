@@ -1,3 +1,5 @@
+#include "libxml.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <libxml/parser.h>
@@ -5,14 +7,6 @@
 
 
 /**** dictionary tests ****/
-
-#ifdef __clang__
-  #define ATTRIBUTE_NO_SANITIZE_INTEGER \
-    __attribute__ ((no_sanitize("unsigned-integer-overflow"))) \
-    __attribute__ ((no_sanitize("unsigned-shift-base")))
-#else
-  #define ATTRIBUTE_NO_SANITIZE_INTEGER
-#endif
 
 /* #define WITH_PRINT */
 

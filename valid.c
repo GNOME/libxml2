@@ -6479,6 +6479,25 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
     return(ret);
 }
 
+/**
+ * xmlCtxtValidateDtd:
+ * @ctxt:  a parser context
+ * @doc:  a document instance
+ * @dtd:  a dtd instance
+ *
+ * Validate a document against a DTD.
+ *
+ * Like xmlValidateDtd but uses the parser context's error handler.
+ *
+ * Availabe since 2.14.0.
+ *
+ * Returns 1 if valid or 0 otherwise.
+ */
+int
+xmlCtxtValidateDtd(xmlParserCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
+    return(xmlValidateDtd(&ctxt->vctxt, doc, dtd));
+}
+
 static void
 xmlValidateNotationCallback(void *payload, void *data,
 	                    const xmlChar *name ATTRIBUTE_UNUSED) {

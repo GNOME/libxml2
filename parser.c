@@ -11720,10 +11720,79 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  ************************************************************************/
 
 /**
+ * xmlCtxtParseDtd:
+ * @ctxt:  a parser context
+ * @input:  a parser input
+ * @publicId:  public ID of the DTD (optional)
+ * @systemId:  system ID of the DTD (optional)
+ *
+ * Parse a DTD.
+ *
+ * Option XML_PARSE_DTDLOAD should be enabled in the parser context
+ * to make external entities work.
+ *
+ * Availabe since 2.14.0.
+ *
+ * Returns the resulting xmlDtdPtr or NULL in case of error.
+ * @input will be freed by the function in any case.
+ */
+xmlDtdPtr
+xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
+                const xmlChar *publicId, const xmlChar *systemId) {
+    xmlDtdPtr ret;
+
+    if (xmlPushInput(ctxt, input) < 0) {
+        xmlFreeInputStream(input);
+        return(NULL);
+    }
+
+    if (publicId == NULL)
+        publicId = BAD_CAST "none";
+    if (systemId == NULL)
+        systemId = BAD_CAST "none";
+
+    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
+    if (ctxt->myDoc == NULL) {
+        xmlErrMemory(ctxt);
+        return(NULL);
+    }
+    ctxt->myDoc->properties = XML_DOC_INTERNAL;
+    ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
+                                       publicId, systemId);
+
+    xmlDetectEncoding(ctxt);
+
+    xmlParseExternalSubset(ctxt, publicId, systemId);
+
+    if (ctxt->wellFormed) {
+        ret = ctxt->myDoc->extSubset;
+        ctxt->myDoc->extSubset = NULL;
+        if (ret != NULL) {
+            xmlNodePtr tmp;
+
+            ret->doc = NULL;
+            tmp = ret->children;
+            while (tmp != NULL) {
+                tmp->doc = NULL;
+                tmp = tmp->next;
+            }
+        }
+    } else {
+        ret = NULL;
+    }
+    xmlFreeDoc(ctxt->myDoc);
+    ctxt->myDoc = NULL;
+
+    return(ret);
+}
+
+/**
  * xmlIOParseDTD:
  * @sax:  the SAX handler block or NULL
  * @input:  an Input Buffer
  * @enc:  the charset encoding if known
+ *
+ * DEPRECATED: Use xmlCtxtParseDtd.
  *
  * Load and parse a DTD
  *
@@ -11759,54 +11828,13 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
 	return(NULL);
     }
 
-    /*
-     * plug some encoding conversion routines here.
-     */
-    if (xmlPushInput(ctxt, pinput) < 0) {
-        xmlFreeInputStream(pinput);
-	xmlFreeParserCtxt(ctxt);
-	return(NULL);
-    }
     if (enc != XML_CHAR_ENCODING_NONE) {
         xmlSwitchEncoding(ctxt, enc);
     }
 
-    /*
-     * let's parse that entity knowing it's an external subset.
-     */
-    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
-    if (ctxt->myDoc == NULL) {
-	xmlErrMemory(ctxt);
-	return(NULL);
-    }
-    ctxt->myDoc->properties = XML_DOC_INTERNAL;
-    ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
-	                               BAD_CAST "none", BAD_CAST "none");
+    ret = xmlCtxtParseDtd(ctxt, pinput, NULL, NULL);
 
-    xmlParseExternalSubset(ctxt, BAD_CAST "none", BAD_CAST "none");
-
-    if (ctxt->myDoc != NULL) {
-	if (ctxt->wellFormed) {
-	    ret = ctxt->myDoc->extSubset;
-	    ctxt->myDoc->extSubset = NULL;
-	    if (ret != NULL) {
-		xmlNodePtr tmp;
-
-		ret->doc = NULL;
-		tmp = ret->children;
-		while (tmp != NULL) {
-		    tmp->doc = NULL;
-		    tmp = tmp->next;
-		}
-	    }
-	} else {
-	    ret = NULL;
-	}
-        xmlFreeDoc(ctxt->myDoc);
-        ctxt->myDoc = NULL;
-    }
     xmlFreeParserCtxt(ctxt);
-
     return(ret);
 }
 
@@ -11816,7 +11844,7 @@ xmlIOParseDTD(xmlSAXHandlerPtr sax, xmlParserInputBufferPtr input,
  * @ExternalID:  a NAME* containing the External ID of the DTD
  * @SystemID:  a NAME* containing the URL to the DTD
  *
- * DEPRECATED: Don't use.
+ * DEPRECATED: Use xmlCtxtParseDtd.
  *
  * Load and parse an external subset.
  *
@@ -11862,65 +11890,14 @@ xmlSAXParseDTD(xmlSAXHandlerPtr sax, const xmlChar *ExternalID,
 	return(NULL);
     }
 
-    /*
-     * plug some encoding conversion routines here.
-     */
-    if (xmlPushInput(ctxt, input) < 0) {
-        xmlFreeInputStream(input);
-	xmlFreeParserCtxt(ctxt);
-	if (systemIdCanonic != NULL)
-	    xmlFree(systemIdCanonic);
-	return(NULL);
-    }
-
-    xmlDetectEncoding(ctxt);
-
     if (input->filename == NULL)
 	input->filename = (char *) systemIdCanonic;
     else
 	xmlFree(systemIdCanonic);
 
-    /*
-     * let's parse that entity knowing it's an external subset.
-     */
-    ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
-    if (ctxt->myDoc == NULL) {
-	xmlErrMemory(ctxt);
-	xmlFreeParserCtxt(ctxt);
-	return(NULL);
-    }
-    ctxt->myDoc->properties = XML_DOC_INTERNAL;
-    ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
-	                               ExternalID, SystemID);
-    if (ctxt->myDoc->extSubset == NULL) {
-        xmlFreeDoc(ctxt->myDoc);
-        xmlFreeParserCtxt(ctxt);
-        return(NULL);
-    }
-    xmlParseExternalSubset(ctxt, ExternalID, SystemID);
+    ret = xmlCtxtParseDtd(ctxt, input, ExternalID, SystemID);
 
-    if (ctxt->myDoc != NULL) {
-	if (ctxt->wellFormed) {
-	    ret = ctxt->myDoc->extSubset;
-	    ctxt->myDoc->extSubset = NULL;
-	    if (ret != NULL) {
-		xmlNodePtr tmp;
-
-		ret->doc = NULL;
-		tmp = ret->children;
-		while (tmp != NULL) {
-		    tmp->doc = NULL;
-		    tmp = tmp->next;
-		}
-	    }
-	} else {
-	    ret = NULL;
-	}
-        xmlFreeDoc(ctxt->myDoc);
-        ctxt->myDoc = NULL;
-    }
     xmlFreeParserCtxt(ctxt);
-
     return(ret);
 }
 

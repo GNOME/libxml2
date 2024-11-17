@@ -11759,6 +11759,11 @@ xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     ctxt->myDoc->properties = XML_DOC_INTERNAL;
     ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
                                        publicId, systemId);
+    if (ctxt->myDoc->extSubset == NULL) {
+        xmlErrMemory(ctxt);
+        xmlFreeDoc(ctxt->myDoc);
+        return(NULL);
+    }
 
     xmlDetectEncoding(ctxt);
 

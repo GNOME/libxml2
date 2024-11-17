@@ -1931,7 +1931,7 @@ mem_error:
 }
 
 /**
- * inputPush:
+ * xmlCtxtPushInput:
  * @ctxt:  an XML parser context
  * @value:  the parser input
  *
@@ -1940,12 +1940,21 @@ mem_error:
  * Returns -1 in case of error, the index in the stack otherwise
  */
 int
-inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
+xmlCtxtPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
 {
     char *directory = NULL;
+    int maxDepth;
 
     if ((ctxt == NULL) || (value == NULL))
         return(-1);
+
+    maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
+    if (ctxt->inputNr > maxDepth) {
+        xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
+                       "Maximum entity nesting depth exceeded");
+        xmlHaltParser(ctxt);
+	return(-1);
+    }
 
     if (ctxt->inputNr >= ctxt->inputMax) {
         size_t newSize = ctxt->inputMax * 2;
@@ -1991,8 +2000,9 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
 
     return(ctxt->inputNr++);
 }
+
 /**
- * inputPop:
+ * xmlCtxtPopInput:
  * @ctxt: an XML parser context
  *
  * Pops the top parser input from the input stack
@@ -2000,7 +2010,7 @@ inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
  * Returns the input just removed
  */
 xmlParserInputPtr
-inputPop(xmlParserCtxtPtr ctxt)
+xmlCtxtPopInput(xmlParserCtxtPtr ctxt)
 {
     xmlParserInputPtr ret;
 
@@ -2016,6 +2026,34 @@ inputPop(xmlParserCtxtPtr ctxt)
     ret = ctxt->inputTab[ctxt->inputNr];
     ctxt->inputTab[ctxt->inputNr] = NULL;
     return (ret);
+}
+
+/**
+ * inputPush:
+ * @ctxt:  an XML parser context
+ * @value:  the parser input
+ *
+ * Pushes a new parser input on top of the input stack
+ *
+ * Returns -1 in case of error, the index in the stack otherwise
+ */
+int
+inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
+{
+    return(xmlCtxtPushInput(ctxt, value));
+}
+/**
+ * inputPop:
+ * @ctxt: an XML parser context
+ *
+ * Pops the top parser input from the input stack
+ *
+ * Returns the input just removed
+ */
+xmlParserInputPtr
+inputPop(xmlParserCtxtPtr ctxt)
+{
+    return(xmlCtxtPopInput(ctxt));
 }
 /**
  * nodePush:
@@ -2561,7 +2599,7 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (ctxt->inputNr <= 1)) return(0);
-    input = inputPop(ctxt);
+    input = xmlCtxtPopInput(ctxt);
     xmlFreeInputStream(input);
     if (*ctxt->input->cur == 0)
         xmlParserGrow(ctxt);
@@ -2581,20 +2619,12 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
  */
 int
 xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
-    int maxDepth;
     int ret;
 
     if ((ctxt == NULL) || (input == NULL))
         return(-1);
 
-    maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
-    if (ctxt->inputNr > maxDepth) {
-        xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
-                       "Maximum entity nesting depth exceeded");
-        xmlHaltParser(ctxt);
-	return(-1);
-    }
-    ret = inputPush(ctxt, input);
+    ret = xmlCtxtPushInput(ctxt, input);
     if (ret >= 0)
         GROW;
     return(ret);
@@ -7984,7 +8014,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 
     xmlBufResetInput(input->buf->buffer, input);
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         goto error;
     }
@@ -8053,7 +8083,7 @@ xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
 
 error:
     while (ctxt->inputNr > 0)
-        xmlFreeInputStream(inputPop(ctxt));
+        xmlFreeInputStream(xmlCtxtPopInput(ctxt));
     xmlFree(ctxt->inputTab);
     xmlFree((xmlChar *) ctxt->encoding);
 
@@ -11650,7 +11680,7 @@ xmlCreatePushParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -11709,7 +11739,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 	xmlFreeParserCtxt(ctxt);
         return (NULL);
     }
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -12019,7 +12049,7 @@ xmlCtxtParseContentInternal(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     spacePop(ctxt);
 
     /* xmlPopInput would free the stream */
-    inputPop(ctxt);
+    xmlCtxtPopInput(ctxt);
 
 error:
     xmlFreeNode(root);
@@ -12672,7 +12702,7 @@ xmlCreateEntityParserCtxt(const xmlChar *URL, const xmlChar *ID,
     if (input == NULL)
         goto error;
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         goto error;
     }
@@ -12723,7 +12753,7 @@ xmlCreateURLParserCtxt(const char *filename, int options)
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -12908,7 +12938,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
                                       NULL, 0);
     if (input == NULL)
         return;
-    if (inputPush(ctxt, input) < 0)
+    if (xmlCtxtPushInput(ctxt, input) < 0)
         xmlFreeInputStream(input);
 }
 
@@ -12996,7 +13026,7 @@ xmlCreateMemoryParserCtxt(const char *buffer, int size) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -13186,7 +13216,7 @@ xmlCreateDocParserCtxt(const xmlChar *str) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -13295,7 +13325,7 @@ xmlCtxtReset(xmlParserCtxtPtr ctxt)
 
     dict = ctxt->dict;
 
-    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+    while ((input = xmlCtxtPopInput(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
     }
     ctxt->inputNr = 0;
@@ -13404,7 +13434,7 @@ xmlCtxtResetPush(xmlParserCtxtPtr ctxt, const char *chunk,
     if (input == NULL)
         return(1);
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         return(1);
     }
@@ -13796,9 +13826,9 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 
     /* assert(ctxt->inputNr == 0); */
     while (ctxt->inputNr > 0)
-        xmlFreeInputStream(inputPop(ctxt));
+        xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         return(NULL);
     }
@@ -13819,7 +13849,7 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 
     /* assert(ctxt->inputNr == 1); */
     while (ctxt->inputNr > 0)
-        xmlFreeInputStream(inputPop(ctxt));
+        xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
     return(ret);
 }

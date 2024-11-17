@@ -897,7 +897,7 @@ xmlParseCatalogFile(const char *filename) {
     inputStream->buf = buf;
     xmlBufResetInput(buf->buffer, inputStream);
 
-    if (inputPush(ctxt, inputStream) < 0) {
+    if (xmlCtxtPushInput(ctxt, inputStream) < 0) {
         xmlFreeInputStream(inputStream);
         xmlFreeParserCtxt(ctxt);
         return(NULL);

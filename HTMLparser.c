@@ -4293,7 +4293,7 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
     htmlnamePop(ctxt);
 
     /* xmlPopInput would free the stream */
-    inputPop(ctxt);
+    xmlCtxtPopInput(ctxt);
 
     xmlFreeNode(root);
     return(list);
@@ -4606,7 +4606,7 @@ htmlCreateMemoryParserCtxtInternal(const char *url,
         return(NULL);
     }
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -4664,7 +4664,7 @@ htmlCreateDocParserCtxt(const xmlChar *str, const char *url,
 	return(NULL);
     }
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -5301,7 +5301,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 	return(NULL);
     }
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -5411,7 +5411,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         xmlFreeParserCtxt(ctxt);
         return(NULL);
@@ -5596,7 +5596,7 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
 
     dict = ctxt->dict;
 
-    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+    while ((input = xmlCtxtPopInput(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
     }
     ctxt->inputNr = 0;
@@ -5892,9 +5892,9 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 
     /* assert(ctxt->inputNr == 0); */
     while (ctxt->inputNr > 0)
-        xmlFreeInputStream(inputPop(ctxt));
+        xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
-    if (inputPush(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         return(NULL);
     }
@@ -5912,7 +5912,7 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 
     /* assert(ctxt->inputNr == 1); */
     while (ctxt->inputNr > 0)
-        xmlFreeInputStream(inputPop(ctxt));
+        xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
     return(ret);
 }

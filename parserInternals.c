@@ -2755,7 +2755,7 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     }
     if (ctxt->inputTab == NULL)
 	return(-1);
-    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+    while ((input = xmlCtxtPopInput(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
     }
     ctxt->inputNr = 0;
@@ -2896,7 +2896,7 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 
     if (ctxt == NULL) return;
 
-    while ((input = inputPop(ctxt)) != NULL) { /* Non consuming */
+    while ((input = xmlCtxtPopInput(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
     }
     if (ctxt->spaceTab != NULL) xmlFree(ctxt->spaceTab);

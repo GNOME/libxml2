@@ -4919,7 +4919,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 	    inputStream->buf = buf;
             xmlBufResetInput(buf->buffer, inputStream);
 
-            if (inputPush(reader->ctxt, inputStream) < 0) {
+            if (xmlCtxtPushInput(reader->ctxt, inputStream) < 0) {
                 xmlFreeInputStream(inputStream);
                 return(-1);
             }

@@ -343,6 +343,11 @@ XML_DEPRECATED
 XMLPUBFUN xmlParserInputPtr
 			xmlNewEntityInputStream	(xmlParserCtxtPtr ctxt,
 						 xmlEntityPtr entity);
+XMLPUBFUN int
+			xmlCtxtPushInput	(xmlParserCtxtPtr ctxt,
+						 xmlParserInputPtr input);
+XMLPUBFUN xmlParserInputPtr
+			xmlCtxtPopInput		(xmlParserCtxtPtr ctxt);
 XML_DEPRECATED
 XMLPUBFUN int
 			xmlPushInput		(xmlParserCtxtPtr ctxt,

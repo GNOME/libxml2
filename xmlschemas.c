@@ -28806,7 +28806,7 @@ xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
         ret = -1;
 	goto done;
     }
-    if (inputPush(pctxt, inputStream) < 0) {
+    if (xmlCtxtPushInput(pctxt, inputStream) < 0) {
         xmlFreeInputStream(inputStream);
         ret = -1;
         goto done;

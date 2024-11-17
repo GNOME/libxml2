@@ -6495,6 +6495,8 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
  */
 int
 xmlCtxtValidateDtd(xmlParserCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
+    if (ctxt == NULL)
+        return(0);
     return(xmlValidateDtd(&ctxt->vctxt, doc, dtd));
 }
 

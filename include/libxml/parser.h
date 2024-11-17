@@ -1189,6 +1189,9 @@ XMLPUBFUN xmlDtdPtr
 					 const xmlChar *ExternalID,
 					 const xmlChar *SystemID);
 XMLPUBFUN int
+		xmlCtxtValidateDocument	(xmlParserCtxtPtr ctxt,
+					 xmlDocPtr doc);
+XMLPUBFUN int
 		xmlCtxtValidateDtd	(xmlParserCtxtPtr ctxt,
 					 xmlDocPtr doc,
 					 xmlDtdPtr dtd);

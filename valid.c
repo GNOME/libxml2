@@ -6660,56 +6660,75 @@ xmlValidateDtdFinal(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
 }
 
 /**
- * xmlValidateDocument:
- * @ctxt:  the validation context
- * @doc:  a document instance
+ * xmlValidateDocumentInternal:
+ * @ctxt:  parser context (optional)
+ * @vctxt:  validation context (optional)
+ * @doc:  document
  *
- * Try to validate the document instance
+ * Validate a document.
  *
- * basically it does the all the checks described by the XML Rec
- * i.e. validates the internal and external subset (if present)
- * and validate the document tree.
- *
- * returns 1 if valid or 0 otherwise
+ * Returns 1 if valid or 0 otherwise
  */
-
-int
-xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
+static int
+xmlValidateDocumentInternal(xmlParserCtxtPtr ctxt, xmlValidCtxtPtr vctxt,
+                            xmlDocPtr doc) {
     int ret;
     xmlNodePtr root;
 
     if (doc == NULL)
         return(0);
     if ((doc->intSubset == NULL) && (doc->extSubset == NULL)) {
-        xmlErrValid(ctxt, XML_DTD_NO_DTD,
+        xmlErrValid(vctxt, XML_DTD_NO_DTD,
 	            "no DTD found!\n", NULL);
 	return(0);
     }
+
     if ((doc->intSubset != NULL) && ((doc->intSubset->SystemID != NULL) ||
 	(doc->intSubset->ExternalID != NULL)) && (doc->extSubset == NULL)) {
-	xmlChar *sysID;
+	xmlChar *sysID = NULL;
+
 	if (doc->intSubset->SystemID != NULL) {
-	    sysID = xmlBuildURI(doc->intSubset->SystemID,
-			doc->URL);
-	    if (sysID == NULL) {
-	        xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,
+            int res;
+
+            res = xmlBuildURISafe(doc->intSubset->SystemID, doc->URL, &sysID);
+            if (res < 0) {
+                xmlVErrMemory(vctxt);
+                return 0;
+            } else if (res != 0) {
+                xmlErrValid(vctxt, XML_DTD_LOAD_ERROR,
 			"Could not build URI for external subset \"%s\"\n",
 			(const char *) doc->intSubset->SystemID);
 		return 0;
 	    }
-	} else
-	    sysID = NULL;
-        doc->extSubset = xmlParseDTD(doc->intSubset->ExternalID,
-			(const xmlChar *)sysID);
+	}
+
+        if (ctxt != NULL) {
+            xmlParserInputPtr input;
+
+            input = xmlLoadResource(ctxt, (const char *) sysID,
+                    (const char *) doc->intSubset->ExternalID,
+                    XML_RESOURCE_DTD);
+            if (input == NULL) {
+                xmlFree(sysID);
+                return 0;
+            }
+
+            doc->extSubset = xmlCtxtParseDtd(ctxt, input,
+                                             doc->intSubset->ExternalID,
+                                             sysID);
+        } else {
+            doc->extSubset = xmlParseDTD(doc->intSubset->ExternalID, sysID);
+        }
+
 	if (sysID != NULL)
 	    xmlFree(sysID);
         if (doc->extSubset == NULL) {
 	    if (doc->intSubset->SystemID != NULL) {
-		xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,
+		xmlErrValid(vctxt, XML_DTD_LOAD_ERROR,
 		       "Could not load the external subset \"%s\"\n",
 		       (const char *) doc->intSubset->SystemID);
 	    } else {
-		xmlErrValid(ctxt, XML_DTD_LOAD_ERROR,
+		xmlErrValid(vctxt, XML_DTD_LOAD_ERROR,
 		       "Could not load the external subset \"%s\"\n",
 		       (const char *) doc->intSubset->ExternalID);
 	    }
@@ -6725,13 +6744,57 @@ xmlValidateDocument(xmlValidCtxtPtr ctxt, xmlDocPtr doc) {
           xmlFreeRefTable(doc->refs);
           doc->refs = NULL;
     }
-    ret = xmlValidateDtdFinal(ctxt, doc);
-    if (!xmlValidateRoot(ctxt, doc)) return(0);
+    ret = xmlValidateDtdFinal(vctxt, doc);
+    if (!xmlValidateRoot(vctxt, doc)) return(0);
 
     root = xmlDocGetRootElement(doc);
-    ret &= xmlValidateElement(ctxt, doc, root);
-    ret &= xmlValidateDocumentFinal(ctxt, doc);
+    ret &= xmlValidateElement(vctxt, doc, root);
+    ret &= xmlValidateDocumentFinal(vctxt, doc);
     return(ret);
+}
+
+/**
+ * xmlValidateDocument:
+ * @ctxt:  the validation context
+ * @doc:  a document instance
+ *
+ * DEPRECATED: This function can't report malloc or other failures.
+ * Use xmlCtxtValidateDocument.
+ *
+ * Try to validate the document instance
+ *
+ * basically it does the all the checks described by the XML Rec
+ * i.e. validates the internal and external subset (if present)
+ * and validate the document tree.
+ *
+ * returns 1 if valid or 0 otherwise
+ */
+int
+xmlValidateDocument(xmlValidCtxtPtr vctxt, xmlDocPtr doc) {
+    return(xmlValidateDocumentInternal(NULL, vctxt, doc));
+}
+
+/**
+ * xmlCtxtValidateDocument:
+ * @ctxt:  a parser context
+ * @doc:  a document instance
+ *
+ * Validate a document.
+ *
+ * Like xmlValidateDocument but uses the parser context's error handler.
+ *
+ * Option XML_PARSE_DTDLOAD should be enabled in the parser context
+ * to make external entities work.
+ *
+ * Availabe since 2.14.0.
+ *
+ * Returns 1 if valid or 0 otherwise.
+ */
+int
+xmlCtxtValidateDocument(xmlParserCtxtPtr ctxt, xmlDocPtr doc) {
+    if (ctxt == NULL)
+        return(0);
+    return(xmlValidateDocumentInternal(ctxt, &ctxt->vctxt, doc));
 }
 
 /************************************************************************

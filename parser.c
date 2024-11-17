@@ -2549,6 +2549,8 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
  * xmlPopInput:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * xmlPopInput: the current input pointed by ctxt->input came to an end
  *          pop it and return the next char.
  *
@@ -2570,6 +2572,8 @@ xmlPopInput(xmlParserCtxtPtr ctxt) {
  * xmlPushInput:
  * @ctxt:  an XML parser context
  * @input:  an XML parser input fragment (entity, XML fragment ...).
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Push an input stream onto the stack.
  *
@@ -7259,6 +7263,8 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  * @ExternalID: the external identifier
  * @SystemID: the system identifier (or URL)
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * parse Markup declarations from an external subset
  *

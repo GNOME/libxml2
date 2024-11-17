@@ -990,6 +990,8 @@ xmlStringCurrentChar(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * @out:  pointer to an array of xmlChar
  * @val:  the char value
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * append the char value in the array
  *
  * Returns the number of xmlChar written

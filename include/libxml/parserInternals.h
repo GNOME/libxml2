@@ -294,6 +294,7 @@ XMLPUBVAR const unsigned int xmlParserMaxDepth;
  */
 XMLPUBVAR const xmlChar xmlStringText[];
 XMLPUBVAR const xmlChar xmlStringTextNoenc[];
+XML_DEPRECATED
 XMLPUBVAR const xmlChar xmlStringComment[];
 
 XML_DEPRECATED
@@ -310,6 +311,7 @@ XMLPUBFUN xmlParserCtxtPtr
 XMLPUBFUN xmlParserCtxtPtr
 			xmlCreateMemoryParserCtxt(const char *buffer,
 						 int size);
+XML_DEPRECATED
 XMLPUBFUN xmlParserCtxtPtr
 			xmlCreateEntityParserCtxt(const xmlChar *URL,
 						 const xmlChar *ID,
@@ -341,9 +343,11 @@ XML_DEPRECATED
 XMLPUBFUN xmlParserInputPtr
 			xmlNewEntityInputStream	(xmlParserCtxtPtr ctxt,
 						 xmlEntityPtr entity);
+XML_DEPRECATED
 XMLPUBFUN int
 			xmlPushInput		(xmlParserCtxtPtr ctxt,
 						 xmlParserInputPtr input);
+XML_DEPRECATED
 XMLPUBFUN xmlChar
 			xmlPopInput		(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void
@@ -509,6 +513,7 @@ XMLPUBFUN void
 XML_DEPRECATED
 XMLPUBFUN void
 			xmlParseMisc		(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void
 			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
 						 const xmlChar *ExternalID,
@@ -593,6 +598,7 @@ XMLPUBFUN int			xmlCheckLanguageID	(const xmlChar *lang);
 XML_DEPRECATED
 XMLPUBFUN int			xmlCurrentChar		(xmlParserCtxtPtr ctxt,
 						 int *len);
+XML_DEPRECATED
 XMLPUBFUN int		xmlCopyCharMultiByte	(xmlChar *out,
 						 int val);
 XML_DEPRECATED

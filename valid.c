@@ -707,6 +707,8 @@ xmlFreeValidCtxt(xmlValidCtxtPtr cur) {
  * @name:  the subelement name or NULL
  * @type:  the type of element content decl
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Allocate an element content structure for the document.
  *
  * Returns NULL if not, otherwise the new element content structure
@@ -785,6 +787,8 @@ error:
  * @name:  the subelement name or NULL
  * @type:  the type of element content decl
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Allocate an element content structure.
  * Deprecated in favor of xmlNewDocElementContent
  *
@@ -799,6 +803,8 @@ xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
  * xmlCopyDocElementContent:
  * @doc:  the document owning the element declaration
  * @cur:  An element content pointer.
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Build a copy of an element content description.
  *
@@ -893,6 +899,8 @@ error:
  * xmlCopyElementContent:
  * @cur:  An element content pointer.
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Build a copy of an element content description.
  * Deprecated, use xmlCopyDocElementContent instead
  *
@@ -907,6 +915,8 @@ xmlCopyElementContent(xmlElementContentPtr cur) {
  * xmlFreeDocElementContent:
  * @doc: the document owning the element declaration
  * @cur:  the element content tree to free
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Free an element content structure. The whole subtree is removed.
  */
@@ -973,6 +983,8 @@ xmlFreeDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
  * xmlFreeElementContent:
  * @cur:  the element content tree to free
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Free an element content structure. The whole subtree is removed.
  * Deprecated, use xmlFreeDocElementContent instead
  */
@@ -987,6 +999,8 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
  * @buf:  an output buffer
  * @content:  An element table
  * @englob: 1 if one must print the englobing parenthesis, 0 otherwise
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Deprecated, unsafe, use xmlSnprintfElementContent
  */
@@ -1003,6 +1017,8 @@ xmlSprintfElementContent(char *buf ATTRIBUTE_UNUSED,
  * @size:  the buffer size
  * @content:  An element table
  * @englob: 1 if one must print the englobing parenthesis, 0 otherwise
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * This will dump the content of the element content definition
  * Intended just for the debug routine
@@ -1135,6 +1151,8 @@ xmlFreeElement(xmlElementPtr elem) {
  * @name:  the entity name
  * @type:  the element type
  * @content:  the element content tree or NULL
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Register a new element declaration
  *
@@ -1345,6 +1363,8 @@ xmlFreeElementTableEntry(void *elem, const xmlChar *name ATTRIBUTE_UNUSED) {
  * xmlFreeElementTable:
  * @table:  An element table
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Deallocate the memory used by an element hash table.
  */
 void
@@ -1398,6 +1418,8 @@ error:
 /**
  * xmlCopyElementTable:
  * @table:  An element table
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Build a copy of an element table.
  *
@@ -1473,6 +1495,8 @@ xmlDumpElementTable(xmlBufferPtr buf, xmlElementTablePtr table) {
  * xmlCreateEnumeration:
  * @name:  the enumeration name or NULL
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * create and initialize an enumeration attribute node.
  *
  * Returns the xmlEnumerationPtr just created or NULL in case
@@ -1519,6 +1543,8 @@ xmlFreeEnumeration(xmlEnumerationPtr cur) {
 /**
  * xmlCopyEnumeration:
  * @cur:  the tree to copy.
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Copy an enumeration attribute node (recursive).
  *
@@ -1637,6 +1663,8 @@ xmlFreeAttribute(xmlAttributePtr attr) {
  * @def:  the attribute default type
  * @defaultValue:  the attribute default value
  * @tree:  if it's an enumeration, the associated list
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Register a new attribute declaration
  * Note that @tree becomes the ownership of the DTD
@@ -1880,6 +1908,8 @@ xmlFreeAttributeTableEntry(void *attr, const xmlChar *name ATTRIBUTE_UNUSED) {
  * xmlFreeAttributeTable:
  * @table:  An attribute table
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Deallocate the memory used by an entities hash table.
  */
 void
@@ -1942,6 +1972,8 @@ error:
 /**
  * xmlCopyAttributeTable:
  * @table:  An attribute table
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Build a copy of an attribute table.
  *
@@ -2045,6 +2077,8 @@ xmlFreeNotation(xmlNotationPtr nota) {
  * @PublicID:  the public identifier or NULL
  * @SystemID:  the system identifier or NULL
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Register a new notation declaration
  *
  * Returns NULL if not, otherwise the entity
@@ -2136,6 +2170,8 @@ xmlFreeNotationTableEntry(void *nota, const xmlChar *name ATTRIBUTE_UNUSED) {
  * xmlFreeNotationTable:
  * @table:  An notation table
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * Deallocate the memory used by an entities hash table.
  */
 void
@@ -2185,6 +2221,8 @@ error:
 /**
  * xmlCopyNotationTable:
  * @table:  A notation table
+ *
+ * DEPRECATED: Internal function, don't use.
  *
  * Build a copy of a notation table.
  *

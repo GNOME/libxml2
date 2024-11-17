@@ -325,7 +325,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	ctxt->inputNr = 0;
 	ctxt->inputMax = 5;
 	ctxt->input = NULL;
-	if (xmlPushInput(ctxt, input) < 0)
+	if (xmlCtxtPushInput(ctxt, input) < 0)
             goto error;
 
 	if (input->filename == NULL)
@@ -346,7 +346,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	 */
 
 	while (ctxt->inputNr > 1)
-	    xmlPopInput(ctxt);
+	    xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
         consumed = ctxt->input->consumed;
         buffered = ctxt->input->cur - ctxt->input->base;

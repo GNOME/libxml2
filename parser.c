@@ -2507,9 +2507,11 @@ xmlPopPE(xmlParserCtxtPtr ctxt) {
         ent->flags |= XML_ENT_CHECKED;
     }
 
-    xmlPopInput(ctxt);
+    xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
     xmlParserEntityCheck(ctxt, ent->expandedSize);
+
+    GROW;
 }
 
 /**
@@ -2588,9 +2590,6 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
  * @ctxt:  an XML parser context
  *
  * DEPRECATED: Internal function, don't use.
- *
- * xmlPopInput: the current input pointed by ctxt->input came to an end
- *          pop it and return the next char.
  *
  * Returns the current xmlChar in the parser context
  */
@@ -7936,12 +7935,14 @@ xmlParsePEReference(xmlParserCtxtPtr ctxt)
             }
 
 	    input = xmlNewEntityInputStream(ctxt, entity);
-	    if (xmlPushInput(ctxt, input) < 0) {
+	    if (xmlCtxtPushInput(ctxt, input) < 0) {
                 xmlFreeInputStream(input);
 		return;
             }
 
             entity->flags |= XML_ENT_EXPANDING;
+
+            GROW;
 
 	    if (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
                 xmlDetectEncoding(ctxt);
@@ -11777,7 +11778,7 @@ xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                 const xmlChar *publicId, const xmlChar *systemId) {
     xmlDtdPtr ret;
 
-    if (xmlPushInput(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
         return(NULL);
     }
@@ -11981,7 +11982,7 @@ xmlCtxtParseContentInternal(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         }
     }
 
-    if (xmlPushInput(ctxt, input) < 0)
+    if (xmlCtxtPushInput(ctxt, input) < 0)
         goto error;
 
     nameNsPush(ctxt, rootName, NULL, NULL, 0, 0);
@@ -12048,7 +12049,6 @@ xmlCtxtParseContentInternal(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     namePop(ctxt);
     spacePop(ctxt);
 
-    /* xmlPopInput would free the stream */
     xmlCtxtPopInput(ctxt);
 
 error:
@@ -12111,7 +12111,7 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      * - xmlCtxtParseEntity
      *
      * The nesting depth is limited by the maximum number of inputs,
-     * see xmlPushInput.
+     * see xmlCtxtPushInput.
      *
      * It's possible to make this non-recursive (minNsIndex must be
      * stored in the input struct) at the expense of code readability.

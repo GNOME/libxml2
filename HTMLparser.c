@@ -4085,11 +4085,12 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
 
 static void
 htmlParseContent(htmlParserCtxtPtr ctxt) {
+    GROW;
+
     while ((PARSER_STOPPED(ctxt) == 0) &&
            (ctxt->input->cur < ctxt->input->end)) {
         int mode;
 
-        GROW;
         mode = ctxt->endCheckState;
 
         if ((mode == 0) && (CUR == '<')) {
@@ -4265,7 +4266,7 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
         return(NULL);
     }
 
-    if (xmlPushInput(ctxt, input) < 0) {
+    if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeNode(root);
         return(NULL);
     }
@@ -4292,7 +4293,6 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
     nodePop(ctxt);
     htmlnamePop(ctxt);
 
-    /* xmlPopInput would free the stream */
     xmlCtxtPopInput(ctxt);
 
     xmlFreeNode(root);

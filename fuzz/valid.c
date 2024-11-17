@@ -27,7 +27,6 @@ int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
-    xmlValidCtxtPtr vctxt;
     const char *docBuffer, *docUrl;
     size_t maxAlloc, docSize;
     int opts;
@@ -67,17 +66,15 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL,
                                 opts & ~XML_PARSE_DTDVALID);
-        xmlFreeParserCtxt(ctxt);
-
-        /* Post validation requires global callbacks */
-        xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
-        xmlSetExternalEntityLoader(xmlFuzzEntityLoader);
-        vctxt = xmlNewValidCtxt();
-        xmlValidateDocument(vctxt, doc);
-        xmlFreeValidCtxt(vctxt);
+        xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
+                                  ctxt->errNo == XML_ERR_NO_MEMORY);
+        if (doc != NULL) {
+            xmlCtxtValidateDocument(ctxt, doc);
+            xmlFuzzCheckMallocFailure("xmlCtxtValidateDocument",
+                                      ctxt->errNo == XML_ERR_NO_MEMORY);
+        }
         xmlFreeDoc(doc);
-        xmlSetGenericErrorFunc(NULL, NULL);
-        xmlSetExternalEntityLoader(NULL);
+        xmlFreeParserCtxt(ctxt);
     }
 
     /* Push parser */
@@ -88,7 +85,13 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         size_t consumed, chunkSize;
 
         xmlFuzzMemSetLimit(maxAlloc);
+        /*
+         * FIXME: xmlCreatePushParserCtxt can still report OOM errors
+         * to stderr.
+         */
+        xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
         ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
+        xmlSetGenericErrorFunc(NULL, NULL);
         if (ctxt != NULL) {
             xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
             xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);

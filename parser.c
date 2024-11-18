@@ -11802,8 +11802,6 @@ xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         return(NULL);
     }
 
-    xmlDetectEncoding(ctxt);
-
     xmlParseExternalSubset(ctxt, publicId, systemId);
 
     if (ctxt->wellFormed) {

@@ -10795,6 +10795,8 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
  * xmlParseExtParsedEnt:
  * @ctxt:  an XML parser context
  *
+ * DEPRECATED: Internal function, don't use.
+ *
  * parse a general parsed entity
  * An external general parsed entity is well-formed if it matches the
  * production labeled extParsedEnt.

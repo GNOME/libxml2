@@ -343,6 +343,7 @@ deprecated_funcs = {
     'xmlParseEntity': True,
     'xmlParseEntityDecl': True,
     'xmlParseEntityRef': True,
+    'xmlParseExtParsedEnt': True,
     'xmlParseExternalSubset': True,
     'xmlParseMarkupDecl': True,
     'xmlParseMisc': True,

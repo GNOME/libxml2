@@ -234,48 +234,79 @@ set(
 set(
     LIBXML2_SRCS
     buf.c
-    c14n.c
-    catalog.c
     chvalid.c
-    debugXML.c
     dict.c
     encoding.c
     entities.c
     error.c
     globals.c
     hash.c
-    HTMLparser.c
-    HTMLtree.c
-    legacy.c
     list.c
-    nanohttp.c
     parser.c
     parserInternals.c
-    pattern.c
-    relaxng.c
     SAX2.c
-    schematron.c
     threads.c
     tree.c
     uri.c
     valid.c
-    xinclude.c
-    xlink.c
     xmlIO.c
     xmlmemory.c
-    xmlmodule.c
-    xmlreader.c
-    xmlregexp.c
-    xmlsave.c
-    xmlschemas.c
-    xmlschemastypes.c
     xmlstring.c
-    xmlunicode.c
-    xmlwriter.c
-    xpath.c
-    xpointer.c
-    xzlib.c
 )
+if(LIBXML2_WITH_C14N)
+    list(APPEND LIBXML2_SRCS c14n.c)
+endif()
+if(LIBXML2_WITH_CATALOG)
+    list(APPEND LIBXML2_SRCS catalog.c)
+endif()
+if(LIBXML2_WITH_DEBUG)
+    list(APPEND LIBXML2_SRCS debugXML.c)
+endif()
+if(LIBXML2_WITH_HTML)
+    list(APPEND LIBXML2_SRCS HTMLparser.c HTMLtree.c)
+endif()
+if(LIBXML2_WITH_HTTP)
+    list(APPEND LIBXML2_SRCS nanohttp.c)
+endif()
+if(LIBXML2_WITH_LEGACY)
+    list(APPEND LIBXML2_SRCS legacy.c)
+endif()
+if(LIBXML2_WITH_LZMA)
+    list(APPEND LIBXML2_SRCS xzlib.c)
+endif()
+if(LIBXML2_WITH_MODULES)
+    list(APPEND LIBXML2_SRCS xmlmodule.c)
+endif()
+if(LIBXML2_WITH_OUTPUT)
+    list(APPEND LIBXML2_SRCS xmlsave.c)
+endif()
+if(LIBXML2_WITH_PATTERN)
+    list(APPEND LIBXML2_SRCS pattern.c)
+endif()
+if(LIBXML2_WITH_READER)
+    list(APPEND LIBXML2_SRCS xmlreader.c)
+endif()
+if(LIBXML2_WITH_REGEXPS)
+    list(APPEND LIBXML2_SRCS xmlregexp.c xmlunicode.c)
+endif()
+if(LIBXML2_WITH_SCHEMAS)
+    list(APPEND LIBXML2_SRCS relaxng.c xmlschemas.c xmlschemastypes.c)
+endif()
+if(LIBXML2_WITH_SCHEMATRON)
+    list(APPEND LIBXML2_SRCS schematron.c)
+endif()
+if(LIBXML2_WITH_WRITER)
+    list(APPEND LIBXML2_SRCS xmlwriter.c)
+endif()
+if(LIBXML2_WITH_XINCLUDE)
+    list(APPEND LIBXML2_SRCS xinclude.c)
+endif()
+if(LIBXML2_WITH_XPATH)
+    list(APPEND LIBXML2_SRCS xpath.c)
+endif()
+if(LIBXML2_WITH_XPTR)
+    list(APPEND LIBXML2_SRCS xlink.c xpointer.c)
+endif()
 
 if(WIN32)
     list(APPEND LIBXML2_SRCS win32/libxml2.rc)

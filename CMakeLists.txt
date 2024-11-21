@@ -106,13 +106,6 @@ math(EXPR LIBXML_VERSION_NUMBER "
 
 set(MODULE_EXTENSION "${CMAKE_SHARED_LIBRARY_SUFFIX}")
 
-set(PACKAGE "libxml2")
-set(PACKAGE_NAME "libxml2")
-set(PACKAGE_STRING "libxml2 ${VERSION}")
-set(PACKAGE_TARNAME "libxml2")
-set(PACKAGE_URL "https://gitlab.gnome.org/GNOME/libxml2")
-set(PACKAGE_VERSION ${VERSION})
-
 if(LIBXML2_WITH_ICONV)
     find_package(Iconv REQUIRED)
 endif()

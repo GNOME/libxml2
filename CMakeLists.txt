@@ -439,12 +439,11 @@ endif()
 
 if(LIBXML2_WITH_PROGRAMS)
     add_executable(xmllint xmllint.c shell.c)
-    add_executable(xmlcatalog xmlcatalog.c)
-    set(
-        PROGRAMS
-        xmlcatalog
-        xmllint
-    )
+    set(PROGRAMS xmllint)
+    if(LIBXML2_WITH_CATALOG AND LIBXML2_WITH_OUTPUT)
+        add_executable(xmlcatalog xmlcatalog.c)
+        list(APPEND PROGRAMS xmlcatalog)
+    endif()
     foreach(PROGRAM ${PROGRAMS})
         add_executable(LibXml2::${PROGRAM} ALIAS ${PROGRAM})
         target_link_libraries(${PROGRAM} LibXml2)

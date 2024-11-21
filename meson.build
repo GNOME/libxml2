@@ -484,13 +484,15 @@ executable(
 
 ## xmlcatalog tool
 
-executable(
-    'xmlcatalog',
-    files('xmlcatalog.c'),
-    dependencies: [xml_dep, xmllint_deps],
-    include_directories: config_dir,
-    install: true,
-)
+if want_catalog and want_output
+    executable(
+        'xmlcatalog',
+        files('xmlcatalog.c'),
+        dependencies: [xml_dep, xmllint_deps],
+        include_directories: config_dir,
+        install: true,
+    )
+endif
 
 ## testdso module
 

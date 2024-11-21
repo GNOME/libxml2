@@ -26,7 +26,7 @@ check_PROGRAMS = \
 	testparser \
 	testrecurse
 
-bin_PROGRAMS = xmllint xmlcatalog
+bin_PROGRAMS = xmllint
 
 bin_SCRIPTS = xml2-config
 
@@ -48,6 +48,15 @@ if WITH_C14N_SOURCES
 libxml2_la_SOURCES += c14n.c
 endif
 if WITH_CATALOG_SOURCES
+if WITH_OUTPUT_SOURCES
+bin_PROGRAMS += xmlcatalog
+
+xmlcatalog_SOURCES = xmlcatalog.c
+xmlcatalog_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
+xmlcatalog_DEPENDENCIES = $(DEPS)
+xmlcatalog_LDADD = $(RDL_LIBS) $(LDADDS)
+endif
+
 libxml2_la_SOURCES += catalog.c
 endif
 if WITH_DEBUG_SOURCES
@@ -137,11 +146,6 @@ xmllint_SOURCES = xmllint.c shell.c
 xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
 xmllint_DEPENDENCIES = $(DEPS)
 xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)
-
-xmlcatalog_SOURCES=xmlcatalog.c
-xmlcatalog_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(ICONV_CFLAGS)
-xmlcatalog_DEPENDENCIES = $(DEPS)
-xmlcatalog_LDADD = $(RDL_LIBS) $(LDADDS)
 
 testModule_SOURCES=testModule.c
 testModule_DEPENDENCIES = $(DEPS)

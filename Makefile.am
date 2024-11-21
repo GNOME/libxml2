@@ -91,9 +91,6 @@ libxml2_la_SOURCES += xmlregexp.c xmlunicode.c
 endif
 if WITH_SCHEMAS_SOURCES
 libxml2_la_SOURCES += relaxng.c xmlschemas.c xmlschemastypes.c
-if !WITH_XPATH_SOURCES
-libxml2_la_SOURCES += xpath.c
-endif
 endif
 if WITH_SCHEMATRON_SOURCES
 libxml2_la_SOURCES += schematron.c

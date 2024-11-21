@@ -3389,9 +3389,11 @@ static int urip_rlen;
  */
 static int
 uripMatch(const char * URI) {
+#ifdef LIBXML_CATALOG_ENABLED
     if ((URI == NULL) ||
         (!strcmp(URI, "file://" XML_SYSCONFDIR "/xml/catalog")))
         return(0);
+#endif
     /* Verify we received the escaped URL */
     if (strcmp(urip_rcvsURLs[urip_current], URI))
 	urip_success = 0;
@@ -3409,9 +3411,11 @@ uripMatch(const char * URI) {
  */
 static void *
 uripOpen(const char * URI) {
+#ifdef LIBXML_CATALOG_ENABLED
     if ((URI == NULL) ||
         (!strcmp(URI, "file://" XML_SYSCONFDIR "/xml/catalog")))
         return(NULL);
+#endif
     /* Verify we received the escaped URL */
     if (strcmp(urip_rcvsURLs[urip_current], URI))
 	urip_success = 0;

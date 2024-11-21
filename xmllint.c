@@ -77,10 +77,6 @@
   #define ERR_STREAM stderr
 #endif
 
-#ifndef XML_XML_DEFAULT_CATALOG
-#define XML_XML_DEFAULT_CATALOG "file://" XML_SYSCONFDIR "/xml/catalog"
-#endif
-
 #ifndef STDIN_FILENO
   #define STDIN_FILENO 0
 #endif
@@ -2709,7 +2705,8 @@ static void usage(FILE *f, const char *name) {
 #ifdef LIBXML_CATALOG_ENABLED
     fprintf(f, "\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
     fprintf(f, "\t             otherwise XML Catalogs starting from \n");
-    fprintf(f, "\t         %s are activated by default\n", XML_XML_DEFAULT_CATALOG);
+    fprintf(f, "\t         file://" XML_SYSCONFDIR "/xml/catalog "
+            "are activated by default\n");
     fprintf(f, "\t--nocatalogs: deactivate all catalogs\n");
 #endif
     fprintf(f, "\t--auto : generate a small doc on the fly\n");

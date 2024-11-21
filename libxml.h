@@ -29,15 +29,6 @@
 #include "config.h"
 #include <libxml/xmlversion.h>
 
-/*
- * Due to some Autotools limitations, this variable must be passed as
- * compiler flag. Define a default value if the macro wasn't set by the
- * build system.
- */
-#ifndef SYSCONFDIR
-  #define SYSCONFDIR "/etc"
-#endif
-
 #if !defined(_WIN32) && \
     !defined(__CYGWIN__) && \
     (defined(__clang__) || \

@@ -231,6 +231,8 @@ config_h.set_quoted('PACKAGE_BIN_DIR', dir_bin)
 config_h.set_quoted('PACKAGE_LIB_DIR', dir_lib)
 config_h.set_quoted('PACKAGE_DATA_DIR', dir_data)
 config_h.set_quoted('LOCALEDIR', dir_locale)
+config_h.set_quoted('XML_SYSCONFDIR',
+                    get_option('prefix') / get_option('sysconfdir'))
 
 # header files
 xml_check_headers = [

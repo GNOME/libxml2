@@ -292,8 +292,6 @@ endif()
 add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
 add_library(LibXml2::LibXml2 ALIAS LibXml2)
 
-target_compile_definitions(LibXml2 PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
-
 target_include_directories(
     LibXml2
     PUBLIC
@@ -423,6 +421,8 @@ if(MSVC)
     endif()
 endif()
 
+set(XML_SYSCONFDIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}")
+
 install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
 
 install(
@@ -447,7 +447,6 @@ if(LIBXML2_WITH_PROGRAMS)
     )
     foreach(PROGRAM ${PROGRAMS})
         add_executable(LibXml2::${PROGRAM} ALIAS ${PROGRAM})
-        target_compile_definitions(${PROGRAM} PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
         target_link_libraries(${PROGRAM} LibXml2)
         if(HAVE_LIBHISTORY)
             target_link_libraries(${PROGRAM} history)
@@ -476,7 +475,6 @@ if(LIBXML2_WITH_TESTS)
     )
     foreach(TEST ${TESTS})
         add_executable(${TEST} ${TEST}.c)
-        target_compile_definitions(${TEST} PRIVATE SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}")
         target_link_libraries(${TEST} LibXml2)
     endforeach()
     if(Threads_FOUND)

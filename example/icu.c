@@ -22,12 +22,12 @@
 #define ICU_PIVOT_BUF_SIZE 1024
 
 typedef struct {
-  UConverter *uconv; /* for conversion between an encoding and UTF-16 */
-  UConverter *utf8; /* for conversion between UTF-8 and UTF-16 */
-  UChar      *pivot_source;
-  UChar      *pivot_target;
-  int        isInput;
-  UChar      pivot_buf[ICU_PIVOT_BUF_SIZE];
+    UConverter *uconv; /* for conversion between an encoding and UTF-16 */
+    UConverter *utf8; /* for conversion between UTF-8 and UTF-16 */
+    UChar      *pivot_source;
+    UChar      *pivot_target;
+    int        isInput;
+    UChar      pivot_buf[ICU_PIVOT_BUF_SIZE];
 } myConvCtxt;
 
 static int
@@ -129,11 +129,11 @@ icuOpen(const char* name, int isInput, myConvCtxt **out)
     status = U_ZERO_ERROR;
     if (isInput) {
         ucnv_setToUCallBack(cd->uconv, UCNV_TO_U_CALLBACK_STOP,
-                                                NULL, NULL, NULL, &status);
+                            NULL, NULL, NULL, &status);
     }
     else {
         ucnv_setFromUCallBack(cd->uconv, UCNV_FROM_U_CALLBACK_STOP,
-                                                NULL, NULL, NULL, &status);
+                              NULL, NULL, NULL, &status);
     }
     if (U_FAILURE(status))
         goto error;

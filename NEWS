@@ -22,6 +22,10 @@ The serialization API will now take user-provided or default encodings
 into account when serializing attribute values, matching the
 serialization of text and avoiding unnecessary escaping.
 
+An API function to install a custom character encoding converter is
+now available. This makes it possible to use ICU for encoding conversion
+even if libxml2 was complied without ICU support, see example/icu.c.
+
 Access to many public struct members is now deprecated. Several accessor
 functions were added.
 

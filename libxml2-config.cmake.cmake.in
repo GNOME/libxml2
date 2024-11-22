@@ -157,7 +157,7 @@ if(NOT LIBXML2_SHARED)
   endif()
 
   if(WIN32)
-    list(APPEND LIBXML2_LIBRARIES ws2_32)
+    list(APPEND LIBXML2_LIBRARIES ws2_32;Bcrypt)
   endif()
 endif()
 

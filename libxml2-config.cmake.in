@@ -115,6 +115,8 @@ endif()
 if(WIN32)
   list(APPEND LIBXML2_LIBRARIES    ws2_32)
   list(APPEND LIBXML2_INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:ws2_32>")
+  list(APPEND LIBXML2_LIBRARIES    Bcrypt)
+  list(APPEND LIBXML2_INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:Bcrypt>")
 endif()
 
 # whether libxml2 has dso support

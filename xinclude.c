@@ -162,6 +162,11 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
     void *data = NULL;
     int res;
 
+    if (error == XML_ERR_NO_MEMORY) {
+        xmlXIncludeErrMemory(ctxt);
+        return;
+    }
+
     if (ctxt->fatalErr != 0)
         return;
     ctxt->nbErrors++;
@@ -183,6 +188,14 @@ xmlXIncludeErr(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node, int error,
         ctxt->fatalErr = 1;
     } else {
         ctxt->errNo = error;
+        /*
+         * Note that we treat IO errors except ENOENT as fatal
+         * although the XInclude spec could be interpreted in a
+         * way that at least some IO errors should be handled
+         * gracefully.
+         */
+        if (xmlIsCatastrophicError(XML_ERR_FATAL, error))
+            ctxt->fatalErr = 1;
     }
 }
 
@@ -369,8 +382,8 @@ xmlXIncludeParseFile(xmlXIncludeCtxtPtr ctxt, const char *URL) {
     }
 
 error:
-    if (pctxt->errNo == XML_ERR_NO_MEMORY)
-        xmlXIncludeErrMemory(ctxt);
+    if (xmlCtxtIsCatastrophicError(pctxt))
+        xmlXIncludeErr(ctxt, NULL, pctxt->errNo, "parser error", NULL);
     xmlFreeParserCtxt(pctxt);
 
     return(ret);

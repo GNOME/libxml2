@@ -42,9 +42,10 @@ static struct {
     xmlFuzzEntityInfo *mainEntity;
 } fuzzData;
 
-size_t fuzzNumAllocs;
-size_t fuzzMaxAllocs;
+size_t fuzzNumAttempts;
+size_t fuzzFailurePos;
 int fuzzAllocFailed;
+int fuzzIoFailed;
 
 /**
  * xmlFuzzErrorFunc:
@@ -67,29 +68,61 @@ xmlFuzzSErrorFunc(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /*
- * Malloc failure injection.
+ * Failure injection.
  *
- * To debug issues involving malloc failures, it's often helpful to set
- * MALLOC_ABORT to 1. This should provide a backtrace of the failed
- * allocation.
+ * To debug issues involving injected failures, it's often helpful to set
+ * FAILURE_ABORT to 1. This should provide a backtrace of the failed
+ * operation.
  */
 
-#define XML_FUZZ_MALLOC_ABORT   0
+#define XML_FUZZ_FAILURE_ABORT   0
+
+void
+xmlFuzzInjectFailure(size_t failurePos) {
+    fuzzNumAttempts = 0;
+    fuzzFailurePos = failurePos;
+    fuzzAllocFailed = 0;
+    fuzzIoFailed = 0;
+}
+
+static int
+xmlFuzzTryMalloc(void) {
+    if (fuzzFailurePos > 0) {
+        fuzzNumAttempts += 1;
+        if (fuzzNumAttempts == fuzzFailurePos) {
+#if XML_FUZZ_FAILURE_ABORT
+            abort();
+#endif
+            fuzzAllocFailed = 1;
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
+static int
+xmlFuzzTryIo(void) {
+    if (fuzzFailurePos > 0) {
+        fuzzNumAttempts += 1;
+        if (fuzzNumAttempts == fuzzFailurePos) {
+#if XML_FUZZ_FAILURE_ABORT
+            abort();
+#endif
+            fuzzIoFailed = 1;
+            return -1;
+        }
+    }
+
+    return 0;
+}
 
 static void *
 xmlFuzzMalloc(size_t size) {
     void *ret;
 
-    if (fuzzMaxAllocs > 0) {
-        fuzzNumAllocs += 1;
-        if (fuzzNumAllocs == fuzzMaxAllocs) {
-#if XML_FUZZ_MALLOC_ABORT
-            abort();
-#endif
-            fuzzAllocFailed = 1;
-            return NULL;
-        }
-    }
+    if (xmlFuzzTryMalloc() < 0)
+        return NULL;
 
     ret = malloc(size);
     if (ret == NULL)
@@ -102,16 +135,8 @@ static void *
 xmlFuzzRealloc(void *ptr, size_t size) {
     void *ret;
 
-    if (fuzzMaxAllocs > 0) {
-        fuzzNumAllocs += 1;
-        if (fuzzNumAllocs == fuzzMaxAllocs) {
-#if XML_FUZZ_MALLOC_ABORT
-            abort();
-#endif
-            fuzzAllocFailed = 1;
-            return NULL;
-        }
-    }
+    if (xmlFuzzTryMalloc() < 0)
+        return NULL;
 
     ret = realloc(ptr, size);
     if (ret == NULL)
@@ -125,31 +150,31 @@ xmlFuzzMemSetup(void) {
     xmlMemSetup(free, xmlFuzzMalloc, xmlFuzzRealloc, xmlMemStrdup);
 }
 
-void
-xmlFuzzMemSetLimit(size_t limit) {
-    fuzzNumAllocs = 0;
-    fuzzMaxAllocs = limit;
-    fuzzAllocFailed = 0;
-}
-
 int
 xmlFuzzMallocFailed(void) {
     return fuzzAllocFailed;
 }
 
 void
-xmlFuzzResetMallocFailed(void) {
+xmlFuzzResetFailure(void) {
     fuzzAllocFailed = 0;
+    fuzzIoFailed = 0;
 }
 
 void
-xmlFuzzCheckMallocFailure(const char *func, int error) {
-    if (error >= 0 && fuzzAllocFailed != error) {
+xmlFuzzCheckFailureReport(const char *func, int oomReport, int ioReport) {
+    if (oomReport >= 0 && fuzzAllocFailed != oomReport) {
         fprintf(stderr, "%s: malloc failure %s reported\n",
                 func, fuzzAllocFailed ? "not" : "erroneously");
         abort();
     }
+    if (ioReport >= 0 && fuzzIoFailed != ioReport) {
+        fprintf(stderr, "%s: IO failure %s reported\n",
+                func, fuzzIoFailed ? "not" : "erroneously");
+        abort();
+    }
     fuzzAllocFailed = 0;
+    fuzzIoFailed = 0;
 }
 
 /**
@@ -412,6 +437,10 @@ xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
     entity = xmlHashLookup(fuzzData.entities, (xmlChar *) URL);
     if (entity == NULL)
         return(XML_IO_ENOENT);
+
+    /* IO failure injection */
+    if (xmlFuzzTryIo() < 0)
+        return(XML_IO_EIO);
 
     input = xmlNewInputFromMemory(URL, entity->data, entity->size,
                                   XML_INPUT_BUF_STATIC |

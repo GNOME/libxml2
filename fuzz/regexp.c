@@ -20,17 +20,17 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
 int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlRegexpPtr regexp;
-    size_t maxAlloc;
+    size_t failurePos;
     const char *str1;
 
     if (size > 200)
         return(0);
 
     xmlFuzzDataInit(data, size);
-    maxAlloc = xmlFuzzReadInt(4) % (size * 8 + 100);
+    failurePos = xmlFuzzReadInt(4) % (size * 8 + 100);
     str1 = xmlFuzzReadString(NULL);
 
-    xmlFuzzMemSetLimit(maxAlloc);
+    xmlFuzzInjectFailure(failurePos);
     regexp = xmlRegexpCompile(BAD_CAST str1);
     if (xmlFuzzMallocFailed() && regexp != NULL) {
         fprintf(stderr, "malloc failure not reported\n");
@@ -42,7 +42,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 #endif
     xmlRegFreeRegexp(regexp);
 
-    xmlFuzzMemSetLimit(0);
+    xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();
     xmlResetLastError();
 

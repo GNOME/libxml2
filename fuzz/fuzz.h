@@ -68,16 +68,16 @@ void
 xmlFuzzMemSetup(void);
 
 void
-xmlFuzzMemSetLimit(size_t limit);
+xmlFuzzInjectFailure(size_t failurePos);
 
 int
 xmlFuzzMallocFailed(void);
 
 void
-xmlFuzzResetMallocFailed(void);
+xmlFuzzResetFailure(void);
 
 void
-xmlFuzzCheckMallocFailure(const char *func, int expect);
+xmlFuzzCheckFailureReport(const char *func, int oomReport, int ioReport);
 
 void
 xmlFuzzDataInit(const char *data, size_t size);

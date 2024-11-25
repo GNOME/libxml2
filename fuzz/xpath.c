@@ -27,14 +27,14 @@ int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlDocPtr doc;
     const char *expr, *xml;
-    size_t maxAlloc, exprSize, xmlSize;
+    size_t failurePos, exprSize, xmlSize;
 
     if (size > 10000)
         return(0);
 
     xmlFuzzDataInit(data, size);
 
-    maxAlloc = xmlFuzzReadInt(4) % (size + 100);
+    failurePos = xmlFuzzReadInt(4) % (size + 100);
     expr = xmlFuzzReadString(&exprSize);
     xml = xmlFuzzReadString(&xmlSize);
 
@@ -43,7 +43,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     if (doc != NULL) {
         xmlXPathContextPtr xpctxt;
 
-        xmlFuzzMemSetLimit(maxAlloc);
+        xmlFuzzInjectFailure(failurePos);
 
         xpctxt = xmlXPathNewContext(doc);
         if (xpctxt != NULL) {
@@ -53,17 +53,16 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             xpctxt->opLimit = 500000;
 
             res = xmlXPathContextSetCache(xpctxt, 1, 4, 0);
-            xmlFuzzCheckMallocFailure("xmlXPathContextSetCache", res == -1);
+            xmlFuzzCheckFailureReport("xmlXPathContextSetCache", res == -1, 0);
 
-            xmlFuzzResetMallocFailed();
+            xmlFuzzResetFailure();
             xmlXPathFreeObject(xmlXPtrEval(BAD_CAST expr, xpctxt));
-            xmlFuzzCheckMallocFailure("xmlXPtrEval",
-                                      xpctxt->lastError.code ==
-                                      XML_ERR_NO_MEMORY);
+            xmlFuzzCheckFailureReport("xmlXPtrEval",
+                    xpctxt->lastError.code == XML_ERR_NO_MEMORY, 0);
             xmlXPathFreeContext(xpctxt);
         }
 
-        xmlFuzzMemSetLimit(0);
+        xmlFuzzInjectFailure(0);
         xmlFreeDoc(doc);
     }
 

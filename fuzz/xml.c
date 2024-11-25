@@ -29,7 +29,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     const char *docBuffer, *docUrl;
-    size_t maxAlloc, docSize;
+    size_t failurePos, docSize;
     int opts;
 
     xmlFuzzDataInit(data, size);
@@ -40,7 +40,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     opts &= ~XML_PARSE_XINCLUDE &
             ~XML_PARSE_DTDVALID &
             ~XML_PARSE_SAX1;
-    maxAlloc = xmlFuzzReadInt(4) % (size + 100);
+    failurePos = xmlFuzzReadInt(4) % (size + 100);
 
     xmlFuzzReadEntities();
     docBuffer = xmlFuzzMainEntity(&docSize);
@@ -50,15 +50,15 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     /* Pull parser */
 
-    xmlFuzzMemSetLimit(maxAlloc);
+    xmlFuzzInjectFailure(failurePos);
     ctxt = xmlNewParserCtxt();
     if (ctxt != NULL) {
         xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
         xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
-        xmlFuzzCheckMallocFailure("xmlCtxtReadMemory",
-                                  doc == NULL &&
-                                  ctxt->errNo == XML_ERR_NO_MEMORY);
+        xmlFuzzCheckFailureReport("xmlCtxtReadMemory",
+                doc == NULL && ctxt->errNo == XML_ERR_NO_MEMORY,
+                doc == NULL && ctxt->errNo == XML_IO_EIO);
 
         if (doc != NULL) {
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -73,8 +73,9 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
                 xmlSaveDoc(save, doc);
                 errNo = xmlSaveFinish(save);
-                xmlFuzzCheckMallocFailure("xmlSaveDoc",
-                                          errNo == XML_ERR_NO_MEMORY);
+                xmlFuzzCheckFailureReport("xmlSaveDoc",
+                                          errNo == XML_ERR_NO_MEMORY,
+                                          errNo == XML_IO_EIO);
             }
             xmlBufferFree(buffer);
 #endif
@@ -91,7 +92,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         static const size_t maxChunkSize = 128;
         size_t consumed, chunkSize;
 
-        xmlFuzzMemSetLimit(maxAlloc);
+        xmlFuzzInjectFailure(failurePos);
         ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
         if (ctxt != NULL) {
             xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
@@ -106,8 +107,9 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             }
 
             xmlParseChunk(ctxt, NULL, 0, 1);
-            xmlFuzzCheckMallocFailure("xmlParseChunk",
-                                      ctxt->errNo == XML_ERR_NO_MEMORY);
+            xmlFuzzCheckFailureReport("xmlParseChunk",
+                                      ctxt->errNo == XML_ERR_NO_MEMORY,
+                                      ctxt->errNo == XML_IO_EIO);
             xmlFreeDoc(ctxt->myDoc);
             xmlFreeParserCtxt(ctxt);
         }
@@ -115,7 +117,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 #endif
 
 exit:
-    xmlFuzzMemSetLimit(0);
+    xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();
     xmlResetLastError();
     return(0);

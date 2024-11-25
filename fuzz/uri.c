@@ -18,7 +18,7 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
 int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlURIPtr uri;
-    size_t maxAlloc;
+    size_t failurePos;
     const char *str1, *str2;
     char *copy;
     xmlChar *strRes;
@@ -28,20 +28,20 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         return(0);
 
     xmlFuzzDataInit(data, size);
-    maxAlloc = xmlFuzzReadInt(4) % (size * 8 + 100);
+    failurePos = xmlFuzzReadInt(4) % (size * 8 + 100);
     str1 = xmlFuzzReadString(NULL);
     str2 = xmlFuzzReadString(NULL);
 
-    xmlFuzzMemSetLimit(maxAlloc);
+    xmlFuzzInjectFailure(failurePos);
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     intRes = xmlParseURISafe(str1, &uri);
-    xmlFuzzCheckMallocFailure("xmlParseURISafe", intRes == -1);
+    xmlFuzzCheckFailureReport("xmlParseURISafe", intRes == -1, 0);
 
     if (uri != NULL) {
-        xmlFuzzResetMallocFailed();
+        xmlFuzzResetFailure();
         strRes = xmlSaveUri(uri);
-        xmlFuzzCheckMallocFailure("xmlSaveURI", strRes == NULL);
+        xmlFuzzCheckFailureReport("xmlSaveURI", strRes == NULL, 0);
         xmlFree(strRes);
         xmlFreeURI(uri);
     }
@@ -52,50 +52,51 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFree(xmlSaveUri(uri));
     xmlFreeURI(uri);
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     strRes = BAD_CAST xmlURIUnescapeString(str1, -1, NULL);
-    xmlFuzzCheckMallocFailure("xmlURIUnescapeString",
-                              str1 != NULL && strRes == NULL);
+    xmlFuzzCheckFailureReport("xmlURIUnescapeString",
+                              str1 != NULL && strRes == NULL, 0);
     xmlFree(strRes);
 
     xmlFree(xmlURIEscape(BAD_CAST str1));
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     strRes = xmlCanonicPath(BAD_CAST str1);
-    xmlFuzzCheckMallocFailure("xmlCanonicPath",
-                              str1 != NULL && strRes == NULL);
+    xmlFuzzCheckFailureReport("xmlCanonicPath",
+                              str1 != NULL && strRes == NULL, 0);
     xmlFree(strRes);
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     strRes = xmlPathToURI(BAD_CAST str1);
-    xmlFuzzCheckMallocFailure("xmlPathToURI", str1 != NULL && strRes == NULL);
+    xmlFuzzCheckFailureReport("xmlPathToURI",
+                              str1 != NULL && strRes == NULL, 0);
     xmlFree(strRes);
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     intRes = xmlBuildURISafe(BAD_CAST str2, BAD_CAST str1, &strRes);
-    xmlFuzzCheckMallocFailure("xmlBuildURISafe", intRes == -1);
+    xmlFuzzCheckFailureReport("xmlBuildURISafe", intRes == -1, 0);
     xmlFree(strRes);
 
     xmlFree(xmlBuildURI(BAD_CAST str2, BAD_CAST str1));
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     intRes = xmlBuildRelativeURISafe(BAD_CAST str2, BAD_CAST str1, &strRes);
-    xmlFuzzCheckMallocFailure("xmlBuildRelativeURISafe", intRes == -1);
+    xmlFuzzCheckFailureReport("xmlBuildRelativeURISafe", intRes == -1, 0);
     xmlFree(strRes);
 
     xmlFree(xmlBuildRelativeURI(BAD_CAST str2, BAD_CAST str1));
 
-    xmlFuzzResetMallocFailed();
+    xmlFuzzResetFailure();
     strRes = xmlURIEscapeStr(BAD_CAST str1, BAD_CAST str2);
-    xmlFuzzCheckMallocFailure("xmlURIEscapeStr",
-                              str1 != NULL && strRes == NULL);
+    xmlFuzzCheckFailureReport("xmlURIEscapeStr",
+                              str1 != NULL && strRes == NULL, 0);
     xmlFree(strRes);
 
     copy = (char *) xmlCharStrdup(str1);
     xmlNormalizeURIPath(copy);
     xmlFree(copy);
 
-    xmlFuzzMemSetLimit(0);
+    xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();
 
     return 0;

@@ -107,14 +107,14 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     const xmlError *error;
     const char *docBuffer;
     const unsigned char *program;
-    size_t maxAlloc, docSize, programSize, i;
+    size_t failurePos, docSize, programSize, i;
     size_t totalStringSize = 0;
     int opts;
     int oomReport = 0;
 
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
-    maxAlloc = xmlFuzzReadInt(4) % (size + 100);
+    failurePos = xmlFuzzReadInt(4) % (size + 100);
 
     program = (const unsigned char *) xmlFuzzReadString(&programSize);
     if (programSize > 1000)
@@ -138,7 +138,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     fprintf(stderr, "\nEOF\n");
 #endif
 
-    xmlFuzzMemSetLimit(maxAlloc);
+    xmlFuzzInjectFailure(failurePos);
     reader = xmlReaderForMemory(docBuffer, docSize, NULL, NULL, opts);
     if (reader == NULL)
         goto exit;
@@ -539,7 +539,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     error = xmlTextReaderGetLastError(reader);
     if (error->code == XML_ERR_NO_MEMORY)
         oomReport = 1;
-    xmlFuzzCheckMallocFailure("reader", oomReport);
+    xmlFuzzCheckFailureReport("reader", oomReport, 0);
 
     xmlFreeTextReader(reader);
 
@@ -547,7 +547,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         xmlFreeDoc(doc);
 
 exit:
-    xmlFuzzMemSetLimit(0);
+    xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();
     xmlResetLastError();
     return(0);

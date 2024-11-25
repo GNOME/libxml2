@@ -93,7 +93,13 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         size_t consumed, chunkSize;
 
         xmlFuzzInjectFailure(failurePos);
+        /*
+         * FIXME: xmlCreatePushParserCtxt can still report OOM errors
+         * to stderr.
+         */
+        xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
         ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
+        xmlSetGenericErrorFunc(NULL, NULL);
         if (ctxt != NULL) {
             xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
             xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);

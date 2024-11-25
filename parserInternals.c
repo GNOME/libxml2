@@ -254,18 +254,12 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
                msg, str1, str2);
 }
 
-static int
-xmlCtxtIsCatastrophicError(xmlParserCtxtPtr ctxt) {
+int
+xmlIsCatastrophicError(int level, int code) {
     int fatal = 0;
-    int code;
 
-    if (ctxt == NULL)
-        return(1);
-
-    if (ctxt->lastError.level != XML_ERR_FATAL)
+    if (level != XML_ERR_FATAL)
         return(0);
-
-    code = ctxt->lastError.code;
 
     switch (code) {
         case XML_ERR_NO_MEMORY:
@@ -282,6 +276,15 @@ xmlCtxtIsCatastrophicError(xmlParserCtxtPtr ctxt) {
     }
 
     return(fatal);
+}
+
+int
+xmlCtxtIsCatastrophicError(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(1);
+
+    return(xmlIsCatastrophicError(ctxt->lastError.level,
+                                  ctxt->lastError.code));
 }
 
 /**
@@ -325,15 +328,20 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
     if (PARSER_STOPPED(ctxt))
 	return;
 
+    /* Don't overwrite catastrophic errors */
+    if (xmlCtxtIsCatastrophicError(ctxt))
+        return;
+
     if (level == XML_ERR_WARNING) {
         if (ctxt->nbWarnings >= XML_MAX_ERRORS)
-            goto done;
+            return;
         ctxt->nbWarnings += 1;
     } else {
         /* Report at least one fatal error. */
         if ((ctxt->nbErrors >= XML_MAX_ERRORS) &&
-            ((level < XML_ERR_FATAL) || (ctxt->wellFormed == 0)))
-            goto done;
+            ((level < XML_ERR_FATAL) || (ctxt->wellFormed == 0)) &&
+            (!xmlIsCatastrophicError(level, code)))
+            return;
         ctxt->nbErrors += 1;
     }
 
@@ -384,7 +392,6 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
         return;
     }
 
-done:
     if (level >= XML_ERR_ERROR)
         ctxt->errNo = code;
     if (level == XML_ERR_FATAL) {

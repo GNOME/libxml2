@@ -12018,7 +12018,7 @@ xmlCtxtParseContentInternal(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
 	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
 
     if ((ctxt->wellFormed) ||
-        ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
+        ((ctxt->recovery) && (!xmlCtxtIsCatastrophicError(ctxt)))) {
         if (root != NULL) {
             xmlNodePtr cur;
 
@@ -13836,7 +13836,7 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input)
     xmlParseDocument(ctxt);
 
     if ((ctxt->wellFormed) ||
-        ((ctxt->recovery) && (ctxt->errNo != XML_ERR_NO_MEMORY))) {
+        ((ctxt->recovery) && (!xmlCtxtIsCatastrophicError(ctxt)))) {
         ret = ctxt->myDoc;
     } else {
         if (ctxt->errNo == XML_ERR_OK)

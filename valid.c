@@ -6533,8 +6533,11 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
  */
 int
 xmlCtxtValidateDtd(xmlParserCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
-    if (ctxt == NULL)
+    if ((ctxt == NULL) || (ctxt->html))
         return(0);
+
+    xmlCtxtReset(ctxt);
+
     return(xmlValidateDtd(&ctxt->vctxt, doc, dtd));
 }
 
@@ -6830,8 +6833,11 @@ xmlValidateDocument(xmlValidCtxtPtr vctxt, xmlDocPtr doc) {
  */
 int
 xmlCtxtValidateDocument(xmlParserCtxtPtr ctxt, xmlDocPtr doc) {
-    if (ctxt == NULL)
+    if ((ctxt == NULL) || (ctxt->html))
         return(0);
+
+    xmlCtxtReset(ctxt);
+
     return(xmlValidateDocumentInternal(ctxt, &ctxt->vctxt, doc));
 }
 

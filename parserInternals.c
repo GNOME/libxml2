@@ -263,7 +263,7 @@ xmlIsCatastrophicError(int level, int code) {
 
     switch (code) {
         case XML_ERR_NO_MEMORY:
-        case XML_ERR_RESOURCE_LIMIT:
+        /* case XML_ERR_RESOURCE_LIMIT: */
         case XML_ERR_SYSTEM:
         case XML_ERR_ARGUMENT:
         case XML_ERR_INTERNAL_ERROR:

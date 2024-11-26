@@ -423,33 +423,6 @@ xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
     return(XML_ERR_OK);
 }
 
-/**
- * xmlFuzzEntityLoader:
- *
- * The entity loader for fuzz data.
- */
-xmlParserInputPtr
-xmlFuzzEntityLoader(const char *URL, const char *ID ATTRIBUTE_UNUSED,
-                    xmlParserCtxtPtr ctxt) {
-    xmlParserInputBufferPtr buf;
-    xmlFuzzEntityInfo *entity;
-
-    if (URL == NULL)
-        return(NULL);
-    entity = xmlHashLookup(fuzzData.entities, (xmlChar *) URL);
-    if (entity == NULL)
-        return(NULL);
-
-    buf = xmlParserInputBufferCreateMem(entity->data, entity->size,
-                                        XML_CHAR_ENCODING_NONE);
-    if (buf == NULL) {
-        xmlCtxtErrMemory(ctxt);
-        return(NULL);
-    }
-
-    return(xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE));
-}
-
 char *
 xmlSlurpFile(const char *path, size_t *sizeRet) {
     FILE *file;

@@ -11778,7 +11778,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
 xmlDtdPtr
 xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                 const xmlChar *publicId, const xmlChar *systemId) {
-    xmlDtdPtr ret;
+    xmlDtdPtr ret = NULL;
 
     if (xmlCtxtPushInput(ctxt, input) < 0) {
         xmlFreeInputStream(input);
@@ -11793,7 +11793,7 @@ xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     ctxt->myDoc = xmlNewDoc(BAD_CAST "1.0");
     if (ctxt->myDoc == NULL) {
         xmlErrMemory(ctxt);
-        return(NULL);
+        goto error;
     }
     ctxt->myDoc->properties = XML_DOC_INTERNAL;
     ctxt->myDoc->extSubset = xmlNewDtd(ctxt->myDoc, BAD_CAST "none",
@@ -11801,7 +11801,7 @@ xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (ctxt->myDoc->extSubset == NULL) {
         xmlErrMemory(ctxt);
         xmlFreeDoc(ctxt->myDoc);
-        return(NULL);
+        goto error;
     }
 
     xmlParseExternalSubset(ctxt, publicId, systemId);
@@ -11824,6 +11824,9 @@ xmlCtxtParseDtd(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     }
     xmlFreeDoc(ctxt->myDoc);
     ctxt->myDoc = NULL;
+
+error:
+    xmlFreeInputStream(xmlCtxtPopInput(ctxt));
 
     return(ret);
 }

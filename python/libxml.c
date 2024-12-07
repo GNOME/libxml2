@@ -30,7 +30,7 @@
 #include "libxml2-py.h"
 
 #if PY_MAJOR_VERSION >= 3
-PyObject *PyInit_libxml2mod(void);
+PyMODINIT_FUNC PyInit_libxml2mod(void);
 
 #define PY_IMPORT_STRING_SIZE PyUnicode_FromStringAndSize
 #define PY_IMPORT_STRING PyUnicode_FromString
@@ -3671,7 +3671,7 @@ extern void initlibxsltmod(void);
 #endif
 
 #if PY_MAJOR_VERSION >= 3
-PyObject *PyInit_libxml2mod(void)
+PyMODINIT_FUNC PyInit_libxml2mod(void)
 #else
 void initlibxml2mod(void)
 #endif

@@ -537,7 +537,7 @@ if(LIBXML2_WITH_PYTHON)
     file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML2CLASS_PY}")
     configure_file(${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in libxml2.py COPYONLY)
     add_library(
-        LibXml2Mod
+        LibXml2Mod SHARED
         libxml2-py.c
         libxml2-py.h
         python/libxml.c

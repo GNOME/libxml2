@@ -286,6 +286,14 @@ cmake:linux:gcc:shared:
     CC: gcc
     SUFFIX: linux-gcc-shared
 
+dist:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/dist.sh
+  artifacts:
+    paths:
+      - libxml2-dist/*.tar.xz
+
 pages:
   script:
     - mkdir -p public

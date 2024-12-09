@@ -209,7 +209,8 @@ CLEANFILES = runsuite.log runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst
 
 EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
-	     libxml.h iso8859x.inc \
+	     libxml.h \
+	     html5ent.inc iso8859x.inc \
 	     tools/gentest.py \
 	     tools/genChRanges.py tools/genEscape.py tools/genUnicode.py \
 	     libxml2.syms timsort.h \

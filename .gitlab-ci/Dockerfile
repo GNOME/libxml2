@@ -11,7 +11,8 @@ RUN apt-get update && \
         make gcc clang llvm libclang-rt-dev \
         zlib1g-dev liblzma-dev libgcrypt-dev \
         python3-dev \
-        cmake meson
+        cmake meson \
+        xz-utils
 WORKDIR /tests
 RUN curl https://www.w3.org/XML/Test/xmlts20080827.tar.gz |tar xz
 

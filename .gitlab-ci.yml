@@ -1,3 +1,7 @@
+include:
+  - project: 'Infrastructure/gnome-release-service-ci-templates'
+    file: 'release-module.yml'
+
 .test:
   image: registry.gitlab.gnome.org/gnome/libxml2
   variables:
@@ -285,6 +289,24 @@ cmake:linux:gcc:shared:
     BUILD_SHARED_LIBS: "ON"
     CC: gcc
     SUFFIX: linux-gcc-shared
+
+dist:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/dist.sh
+  artifacts:
+    paths:
+      - libxml2-dist/*.tar.xz
+
+# TODO: Strip "v" from $CI_COMMIT_TAG
+
+#release:
+#  stage: release
+#  variables:
+#    TARBALL_ARTIFACT_PATH: libxml2-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
+#  extends: .release-module
+#  rules:
+#    - if: $CI_COMMIT_TAG
 
 pages:
   script:

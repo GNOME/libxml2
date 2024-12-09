@@ -274,6 +274,14 @@ cmake:msvc:v141:x86:static:
     BUILD_SHARED_LIBS: "OFF"
     SUFFIX: static
 
+dist:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/dist.sh
+  artifacts:
+    paths:
+      - libxml2-dist/*.tar.xz
+
 pages:
   script:
     - mkdir -p public

@@ -106,7 +106,7 @@ The following changes are allowed (after careful consideration):
 ## Updating the CI Docker image
 
 Note that the CI image is used for libxslt as well. First create a
-GitLab access token with maintainer rile and `read_registry` and
+GitLab access token with maintainer role and `read_registry` and
 `write_registry` permissions. Then run the following commands with the
 Dockerfile in the .gitlab-ci directory:
 

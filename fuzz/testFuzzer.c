@@ -158,13 +158,26 @@ testEntityLoader(void) {
         "<!ENTITY ent SYSTEM \"ent.txt\">\\\n"
         "ent.txt\\\n"
         "Hello, world!\\\n";
-    const char *docBuffer;
+    const char *docBuffer, *url;
     size_t docSize;
     xmlDocPtr doc;
     int ret = 0;
 
     xmlFuzzDataInit(data, sizeof(data) - 1);
     xmlFuzzReadEntities();
+
+    url = xmlFuzzMainUrl();
+    if (strcmp(url, "doc.xml") != 0) {
+        fprintf(stderr, "unexpected main url: %s\n", url);
+        ret = 1;
+    }
+
+    url = xmlFuzzSecondaryUrl();
+    if (strcmp(url, "doc.dtd") != 0) {
+        fprintf(stderr, "unexpected secondary url: %s\n", url);
+        ret = 1;
+    }
+
     docBuffer = xmlFuzzMainEntity(&docSize);
     ctxt = xmlNewParserCtxt();
     xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);

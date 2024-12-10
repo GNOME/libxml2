@@ -24,9 +24,10 @@ LLVMFuzzerInitialize(int *argc ATTRIBUTE_UNUSED,
 int
 LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlSchemaParserCtxtPtr pctxt;
+    xmlSchemaPtr schema;
     size_t failurePos;
 
-    if (size > 50000)
+    if (size > 200000)
         return(0);
 
     failurePos = xmlFuzzReadInt(4) % (size + 100);
@@ -38,8 +39,29 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     pctxt = xmlSchemaNewParserCtxt(xmlFuzzMainUrl());
     xmlSchemaSetParserStructuredErrors(pctxt, xmlFuzzSErrorFunc, NULL);
     xmlSchemaSetResourceLoader(pctxt, xmlFuzzResourceLoader, NULL);
-    xmlSchemaFree(xmlSchemaParse(pctxt));
+    schema = xmlSchemaParse(pctxt);
     xmlSchemaFreeParserCtxt(pctxt);
+
+    if (schema != NULL) {
+        xmlSchemaValidCtxtPtr vctxt;
+        xmlParserCtxtPtr ctxt;
+        xmlDocPtr doc;
+
+        ctxt = xmlNewParserCtxt();
+        xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
+        xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
+        doc = xmlCtxtReadFile(ctxt, xmlFuzzSecondaryUrl(), NULL,
+                              XML_PARSE_NOENT);
+        xmlFreeParserCtxt(ctxt);
+
+        vctxt = xmlSchemaNewValidCtxt(schema);
+        xmlSchemaSetValidStructuredErrors(vctxt, xmlFuzzSErrorFunc, NULL);
+        xmlSchemaValidateDoc(vctxt, doc);
+        xmlSchemaFreeValidCtxt(vctxt);
+
+        xmlFreeDoc(doc);
+        xmlSchemaFree(schema);
+    }
 
     xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();

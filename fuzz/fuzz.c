@@ -40,6 +40,8 @@ static struct {
     /* The first entity is the main entity. */
     const char *mainUrl;
     xmlFuzzEntityInfo *mainEntity;
+    const char *secondaryUrl;
+    xmlFuzzEntityInfo *secondaryEntity;
 } fuzzData;
 
 size_t fuzzNumAttempts;
@@ -195,6 +197,8 @@ xmlFuzzDataInit(const char *data, size_t size) {
     fuzzData.entities = xmlHashCreate(8);
     fuzzData.mainUrl = NULL;
     fuzzData.mainEntity = NULL;
+    fuzzData.secondaryUrl = NULL;
+    fuzzData.secondaryEntity = NULL;
 }
 
 /**
@@ -390,6 +394,9 @@ xmlFuzzReadEntities(void) {
             if (num == 0) {
                 fuzzData.mainUrl = url;
                 fuzzData.mainEntity = entityInfo;
+            } else if (num == 1) {
+                fuzzData.secondaryUrl = url;
+                fuzzData.secondaryEntity = entityInfo;
             }
 
             num++;
@@ -419,6 +426,30 @@ xmlFuzzMainEntity(size_t *size) {
         return(NULL);
     *size = fuzzData.mainEntity->size;
     return(fuzzData.mainEntity->data);
+}
+
+/**
+ * xmlFuzzSecondaryUrl:
+ *
+ * Returns the secondary URL.
+ */
+const char *
+xmlFuzzSecondaryUrl(void) {
+    return(fuzzData.secondaryUrl);
+}
+
+/**
+ * xmlFuzzSecondaryEntity:
+ * @size:  size of the secondary entity in bytes
+ *
+ * Returns the secondary entity.
+ */
+const char *
+xmlFuzzSecondaryEntity(size_t *size) {
+    if (fuzzData.secondaryEntity == NULL)
+        return(NULL);
+    *size = fuzzData.secondaryEntity->size;
+    return(fuzzData.secondaryEntity->data);
 }
 
 /**

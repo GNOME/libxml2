@@ -112,6 +112,12 @@ xmlFuzzMainUrl(void);
 const char *
 xmlFuzzMainEntity(size_t *size);
 
+const char *
+xmlFuzzSecondaryUrl(void);
+
+const char *
+xmlFuzzSecondaryEntity(size_t *size);
+
 int
 xmlFuzzResourceLoader(void *data, const char *URL, const char *ID,
                       xmlResourceType type, int flags, xmlParserInputPtr *out);

@@ -23364,6 +23364,7 @@ xmlSchemaIDCFillNodeTables(xmlSchemaValidCtxtPtr vctxt,
 			}
 			if (xmlSchemaItemListAdd(bind->dupls, bind->nodeTable[j]) == -1)
 			    goto internal_error;
+                        dupls = (xmlSchemaPSVIIDCNodePtr *) bind->dupls->items;
 			/*
 			* Remove the duplicate entry from the IDC node-table.
 			*/
@@ -23580,6 +23581,8 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
 				goto internal_error;
 			}
 			xmlSchemaItemListAdd(parBind->dupls, parNode);
+		        dupls = (xmlSchemaPSVIIDCNodePtr *)
+                            parBind->dupls->items;
 		    } else {
 			/*
 			* Add the node-table entry (node and key-sequence) of

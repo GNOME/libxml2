@@ -77,6 +77,7 @@
 #endif
 
 #include "private/error.h"
+#include "private/memory.h"
 #include "private/string.h"
 
 /* #define WXS_ELEM_DECL_CONS_ENABLED */
@@ -3427,21 +3428,23 @@ xmlSchemaItemListClear(xmlSchemaItemListPtr list)
 }
 
 static int
-xmlSchemaItemListAdd(xmlSchemaItemListPtr list, void *item)
+xmlSchemaItemListGrow(xmlSchemaItemListPtr list, int initialSize)
 {
-    if (list->sizeItems <= list->nbItems) {
-        void **tmp;
-        size_t newSize = list->sizeItems == 0 ? 20 : list->sizeItems * 2;
+    void **tmp;
+    int newSize;
 
-	tmp = (void **) xmlRealloc(list->items, newSize * sizeof(void *));
-	if (tmp == NULL) {
-	    xmlSchemaPErrMemory(NULL);
-	    return(-1);
-	}
-        list->items = tmp;
-	list->sizeItems = newSize;
-    }
-    list->items[list->nbItems++] = item;
+    if (initialSize <= 0)
+        initialSize = 1;
+    newSize = xmlGrowCapacity(list->sizeItems, sizeof(tmp[0]),
+                              initialSize, XML_MAX_ITEMS);
+    if (newSize < 0)
+        return(-1);
+    tmp = xmlRealloc(list->items, newSize * sizeof(tmp[0]));
+    if (tmp == NULL)
+        return(-1);
+
+    list->items = tmp;
+    list->sizeItems = newSize;
     return(0);
 }
 
@@ -3450,48 +3453,33 @@ xmlSchemaItemListAddSize(xmlSchemaItemListPtr list,
 			 int initialSize,
 			 void *item)
 {
-    if (list->items == NULL) {
-	if (initialSize <= 0)
-	    initialSize = 1;
-	list->items = (void **) xmlMalloc(
-	    initialSize * sizeof(void *));
-	if (list->items == NULL) {
+    if (list->sizeItems <= list->nbItems) {
+        if (xmlSchemaItemListGrow(list, initialSize) < 0) {
 	    xmlSchemaPErrMemory(NULL);
 	    return(-1);
-	}
-	list->sizeItems = initialSize;
-    } else if (list->sizeItems <= list->nbItems) {
-        void **tmp;
-
-	list->sizeItems *= 2;
-	tmp = (void **) xmlRealloc(list->items,
-	    list->sizeItems * sizeof(void *));
-	if (tmp == NULL) {
-	    xmlSchemaPErrMemory(NULL);
-	    list->sizeItems /= 2;
-	    return(-1);
-	}
-        list->items = tmp;
+        }
     }
+
     list->items[list->nbItems++] = item;
     return(0);
+}
+
+static int
+xmlSchemaItemListAdd(xmlSchemaItemListPtr list, void *item)
+{
+    return(xmlSchemaItemListAddSize(list, 20, item));
 }
 
 static int
 xmlSchemaItemListInsert(xmlSchemaItemListPtr list, void *item, int idx)
 {
     if (list->sizeItems <= list->nbItems) {
-        void **tmp;
-        size_t newSize = list->sizeItems == 0 ? 20 : list->sizeItems * 2;
-
-	tmp = (void **) xmlRealloc(list->items, newSize * sizeof(void *));
-	if (tmp == NULL) {
+        if (xmlSchemaItemListGrow(list, 20) < 0) {
 	    xmlSchemaPErrMemory(NULL);
 	    return(-1);
-	}
-        list->items = tmp;
-	list->sizeItems = newSize;
+        }
     }
+
     /*
     * Just append if the index is greater/equal than the item count.
     */
@@ -3506,49 +3494,6 @@ xmlSchemaItemListInsert(xmlSchemaItemListPtr list, void *item, int idx)
     }
     return(0);
 }
-
-#if 0 /* enable if ever needed */
-static int
-xmlSchemaItemListInsertSize(xmlSchemaItemListPtr list,
-			    int initialSize,
-			    void *item,
-			    int idx)
-{
-    if (list->items == NULL) {
-	if (initialSize <= 0)
-	    initialSize = 1;
-	list->items = (void **) xmlMalloc(
-	    initialSize * sizeof(void *));
-	if (list->items == NULL) {
-	    xmlSchemaPErrMemory(NULL);
-	    return(-1);
-	}
-	list->sizeItems = initialSize;
-    } else if (list->sizeItems <= list->nbItems) {
-	list->sizeItems *= 2;
-	list->items = (void **) xmlRealloc(list->items,
-	    list->sizeItems * sizeof(void *));
-	if (list->items == NULL) {
-	    xmlSchemaPErrMemory(NULL);
-	    list->sizeItems = 0;
-	    return(-1);
-	}
-    }
-    /*
-    * Just append if the index is greater/equal than the item count.
-    */
-    if (idx >= list->nbItems) {
-	list->items[list->nbItems++] = item;
-    } else {
-	int i;
-	for (i = list->nbItems; i > idx; i--)
-	    list->items[i] = list->items[i-1];
-	list->items[idx] = item;
-	list->nbItems++;
-    }
-    return(0);
-}
-#endif
 
 static int
 xmlSchemaItemListRemove(xmlSchemaItemListPtr list, int idx)
@@ -22029,26 +21974,27 @@ xmlSchemaIDCStoreNodeTableItem(xmlSchemaValidCtxtPtr vctxt,
     /*
     * Add to global list.
     */
-    if (vctxt->idcNodes == NULL) {
-	vctxt->idcNodes = (xmlSchemaPSVIIDCNodePtr *)
-	    xmlMalloc(20 * sizeof(xmlSchemaPSVIIDCNodePtr));
-	if (vctxt->idcNodes == NULL) {
-	    xmlSchemaVErrMemory(vctxt);
-	    return (-1);
-	}
-	vctxt->sizeIdcNodes = 20;
-    } else if (vctxt->sizeIdcNodes <= vctxt->nbIdcNodes) {
-	vctxt->sizeIdcNodes *= 2;
-	vctxt->idcNodes = (xmlSchemaPSVIIDCNodePtr *)
-	    xmlRealloc(vctxt->idcNodes, vctxt->sizeIdcNodes *
-	    sizeof(xmlSchemaPSVIIDCNodePtr));
-	if (vctxt->idcNodes == NULL) {
-	    xmlSchemaVErrMemory(vctxt);
-	    return (-1);
-	}
-    }
-    vctxt->idcNodes[vctxt->nbIdcNodes++] = item;
+    if (vctxt->sizeIdcNodes <= vctxt->nbIdcNodes) {
+        xmlSchemaPSVIIDCNodePtr *tmp;
+        int newSize;
 
+        newSize = xmlGrowCapacity(vctxt->sizeIdcNodes, sizeof(tmp[0]),
+                                  20, XML_MAX_ITEMS);
+	if (newSize < 0) {
+	    xmlSchemaVErrMemory(vctxt);
+	    return (-1);
+	}
+	tmp = xmlRealloc(vctxt->idcNodes, newSize * sizeof(tmp[0]));
+	if (tmp == NULL) {
+	    xmlSchemaVErrMemory(vctxt);
+	    return (-1);
+	}
+
+        vctxt->idcNodes = tmp;
+        vctxt->sizeIdcNodes = newSize;
+    }
+
+    vctxt->idcNodes[vctxt->nbIdcNodes++] = item;
     return (0);
 }
 
@@ -22068,26 +22014,27 @@ xmlSchemaIDCStoreKey(xmlSchemaValidCtxtPtr vctxt,
     /*
     * Add to global list.
     */
-    if (vctxt->idcKeys == NULL) {
-	vctxt->idcKeys = (xmlSchemaPSVIIDCKeyPtr *)
-	    xmlMalloc(40 * sizeof(xmlSchemaPSVIIDCKeyPtr));
-	if (vctxt->idcKeys == NULL) {
-	    xmlSchemaVErrMemory(vctxt);
-	    return (-1);
-	}
-	vctxt->sizeIdcKeys = 40;
-    } else if (vctxt->sizeIdcKeys <= vctxt->nbIdcKeys) {
-	vctxt->sizeIdcKeys *= 2;
-	vctxt->idcKeys = (xmlSchemaPSVIIDCKeyPtr *)
-	    xmlRealloc(vctxt->idcKeys, vctxt->sizeIdcKeys *
-	    sizeof(xmlSchemaPSVIIDCKeyPtr));
-	if (vctxt->idcKeys == NULL) {
-	    xmlSchemaVErrMemory(vctxt);
-	    return (-1);
-	}
-    }
-    vctxt->idcKeys[vctxt->nbIdcKeys++] = key;
+    if (vctxt->sizeIdcKeys <= vctxt->nbIdcKeys) {
+        xmlSchemaPSVIIDCKeyPtr *tmp;
+        int newSize;
 
+        newSize = xmlGrowCapacity(vctxt->sizeIdcKeys, sizeof(tmp[0]),
+                                  20, XML_MAX_ITEMS);
+	if (newSize < 0) {
+	    xmlSchemaVErrMemory(vctxt);
+	    return (-1);
+	}
+	tmp = xmlRealloc(vctxt->idcKeys, newSize * sizeof(tmp[0]));
+	if (tmp == NULL) {
+	    xmlSchemaVErrMemory(vctxt);
+	    return (-1);
+	}
+
+        vctxt->idcKeys = tmp;
+        vctxt->sizeIdcKeys = newSize;
+    }
+
+    vctxt->idcKeys[vctxt->nbIdcKeys++] = key;
     return (0);
 }
 
@@ -22104,24 +22051,26 @@ static int
 xmlSchemaIDCAppendNodeTableItem(xmlSchemaPSVIIDCBindingPtr bind,
 				xmlSchemaPSVIIDCNodePtr ntItem)
 {
-    if (bind->nodeTable == NULL) {
-	bind->sizeNodes = 10;
-	bind->nodeTable = (xmlSchemaPSVIIDCNodePtr *)
-	    xmlMalloc(10 * sizeof(xmlSchemaPSVIIDCNodePtr));
-	if (bind->nodeTable == NULL) {
+    if (bind->sizeNodes <= bind->nbNodes) {
+        xmlSchemaPSVIIDCNodePtr *tmp;
+        int newSize;
+
+        newSize = xmlGrowCapacity(bind->sizeNodes, sizeof(tmp[0]),
+                                  10, XML_MAX_ITEMS);
+	if (newSize < 0) {
 	    xmlSchemaVErrMemory(NULL);
 	    return(-1);
 	}
-    } else if (bind->sizeNodes <= bind->nbNodes) {
-	bind->sizeNodes *= 2;
-	bind->nodeTable = (xmlSchemaPSVIIDCNodePtr *)
-	    xmlRealloc(bind->nodeTable, bind->sizeNodes *
-		sizeof(xmlSchemaPSVIIDCNodePtr));
-	if (bind->nodeTable == NULL) {
+	tmp = xmlRealloc(bind->nodeTable, newSize * sizeof(tmp[0]));
+	if (tmp == NULL) {
 	    xmlSchemaVErrMemory(NULL);
 	    return(-1);
 	}
+
+        bind->nodeTable = tmp;
+        bind->sizeNodes = newSize;
     }
+
     bind->nodeTable[bind->nbNodes++] = ntItem;
     return(0);
 }
@@ -22463,21 +22412,24 @@ xmlSchemaXPathEvaluate(xmlSchemaValidCtxtPtr vctxt,
 	/*
 	* Register a match in the state object history.
 	*/
-	if (sto->history == NULL) {
-	    sto->history = (int *) xmlMalloc(5 * sizeof(int));
-	    if (sto->history == NULL) {
-		xmlSchemaVErrMemory(NULL);
-		return(-1);
-	    }
-	    sto->sizeHistory = 5;
-	} else if (sto->sizeHistory <= sto->nbHistory) {
-	    sto->sizeHistory *= 2;
-	    sto->history = (int *) xmlRealloc(sto->history,
-		sto->sizeHistory * sizeof(int));
-	    if (sto->history == NULL) {
-		xmlSchemaVErrMemory(NULL);
-		return(-1);
-	    }
+        if (sto->sizeHistory <= sto->nbHistory) {
+            int *tmp;
+            int newSize;
+
+            newSize = xmlGrowCapacity(sto->sizeHistory, sizeof(tmp[0]),
+                                      5, XML_MAX_ITEMS);
+            if (newSize < 0) {
+                xmlSchemaVErrMemory(vctxt);
+                return (-1);
+            }
+            tmp = xmlRealloc(sto->history, newSize * sizeof(tmp[0]));
+            if (tmp == NULL) {
+                xmlSchemaVErrMemory(vctxt);
+                return (-1);
+            }
+
+            sto->history = tmp;
+            sto->sizeHistory = newSize;
 	}
 	sto->history[sto->nbHistory++] = depth;
 
@@ -22734,38 +22686,32 @@ xmlSchemaXPathProcessHistory(xmlSchemaValidCtxtPtr vctxt,
 		/*
 		* Create/grow the array of key-sequences.
 		*/
-		if (matcher->keySeqs == NULL) {
-		    if (pos > 9)
-			matcher->sizeKeySeqs = pos * 2;
-		    else
-			matcher->sizeKeySeqs = 10;
-		    matcher->keySeqs = (xmlSchemaPSVIIDCKeyPtr **)
-			xmlMalloc(matcher->sizeKeySeqs *
-			sizeof(xmlSchemaPSVIIDCKeyPtr *));
-		    if (matcher->keySeqs == NULL) {
-			xmlSchemaVErrMemory(NULL);
-			return(-1);
-		    }
-		    memset(matcher->keySeqs, 0,
-			matcher->sizeKeySeqs *
-			sizeof(xmlSchemaPSVIIDCKeyPtr *));
-		} else if (pos >= matcher->sizeKeySeqs) {
-		    int i = matcher->sizeKeySeqs;
+                if (pos >= matcher->sizeKeySeqs) {
+                    xmlSchemaPSVIIDCKeyPtr **tmp;
+                    int oldSize = matcher->sizeKeySeqs;
+                    int newSize, i;
 
-		    matcher->sizeKeySeqs = pos * 2;
-		    matcher->keySeqs = (xmlSchemaPSVIIDCKeyPtr **)
-			xmlRealloc(matcher->keySeqs,
-			matcher->sizeKeySeqs *
-			sizeof(xmlSchemaPSVIIDCKeyPtr *));
-		    if (matcher->keySeqs == NULL) {
-			xmlSchemaVErrMemory(NULL);
-			return (-1);
-		    }
+                    newSize = xmlGrowCapacity(pos, sizeof(tmp[0]),
+                                              10, XML_MAX_ITEMS);
+                    if (newSize < 0) {
+                        xmlSchemaVErrMemory(vctxt);
+                        return (-1);
+                    }
+                    tmp = xmlRealloc(matcher->keySeqs,
+                                     newSize * sizeof(tmp[0]));
+                    if (tmp == NULL) {
+                        xmlSchemaVErrMemory(vctxt);
+                        return (-1);
+                    }
+
+                    matcher->keySeqs = tmp;
+                    matcher->sizeKeySeqs = newSize;
+
 		    /*
 		    * The array needs to be NULLed.
 		    * TODO: Use memset?
 		    */
-		    for (; i < matcher->sizeKeySeqs; i++)
+		    for (i = oldSize; i < newSize; i++)
 			matcher->keySeqs[i] = NULL;
 		}
 
@@ -23611,23 +23557,26 @@ xmlSchemaBubbleIDCNodeTables(xmlSchemaValidCtxtPtr vctxt)
 			* Add the node-table entry (node and key-sequence) of
 			* the child node to the node table of the parent node.
 			*/
-			if (parBind->nodeTable == NULL) {
-			    parBind->nodeTable = (xmlSchemaPSVIIDCNodePtr *)
-				xmlMalloc(10 * sizeof(xmlSchemaPSVIIDCNodePtr));
-			    if (parBind->nodeTable == NULL) {
-				xmlSchemaVErrMemory(NULL);
-				goto internal_error;
-			    }
-			    parBind->sizeNodes = 1;
-			} else if (parBind->nbNodes >= parBind->sizeNodes) {
-			    parBind->sizeNodes *= 2;
-			    parBind->nodeTable = (xmlSchemaPSVIIDCNodePtr *)
-				xmlRealloc(parBind->nodeTable, parBind->sizeNodes *
-				sizeof(xmlSchemaPSVIIDCNodePtr));
-			    if (parBind->nodeTable == NULL) {
-				xmlSchemaVErrMemory(NULL);
-				goto internal_error;
-			    }
+                        if (parBind->nbNodes >= parBind->sizeNodes) {
+                            xmlSchemaPSVIIDCNodePtr *tmp;
+                            int newSize;
+
+                            newSize = xmlGrowCapacity(parBind->sizeNodes,
+                                                      sizeof(tmp[0]),
+                                                      10, XML_MAX_ITEMS);
+                            if (newSize < 0) {
+                                xmlSchemaVErrMemory(vctxt);
+                                goto internal_error;
+                            }
+                            tmp = xmlRealloc(parBind->nodeTable,
+                                             newSize * sizeof(tmp[0]));
+                            if (tmp == NULL) {
+                                xmlSchemaVErrMemory(vctxt);
+                                goto internal_error;
+                            }
+
+                            parBind->nodeTable = tmp;
+                            parBind->sizeNodes = newSize;
 			}
 			parNodes = parBind->nodeTable;
 			/*
@@ -23882,33 +23831,41 @@ xmlSchemaGetFreshAttrInfo(xmlSchemaValidCtxtPtr vctxt)
     /*
     * Grow/create list of attribute infos.
     */
-    if (vctxt->attrInfos == NULL) {
-	vctxt->attrInfos = (xmlSchemaAttrInfoPtr *)
-	    xmlMalloc(sizeof(xmlSchemaAttrInfoPtr));
-	vctxt->sizeAttrInfos = 1;
-	if (vctxt->attrInfos == NULL) {
+    if (vctxt->sizeAttrInfos <= vctxt->nbAttrInfos) {
+        xmlSchemaAttrInfoPtr *tmp;
+        int oldSize = vctxt->sizeAttrInfos;
+        int newSize, i;
+
+        newSize = xmlGrowCapacity(oldSize, sizeof(tmp[0]), 5, XML_MAX_ITEMS);
+	if (newSize < 0) {
 	    xmlSchemaVErrMemory(vctxt);
 	    return (NULL);
 	}
-    } else if (vctxt->sizeAttrInfos <= vctxt->nbAttrInfos) {
-	vctxt->sizeAttrInfos++;
-	vctxt->attrInfos = (xmlSchemaAttrInfoPtr *)
-	    xmlRealloc(vctxt->attrInfos,
-		vctxt->sizeAttrInfos * sizeof(xmlSchemaAttrInfoPtr));
-	if (vctxt->attrInfos == NULL) {
+	tmp = xmlRealloc(vctxt->attrInfos, newSize * sizeof(tmp[0]));
+	if (tmp == NULL) {
 	    xmlSchemaVErrMemory(vctxt);
 	    return (NULL);
 	}
-    } else {
-	iattr = vctxt->attrInfos[vctxt->nbAttrInfos++];
+
+        vctxt->attrInfos = tmp;
+        vctxt->sizeAttrInfos = newSize;
+
+        for (i = oldSize; i < newSize; i++)
+            vctxt->attrInfos[i] = NULL;
+    }
+
+    iattr = vctxt->attrInfos[vctxt->nbAttrInfos];
+    if (iattr != NULL) {
 	if (iattr->localName != NULL) {
 	    VERROR_INT("xmlSchemaGetFreshAttrInfo",
 		"attr info not cleared");
 	    return (NULL);
 	}
 	iattr->nodeType = XML_ATTRIBUTE_NODE;
+        vctxt->nbAttrInfos++;
 	return (iattr);
     }
+
     /*
     * Create an attribute info.
     */
@@ -24062,31 +24019,30 @@ xmlSchemaGetFreshElemInfo(xmlSchemaValidCtxtPtr vctxt)
 	    "inconsistent depth encountered");
 	return (NULL);
     }
-    if (vctxt->elemInfos == NULL) {
-	vctxt->elemInfos = (xmlSchemaNodeInfoPtr *)
-	    xmlMalloc(10 * sizeof(xmlSchemaNodeInfoPtr));
-	if (vctxt->elemInfos == NULL) {
-	    xmlSchemaVErrMemory(vctxt);
-	    return (NULL);
-	}
-	memset(vctxt->elemInfos, 0, 10 * sizeof(xmlSchemaNodeInfoPtr));
-	vctxt->sizeElemInfos = 10;
-    } else if (vctxt->sizeElemInfos <= vctxt->depth) {
-	int i = vctxt->sizeElemInfos;
+    if (vctxt->sizeElemInfos <= vctxt->depth) {
+        xmlSchemaNodeInfoPtr *tmp;
+        int oldSize = vctxt->sizeElemInfos;
+        int newSize, i;
 
-	vctxt->sizeElemInfos *= 2;
-	vctxt->elemInfos = (xmlSchemaNodeInfoPtr *)
-	    xmlRealloc(vctxt->elemInfos, vctxt->sizeElemInfos *
-	    sizeof(xmlSchemaNodeInfoPtr));
-	if (vctxt->elemInfos == NULL) {
-	    xmlSchemaVErrMemory(vctxt);
-	    return (NULL);
-	}
+        newSize = xmlGrowCapacity(oldSize, sizeof(tmp[0]), 10, XML_MAX_ITEMS);
+        if (newSize < 0) {
+            xmlSchemaVErrMemory(vctxt);
+            return (NULL);
+        }
+        tmp = xmlRealloc(vctxt->elemInfos, newSize * sizeof(tmp[0]));
+        if (tmp == NULL) {
+            xmlSchemaVErrMemory(vctxt);
+            return (NULL);
+        }
+
+        vctxt->elemInfos = tmp;
+        vctxt->sizeElemInfos = newSize;
+
 	/*
 	* We need the new memory to be NULLed.
 	* TODO: Use memset instead?
 	*/
-	for (; i < vctxt->sizeElemInfos; i++)
+	for (i = oldSize; i < newSize; i++)
 	    vctxt->elemInfos[i] = NULL;
     } else
 	info = vctxt->elemInfos[vctxt->depth];
@@ -27239,26 +27195,25 @@ xmlSchemaSAXHandleStartElementNs(void *ctx,
 	    /*
 	    * Store prefix and namespace name.
 	    */
-	    if (ielem->nsBindings == NULL) {
-		ielem->nsBindings =
-		    (const xmlChar **) xmlMalloc(10 *
-			sizeof(const xmlChar *));
-		if (ielem->nsBindings == NULL) {
-		    xmlSchemaVErrMemory(vctxt);
-		    goto internal_error;
-		}
-		ielem->nbNsBindings = 0;
-		ielem->sizeNsBindings = 5;
-	    } else if (ielem->sizeNsBindings <= ielem->nbNsBindings) {
-		ielem->sizeNsBindings *= 2;
-		ielem->nsBindings =
-		    (const xmlChar **) xmlRealloc(
-			(void *) ielem->nsBindings,
-			ielem->sizeNsBindings * 2 * sizeof(const xmlChar *));
-		if (ielem->nsBindings == NULL) {
-		    xmlSchemaVErrMemory(vctxt);
-		    goto internal_error;
-		}
+            if (ielem->sizeNsBindings <= ielem->nbNsBindings) {
+                const xmlChar **tmp;
+                size_t elemSize = 2 * sizeof(tmp[0]);
+                int newSize;
+
+                newSize = xmlGrowCapacity(ielem->sizeNsBindings, elemSize,
+                                          5, XML_MAX_ITEMS);
+                if (newSize < 0) {
+                    xmlSchemaVErrMemory(vctxt);
+                    goto internal_error;
+                }
+                tmp = xmlRealloc(ielem->nsBindings, newSize * elemSize);
+                if (tmp == NULL) {
+                    xmlSchemaVErrMemory(vctxt);
+                    goto internal_error;
+                }
+
+                ielem->nsBindings = tmp;
+                ielem->sizeNsBindings = newSize;
 	    }
 
 	    ielem->nsBindings[ielem->nbNsBindings * 2] = namespaces[j];

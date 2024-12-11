@@ -35,7 +35,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define XML_DEPRECATED
+#ifndef XML_DEPRECATED
+  #define XML_DEPRECATED
+#endif
 
 #include <libxml/catalog.h>
 #include <libxml/HTMLtree.h>

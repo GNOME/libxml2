@@ -5,6 +5,10 @@
  * See Copyright for the status of this software.
  */
 
+#ifndef XML_DEPRECATED
+  #define XML_DEPRECATED
+#endif
+
 #include <string.h>
 #include <glob.h>
 #include <libxml/parser.h>

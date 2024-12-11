@@ -4,8 +4,13 @@
  * See Copyright for the status of this software.
  */
 
+#ifndef XML_DEPRECATED
+  #define XML_DEPRECATED
+#endif
+
 #include <libxml/catalog.h>
 #include <libxml/xmlschemas.h>
+#include <libxml/xmlschemastypes.h>
 #include "fuzz.h"
 
 int
@@ -30,9 +35,10 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     if (size > 200000)
         return(0);
 
+    xmlFuzzDataInit(data, size);
+
     failurePos = xmlFuzzReadInt(4) % (size + 100);
 
-    xmlFuzzDataInit(data, size);
     xmlFuzzReadEntities();
 
     xmlFuzzInjectFailure(failurePos);
@@ -66,6 +72,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();
     xmlResetLastError();
+    xmlSchemaCleanupTypes();
 
     return(0);
 }

@@ -286,7 +286,10 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 
 #define WXS_ADD_LOCAL(ctx, item) \
     do { \
-        if (xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->locals), 10, item) < 0) { \
+        if ((item != NULL) && \
+            (xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->locals), 10, \
+                                  item) < 0)) { \
+            xmlSchemaPErrMemory(ctx); \
             xmlFree(item); \
             item = NULL; \
         } \
@@ -294,14 +297,23 @@ static const xmlChar *xmlNamespaceNs = (const xmlChar *)
 
 #define WXS_ADD_GLOBAL(ctx, item) \
     do { \
-        if (xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->globals), 5, item) < 0) { \
+        if ((item != NULL) && \
+            (xmlSchemaAddItemSize(&(WXS_BUCKET(ctx)->globals), 5, \
+                                  item) < 0)) { \
+            xmlSchemaPErrMemory(ctx); \
             xmlFree(item); \
             item = NULL; \
         } \
     } while (0)
 
 #define WXS_ADD_PENDING(ctx, item) \
-    xmlSchemaAddItemSize(&((ctx)->constructor->pending), 10, item)
+    do { \
+        if ((item != NULL) && \
+            (xmlSchemaAddItemSize(&((ctx)->constructor->pending), 10, \
+                                  item) < 0)) { \
+            xmlSchemaPErrMemory(ctx); \
+        } \
+    } while (0)
 /*
 * xmlSchemaItemList macros.
 */
@@ -859,19 +871,19 @@ struct _xmlSchemaIDCMatcher {
 /*
 * Element info flags.
 */
-#define XML_SCHEMA_NODE_INFO_FLAG_OWNED_NAMES  1<<0
-#define XML_SCHEMA_NODE_INFO_FLAG_OWNED_VALUES 1<<1
-#define XML_SCHEMA_ELEM_INFO_NILLED	       1<<2
-#define XML_SCHEMA_ELEM_INFO_LOCAL_TYPE	       1<<3
+#define XML_SCHEMA_NODE_INFO_FLAG_OWNED_NAMES  (1<<0)
+#define XML_SCHEMA_NODE_INFO_FLAG_OWNED_VALUES (1<<1)
+#define XML_SCHEMA_ELEM_INFO_NILLED            (1<<2)
+#define XML_SCHEMA_ELEM_INFO_LOCAL_TYPE        (1<<3)
 
-#define XML_SCHEMA_NODE_INFO_VALUE_NEEDED      1<<4
-#define XML_SCHEMA_ELEM_INFO_EMPTY             1<<5
-#define XML_SCHEMA_ELEM_INFO_HAS_CONTENT       1<<6
+#define XML_SCHEMA_NODE_INFO_VALUE_NEEDED      (1<<4)
+#define XML_SCHEMA_ELEM_INFO_EMPTY             (1<<5)
+#define XML_SCHEMA_ELEM_INFO_HAS_CONTENT       (1<<6)
 
-#define XML_SCHEMA_ELEM_INFO_HAS_ELEM_CONTENT  1<<7
-#define XML_SCHEMA_ELEM_INFO_ERR_BAD_CONTENT  1<<8
-#define XML_SCHEMA_NODE_INFO_ERR_NOT_EXPECTED  1<<9
-#define XML_SCHEMA_NODE_INFO_ERR_BAD_TYPE  1<<10
+#define XML_SCHEMA_ELEM_INFO_HAS_ELEM_CONTENT  (1<<7)
+#define XML_SCHEMA_ELEM_INFO_ERR_BAD_CONTENT   (1<<8)
+#define XML_SCHEMA_NODE_INFO_ERR_NOT_EXPECTED  (1<<9)
+#define XML_SCHEMA_NODE_INFO_ERR_BAD_TYPE      (1<<10)
 
 /**
  * xmlSchemaNodeInfo:
@@ -8849,17 +8861,14 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		}
 		link->type = NULL;
 		link->next = NULL;
-		if (lastLink == NULL)
-		    type->memberTypes = link;
-		else
-		    lastLink->next = link;
-		lastLink = link;
 		/*
 		* Create a reference item.
 		*/
 		ref = xmlSchemaNewQNameRef(ctxt, XML_SCHEMA_TYPE_SIMPLE,
 		    localName, nsName);
 		if (ref == NULL) {
+                    xmlSchemaPErrMemory(ctxt);
+                    xmlFree(link);
 		    FREE_AND_NULL(tmp)
 		    return (-1);
 		}
@@ -8868,6 +8877,12 @@ xmlSchemaParseUnion(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
 		* later during fixup of the union simple type.
 		*/
 		link->type = (xmlSchemaTypePtr) ref;
+
+		if (lastLink == NULL)
+		    type->memberTypes = link;
+		else
+		    lastLink->next = link;
+		lastLink = link;
 	    }
 	    FREE_AND_NULL(tmp)
 	    cur = end;
@@ -21867,8 +21882,15 @@ xmlSchemaVAddNodeQName(xmlSchemaValidCtxtPtr vctxt,
     }
     /* Add new entry. */
     i = vctxt->nodeQNames->nbItems;
-    xmlSchemaItemListAdd(vctxt->nodeQNames, (void *) lname);
-    xmlSchemaItemListAdd(vctxt->nodeQNames, (void *) nsname);
+    if (xmlSchemaItemListAdd(vctxt->nodeQNames, (void *) lname) < 0) {
+        xmlSchemaVErrMemory(vctxt);
+        return(-1);
+    }
+    if (xmlSchemaItemListAdd(vctxt->nodeQNames, (void *) nsname) < 0) {
+        vctxt->nodeQNames->nbItems--;
+        xmlSchemaVErrMemory(vctxt);
+        return(-1);
+    }
     return(i);
 }
 
@@ -22119,11 +22141,14 @@ xmlSchemaIDCAcquireBinding(xmlSchemaValidCtxtPtr vctxt,
 }
 
 static xmlSchemaItemListPtr
-xmlSchemaIDCAcquireTargetList(xmlSchemaValidCtxtPtr vctxt ATTRIBUTE_UNUSED,
-			     xmlSchemaIDCMatcherPtr matcher)
+xmlSchemaIDCAcquireTargetList(xmlSchemaValidCtxtPtr vctxt,
+			      xmlSchemaIDCMatcherPtr matcher)
 {
-    if (matcher->targets == NULL)
+    if (matcher->targets == NULL) {
 	matcher->targets = xmlSchemaItemListCreate();
+        if (matcher->targets == NULL)
+            xmlSchemaVErrMemory(vctxt);
+    }
     return(matcher->targets);
 }
 
@@ -22864,6 +22889,9 @@ create_key:
 	    bind = xmlSchemaIDCAcquireBinding(vctxt, matcher);
 #endif
 	    targets = xmlSchemaIDCAcquireTargetList(vctxt, matcher);
+            if (targets == NULL)
+                return(-1);
+
 	    if ((idc->type != XML_SCHEMA_TYPE_IDC_KEYREF) &&
 		(targets->nbItems != 0)) {
 		xmlSchemaPSVIIDCKeyPtr ckey, bkey, *bkeySeq;
@@ -22991,6 +23019,10 @@ create_key:
 		  matcher->htab = xmlHashCreate(4);
 		xmlSchemaHashKeySequence(vctxt, &value, ntItem->keys, nbKeys);
 		e = xmlMalloc(sizeof *e);
+                if (e == NULL) {
+                    xmlSchemaVErrMemory(vctxt);
+                    goto mem_error;
+                }
 		e->index = targets->nbItems - 1;
 		r = xmlHashLookup(matcher->htab, value);
 		if (r) {
@@ -22998,8 +23030,12 @@ create_key:
 		    r->next = e;
 		} else {
 		    e->next = NULL;
-		    xmlHashAddEntry(matcher->htab, value, e);
+		    if (xmlHashAddEntry(matcher->htab, value, e) < 0) {
+                        xmlSchemaVErrMemory(vctxt);
+                        xmlFree(e);
+                    }
 		}
+mem_error:
 		FREE_AND_NULL(value);
 	    }
 
@@ -23232,6 +23268,8 @@ xmlSchemaIDCFillNodeTables(xmlSchemaValidCtxtPtr vctxt,
 	    /*
 	    * Transfer all IDC target-nodes to the IDC node-table.
 	    */
+            if (bind->nodeTable != NULL)
+                xmlFree(bind->nodeTable);
 	    bind->nodeTable =
 		(xmlSchemaPSVIIDCNodePtr *) matcher->targets->items;
 	    bind->sizeNodes = matcher->targets->sizeItems;
@@ -23716,6 +23754,10 @@ xmlSchemaCheckCVCIDCKeyRef(xmlSchemaValidCtxtPtr vctxt)
 		    keys = bind->nodeTable[j]->keys;
 		    xmlSchemaHashKeySequence(vctxt, &value, keys, nbFields);
 		    e = xmlMalloc(sizeof *e);
+                    if (e == NULL) {
+                        xmlSchemaVErrMemory(vctxt);
+                        goto mem_error;
+                    }
 		    e->index = j;
 		    r = xmlHashLookup(table, value);
 		    if (r) {
@@ -23723,8 +23765,12 @@ xmlSchemaCheckCVCIDCKeyRef(xmlSchemaValidCtxtPtr vctxt)
 			r->next = e;
 		    } else {
 			e->next = NULL;
-			xmlHashAddEntry(table, value, e);
+                        if (xmlHashAddEntry(table, value, e) < 0) {
+                            xmlSchemaVErrMemory(vctxt);
+                            xmlFree(e);
+                        }
 		    }
+mem_error:
 		    FREE_AND_NULL(value);
 		}
 	    }
@@ -26645,6 +26691,8 @@ xmlSchemaVPushText(xmlSchemaValidCtxtPtr vctxt,
 		* When working on a tree.
 		*/
 		vctxt->inode->value = value;
+		vctxt->inode->flags &=
+		    ~XML_SCHEMA_NODE_INFO_FLAG_OWNED_VALUES;
 		break;
 	    case XML_SCHEMA_PUSH_TEXT_CREATED:
 		/*
@@ -27370,7 +27418,15 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
     memset(ret, 0, sizeof(xmlSchemaValidCtxt));
     ret->type = XML_SCHEMA_CTXT_VALIDATOR;
     ret->dict = xmlDictCreate();
+    if (ret->dict == NULL) {
+        xmlSchemaFreeValidCtxt(ret);
+        return(NULL);
+    }
     ret->nodeQNames = xmlSchemaItemListCreate();
+    if (ret->nodeQNames == NULL) {
+        xmlSchemaFreeValidCtxt(ret);
+        return(NULL);
+    }
     ret->schema = schema;
     return (ret);
 }
@@ -27800,10 +27856,14 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
 	    if (node->properties != NULL) {
 		attr = node->properties;
 		do {
+                    xmlChar *content;
+
 		    if (attr->ns != NULL)
 			nsName = attr->ns->href;
 		    else
 			nsName = NULL;
+                    content = xmlNodeListGetString(attr->doc,
+                                                   attr->children, 1);
 		    ret = xmlSchemaValidatorPushAttribute(vctxt,
 			(xmlNodePtr) attr,
 			/*
@@ -27812,10 +27872,11 @@ xmlSchemaVDocWalk(xmlSchemaValidCtxtPtr vctxt)
 			*/
 			ielem->nodeLine,
 			attr->name, nsName, 0,
-			xmlNodeListGetString(attr->doc, attr->children, 1), 1);
+			content, 1);
 		    if (ret == -1) {
 			VERROR_INT("xmlSchemaDocWalk",
 			    "calling xmlSchemaValidatorPushAttribute()");
+                        xmlFree(content);
 			goto internal_error;
 		    }
 		    attr = attr->next;

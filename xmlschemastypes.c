@@ -327,8 +327,11 @@ xmlSchemaInitBasicType(const char *name, xmlSchemaValType type,
 	    ret->flags |= XML_SCHEMAS_TYPE_VARIETY_ATOMIC;
 	    break;
     }
-    xmlHashAddEntry2(xmlSchemaTypesBank, ret->name,
-	             XML_SCHEMAS_NAMESPACE_NAME, ret);
+    if (xmlHashAddEntry2(xmlSchemaTypesBank, ret->name,
+	                 XML_SCHEMAS_NAMESPACE_NAME, ret) < 0) {
+        xmlSchemaFreeType(ret);
+        return(NULL);
+    }
     ret->builtInType = type;
     return(ret);
 }
@@ -496,13 +499,20 @@ xmlSchemaCleanupTypesInternal(void) {
         xmlSchemaFreeWildcard(xmlSchemaTypeAnyTypeDef->attributeWildcard);
         /* Content type. */
         particle = (xmlSchemaParticlePtr) xmlSchemaTypeAnyTypeDef->subtypes;
-        /* Wildcard. */
-        xmlSchemaFreeWildcard((xmlSchemaWildcardPtr)
-            particle->children->children->children);
-        xmlFree((xmlSchemaParticlePtr) particle->children->children);
-        /* Sequence model group. */
-        xmlFree((xmlSchemaModelGroupPtr) particle->children);
-        xmlFree((xmlSchemaParticlePtr) particle);
+        if (particle != NULL) {
+            if (particle->children != NULL) {
+                if (particle->children->children != NULL) {
+                    /* Wildcard. */
+                    xmlSchemaFreeWildcard((xmlSchemaWildcardPtr)
+                        particle->children->children->children);
+                    xmlFree((xmlSchemaParticlePtr)
+                        particle->children->children);
+                }
+                /* Sequence model group. */
+                xmlFree((xmlSchemaModelGroupPtr) particle->children);
+            }
+            xmlFree((xmlSchemaParticlePtr) particle);
+        }
         xmlSchemaTypeAnyTypeDef->subtypes = NULL;
         xmlSchemaTypeAnyTypeDef = NULL;
     }
@@ -2223,6 +2233,8 @@ xmlSchemaWhiteSpaceReplace(const xmlChar *value) {
     if (*cur == 0)
 	return (NULL);
     ret = xmlStrdup(value);
+    if (ret == NULL)
+        return(NULL);
     /* TODO FIXME: I guess gcc will bark at this. */
     mcur = (xmlChar *)  (ret + (cur - value));
     do {
@@ -2392,6 +2404,8 @@ static int xmlSchemaParseUInt(const xmlChar **str, xmlSchemaValDecimalPtr val) {
         }
         /*  sign, dot, fractional 0 and NULL terminator */
         val->str = xmlMalloc(i + 4);
+        if (val->str == NULL)
+            return(-1);
     }
     val->fractionalPlaces = 1;
     val->integralPlaces = i;
@@ -2678,6 +2692,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                         decimal.str = xmlMalloc(bufsize);
                         if (!decimal.str)
                         {
+                            xmlSchemaFreeValue(v);
                             goto error;
                         }
                         snprintf((char *)decimal.str, bufsize, "%c%.*s.%.*s", sign, decimal.integralPlaces, integralStart,
@@ -3578,10 +3593,12 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
                 }
                 if (val != NULL) {
                     v = xmlSchemaNewValue(type->builtInType);
-                    if (v != NULL) {
-                        v->value.decimal = decimal;
-                        *val = v;
+                    if (v == NULL) {
+                        xmlFree(decimal.str);
+                        goto error;
                     }
+                    v->value.decimal = decimal;
+                    *val = v;
                 }
                 else if(decimal.str != NULL)
                 {
@@ -4103,10 +4120,11 @@ xmlSchemaDateNormalize (xmlSchemaValPtr dt, double offset)
     dur->value.date.sec -= offset;
 
     ret = _xmlSchemaDateAdd(dt, dur);
-    if (ret == NULL)
-        return NULL;
 
     xmlSchemaFreeValue(dur);
+
+    if (ret == NULL)
+        return NULL;
 
     /* ret->value.date.tzo = 0; */
     return ret;

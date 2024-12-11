@@ -529,3 +529,74 @@ xmlFuzzOutputClose(void *ctxt ATTRIBUTE_UNUSED) {
     return 0;
 }
 
+/**
+ * xmlFuzzMutateChunks:
+ * @chunks: array of chunk descriptions
+ * @data: fuzz data (from LLVMFuzzerCustomMutator)
+ * @size: data size (from LLVMFuzzerCustomMutator)
+ * @maxSize: max data size (from LLVMFuzzerCustomMutator)
+ * @seed: seed (from LLVMFuzzerCustomMutator)
+ * @mutator: mutator function, use LLVMFuzzerMutate
+ *
+ * Mutates one of several chunks with a given probability.
+ *
+ * Probability is a value between 0 and XML_FUZZ_PROB_ONE.
+ *
+ * The last chunk has flexible size and must have size and
+ * mutateProb set to 0.
+ *
+ * Returns the size of the mutated data like LLVMFuzzerCustomMutator.
+ */
+size_t
+xmlFuzzMutateChunks(const xmlFuzzChunkDesc *chunks,
+                    char *data, size_t size, size_t maxSize, unsigned seed,
+                    xmlFuzzMutator mutator) {
+    size_t off = 0;
+    size_t ret, chunkSize, maxChunkSize, mutSize;
+    unsigned prob = seed % XML_FUZZ_PROB_ONE;
+    unsigned descSize = 0;
+    int i = 0;
+
+    while (1) {
+        unsigned descProb;
+
+        descSize = chunks[i].size;
+        descProb = chunks[i].mutateProb;
+
+        if (descSize == 0 ||
+            off + descSize > size ||
+            off + descSize >= maxSize ||
+            prob < descProb)
+            break;
+
+        off += descSize;
+        prob -= descProb;
+        i += 1;
+    }
+
+    chunkSize = size - off;
+    maxChunkSize = maxSize - off;
+
+    if (descSize != 0) {
+        if (chunkSize > descSize)
+            chunkSize = descSize;
+        if (maxChunkSize > descSize)
+            maxChunkSize = descSize;
+    }
+
+    mutSize = mutator(data + off, chunkSize, maxChunkSize);
+
+    if (size > off + chunkSize) {
+        size_t j;
+
+        for (j = mutSize; j < chunkSize; j++)
+            data[off + j] = 0;
+
+        ret = size;
+    } else {
+        ret = off + mutSize;
+    }
+
+    return ret;
+}
+

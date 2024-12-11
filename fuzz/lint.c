@@ -233,3 +233,19 @@ exit:
     free(vars.argv);
     return(0);
 }
+
+size_t
+LLVMFuzzerCustomMutator(char *data, size_t size, size_t maxSize,
+                        unsigned seed) {
+    static const xmlFuzzChunkDesc chunks[] = {
+        { 8, XML_FUZZ_PROB_ONE / 10  }, /* switches */
+        { 4, XML_FUZZ_PROB_ONE / 10  }, /* maxmem */
+        { 1, XML_FUZZ_PROB_ONE / 100 }, /* maxAmpl */
+        { 1, XML_FUZZ_PROB_ONE / 100 }, /* pretty */
+        { 0, 0 }
+    };
+
+    return xmlFuzzMutateChunks(chunks, data, size, maxSize, seed,
+                               LLVMFuzzerMutate);
+}
+

@@ -539,7 +539,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     error = xmlTextReaderGetLastError(reader);
     if (error->code == XML_ERR_NO_MEMORY)
         oomReport = 1;
-    xmlFuzzCheckFailureReport("reader", oomReport, 0);
+    xmlFuzzCheckFailureReport("reader", oomReport, error->code == XML_IO_EIO);
 
     xmlFreeTextReader(reader);
 

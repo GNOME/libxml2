@@ -176,8 +176,10 @@ xmlCtxtErrMemory(xmlParserCtxtPtr ctxt)
     xmlGenericErrorFunc channel = NULL;
     void *data;
 
-    if (ctxt == NULL)
+    if (ctxt == NULL) {
+        xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_PARSER, NULL);
         return;
+    }
 
     ctxt->errNo = XML_ERR_NO_MEMORY;
     ctxt->instate = XML_PARSER_EOF; /* TODO: Remove after refactoring */
@@ -322,8 +324,16 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
         return;
     }
 
-    if (ctxt == NULL)
+    if (ctxt == NULL) {
+        res = xmlVRaiseError(NULL, NULL, NULL, NULL, node, domain, code,
+                             level, NULL, 0, (const char *) str1,
+                             (const char *) str2, (const char *) str3,
+                             int1, 0, msg, ap);
+        if (res < 0)
+            xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_PARSER, NULL);
+
         return;
+    }
 
     if (PARSER_STOPPED(ctxt))
 	return;

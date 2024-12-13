@@ -131,6 +131,11 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     unsigned uval;
     int ival;
 
+    if (xmlMemUsed() != 0) {
+        fprintf(stderr, "Undetected leak in previous iteration\n");
+        abort();
+    }
+
     vars.argv = malloc((numSwitches + 5 + 6 * 2) * sizeof(vars.argv[0]));
     vars.argi = 0;
     pushArg("xmllint"),

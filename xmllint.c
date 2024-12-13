@@ -1977,6 +1977,10 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
     if (html) {
         ctxt = htmlNewParserCtxt();
+        if (ctxt == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            return(NULL);
+        }
         doc = parseHtml(ctxt, filename);
         htmlFreeParserCtxt(ctxt);
         return(doc);

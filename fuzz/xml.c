@@ -47,8 +47,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /*
      * Disable options that are known to cause timeouts
      */
-    opts &= ~XML_PARSE_XINCLUDE &
-            ~XML_PARSE_DTDVALID &
+    opts &= ~XML_PARSE_DTDVALID &
             ~XML_PARSE_SAX1;
     failurePos = xmlFuzzReadInt(4) % (size + 100);
 

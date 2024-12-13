@@ -5887,8 +5887,11 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 {
     htmlDocPtr ret;
 
-    if ((ctxt == NULL) || (input == NULL))
+    if ((ctxt == NULL) || (input == NULL)) {
+        xmlFatalErr(ctxt, XML_ERR_ARGUMENT, NULL);
+        xmlFreeInputStream(input);
         return(NULL);
+    }
 
     /* assert(ctxt->inputNr == 0); */
     while (ctxt->inputNr > 0)
@@ -5937,7 +5940,7 @@ htmlReadDoc(const xmlChar *str, const char *url, const char *encoding,
 {
     htmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
-    htmlDocPtr doc;
+    htmlDocPtr doc = NULL;
 
     ctxt = htmlNewParserCtxt();
     if (ctxt == NULL)
@@ -5948,7 +5951,8 @@ htmlReadDoc(const xmlChar *str, const char *url, const char *encoding,
     input = xmlCtxtNewInputFromString(ctxt, url, (const char *) str, encoding,
                                       XML_INPUT_BUF_STATIC);
 
-    doc = htmlCtxtParseDocument(ctxt, input);
+    if (input != NULL)
+        doc = htmlCtxtParseDocument(ctxt, input);
 
     htmlFreeParserCtxt(ctxt);
     return(doc);
@@ -5972,7 +5976,7 @@ htmlReadFile(const char *filename, const char *encoding, int options)
 {
     htmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
-    htmlDocPtr doc;
+    htmlDocPtr doc = NULL;
 
     ctxt = htmlNewParserCtxt();
     if (ctxt == NULL)
@@ -5982,7 +5986,8 @@ htmlReadFile(const char *filename, const char *encoding, int options)
 
     input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, encoding, 0);
 
-    doc = htmlCtxtParseDocument(ctxt, input);
+    if (input != NULL)
+        doc = htmlCtxtParseDocument(ctxt, input);
 
     htmlFreeParserCtxt(ctxt);
     return(doc);
@@ -6009,7 +6014,7 @@ htmlReadMemory(const char *buffer, int size, const char *url,
 {
     htmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
-    htmlDocPtr doc;
+    htmlDocPtr doc = NULL;
 
     if (size < 0)
 	return(NULL);
@@ -6023,7 +6028,8 @@ htmlReadMemory(const char *buffer, int size, const char *url,
     input = xmlCtxtNewInputFromMemory(ctxt, url, buffer, size, encoding,
                                       XML_INPUT_BUF_STATIC);
 
-    doc = htmlCtxtParseDocument(ctxt, input);
+    if (input != NULL)
+        doc = htmlCtxtParseDocument(ctxt, input);
 
     htmlFreeParserCtxt(ctxt);
     return(doc);
@@ -6051,7 +6057,7 @@ htmlReadFd(int fd, const char *url, const char *encoding, int options)
 {
     htmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
-    htmlDocPtr doc;
+    htmlDocPtr doc = NULL;
 
     ctxt = htmlNewParserCtxt();
     if (ctxt == NULL)
@@ -6061,7 +6067,8 @@ htmlReadFd(int fd, const char *url, const char *encoding, int options)
 
     input = xmlCtxtNewInputFromFd(ctxt, url, fd, encoding, 0);
 
-    doc = htmlCtxtParseDocument(ctxt, input);
+    if (input != NULL)
+        doc = htmlCtxtParseDocument(ctxt, input);
 
     htmlFreeParserCtxt(ctxt);
     return(doc);
@@ -6089,7 +6096,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 {
     htmlParserCtxtPtr ctxt;
     xmlParserInputPtr input;
-    htmlDocPtr doc;
+    htmlDocPtr doc = NULL;
 
     ctxt = htmlNewParserCtxt();
     if (ctxt == NULL)
@@ -6100,7 +6107,8 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
     input = xmlCtxtNewInputFromIO(ctxt, url, ioread, ioclose, ioctx,
                                   encoding, 0);
 
-    doc = htmlCtxtParseDocument(ctxt, input);
+    if (input != NULL)
+        doc = htmlCtxtParseDocument(ctxt, input);
 
     htmlFreeParserCtxt(ctxt);
     return(doc);
@@ -6134,6 +6142,8 @@ htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
 
     input = xmlCtxtNewInputFromString(ctxt, URL, (const char *) str,
                                       encoding, 0);
+    if (input == NULL)
+        return(NULL);
 
     return(htmlCtxtParseDocument(ctxt, input));
 }
@@ -6165,6 +6175,8 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
     htmlCtxtUseOptions(ctxt, options);
 
     input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, encoding, 0);
+    if (input == NULL)
+        return(NULL);
 
     return(htmlCtxtParseDocument(ctxt, input));
 }
@@ -6199,6 +6211,8 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
 
     input = xmlCtxtNewInputFromMemory(ctxt, URL, buffer, size, encoding,
                                       XML_INPUT_BUF_STATIC);
+    if (input == NULL)
+        return(NULL);
 
     return(htmlCtxtParseDocument(ctxt, input));
 }
@@ -6233,6 +6247,8 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
     htmlCtxtUseOptions(ctxt, options);
 
     input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, 0);
+    if (input == NULL)
+        return(NULL);
 
     return(htmlCtxtParseDocument(ctxt, input));
 }
@@ -6269,6 +6285,8 @@ htmlCtxtReadIO(htmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
 
     input = xmlCtxtNewInputFromIO(ctxt, URL, ioread, ioclose, ioctx,
                                   encoding, 0);
+    if (input == NULL)
+        return(NULL);
 
     return(htmlCtxtParseDocument(ctxt, input));
 }

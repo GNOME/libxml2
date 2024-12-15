@@ -41,8 +41,9 @@
 
 #include "private/buf.h"
 #include "private/error.h"
-#include "private/tree.h"
+#include "private/memory.h"
 #include "private/parser.h"
+#include "private/tree.h"
 #ifdef LIBXML_XINCLUDE_ENABLED
 #include "private/xinclude.h"
 #endif
@@ -574,11 +575,16 @@ static int
 xmlTextReaderEntPush(xmlTextReaderPtr reader, xmlNodePtr value)
 {
     if (reader->entNr >= reader->entMax) {
-        size_t newSize = reader->entMax == 0 ? 10 : reader->entMax * 2;
         xmlNodePtr *tmp;
+        int newSize;
 
-        tmp = (xmlNodePtr *) xmlRealloc(reader->entTab,
-                                        newSize * sizeof(*tmp));
+        newSize = xmlGrowCapacity(reader->entMax, sizeof(tmp[0]),
+                                  10, XML_MAX_ITEMS);
+        if (newSize < 0) {
+            xmlTextReaderErrMemory(reader);
+            return (-1);
+        }
+        tmp = xmlRealloc(reader->entTab, newSize * sizeof(tmp[0]));
         if (tmp == NULL) {
             xmlTextReaderErrMemory(reader);
             return (-1);
@@ -3951,27 +3957,23 @@ xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern,
     if (comp == NULL)
         return(-1);
 
-    if (reader->patternMax <= 0) {
-	reader->patternMax = 4;
-	reader->patternTab = (xmlPatternPtr *) xmlMalloc(reader->patternMax *
-					      sizeof(reader->patternTab[0]));
-        if (reader->patternTab == NULL) {
-            xmlTextReaderErrMemory(reader);
-            return (-1);
-        }
-    }
     if (reader->patternNr >= reader->patternMax) {
         xmlPatternPtr *tmp;
-        reader->patternMax *= 2;
-	tmp = (xmlPatternPtr *) xmlRealloc(reader->patternTab,
-                                      reader->patternMax *
-                                      sizeof(reader->patternTab[0]));
+        int newSize;
+
+        newSize = xmlGrowCapacity(reader->patternMax, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+        if (newSize < 0) {
+            xmlTextReaderErrMemory(reader);
+            return(-1);
+        }
+	tmp = xmlRealloc(reader->patternTab, newSize * sizeof(tmp[0]));
         if (tmp == NULL) {
             xmlTextReaderErrMemory(reader);
-	    reader->patternMax /= 2;
-            return (-1);
+            return(-1);
         }
 	reader->patternTab = tmp;
+        reader->patternMax = newSize;
     }
     reader->patternTab[reader->patternNr] = comp;
     return(reader->patternNr++);

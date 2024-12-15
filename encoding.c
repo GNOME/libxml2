@@ -45,6 +45,7 @@
 #include "private/enc.h"
 #include "private/entities.h"
 #include "private/error.h"
+#include "private/memory.h"
 
 #ifdef LIBXML_ICU_ENABLED
 #include <unicode/ucnv.h>
@@ -424,13 +425,13 @@ xmlAddEncodingAlias(const char *name, const char *alias) {
 
     if (xmlCharEncodingAliasesNb >= xmlCharEncodingAliasesMax) {
         xmlCharEncodingAliasPtr tmp;
-        size_t newSize = xmlCharEncodingAliasesMax ?
-                         xmlCharEncodingAliasesMax * 2 :
-                         20;
+        int newSize;
 
-        tmp = (xmlCharEncodingAliasPtr)
-              xmlRealloc(xmlCharEncodingAliases,
-                         newSize * sizeof(xmlCharEncodingAlias));
+        newSize = xmlGrowCapacity(xmlCharEncodingAliasesMax, sizeof(tmp[0]),
+                                  20, XML_MAX_ITEMS);
+        if (newSize < 0)
+            return(-1);
+        tmp = xmlRealloc(xmlCharEncodingAliases, newSize * sizeof(tmp[0]));
         if (tmp == NULL)
             return(-1);
         xmlCharEncodingAliases = tmp;

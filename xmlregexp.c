@@ -30,6 +30,7 @@
 #include <libxml/xmlunicode.h>
 
 #include "private/error.h"
+#include "private/memory.h"
 #include "private/regexp.h"
 
 #ifndef SIZE_MAX
@@ -1174,26 +1175,23 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 	ERROR("add range: atom is not ranges");
 	return(NULL);
     }
-    if (atom->maxRanges == 0) {
-	atom->maxRanges = 4;
-	atom->ranges = (xmlRegRangePtr *) xmlMalloc(atom->maxRanges *
-		                             sizeof(xmlRegRangePtr));
-	if (atom->ranges == NULL) {
-	    xmlRegexpErrMemory(ctxt);
-	    atom->maxRanges = 0;
-	    return(NULL);
-	}
-    } else if (atom->nbRanges >= atom->maxRanges) {
+    if (atom->nbRanges >= atom->maxRanges) {
 	xmlRegRangePtr *tmp;
-	atom->maxRanges *= 2;
-	tmp = (xmlRegRangePtr *) xmlRealloc(atom->ranges, atom->maxRanges *
-		                             sizeof(xmlRegRangePtr));
+        int newSize;
+
+        newSize = xmlGrowCapacity(atom->maxRanges, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+        if (newSize < 0) {
+	    xmlRegexpErrMemory(ctxt);
+	    return(NULL);
+        }
+	tmp = xmlRealloc(atom->ranges, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt);
-	    atom->maxRanges /= 2;
 	    return(NULL);
 	}
 	atom->ranges = tmp;
+	atom->maxRanges = newSize;
     }
     range = xmlRegNewRange(ctxt, neg, type, start, end);
     if (range == NULL)
@@ -1206,26 +1204,23 @@ xmlRegAtomAddRange(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom,
 
 static int
 xmlRegGetCounter(xmlRegParserCtxtPtr ctxt) {
-    if (ctxt->maxCounters == 0) {
-	ctxt->maxCounters = 4;
-	ctxt->counters = (xmlRegCounter *) xmlMalloc(ctxt->maxCounters *
-		                             sizeof(xmlRegCounter));
-	if (ctxt->counters == NULL) {
+    if (ctxt->nbCounters >= ctxt->maxCounters) {
+	xmlRegCounter *tmp;
+        int newSize;
+
+        newSize = xmlGrowCapacity(ctxt->maxCounters, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+	if (newSize < 0) {
 	    xmlRegexpErrMemory(ctxt);
-	    ctxt->maxCounters = 0;
 	    return(-1);
 	}
-    } else if (ctxt->nbCounters >= ctxt->maxCounters) {
-	xmlRegCounter *tmp;
-	ctxt->maxCounters *= 2;
-	tmp = (xmlRegCounter *) xmlRealloc(ctxt->counters, ctxt->maxCounters *
-		                           sizeof(xmlRegCounter));
+	tmp = xmlRealloc(ctxt->counters, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt);
-	    ctxt->maxCounters /= 2;
 	    return(-1);
 	}
 	ctxt->counters = tmp;
+	ctxt->maxCounters = newSize;
     }
     ctxt->counters[ctxt->nbCounters].min = -1;
     ctxt->counters[ctxt->nbCounters].max = -1;
@@ -1239,10 +1234,16 @@ xmlRegAtomPush(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom) {
 	return(-1);
     }
     if (ctxt->nbAtoms >= ctxt->maxAtoms) {
-        size_t newSize = ctxt->maxAtoms ? ctxt->maxAtoms * 2 : 4;
 	xmlRegAtomPtr *tmp;
+        int newSize;
 
-	tmp = xmlRealloc(ctxt->atoms, newSize * sizeof(xmlRegAtomPtr));
+        newSize = xmlGrowCapacity(ctxt->maxAtoms, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+	if (newSize < 0) {
+	    xmlRegexpErrMemory(ctxt);
+	    return(-1);
+	}
+	tmp = xmlRealloc(ctxt->atoms, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt);
 	    return(-1);
@@ -1258,26 +1259,23 @@ xmlRegAtomPush(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom) {
 static void
 xmlRegStateAddTransTo(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr target,
                       int from) {
-    if (target->maxTransTo == 0) {
-	target->maxTransTo = 8;
-	target->transTo = (int *) xmlMalloc(target->maxTransTo *
-		                             sizeof(int));
-	if (target->transTo == NULL) {
+    if (target->nbTransTo >= target->maxTransTo) {
+	int *tmp;
+        int newSize;
+
+        newSize = xmlGrowCapacity(target->maxTransTo, sizeof(tmp[0]),
+                                  8, XML_MAX_ITEMS);
+	if (newSize < 0) {
 	    xmlRegexpErrMemory(ctxt);
-	    target->maxTransTo = 0;
 	    return;
 	}
-    } else if (target->nbTransTo >= target->maxTransTo) {
-	int *tmp;
-	target->maxTransTo *= 2;
-	tmp = (int *) xmlRealloc(target->transTo, target->maxTransTo *
-		                             sizeof(int));
+	tmp = xmlRealloc(target->transTo, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt);
-	    target->maxTransTo /= 2;
 	    return;
 	}
 	target->transTo = tmp;
+	target->maxTransTo = newSize;
     }
     target->transTo[target->nbTransTo] = from;
     target->nbTransTo++;
@@ -1314,26 +1312,23 @@ xmlRegStateAddTrans(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 	}
     }
 
-    if (state->maxTrans == 0) {
-	state->maxTrans = 8;
-	state->trans = (xmlRegTrans *) xmlMalloc(state->maxTrans *
-		                             sizeof(xmlRegTrans));
-	if (state->trans == NULL) {
+    if (state->nbTrans >= state->maxTrans) {
+	xmlRegTrans *tmp;
+        int newSize;
+
+        newSize = xmlGrowCapacity(state->maxTrans, sizeof(tmp[0]),
+                                  8, XML_MAX_ITEMS);
+	if (newSize < 0) {
 	    xmlRegexpErrMemory(ctxt);
-	    state->maxTrans = 0;
 	    return;
 	}
-    } else if (state->nbTrans >= state->maxTrans) {
-	xmlRegTrans *tmp;
-	state->maxTrans *= 2;
-	tmp = (xmlRegTrans *) xmlRealloc(state->trans, state->maxTrans *
-		                             sizeof(xmlRegTrans));
+	tmp = xmlRealloc(state->trans, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt);
-	    state->maxTrans /= 2;
 	    return;
 	}
 	state->trans = tmp;
+	state->maxTrans = newSize;
     }
 
     state->trans[state->nbTrans].atom = atom;
@@ -1350,9 +1345,15 @@ xmlRegStatePush(xmlRegParserCtxtPtr ctxt) {
     xmlRegStatePtr state;
 
     if (ctxt->nbStates >= ctxt->maxStates) {
-        size_t newSize = ctxt->maxStates ? ctxt->maxStates * 2 : 4;
 	xmlRegStatePtr *tmp;
+        int newSize;
 
+        newSize = xmlGrowCapacity(ctxt->maxStates, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+	if (newSize < 0) {
+	    xmlRegexpErrMemory(ctxt);
+	    return(NULL);
+	}
 	tmp = xmlRealloc(ctxt->states, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
 	    xmlRegexpErrMemory(ctxt);
@@ -3034,30 +3035,24 @@ xmlFARegExecSave(xmlRegExecCtxtPtr exec) {
     exec->nbPush++;
 #endif
 
-    if (exec->maxRollbacks == 0) {
-	exec->maxRollbacks = 4;
-	exec->rollbacks = (xmlRegExecRollback *) xmlMalloc(exec->maxRollbacks *
-		                             sizeof(xmlRegExecRollback));
-	if (exec->rollbacks == NULL) {
-	    exec->maxRollbacks = 0;
+    if (exec->nbRollbacks >= exec->maxRollbacks) {
+	xmlRegExecRollback *tmp;
+        int newSize;
+	int len = exec->nbRollbacks;
+
+        newSize = xmlGrowCapacity(exec->maxRollbacks, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+	if (newSize < 0) {
             exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
 	}
-	memset(exec->rollbacks, 0,
-	       exec->maxRollbacks * sizeof(xmlRegExecRollback));
-    } else if (exec->nbRollbacks >= exec->maxRollbacks) {
-	xmlRegExecRollback *tmp;
-	int len = exec->maxRollbacks;
-
-	exec->maxRollbacks *= 2;
-	tmp = (xmlRegExecRollback *) xmlRealloc(exec->rollbacks,
-			exec->maxRollbacks * sizeof(xmlRegExecRollback));
+	tmp = xmlRealloc(exec->rollbacks, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
-	    exec->maxRollbacks /= 2;
             exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
 	}
 	exec->rollbacks = tmp;
+	exec->maxRollbacks = newSize;
 	tmp = &exec->rollbacks[len];
 	memset(tmp, 0, (exec->maxRollbacks - len) * sizeof(xmlRegExecRollback));
     }
@@ -3512,27 +3507,27 @@ xmlRegExecSetErrString(xmlRegExecCtxtPtr exec, const xmlChar *value) {
 static void
 xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 	                    void *data) {
-    if (exec->inputStackMax == 0) {
-	exec->inputStackMax = 4;
-	exec->inputStack = (xmlRegInputTokenPtr)
-	    xmlMalloc(exec->inputStackMax * sizeof(xmlRegInputToken));
-	if (exec->inputStack == NULL) {
-	    exec->inputStackMax = 0;
+    if (exec->inputStackNr + 1 >= exec->inputStackMax) {
+	xmlRegInputTokenPtr tmp;
+        int newSize;
+
+        newSize = xmlGrowCapacity(exec->inputStackMax, sizeof(tmp[0]),
+                                  4, XML_MAX_ITEMS);
+	if (newSize < 0) {
             exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
 	}
-    } else if (exec->inputStackNr + 1 >= exec->inputStackMax) {
-	xmlRegInputTokenPtr tmp;
-
-	exec->inputStackMax *= 2;
-	tmp = (xmlRegInputTokenPtr) xmlRealloc(exec->inputStack,
-			exec->inputStackMax * sizeof(xmlRegInputToken));
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        if (newSize < 2)
+            newSize = 2;
+#endif
+	tmp = xmlRealloc(exec->inputStack, newSize * sizeof(tmp[0]));
 	if (tmp == NULL) {
-	    exec->inputStackMax /= 2;
             exec->status = XML_REGEXP_OUT_OF_MEMORY;
 	    return;
 	}
 	exec->inputStack = tmp;
+	exec->inputStackMax = newSize;
     }
     if (value == NULL) {
         exec->inputStack[exec->inputStackNr].value = NULL;
@@ -7514,14 +7509,21 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
     len = xmlExpGetStartInt(ctxt, sub, tab, ctxt->tabSize, 0);
     while (len < 0) {
         const xmlChar **temp;
-	temp = (const xmlChar **) xmlRealloc((xmlChar **) tab, ctxt->tabSize * 2 *
-	                                     sizeof(const xmlChar *));
+        int newSize;
+
+        newSize = xmlGrowCapacity(ctxt->tabSize, sizeof(temp[0]),
+                                  40, XML_MAX_ITEMS);
+	if (newSize < 0) {
+	    xmlFree(tab);
+	    return(NULL);
+	}
+	temp = xmlRealloc(tab, newSize * sizeof(temp[0]));
 	if (temp == NULL) {
-	    xmlFree((xmlChar **) tab);
+	    xmlFree(tab);
 	    return(NULL);
 	}
 	tab = temp;
-	ctxt->tabSize *= 2;
+	ctxt->tabSize = newSize;
 	len = xmlExpGetStartInt(ctxt, sub, tab, ctxt->tabSize, 0);
     }
     for (i = 0;i < len;i++) {

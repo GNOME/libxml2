@@ -44,6 +44,7 @@
 #include "private/enc.h"
 #include "private/error.h"
 #include "private/io.h"
+#include "private/memory.h"
 #include "private/parser.h"
 
 #define XML_MAX_ERRORS 100
@@ -3274,29 +3275,23 @@ xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt,
 
     /* Otherwise, we need to add new node to buffer */
     else {
-        if ((ctxt->node_seq.length + 1 > ctxt->node_seq.maximum) ||
-	    (ctxt->node_seq.buffer == NULL)) {
-            xmlParserNodeInfo *tmp_buffer;
-            unsigned int byte_size;
+        if (ctxt->node_seq.length + 1 > ctxt->node_seq.maximum) {
+            xmlParserNodeInfo *tmp;
+            int newSize;
 
-            if (ctxt->node_seq.maximum == 0)
-                ctxt->node_seq.maximum = 2;
-            byte_size = (sizeof(*ctxt->node_seq.buffer) *
-			(2 * ctxt->node_seq.maximum));
-
-            if (ctxt->node_seq.buffer == NULL)
-                tmp_buffer = (xmlParserNodeInfo *) xmlMalloc(byte_size);
-            else
-                tmp_buffer =
-                    (xmlParserNodeInfo *) xmlRealloc(ctxt->node_seq.buffer,
-                                                     byte_size);
-
-            if (tmp_buffer == NULL) {
+            newSize = xmlGrowCapacity(ctxt->node_seq.maximum, sizeof(tmp[0]),
+                                      4, XML_MAX_ITEMS);
+            if (newSize < 0) {
 		xmlCtxtErrMemory(ctxt);
                 return;
             }
-            ctxt->node_seq.buffer = tmp_buffer;
-            ctxt->node_seq.maximum *= 2;
+            tmp = xmlRealloc(ctxt->node_seq.buffer, newSize * sizeof(tmp[0]));
+            if (tmp == NULL) {
+		xmlCtxtErrMemory(ctxt);
+                return;
+            }
+            ctxt->node_seq.buffer = tmp;
+            ctxt->node_seq.maximum = newSize;
         }
 
         /* If position is not at end, move elements out of the way */

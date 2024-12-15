@@ -29,6 +29,10 @@
 #include "private/entities.h"
 #include "private/error.h"
 
+#ifndef SIZE_MAX
+  #define SIZE_MAX ((size_t) -1)
+#endif
+
 /*
  * The XML predefined entities.
  */
@@ -710,16 +714,23 @@ xmlEscapeText(const xmlChar *text, int flags) {
 
         if (totalSize > size - used) {
             xmlChar *tmp;
+            int newSize;
 
-            size += totalSize;
+            if ((size > (SIZE_MAX - 1) / 2) ||
+                (totalSize > (SIZE_MAX - 1) / 2 - size)) {
+                xmlFree(buffer);
+                return(NULL);
+            }
+            newSize = size + totalSize;
             if (*cur != 0)
-                size *= 2;
-            tmp = xmlRealloc(buffer, size + 1);
+                newSize *= 2;
+            tmp = xmlRealloc(buffer, newSize + 1);
             if (tmp == NULL) {
                 xmlFree(buffer);
                 return(NULL);
             }
             buffer = tmp;
+            size = newSize;
             out = buffer + used;
         }
 

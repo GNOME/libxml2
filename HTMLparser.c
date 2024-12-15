@@ -41,10 +41,12 @@
 #include "private/error.h"
 #include "private/html.h"
 #include "private/io.h"
+#include "private/memory.h"
 #include "private/parser.h"
 #include "private/tree.h"
 
 #define HTML_MAX_NAMELEN 1000
+#define HTML_MAX_ATTRS 100000000 /* 100 million */
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000
 #define HTML_PARSER_BUFFER_SIZE 100
 
@@ -158,14 +160,19 @@ htmlnamePush(htmlParserCtxtPtr ctxt, const xmlChar * value)
     if ((ctxt->html < 10) && (xmlStrEqual(value, BAD_CAST "body")))
         ctxt->html = 10;
     if (ctxt->nameNr >= ctxt->nameMax) {
-        size_t newSize = ctxt->nameMax * 2;
         const xmlChar **tmp;
+        int newSize;
 
-        tmp = xmlRealloc((xmlChar **) ctxt->nameTab,
-                         newSize * sizeof(ctxt->nameTab[0]));
-        if (tmp == NULL) {
+        newSize = xmlGrowCapacity(ctxt->nameMax, sizeof(tmp[0]),
+                                  10, XML_MAX_ITEMS);
+        if (newSize < 0) {
             htmlErrMemory(ctxt);
             return (-1);
+        }
+        tmp = xmlRealloc(ctxt->nameTab, newSize * sizeof(tmp[0]));
+        if (tmp == NULL) {
+            htmlErrMemory(ctxt);
+            return(-1);
         }
         ctxt->nameTab = tmp;
         ctxt->nameMax = newSize;
@@ -214,17 +221,22 @@ static int
 htmlNodeInfoPush(htmlParserCtxtPtr ctxt, htmlParserNodeInfo *value)
 {
     if (ctxt->nodeInfoNr >= ctxt->nodeInfoMax) {
-        if (ctxt->nodeInfoMax == 0)
-                ctxt->nodeInfoMax = 5;
-        ctxt->nodeInfoMax *= 2;
-        ctxt->nodeInfoTab = (htmlParserNodeInfo *)
-                         xmlRealloc((htmlParserNodeInfo *)ctxt->nodeInfoTab,
-                                    ctxt->nodeInfoMax *
-                                    sizeof(ctxt->nodeInfoTab[0]));
-        if (ctxt->nodeInfoTab == NULL) {
+        xmlParserNodeInfo *tmp;
+        int newSize;
+
+        newSize = xmlGrowCapacity(ctxt->nodeInfoMax, sizeof(tmp[0]),
+                                  5, XML_MAX_ITEMS);
+        if (newSize < 0) {
             htmlErrMemory(ctxt);
             return (0);
         }
+        tmp = xmlRealloc(ctxt->nodeInfoTab, newSize * sizeof(tmp[0]));
+        if (tmp == NULL) {
+            htmlErrMemory(ctxt);
+            return (0);
+        }
+        ctxt->nodeInfoTab = tmp;
+        ctxt->nodeInfoMax = newSize;
     }
     ctxt->nodeInfoTab[ctxt->nodeInfoNr] = *value;
     ctxt->nodeInfo = &ctxt->nodeInfoTab[ctxt->nodeInfoNr];
@@ -2835,7 +2847,7 @@ next_chunk:
 
         if (extraSize > buffer_size - used) {
             size_t newSize = (used + extraSize) * 2;
-            xmlChar *tmp = (xmlChar *) xmlRealloc(buffer, newSize + 1);
+            xmlChar *tmp = xmlRealloc(buffer, newSize + 1);
 
             if (tmp == NULL) {
                 htmlErrMemory(ctxt);
@@ -3804,47 +3816,49 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
 	    if (nbatts + 4 > maxatts) {
 	        const xmlChar **tmp;
                 unsigned *utmp;
-                size_t newSize = maxatts ? maxatts * 2 : 22;
+                int newSize;
 
-	        tmp = xmlMalloc(newSize * sizeof(tmp[0]));
+                newSize = xmlGrowCapacity(maxatts,
+                                          sizeof(tmp[0]) * 2 + sizeof(utmp[0]),
+                                          11, HTML_MAX_ATTRS);
+		if (newSize < 0) {
+		    htmlErrMemory(ctxt);
+		    goto failed;
+		}
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+                if (newSize < 2)
+                    newSize = 2;
+#endif
+	        tmp = xmlRealloc(atts, newSize * sizeof(tmp[0]) * 2);
 		if (tmp == NULL) {
 		    htmlErrMemory(ctxt);
-		    if (attvalue != NULL)
-			xmlFree(attvalue);
 		    goto failed;
 		}
+                atts = tmp;
+		ctxt->atts = tmp;
 
-	        utmp = xmlRealloc(ctxt->attallocs,
-                                  newSize / 2 * sizeof(utmp[0]));
+	        utmp = xmlRealloc(ctxt->attallocs, newSize * sizeof(utmp[0]));
 		if (utmp == NULL) {
 		    htmlErrMemory(ctxt);
-		    if (attvalue != NULL)
-			xmlFree(attvalue);
-                    xmlFree(tmp);
 		    goto failed;
 		}
-
-                if (maxatts > 0)
-                    memcpy(tmp, atts, maxatts * sizeof(tmp[0]));
-                xmlFree(atts);
-
-                atts = tmp;
-                maxatts = newSize;
-		ctxt->atts = atts;
                 ctxt->attallocs = utmp;
+
+                maxatts = newSize * 2;
 		ctxt->maxatts = maxatts;
 	    }
 
             ctxt->attallocs[nbatts/2] = hattname.hashValue;
 	    atts[nbatts++] = attname;
 	    atts[nbatts++] = attvalue;
-	}
-	else {
-	    if (attvalue != NULL)
-	        xmlFree(attvalue);
+
+            attvalue = NULL;
 	}
 
 failed:
+        if (attvalue != NULL)
+            xmlFree(attvalue);
+
 	SKIP_BLANKS;
     }
 

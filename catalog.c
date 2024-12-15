@@ -40,6 +40,7 @@
 #include "private/cata.h"
 #include "private/buf.h"
 #include "private/error.h"
+#include "private/memory.h"
 #include "private/threads.h"
 
 #define MAX_DELEGATE	50
@@ -2128,7 +2129,7 @@ xmlParseSGMLCatalogComment(const xmlChar *cur) {
  */
 static const xmlChar *
 xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
-    xmlChar *buf = NULL, *tmp;
+    xmlChar *buf = NULL;
     int len = 0;
     int size = 50;
     xmlChar stop;
@@ -2155,14 +2156,23 @@ xmlParseSGMLCatalogPubid(const xmlChar *cur, xmlChar **id) {
 	if ((stop == ' ') && (IS_BLANK_CH(*cur)))
 	    break;
 	if (len + 1 >= size) {
-	    size *= 2;
-	    tmp = (xmlChar *) xmlRealloc(buf, size);
+            xmlChar *tmp;
+            int newSize;
+
+            newSize = xmlGrowCapacity(size, 1, 1, XML_MAX_ITEMS);
+            if (newSize < 0) {
+		xmlCatalogErrMemory();
+		xmlFree(buf);
+		return(NULL);
+            }
+	    tmp = xmlRealloc(buf, newSize);
 	    if (tmp == NULL) {
 		xmlCatalogErrMemory();
 		xmlFree(buf);
 		return(NULL);
 	    }
 	    buf = tmp;
+            size = newSize;
 	}
 	buf[len++] = *cur;
 	NEXT;

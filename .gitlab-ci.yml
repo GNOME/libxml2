@@ -18,7 +18,7 @@ gcc:c89:
   extends: .test
   variables:
     CONFIG: "--without-python"
-    CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=600"
+    CFLAGS: "-O2 -std=c89 -D_XOPEN_SOURCE=600 -Wno-error=unused-function"
 
 gcc:minimum:
   extends: .test

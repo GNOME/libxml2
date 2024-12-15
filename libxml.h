@@ -29,6 +29,18 @@
 #include "config.h"
 #include <libxml/xmlversion.h>
 
+#if __STDC_VERSION__ >= 199901L
+  #define XML_INLINE inline
+#elif defined(_MSC_VER)
+  #if _MSC_VER >= 1900
+    #define XML_INLINE inline
+  #else
+    #define XML_INLINE _inline
+  #endif
+#else
+  #define XML_INLINE
+#endif
+
 #if !defined(_WIN32) && \
     !defined(__CYGWIN__) && \
     (defined(__clang__) || \

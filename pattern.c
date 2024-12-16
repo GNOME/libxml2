@@ -209,14 +209,8 @@ xmlNewPattern(void) {
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlPattern));
-    cur->maxStep = 10;
-    cur->steps = (xmlStepOpPtr) xmlMalloc(cur->maxStep * sizeof(xmlStepOp));
-    if (cur->steps == NULL) {
-        xmlFree(cur);
-	ERROR(NULL, NULL, NULL,
-		"xmlNewPattern : malloc failed\n");
-	return(NULL);
-    }
+    cur->steps = NULL;
+    cur->maxStep = 0;
     return(cur);
 }
 
@@ -1583,15 +1577,9 @@ xmlNewStreamCtxt(xmlStreamCompPtr stream) {
 	return(NULL);
     }
     memset(cur, 0, sizeof(xmlStreamCtxt));
-    cur->states = (int *) xmlMalloc(4 * 2 * sizeof(int));
-    if (cur->states == NULL) {
-	xmlFree(cur);
-	ERROR(NULL, NULL, NULL,
-	      "xmlNewStreamCtxt: malloc failed\n");
-	return(NULL);
-    }
+    cur->states = NULL;
     cur->nbState = 0;
-    cur->maxState = 4;
+    cur->maxState = 0;
     cur->level = 0;
     cur->comp = stream;
     cur->blockLevel = -1;

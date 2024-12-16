@@ -1264,7 +1264,7 @@ DECLARE_ISO_FUNCS(16)
 #endif /* LIBXML_ISO8859X_ENABLED */
 
 #ifdef LIBXML_ICONV_ENABLED
-  #define EMPTY_ICONV , (iconv_t) 0, (iconv_t) 0
+  #define EMPTY_ICONV , (iconv_t) -1, (iconv_t) -1
 #else
   #define EMPTY_ICONV
 #endif
@@ -1389,8 +1389,8 @@ xmlNewCharEncodingHandler(const char *name,
     handler->name = up;
 
 #ifdef LIBXML_ICONV_ENABLED
-    handler->iconv_in = NULL;
-    handler->iconv_out = NULL;
+    handler->iconv_in = (iconv_t) -1;
+    handler->iconv_out = (iconv_t) -1;
 #endif
 #ifdef LIBXML_ICU_ENABLED
     handler->uconv_in = NULL;
@@ -2200,7 +2200,7 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
         }
     }
 #ifdef LIBXML_ICONV_ENABLED
-    else if (handler->iconv_in != NULL) {
+    else if (handler->iconv_in != (iconv_t) -1) {
         ret = xmlIconvWrapper(handler->iconv_in, out, outlen, in, inlen);
     }
 #endif /* LIBXML_ICONV_ENABLED */
@@ -2260,7 +2260,7 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
         }
     }
 #ifdef LIBXML_ICONV_ENABLED
-    else if (handler->iconv_out != NULL) {
+    else if (handler->iconv_out != (iconv_t) -1) {
         ret = xmlIconvWrapper(handler->iconv_out, out, outlen, in, inlen);
     }
 #endif /* LIBXML_ICONV_ENABLED */
@@ -2672,17 +2672,17 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
      * Iconv handlers can be used only once, free the whole block.
      * and the associated icon resources.
      */
-    if ((handler->iconv_out != NULL) || (handler->iconv_in != NULL)) {
+    if ((handler->iconv_out != (iconv_t) -1) || (handler->iconv_in != (iconv_t) -1)) {
         tofree = 1;
-	if (handler->iconv_out != NULL) {
+	if (handler->iconv_out != (iconv_t) -1) {
 	    if (iconv_close(handler->iconv_out))
 		ret = -1;
-	    handler->iconv_out = NULL;
+	    handler->iconv_out = (iconv_t) -1;
 	}
-	if (handler->iconv_in != NULL) {
+	if (handler->iconv_in != (iconv_t) -1) {
 	    if (iconv_close(handler->iconv_in))
 		ret = -1;
-	    handler->iconv_in = NULL;
+	    handler->iconv_in = (iconv_t) -1;
 	}
     }
 #endif /* LIBXML_ICONV_ENABLED */

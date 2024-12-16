@@ -31,6 +31,8 @@ xmlCleanupMemoryInternal(void);
  */
 static XML_INLINE int
 xmlGrowCapacity(int capacity, size_t elemSize, int min, int max) {
+    int extra;
+
     if (capacity <= 0) {
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
         (void) min;
@@ -44,10 +46,13 @@ xmlGrowCapacity(int capacity, size_t elemSize, int min, int max) {
         ((size_t) capacity > SIZE_MAX / 2 / elemSize))
         return(-1);
 
-    if (capacity > max / 2)
+    /* Grow by 50% */
+    extra = (capacity + 1) / 2;
+
+    if (capacity > max - extra)
         return(max);
 
-    return(capacity * 2);
+    return(capacity + extra);
 }
 
 #endif /* XML_MEMORY_H_PRIVATE__ */

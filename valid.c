@@ -5175,9 +5175,12 @@ fail:
     /*
      * Allocate the stack
      */
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
     ctxt->vstateMax = 8;
-    ctxt->vstateTab = (xmlValidState *) xmlMalloc(
-		 ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
+#else
+    ctxt->vstateMax = 1;
+#endif
+    ctxt->vstateTab = xmlMalloc(ctxt->vstateMax * sizeof(ctxt->vstateTab[0]));
     if (ctxt->vstateTab == NULL) {
 	xmlVErrMemory(ctxt);
 	return(-1);

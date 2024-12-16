@@ -289,6 +289,11 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	const xmlChar *oldencoding;
         unsigned long consumed;
         size_t buffered;
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        int inputMax = 1;
+#else
+        int inputMax = 5;
+#endif
 
 	/*
 	 * Ask the Entity resolver to load the damn thing
@@ -316,14 +321,13 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	oldencoding = ctxt->encoding;
 	ctxt->encoding = NULL;
 
-	ctxt->inputTab = (xmlParserInputPtr *)
-	                 xmlMalloc(5 * sizeof(xmlParserInputPtr));
+	ctxt->inputTab = xmlMalloc(inputMax * sizeof(xmlParserInputPtr));
 	if (ctxt->inputTab == NULL) {
 	    xmlSAX2ErrMemory(ctxt);
             goto error;
 	}
 	ctxt->inputNr = 0;
-	ctxt->inputMax = 5;
+	ctxt->inputMax = inputMax;
 	ctxt->input = NULL;
 	if (xmlCtxtPushInput(ctxt, input) < 0)
             goto error;

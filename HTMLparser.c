@@ -4550,6 +4550,12 @@ static int
 htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
                    void *userData)
 {
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    size_t initialNodeTabSize = 1;
+#else
+    size_t initialNodeTabSize = 10;
+#endif
+
     if (ctxt == NULL) return(-1);
     memset(ctxt, 0, sizeof(htmlParserCtxt));
 
@@ -4572,11 +4578,11 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
 
     /* Allocate the Input stack */
     ctxt->inputTab = (htmlParserInputPtr *)
-                      xmlMalloc(5 * sizeof(htmlParserInputPtr));
+                      xmlMalloc(sizeof(htmlParserInputPtr));
     if (ctxt->inputTab == NULL)
 	return(-1);
     ctxt->inputNr = 0;
-    ctxt->inputMax = 5;
+    ctxt->inputMax = 1;
     ctxt->input = NULL;
     ctxt->version = NULL;
     ctxt->encoding = NULL;
@@ -4584,19 +4590,19 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
     ctxt->instate = XML_PARSER_START;
 
     /* Allocate the Node stack */
-    ctxt->nodeTab = (htmlNodePtr *) xmlMalloc(10 * sizeof(htmlNodePtr));
+    ctxt->nodeTab = xmlMalloc(initialNodeTabSize * sizeof(htmlNodePtr));
     if (ctxt->nodeTab == NULL)
 	return(-1);
     ctxt->nodeNr = 0;
-    ctxt->nodeMax = 10;
+    ctxt->nodeMax = initialNodeTabSize;
     ctxt->node = NULL;
 
     /* Allocate the Name stack */
-    ctxt->nameTab = (const xmlChar **) xmlMalloc(10 * sizeof(xmlChar *));
+    ctxt->nameTab = xmlMalloc(initialNodeTabSize * sizeof(xmlChar *));
     if (ctxt->nameTab == NULL)
 	return(-1);
     ctxt->nameNr = 0;
-    ctxt->nameMax = 10;
+    ctxt->nameMax = initialNodeTabSize;
     ctxt->name = NULL;
 
     ctxt->nodeInfoTab = NULL;

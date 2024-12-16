@@ -957,7 +957,11 @@ xmlXPathNewCompExpr(void) {
     if (cur == NULL)
 	return(NULL);
     memset(cur, 0, sizeof(xmlXPathCompExpr));
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    cur->maxStep = 1;
+#else
     cur->maxStep = 10;
+#endif
     cur->nbStep = 0;
     cur->steps = (xmlXPathStepOp *) xmlMalloc(cur->maxStep *
 	                                   sizeof(xmlXPathStepOp));
@@ -5057,15 +5061,18 @@ xmlXPathCompParserContext(xmlXPathCompExprPtr comp, xmlXPathContextPtr ctxt) {
     memset(ret, 0 , sizeof(xmlXPathParserContext));
 
     /* Allocate the value stack */
-    ret->valueTab = (xmlXPathObjectPtr *)
-                     xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    ret->valueMax = 1;
+#else
+    ret->valueMax = 10;
+#endif
+    ret->valueTab = xmlMalloc(ret->valueMax * sizeof(xmlXPathObjectPtr));
     if (ret->valueTab == NULL) {
 	xmlFree(ret);
 	xmlXPathErrMemory(ctxt);
 	return(NULL);
     }
     ret->valueNr = 0;
-    ret->valueMax = 10;
     ret->value = NULL;
 
     ret->context = ctxt;
@@ -12044,15 +12051,20 @@ xmlXPathRunEval(xmlXPathParserContextPtr ctxt, int toBool)
 	return(-1);
 
     if (ctxt->valueTab == NULL) {
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+        int valueMax = 1;
+#else
+        int valueMax = 10;
+#endif
+
 	/* Allocate the value stack */
-	ctxt->valueTab = (xmlXPathObjectPtr *)
-			 xmlMalloc(10 * sizeof(xmlXPathObjectPtr));
+	ctxt->valueTab = xmlMalloc(valueMax * sizeof(xmlXPathObjectPtr));
 	if (ctxt->valueTab == NULL) {
 	    xmlXPathPErrMemory(ctxt);
 	    return(-1);
 	}
 	ctxt->valueNr = 0;
-	ctxt->valueMax = 10;
+	ctxt->valueMax = valueMax;
 	ctxt->value = NULL;
     }
 #ifdef XPATH_STREAMING

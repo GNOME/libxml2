@@ -1002,6 +1002,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
         size_t readSize;
         int op = xmlFuzzReadInt(1);
         int oomReport = -1; /* -1 means unknown */
+        int ioReport = 0;
 
         vars->opName = "[unset]";
 
@@ -3301,7 +3302,8 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 }
 
                 incStrIdx();
-                output = xmlAllocOutputBuffer(NULL);
+                output = xmlOutputBufferCreateIO(xmlFuzzOutputWrite,
+                                                 xmlFuzzOutputClose, NULL, NULL);
                 xmlFuzzResetFailure();
                 node = getNode(0);
                 doc = node ? node->doc : NULL;
@@ -3353,16 +3355,17 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 if (closed) {
                     if (res >= 0)
                         oomReport = 0;
+                    else
+                        ioReport = -1;
                     moveStr(0, NULL);
                 } else {
-                    oomReport =
-                        (output != NULL &&
-                         output->error == XML_ERR_NO_MEMORY);
                     if (argsOk && !output->error)
                         copyStr(0, xmlBufContent(output->buffer));
                     else
                         moveStr(0, NULL);
-                    xmlOutputBufferClose(output);
+                    res = xmlOutputBufferClose(output);
+                    oomReport = (res == -XML_ERR_NO_MEMORY);
+                    ioReport  = (res == -XML_IO_EIO);
                 }
                 endOp();
                 break;
@@ -3570,7 +3573,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 break;
         }
 
-        xmlFuzzCheckFailureReport(vars->opName, oomReport, 0);
+        xmlFuzzCheckFailureReport(vars->opName, oomReport, ioReport);
     }
 
     for (i = 0; i < REG_MAX; i++)

@@ -481,3 +481,20 @@ xmlSlurpFile(const char *path, size_t *sizeRet) {
     return(data);
 }
 
+int
+xmlFuzzOutputWrite(void *ctxt ATTRIBUTE_UNUSED,
+                   const char *buffer ATTRIBUTE_UNUSED, int len) {
+    if (xmlFuzzTryIo() < 0)
+        return -XML_IO_EIO;
+
+    return len;
+}
+
+int
+xmlFuzzOutputClose(void *ctxt ATTRIBUTE_UNUSED) {
+    if (xmlFuzzTryIo() < 0)
+        return XML_IO_EIO;
+
+    return 0;
+}
+

@@ -119,6 +119,12 @@ xmlFuzzResourceLoader(void *data, const char *URL, const char *ID,
 char *
 xmlSlurpFile(const char *path, size_t *size);
 
+int
+xmlFuzzOutputWrite(void *ctxt, const char *buffer, int len);
+
+int
+xmlFuzzOutputClose(void *ctxt);
+
 #ifdef __cplusplus
 }
 #endif

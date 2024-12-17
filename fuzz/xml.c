@@ -31,6 +31,10 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     const char *docBuffer, *docUrl;
     size_t failurePos, docSize;
     int opts;
+#ifdef LIBXML_OUTPUT_ENABLED
+    const char *saveEncoding;
+    int saveOpts;
+#endif
 
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
@@ -41,6 +45,12 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             ~XML_PARSE_DTDVALID &
             ~XML_PARSE_SAX1;
     failurePos = xmlFuzzReadInt(4) % (size + 100);
+
+#ifdef LIBXML_OUTPUT_ENABLED
+    /* TODO: Take from fuzz data */
+    saveOpts = 0;
+    saveEncoding = NULL;
+#endif
 
     xmlFuzzReadEntities();
     docBuffer = xmlFuzzMainEntity(&docSize);
@@ -62,12 +72,12 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
         if (doc != NULL) {
 #ifdef LIBXML_OUTPUT_ENABLED
-            xmlBufferPtr buffer;
             xmlSaveCtxtPtr save;
 
             /* Also test the serializer. */
-            buffer = xmlBufferCreate();
-            save = xmlSaveToBuffer(buffer, NULL, 0);
+            save = xmlSaveToIO(xmlFuzzOutputWrite, xmlFuzzOutputClose, NULL,
+                               saveEncoding, saveOpts);
+
             if (save != NULL) {
                 int errNo;
 
@@ -77,7 +87,6 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                                           errNo == XML_ERR_NO_MEMORY,
                                           errNo == XML_IO_EIO);
             }
-            xmlBufferFree(buffer);
 #endif
             xmlFreeDoc(doc);
         }

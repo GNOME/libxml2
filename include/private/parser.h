@@ -68,8 +68,6 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 XML_HIDDEN void
 xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri);
 XML_HIDDEN int
-xmlIsCatastrophicError(int level, int code);
-XML_HIDDEN int
 xmlCtxtIsCatastrophicError(xmlParserCtxtPtr ctxt);
 
 XML_HIDDEN void

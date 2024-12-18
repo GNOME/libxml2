@@ -20,6 +20,30 @@
 #include "private/globals.h"
 #include "private/string.h"
 
+int
+xmlIsCatastrophicError(int level, int code) {
+    int fatal = 0;
+
+    if (level != XML_ERR_FATAL)
+        return(0);
+
+    switch (code) {
+        case XML_ERR_NO_MEMORY:
+        /* case XML_ERR_RESOURCE_LIMIT: */
+        case XML_ERR_SYSTEM:
+        case XML_ERR_ARGUMENT:
+        case XML_ERR_INTERNAL_ERROR:
+            fatal = 1;
+            break;
+        default:
+            if ((code >= 1500) && (code <= 1599))
+                fatal = 1;
+            break;
+    }
+
+    return(fatal);
+}
+
 /************************************************************************
  *									*
  *			Error struct					*

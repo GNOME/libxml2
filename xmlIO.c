@@ -1341,7 +1341,8 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
     if (out->closecallback != NULL) {
         int code = out->closecallback(out->context);
 
-        if ((code != XML_ERR_OK) && (out->error == XML_ERR_OK)) {
+        if ((code != XML_ERR_OK) &&
+            (!xmlIsCatastrophicError(XML_ERR_FATAL, out->error))) {
             if (code < 0)
                 out->error = XML_IO_UNKNOWN;
             else

@@ -368,12 +368,12 @@ nodeVPush(xmlValidCtxtPtr ctxt, xmlNodePtr value)
                                   4, XML_MAX_ITEMS);
         if (newSize < 0) {
 	    xmlVErrMemory(ctxt);
-            return (0);
+            return (-1);
         }
         tmp = xmlRealloc(ctxt->nodeTab, newSize * sizeof(tmp[0]));
         if (tmp == NULL) {
 	    xmlVErrMemory(ctxt);
-            return (0);
+            return (-1);
         }
 	ctxt->nodeTab = tmp;
         ctxt->nodeMax = newSize;
@@ -5110,7 +5110,10 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
                      */
                     if ((cur->children != NULL) &&
                         (cur->children->children != NULL)) {
-                        nodeVPush(ctxt, cur);
+                        if (nodeVPush(ctxt, cur) < 0) {
+                            xmlRegFreeExecCtxt(exec);
+                            return(-1);
+                        }
                         cur = cur->children->children;
                         continue;
                     }
@@ -5214,7 +5217,11 @@ fail:
 		     */
 		    if ((cur->children != NULL) &&
 			(cur->children->children != NULL)) {
-			nodeVPush(ctxt, cur);
+			if (nodeVPush(ctxt, cur) < 0) {
+                            xmlFreeNodeList(repl);
+                            ret = -1;
+                            goto done;
+                        }
 			cur = cur->children->children;
 			continue;
 		    }
@@ -5382,7 +5389,10 @@ xmlValidateOneCdataElement(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
 		 */
 		if ((cur->children != NULL) &&
 		    (cur->children->children != NULL)) {
-		    nodeVPush(ctxt, cur);
+		    if (nodeVPush(ctxt, cur) < 0) {
+                        ret = 0;
+                        goto done;
+                    }
 		    cur = cur->children->children;
 		    continue;
 		}

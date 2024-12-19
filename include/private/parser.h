@@ -60,6 +60,14 @@
 #define IS_PUBIDCHAR(c)     xmlIsPubidCharQ(c)
 #define IS_PUBIDCHAR_CH(c)  xmlIsPubidChar_ch(c)
 
+/**
+ * INPUT_CHUNK:
+ *
+ * The parser tries to always have that amount of input ready.
+ * One of the point is providing context when reporting errors.
+ */
+#define INPUT_CHUNK	250
+
 struct _xmlAttrHashBucket {
     int index;
 };

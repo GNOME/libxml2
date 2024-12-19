@@ -92,14 +92,6 @@ XMLPUBVAR const unsigned int xmlParserMaxDepth;
 #define XML_MAX_NAMELEN 100
 
 /**
- * INPUT_CHUNK:
- *
- * The parser tries to always have that amount of input ready.
- * One of the point is providing context when reporting errors.
- */
-#define INPUT_CHUNK	250
-
-/**
  * IS_BLANK:
  * @c:  an UNICODE value (int)
  *

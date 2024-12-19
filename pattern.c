@@ -35,6 +35,7 @@
 #include <libxml/parserInternals.h>
 
 #include "private/memory.h"
+#include "private/parser.h"
 
 #ifdef LIBXML_PATTERN_ENABLED
 

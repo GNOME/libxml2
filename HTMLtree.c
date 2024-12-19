@@ -26,6 +26,7 @@
 #include "private/buf.h"
 #include "private/error.h"
 #include "private/io.h"
+#include "private/parser.h"
 #include "private/save.h"
 
 /************************************************************************

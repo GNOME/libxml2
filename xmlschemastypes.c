@@ -35,6 +35,7 @@
 #include <libxml/xmlschemastypes.h>
 
 #include "private/error.h"
+#include "private/parser.h"
 
 #ifndef isnan
   #define isnan(x) (!((x) == (x)))

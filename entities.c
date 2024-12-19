@@ -28,6 +28,7 @@
 
 #include "private/entities.h"
 #include "private/error.h"
+#include "private/parser.h"
 
 #ifndef SIZE_MAX
   #define SIZE_MAX ((size_t) -1)

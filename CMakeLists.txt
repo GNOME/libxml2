@@ -10,6 +10,8 @@ endif()
 
 project(libxml2 VERSION ${VERSION} LANGUAGES C)
 
+set(CMAKE_C_STANDARD 11)
+
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)
 include(CheckIncludeFiles)

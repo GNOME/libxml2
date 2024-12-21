@@ -3,7 +3,11 @@ project(
     'c',
     version: files('VERSION'),
     license: 'MIT',
-    default_options: ['buildtype=debug', 'warning_level=3'],
+    default_options: [
+        'c_std=c11,c99,c89',
+        'buildtype=debug',
+        'warning_level=3',
+    ],
     meson_version: '>= 0.61',
 )
 
@@ -55,6 +59,8 @@ cc = meson.get_compiler('c')
 # global compiler flags
 
 global_args = [
+    '-D_XOPEN_SOURCE=600',
+
     # Enabled by warning_level=3
     # '-pedantic',
     # '-Wall',

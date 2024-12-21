@@ -5015,13 +5015,6 @@ xmlXPathNewContext(xmlDocPtr doc) {
     }
 #endif
 
-    xmlXPathRegisterAllFunctions(ret);
-
-    if (ret->lastError.code != XML_ERR_OK) {
-	xmlXPathFreeContext(ret);
-	return(NULL);
-    }
-
     return(ret);
 }
 
@@ -12766,131 +12759,17 @@ xmlXPathEvalExpression(const xmlChar *str, xmlXPathContextPtr ctxt) {
     return(xmlXPathEval(str, ctxt));
 }
 
-/************************************************************************
- *									*
- *	Extra functions not pertaining to the XPath spec		*
- *									*
- ************************************************************************/
-/**
- * xmlXPathEscapeUriFunction:
- * @ctxt:  the XPath Parser context
- * @nargs:  the number of arguments
- *
- * Implement the escape-uri() XPath function
- *    string escape-uri(string $str, bool $escape-reserved)
- *
- * This function applies the URI escaping rules defined in section 2 of [RFC
- * 2396] to the string supplied as $uri-part, which typically represents all
- * or part of a URI. The effect of the function is to replace any special
- * character in the string by an escape sequence of the form %xx%yy...,
- * where xxyy... is the hexadecimal representation of the octets used to
- * represent the character in UTF-8.
- *
- * The set of characters that are escaped depends on the setting of the
- * boolean argument $escape-reserved.
- *
- * If $escape-reserved is true, all characters are escaped other than lower
- * case letters a-z, upper case letters A-Z, digits 0-9, and the characters
- * referred to in [RFC 2396] as "marks": specifically, "-" | "_" | "." | "!"
- * | "~" | "*" | "'" | "(" | ")". The "%" character itself is escaped only
- * if it is not followed by two hexadecimal digits (that is, 0-9, a-f, and
- * A-F).
- *
- * If $escape-reserved is false, the behavior differs in that characters
- * referred to in [RFC 2396] as reserved characters are not escaped. These
- * characters are ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | ",".
- *
- * [RFC 2396] does not define whether escaped URIs should use lower case or
- * upper case for hexadecimal digits. To ensure that escaped URIs can be
- * compared using string comparison functions, this function must always use
- * the upper-case letters A-F.
- *
- * Generally, $escape-reserved should be set to true when escaping a string
- * that is to form a single part of a URI, and to false when escaping an
- * entire URI or URI reference.
- *
- * In the case of non-ascii characters, the string is encoded according to
- * utf-8 and then converted according to RFC 2396.
- *
- * Examples
- *  xf:escape-uri ("gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles#ocean"), true())
- *  returns "gopher%3A%2F%2Fspinaltap.micro.umn.edu%2F00%2FWeather%2FCalifornia%2FLos%20Angeles%23ocean"
- *  xf:escape-uri ("gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles#ocean"), false())
- *  returns "gopher://spinaltap.micro.umn.edu/00/Weather/California/Los%20Angeles%23ocean"
- *
- */
-static void
-xmlXPathEscapeUriFunction(xmlXPathParserContextPtr ctxt, int nargs) {
-    xmlXPathObjectPtr str;
-    int escape_reserved;
-    xmlBufPtr target;
-    xmlChar *cptr;
-    xmlChar escape[4];
-
-    CHECK_ARITY(2);
-
-    escape_reserved = xmlXPathPopBoolean(ctxt);
-
-    CAST_TO_STRING;
-    str = valuePop(ctxt);
-
-    target = xmlBufCreate(50);
-
-    escape[0] = '%';
-    escape[3] = 0;
-
-    if (target) {
-	for (cptr = str->stringval; *cptr; cptr++) {
-	    if ((*cptr >= 'A' && *cptr <= 'Z') ||
-		(*cptr >= 'a' && *cptr <= 'z') ||
-		(*cptr >= '0' && *cptr <= '9') ||
-		*cptr == '-' || *cptr == '_' || *cptr == '.' ||
-		*cptr == '!' || *cptr == '~' || *cptr == '*' ||
-		*cptr == '\''|| *cptr == '(' || *cptr == ')' ||
-		(*cptr == '%' &&
-		 ((cptr[1] >= 'A' && cptr[1] <= 'F') ||
-		  (cptr[1] >= 'a' && cptr[1] <= 'f') ||
-		  (cptr[1] >= '0' && cptr[1] <= '9')) &&
-		 ((cptr[2] >= 'A' && cptr[2] <= 'F') ||
-		  (cptr[2] >= 'a' && cptr[2] <= 'f') ||
-		  (cptr[2] >= '0' && cptr[2] <= '9'))) ||
-		(!escape_reserved &&
-		 (*cptr == ';' || *cptr == '/' || *cptr == '?' ||
-		  *cptr == ':' || *cptr == '@' || *cptr == '&' ||
-		  *cptr == '=' || *cptr == '+' || *cptr == '$' ||
-		  *cptr == ','))) {
-		xmlBufAdd(target, cptr, 1);
-	    } else {
-		if ((*cptr >> 4) < 10)
-		    escape[1] = '0' + (*cptr >> 4);
-		else
-		    escape[1] = 'A' - 10 + (*cptr >> 4);
-		if ((*cptr & 0xF) < 10)
-		    escape[2] = '0' + (*cptr & 0xF);
-		else
-		    escape[2] = 'A' - 10 + (*cptr & 0xF);
-
-		xmlBufAdd(target, &escape[0], 3);
-	    }
-	}
-    }
-    valuePush(ctxt, xmlXPathCacheNewString(ctxt, xmlBufContent(target)));
-    xmlBufFree(target);
-    xmlXPathReleaseObject(ctxt->context, str);
-}
-
 /**
  * xmlXPathRegisterAllFunctions:
  * @ctxt:  the XPath context
  *
+ * DEPRECATED: No-op since 2.14.0.
+ *
  * Registers all default XPath functions in this context
  */
 void
-xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt)
+xmlXPathRegisterAllFunctions(xmlXPathContextPtr ctxt ATTRIBUTE_UNUSED)
 {
-    xmlXPathRegisterFuncNS(ctxt, (const xmlChar *)"escape-uri",
-	 (const xmlChar *)"http://www.w3.org/2002/08/xquery-functions",
-                         xmlXPathEscapeUriFunction);
 }
 
 #endif /* LIBXML_XPATH_ENABLED */

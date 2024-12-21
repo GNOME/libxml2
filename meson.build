@@ -52,6 +52,27 @@ endif
 # binaries
 cc = meson.get_compiler('c')
 
+# global compiler flags
+
+global_args = [
+    # Enabled by warning_level=3
+    # '-pedantic',
+    # '-Wall',
+    # '-Wextra',
+
+    '-Wshadow',
+    '-Wpointer-arith',
+    '-Wcast-align',
+    '-Wwrite-strings',
+    '-Wstrict-prototypes',
+    '-Wmissing-prototypes',
+    '-Wno-long-long',
+    '-Wno-format-extra-args',
+    '-Wno-array-bounds',
+]
+
+add_global_arguments(global_args, language: 'c')
+
 # options
 
 # disabled by default

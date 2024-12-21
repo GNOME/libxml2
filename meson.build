@@ -121,6 +121,9 @@ want_threads = want_minimum ? feature.enabled() : feature.allowed()
 feature = get_option('valid')
 want_valid = want_minimum ? feature.enabled() : feature.allowed()
 
+feature = get_option('xinclude')
+want_xinclude = want_minimum ? feature.enabled() : feature.allowed()
+
 # default depends on legacy option
 
 feature = get_option('http')
@@ -165,7 +168,6 @@ feature = get_option('xpath')
 want_xpath = not want_minimum \
     or get_option('c14n').enabled() \
     or get_option('schematron').enabled() \
-    or get_option('xinclude').enabled() \
     or get_option('xptr').enabled() ? \
     feature.allowed() : feature.enabled()
 
@@ -196,10 +198,6 @@ feature = get_option('writer') \
     .require(want_output, error_message: 'writer requires output') \
     .require(want_push, error_message: 'writer requires push')
 want_writer = want_minimum ? feature.enabled() : feature.allowed()
-
-feature = get_option('xinclude') \
-    .require(want_xpath, error_message: 'xinclude requires xpath')
-want_xinclude = want_minimum ? feature.enabled() : feature.allowed()
 
 feature = get_option('xptr') \
     .require(want_xpath, error_message: 'xptr requires xpath')

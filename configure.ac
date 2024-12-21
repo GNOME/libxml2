@@ -194,12 +194,6 @@ if test "$with_writer" = "yes"; then
     fi
     with_push=yes
 fi
-if test "$with_xinclude" = "yes"; then
-    if test "$with_xpath" = "no"; then
-        echo WARNING: --with-xinclude overrides --without-xpath
-    fi
-    with_xpath=yes
-fi
 if test "$with_xptr" = "yes"; then
     if test "$with_xpath" = "no"; then
         echo WARNING: --with-xptr overrides --without-xpath
@@ -271,7 +265,6 @@ else
     if test "$with_xpath" = "no"; then
         with_c14n=no
         with_schematron=no
-        with_xinclude=no
         with_xptr=no
     fi
 fi

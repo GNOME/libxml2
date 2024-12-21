@@ -103,7 +103,9 @@ struct _xmlXIncludeCtxt {
     int			depth; /* recursion depth */
     int		     isStream; /* streaming mode */
 
+#ifdef LIBXML_XPTR_ENABLED
     xmlXPathContextPtr xpctxt;
+#endif
 
     xmlStructuredErrorFunc errorHandler;
     void *errorCtxt;
@@ -308,8 +310,10 @@ xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
 	}
 	xmlFree(ctxt->txtTab);
     }
+#ifdef LIBXML_XPTR_ENABLED
     if (ctxt->xpctxt != NULL)
 	xmlXPathFreeContext(ctxt->xpctxt);
+#endif
     xmlFree(ctxt);
 }
 
@@ -1331,9 +1335,10 @@ loaded:
         ref->inc = xmlXIncludeCopyXPointer(ctxt, xptr, ref->base);
         xmlXPathFreeObject(xptr);
     }
-#endif
 
 done:
+#endif
+
     ret = 0;
 
 error:

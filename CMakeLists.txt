@@ -47,6 +47,7 @@ option(LIBXML2_WITH_TESTS "Build tests" ON)
 option(LIBXML2_WITH_THREADS "Add multithread support" ON)
 option(LIBXML2_WITH_TLS "Enable thread-local storage" OFF)
 option(LIBXML2_WITH_VALID "Add the DTD validation support" ON)
+option(LIBXML2_WITH_XINCLUDE "Add the XInclude support" ON)
 option(LIBXML2_WITH_XPATH "Add the XPATH support" ON)
 option(LIBXML2_WITH_ZLIB "Use libz" OFF)
 
@@ -71,9 +72,6 @@ cmake_dependent_option(
 cmake_dependent_option(
     LIBXML2_WITH_WRITER "Add the xmlWriter saving interface" ON
     "LIBXML2_WITH_OUTPUT;LIBXML2_WITH_PUSH" OFF)
-cmake_dependent_option(
-    LIBXML2_WITH_XINCLUDE "Add the XInclude support" ON
-    "LIBXML2_WITH_XPATH" OFF)
 cmake_dependent_option(
     LIBXML2_WITH_XPTR "Add the XPointer support" ON
     "LIBXML2_WITH_XPATH" OFF)

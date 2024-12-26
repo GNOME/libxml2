@@ -11,7 +11,10 @@
      <exports symbol='HTML_DEPRECATED' type='enum'/>
      <exports symbol='HTML_INVALID' type='enum'/>
      <exports symbol='HTML_NA' type='enum'/>
+     <exports symbol='HTML_PARSE_BIG_LINES' type='enum'/>
      <exports symbol='HTML_PARSE_COMPACT' type='enum'/>
+     <exports symbol='HTML_PARSE_HTML5' type='enum'/>
+     <exports symbol='HTML_PARSE_HUGE' type='enum'/>
      <exports symbol='HTML_PARSE_IGNORE_ENC' type='enum'/>
      <exports symbol='HTML_PARSE_NOBLANKS' type='enum'/>
      <exports symbol='HTML_PARSE_NODEFDTD' type='enum'/>
@@ -54,6 +57,7 @@
      <exports symbol='htmlCtxtReadIO' type='function'/>
      <exports symbol='htmlCtxtReadMemory' type='function'/>
      <exports symbol='htmlCtxtReset' type='function'/>
+     <exports symbol='htmlCtxtSetOptions' type='function'/>
      <exports symbol='htmlCtxtUseOptions' type='function'/>
      <exports symbol='htmlElementAllowedHere' type='function'/>
      <exports symbol='htmlElementStatusHere' type='function'/>
@@ -697,6 +701,7 @@
      <exports symbol='xmlCtxtGetVersion' type='function'/>
      <exports symbol='xmlCtxtParseContent' type='function'/>
      <exports symbol='xmlCtxtParseDocument' type='function'/>
+     <exports symbol='xmlCtxtParseDtd' type='function'/>
      <exports symbol='xmlCtxtReadDoc' type='function'/>
      <exports symbol='xmlCtxtReadFd' type='function'/>
      <exports symbol='xmlCtxtReadFile' type='function'/>
@@ -713,6 +718,8 @@
      <exports symbol='xmlCtxtSetPrivate' type='function'/>
      <exports symbol='xmlCtxtSetResourceLoader' type='function'/>
      <exports symbol='xmlCtxtUseOptions' type='function'/>
+     <exports symbol='xmlCtxtValidateDocument' type='function'/>
+     <exports symbol='xmlCtxtValidateDtd' type='function'/>
      <exports symbol='xmlExternalEntityLoader' type='function'/>
      <exports symbol='xmlFreeParserCtxt' type='function'/>
      <exports symbol='xmlGetExternalEntityLoader' type='function'/>
@@ -789,26 +796,8 @@
      <summary>internals routines and limits exported by the parser.</summary>
      <description>this module exports a number of internal parsing routines they are not really all intended for applications but can prove useful doing low level processing. </description>
      <author>Daniel Veillard </author>
-     <exports symbol='INPUT_CHUNK' type='macro'/>
-     <exports symbol='IS_ASCII_DIGIT' type='macro'/>
-     <exports symbol='IS_ASCII_LETTER' type='macro'/>
-     <exports symbol='IS_BASECHAR' type='macro'/>
      <exports symbol='IS_BLANK' type='macro'/>
      <exports symbol='IS_BLANK_CH' type='macro'/>
-     <exports symbol='IS_BYTE_CHAR' type='macro'/>
-     <exports symbol='IS_CHAR' type='macro'/>
-     <exports symbol='IS_CHAR_CH' type='macro'/>
-     <exports symbol='IS_COMBINING' type='macro'/>
-     <exports symbol='IS_COMBINING_CH' type='macro'/>
-     <exports symbol='IS_DIGIT' type='macro'/>
-     <exports symbol='IS_DIGIT_CH' type='macro'/>
-     <exports symbol='IS_EXTENDER' type='macro'/>
-     <exports symbol='IS_EXTENDER_CH' type='macro'/>
-     <exports symbol='IS_IDEOGRAPHIC' type='macro'/>
-     <exports symbol='IS_LETTER' type='macro'/>
-     <exports symbol='IS_LETTER_CH' type='macro'/>
-     <exports symbol='IS_PUBIDCHAR' type='macro'/>
-     <exports symbol='IS_PUBIDCHAR_CH' type='macro'/>
      <exports symbol='XML_MAX_DICTIONARY_LIMIT' type='macro'/>
      <exports symbol='XML_MAX_HUGE_LENGTH' type='macro'/>
      <exports symbol='XML_MAX_LOOKUP_LIMIT' type='macro'/>
@@ -837,6 +826,8 @@
      <exports symbol='xmlCreateMemoryParserCtxt' type='function'/>
      <exports symbol='xmlCreateURLParserCtxt' type='function'/>
      <exports symbol='xmlCtxtErrMemory' type='function'/>
+     <exports symbol='xmlCtxtPopInput' type='function'/>
+     <exports symbol='xmlCtxtPushInput' type='function'/>
      <exports symbol='xmlCurrentChar' type='function'/>
      <exports symbol='xmlFreeInputStream' type='function'/>
      <exports symbol='xmlIsLetter' type='function'/>
@@ -1438,6 +1429,8 @@
      <exports symbol='_xmlNotation' type='struct'/>
      <exports symbol='_xmlNs' type='struct'/>
      <exports symbol='_xmlRef' type='struct'/>
+     <exports symbol='xmlBufferAllocScheme' type='variable'/>
+     <exports symbol='xmlDefaultBufferSize' type='variable'/>
      <exports symbol='xmlAddChild' type='function'/>
      <exports symbol='xmlAddChildList' type='function'/>
      <exports symbol='xmlAddNextSibling' type='function'/>
@@ -3730,83 +3723,12 @@
     <macro name='HTML_TEXT_NODE' file='HTMLtree'>
       <info>Macro. A text node in a HTML document is really implemented the same way as a text node in an XML document.</info>
     </macro>
-    <macro name='INPUT_CHUNK' file='parserInternals'>
-      <info>The parser tries to always have that amount of input ready. One of the point is providing context when reporting errors.</info>
-    </macro>
-    <macro name='IS_ASCII_DIGIT' file='parserInternals'>
-      <info>Macro to check [0-9]</info>
-      <arg name='c' info='an xmlChar value'/>
-    </macro>
-    <macro name='IS_ASCII_LETTER' file='parserInternals'>
-      <info>Macro to check [a-zA-Z]</info>
-      <arg name='c' info='an xmlChar value'/>
-    </macro>
-    <macro name='IS_BASECHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:  [85] BaseChar ::= ... long list see REC ...</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
     <macro name='IS_BLANK' file='parserInternals'>
       <info>Macro to check the following production in the XML spec:  [3] S ::= (#x20 | #x9 | #xD | #xA)+</info>
       <arg name='c' info='an UNICODE value (int)'/>
     </macro>
     <macro name='IS_BLANK_CH' file='parserInternals'>
       <info>Behaviour same as IS_BLANK</info>
-      <arg name='c' info='an xmlChar value (normally unsigned char)'/>
-    </macro>
-    <macro name='IS_BYTE_CHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:  [2] Char ::= #x9 | #xA | #xD | [#x20...] any byte character in the accepted range</info>
-      <arg name='c' info='an byte value (int)'/>
-    </macro>
-    <macro name='IS_CHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:  [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_CHAR_CH' file='parserInternals'>
-      <info>Behaves like IS_CHAR on single-byte value</info>
-      <arg name='c' info='an xmlChar (usually an unsigned char)'/>
-    </macro>
-    <macro name='IS_COMBINING' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:  [87] CombiningChar ::= ... long list see REC ...</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_COMBINING_CH' file='parserInternals'>
-      <info>Always false (all combining chars &gt; 0xff)</info>
-      <arg name='c' info='an xmlChar (usually an unsigned char)'/>
-    </macro>
-    <macro name='IS_DIGIT' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:  [88] Digit ::= ... long list see REC ...</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_DIGIT_CH' file='parserInternals'>
-      <info>Behaves like IS_DIGIT but with a single byte argument</info>
-      <arg name='c' info='an xmlChar value (usually an unsigned char)'/>
-    </macro>
-    <macro name='IS_EXTENDER' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:   [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 | #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] | [#x309D-#x309E] | [#x30FC-#x30FE]</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_EXTENDER_CH' file='parserInternals'>
-      <info>Behaves like IS_EXTENDER but with a single-byte argument</info>
-      <arg name='c' info='an xmlChar value (usually an unsigned char)'/>
-    </macro>
-    <macro name='IS_IDEOGRAPHIC' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:   [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_LETTER' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:   [84] Letter ::= BaseChar | Ideographic</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_LETTER_CH' file='parserInternals'>
-      <info>Macro behaves like IS_LETTER, but only check base chars</info>
-      <arg name='c' info='an xmlChar value (normally unsigned char)'/>
-    </macro>
-    <macro name='IS_PUBIDCHAR' file='parserInternals'>
-      <info>Macro to check the following production in the XML spec:   [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-&apos;()+,./:=?;!*#@$_%]</info>
-      <arg name='c' info='an UNICODE value (int)'/>
-    </macro>
-    <macro name='IS_PUBIDCHAR_CH' file='parserInternals'>
-      <info>Same as IS_PUBIDCHAR but for single-byte value</info>
       <arg name='c' info='an xmlChar value (normally unsigned char)'/>
     </macro>
     <macro name='LIBXML2_NEW_BUFFER' file='tree'>
@@ -4466,16 +4388,19 @@
     <enum name='HTML_DEPRECATED' file='HTMLparser' value='2' type='htmlStatus'/>
     <enum name='HTML_INVALID' file='HTMLparser' value='1' type='htmlStatus'/>
     <enum name='HTML_NA' file='HTMLparser' value='0' type='htmlStatus' info='something we don&apos;t check at all'/>
+    <enum name='HTML_PARSE_BIG_LINES' file='HTMLparser' value='4194304' type='htmlParserOption' info=' Store big lines numbers in text PSVI field'/>
     <enum name='HTML_PARSE_COMPACT' file='HTMLparser' value='65536' type='htmlParserOption' info='compact small text nodes'/>
-    <enum name='HTML_PARSE_IGNORE_ENC' file='HTMLparser' value='2097152' type='htmlParserOption' info=' ignore internal document encoding hint'/>
+    <enum name='HTML_PARSE_HTML5' file='HTMLparser' value='2' type='htmlParserOption' info='HTML5 support'/>
+    <enum name='HTML_PARSE_HUGE' file='HTMLparser' value='524288' type='htmlParserOption' info='relax any hardcoded limit from the parser'/>
+    <enum name='HTML_PARSE_IGNORE_ENC' file='HTMLparser' value='2097152' type='htmlParserOption' info='ignore internal document encoding hint'/>
     <enum name='HTML_PARSE_NOBLANKS' file='HTMLparser' value='256' type='htmlParserOption' info='remove blank nodes'/>
     <enum name='HTML_PARSE_NODEFDTD' file='HTMLparser' value='4' type='htmlParserOption' info='do not default a doctype if not found'/>
     <enum name='HTML_PARSE_NOERROR' file='HTMLparser' value='32' type='htmlParserOption' info='suppress error reports'/>
     <enum name='HTML_PARSE_NOIMPLIED' file='HTMLparser' value='8192' type='htmlParserOption' info='Do not add implied html/body... elements'/>
-    <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info='Forbid network access'/>
+    <enum name='HTML_PARSE_NONET' file='HTMLparser' value='2048' type='htmlParserOption' info='No effect'/>
     <enum name='HTML_PARSE_NOWARNING' file='HTMLparser' value='64' type='htmlParserOption' info='suppress warning reports'/>
-    <enum name='HTML_PARSE_PEDANTIC' file='HTMLparser' value='128' type='htmlParserOption' info='pedantic error reporting'/>
-    <enum name='HTML_PARSE_RECOVER' file='HTMLparser' value='1' type='htmlParserOption' info='Relaxed parsing'/>
+    <enum name='HTML_PARSE_PEDANTIC' file='HTMLparser' value='128' type='htmlParserOption' info='No effect'/>
+    <enum name='HTML_PARSE_RECOVER' file='HTMLparser' value='1' type='htmlParserOption' info='No effect'/>
     <enum name='HTML_REQUIRED' file='HTMLparser' value='12' type='htmlStatus' info=' VALID bit set so ( &amp; HTML_VALID ) is TRUE'/>
     <enum name='HTML_VALID' file='HTMLparser' value='4' type='htmlStatus'/>
     <enum name='XLINK_ACTUATE_AUTO' file='xlink' value='1' type='xlinkActuate'/>
@@ -5754,6 +5679,7 @@ crash if you try to modify the tree)'/>
       <field name='attrs_opt' type='const char **'/>
       <field name='attrs_depr' type='const char **'/>
       <field name='attrs_req' type='const char **'/>
+      <field name='dataMode' type='int'/>
     </struct>
     <typedef name='htmlElemDescPtr' file='HTMLparser' type='htmlElemDesc *'/>
     <struct name='htmlEntityDesc' file='HTMLparser' type='struct _htmlEntityDesc'>
@@ -6730,6 +6656,12 @@ crash if you try to modify the tree)'/>
     <variable name='oldXMLWDcompatibility' file='parser' type='const int'>
       <info>DEPRECATED, always 0.</info>
     </variable>
+    <variable name='xmlBufferAllocScheme' file='tree' type='const xmlBufferAllocationScheme'>
+      <info>DEPRECATED: Don&apos;t use.  Global setting, default allocation policy for buffers, default is XML_BUFFER_ALLOC_EXACT</info>
+    </variable>
+    <variable name='xmlDefaultBufferSize' file='tree' type='const int'>
+      <info>DEPRECATED: Don&apos;t use.  Global setting, default buffer size. Default value is BASE_BUFFER_SIZE</info>
+    </variable>
     <variable name='xmlDefaultSAXHandler' file='parser' type='const xmlSAXHandlerV1'>
       <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default SAX version1 handler for XML, builds the DOM tree</info>
     </variable>
@@ -6912,15 +6844,15 @@ crash if you try to modify the tree)'/>
     </functype>
     <function name='htmlAttrAllowed' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Checks whether an attribute is valid for an element Has full knowledge of Required and Deprecated attributes</info>
-      <return type='htmlStatus' info='one of HTML_REQUIRED, HTML_VALID, HTML_DEPRECATED, HTML_INVALID'/>
+      <info>DEPRECATED: Don&apos;t use.</info>
+      <return type='htmlStatus' info='HTML_VALID'/>
       <arg name='elt' type='const htmlElemDesc *' info='HTML element'/>
       <arg name='attr' type='const xmlChar *' info='HTML attribute'/>
       <arg name='legacy' type='int' info='whether to allow deprecated attributes'/>
     </function>
     <function name='htmlAutoCloseTag' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if the element or one of it&apos;s children would autoclose the given tag.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if the element or one of it&apos;s children would autoclose the given tag.</info>
       <return type='int' info='1 if autoclose, 0 otherwise'/>
       <arg name='doc' type='htmlDocPtr' info='the HTML document'/>
       <arg name='name' type='const xmlChar *' info='The tag name'/>
@@ -7016,9 +6948,16 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
     </function>
+    <function name='htmlCtxtSetOptions' file='HTMLparser' module='HTMLparser'>
+      <cond>defined(LIBXML_HTML_ENABLED)</cond>
+      <info>Applies the options to the parser context. Unset options are cleared.  Available since 2.14.0. With older versions, you can use htmlCtxtUseOptions.  HTML_PARSE_RECOVER  No effect as of 2.14.0.  HTML_PARSE_HTML5  Make the tokenizer emit a SAX callback for each token. This results in unbalanced invocations of startElement and endElement.  For now, this is only usable with custom SAX callbacks.  HTML_PARSE_NODEFDTD  Do not default to a doctype if none was found.  HTML_PARSE_NOERROR  Disable error and warning reports to the error handlers. Errors are still accessible with xmlCtxtGetLastError.  HTML_PARSE_NOWARNING  Disable warning reports.  HTML_PARSE_PEDANTIC  No effect.  HTML_PARSE_NOBLANKS  Remove some text nodes containing only whitespace from the result document. Which nodes are removed depends on a conservative heuristic. The reindenting feature of the serialization code relies on this option to be set when parsing. Use of this option is DISCOURAGED.  HTML_PARSE_NONET  No effect.  HTML_PARSE_NOIMPLIED  Do not add implied html, head or body elements.  HTML_PARSE_COMPACT  Store small strings directly in the node struct to save memory.  HTML_PARSE_HUGE  Relax some internal limits.  Available since 2.14.0. Use XML_PARSE_HUGE works with older versions.  Maximum size of text nodes, tags, comments, CDATA sections  normal: 10M huge:    1B  Maximum size of names, system literals, pubid literals  normal: 50K huge:   10M  Maximum nesting depth of elements  normal:  256 huge:   2048  HTML_PARSE_IGNORE_ENC  Ignore the encoding in the HTML declaration. This option is mostly unneeded these days. The only effect is to enforce UTF-8 decoding of ASCII-like data.  HTML_PARSE_BIG_LINES  Enable reporting of line numbers larger than 65535.  Available since 2.14.0.</info>
+      <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an HTML parser context'/>
+      <arg name='options' type='int' info='a bitmask of xmlParserOption values'/>
+    </function>
     <function name='htmlCtxtUseOptions' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Applies the options to the parser context</info>
+      <info>DEPRECATED: Use htmlCtxtSetOptions.  Applies the options to the parser context. The following options are never cleared and can only be enabled:  HTML_PARSE_NODEFDTD HTML_PARSE_NOERROR HTML_PARSE_NOWARNING HTML_PARSE_NOIMPLIED HTML_PARSE_COMPACT HTML_PARSE_HUGE HTML_PARSE_IGNORE_ENC HTML_PARSE_BIG_LINES</info>
       <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
       <arg name='options' type='int' info='a combination of htmlParserOption(s)'/>
@@ -7071,15 +7010,15 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlElementAllowedHere' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Checks whether an HTML element may be a direct child of a parent element. Note - doesn&apos;t check for deprecated elements</info>
-      <return type='int' info='1 if allowed; 0 otherwise.'/>
+      <info>DEPRECATED: Don&apos;t use.</info>
+      <return type='int' info='1'/>
       <arg name='parent' type='const htmlElemDesc *' info='HTML parent element'/>
       <arg name='elt' type='const xmlChar *' info='HTML element'/>
     </function>
     <function name='htmlElementStatusHere' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Checks whether an HTML element may be a direct child of a parent element. and if so whether it is valid or deprecated.</info>
-      <return type='htmlStatus' info='one of HTML_VALID, HTML_DEPRECATED, HTML_INVALID'/>
+      <info>DEPRECATED: Don&apos;t use.</info>
+      <return type='htmlStatus' info='HTML_VALID'/>
       <arg name='parent' type='const htmlElemDesc *' info='HTML parent element'/>
       <arg name='elt' type='const htmlElemDesc *' info='HTML element'/>
     </function>
@@ -7130,14 +7069,14 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlIsAutoClosed' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if a tag is autoclosed by one of it&apos;s child</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if a tag is autoclosed by one of it&apos;s child</info>
       <return type='int' info='1 if autoclosed, 0 otherwise'/>
       <arg name='doc' type='htmlDocPtr' info='the HTML document'/>
       <arg name='elem' type='htmlNodePtr' info='the HTML element'/>
     </function>
     <function name='htmlIsBooleanAttr' file='HTMLtree' module='HTMLtree'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Determine if a given attribute is a boolean attribute.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Determine if a given attribute is a boolean attribute.</info>
       <return type='int' info='false if the attribute is not boolean, true otherwise.'/>
       <arg name='name' type='const xmlChar *' info='the name of the attribute to check'/>
     </function>
@@ -7220,15 +7159,15 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlNodeStatus' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Checks whether the tree node is valid.  Experimental (the author only uses the HTML enhancements in a SAX parser)</info>
-      <return type='htmlStatus' info='for Element nodes, a return from htmlElementAllowedHere (if legacy allowed) or htmlElementStatusHere (otherwise). for Attribute nodes, a return from htmlAttrAllowed for other nodes, HTML_NA (no checks performed)'/>
+      <info>DEPRECATED: Don&apos;t use.</info>
+      <return type='htmlStatus' info='HTML_VALID'/>
       <arg name='node' type='htmlNodePtr' info='an htmlNodePtr in a tree'/>
       <arg name='legacy' type='int' info='whether to allow deprecated elements (YES is faster here for Element nodes)'/>
     </function>
     <function name='htmlParseCharRef' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>DEPRECATED: Internal function, don&apos;t use.  parse Reference declarations  [66] CharRef ::= &apos;&amp;#&apos; [0-9]+ &apos;;&apos; | &apos;&amp;#x&apos; [0-9a-fA-F]+ &apos;;&apos;</info>
-      <return type='int' info='the value parsed (as an int)'/>
+      <info>DEPRECATED: Internal function, don&apos;t use.</info>
+      <return type='int' info='0'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
     </function>
     <function name='htmlParseChunk' file='HTMLparser' module='HTMLparser'>
@@ -7261,8 +7200,8 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='htmlParseEntityRef' file='HTMLparser' module='HTMLparser'>
       <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>DEPRECATED: Internal function, don&apos;t use.  parse an HTML ENTITY references  [68] EntityRef ::= &apos;&amp;&apos; Name &apos;;&apos;</info>
-      <return type='const htmlEntityDesc *' info='the associated htmlEntityDescPtr if found, or NULL otherwise, if non-NULL *str will have to be freed by the caller.'/>
+      <info>DEPRECATED: Internal function, don&apos;t use.</info>
+      <return type='const htmlEntityDesc *' info='NULL.'/>
       <arg name='ctxt' type='htmlParserCtxtPtr' info='an HTML parser context'/>
       <arg name='str' type='const xmlChar **' info='location to store the entity name'/>
     </function>
@@ -7659,7 +7598,7 @@ crash if you try to modify the tree)'/>
       <arg name='URI' type='const xmlChar *' info='the URI'/>
     </function>
     <function name='xmlAddAttributeDecl' file='valid' module='valid'>
-      <info>Register a new attribute declaration Note that @tree becomes the ownership of the DTD</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Register a new attribute declaration Note that @tree becomes the ownership of the DTD</info>
       <return type='xmlAttributePtr' info='NULL if not new, otherwise the attribute decl'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='dtd' type='xmlDtdPtr' info='pointer to the DTD'/>
@@ -7704,7 +7643,7 @@ crash if you try to modify the tree)'/>
       <arg name='content' type='const xmlChar *' info='the entity content'/>
     </function>
     <function name='xmlAddElementDecl' file='valid' module='valid'>
-      <info>Register a new element declaration</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Register a new element declaration</info>
       <return type='xmlElementPtr' info='NULL if not, otherwise the entity'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='dtd' type='xmlDtdPtr' info='pointer to the DTD'/>
@@ -7751,7 +7690,7 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlNodePtr' info='the new node'/>
     </function>
     <function name='xmlAddNotationDecl' file='valid' module='valid'>
-      <info>Register a new notation declaration</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Register a new notation declaration</info>
       <return type='xmlNotationPtr' info='NULL if not, otherwise the entity'/>
       <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='dtd' type='xmlDtdPtr' info='pointer to the DTD'/>
@@ -7781,12 +7720,12 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlAllocOutputBuffer' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a buffered parser output</info>
+      <info>Create a buffered parser output  Consumes @encoder even in error case.</info>
       <return type='xmlOutputBufferPtr' info='the new parser output or NULL'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
     </function>
     <function name='xmlAllocParserInputBuffer' file='xmlIO' module='xmlIO'>
-      <info>Create a buffered parser input for progressive parsing.  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
+      <info>DEPRECATED: Use xmlNewInputFrom*.  Create a buffered parser input for progressive parsing.  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known (deprecated)'/>
     </function>
@@ -7982,7 +7921,7 @@ crash if you try to modify the tree)'/>
       <arg name='format' type='int' info='is formatting allowed'/>
     </function>
     <function name='xmlBufShrink' file='tree' module='buf'>
-      <info>Remove the beginning of an XML buffer. NOTE that this routine behaviour differs from xmlBufferShrink() as it will return 0 on error instead of -1 due to size_t being used as the return type.</info>
+      <info>DEPRECATED: Don&apos;t use.  Remove the beginning of an XML buffer. NOTE that this routine behaviour differs from xmlBufferShrink() as it will return 0 on error instead of -1 due to size_t being used as the return type.</info>
       <return type='size_t' info='the number of byte removed or 0 in case of failure'/>
       <arg name='buf' type='xmlBufPtr' info='the buffer to dump'/>
       <arg name='len' type='size_t' info='the number of xmlChar to remove'/>
@@ -7992,115 +7931,115 @@ crash if you try to modify the tree)'/>
       <return type='size_t' info='the length of data in the internal content'/>
       <arg name='buf' type='const xmlBufPtr' info='the buffer'/>
     </function>
-    <function name='xmlBufferAdd' file='tree' module='tree'>
+    <function name='xmlBufferAdd' file='tree' module='buf'>
       <info>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</info>
-      <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <return type='int' info='a xmlParserError code.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
       <arg name='len' type='int' info='the number of #xmlChar to add'/>
     </function>
-    <function name='xmlBufferAddHead' file='tree' module='tree'>
+    <function name='xmlBufferAddHead' file='tree' module='buf'>
       <info>Add a string range to the beginning of an XML buffer. if len == -1, the length of @str is recomputed.</info>
-      <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
+      <return type='int' info='a xmlParserError code.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
       <arg name='len' type='int' info='the number of #xmlChar to add'/>
     </function>
-    <function name='xmlBufferCCat' file='tree' module='tree'>
+    <function name='xmlBufferCCat' file='tree' module='buf'>
       <info>Append a zero terminated C string to an XML buffer.</info>
       <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
       <arg name='str' type='const char *' info='the C char string'/>
     </function>
-    <function name='xmlBufferCat' file='tree' module='tree'>
+    <function name='xmlBufferCat' file='tree' module='buf'>
       <info>Append a zero terminated string to an XML buffer.</info>
       <return type='int' info='0 successful, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to add to'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
     </function>
-    <function name='xmlBufferContent' file='tree' module='tree'>
+    <function name='xmlBufferContent' file='tree' module='buf'>
       <info>Function to extract the content of a buffer</info>
       <return type='const xmlChar *' info='the internal content'/>
       <arg name='buf' type='const xmlBuffer *' info='the buffer'/>
     </function>
-    <function name='xmlBufferCreate' file='tree' module='tree'>
+    <function name='xmlBufferCreate' file='tree' module='buf'>
       <info>routine to create an XML buffer.</info>
       <return type='xmlBufferPtr' info='the new structure.'/>
     </function>
-    <function name='xmlBufferCreateSize' file='tree' module='tree'>
+    <function name='xmlBufferCreateSize' file='tree' module='buf'>
       <info>routine to create an XML buffer.</info>
       <return type='xmlBufferPtr' info='the new structure.'/>
       <arg name='size' type='size_t' info='initial size of buffer'/>
     </function>
-    <function name='xmlBufferCreateStatic' file='tree' module='tree'>
+    <function name='xmlBufferCreateStatic' file='tree' module='buf'>
       <info></info>
       <return type='xmlBufferPtr' info='an XML buffer initialized with bytes.'/>
       <arg name='mem' type='void *' info='the memory area'/>
       <arg name='size' type='size_t' info='the size in byte'/>
     </function>
-    <function name='xmlBufferDetach' file='tree' module='tree'>
+    <function name='xmlBufferDetach' file='tree' module='buf'>
       <info>Remove the string contained in a buffer and gie it back to the caller. The buffer is reset to an empty content. This doesn&apos;t work with immutable buffers as they can&apos;t be reset.</info>
       <return type='xmlChar *' info='the previous string contained by the buffer.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer'/>
     </function>
-    <function name='xmlBufferDump' file='tree' module='tree'>
+    <function name='xmlBufferDump' file='tree' module='buf'>
       <info>Dumps an XML buffer to  a FILE *.</info>
       <return type='int' info='the number of #xmlChar written'/>
       <arg name='file' type='FILE *' info='the file output'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
     </function>
-    <function name='xmlBufferEmpty' file='tree' module='tree'>
+    <function name='xmlBufferEmpty' file='tree' module='buf'>
       <info>empty a buffer.</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer'/>
     </function>
-    <function name='xmlBufferFree' file='tree' module='tree'>
+    <function name='xmlBufferFree' file='tree' module='buf'>
       <info>Frees an XML buffer. It frees both the content and the structure which encapsulate it.</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to free'/>
     </function>
-    <function name='xmlBufferGrow' file='tree' module='tree'>
-      <info>Grow the available space of an XML buffer.</info>
+    <function name='xmlBufferGrow' file='tree' module='buf'>
+      <info>DEPRECATED: Don&apos;t use.  Grow the available space of an XML buffer.</info>
       <return type='int' info='the new available space or -1 in case of error'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer'/>
       <arg name='len' type='unsigned int' info='the minimum free size to allocate'/>
     </function>
-    <function name='xmlBufferLength' file='tree' module='tree'>
+    <function name='xmlBufferLength' file='tree' module='buf'>
       <info>Function to get the length of a buffer</info>
       <return type='int' info='the length of data in the internal content'/>
       <arg name='buf' type='const xmlBuffer *' info='the buffer'/>
     </function>
-    <function name='xmlBufferResize' file='tree' module='tree'>
-      <info>Resize a buffer to accommodate minimum size of @size.</info>
+    <function name='xmlBufferResize' file='tree' module='buf'>
+      <info>DEPRECATED: Don&apos;t use. Resize a buffer to accommodate minimum size of @size.</info>
       <return type='int' info='0 in case of problems, 1 otherwise'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to resize'/>
       <arg name='size' type='unsigned int' info='the desired size'/>
     </function>
-    <function name='xmlBufferSetAllocationScheme' file='tree' module='tree'>
-      <info>Sets the allocation scheme for this buffer</info>
+    <function name='xmlBufferSetAllocationScheme' file='tree' module='buf'>
+      <info>Sets the allocation scheme for this buffer.  For libxml2 before 2.14, it is recommended to set this to XML_BUFFER_ALLOC_DOUBLE_IT. Has no effect on 2.14 or later.</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to tune'/>
       <arg name='scheme' type='xmlBufferAllocationScheme' info='allocation scheme to use'/>
     </function>
-    <function name='xmlBufferShrink' file='tree' module='tree'>
-      <info>Remove the beginning of an XML buffer.</info>
+    <function name='xmlBufferShrink' file='tree' module='buf'>
+      <info>DEPRECATED: Don&apos;t use.  Remove the beginning of an XML buffer.</info>
       <return type='int' info='the number of #xmlChar removed, or -1 in case of failure.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
       <arg name='len' type='unsigned int' info='the number of xmlChar to remove'/>
     </function>
-    <function name='xmlBufferWriteCHAR' file='tree' module='tree'>
+    <function name='xmlBufferWriteCHAR' file='tree' module='buf'>
       <info>routine which manages and grows an output buffer. This one adds xmlChars at the end of the buffer.</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer'/>
       <arg name='string' type='const xmlChar *' info='the string to add'/>
     </function>
-    <function name='xmlBufferWriteChar' file='tree' module='tree'>
+    <function name='xmlBufferWriteChar' file='tree' module='buf'>
       <info>routine which manage and grows an output buffer. This one add C chars at the end of the array.</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
       <arg name='string' type='const char *' info='the string to add'/>
     </function>
-    <function name='xmlBufferWriteQuotedString' file='tree' module='tree'>
+    <function name='xmlBufferWriteQuotedString' file='tree' module='buf'>
       <info>routine which manage and grows an output buffer. This one writes a quoted or double quoted #xmlChar string, checking first if it holds quote or double-quotes internally</info>
       <return type='void'/>
       <arg name='buf' type='xmlBufferPtr' info='the XML buffer output'/>
@@ -8141,7 +8080,7 @@ crash if you try to modify the tree)'/>
       <arg name='valPtr' type='xmlChar **' info='pointer to result URI'/>
     </function>
     <function name='xmlByteConsumed' file='parser' module='encoding'>
-      <info>This function provides the current index of the parser relative to the start of the current entity. This function is computed in bytes from the beginning starting at zero and finishing at the size in byte of the file if parsing a file. The function is of constant cost if the input is UTF-8 but can be costly if run on non-UTF-8 input.</info>
+      <info>DEPRECATED: Don&apos;t use.  This function provides the current index of the parser relative to the start of the current entity. This function is computed in bytes from the beginning starting at zero and finishing at the size in byte of the file if parsing a file. The function is of constant cost if the input is UTF-8 but can be costly if run on non-UTF-8 input.</info>
       <return type='long' info='the index in bytes from the beginning of the entity or -1 in case the index could not be computed.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -8426,7 +8365,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlCheckThreadLocalStorage' file='threads' module='globals'>
       <info>Check whether thread-local storage could be allocated.  In cross-platform code running in multithreaded environments, this function should be called once in each thread before calling other library functions to make sure that thread-local storage was allocated properly.</info>
-      <return type='int' info='0 on success or -1 if a memory allocation failed. A failed allocation signals a typically fatal and irrecoverable out-of-memory situation. Don&apos;t call any library functions in this case.  This function never fails if the library is compiled with support for thread-local storage.  This function never fails for the &quot;main&quot; thread which is the first thread calling xmlInitParser.  Available since v2.12.0.'/>
+      <return type='int' info='0 on success or -1 if a memory allocation failed. A failed allocation signals a typically fatal and irrecoverable out-of-memory situation. Don&apos;t call any library functions in this case.  Available since 2.12.0.'/>
     </function>
     <function name='xmlCheckUTF8' file='xmlstring' module='xmlstring'>
       <info>Checks @utf for being valid UTF-8. @utf is assumed to be null-terminated. This function is not super-strict, as it will allow longer UTF-8 sequences than necessary. Note that Java is capable of producing these sequences if provoked. Also note, this routine checks for the 4-byte maximum size, but does not check for 0x10ffff maximum value.</info>
@@ -8464,7 +8403,7 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
     </function>
     <function name='xmlCleanupParser' file='parser' module='threads'>
-      <info>This function name is somewhat misleading. It does not clean up parser state, it cleans up memory allocated by the library itself. It is a cleanup function for the XML library. It tries to reclaim all related global memory allocated for the library processing. It doesn&apos;t deallocate any document related memory. One should call xmlCleanupParser() only when the process has finished using the library and all XML/HTML documents built with it. See also xmlInitParser() which has the opposite function of preparing the library for operations.  WARNING: if your application is multithreaded or has plugin support calling this may crash the application if another thread or a plugin is still using libxml2. It&apos;s sometimes very hard to guess if libxml2 is in use in the application, some libraries or plugins may use it without notice. In case of doubt abstain from calling this function or do it just before calling exit() to avoid leak reports from valgrind !</info>
+      <info>This function is named somewhat misleadingly. It does not clean up parser state but global memory allocated by the library itself.  Since 2.9.11, cleanup is performed automatically if a shared or dynamic libxml2 library is unloaded. This function should only be used to avoid false positives from memory leak checkers in static builds.  WARNING: xmlCleanupParser assumes that all other threads that called libxml2 functions have terminated. No library calls must be made after calling this function. In general, THIS FUNCTION SHOULD ONLY BE CALLED RIGHT BEFORE THE WHOLE PROCESS EXITS.</info>
       <return type='void'/>
     </function>
     <function name='xmlCleanupThreads' file='threads' module='threads'>
@@ -8488,7 +8427,7 @@ crash if you try to modify the tree)'/>
       <arg name='catal' type='xmlCatalogPtr' info='the catalog'/>
     </function>
     <function name='xmlCopyAttributeTable' file='valid' module='valid'>
-      <info>Build a copy of an attribute table.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Build a copy of an attribute table.</info>
       <return type='xmlAttributeTablePtr' info='the new xmlAttributeTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlAttributeTablePtr' info='An attribute table'/>
     </function>
@@ -8500,7 +8439,7 @@ crash if you try to modify the tree)'/>
       <arg name='val' type='int' info='the char value'/>
     </function>
     <function name='xmlCopyCharMultiByte' file='parserInternals' module='parserInternals'>
-      <info>append the char value in the array</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  append the char value in the array</info>
       <return type='int' info='the number of xmlChar written'/>
       <arg name='out' type='xmlChar *' info='pointer to an array of xmlChar'/>
       <arg name='val' type='int' info='the char value'/>
@@ -8512,7 +8451,7 @@ crash if you try to modify the tree)'/>
       <arg name='recursive' type='int' info='if not zero do a recursive copy.'/>
     </function>
     <function name='xmlCopyDocElementContent' file='valid' module='valid'>
-      <info>Build a copy of an element content description.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Build a copy of an element content description.</info>
       <return type='xmlElementContentPtr' info='the new xmlElementContentPtr or NULL in case of error.'/>
       <arg name='doc' type='xmlDocPtr' info='the document owning the element declaration'/>
       <arg name='cur' type='xmlElementContentPtr' info='An element content pointer.'/>
@@ -8523,12 +8462,12 @@ crash if you try to modify the tree)'/>
       <arg name='dtd' type='xmlDtdPtr' info='the DTD'/>
     </function>
     <function name='xmlCopyElementContent' file='valid' module='valid'>
-      <info>Build a copy of an element content description. Deprecated, use xmlCopyDocElementContent instead</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Build a copy of an element content description. Deprecated, use xmlCopyDocElementContent instead</info>
       <return type='xmlElementContentPtr' info='the new xmlElementContentPtr or NULL in case of error.'/>
       <arg name='cur' type='xmlElementContentPtr' info='An element content pointer.'/>
     </function>
     <function name='xmlCopyElementTable' file='valid' module='valid'>
-      <info>Build a copy of an element table.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Build a copy of an element table.</info>
       <return type='xmlElementTablePtr' info='the new xmlElementTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlElementTablePtr' info='An element table'/>
     </function>
@@ -8538,7 +8477,7 @@ crash if you try to modify the tree)'/>
       <arg name='table' type='xmlEntitiesTablePtr' info='An entity table'/>
     </function>
     <function name='xmlCopyEnumeration' file='valid' module='valid'>
-      <info>Copy an enumeration attribute node (recursive).</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Copy an enumeration attribute node (recursive).</info>
       <return type='xmlEnumerationPtr' info='the xmlEnumerationPtr just created or NULL in case of error.'/>
       <arg name='cur' type='xmlEnumerationPtr' info='the tree to copy.'/>
     </function>
@@ -8570,7 +8509,7 @@ crash if you try to modify the tree)'/>
       <arg name='node' type='xmlNodePtr' info='the first node in the list.'/>
     </function>
     <function name='xmlCopyNotationTable' file='valid' module='valid'>
-      <info>Build a copy of a notation table.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Build a copy of a notation table.</info>
       <return type='xmlNotationTablePtr' info='the new xmlNotationTablePtr or NULL in case of error.'/>
       <arg name='table' type='xmlNotationTablePtr' info='A notation table'/>
     </function>
@@ -8612,7 +8551,7 @@ crash if you try to modify the tree)'/>
       <arg name='base' type='const xmlChar *' info='a possible base for the target URI'/>
     </function>
     <function name='xmlCreateEnumeration' file='valid' module='valid'>
-      <info>create and initialize an enumeration attribute node.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  create and initialize an enumeration attribute node.</info>
       <return type='xmlEnumerationPtr' info='the xmlEnumerationPtr just created or NULL in case of error.'/>
       <arg name='name' type='const xmlChar *' info='the enumeration name or NULL'/>
     </function>
@@ -8671,19 +8610,19 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetCatalogs' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context  Available since 2.14.0.</info>
+      <info>Available since 2.14.0.</info>
       <return type='void *' info='the local catalogs.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
     </function>
     <function name='xmlCtxtGetDeclaredEncoding' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context  Available since 2.14.0.</info>
+      <info>Available since 2.14.0.</info>
       <return type='const xmlChar *' info='the encoding from the encoding declaration. This can differ from the actual encoding.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
     </function>
     <function name='xmlCtxtGetDict' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context  Available since 2.14.0.</info>
+      <info>Available since 2.14.0.</info>
       <return type='xmlDictPtr' info='the dictionary.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
     </function>
     <function name='xmlCtxtGetLastError' file='xmlerror' module='parserInternals'>
       <info>Get the last parsing error registered.</info>
@@ -8696,14 +8635,14 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetPrivate' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context  Available since 2.14.0.</info>
+      <info>Available since 2.14.0.</info>
       <return type='void *' info='the private application data.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
     </function>
     <function name='xmlCtxtGetStandalone' file='parser' module='parser'>
-      <info>ctxt:  parser context  Available since 2.14.0.</info>
+      <info>Available since 2.14.0.</info>
       <return type='int' info='the value from the standalone document declaration.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
     </function>
     <function name='xmlCtxtGetStatus' file='parser' module='parserInternals'>
       <info>Get well-formedness and validation status after parsing. Also reports catastrophic errors which are not related to parsing like out-of-memory, I/O or other errors.  Available since 2.14.0.</info>
@@ -8711,9 +8650,9 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxt *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetVersion' file='parser' module='parser'>
-      <info>ctxt:  parser context  Available since 2.14.0.</info>
+      <info>Available since 2.14.0.</info>
       <return type='const xmlChar *' info='the version from the XML declaration.'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
     </function>
     <function name='xmlCtxtParseContent' file='parser' module='parser'>
       <info>Parse a well-balanced chunk of XML matching the &apos;content&apos; production.  Namespaces in scope of @node and entities of @node&apos;s document are recognized. When validating, the DTD of @node&apos;s document is used.  Always consumes @input even in error case.  Available since 2.14.0.</info>
@@ -8728,6 +8667,26 @@ crash if you try to modify the tree)'/>
       <return type='xmlDocPtr' info='the resulting document tree or NULL'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='input' type='xmlParserInputPtr' info='parser input'/>
+    </function>
+    <function name='xmlCtxtParseDtd' file='parser' module='parser'>
+      <cond>defined(LIBXML_VALID_ENABLED)</cond>
+      <info>Parse a DTD.  Option XML_PARSE_DTDLOAD should be enabled in the parser context to make external entities work.  Availabe since 2.14.0.</info>
+      <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error. @input will be freed by the function in any case.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='a parser context'/>
+      <arg name='input' type='xmlParserInputPtr' info='a parser input'/>
+      <arg name='publicId' type='const xmlChar *' info='public ID of the DTD (optional)'/>
+      <arg name='systemId' type='const xmlChar *' info='system ID of the DTD (optional)'/>
+    </function>
+    <function name='xmlCtxtPopInput' file='parserInternals' module='parser'>
+      <info>Pops the top parser input from the input stack</info>
+      <return type='xmlParserInputPtr' info='the input just removed'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+    </function>
+    <function name='xmlCtxtPushInput' file='parserInternals' module='parser'>
+      <info>Pushes a new parser input on top of the input stack</info>
+      <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
+      <arg name='value' type='xmlParserInputPtr' info='the parser input'/>
     </function>
     <function name='xmlCtxtReadDoc' file='parser' module='parser'>
       <info>Parse an XML in-memory document and build a tree.  @URL is used as base to resolve external entities and for error reporting.  See xmlCtxtUseOptions for details.</info>
@@ -8796,10 +8755,10 @@ crash if you try to modify the tree)'/>
       <arg name='encoding' type='const char *' info='the document encoding, or NULL'/>
     </function>
     <function name='xmlCtxtSetCatalogs' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context catalogs:  catalogs pointer  Available since 2.14.0.  Set the local catalogs.</info>
+      <info>Available since 2.14.0.  Set the local catalogs.</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
-      <arg name='catalogs' type='void *' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
+      <arg name='catalogs' type='void *' info='catalogs pointer'/>
     </function>
     <function name='xmlCtxtSetCharEncConvImpl' file='parser' module='parserInternals'>
       <info>Installs a custom implementation to convert between character encodings.  This bypasses legacy feature like global encoding handlers or encoding aliases.  Available since 2.14.0.</info>
@@ -8809,10 +8768,10 @@ crash if you try to modify the tree)'/>
       <arg name='vctxt' type='void *' info='user data'/>
     </function>
     <function name='xmlCtxtSetDict' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context dict:  dictionary  Available since 2.14.0.  Set the dictionary. This should only be done immediately after creating a parser context.</info>
+      <info>Available since 2.14.0.  Set the dictionary. This should only be done immediately after creating a parser context.</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
-      <arg name='dict' type='xmlDictPtr' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
+      <arg name='dict' type='xmlDictPtr' info='dictionary'/>
     </function>
     <function name='xmlCtxtSetErrorHandler' file='parser' module='parserInternals'>
       <info>Register a callback function that will be called on errors and warnings. If handler is NULL, the error handler will be deactivated.  This is the recommended way to collect errors from the parser and takes precedence over all other error reporting mechanisms. These are (in order of precedence):  - per-context structured handler (xmlCtxtSetErrorHandler) - per-context structured &quot;serror&quot; SAX handler - global structured handler (xmlSetStructuredErrorFunc) - per-context generic &quot;error&quot; and &quot;warning&quot; SAX handlers - global generic handler (xmlSetGenericErrorFunc) - print to stderr  Available since 2.13.0.</info>
@@ -8828,16 +8787,16 @@ crash if you try to modify the tree)'/>
       <arg name='maxAmpl' type='unsigned' info='maximum amplification factor'/>
     </function>
     <function name='xmlCtxtSetOptions' file='parser' module='parser'>
-      <info>Applies the options to the parser context. Unset options are cleared.  Available since 2.13.0. With older versions, you can use xmlCtxtUseOptions.  XML_PARSE_RECOVER  Enable &quot;recovery&quot; mode which allows non-wellformed documents. How this mode behaves exactly is unspecified and may change without further notice. Use of this feature is DISCOURAGED.  XML_PARSE_NOENT  Despite the confusing name, this option enables substitution of entities. The resulting tree won&apos;t contain any entity reference nodes.  This option also enables loading of external entities (both general and parameter entities) which is dangerous. If you process untrusted data, it&apos;s recommended to set the XML_PARSE_NO_XXE option to disable loading of external entities.  XML_PARSE_DTDLOAD  Enables loading of an external DTD and the loading and substitution of external parameter entities. Has no effect if XML_PARSE_NO_XXE is set.  XML_PARSE_DTDATTR  Adds default attributes from the DTD to the result document.  Implies XML_PARSE_DTDLOAD, but loading of external content can be disabled with XML_PARSE_NO_XXE.  XML_PARSE_DTDVALID  This option enables DTD validation which requires to load external DTDs and external entities (both general and parameter entities) unless XML_PARSE_NO_XXE was set.  XML_PARSE_NO_XXE  Disables loading of external DTDs or entities.  XML_PARSE_NOERROR  Disable error and warning reports to the error handlers. Errors are still accessible with xmlCtxtGetLastError.  XML_PARSE_NOWARNING  Disable warning reports.  XML_PARSE_PEDANTIC  Enable some pedantic warnings.  XML_PARSE_NOBLANKS  Remove some text nodes containing only whitespace from the result document. Which nodes are removed depends on DTD element declarations or a conservative heuristic. The reindenting feature of the serialization code relies on this option to be set when parsing. Use of this option is DISCOURAGED.  XML_PARSE_SAX1  Always invoke the deprecated SAX1 startElement and endElement handlers. This option is DEPRECATED.  XML_PARSE_NONET  Disable network access with the builtin HTTP client.  XML_PARSE_NODICT  Create a document without interned strings, making all strings separate memory allocations.  XML_PARSE_NSCLEAN  Remove redundant namespace declarations from the result document.  XML_PARSE_NOCDATA  Output normal text nodes instead of CDATA nodes.  XML_PARSE_COMPACT  Store small strings directly in the node struct to save memory.  XML_PARSE_OLD10  Use old Name productions from before XML 1.0 Fifth Edition. This options is DEPRECATED.  XML_PARSE_HUGE  Relax some internal limits.  Maximum size of text nodes, tags, comments, processing instructions, CDATA sections, entity values  normal: 10M huge:    1B  Maximum size of names, system literals, pubid literals  normal: 50K huge:   10M  Maximum nesting depth of elements  normal:  256 huge:   2048  Maximum nesting depth of entities  normal: 20 huge:   40  XML_PARSE_OLDSAX  Enable an unspecified legacy mode for SAX parsers. This option is DEPRECATED.  XML_PARSE_IGNORE_ENC  Ignore the encoding in the XML declaration. This option is mostly unneeded these days. The only effect is to enforce UTF-8 decoding of ASCII-like data.  XML_PARSE_BIG_LINES  Enable reporting of line numbers larger than 65535.  XML_PARSE_NO_UNZIP  Disables input decompression. Setting this option is recommended to avoid zip bombs.  Available since 2.14.0.  XML_PARSE_NO_SYS_CATALOG  Disables the global system XML catalog.  Available since 2.14.0.  XML_PARSE_NO_CATALOG_PI  Ignore XML catalog processing instructions.  Available since 2.14.0.</info>
+      <info>Applies the options to the parser context. Unset options are cleared.  Available since 2.13.0. With older versions, you can use xmlCtxtUseOptions.  XML_PARSE_RECOVER  Enable &quot;recovery&quot; mode which allows non-wellformed documents. How this mode behaves exactly is unspecified and may change without further notice. Use of this feature is DISCOURAGED.  XML_PARSE_NOENT  Despite the confusing name, this option enables substitution of entities. The resulting tree won&apos;t contain any entity reference nodes.  This option also enables loading of external entities (both general and parameter entities) which is dangerous. If you process untrusted data, it&apos;s recommended to set the XML_PARSE_NO_XXE option to disable loading of external entities.  XML_PARSE_DTDLOAD  Enables loading of an external DTD and the loading and substitution of external parameter entities. Has no effect if XML_PARSE_NO_XXE is set.  XML_PARSE_DTDATTR  Adds default attributes from the DTD to the result document.  Implies XML_PARSE_DTDLOAD, but loading of external content can be disabled with XML_PARSE_NO_XXE.  XML_PARSE_DTDVALID  This option enables DTD validation which requires to load external DTDs and external entities (both general and parameter entities) unless XML_PARSE_NO_XXE was set.  XML_PARSE_NO_XXE  Disables loading of external DTDs or entities.  Available since 2.13.0.  XML_PARSE_NOERROR  Disable error and warning reports to the error handlers. Errors are still accessible with xmlCtxtGetLastError.  XML_PARSE_NOWARNING  Disable warning reports.  XML_PARSE_PEDANTIC  Enable some pedantic warnings.  XML_PARSE_NOBLANKS  Remove some text nodes containing only whitespace from the result document. Which nodes are removed depends on DTD element declarations or a conservative heuristic. The reindenting feature of the serialization code relies on this option to be set when parsing. Use of this option is DISCOURAGED.  XML_PARSE_SAX1  Always invoke the deprecated SAX1 startElement and endElement handlers. This option is DEPRECATED.  XML_PARSE_NONET  Disable network access with the builtin HTTP client.  XML_PARSE_NODICT  Create a document without interned strings, making all strings separate memory allocations.  XML_PARSE_NSCLEAN  Remove redundant namespace declarations from the result document.  XML_PARSE_NOCDATA  Output normal text nodes instead of CDATA nodes.  XML_PARSE_COMPACT  Store small strings directly in the node struct to save memory.  XML_PARSE_OLD10  Use old Name productions from before XML 1.0 Fifth Edition. This options is DEPRECATED.  XML_PARSE_HUGE  Relax some internal limits.  Maximum size of text nodes, tags, comments, processing instructions, CDATA sections, entity values  normal: 10M huge:    1B  Maximum size of names, system literals, pubid literals  normal: 50K huge:   10M  Maximum nesting depth of elements  normal:  256 huge:   2048  Maximum nesting depth of entities  normal: 20 huge:   40  XML_PARSE_OLDSAX  Enable an unspecified legacy mode for SAX parsers. This option is DEPRECATED.  XML_PARSE_IGNORE_ENC  Ignore the encoding in the XML declaration. This option is mostly unneeded these days. The only effect is to enforce UTF-8 decoding of ASCII-like data.  XML_PARSE_BIG_LINES  Enable reporting of line numbers larger than 65535.  XML_PARSE_NO_UNZIP  Disables input decompression. Setting this option is recommended to avoid zip bombs.  Available since 2.14.0.  XML_PARSE_NO_SYS_CATALOG  Disables the global system XML catalog.  Available since 2.14.0.  XML_PARSE_NO_CATALOG_PI  Ignore XML catalog processing instructions.  Available since 2.14.0.</info>
       <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='options' type='int' info='a bitmask of xmlParserOption values'/>
     </function>
     <function name='xmlCtxtSetPrivate' file='parser' module='parserInternals'>
-      <info>ctxt:  parser context priv:  private application data  Available since 2.14.0.  Set the private application data.</info>
+      <info>Available since 2.14.0.  Set the private application data.</info>
       <return type='void'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info=''/>
-      <arg name='priv' type='void *' info=''/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='parser context'/>
+      <arg name='priv' type='void *' info='private application data'/>
     </function>
     <function name='xmlCtxtSetResourceLoader' file='parser' module='parserInternals'>
       <info>Installs a custom callback to load documents, DTDs or external entities.  Available since 2.14.0.</info>
@@ -8851,6 +8810,21 @@ crash if you try to modify the tree)'/>
       <return type='int' info='0 in case of success, the set of unknown or unimplemented options in case of error.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='options' type='int' info='a combination of xmlParserOption'/>
+    </function>
+    <function name='xmlCtxtValidateDocument' file='parser' module='valid'>
+      <cond>defined(LIBXML_VALID_ENABLED)</cond>
+      <info>Validate a document.  Like xmlValidateDocument but uses the parser context&apos;s error handler.  Option XML_PARSE_DTDLOAD should be enabled in the parser context to make external entities work.  Availabe since 2.14.0.</info>
+      <return type='int' info='1 if valid or 0 otherwise.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='a parser context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+    </function>
+    <function name='xmlCtxtValidateDtd' file='parser' module='valid'>
+      <cond>defined(LIBXML_VALID_ENABLED)</cond>
+      <info>Validate a document against a DTD.  Like xmlValidateDtd but uses the parser context&apos;s error handler.  Availabe since 2.14.0.</info>
+      <return type='int' info='1 if valid or 0 otherwise.'/>
+      <arg name='ctxt' type='xmlParserCtxtPtr' info='a parser context'/>
+      <arg name='doc' type='xmlDocPtr' info='a document instance'/>
+      <arg name='dtd' type='xmlDtdPtr' info='a dtd instance'/>
     </function>
     <function name='xmlCurrentChar' file='parserInternals' module='parserInternals'>
       <info>DEPRECATED: Internal function, do not use.  The current char value, if using UTF-8 this may actually span multiple bytes in the input buffer. Implement the end of line normalization: 2.11 End-of-Line Handling Wherever an external parsed entity or the literal entity value of an internal parsed entity contains either the literal two-character sequence &quot;#xD#xA&quot; or a standalone literal #xD, an XML processor must pass to the application the single character #xA. This behavior can conveniently be produced by normalizing all line breaks to #xA on input, before parsing.)</info>
@@ -9225,15 +9199,15 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlNodePtr' info='the current node'/>
     </function>
     <function name='xmlEncodeEntitiesReentrant' file='entities' module='entities'>
-      <info>Do a global encoding of a string, replacing the predefined entities and non ASCII values with their entities and CharRef counterparts. Contrary to xmlEncodeEntities, this routine is reentrant, and result must be deallocated.</info>
+      <info>Do a global encoding of a string, replacing the predefined entities and non ASCII values with their entities and CharRef counterparts. Contrary to xmlEncodeEntities, this routine is reentrant, and result must be deallocated.  This escapes &apos;&lt;&apos;, &apos;&gt;&apos;, &apos;&amp;&apos; and &apos;\r&apos;. If the document has no encoding, non-ASCII codepoints are escaped. There is some special handling for HTML documents.</info>
       <return type='xmlChar *' info='A newly allocated string with the substitution done.'/>
       <arg name='doc' type='xmlDocPtr' info='the document containing the string'/>
       <arg name='input' type='const xmlChar *' info='A string to convert to XML.'/>
     </function>
     <function name='xmlEncodeSpecialChars' file='entities' module='entities'>
-      <info>Do a global encoding of a string, replacing the predefined entities this routine is reentrant, and result must be deallocated.</info>
+      <info>Do a global encoding of a string, replacing the predefined entities this routine is reentrant, and result must be deallocated.  This escapes &apos;&lt;&apos;, &apos;&gt;&apos;, &apos;&amp;&apos;, &apos;&quot;&apos; and &apos;\r&apos; chars.</info>
       <return type='xmlChar *' info='A newly allocated string with the substitution done.'/>
-      <arg name='doc' type='const xmlDoc *' info='the document containing the string'/>
+      <arg name='doc' type='const xmlDoc *' info='unused'/>
       <arg name='input' type='const xmlChar *' info='A string to convert to XML.'/>
     </function>
     <functype name='xmlExternalEntityLoader' file='parser' module='parser'>
@@ -9283,7 +9257,7 @@ crash if you try to modify the tree)'/>
       <arg name='data' type='void *' info='user data for callback'/>
     </function>
     <function name='xmlFreeAttributeTable' file='valid' module='valid'>
-      <info>Deallocate the memory used by an entities hash table.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Deallocate the memory used by an entities hash table.</info>
       <return type='void'/>
       <arg name='table' type='xmlAttributeTablePtr' info='An attribute table'/>
     </function>
@@ -9305,7 +9279,7 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlDocPtr' info='pointer to the document'/>
     </function>
     <function name='xmlFreeDocElementContent' file='valid' module='valid'>
-      <info>Free an element content structure. The whole subtree is removed.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Free an element content structure. The whole subtree is removed.</info>
       <return type='void'/>
       <arg name='doc' type='xmlDocPtr' info='the document owning the element declaration'/>
       <arg name='cur' type='xmlElementContentPtr' info='the element content tree to free'/>
@@ -9316,12 +9290,12 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlDtdPtr' info='the DTD structure to free up'/>
     </function>
     <function name='xmlFreeElementContent' file='valid' module='valid'>
-      <info>Free an element content structure. The whole subtree is removed. Deprecated, use xmlFreeDocElementContent instead</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Free an element content structure. The whole subtree is removed. Deprecated, use xmlFreeDocElementContent instead</info>
       <return type='void'/>
       <arg name='cur' type='xmlElementContentPtr' info='the element content tree to free'/>
     </function>
     <function name='xmlFreeElementTable' file='valid' module='valid'>
-      <info>Deallocate the memory used by an element hash table.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Deallocate the memory used by an element hash table.</info>
       <return type='void'/>
       <arg name='table' type='xmlElementTablePtr' info='An element table'/>
     </function>
@@ -9371,7 +9345,7 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlNodePtr' info='the first node in the list'/>
     </function>
     <function name='xmlFreeNotationTable' file='valid' module='valid'>
-      <info>Deallocate the memory used by an entities hash table.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Deallocate the memory used by an entities hash table.</info>
       <return type='void'/>
       <arg name='table' type='xmlNotationTablePtr' info='An notation table'/>
     </function>
@@ -9457,7 +9431,7 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlValidCtxtPtr' info='the validation context to free'/>
     </function>
     <function name='xmlGcMemGet' file='xmlmemory' module='xmlmemory'>
-      <info>Provides the memory access functions set currently in use The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas  useful for garbage collected memory allocators</info>
+      <info>DEPRECATED: xmlMemGet.  Provides the memory access functions set currently in use The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas  useful for garbage collected memory allocators</info>
       <return type='int' info='0 on success'/>
       <arg name='freeFunc' type='xmlFreeFunc *' info='place to save the free() function in use'/>
       <arg name='mallocFunc' type='xmlMallocFunc *' info='place to save the malloc() function in use'/>
@@ -9466,7 +9440,7 @@ crash if you try to modify the tree)'/>
       <arg name='strdupFunc' type='xmlStrdupFunc *' info='place to save the strdup() function in use'/>
     </function>
     <function name='xmlGcMemSetup' file='xmlmemory' module='xmlmemory'>
-      <info>Override the default memory access functions with a new set This has to be called before any other libxml routines ! The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas  useful for garbage collected memory allocators  Should this be blocked if there was already some allocations done ?</info>
+      <info>DEPRECATED: Use xmlMemSetup.  Override the default memory access functions with a new set This has to be called before any other libxml routines ! The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas  useful for garbage collected memory allocators  Should this be blocked if there was already some allocations done ?</info>
       <return type='int' info='0 on success'/>
       <arg name='freeFunc' type='xmlFreeFunc' info='the free() function to use'/>
       <arg name='mallocFunc' type='xmlMallocFunc' info='the malloc() function to use'/>
@@ -9481,8 +9455,8 @@ crash if you try to modify the tree)'/>
       <arg name='msg' type='const char *' info='the message'/>
       <arg name='...' type='...' info='the extra arguments of the varargs to format the message'/>
     </functype>
-    <function name='xmlGetBufferAllocationScheme' file='tree' module='tree'>
-      <info>Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance XML_BUFFER_ALLOC_HYBRID - use exact sizes on small strings to keep memory usage tight in normal usage, and doubleit on large strings to avoid pathological performance.</info>
+    <function name='xmlGetBufferAllocationScheme' file='tree' module='buf'>
+      <info>DEPRECATED: Use xmlBufferSetAllocationScheme.  Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance XML_BUFFER_ALLOC_HYBRID - use exact sizes on small strings to keep memory usage tight in normal usage, and doubleit on large strings to avoid pathological performance.</info>
       <return type='xmlBufferAllocationScheme' info='the current allocation scheme'/>
     </function>
     <function name='xmlGetCharEncodingHandler' file='encoding' module='encoding'>
@@ -9955,7 +9929,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlIOParseDTD' file='parser' module='parser'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
-      <info>Load and parse a DTD</info>
+      <info>DEPRECATED: Use xmlCtxtParseDtd.  Load and parse a DTD</info>
       <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error. @input will be freed by the function in any case.'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block or NULL'/>
       <arg name='input' type='xmlParserInputBufferPtr' info='an Input Buffer'/>
@@ -9979,7 +9953,7 @@ crash if you try to modify the tree)'/>
       <arg name='seq' type='xmlParserNodeInfoSeqPtr' info='a node info sequence pointer'/>
     </function>
     <function name='xmlInitParser' file='parser' module='threads'>
-      <info>Initialization function for the XML parser.  Call once from the main thread before using the library in multithreaded programs.</info>
+      <info>Initialization function for the XML parser.  For older versions, it&apos;s recommended to call this function once from the main thread before using the library in multithreaded programs.  Since 2.14.0, there&apos;s no distinction between threads. It should be unnecessary to call this function.</info>
       <return type='void'/>
     </function>
     <function name='xmlInitParserCtxt' file='parser' module='parserInternals'>
@@ -10641,7 +10615,7 @@ crash if you try to modify the tree)'/>
       <arg name='content' type='const xmlChar *' info='the comment content'/>
     </function>
     <function name='xmlNewDocElementContent' file='valid' module='valid'>
-      <info>Allocate an element content structure for the document.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Allocate an element content structure for the document.</info>
       <return type='xmlElementContentPtr' info='NULL if not, otherwise the new element content structure'/>
       <arg name='doc' type='xmlDocPtr' info='the document'/>
       <arg name='name' type='const xmlChar *' info='the subelement name or NULL'/>
@@ -10712,7 +10686,7 @@ crash if you try to modify the tree)'/>
       <arg name='SystemID' type='const xmlChar *' info='the system ID (optional)'/>
     </function>
     <function name='xmlNewElementContent' file='valid' module='valid'>
-      <info>Allocate an element content structure. Deprecated in favor of xmlNewDocElementContent</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Allocate an element content structure. Deprecated in favor of xmlNewDocElementContent</info>
       <return type='xmlElementContentPtr' info='NULL if not, otherwise the new element content structure'/>
       <arg name='name' type='const xmlChar *' info='the subelement name or NULL'/>
       <arg name='type' type='xmlElementContentType' info='the type of element content decl'/>
@@ -11045,17 +11019,17 @@ crash if you try to modify the tree)'/>
       <arg name='node' type='const xmlNode *' info='the node'/>
     </function>
     <function name='xmlNodeListGetRawString' file='tree' module='tree'>
-      <info>Serializes attribute children (text and entity reference nodes) into a string. An empty list produces an empty string.  If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special characters like &apos;&amp;&apos; will be escaped.</info>
+      <info>Serializes attribute children (text and entity reference nodes) into a string.  If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special characters like &apos;&amp;&apos; will be escaped.</info>
       <return type='xmlChar *' info='a string or NULL if a memory allocation failed.'/>
       <arg name='doc' type='const xmlDoc *' info='a document (optional)'/>
-      <arg name='list' type='const xmlNode *' info='a node list of attribute children (optional)'/>
+      <arg name='list' type='const xmlNode *' info='a node list of attribute children'/>
       <arg name='inLine' type='int' info='whether entity references are substituted'/>
     </function>
     <function name='xmlNodeListGetString' file='tree' module='tree'>
-      <info>Serializes attribute children (text and entity reference nodes) into a string. An empty list produces an empty string.  If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special characters like &apos;&amp;&apos; as well as non-ASCII chars will be escaped. See xmlNodeListGetRawString for an alternative option.</info>
+      <info>Serializes attribute children (text and entity reference nodes) into a string.  If @inLine is true, entity references will be substituted. Otherwise, entity references will be kept and special characters like &apos;&amp;&apos; as well as non-ASCII chars will be escaped. See xmlNodeListGetRawString for an alternative option.</info>
       <return type='xmlChar *' info='a string or NULL if a memory allocation failed.'/>
       <arg name='doc' type='xmlDocPtr' info='a document (optional)'/>
-      <arg name='list' type='const xmlNode *' info='a node list of attribute children (optional)'/>
+      <arg name='list' type='const xmlNode *' info='a node list of attribute children'/>
       <arg name='inLine' type='int' info='whether entity references are substituted'/>
     </function>
     <function name='xmlNodeSetBase' file='tree' module='tree'>
@@ -11120,28 +11094,28 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlOutputBufferCreateBuffer' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a buffered output for the progressive saving to a xmlBuffer</info>
+      <info>Create a buffered output for the progressive saving to a xmlBuffer  Consumes @encoder even in error case.</info>
       <return type='xmlOutputBufferPtr' info='the new parser output or NULL'/>
       <arg name='buffer' type='xmlBufferPtr' info='a xmlBufferPtr'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
     </function>
     <function name='xmlOutputBufferCreateFd' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a buffered output for the progressive saving to a file descriptor</info>
+      <info>Create a buffered output for the progressive saving to a file descriptor  Consumes @encoder even in error case.</info>
       <return type='xmlOutputBufferPtr' info='the new parser output or NULL'/>
       <arg name='fd' type='int' info='a file descriptor number'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
     </function>
     <function name='xmlOutputBufferCreateFile' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a buffered output for the progressive saving to a FILE * buffered C I/O</info>
+      <info>Create a buffered output for the progressive saving to a FILE * buffered C I/O  Consumes @encoder even in error case.</info>
       <return type='xmlOutputBufferPtr' info='the new parser output or NULL'/>
       <arg name='file' type='FILE *' info='a FILE*'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
     </function>
     <function name='xmlOutputBufferCreateFilename' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a buffered  output for the progressive saving of a file If filename is &quot;-&apos; then we use stdout as the output. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. TODO: currently if compression is set, the library only support writing to a local file.</info>
+      <info>Create a buffered  output for the progressive saving of a file If filename is &quot;-&apos; then we use stdout as the output. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. TODO: currently if compression is set, the library only support writing to a local file.  Consumes @encoder even in error case.</info>
       <return type='xmlOutputBufferPtr' info='the new output or NULL'/>
       <arg name='URI' type='const char *' info='a C string containing the URI or filename'/>
       <arg name='encoder' type='xmlCharEncodingHandlerPtr' info='the encoding converter or NULL'/>
@@ -11161,7 +11135,7 @@ crash if you try to modify the tree)'/>
     </functype>
     <function name='xmlOutputBufferCreateIO' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Create a buffered output for the progressive saving to an I/O handler</info>
+      <info>Create a buffered output for the progressive saving to an I/O handler  Consumes @encoder even in error case.</info>
       <return type='xmlOutputBufferPtr' info='the new parser output or NULL'/>
       <arg name='iowrite' type='xmlOutputWriteCallback' info='an I/O write function'/>
       <arg name='ioclose' type='xmlOutputCloseCallback' info='an I/O close function'/>
@@ -11192,7 +11166,7 @@ crash if you try to modify the tree)'/>
       <return type='int' info='the number of chars immediately written, or -1 in case of error.'/>
       <arg name='out' type='xmlOutputBufferPtr' info='a buffered parser output'/>
       <arg name='len' type='int' info='the size in bytes of the array.'/>
-      <arg name='buf' type='const char *' info='an char array'/>
+      <arg name='data' type='const char *' info='an char array'/>
     </function>
     <function name='xmlOutputBufferWriteEscape' file='xmlIO' module='xmlIO'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
@@ -11443,7 +11417,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
     <function name='xmlParseExtParsedEnt' file='parser' module='parser'>
-      <info>parse a general parsed entity An external general parsed entity is well-formed if it matches the production labeled extParsedEnt.  [78] extParsedEnt ::= TextDecl? content</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse a general parsed entity An external general parsed entity is well-formed if it matches the production labeled extParsedEnt.  [78] extParsedEnt ::= TextDecl? content</info>
       <return type='int' info='0, -1 in case of error. the parser context is augmented as a result of the parsing.'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -11467,7 +11441,7 @@ crash if you try to modify the tree)'/>
       <arg name='strict' type='int' info='indicate whether we should restrict parsing to only production [75], see NOTE below'/>
     </function>
     <function name='xmlParseExternalSubset' file='parserInternals' module='parser'>
-      <info>parse Markup declarations from an external subset  [30] extSubset ::= textDecl? extSubsetDecl  [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  parse Markup declarations from an external subset  [30] extSubset ::= textDecl? extSubsetDecl  [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='ExternalID' type='const xmlChar *' info='the external identifier'/>
@@ -11645,19 +11619,19 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the parser context'/>
     </function>
     <function name='xmlParserInputBufferCreateFd' file='xmlIO' module='xmlIO'>
-      <info>Create a buffered parser input for the progressive parsing for the input from a file descriptor  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
+      <info>DEPRECATED: Use xmlNewInputFromFd.  Create a buffered parser input for the progressive parsing for the input from a file descriptor  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='fd' type='int' info='a file descriptor number'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known (deprecated)'/>
     </function>
     <function name='xmlParserInputBufferCreateFile' file='xmlIO' module='xmlIO'>
-      <info>Create a buffered parser input for the progressive parsing of a FILE * buffered C I/O  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
+      <info>DEPRECATED: Don&apos;t use.  Create a buffered parser input for the progressive parsing of a FILE * buffered C I/O  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='file' type='FILE *' info='a FILE*'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known (deprecated)'/>
     </function>
     <function name='xmlParserInputBufferCreateFilename' file='xmlIO' module='xmlIO'>
-      <info>Create a buffered parser input for the progressive parsing of a file Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. Do an encoding check if enc == XML_CHAR_ENCODING_NONE</info>
+      <info>DEPRECATED: Use xmlNewInputFromUrl.  Create a buffered parser input for the progressive parsing of a file Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. Do an encoding check if enc == XML_CHAR_ENCODING_NONE</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='URI' type='const char *' info='a C string containing the URI or filename'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
@@ -11674,7 +11648,7 @@ crash if you try to modify the tree)'/>
       <arg name='enc' type='xmlCharEncoding' info='the requested source encoding'/>
     </functype>
     <function name='xmlParserInputBufferCreateIO' file='xmlIO' module='xmlIO'>
-      <info>Create a buffered parser input for the progressive parsing for the input from an I/O handler  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
+      <info>DEPRECATED: Use xmlNewInputFromIO.  Create a buffered parser input for the progressive parsing for the input from an I/O handler  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL'/>
       <arg name='ioread' type='xmlInputReadCallback' info='an I/O read function'/>
       <arg name='ioclose' type='xmlInputCloseCallback' info='an I/O close function'/>
@@ -11682,34 +11656,34 @@ crash if you try to modify the tree)'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known (deprecated)'/>
     </function>
     <function name='xmlParserInputBufferCreateMem' file='xmlIO' module='xmlIO'>
-      <info>Create a parser input buffer for parsing from a memory area.  This function makes a copy of the whole input buffer. If you are sure that the contents of the buffer will remain valid until the document was parsed, you can avoid the copy by using xmlParserInputBufferCreateStatic.  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
+      <info>DEPRECATED: Use xmlNewInputFromMemory.  Create a parser input buffer for parsing from a memory area.  This function makes a copy of the whole input buffer. If you are sure that the contents of the buffer will remain valid until the document was parsed, you can avoid the copy by using xmlParserInputBufferCreateStatic.  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL in case of error.'/>
       <arg name='mem' type='const char *' info='the memory input'/>
       <arg name='size' type='int' info='the length of the memory block'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known (deprecated)'/>
     </function>
     <function name='xmlParserInputBufferCreateStatic' file='xmlIO' module='xmlIO'>
-      <info>Create a parser input buffer for parsing from a memory area.  This functions assumes that the contents of the input buffer remain valid until the document was parsed. Use xmlParserInputBufferCreateMem otherwise.  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
+      <info>DEPRECATED: Use xmlNewInputFromMemory.  Create a parser input buffer for parsing from a memory area.  This functions assumes that the contents of the input buffer remain valid until the document was parsed. Use xmlParserInputBufferCreateMem otherwise.  The encoding argument is deprecated and should be set to XML_CHAR_ENCODING_NONE. The encoding can be changed with xmlSwitchEncoding or xmlSwitchEncodingName later on.</info>
       <return type='xmlParserInputBufferPtr' info='the new parser input or NULL in case of error.'/>
       <arg name='mem' type='const char *' info='the memory input'/>
       <arg name='size' type='int' info='the length of the memory block'/>
       <arg name='enc' type='xmlCharEncoding' info='the charset encoding if known'/>
     </function>
     <function name='xmlParserInputBufferGrow' file='xmlIO' module='xmlIO'>
-      <info>Grow up the content of the input buffer, the old data are preserved This routine handle the I18N transcoding to internal UTF-8 This routine is used when operating the parser in normal (pull) mode  TODO: one should be able to remove one extra copy by copying directly onto in-&gt;buffer or in-&gt;raw</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Grow up the content of the input buffer, the old data are preserved This routine handle the I18N transcoding to internal UTF-8 This routine is used when operating the parser in normal (pull) mode</info>
       <return type='int' info='the number of chars read and stored in the buffer, or -1 in case of error.'/>
       <arg name='in' type='xmlParserInputBufferPtr' info='a buffered parser input'/>
       <arg name='len' type='int' info='indicative value of the amount of chars to read'/>
     </function>
     <function name='xmlParserInputBufferPush' file='xmlIO' module='xmlIO'>
-      <info>Push the content of the arry in the input buffer This routine handle the I18N transcoding to internal UTF-8 This is used when operating the parser in progressive (push) mode.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Push the content of the arry in the input buffer This routine handle the I18N transcoding to internal UTF-8 This is used when operating the parser in progressive (push) mode.</info>
       <return type='int' info='the number of chars read and stored in the buffer, or -1 in case of error.'/>
       <arg name='in' type='xmlParserInputBufferPtr' info='a buffered parser input'/>
       <arg name='len' type='int' info='the size in bytes of the array.'/>
       <arg name='buf' type='const char *' info='an char array'/>
     </function>
     <function name='xmlParserInputBufferRead' file='xmlIO' module='xmlIO'>
-      <info>Refresh the content of the input buffer, the old data are considered consumed This routine handle the I18N transcoding to internal UTF-8</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Same as xmlParserInputBufferGrow.</info>
       <return type='int' info='the number of chars read and stored in the buffer, or -1 in case of error.'/>
       <arg name='in' type='xmlParserInputBufferPtr' info='a buffered parser input'/>
       <arg name='len' type='int' info='indicative value of the amount of chars to read'/>
@@ -11834,7 +11808,7 @@ crash if you try to modify the tree)'/>
       <arg name='val' type='int' info='int 0 or 1'/>
     </function>
     <function name='xmlPopInput' file='parserInternals' module='parser'>
-      <info>xmlPopInput: the current input pointed by ctxt-&gt;input came to an end pop it and return the next char.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.</info>
       <return type='xmlChar' info='the current xmlChar in the parser context'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
     </function>
@@ -11859,7 +11833,7 @@ crash if you try to modify the tree)'/>
       <arg name='uri' type='xmlURIPtr' info='pointer to an xmlURI'/>
     </function>
     <function name='xmlPushInput' file='parserInternals' module='parser'>
-      <info>Push an input stream onto the stack.</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Push an input stream onto the stack.</info>
       <return type='int' info='-1 in case of error or the index in the input stack'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
       <arg name='input' type='xmlParserInputPtr' info='an XML parser input fragment (entity, XML fragment ...).'/>
@@ -12669,7 +12643,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlSAXParseDTD' file='parser' module='parser'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
-      <info>DEPRECATED: Don&apos;t use.  Load and parse an external subset.</info>
+      <info>DEPRECATED: Use xmlCtxtParseDtd.  Load and parse an external subset.</info>
       <return type='xmlDtdPtr' info='the resulting xmlDtdPtr or NULL in case of error.'/>
       <arg name='sax' type='xmlSAXHandlerPtr' info='the SAX handler block'/>
       <arg name='ExternalID' type='const xmlChar *' info='a NAME* containing the External ID of the DTD'/>
@@ -12825,14 +12799,14 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlSaveSetAttrEscape' file='xmlsave' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Set a custom escaping function to be used for text in attribute content</info>
+      <info>DEPRECATED: Don&apos;t use.  Has no effect.</info>
       <return type='int' info='0 if successful or -1 in case of error.'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
       <arg name='escape' type='xmlCharEncodingOutputFunc' info='the escaping function'/>
     </function>
     <function name='xmlSaveSetEscape' file='xmlsave' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Set a custom escaping function to be used for text in element content</info>
+      <info>DEPRECATED: Don&apos;t use.  Set a custom escaping function to be used for text in element content</info>
       <return type='int' info='0 if successful or -1 in case of error.'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
       <arg name='escape' type='xmlCharEncodingOutputFunc' info='the escaping function'/>
@@ -13468,8 +13442,8 @@ crash if you try to modify the tree)'/>
       <arg name='node' type='xmlNodePtr' info='the current node'/>
       <arg name='href' type='const xmlChar *' info='the namespace value'/>
     </function>
-    <function name='xmlSetBufferAllocationScheme' file='tree' module='tree'>
-      <info>Set the buffer allocation method.  Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance</info>
+    <function name='xmlSetBufferAllocationScheme' file='tree' module='buf'>
+      <info>DEPRECATED: Use xmlBufferSetAllocationScheme.  Set the buffer allocation method.  Types are XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down XML_BUFFER_ALLOC_DOUBLEIT - double buffer when extra needed, improves performance</info>
       <return type='void'/>
       <arg name='scheme' type='xmlBufferAllocationScheme' info='allocation method to use'/>
     </function>
@@ -13548,7 +13522,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctxt' type='xmlParserCtxtPtr' info='the XML parser context'/>
     </function>
     <function name='xmlSnprintfElementContent' file='valid' module='valid'>
-      <info>This will dump the content of the element content definition Intended just for the debug routine</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  This will dump the content of the element content definition Intended just for the debug routine</info>
       <return type='void'/>
       <arg name='buf' type='char *' info='an output buffer'/>
       <arg name='size' type='int' info='the buffer size'/>
@@ -13576,7 +13550,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlSprintfElementContent' file='valid' module='valid'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Deprecated, unsafe, use xmlSnprintfElementContent</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Deprecated, unsafe, use xmlSnprintfElementContent</info>
       <return type='void'/>
       <arg name='buf' type='char *' info='an output buffer'/>
       <arg name='content' type='xmlElementContentPtr' info='An element table'/>
@@ -13849,7 +13823,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlTextReaderByteConsumed' file='xmlreader' module='xmlreader'>
       <cond>defined(LIBXML_READER_ENABLED)</cond>
-      <info>This function provides the current index of the parser used by the reader, relative to the start of the current entity. This function actually just wraps a call to xmlBytesConsumed() for the parser context associated with the reader. See xmlBytesConsumed() for more information.</info>
+      <info>DEPRECATED: The returned value is mostly random and useless. It reflects the parser reading ahead and is in no way related to the current node.  This function provides the current index of the parser used by the reader, relative to the start of the current entity. This function actually just wraps a call to xmlBytesConsumed() for the parser context associated with the reader. See xmlBytesConsumed() for more information.</info>
       <return type='long' info='the index in bytes from the beginning of the entity or -1 in case the index could not be computed.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='an XML reader'/>
     </function>
@@ -16174,9 +16148,9 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlValidateDocument' file='valid' module='valid'>
       <cond>defined(LIBXML_VALID_ENABLED)</cond>
-      <info>Try to validate the document instance  basically it does the all the checks described by the XML Rec i.e. validates the internal and external subset (if present) and validate the document tree.</info>
+      <info>DEPRECATED: This function can&apos;t report malloc or other failures. Use xmlCtxtValidateDocument.  Try to validate the document instance  basically it does the all the checks described by the XML Rec i.e. validates the internal and external subset (if present) and validate the document tree.</info>
       <return type='int' info='1 if valid or 0 otherwise'/>
-      <arg name='ctxt' type='xmlValidCtxtPtr' info='the validation context'/>
+      <arg name='vctxt' type='xmlValidCtxtPtr' info='the validation context'/>
       <arg name='doc' type='xmlDocPtr' info='a document instance'/>
     </function>
     <function name='xmlValidateDocumentFinal' file='valid' module='valid'>
@@ -16718,7 +16692,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlXPathEvalExpr' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Parse and evaluate an XPath expression in the given context, then push the result on the context stack</info>
+      <info>DEPRECATED: Internal function, don&apos;t use.  Parse and evaluate an XPath expression in the given context, then push the result on the context stack</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
     </function>
@@ -17275,7 +17249,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlXPathRegisterAllFunctions' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Registers all default XPath functions in this context</info>
+      <info>DEPRECATED: No-op since 2.14.0.  Registers all default XPath functions in this context</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathContextPtr' info='the XPath context'/>
     </function>

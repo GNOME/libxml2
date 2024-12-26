@@ -2,12 +2,12 @@
 .\"     Title: xmllint
 .\"    Author: John Fleck <jfleck@inkstain.net>
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 06/12/2024
+.\"      Date: 12/26/2024
 .\"    Manual: xmllint Manual
 .\"    Source: libxml2
 .\"  Language: English
 .\"
-.TH "XMLLINT" "1" "06/12/2024" "libxml2" "xmllint Manual"
+.TH "XMLLINT" "1" "12/26/2024" "libxml2" "xmllint Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,9 +31,7 @@
 xmllint \- command line XML tool
 .SH "SYNOPSIS"
 .HP \w'\fBxmllint\fR\ 'u
-\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-quiet\fR | \fB\-\-shell\fR | \fB\-\-xpath\ "\fR\fB\fIXPath_expression\fR\fR\fB"\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-nodict\fR | \fB\-\-noent\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-path\ "\fR\fB\fIPATH(S)\fR\fR\fB"\fR | \fB\-\-load\-trace\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fR\fB\fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fR\fB\fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fR\fB\fIFILE\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-max\-ampl\ \fR\fB\fIINTEGER\fR\fR | \fB\-\-maxmem\ \fR\fB\fINBBYTES\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-encode\ \fR\fB\fIENCODING\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-noxincludenode\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fR\fB\fIPATTERNVALUE\fR\fR | \fB\-\-relaxng\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-schema\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-c14n\fR | \fB\-\-pedantic\fR] {\fIXML\-FILE(S)\fR... | \-}
-.HP \w'\fBxmllint\fR\ 'u
-\fBxmllint\fR \fB\-\-help\fR
+\fBxmllint\fR [\fB\-\-version\fR | \fB\-\-debug\fR | \fB\-\-quiet\fR | \fB\-\-shell\fR | \fB\-\-xpath\ "\fR\fB\fIXPath_expression\fR\fR\fB"\fR | \fB\-\-debugent\fR | \fB\-\-copy\fR | \fB\-\-recover\fR | \fB\-\-huge\fR | \fB\-\-nocompact\fR | \fB\-\-nodefdtd\fR | \fB\-\-nodict\fR | \fB\-\-noenc\fR | \fB\-\-noent\fR | \fB\-\-nofixup\-base\-uris\fR | \fB\-\-noout\fR | \fB\-\-nonet\fR | \fB\-\-path\ "\fR\fB\fIPATH(S)\fR\fR\fB"\fR | \fB\-\-load\-trace\fR | \fB\-\-htmlout\fR | \fB\-\-nowrap\fR | \fB\-\-valid\fR | \fB\-\-postvalid\fR | \fB\-\-dtdvalid\ \fR\fB\fIURL\fR\fR | \fB\-\-dtdvalidfpi\ \fR\fB\fIFPI\fR\fR | \fB\-\-timing\fR | \fB\-\-output\ \fR\fB\fIFILE\fR\fR | \fB\-\-repeat\fR | \fB\-\-insert\fR | \fB\-\-compress\fR | \fB\-\-html\fR | \fB\-\-xmlout\fR | \fB\-\-push\fR | \fB\-\-memory\fR | \fB\-\-max\-ampl\ \fR\fB\fIINTEGER\fR\fR | \fB\-\-maxmem\ \fR\fB\fINBBYTES\fR\fR | \fB\-\-nowarning\fR | \fB\-\-noblanks\fR | \fB\-\-nocdata\fR | \fB\-\-format\fR | \fB\-\-pretty\ \fR\fB\fIINTEGER\fR\fR | \fB\-\-encode\ \fR\fB\fIENCODING\fR\fR | \fB\-\-dropdtd\fR | \fB\-\-nsclean\fR | \fB\-\-testIO\fR | \fB\-\-catalogs\fR | \fB\-\-nocatalogs\fR | \fB\-\-auto\fR | \fB\-\-xinclude\fR | \fB\-\-noxincludenode\fR | \fB\-\-loaddtd\fR | \fB\-\-dtdattr\fR | \fB\-\-stream\fR | \fB\-\-walker\fR | \fB\-\-pattern\ \fR\fB\fIPATTERNVALUE\fR\fR | \fB\-\-relaxng\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-schema\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-schematron\ \fR\fB\fISCHEMA\fR\fR | \fB\-\-c14n\fR | \fB\-\-c14n11\fR | \fB\-\-exc\-c14n\fR | \fB\-\-pedantic\fR | \fB\-\-sax\fR | \fB\-\-sax1\fR | \fB\-\-oldxml10\fR] {\fIXML\-FILE(S)\fR... | \-}
 .SH "DESCRIPTION"
 .PP
 The
@@ -89,7 +87,7 @@ compression of output\&.
 Test the internal copy implementation\&.
 .RE
 .PP
-\fB\-\-c14n\fR
+\fB\-\-c14n\fR, \fB\-\-c14n11\fR, \fB\-\-exc\-c14n\fR
 .RS 4
 Use the W3C
 XML
@@ -151,12 +149,6 @@ Reformat and reindent the output\&. The
 environment variable controls the indentation\&. The default value is two spaces " ")\&.
 .RE
 .PP
-\fB\-\-help\fR
-.RS 4
-Print out a short usage summary for
-\fBxmllint\fR\&.
-.RE
-.PP
 \fB\-\-html\fR
 .RS 4
 Use the
@@ -173,6 +165,11 @@ file\&. This causes
 to output the necessary
 HTML
 tags surrounding the result tree output so the results can be displayed/viewed in a browser\&.
+.RE
+.PP
+\fB\-\-huge\fR
+.RS 4
+Ignore some hardcoded parser limits\&.
 .RE
 .PP
 \fB\-\-insert\fR
@@ -226,9 +223,24 @@ Do not use any catalogs\&.
 Substitute CDATA section by equivalent text nodes\&.
 .RE
 .PP
+\fB\-\-nocompact\fR
+.RS 4
+Do not generate compact text nodes (parser option XML_PARSE_COMPACT)\&. Only for debugging\&.
+.RE
+.PP
+\fB\-\-nodefdtd\fR
+.RS 4
+Do not set default HTML doctype (parser option HTML_PARSE_NODEFDTD)\&.
+.RE
+.PP
 \fB\-\-nodict\fR
 .RS 4
 Don\*(Aqt use dictionaries (parser option XML_PARSE_NODICT)\&. Only for debugging\&.
+.RE
+.PP
+\fB\-\-noenc\fR
+.RS 4
+Ignore encoding declaration (parser option XML_PARSE_IGNORE_ENC)\&.
 .RE
 .PP
 \fB\-\-noent\fR
@@ -236,6 +248,11 @@ Don\*(Aqt use dictionaries (parser option XML_PARSE_NODICT)\&. Only for debuggin
 Substitute entity values for entity references\&. By default,
 \fBxmllint\fR
 leaves entity references in place\&.
+.RE
+.PP
+\fB\-\-nofixup\-base\-uris\fR
+.RS 4
+Don\*(Aqt fix xml:base URIs when processing XIncludes (parser option XML_PARSE_NOBASEFIX)\&.
 .RE
 .PP
 \fB\-\-nonet\fR
@@ -273,6 +290,11 @@ Do XInclude processing but do not generate XInclude start and end nodes\&.
 Remove redundant namespace declarations\&.
 .RE
 .PP
+\fB\-\-oldxml10\fR
+.RS 4
+Use deprecated parsing rules before XML 1\&.0, 5th edition\&.
+.RE
+.PP
 \fB\-\-output \fR\fB\fIFILE\fR\fR
 .RS 4
 Define a file path where
@@ -306,6 +328,11 @@ Enable additional warnings\&.
 Validate after parsing has completed\&.
 .RE
 .PP
+\fB\-\-pretty \fR\fB\fIINTEGER\fR\fR
+.RS 4
+Value 0 means no formatting, 1 means XML_SAVE_FORMAT (same as \-\-format), 2 means XML_SAVE_WSNONSIG\&.
+.RE
+.PP
 \fB\-\-push\fR
 .RS 4
 Use the push mode of the parser\&.
@@ -333,11 +360,28 @@ for validation\&.
 Repeat 100 times, for timing or profiling\&.
 .RE
 .PP
+\fB\-\-sax\fR
+.RS 4
+Print SAX callbacks (only for debugging)\&.
+.RE
+.PP
+\fB\-\-sax1\fR
+.RS 4
+Use deprecated SAX1 interface (only for debugging)\&.
+.RE
+.PP
 \fB\-\-schema \fR\fB\fISCHEMA\fR\fR
 .RS 4
 Use a W3C
 XML
 Schema file named
+\fISCHEMA\fR
+for validation\&.
+.RE
+.PP
+\fB\-\-schematron \fR\fB\fISCHEMA\fR\fR
+.RS 4
+Use a Schematron file named
 \fISCHEMA\fR
 for validation\&.
 .RE

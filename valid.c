@@ -6790,7 +6790,7 @@ xmlValidateDocumentInternal(xmlParserCtxtPtr ctxt, xmlValidCtxtPtr vctxt,
 
 /**
  * xmlValidateDocument:
- * @ctxt:  the validation context
+ * @vctxt:  the validation context
  * @doc:  a document instance
  *
  * DEPRECATED: This function can't report malloc or other failures.

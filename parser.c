@@ -10656,7 +10656,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 
 /**
  * xmlCtxtGetVersion:
- * ctxt:  parser context
+ * @ctxt:  parser context
  *
  * Available since 2.14.0.
  *
@@ -10672,7 +10672,7 @@ xmlCtxtGetVersion(xmlParserCtxtPtr ctxt) {
 
 /**
  * xmlCtxtGetStandalone:
- * ctxt:  parser context
+ * @ctxt:  parser context
  *
  * Available since 2.14.0.
  *

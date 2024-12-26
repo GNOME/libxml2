@@ -981,6 +981,11 @@ xmlCheckThreadLocalStorage(void) {
     return(0);
 }
 
+/**
+ * xmlGetLastErrorInternal:
+ *
+ * Returns a pointer to the global error struct.
+ */
 xmlError *
 xmlGetLastErrorInternal(void) {
 #ifdef LIBXML_THREAD_ENABLED

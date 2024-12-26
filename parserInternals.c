@@ -257,6 +257,12 @@ xmlCtxtErrIO(xmlParserCtxtPtr ctxt, int code, const char *uri)
                msg, str1, str2);
 }
 
+/**
+ * xmlCtxtIsCatastrophicError:
+ * @ctxt:  parser context
+ *
+ * Returns true if the last error is catastrophic.
+ */
 int
 xmlCtxtIsCatastrophicError(xmlParserCtxtPtr ctxt) {
     if (ctxt == NULL)
@@ -1612,7 +1618,7 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
 
 /**
  * xmlCtxtGetDeclaredEncoding:
- * ctxt:  parser context
+ * @ctxt:  parser context
  *
  * Available since 2.14.0.
  *
@@ -3012,7 +3018,7 @@ xmlNewSAXParserCtxt(const xmlSAXHandler *sax, void *userData)
 
 /**
  * xmlCtxtGetPrivate:
- * ctxt:  parser context
+ * @ctxt:  parser context
  *
  * Available since 2.14.0.
  *
@@ -3028,8 +3034,8 @@ xmlCtxtGetPrivate(xmlParserCtxtPtr ctxt) {
 
 /**
  * xmlCtxtSetPrivate:
- * ctxt:  parser context
- * priv:  private application data
+ * @ctxt:  parser context
+ * @priv:  private application data
  *
  * Available since 2.14.0.
  *
@@ -3045,7 +3051,7 @@ xmlCtxtSetPrivate(xmlParserCtxtPtr ctxt, void *priv) {
 
 /**
  * xmlCtxtGetCatalogs:
- * ctxt:  parser context
+ * @ctxt:  parser context
  *
  * Available since 2.14.0.
  *
@@ -3061,8 +3067,8 @@ xmlCtxtGetCatalogs(xmlParserCtxtPtr ctxt) {
 
 /**
  * xmlCtxtSetCatalogs:
- * ctxt:  parser context
- * catalogs:  catalogs pointer
+ * @ctxt:  parser context
+ * @catalogs:  catalogs pointer
  *
  * Available since 2.14.0.
  *
@@ -3078,7 +3084,7 @@ xmlCtxtSetCatalogs(xmlParserCtxtPtr ctxt, void *catalogs) {
 
 /**
  * xmlCtxtGetDict:
- * ctxt:  parser context
+ * @ctxt:  parser context
  *
  * Available since 2.14.0.
  *
@@ -3094,8 +3100,8 @@ xmlCtxtGetDict(xmlParserCtxtPtr ctxt) {
 
 /**
  * xmlCtxtSetDict:
- * ctxt:  parser context
- * dict:  dictionary
+ * @ctxt:  parser context
+ * @dict:  dictionary
  *
  * Available since 2.14.0.
  *

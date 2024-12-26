@@ -1096,7 +1096,6 @@ xmllintShellReadline(char *prompt) {
  * xmllintShell:
  * @doc:  the initial document
  * @filename:  the output buffer
- * @input:  the line reading function
  * @output:  the output FILE*, defaults to stdout if NULL
  *
  * Implements the XML shell

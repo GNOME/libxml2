@@ -622,6 +622,7 @@ xmlBufFromBuffer(xmlBufferPtr buffer) {
 /**
  * xmlBufBackToBuffer:
  * @buf: new buffer wrapping the old one
+ * @ret: old buffer
  *
  * Function to be called once internal processing had been done to
  * update back the buffer provided by the user. This can lead to
@@ -629,7 +630,7 @@ xmlBufFromBuffer(xmlBufferPtr buffer) {
  * than what an xmlBuffer can support on 64 bits (INT_MAX)
  * The xmlBufPtr @buf wrapper is deallocated by this call in any case.
  *
- * Returns the old xmlBufferPtr unless the call failed and NULL is returned
+ * Returns 0 on success, -1 on error.
  */
 int
 xmlBufBackToBuffer(xmlBufPtr buf, xmlBufferPtr ret) {

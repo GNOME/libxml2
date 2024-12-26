@@ -21,6 +21,7 @@ debugsym=None
 ignored_files = {
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
+  "legacy.c": "legacy code",
   "testModule.c": "test tool",
   "testapi.c": "generated regression tests",
   "runtest.c": "regression tests program",
@@ -57,6 +58,7 @@ ignored_words = {
   "LIBXML_ATTR_ALLOC_SIZE": (3, "macro for gcc checking extension"),
   "ATTRIBUTE_NO_SANITIZE": (3, "macro keyword"),
   "ATTRIBUTE_NO_SANITIZE_INTEGER": (0, "macro keyword"),
+  "ATTRIBUTE_COUNTED_BY": (3, "macro keyword"),
   "XML_DEPRECATED": (0, "macro keyword"),
   "XML_DEPRECATED_MEMBER": (0, "macro keyword"),
   "XML_GLOBALS_ALLOC": (0, "macro keyword"),

@@ -4268,6 +4268,13 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
     }
 }
 
+/**
+ * htmlCtxtParseContentInternal:
+ * @ctxt:  parser context
+ * @input:  parser input
+ *
+ * Returns a node list.
+ */
 xmlNodePtr
 htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
     xmlNodePtr root;
@@ -4694,7 +4701,7 @@ htmlCreateDocParserCtxt(const xmlChar *str, const char *url,
  *									*
  ************************************************************************/
 
-enum xmlLookupStates {
+typedef enum {
     LSTATE_TAG_NAME = 0,
     LSTATE_BEFORE_ATTR_NAME,
     LSTATE_ATTR_NAME,
@@ -4703,7 +4710,7 @@ enum xmlLookupStates {
     LSTATE_ATTR_VALUE_DQUOTED,
     LSTATE_ATTR_VALUE_SQUOTED,
     LSTATE_ATTR_VALUE_UNQUOTED
-};
+} xmlLookupStates;
 
 /**
  * htmlParseLookupGt:

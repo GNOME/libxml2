@@ -7,6 +7,7 @@ AC_INIT([libxml2],[version_macro])
 AC_CONFIG_SRCDIR([entities.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([.])
 AC_CANONICAL_HOST
 
 LIBXML_VERSION=version_macro

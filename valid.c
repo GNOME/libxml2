@@ -314,7 +314,7 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
         int newSize;
 
         newSize = xmlGrowCapacity(ctxt->vstateMax, sizeof(tmp[0]),
-                                  8, MAX_RECURSE)
+                                  8, MAX_RECURSE);
 	    return(-1);
         tmp = xmlRealloc(ctxt->vstateTab, newSize * sizeof(tmp[0]));
         if (tmp == NULL) {
@@ -5229,9 +5229,8 @@ fail:
 		case XML_TEXT_NODE:
 		    if (xmlIsBlankNode(cur))
 			break;
-		    /* no break on purpose */
+		    /* falls through */
 		case XML_CDATA_SECTION_NODE:
-		    /* no break on purpose */
 		case XML_ELEMENT_NODE:
 		    /*
 		     * Allocate a new node and minimally fills in

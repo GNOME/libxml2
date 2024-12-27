@@ -30,7 +30,7 @@ gcc:medium:
   extends: .test
   variables:
     BASE_CONFIG: "--with-minimum"
-    CONFIG: "--with-threads --with-tree --with-xpath --with-output --with-html --with-iso8859x"
+    CONFIG: "--with-threads --with-tree --with-xpath --with-output --with-html --with-iso8859x --with-valid"
     CFLAGS: "-O2"
 
 gcc:legacy:

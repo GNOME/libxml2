@@ -5111,8 +5111,8 @@ xmlValidateElementContent(xmlValidCtxtPtr ctxt, xmlNodePtr child,
                     if ((cur->children != NULL) &&
                         (cur->children->children != NULL)) {
                         if (nodeVPush(ctxt, cur) < 0) {
-                            xmlRegFreeExecCtxt(exec);
-                            return(-1);
+                            ret = -1;
+                            goto fail;
                         }
                         cur = cur->children->children;
                         continue;

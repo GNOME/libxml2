@@ -2110,6 +2110,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
 #ifdef LIBXML_XPATH_ENABLED
     if (xpathquery != NULL) {
+	xmlXPathOrderDocElems(doc);
         doXPathQuery(doc, xpathquery);
     }
 #endif

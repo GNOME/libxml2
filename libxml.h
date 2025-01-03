@@ -41,6 +41,17 @@
   #define XML_INLINE
 #endif
 
+#if __STDC_VERSION__ >= 199901L || (defined(_MSC_VER) && _MSC_VER >= 1900)
+  #include <stdint.h>
+  #define XML_INTPTR_T intptr_t
+#else
+  #include <stddef.h>
+  #define XML_INTPTR_T ptrdiff_t
+#endif
+
+#define XML_PTR_TO_INT(p) ((XML_INTPTR_T) (p))
+#define XML_INT_TO_PTR(i) ((void *) (XML_INTPTR_T) (i))
+
 #if !defined(_WIN32) && \
     !defined(__CYGWIN__) && \
     (defined(__clang__) || \

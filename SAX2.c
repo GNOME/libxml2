@@ -2566,7 +2566,7 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
         else {
             lastChild->line = USHRT_MAX;
             if (ctxt->options & XML_PARSE_BIG_LINES)
-                lastChild->psvi = (void *) (ptrdiff_t) ctxt->input->line;
+                lastChild->psvi = XML_INT_TO_PTR(ctxt->input->line);
         }
     }
 }

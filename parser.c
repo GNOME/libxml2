@@ -1199,7 +1199,7 @@ xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
     }
 
     if (xmlHashAdd2(ctxt->attsSpecial, fullname, fullattr,
-                    (void *) (ptrdiff_t) type) < 0)
+                    XML_INT_TO_PTR(type)) < 0)
         goto mem_error;
     return;
 
@@ -1218,7 +1218,7 @@ xmlCleanSpecialAttrCallback(void *payload, void *data,
                             const xmlChar *unused ATTRIBUTE_UNUSED) {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) data;
 
-    if (((ptrdiff_t) payload) == XML_ATTRIBUTE_CDATA) {
+    if (XML_PTR_TO_INT(payload) == XML_ATTRIBUTE_CDATA) {
         xmlHashRemoveEntry2(ctxt->attsSpecial, fullname, fullattr, NULL);
     }
 }
@@ -8908,9 +8908,8 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
     if (ctxt->attsSpecial != NULL) {
         int type;
 
-        type = (int) (ptrdiff_t) xmlHashQLookup2(ctxt->attsSpecial,
-                                                 pref, elem,
-                                                 prefix, name);
+        type = XML_PTR_TO_INT(xmlHashQLookup2(ctxt->attsSpecial, pref, elem,
+                                              prefix, name));
         if (type != 0)
             normalize = 1;
     }
@@ -9013,7 +9012,7 @@ xmlAttrHashInsert(xmlParserCtxtPtr ctxt, unsigned size, const xmlChar *name,
         const xmlChar **atts = &ctxt->atts[bucket->index];
 
         if (name == atts[0]) {
-            int nsIndex = (int) (ptrdiff_t) atts[2];
+            int nsIndex = XML_PTR_TO_INT(atts[2]);
 
             if ((nsIndex == NS_INDEX_EMPTY) ? (uri == NULL) :
                 (nsIndex == NS_INDEX_XML) ? (uri == ctxt->str_xml_ns) :
@@ -9424,7 +9423,7 @@ next_attr:
             }
         }
 
-        atts[i+2] = (const xmlChar *) (ptrdiff_t) nsIndex;
+        atts[i+2] = XML_INT_TO_PTR(nsIndex);
     }
 
     /*
@@ -9462,7 +9461,7 @@ next_attr:
 
             attname = atts[i];
             aprefix = atts[i+1];
-            nsIndex = (ptrdiff_t) atts[i+2];
+            nsIndex = XML_PTR_TO_INT(atts[i+2]);
             /* Hash values always have bit 31 set, see dict.c */
             nameHashValue = ctxt->attallocs[j] | 0x80000000;
 
@@ -9591,7 +9590,7 @@ next_attr:
 
                 atts[nbatts++] = attname;
                 atts[nbatts++] = aprefix;
-                atts[nbatts++] = (const xmlChar *) (ptrdiff_t) nsIndex;
+                atts[nbatts++] = XML_INT_TO_PTR(nsIndex);
                 atts[nbatts++] = attr->value.name;
                 atts[nbatts++] = attr->valueEnd;
                 if ((ctxt->standalone == 1) && (attr->external != 0)) {
@@ -9647,7 +9646,7 @@ next_attr:
      */
     for (i = 0, j = 0; i < nbatts; i += 5, j++) {
         /* namespace URI */
-        nsIndex = (ptrdiff_t) atts[i+2];
+        nsIndex = XML_PTR_TO_INT(atts[i+2]);
         if (nsIndex == INT_MAX)
             atts[i+2] = NULL;
         else if (nsIndex == INT_MAX - 1)
@@ -9656,8 +9655,8 @@ next_attr:
             atts[i+2] = ctxt->nsTab[nsIndex * 2 + 1];
 
         if ((j < nratts) && (ctxt->attallocs[j] & 0x80000000) == 0) {
-            atts[i+3] = BASE_PTR + (ptrdiff_t) atts[i+3];  /* value */
-            atts[i+4] = BASE_PTR + (ptrdiff_t) atts[i+4];  /* valuend */
+            atts[i+3] = BASE_PTR + XML_PTR_TO_INT(atts[i+3]);  /* value */
+            atts[i+4] = BASE_PTR + XML_PTR_TO_INT(atts[i+4]);  /* valuend */
         }
     }
 

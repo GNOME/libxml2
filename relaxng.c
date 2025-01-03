@@ -4326,7 +4326,7 @@ xmlRelaxNGComputeInterleaves(void *payload, void *data,
                 if ((*tmp)->type == XML_RELAXNG_TEXT) {
                     res = xmlHashAddEntry2(partitions->triage,
                                            BAD_CAST "#text", NULL,
-                                           (void *) (ptrdiff_t) (i + 1));
+                                           XML_INT_TO_PTR(i + 1));
                     if (res != 0)
                         is_determinist = -1;
                 } else if (((*tmp)->type == XML_RELAXNG_ELEMENT) &&
@@ -4334,22 +4334,22 @@ xmlRelaxNGComputeInterleaves(void *payload, void *data,
                     if (((*tmp)->ns == NULL) || ((*tmp)->ns[0] == 0))
                         res = xmlHashAddEntry2(partitions->triage,
                                                (*tmp)->name, NULL,
-                                               (void *) (ptrdiff_t) (i + 1));
+                                               XML_INT_TO_PTR(i + 1));
                     else
                         res = xmlHashAddEntry2(partitions->triage,
                                                (*tmp)->name, (*tmp)->ns,
-                                               (void *) (ptrdiff_t) (i + 1));
+                                               XML_INT_TO_PTR(i + 1));
                     if (res != 0)
                         is_determinist = -1;
                 } else if ((*tmp)->type == XML_RELAXNG_ELEMENT) {
                     if (((*tmp)->ns == NULL) || ((*tmp)->ns[0] == 0))
                         res = xmlHashAddEntry2(partitions->triage,
                                                BAD_CAST "#any", NULL,
-                                               (void *) (ptrdiff_t) (i + 1));
+                                               XML_INT_TO_PTR(i + 1));
                     else
                         res = xmlHashAddEntry2(partitions->triage,
                                                BAD_CAST "#any", (*tmp)->ns,
-                                               (void *) (ptrdiff_t) (i + 1));
+                                               XML_INT_TO_PTR(i + 1));
                     if ((*tmp)->nameClass != NULL)
                         is_determinist = 2;
                     if (res != 0)
@@ -9232,7 +9232,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
             if (tmp == NULL) {
                 i = nbgroups;
             } else {
-                i = ((ptrdiff_t) tmp) - 1;
+                i = XML_PTR_TO_INT(tmp) - 1;
                 if (partitions->flags & IS_NEEDCHECK) {
                     group = partitions->groups[i];
                     if (!xmlRelaxNGNodeMatchesList(cur, group->defs))

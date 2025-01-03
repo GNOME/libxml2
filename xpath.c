@@ -309,7 +309,10 @@ static const xmlNs *const xmlXPathXMLNamespace = &xmlXPathXMLNamespaceStruct;
 static void
 xmlXPathNodeSetClear(xmlNodeSetPtr set, int hasNsNodes);
 
+#define XML_NODE_SORT_VALUE(n) XML_PTR_TO_INT((n)->content)
+
 #ifdef XP_OPTIMIZED_NON_ELEM_COMPARISON
+
 /**
  * xmlXPathCmpNodesExt:
  * @node1:  the first node
@@ -327,7 +330,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
     int misc = 0, precedence1 = 0, precedence2 = 0;
     xmlNodePtr miscNode1 = NULL, miscNode2 = NULL;
     xmlNodePtr cur, root;
-    ptrdiff_t l1, l2;
+    XML_INTPTR_T l1, l2;
 
     if ((node1 == NULL) || (node2 == NULL))
 	return(-2);
@@ -341,12 +344,12 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
     switch (node1->type) {
 	case XML_ELEMENT_NODE:
 	    if (node2->type == XML_ELEMENT_NODE) {
-		if ((0 > (ptrdiff_t) node1->content) &&
-		    (0 > (ptrdiff_t) node2->content) &&
+		if ((0 > XML_NODE_SORT_VALUE(node1)) &&
+		    (0 > XML_NODE_SORT_VALUE(node2)) &&
 		    (node1->doc == node2->doc))
 		{
-		    l1 = -((ptrdiff_t) node1->content);
-		    l2 = -((ptrdiff_t) node2->content);
+		    l1 = -XML_NODE_SORT_VALUE(node1);
+		    l2 = -XML_NODE_SORT_VALUE(node2);
 		    if (l1 < l2)
 			return(1);
 		    if (l1 > l2)
@@ -391,7 +394,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 		node1 = node1->parent;
 	    }
 	    if ((node1 == NULL) || (node1->type != XML_ELEMENT_NODE) ||
-		(0 <= (ptrdiff_t) node1->content)) {
+		(0 <= XML_NODE_SORT_VALUE(node1))) {
 		/*
 		* Fallback for whatever case.
 		*/
@@ -441,7 +444,7 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
 		node2 = node2->parent;
 	    }
 	    if ((node2 == NULL) || (node2->type != XML_ELEMENT_NODE) ||
-		(0 <= (ptrdiff_t) node2->content))
+		(0 <= XML_NODE_SORT_VALUE(node2)))
 	    {
 		node2 = miscNode2;
 		precedence2 = 0;
@@ -514,12 +517,12 @@ xmlXPathCmpNodesExt(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (ptrdiff_t) node1->content) &&
-	(0 > (ptrdiff_t) node2->content) &&
+	(0 > XML_NODE_SORT_VALUE(node1)) &&
+	(0 > XML_NODE_SORT_VALUE(node2)) &&
 	(node1->doc == node2->doc)) {
 
-	l1 = -((ptrdiff_t) node1->content);
-	l2 = -((ptrdiff_t) node2->content);
+	l1 = -XML_NODE_SORT_VALUE(node1);
+	l2 = -XML_NODE_SORT_VALUE(node2);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
@@ -582,12 +585,12 @@ turtle_comparison:
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (ptrdiff_t) node1->content) &&
-	(0 > (ptrdiff_t) node2->content) &&
+	(0 > XML_NODE_SORT_VALUE(node1)) &&
+	(0 > XML_NODE_SORT_VALUE(node2)) &&
 	(node1->doc == node2->doc)) {
 
-	l1 = -((ptrdiff_t) node1->content);
-	l2 = -((ptrdiff_t) node2->content);
+	l1 = -XML_NODE_SORT_VALUE(node1);
+	l2 = -XML_NODE_SORT_VALUE(node2);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
@@ -2417,7 +2420,7 @@ xmlXPathFormatNumber(double number, char buffer[], int buffersize)
  */
 long
 xmlXPathOrderDocElems(xmlDocPtr doc) {
-    ptrdiff_t count = 0;
+    XML_INTPTR_T count = 0;
     xmlNodePtr cur;
 
     if (doc == NULL)
@@ -2425,7 +2428,8 @@ xmlXPathOrderDocElems(xmlDocPtr doc) {
     cur = doc->children;
     while (cur != NULL) {
 	if (cur->type == XML_ELEMENT_NODE) {
-	    cur->content = (void *) (-(++count));
+            count += 1;
+            cur->content = XML_INT_TO_PTR(-count);
 	    if (cur->children != NULL) {
 		cur = cur->children;
 		continue;
@@ -2517,13 +2521,13 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (ptrdiff_t) node1->content) &&
-	(0 > (ptrdiff_t) node2->content) &&
+	(0 > XML_NODE_SORT_VALUE(node1)) &&
+	(0 > XML_NODE_SORT_VALUE(node2)) &&
 	(node1->doc == node2->doc)) {
-	ptrdiff_t l1, l2;
+	XML_INTPTR_T l1, l2;
 
-	l1 = -((ptrdiff_t) node1->content);
-	l2 = -((ptrdiff_t) node2->content);
+	l1 = -XML_NODE_SORT_VALUE(node1);
+	l2 = -XML_NODE_SORT_VALUE(node2);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)
@@ -2580,13 +2584,13 @@ xmlXPathCmpNodes(xmlNodePtr node1, xmlNodePtr node2) {
      */
     if ((node1->type == XML_ELEMENT_NODE) &&
 	(node2->type == XML_ELEMENT_NODE) &&
-	(0 > (ptrdiff_t) node1->content) &&
-	(0 > (ptrdiff_t) node2->content) &&
+	(0 > XML_NODE_SORT_VALUE(node1)) &&
+	(0 > XML_NODE_SORT_VALUE(node2)) &&
 	(node1->doc == node2->doc)) {
-	ptrdiff_t l1, l2;
+	XML_INTPTR_T l1, l2;
 
-	l1 = -((ptrdiff_t) node1->content);
-	l2 = -((ptrdiff_t) node2->content);
+	l1 = -XML_NODE_SORT_VALUE(node1);
+	l2 = -XML_NODE_SORT_VALUE(node2);
 	if (l1 < l2)
 	    return(1);
 	if (l1 > l2)

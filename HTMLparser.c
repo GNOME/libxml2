@@ -4916,7 +4916,7 @@ static int
 htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
     int ret = 0;
     htmlParserInputPtr in;
-    ptrdiff_t avail = 0;
+    size_t avail = 0;
     int cur;
 
     htmlParserNodeInfo node_info;

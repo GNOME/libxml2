@@ -43,6 +43,7 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlerror.h>
 #ifdef LIBXML_XINCLUDE_ENABLED
@@ -1875,26 +1876,45 @@ static void doXPathDump(xmlXPathObjectPtr cur) {
 }
 
 static void doXPathQuery(xmlDocPtr doc, const char *query) {
-    xmlXPathContextPtr ctxt;
-    xmlXPathObjectPtr res;
+    xmlXPathContextPtr ctxt = NULL;
+    xmlXPathCompExprPtr comp = NULL;
+    xmlXPathObjectPtr res = NULL;
 
     ctxt = xmlXPathNewContext(doc);
     if (ctxt == NULL) {
         fprintf(ERR_STREAM, "Out of memory for XPath\n");
         progresult = XMLLINT_ERR_MEM;
-        return;
+        goto error;
     }
-    ctxt->node = (xmlNodePtr) doc;
-    res = xmlXPathEval(BAD_CAST query, ctxt);
-    xmlXPathFreeContext(ctxt);
 
+    comp = xmlXPathCtxtCompile(ctxt, BAD_CAST query);
+    if (comp == NULL) {
+        fprintf(ERR_STREAM, "XPath compilation failure\n");
+        progresult = XMLLINT_ERR_XPATH;
+        goto error;
+    }
+
+#ifdef LIBXML_DEBUG_ENABLED
+    if (debug) {
+        xmlXPathDebugDumpCompExpr(stdout, comp, 0);
+        printf("\n");
+    }
+#endif
+
+    ctxt->node = (xmlNodePtr) doc;
+    res = xmlXPathCompiledEval(comp, ctxt);
     if (res == NULL) {
         fprintf(ERR_STREAM, "XPath evaluation failure\n");
         progresult = XMLLINT_ERR_XPATH;
-        return;
+        goto error;
     }
+
     doXPathDump(res);
+
+error:
     xmlXPathFreeObject(res);
+    xmlXPathFreeCompExpr(comp);
+    xmlXPathFreeContext(ctxt);
 }
 #endif /* LIBXML_XPATH_ENABLED */
 

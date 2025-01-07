@@ -2108,13 +2108,6 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr pctxt) {
     }
 #endif
 
-#ifdef LIBXML_XPATH_ENABLED
-    if (xpathquery != NULL) {
-	xmlXPathOrderDocElems(doc);
-        doXPathQuery(doc, xpathquery);
-    }
-#endif
-
 #ifndef XMLLINT_FUZZ
     /*
      * shell interaction
@@ -2124,6 +2117,14 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr pctxt) {
         xmlXPathOrderDocElems(doc);
 #endif
         xmllintShell(doc, filename, stdout);
+        goto done;
+    }
+#endif
+
+#ifdef LIBXML_XPATH_ENABLED
+    if (xpathquery != NULL) {
+	xmlXPathOrderDocElems(doc);
+        doXPathQuery(doc, xpathquery);
     }
 #endif
 
@@ -2577,6 +2578,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr pctxt) {
 	xmlDebugDumpEntities(ERR_STREAM, doc);
 #endif
 
+done:
     /*
      * free it.
      */
@@ -2949,7 +2951,6 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	if ((!strcmp(argv[i], "-shell")) ||
 	         (!strcmp(argv[i], "--shell"))) {
 	    shell++;
-            noout = 1;
         } else
 	if ((!strcmp(argv[i], "-copy")) || (!strcmp(argv[i], "--copy")))
 	    copy++;
@@ -3254,6 +3255,9 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	    return(XMLLINT_ERR_UNCLASS);
 	}
     }
+
+    if (shell)
+        repeat = 1;
 
 #ifdef LIBXML_CATALOG_ENABLED
     if (nocatalogs == 0) {

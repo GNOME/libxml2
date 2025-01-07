@@ -127,7 +127,7 @@ static xmlSchemaPtr wxschemas = NULL;
 static const char *schematron = NULL;
 static xmlSchematronPtr wxschematron = NULL;
 #endif
-static int repeat = 0;
+static int repeat = 1;
 #if defined(LIBXML_HTML_ENABLED)
 static int html = 0;
 static int xmlout = 0;
@@ -1429,7 +1429,7 @@ testSAX(const char *filename) {
 
 	ret = xmlSchemaValidateStream(vctxt, buf, 0, handler,
 	                              (void *)user_data);
-	if (repeat == 0) {
+	if (repeat == 1) {
 	    if (ret == 0) {
 	        if (!quiet) {
 	            fprintf(ERR_STREAM, "%s validates\n", filename);
@@ -1606,7 +1606,7 @@ static void streamFile(const char *filename) {
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if (relaxng != NULL) {
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		startTimer();
 	    }
 	    ret = xmlTextReaderRelaxNGValidate(reader, relaxng);
@@ -1616,12 +1616,12 @@ static void streamFile(const char *filename) {
 		progresult = XMLLINT_ERR_SCHEMACOMP;
 		relaxng = NULL;
 	    }
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		endTimer("Compiling the schemas");
 	    }
 	}
 	if (schema != NULL) {
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		startTimer();
 	    }
 	    ret = xmlTextReaderSchemaValidate(reader, schema);
@@ -1631,7 +1631,7 @@ static void streamFile(const char *filename) {
 		progresult = XMLLINT_ERR_SCHEMACOMP;
 		schema = NULL;
 	    }
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		endTimer("Compiling the schemas");
 	    }
 	}
@@ -1640,7 +1640,7 @@ static void streamFile(const char *filename) {
 	/*
 	 * Process all nodes in sequence
 	 */
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 	ret = xmlTextReaderRead(reader);
@@ -1653,7 +1653,7 @@ static void streamFile(const char *filename) {
 		processNode(reader);
 	    ret = xmlTextReaderRead(reader);
 	}
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 	    if (relaxng != NULL)
 		endTimer("Parsing and validating");
@@ -1762,7 +1762,7 @@ static void walkDoc(xmlDocPtr doc) {
 #endif /* LIBXML_PATTERN_ENABLED */
     reader = xmlReaderWalker(doc);
     if (reader != NULL) {
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 	ret = xmlTextReaderRead(reader);
@@ -1775,7 +1775,7 @@ static void walkDoc(xmlDocPtr doc) {
 		processNode(reader);
 	    ret = xmlTextReaderRead(reader);
 	}
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("walking through the doc");
 	}
 	xmlFreeTextReader(reader);
@@ -1925,8 +1925,7 @@ error:
  ************************************************************************/
 
 static xmlDocPtr
-parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
-    xmlParserCtxtPtr ctxt;
+parseFile(const char *filename, xmlParserCtxtPtr ctxt) {
     xmlDocPtr doc = NULL;
 
     if ((generate) && (filename == NULL)) {
@@ -1996,13 +1995,7 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_PUSH_ENABLED */
 
     if (html) {
-        ctxt = htmlNewParserCtxt();
-        if (ctxt == NULL) {
-            progresult = XMLLINT_ERR_MEM;
-            return(NULL);
-        }
         doc = parseHtml(ctxt, filename);
-        htmlFreeParserCtxt(ctxt);
         return(doc);
     }
 #endif /* LIBXML_HTML_ENABLED */
@@ -2053,16 +2046,6 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
     } else
 #endif /* LIBXML_PUSH_ENABLED */
     {
-        if (rectxt == NULL) {
-            ctxt = xmlNewParserCtxt();
-            if (ctxt == NULL) {
-                progresult = XMLLINT_ERR_MEM;
-                return(NULL);
-            }
-        } else {
-            ctxt = rectxt;
-        }
-
         doc = parseXml(ctxt, filename);
 
         if (htmlout)
@@ -2081,27 +2064,24 @@ parseFile(const char *filename, xmlParserCtxtPtr rectxt) {
 #endif /* LIBXML_VALID_ENABLED */
     }
 
-    if (ctxt != rectxt)
-        xmlFreeParserCtxt(ctxt);
-
     return(doc);
 }
 
 static void
-parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
+parseAndPrintFile(const char *filename, xmlParserCtxtPtr pctxt) {
     xmlDocPtr doc;
 
-    if ((timing) && (!repeat))
+    if ((timing) && (repeat == 1))
 	startTimer();
 
-    doc = parseFile(filename, rectxt);
+    doc = parseFile(filename, pctxt);
     if (doc == NULL) {
         if (progresult == XMLLINT_RETURN_OK)
             progresult = XMLLINT_ERR_UNCLASS;
 	return;
     }
 
-    if ((timing) && (!repeat)) {
+    if ((timing) && (repeat == 1)) {
 	endTimer("Parsing");
     }
 
@@ -2117,12 +2097,12 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 
 #ifdef LIBXML_XINCLUDE_ENABLED
     if (xinclude) {
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 	if (xmlXIncludeProcessFlags(doc, options) < 0)
 	    progresult = XMLLINT_ERR_UNCLASS;
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("Xinclude processing");
 	}
     }
@@ -2224,7 +2204,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 #ifdef LIBXML_DEBUG_ENABLED
 	if (!debug) {
 #endif
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		startTimer();
 	    }
 #ifdef LIBXML_HTML_ENABLED
@@ -2261,7 +2241,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 			progresult = XMLLINT_ERR_OUT;
 		    }
 		}
-		if ((timing) && (!repeat)) {
+		if ((timing) && (repeat == 1)) {
 		    endTimer("Saving");
 		}
 	    } else
@@ -2373,7 +2353,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 		    progresult = XMLLINT_ERR_OUT;
 		}
 	    }
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		endTimer("Saving");
 	    }
 #ifdef LIBXML_DEBUG_ENABLED
@@ -2405,14 +2385,14 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
     if ((dtdvalid != NULL) || (dtdvalidfpi != NULL)) {
 	xmlDtdPtr dtd;
 
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 	if (dtdvalid != NULL)
 	    dtd = xmlParseDTD(NULL, (const xmlChar *)dtdvalid);
 	else
 	    dtd = xmlParseDTD((const xmlChar *)dtdvalidfpi, NULL);
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("Parsing DTD");
 	}
 	if (dtd == NULL) {
@@ -2435,7 +2415,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
                 return;
 	    }
 
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		startTimer();
 	    }
 	    if (!xmlValidateDtd(cvp, doc, dtd)) {
@@ -2449,7 +2429,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 			    filename, dtdvalidfpi);
 		progresult = XMLLINT_ERR_VALID;
 	    }
-	    if ((timing) && (!repeat)) {
+	    if ((timing) && (repeat == 1)) {
 		endTimer("Validating against DTD");
 	    }
 	    xmlFreeValidCtxt(cvp);
@@ -2467,7 +2447,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
             return;
 	}
 
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 	if (!xmlValidateDocument(cvp, doc)) {
@@ -2475,7 +2455,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 		    "Document %s does not validate\n", filename);
 	    progresult = XMLLINT_ERR_VALID;
 	}
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("Validating");
 	}
 	xmlFreeValidCtxt(cvp);
@@ -2487,7 +2467,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	int ret;
 	int flag;
 
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 
@@ -2517,7 +2497,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	    progresult = XMLLINT_ERR_VALID;
 	}
 	xmlSchematronFreeValidCtxt(ctxt);
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("Validating");
 	}
     }
@@ -2527,7 +2507,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	xmlRelaxNGValidCtxtPtr ctxt;
 	int ret;
 
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 
@@ -2551,14 +2531,14 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	    progresult = XMLLINT_ERR_VALID;
 	}
 	xmlRelaxNGFreeValidCtxt(ctxt);
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("Validating");
 	}
     } else if (wxschemas != NULL) {
 	xmlSchemaValidCtxtPtr ctxt;
 	int ret;
 
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    startTimer();
 	}
 
@@ -2582,7 +2562,7 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
 	    progresult = XMLLINT_ERR_VALID;
 	}
 	xmlSchemaFreeValidCtxt(ctxt);
-	if ((timing) && (!repeat)) {
+	if ((timing) && (repeat == 1)) {
 	    endTimer("Validating");
 	}
     }
@@ -2600,11 +2580,11 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr rectxt) {
     /*
      * free it.
      */
-    if ((timing) && (!repeat)) {
+    if ((timing) && (repeat == 1)) {
 	startTimer();
     }
     xmlFreeDoc(doc);
-    if ((timing) && (!repeat)) {
+    if ((timing) && (repeat == 1)) {
 	endTimer("Freeing");
     }
 }
@@ -2839,7 +2819,7 @@ skipArgs(const char *arg) {
 
 static int
 xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
-    int i, acount;
+    int i, j;
     int files = 0;
     int version = 0;
     int nowrap = 0;
@@ -2884,7 +2864,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
     schematron = NULL;
     wxschematron = NULL;
 #endif
-    repeat = 0;
+    repeat = 1;
 #if defined(LIBXML_HTML_ENABLED)
     html = 0;
     xmlout = 0;
@@ -3065,7 +3045,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	    generate++;
 	else if ((!strcmp(argv[i], "-repeat")) ||
 	         (!strcmp(argv[i], "--repeat"))) {
-	    if (repeat)
+	    if (repeat > 1)
 	        repeat *= 10;
 	    else
 	        repeat = 100;
@@ -3415,6 +3395,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 #endif /* LIBXML_READER_ENABLED && LIBXML_PATTERN_ENABLED */
 
     for (i = 1; i < argc ; i++) {
+        xmlParserCtxtPtr ctxt;
         const char *filename = argv[i];
 #if HAVE_DECL_MMAP
         int memoryFd = -1;
@@ -3449,50 +3430,45 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         }
 #endif /* HAVE_DECL_MMAP */
 
-	if ((timing) && (repeat))
+	if ((timing) && (repeat > 1))
 	    startTimer();
-        if (repeat) {
-            xmlParserCtxtPtr ctxt;
 
+#ifdef LIBXML_HTML_ENABLED
+        if (html) {
+            ctxt = htmlNewParserCtxt();
+        } else
+#endif
+        {
             ctxt = xmlNewParserCtxt();
-            if (ctxt == NULL) {
-                progresult = XMLLINT_ERR_MEM;
-                goto error;
-            }
-
-            for (acount = 0;acount < repeat;acount++) {
-#ifdef LIBXML_READER_ENABLED
-                if (stream != 0) {
-                    streamFile(filename);
-                } else {
-#endif /* LIBXML_READER_ENABLED */
-                    if (sax) {
-                        testSAX(filename);
-                    } else {
-                        parseAndPrintFile(filename, ctxt);
-                    }
-#ifdef LIBXML_READER_ENABLED
-                }
-#endif /* LIBXML_READER_ENABLED */
-            }
-
-            xmlFreeParserCtxt(ctxt);
-        } else {
-#ifdef LIBXML_READER_ENABLED
-            if (stream != 0)
-                streamFile(filename);
-            else
-#endif /* LIBXML_READER_ENABLED */
-            if (sax) {
-                testSAX(filename);
-            } else {
-                parseAndPrintFile(filename, NULL);
-            }
         }
-        files ++;
-        if ((timing) && (repeat)) {
+        if (ctxt == NULL) {
+            progresult = XMLLINT_ERR_MEM;
+            goto error;
+        }
+
+        for (j = 0; j < repeat; j++) {
+#ifdef LIBXML_READER_ENABLED
+            if (stream != 0) {
+                streamFile(filename);
+            } else {
+#endif /* LIBXML_READER_ENABLED */
+                if (sax) {
+                    testSAX(filename);
+                } else {
+                    parseAndPrintFile(filename, ctxt);
+                }
+#ifdef LIBXML_READER_ENABLED
+            }
+#endif /* LIBXML_READER_ENABLED */
+        }
+
+        xmlFreeParserCtxt(ctxt);
+
+        if ((timing) && (repeat > 1)) {
             endTimer("%d iterations", repeat);
         }
+
+        files += 1;
 
 #if HAVE_DECL_MMAP
         if (memory) {

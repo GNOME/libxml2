@@ -1730,8 +1730,9 @@ xmlTextReaderReadOuterXml(xmlTextReaderPtr reader)
  *
  * Reads the contents of an element or a text node as a string.
  *
- * Returns a string containing the contents of the Element or Text node,
- *         or NULL if the reader is positioned on any other type of node.
+ * Returns a string containing the contents of the non-empty Element or
+ *         Text node (including CDATA sections), or NULL if the reader
+ *         is positioned on any other type of node.
  *         The string must be deallocated by the caller.
  */
 xmlChar *
@@ -1754,11 +1755,8 @@ xmlTextReaderReadString(xmlTextReaderPtr reader)
                 (node->children == NULL))
                 return(NULL);
             break;
-        case XML_ATTRIBUTE_NODE:
-            /* TODO */
-            break;
         default:
-            break;
+            return(NULL);
     }
 
     buf = xmlBufCreateSize(30);

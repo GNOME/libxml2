@@ -214,9 +214,9 @@ static const xmlCharEncodingHandler defaultHandlers[31] = {
     MAKE_HANDLER("UCS-4LE", NULL, NULL),
     MAKE_HANDLER("UCS-4BE", NULL, NULL),
     MAKE_HANDLER("IBM037", NULL, NULL),
-    MAKE_HANDLER("ISO-10646-UCS-4", NULL, NULL), /* UCS4_2143 */
-    MAKE_HANDLER("ISO-10646-UCS-4", NULL, NULL), /* UCS4_2143 */
-    MAKE_HANDLER("ISO-10646-UCS-2", NULL, NULL),
+    MAKE_HANDLER(NULL, NULL, NULL), /* UCS4_2143 */
+    MAKE_HANDLER(NULL, NULL, NULL), /* UCS4_3412 */
+    MAKE_HANDLER("UCS-2", NULL, NULL),
     MAKE_HANDLER("ISO-8859-1", latin1ToUTF8, UTF8ToLatin1),
     MAKE_ISO_HANDLER("ISO-8859-2", 2),
     MAKE_ISO_HANDLER("ISO-8859-3", 3),
@@ -287,12 +287,6 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 	if ((in[0] == 0x3C) && (in[1] == 0x00) &&
 	    (in[2] == 0x00) && (in[3] == 0x00))
 	    return(XML_CHAR_ENCODING_UCS4LE);
-	if ((in[0] == 0x00) && (in[1] == 0x00) &&
-	    (in[2] == 0x3C) && (in[3] == 0x00))
-	    return(XML_CHAR_ENCODING_UCS4_2143);
-	if ((in[0] == 0x00) && (in[1] == 0x3C) &&
-	    (in[2] == 0x00) && (in[3] == 0x00))
-	    return(XML_CHAR_ENCODING_UCS4_3412);
 	if ((in[0] == 0x4C) && (in[1] == 0x6F) &&
 	    (in[2] == 0xA7) && (in[3] == 0x94))
 	    return(XML_CHAR_ENCODING_EBCDIC);
@@ -573,9 +567,9 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
         case XML_CHAR_ENCODING_UTF16BE:
 	    return("UTF-16");
         case XML_CHAR_ENCODING_UCS4LE:
-            return("ISO-10646-UCS-4");
+            return("UCS-4");
         case XML_CHAR_ENCODING_UCS4BE:
-            return("ISO-10646-UCS-4");
+            return("UCS-4");
         default:
             break;
     }

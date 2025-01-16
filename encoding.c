@@ -1641,6 +1641,10 @@ xmlCreateUconvHandler(const char *name, xmlCharEncodingHandler **out) {
     }
     enc->input = NULL;
     enc->output = NULL;
+#ifdef LIBXML_ICONV_ENABLED
+    enc->iconv_in = (iconv_t) -1;
+    enc->iconv_out = (iconv_t) -1;
+#endif
     enc->uconv_in = ucv_in;
     enc->uconv_out = ucv_out;
 

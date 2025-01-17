@@ -2132,7 +2132,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	}
 	if (xmlXIncludeProcessFlags(doc, lint->options) < 0) {
 	    lint->progresult = XMLLINT_ERR_UNCLASS;
-            return;
+            goto done;
         }
 	if ((lint->timing) && (lint->repeat == 1)) {
 	    endTimer(lint, "Xinclude processing");

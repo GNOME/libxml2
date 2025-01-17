@@ -210,6 +210,7 @@ typedef struct {
 } xmllintState;
 
 static int xmllintMaxmem;
+static int xmllintMaxmemReached;
 static int xmllintOom;
 
 /************************************************************************
@@ -411,52 +412,81 @@ parseHtml(xmllintState *lint, const char *filename) {
  *									*
  ************************************************************************/
 
+#define XMLLINT_ABORT_ON_FAILURE 0
+
 static void
-myFreeFunc(void *mem)
-{
+myFreeFunc(void *mem) {
     xmlMemFree(mem);
 }
+
 static void *
-myMallocFunc(size_t size)
-{
+myMallocFunc(size_t size) {
     void *ret;
 
-    ret = xmlMemMalloc(size);
-    if (ret != NULL) {
-        if (xmlMemUsed() > xmllintMaxmem) {
-            xmllintOom = 1;
-            xmlMemFree(ret);
-            return (NULL);
-        }
+    if (xmlMemUsed() + size > (size_t) xmllintMaxmem) {
+#if XMLLINT_ABORT_ON_FAILURE
+        abort();
+#endif
+        xmllintMaxmemReached = 1;
+        xmllintOom = 1;
+        return(NULL);
     }
-    return (ret);
+
+    ret = xmlMemMalloc(size);
+    if (ret == NULL)
+        xmllintOom = 1;
+
+    return(ret);
 }
+
 static void *
-myReallocFunc(void *mem, size_t size)
-{
+myReallocFunc(void *mem, size_t size) {
+    void *ret;
     size_t oldsize = xmlMemSize(mem);
 
     if (xmlMemUsed() + size - oldsize > (size_t) xmllintMaxmem) {
+#if XMLLINT_ABORT_ON_FAILURE
+        abort();
+#endif
+        xmllintMaxmemReached = 1;
         xmllintOom = 1;
-        return (NULL);
+        return(NULL);
     }
 
-    return (xmlMemRealloc(mem, size));
+    ret = xmlMemRealloc(mem, size);
+    if (ret == NULL)
+        xmllintOom = 1;
+
+    return(ret);
 }
+
 static char *
-myStrdupFunc(const char *str)
-{
+myStrdupFunc(const char *str) {
+    size_t size;
     char *ret;
 
-    ret = xmlMemoryStrdup(str);
-    if (ret != NULL) {
-        if (xmlMemUsed() > xmllintMaxmem) {
-            xmllintOom = 1;
-            xmlMemFree(ret);
-            return (NULL);
-        }
+    if (str == NULL)
+        return(NULL);
+
+    size = strlen(str) + 1;
+    if (xmlMemUsed() + size > (size_t) xmllintMaxmem) {
+#if XMLLINT_ABORT_ON_FAILURE
+        abort();
+#endif
+        xmllintMaxmemReached = 1;
+        xmllintOom = 1;
+        return(NULL);
     }
-    return (ret);
+
+    ret = xmlMemMalloc(size);
+    if (ret == NULL) {
+        xmllintOom = 1;
+        return(NULL);
+    }
+
+    memcpy(ret, str, size);
+
+    return(ret);
 }
 
 /************************************************************************
@@ -3258,6 +3288,7 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
 
     if (lint->maxmem != 0) {
         xmllintMaxmem = 0;
+        xmllintMaxmemReached = 0;
         xmllintOom = 0;
         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc, myStrdupFunc);
     }
@@ -3535,10 +3566,19 @@ error:
 
     xmlCleanupParser();
 
-    if ((lint->maxmem) && (xmllintOom)) {
+    if ((lint->maxmem) && (xmllintMaxmemReached)) {
         fprintf(errStream, "Ran out of memory, needed > %d bytes\n",
                 xmllintMaxmem);
     }
+
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+    if ((lint->maxmem) &&
+        (xmllintOom != (lint->progresult == XMLLINT_ERR_MEM))) {
+        fprintf(stderr, "xmllint: malloc failure %s reported\n",
+                xmllintOom ? "not" : "erroneously");
+        abort();
+    }
+#endif
 
     return(lint->progresult);
 }

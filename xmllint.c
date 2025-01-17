@@ -2578,6 +2578,9 @@ parseAndPrintFile(const char *filename, xmlParserCtxtPtr pctxt) {
 	xmlDebugDumpEntities(ERR_STREAM, doc);
 #endif
 
+    /* Avoid unused label warning */
+    goto done;
+
 done:
     /*
      * free it.
@@ -3490,6 +3493,9 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	usage(ERR_STREAM, argv[0]);
         progresult = XMLLINT_ERR_UNCLASS;
     }
+
+error:
+
 #ifdef LIBXML_SCHEMATRON_ENABLED
     if (wxschematron != NULL)
 	xmlSchematronFree(wxschematron);
@@ -3505,10 +3511,6 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         xmlFreePattern(patternc);
 #endif
 
-    /* Avoid unused label warning if features are disabled. */
-    goto error;
-
-error:
     xmlCleanupParser();
 
     return(progresult);

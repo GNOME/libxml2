@@ -1927,6 +1927,10 @@ error:
 static xmlDocPtr
 parseFile(const char *filename, xmlParserCtxtPtr ctxt) {
     xmlDocPtr doc = NULL;
+    int errNo;
+#ifdef LIBXML_VALID_ENABLED
+    int valid;
+#endif
 
     if ((generate) && (filename == NULL)) {
         xmlNodePtr n;
@@ -2041,25 +2045,34 @@ parseFile(const char *filename, xmlParserCtxtPtr ctxt) {
         xmlParseChunk(ctxt, chars, 0, 1);
 
         doc = ctxt->myDoc;
+        errNo = ctxt->errNo;
+#ifdef LIBXML_VALID_ENABLED
+        valid = ctxt->valid;
+#endif
+        xmlFreeParserCtxt(ctxt);
         if (f != stdin)
             fclose(f);
     } else
 #endif /* LIBXML_PUSH_ENABLED */
     {
         doc = parseXml(ctxt, filename);
+        errNo = ctxt->errNo;
+#ifdef LIBXML_VALID_ENABLED
+        valid = ctxt->valid;
+#endif
 
         if (htmlout)
             xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
     }
 
     if (doc == NULL) {
-        if (ctxt->errNo == XML_ERR_NO_MEMORY)
+        if (errNo == XML_ERR_NO_MEMORY)
             progresult = XMLLINT_ERR_MEM;
         else
 	    progresult = XMLLINT_ERR_RDFILE;
     } else {
 #ifdef LIBXML_VALID_ENABLED
-        if ((options & XML_PARSE_DTDVALID) && (ctxt->valid == 0))
+        if ((options & XML_PARSE_DTDVALID) && (valid == 0))
             progresult = XMLLINT_ERR_VALID;
 #endif /* LIBXML_VALID_ENABLED */
     }

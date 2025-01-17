@@ -69,12 +69,6 @@
 
 #include "private/shell.h"
 
-#ifdef XMLLINT_FUZZ
-  #define ERR_STREAM stdout
-#else
-  #define ERR_STREAM stderr
-#endif
-
 #ifndef STDIN_FILENO
   #define STDIN_FILENO 0
 #endif
@@ -119,10 +113,12 @@ typedef struct {
 } xmlTime;
 
 typedef struct {
+    FILE *errStream;
     xmlParserCtxtPtr ctxt;
     xmlResourceLoader defaultResourceLoader;
 
     int version;
+    int maxmem;
     int nowrap;
     int sax;
     int callbacks;
@@ -214,6 +210,7 @@ typedef struct {
 } xmllintState;
 
 static int xmllintMaxmem;
+static int xmllintOom;
 
 /************************************************************************
  *									*
@@ -229,7 +226,7 @@ parsePath(xmllintState *lint, const xmlChar *path) {
 	return;
     while (*path != 0) {
 	if (lint->nbpaths >= MAX_PATHS) {
-	    fprintf(ERR_STREAM, "MAX_PATHS reached: too many paths\n");
+	    fprintf(lint->errStream, "MAX_PATHS reached: too many paths\n");
             lint->progresult = XMLLINT_ERR_UNCLASS;
 	    return;
 	}
@@ -272,7 +269,7 @@ xmllintResourceLoader(void *ctxt, const char *URL,
         code = xmlNewInputFromUrl(URL, flags, out);
     if (code != XML_IO_ENOENT) {
         if ((lint->load_trace) && (code == XML_ERR_OK)) {
-            fprintf(ERR_STREAM, "Loaded URL=\"%s\" ID=\"%s\"\n",
+            fprintf(lint->errStream, "Loaded URL=\"%s\" ID=\"%s\"\n",
                     URL, ID ? ID : "(null)");
         }
         return(code);
@@ -292,7 +289,7 @@ xmllintResourceLoader(void *ctxt, const char *URL,
                 code = xmlNewInputFromUrl((const char *) newURL, flags, out);
             if (code != XML_IO_ENOENT) {
                 if ((lint->load_trace) && (code == XML_ERR_OK)) {
-                    fprintf(ERR_STREAM, "Loaded URL=\"%s\" ID=\"%s\"\n",
+                    fprintf(lint->errStream, "Loaded URL=\"%s\" ID=\"%s\"\n",
                             newURL, ID ? ID : "(null)");
                 }
 	        xmlFree(newURL);
@@ -357,7 +354,7 @@ parseXml(xmllintState *lint, const char *filename) {
         } else {
             f = fopen(filename, "rb");
             if (f == NULL) {
-                fprintf(ERR_STREAM, "Can't open %s\n", filename);
+                fprintf(lint->errStream, "Can't open %s\n", filename);
                 lint->progresult = XMLLINT_ERR_RDFILE;
                 return(NULL);
             }
@@ -415,13 +412,6 @@ parseHtml(xmllintState *lint, const char *filename) {
  ************************************************************************/
 
 static void
-OOM(void)
-{
-    fprintf(ERR_STREAM, "Ran out of memory needs > %d bytes\n",
-            xmllintMaxmem);
-}
-
-static void
 myFreeFunc(void *mem)
 {
     xmlMemFree(mem);
@@ -434,7 +424,7 @@ myMallocFunc(size_t size)
     ret = xmlMemMalloc(size);
     if (ret != NULL) {
         if (xmlMemUsed() > xmllintMaxmem) {
-            OOM();
+            xmllintOom = 1;
             xmlMemFree(ret);
             return (NULL);
         }
@@ -447,7 +437,7 @@ myReallocFunc(void *mem, size_t size)
     size_t oldsize = xmlMemSize(mem);
 
     if (xmlMemUsed() + size - oldsize > (size_t) xmllintMaxmem) {
-        OOM();
+        xmllintOom = 1;
         return (NULL);
     }
 
@@ -461,7 +451,7 @@ myStrdupFunc(const char *str)
     ret = xmlMemoryStrdup(str);
     if (ret != NULL) {
         if (xmlMemUsed() > xmllintMaxmem) {
-            OOM();
+            xmllintOom = 1;
             xmlMemFree(ret);
             return (NULL);
         }
@@ -519,10 +509,10 @@ endTimer(xmllintState *lint, const char *fmt, ...)
     msec += (lint->end.usec - lint->begin.usec) / 1000;
 
     va_start(ap, fmt);
-    vfprintf(ERR_STREAM, fmt, ap);
+    vfprintf(lint->errStream, fmt, ap);
     va_end(ap);
 
-    fprintf(ERR_STREAM, " took %ld ms\n", (long) msec);
+    fprintf(lint->errStream, " took %ld ms\n", (long) msec);
 }
 
 /************************************************************************
@@ -543,7 +533,7 @@ xmlHTMLEncodeSend(xmllintState *lint) {
     memset(&lint->htmlBuf[HTML_BUF_SIZE - 4], 0, 4);
     result = (char *) xmlEncodeEntitiesReentrant(NULL, BAD_CAST lint->htmlBuf);
     if (result) {
-	fprintf(ERR_STREAM, "%s", result);
+	fprintf(lint->errStream, "%s", result);
 	xmlFree(result);
     }
 
@@ -596,12 +586,12 @@ xmlHTMLError(void *vctxt, const xmlError *error)
     oldErrorCtxt = xmlGenericErrorContext;
     xmlSetGenericErrorFunc(lint, xmlHTMLBufCat);
 
-    fprintf(ERR_STREAM, "<p>");
+    fprintf(lint->errStream, "<p>");
 
     xmlParserPrintFileInfo(input);
     xmlHTMLEncodeSend(lint);
 
-    fprintf(ERR_STREAM, "<b>%s%s</b>: ",
+    fprintf(lint->errStream, "<b>%s%s</b>: ",
             (error->domain == XML_FROM_VALID) ||
             (error->domain == XML_FROM_DTD) ? "validity " : "",
             error->level == XML_ERR_WARNING ? "warning" : "error");
@@ -609,15 +599,15 @@ xmlHTMLError(void *vctxt, const xmlError *error)
     snprintf(lint->htmlBuf, HTML_BUF_SIZE, "%s", error->message);
     xmlHTMLEncodeSend(lint);
 
-    fprintf(ERR_STREAM, "</p>\n");
+    fprintf(lint->errStream, "</p>\n");
 
     if (input != NULL) {
-        fprintf(ERR_STREAM, "<pre>\n");
+        fprintf(lint->errStream, "<pre>\n");
 
         xmlParserPrintFileContext(input);
         xmlHTMLEncodeSend(lint);
 
-        fprintf(ERR_STREAM, "</pre>");
+        fprintf(lint->errStream, "</pre>");
     }
 
     xmlSetGenericErrorFunc(oldErrorCtxt, oldError);
@@ -1505,13 +1495,13 @@ testSAX(xmllintState *lint, const char *filename) {
 	if (lint->repeat == 1) {
 	    if (ret == 0) {
 	        if (!lint->quiet) {
-	            fprintf(ERR_STREAM, "%s validates\n", filename);
+	            fprintf(lint->errStream, "%s validates\n", filename);
 	        }
 	    } else if (ret > 0) {
-		fprintf(ERR_STREAM, "%s fails to validate\n", filename);
+		fprintf(lint->errStream, "%s fails to validate\n", filename);
 		lint->progresult = XMLLINT_ERR_VALID;
 	    } else {
-		fprintf(ERR_STREAM, "%s validation generated an internal error\n",
+		fprintf(lint->errStream, "%s validation generated an internal error\n",
 		       filename);
 		lint->progresult = XMLLINT_ERR_VALID;
 	    }
@@ -1546,7 +1536,7 @@ testSAX(xmllintState *lint, const char *filename) {
         parseXml(lint, filename);
 
 	if (ctxt->myDoc != NULL) {
-	    fprintf(ERR_STREAM, "SAX generated a doc !\n");
+	    fprintf(lint->errStream, "SAX generated a doc !\n");
 	    xmlFreeDoc(ctxt->myDoc);
 	    ctxt->myDoc = NULL;
 	}
@@ -1610,7 +1600,7 @@ static void processNode(xmllintState *lint, xmlTextReaderPtr reader) {
 		                    xmlTextReaderConstLocalName(reader),
 				    xmlTextReaderConstNamespaceUri(reader));
 		if (ret < 0) {
-		    fprintf(ERR_STREAM, "xmlStreamPush() failure\n");
+		    fprintf(lint->errStream, "xmlStreamPush() failure\n");
                     xmlFreeStreamCtxt(lint->patstream);
 		    lint->patstream = NULL;
 		} else if (ret != match) {
@@ -1618,13 +1608,13 @@ static void processNode(xmllintState *lint, xmlTextReaderPtr reader) {
 		        path = xmlGetNodePath(
 		                       xmlTextReaderCurrentNode(reader));
 		    }
-		    fprintf(ERR_STREAM,
+		    fprintf(lint->errStream,
 		            "xmlPatternMatch and xmlStreamPush disagree\n");
                     if (path != NULL)
-                        fprintf(ERR_STREAM, "  pattern %s node %s\n",
+                        fprintf(lint->errStream, "  pattern %s node %s\n",
                                 lint->pattern, path);
                     else
-		        fprintf(ERR_STREAM, "  pattern %s node %s\n",
+		        fprintf(lint->errStream, "  pattern %s node %s\n",
 			    lint->pattern, xmlTextReaderConstName(reader));
 		}
 
@@ -1633,7 +1623,7 @@ static void processNode(xmllintState *lint, xmlTextReaderPtr reader) {
 	        ((type == XML_READER_TYPE_ELEMENT) && (empty))) {
 	        ret = xmlStreamPop(lint->patstream);
 		if (ret < 0) {
-		    fprintf(ERR_STREAM, "xmlStreamPop() failure\n");
+		    fprintf(lint->errStream, "xmlStreamPop() failure\n");
                     xmlFreeStreamCtxt(lint->patstream);
 		    lint->patstream = NULL;
 		}
@@ -1646,8 +1636,10 @@ static void processNode(xmllintState *lint, xmlTextReaderPtr reader) {
 }
 
 static void streamFile(xmllintState *lint, const char *filename) {
+    FILE *errStream = lint->errStream;
     xmlTextReaderPtr reader;
     int ret;
+
 #if HAVE_DECL_MMAP
     if (lint->memory) {
 	reader = xmlReaderForMemory(lint->memoryData, lint->memorySize,
@@ -1664,7 +1656,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
 	if (lint->patstream != NULL) {
 	    ret = xmlStreamPush(lint->patstream, NULL, NULL);
 	    if (ret < 0) {
-		fprintf(ERR_STREAM, "xmlStreamPush() failure\n");
+		fprintf(errStream, "xmlStreamPush() failure\n");
 		xmlFreeStreamCtxt(lint->patstream);
 		lint->patstream = NULL;
             }
@@ -1685,7 +1677,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
 	    }
 	    ret = xmlTextReaderRelaxNGValidate(reader, lint->relaxng);
 	    if (ret < 0) {
-		fprintf(ERR_STREAM, "Relax-NG schema %s failed to compile\n",
+		fprintf(errStream, "Relax-NG schema %s failed to compile\n",
                         lint->relaxng);
 		lint->progresult = XMLLINT_ERR_SCHEMACOMP;
 		lint->relaxng = NULL;
@@ -1700,7 +1692,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
 	    }
 	    ret = xmlTextReaderSchemaValidate(reader, lint->schema);
 	    if (ret < 0) {
-		fprintf(ERR_STREAM, "XSD schema %s failed to compile\n",
+		fprintf(errStream, "XSD schema %s failed to compile\n",
                         lint->schema);
 		lint->progresult = XMLLINT_ERR_SCHEMACOMP;
 		lint->schema = NULL;
@@ -1744,7 +1736,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
 #ifdef LIBXML_VALID_ENABLED
 	if (lint->options & XML_PARSE_DTDVALID) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
-		fprintf(ERR_STREAM,
+		fprintf(errStream,
 			"Document %s does not validate\n", filename);
 		lint->progresult = XMLLINT_ERR_VALID;
 	    }
@@ -1753,11 +1745,11 @@ static void streamFile(xmllintState *lint, const char *filename) {
 #ifdef LIBXML_SCHEMAS_ENABLED
 	if ((lint->relaxng != NULL) || (lint->schema != NULL)) {
 	    if (xmlTextReaderIsValid(reader) != 1) {
-		fprintf(ERR_STREAM, "%s fails to validate\n", filename);
+		fprintf(errStream, "%s fails to validate\n", filename);
 		lint->progresult = XMLLINT_ERR_VALID;
 	    } else {
 	        if (!lint->quiet) {
-	            fprintf(ERR_STREAM, "%s validates\n", filename);
+	            fprintf(errStream, "%s validates\n", filename);
 	        }
 	    }
 	}
@@ -1767,11 +1759,11 @@ static void streamFile(xmllintState *lint, const char *filename) {
 	 */
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
-	    fprintf(ERR_STREAM, "%s : failed to parse\n", filename);
+	    fprintf(errStream, "%s : failed to parse\n", filename);
 	    lint->progresult = XMLLINT_ERR_UNCLASS;
 	}
     } else {
-	fprintf(ERR_STREAM, "Unable to open %s\n", filename);
+	fprintf(errStream, "Unable to open %s\n", filename);
 	lint->progresult = XMLLINT_ERR_UNCLASS;
     }
 #ifdef LIBXML_PATTERN_ENABLED
@@ -1783,6 +1775,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
 }
 
 static void walkDoc(xmllintState *lint, xmlDocPtr doc) {
+    FILE *errStream = lint->errStream;
     xmlTextReaderPtr reader;
     int ret;
 
@@ -1795,7 +1788,7 @@ static void walkDoc(xmllintState *lint, xmlDocPtr doc) {
 
         root = xmlDocGetRootElement(doc);
         if (root == NULL ) {
-            fprintf(ERR_STREAM,
+            fprintf(errStream,
                     "Document does not have a root element");
             lint->progresult = XMLLINT_ERR_UNCLASS;
             return;
@@ -1813,7 +1806,7 @@ static void walkDoc(xmllintState *lint, xmlDocPtr doc) {
             if (ret < 0) {
                 lint->progresult = XMLLINT_ERR_MEM;
             } else {
-                fprintf(ERR_STREAM, "Pattern %s failed to compile\n",
+                fprintf(errStream, "Pattern %s failed to compile\n",
                         lint->pattern);
                 lint->progresult = XMLLINT_ERR_SCHEMAPAT;
             }
@@ -1828,7 +1821,7 @@ static void walkDoc(xmllintState *lint, xmlDocPtr doc) {
 
         ret = xmlStreamPush(lint->patstream, NULL, NULL);
         if (ret < 0) {
-            fprintf(ERR_STREAM, "xmlStreamPush() failure\n");
+            fprintf(errStream, "xmlStreamPush() failure\n");
             lint->progresult = XMLLINT_ERR_MEM;
             goto error;
         }
@@ -1854,11 +1847,11 @@ static void walkDoc(xmllintState *lint, xmlDocPtr doc) {
 	}
 	xmlFreeTextReader(reader);
 	if (ret != 0) {
-	    fprintf(ERR_STREAM, "failed to walk through the doc\n");
+	    fprintf(errStream, "failed to walk through the doc\n");
 	    lint->progresult = XMLLINT_ERR_UNCLASS;
 	}
     } else {
-	fprintf(ERR_STREAM, "Failed to crate a reader from the document\n");
+	fprintf(errStream, "Failed to create a reader from the document\n");
 	lint->progresult = XMLLINT_ERR_UNCLASS;
     }
 
@@ -1895,13 +1888,13 @@ doXPathDump(xmllintState *lint, xmlXPathObjectPtr cur) {
             if ((cur->nodesetval == NULL) || (cur->nodesetval->nodeNr <= 0)) {
                 lint->progresult = XMLLINT_ERR_XPATH_EMPTY;
                 if (!lint->quiet) {
-                    fprintf(ERR_STREAM, "XPath set is empty\n");
+                    fprintf(lint->errStream, "XPath set is empty\n");
                 }
                 break;
             }
             buf = xmlOutputBufferCreateFile(stdout, NULL);
             if (buf == NULL) {
-                fprintf(ERR_STREAM, "Out of memory for XPath\n");
+                fprintf(lint->errStream, "Out of memory for XPath\n");
                 lint->progresult = XMLLINT_ERR_MEM;
                 return;
             }
@@ -1940,11 +1933,11 @@ doXPathDump(xmllintState *lint, xmlXPathObjectPtr cur) {
 	    printf("%s\n", (const char *) cur->stringval);
 	    break;
         case XPATH_UNDEFINED:
-	    fprintf(ERR_STREAM, "XPath Object is uninitialized\n");
+	    fprintf(lint->errStream, "XPath Object is uninitialized\n");
             lint->progresult = XMLLINT_ERR_XPATH;
 	    break;
 	default:
-	    fprintf(ERR_STREAM, "XPath object of unexpected type\n");
+	    fprintf(lint->errStream, "XPath object of unexpected type\n");
             lint->progresult = XMLLINT_ERR_XPATH;
 	    break;
     }
@@ -1958,14 +1951,14 @@ doXPathQuery(xmllintState *lint, xmlDocPtr doc, const char *query) {
 
     ctxt = xmlXPathNewContext(doc);
     if (ctxt == NULL) {
-        fprintf(ERR_STREAM, "Out of memory for XPath\n");
+        fprintf(lint->errStream, "Out of memory for XPath\n");
         lint->progresult = XMLLINT_ERR_MEM;
         goto error;
     }
 
     comp = xmlXPathCtxtCompile(ctxt, BAD_CAST query);
     if (comp == NULL) {
-        fprintf(ERR_STREAM, "XPath compilation failure\n");
+        fprintf(lint->errStream, "XPath compilation failure\n");
         lint->progresult = XMLLINT_ERR_XPATH;
         goto error;
     }
@@ -1980,7 +1973,7 @@ doXPathQuery(xmllintState *lint, xmlDocPtr doc, const char *query) {
     ctxt->node = (xmlNodePtr) doc;
     res = xmlXPathCompiledEval(comp, ctxt);
     if (res == NULL) {
-        fprintf(ERR_STREAM, "XPath evaluation failure\n");
+        fprintf(lint->errStream, "XPath evaluation failure\n");
         lint->progresult = XMLLINT_ERR_XPATH;
         goto error;
     }
@@ -2046,7 +2039,7 @@ parseFile(xmllintState *lint, const char *filename) {
         } else {
 	    f = fopen(filename, "rb");
             if (f == NULL) {
-                fprintf(ERR_STREAM, "Can't open %s\n", filename);
+                fprintf(lint->errStream, "Can't open %s\n", filename);
                 lint->progresult = XMLLINT_ERR_RDFILE;
                 return(NULL);
             }
@@ -2093,7 +2086,7 @@ parseFile(xmllintState *lint, const char *filename) {
         } else {
             f = fopen(filename, "rb");
             if (f == NULL) {
-                fprintf(ERR_STREAM, "Can't open %s\n", filename);
+                fprintf(lint->errStream, "Can't open %s\n", filename);
                 lint->progresult = XMLLINT_ERR_RDFILE;
                 return(NULL);
             }
@@ -2163,7 +2156,11 @@ parseFile(xmllintState *lint, const char *filename) {
 
 static void
 parseAndPrintFile(xmllintState *lint, const char *filename) {
+    FILE *errStream = lint->errStream;
     xmlDocPtr doc;
+
+    /* Avoid unused variable warning */
+    (void) errStream;
 
     if ((lint->timing) && (lint->repeat == 1))
 	startTimer(lint);
@@ -2271,14 +2268,14 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	    if (node != NULL) {
 		nb = xmlValidGetValidElements(node->last, NULL, list, 256);
 		if (nb < 0) {
-		    fprintf(ERR_STREAM, "could not get valid list of elements\n");
+		    fprintf(errStream, "could not get valid list of elements\n");
 		} else if (nb == 0) {
-		    fprintf(ERR_STREAM, "No element can be inserted under root\n");
+		    fprintf(errStream, "No element can be inserted under root\n");
 		} else {
-		    fprintf(ERR_STREAM, "%d element types can be inserted under root:\n",
+		    fprintf(errStream, "%d element types can be inserted under root:\n",
 		           nb);
 		    for (i = 0;i < nb;i++) {
-			 fprintf(ERR_STREAM, "%s\n", (char *) list[i]);
+			 fprintf(errStream, "%s\n", (char *) list[i]);
 		    }
 		}
 	    }
@@ -2337,7 +2334,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 			if (lint->output != NULL)
 			    fclose(out);
 		    } else {
-			fprintf(ERR_STREAM, "failed to open %s\n",
+			fprintf(errStream, "failed to open %s\n",
                                 lint->output);
 			lint->progresult = XMLLINT_ERR_OUT;
 		    }
@@ -2355,11 +2352,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_1_0, NULL, 1, &result);
 		if (size >= 0) {
 		    if (write(1, result, size) == -1) {
-		        fprintf(ERR_STREAM, "Can't write data\n");
+		        fprintf(errStream, "Can't write data\n");
 		    }
 		    xmlFree(result);
 		} else {
-		    fprintf(ERR_STREAM, "Failed to canonicalize\n");
+		    fprintf(errStream, "Failed to canonicalize\n");
 		    lint->progresult = XMLLINT_ERR_OUT;
 		}
 	    } else if (lint->canonical_11) {
@@ -2369,11 +2366,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_1_1, NULL, 1, &result);
 		if (size >= 0) {
 		    if (write(1, result, size) == -1) {
-		        fprintf(ERR_STREAM, "Can't write data\n");
+		        fprintf(errStream, "Can't write data\n");
 		    }
 		    xmlFree(result);
 		} else {
-		    fprintf(ERR_STREAM, "Failed to canonicalize\n");
+		    fprintf(errStream, "Failed to canonicalize\n");
 		    lint->progresult = XMLLINT_ERR_OUT;
 		}
 	    } else if (lint->exc_canonical) {
@@ -2383,11 +2380,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		size = xmlC14NDocDumpMemory(doc, NULL, XML_C14N_EXCLUSIVE_1_0, NULL, 1, &result);
 		if (size >= 0) {
 		    if (write(1, result, size) == -1) {
-		        fprintf(ERR_STREAM, "Can't write data\n");
+		        fprintf(errStream, "Can't write data\n");
 		    }
 		    xmlFree(result);
 		} else {
-		    fprintf(ERR_STREAM, "Failed to canonicalize\n");
+		    fprintf(errStream, "Failed to canonicalize\n");
 		    lint->progresult = XMLLINT_ERR_OUT;
 		}
 	    } else
@@ -2412,11 +2409,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 			xmlDocDumpMemory(doc, &result, &len);
 		}
 		if (result == NULL) {
-		    fprintf(ERR_STREAM, "Failed to save\n");
+		    fprintf(errStream, "Failed to save\n");
 		    lint->progresult = XMLLINT_ERR_OUT;
 		} else {
 		    if (write(1, result, len) == -1) {
-		        fprintf(ERR_STREAM, "Can't write data\n");
+		        fprintf(errStream, "Can't write data\n");
 		    }
 		    xmlFree(result);
 		}
@@ -2448,7 +2445,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 
 		if (ctxt != NULL) {
 		    if (xmlSaveDoc(ctxt, doc) < 0) {
-			fprintf(ERR_STREAM, "failed save to %s\n",
+			fprintf(errStream, "failed save to %s\n",
 				lint->output ? lint->output : "-");
 			lint->progresult = XMLLINT_ERR_OUT;
 		    }
@@ -2474,7 +2471,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		if (lint->output != NULL)
 		    fclose(out);
 	    } else {
-		fprintf(ERR_STREAM, "failed to open %s\n", lint->output);
+		fprintf(errStream, "failed to open %s\n", lint->output);
 		lint->progresult = XMLLINT_ERR_OUT;
 	    }
 	}
@@ -2501,10 +2498,10 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	}
 	if (dtd == NULL) {
 	    if (lint->dtdvalid != NULL)
-		fprintf(ERR_STREAM, "Could not parse DTD %s\n",
+		fprintf(errStream, "Could not parse DTD %s\n",
                         lint->dtdvalid);
 	    else
-		fprintf(ERR_STREAM, "Could not parse DTD %s\n",
+		fprintf(errStream, "Could not parse DTD %s\n",
                         lint->dtdvalidfpi);
 	    lint->progresult = XMLLINT_ERR_DTD;
 	} else {
@@ -2512,7 +2509,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 
 	    cvp = xmlNewValidCtxt();
 	    if (cvp == NULL) {
-		fprintf(ERR_STREAM,
+		fprintf(errStream,
 			"Couldn't allocate validation context\n");
                 lint->progresult = XMLLINT_ERR_MEM;
                 xmlFreeDtd(dtd);
@@ -2524,11 +2521,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	    }
 	    if (!xmlValidateDtd(cvp, doc, dtd)) {
 		if (lint->dtdvalid != NULL)
-		    fprintf(ERR_STREAM,
+		    fprintf(errStream,
 			    "Document %s does not validate against %s\n",
 			    filename, lint->dtdvalid);
 		else
-		    fprintf(ERR_STREAM,
+		    fprintf(errStream,
 			    "Document %s does not validate against %s\n",
 			    filename, lint->dtdvalidfpi);
 		lint->progresult = XMLLINT_ERR_VALID;
@@ -2544,7 +2541,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 
 	cvp = xmlNewValidCtxt();
 	if (cvp == NULL) {
-	    fprintf(ERR_STREAM,
+	    fprintf(errStream,
 		    "Couldn't allocate validation context\n");
             lint->progresult = XMLLINT_ERR_MEM;
             xmlFreeDoc(doc);
@@ -2555,7 +2552,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	    startTimer(lint);
 	}
 	if (!xmlValidateDocument(cvp, doc)) {
-	    fprintf(ERR_STREAM,
+	    fprintf(errStream,
 		    "Document %s does not validate\n", filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	}
@@ -2590,13 +2587,13 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	ret = xmlSchematronValidateDoc(ctxt, doc);
 	if (ret == 0) {
 	    if (!lint->quiet) {
-	        fprintf(ERR_STREAM, "%s validates\n", filename);
+	        fprintf(errStream, "%s validates\n", filename);
 	    }
 	} else if (ret > 0) {
-	    fprintf(ERR_STREAM, "%s fails to validate\n", filename);
+	    fprintf(errStream, "%s fails to validate\n", filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	} else {
-	    fprintf(ERR_STREAM, "%s validation generated an internal error\n",
+	    fprintf(errStream, "%s validation generated an internal error\n",
 		   filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	}
@@ -2624,13 +2621,13 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	ret = xmlRelaxNGValidateDoc(ctxt, doc);
 	if (ret == 0) {
 	    if (!lint->quiet) {
-	        fprintf(ERR_STREAM, "%s validates\n", filename);
+	        fprintf(errStream, "%s validates\n", filename);
 	    }
 	} else if (ret > 0) {
-	    fprintf(ERR_STREAM, "%s fails to validate\n", filename);
+	    fprintf(errStream, "%s fails to validate\n", filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	} else {
-	    fprintf(ERR_STREAM, "%s validation generated an internal error\n",
+	    fprintf(errStream, "%s validation generated an internal error\n",
 		   filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	}
@@ -2655,13 +2652,13 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	ret = xmlSchemaValidateDoc(ctxt, doc);
 	if (ret == 0) {
 	    if (!lint->quiet) {
-	        fprintf(ERR_STREAM, "%s validates\n", filename);
+	        fprintf(errStream, "%s validates\n", filename);
 	    }
 	} else if (ret > 0) {
-	    fprintf(ERR_STREAM, "%s fails to validate\n", filename);
+	    fprintf(errStream, "%s fails to validate\n", filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	} else {
-	    fprintf(ERR_STREAM, "%s validation generated an internal error\n",
+	    fprintf(errStream, "%s validation generated an internal error\n",
 		   filename);
 	    lint->progresult = XMLLINT_ERR_VALID;
 	}
@@ -2678,7 +2675,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
         && (!lint->html)
 #endif
     )
-	xmlDebugDumpEntities(ERR_STREAM, doc);
+	xmlDebugDumpEntities(errStream, doc);
 #endif
 
     /* Avoid unused label warning */
@@ -2703,40 +2700,40 @@ done:
  *									*
  ************************************************************************/
 
-static void showVersion(const char *name) {
-    fprintf(ERR_STREAM, "%s: using libxml version %s\n", name, xmlParserVersion);
-    fprintf(ERR_STREAM, "   compiled with: ");
-    if (xmlHasFeature(XML_WITH_THREAD)) fprintf(ERR_STREAM, "Threads ");
-    if (xmlHasFeature(XML_WITH_TREE)) fprintf(ERR_STREAM, "Tree ");
-    if (xmlHasFeature(XML_WITH_OUTPUT)) fprintf(ERR_STREAM, "Output ");
-    if (xmlHasFeature(XML_WITH_PUSH)) fprintf(ERR_STREAM, "Push ");
-    if (xmlHasFeature(XML_WITH_READER)) fprintf(ERR_STREAM, "Reader ");
-    if (xmlHasFeature(XML_WITH_PATTERN)) fprintf(ERR_STREAM, "Patterns ");
-    if (xmlHasFeature(XML_WITH_WRITER)) fprintf(ERR_STREAM, "Writer ");
-    if (xmlHasFeature(XML_WITH_SAX1)) fprintf(ERR_STREAM, "SAXv1 ");
-    if (xmlHasFeature(XML_WITH_HTTP)) fprintf(ERR_STREAM, "HTTP ");
-    if (xmlHasFeature(XML_WITH_VALID)) fprintf(ERR_STREAM, "DTDValid ");
-    if (xmlHasFeature(XML_WITH_HTML)) fprintf(ERR_STREAM, "HTML ");
-    if (xmlHasFeature(XML_WITH_LEGACY)) fprintf(ERR_STREAM, "Legacy ");
-    if (xmlHasFeature(XML_WITH_C14N)) fprintf(ERR_STREAM, "C14N ");
-    if (xmlHasFeature(XML_WITH_CATALOG)) fprintf(ERR_STREAM, "Catalog ");
-    if (xmlHasFeature(XML_WITH_XPATH)) fprintf(ERR_STREAM, "XPath ");
-    if (xmlHasFeature(XML_WITH_XPTR)) fprintf(ERR_STREAM, "XPointer ");
-    if (xmlHasFeature(XML_WITH_XINCLUDE)) fprintf(ERR_STREAM, "XInclude ");
-    if (xmlHasFeature(XML_WITH_ICONV)) fprintf(ERR_STREAM, "Iconv ");
-    if (xmlHasFeature(XML_WITH_ICU)) fprintf(ERR_STREAM, "ICU ");
-    if (xmlHasFeature(XML_WITH_ISO8859X)) fprintf(ERR_STREAM, "ISO8859X ");
-    if (xmlHasFeature(XML_WITH_UNICODE)) fprintf(ERR_STREAM, "Unicode ");
-    if (xmlHasFeature(XML_WITH_REGEXP)) fprintf(ERR_STREAM, "Regexps ");
-    if (xmlHasFeature(XML_WITH_AUTOMATA)) fprintf(ERR_STREAM, "Automata ");
-    if (xmlHasFeature(XML_WITH_EXPR)) fprintf(ERR_STREAM, "Expr ");
-    if (xmlHasFeature(XML_WITH_SCHEMAS)) fprintf(ERR_STREAM, "Schemas ");
-    if (xmlHasFeature(XML_WITH_SCHEMATRON)) fprintf(ERR_STREAM, "Schematron ");
-    if (xmlHasFeature(XML_WITH_MODULES)) fprintf(ERR_STREAM, "Modules ");
-    if (xmlHasFeature(XML_WITH_DEBUG)) fprintf(ERR_STREAM, "Debug ");
-    if (xmlHasFeature(XML_WITH_ZLIB)) fprintf(ERR_STREAM, "Zlib ");
-    if (xmlHasFeature(XML_WITH_LZMA)) fprintf(ERR_STREAM, "Lzma ");
-    fprintf(ERR_STREAM, "\n");
+static void showVersion(FILE *errStream, const char *name) {
+    fprintf(errStream, "%s: using libxml version %s\n", name, xmlParserVersion);
+    fprintf(errStream, "   compiled with: ");
+    if (xmlHasFeature(XML_WITH_THREAD)) fprintf(errStream, "Threads ");
+    if (xmlHasFeature(XML_WITH_TREE)) fprintf(errStream, "Tree ");
+    if (xmlHasFeature(XML_WITH_OUTPUT)) fprintf(errStream, "Output ");
+    if (xmlHasFeature(XML_WITH_PUSH)) fprintf(errStream, "Push ");
+    if (xmlHasFeature(XML_WITH_READER)) fprintf(errStream, "Reader ");
+    if (xmlHasFeature(XML_WITH_PATTERN)) fprintf(errStream, "Patterns ");
+    if (xmlHasFeature(XML_WITH_WRITER)) fprintf(errStream, "Writer ");
+    if (xmlHasFeature(XML_WITH_SAX1)) fprintf(errStream, "SAXv1 ");
+    if (xmlHasFeature(XML_WITH_HTTP)) fprintf(errStream, "HTTP ");
+    if (xmlHasFeature(XML_WITH_VALID)) fprintf(errStream, "DTDValid ");
+    if (xmlHasFeature(XML_WITH_HTML)) fprintf(errStream, "HTML ");
+    if (xmlHasFeature(XML_WITH_LEGACY)) fprintf(errStream, "Legacy ");
+    if (xmlHasFeature(XML_WITH_C14N)) fprintf(errStream, "C14N ");
+    if (xmlHasFeature(XML_WITH_CATALOG)) fprintf(errStream, "Catalog ");
+    if (xmlHasFeature(XML_WITH_XPATH)) fprintf(errStream, "XPath ");
+    if (xmlHasFeature(XML_WITH_XPTR)) fprintf(errStream, "XPointer ");
+    if (xmlHasFeature(XML_WITH_XINCLUDE)) fprintf(errStream, "XInclude ");
+    if (xmlHasFeature(XML_WITH_ICONV)) fprintf(errStream, "Iconv ");
+    if (xmlHasFeature(XML_WITH_ICU)) fprintf(errStream, "ICU ");
+    if (xmlHasFeature(XML_WITH_ISO8859X)) fprintf(errStream, "ISO8859X ");
+    if (xmlHasFeature(XML_WITH_UNICODE)) fprintf(errStream, "Unicode ");
+    if (xmlHasFeature(XML_WITH_REGEXP)) fprintf(errStream, "Regexps ");
+    if (xmlHasFeature(XML_WITH_AUTOMATA)) fprintf(errStream, "Automata ");
+    if (xmlHasFeature(XML_WITH_EXPR)) fprintf(errStream, "Expr ");
+    if (xmlHasFeature(XML_WITH_SCHEMAS)) fprintf(errStream, "Schemas ");
+    if (xmlHasFeature(XML_WITH_SCHEMATRON)) fprintf(errStream, "Schematron ");
+    if (xmlHasFeature(XML_WITH_MODULES)) fprintf(errStream, "Modules ");
+    if (xmlHasFeature(XML_WITH_DEBUG)) fprintf(errStream, "Debug ");
+    if (xmlHasFeature(XML_WITH_ZLIB)) fprintf(errStream, "Zlib ");
+    if (xmlHasFeature(XML_WITH_LZMA)) fprintf(errStream, "Lzma ");
+    fprintf(errStream, "\n");
 }
 
 static void usage(FILE *f, const char *name) {
@@ -2858,7 +2855,7 @@ static void usage(FILE *f, const char *name) {
 }
 
 static unsigned long
-parseInteger(const char *ctxt, const char *str,
+parseInteger(FILE *errStream, const char *ctxt, const char *str,
              unsigned long min, unsigned long max) {
     char *strEnd;
     unsigned long val;
@@ -2866,11 +2863,11 @@ parseInteger(const char *ctxt, const char *str,
     errno = 0;
     val = strtoul(str, &strEnd, 10);
     if (errno == EINVAL || *strEnd != 0) {
-        fprintf(ERR_STREAM, "%s: invalid integer: %s\n", ctxt, str);
+        fprintf(errStream, "%s: invalid integer: %s\n", ctxt, str);
         exit(XMLLINT_ERR_UNCLASS);
     }
     if (errno != 0 || val < min || val > max) {
-        fprintf(ERR_STREAM, "%s: integer out of range: %s\n", ctxt, str);
+        fprintf(errStream, "%s: integer out of range: %s\n", ctxt, str);
         exit(XMLLINT_ERR_UNCLASS);
     }
 
@@ -2936,10 +2933,11 @@ xmllintInit(xmllintState *lint) {
 
 static int
 xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
+    FILE *errStream = lint->errStream;
     int i;
 
     if (argc <= 1) {
-        usage(ERR_STREAM, argv[0]);
+        usage(errStream, argv[0]);
         return(XMLLINT_ERR_UNCLASS);
     }
 
@@ -2951,11 +2949,12 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
             (!strcmp(argv[i], "--maxmem"))) {
             i++;
             if (i >= argc) {
-                fprintf(ERR_STREAM, "maxmem: missing integer value\n");
+                fprintf(errStream, "maxmem: missing integer value\n");
                 return(XMLLINT_ERR_UNCLASS);
             }
             errno = 0;
-            xmllintMaxmem = parseInteger("maxmem", argv[i], 0, INT_MAX);
+            lint->maxmem = parseInteger(errStream, "maxmem", argv[i],
+                                        0, INT_MAX);
         } else if ((!strcmp(argv[i], "-debug")) ||
                    (!strcmp(argv[i], "--debug"))) {
             lint->debug = 1;
@@ -2988,7 +2987,7 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
             lint->options |= XML_PARSE_NODICT;
         } else if ((!strcmp(argv[i], "-version")) ||
                    (!strcmp(argv[i], "--version"))) {
-            showVersion(argv[0]);
+            showVersion(errStream, argv[0]);
             lint->version = 1;
         } else if ((!strcmp(argv[i], "-noout")) ||
                    (!strcmp(argv[i], "--noout"))) {
@@ -3217,13 +3216,14 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--max-ampl"))) {
             i++;
             if (i >= argc) {
-                fprintf(ERR_STREAM, "max-ampl: missing integer value\n");
+                fprintf(errStream, "max-ampl: missing integer value\n");
                 return(XMLLINT_ERR_UNCLASS);
             }
-            lint->maxAmpl = parseInteger("max-ampl", argv[i], 1, UINT_MAX);
+            lint->maxAmpl = parseInteger(errStream, "max-ampl", argv[i],
+                                         1, UINT_MAX);
         } else {
-            fprintf(ERR_STREAM, "Unknown option %s\n", argv[i]);
-            usage(ERR_STREAM, argv[0]);
+            fprintf(errStream, "Unknown option %s\n", argv[i]);
+            usage(errStream, argv[0]);
             return(XMLLINT_ERR_UNCLASS);
         }
     }
@@ -3235,7 +3235,8 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
 }
 
 static int
-xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
+xmllintMain(int argc, const char **argv, FILE *errStream,
+            xmlResourceLoader loader) {
     xmllintState state, *lint;
     int i, j, res;
     int files = 0;
@@ -3246,10 +3247,9 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
     _setmode(_fileno(stderr), _O_BINARY);
 #endif
 
-    xmllintMaxmem = 0;
-
     lint = &state;
     xmllintInit(lint);
+    lint->errStream = errStream;
     lint->defaultResourceLoader = loader;
 
     res = xmllintParseOptions(lint, argc, argv);
@@ -3258,8 +3258,11 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         goto error;
     }
 
-    if (xmllintMaxmem != 0)
+    if (lint->maxmem != 0) {
+        xmllintMaxmem = 0;
+        xmllintOom = 0;
         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc, myStrdupFunc);
+    }
 
     LIBXML_TEST_VERSION
 
@@ -3272,7 +3275,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	    if (catal != NULL) {
 		xmlLoadCatalogs(catal);
 	    } else {
-		fprintf(ERR_STREAM, "Variable $SGML_CATALOG_FILES not set\n");
+		fprintf(errStream, "Variable $SGML_CATALOG_FILES not set\n");
 	    }
 	}
     }
@@ -3295,14 +3298,14 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         }
 
         if (!lint->nowrap) {
-            fprintf(ERR_STREAM,
+            fprintf(errStream,
              "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");
-            fprintf(ERR_STREAM,
+            fprintf(errStream,
                     "\t\"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
-            fprintf(ERR_STREAM,
+            fprintf(errStream,
              "<html><head><title>%s output</title></head>\n",
                     argv[0]);
-            fprintf(ERR_STREAM,
+            fprintf(errStream,
              "<body bgcolor=\"#ffffff\"><h1 align=\"center\">%s output</h1>\n",
                     argv[0]);
         }
@@ -3328,7 +3331,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         }
 	lint->wxschematron = xmlSchematronParse(ctxt);
 	if (lint->wxschematron == NULL) {
-	    fprintf(ERR_STREAM, "Schematron schema %s failed to compile\n",
+	    fprintf(errStream, "Schematron schema %s failed to compile\n",
                     lint->schematron);
             lint->progresult = XMLLINT_ERR_SCHEMACOMP;
             goto error;
@@ -3361,7 +3364,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         xmlRelaxNGSetResourceLoader(ctxt, xmllintResourceLoader, lint);
 	lint->relaxngschemas = xmlRelaxNGParse(ctxt);
 	if (lint->relaxngschemas == NULL) {
-	    fprintf(ERR_STREAM, "Relax-NG schema %s failed to compile\n",
+	    fprintf(errStream, "Relax-NG schema %s failed to compile\n",
                     lint->relaxng);
             lint->progresult = XMLLINT_ERR_SCHEMACOMP;
             goto error;
@@ -3388,7 +3391,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         xmlSchemaSetResourceLoader(ctxt, xmllintResourceLoader, lint);
 	lint->wxschemas = xmlSchemaParse(ctxt);
 	if (lint->wxschemas == NULL) {
-	    fprintf(ERR_STREAM, "WXS schema %s failed to compile\n",
+	    fprintf(errStream, "WXS schema %s failed to compile\n",
                     lint->schema);
             lint->progresult = XMLLINT_ERR_SCHEMACOMP;
             goto error;
@@ -3405,7 +3408,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
         lint->patternc = xmlPatterncompile(BAD_CAST lint->pattern, NULL, 0,
                                            NULL);
 	if (lint->patternc == NULL) {
-	    fprintf(ERR_STREAM, "Pattern %s failed to compile\n",
+	    fprintf(errStream, "Pattern %s failed to compile\n",
                     lint->pattern);
             lint->progresult = XMLLINT_ERR_SCHEMAPAT;
             goto error;
@@ -3440,7 +3443,7 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
                                     MAP_SHARED, memoryFd, 0);
             if (lint->memoryData == (void *) MAP_FAILED) {
                 close(memoryFd);
-                fprintf(ERR_STREAM, "mmap failure for file %s\n", filename);
+                fprintf(errStream, "mmap failure for file %s\n", filename);
                 lint->progresult = XMLLINT_ERR_RDFILE;
                 break;
             }
@@ -3500,11 +3503,11 @@ xmllintMain(int argc, const char **argv, xmlResourceLoader loader) {
 	parseAndPrintFile(lint, NULL);
 
     if ((lint->htmlout) && (!lint->nowrap)) {
-	fprintf(ERR_STREAM, "</body></html>\n");
+	fprintf(errStream, "</body></html>\n");
     }
 
     if ((files == 0) && (!lint->generate) && (lint->version == 0)) {
-	usage(ERR_STREAM, argv[0]);
+	usage(errStream, argv[0]);
         lint->progresult = XMLLINT_ERR_UNCLASS;
     }
 
@@ -3530,13 +3533,18 @@ error:
 
     xmlCleanupParser();
 
+    if ((lint->maxmem) && (xmllintOom)) {
+        fprintf(errStream, "Ran out of memory, needed > %d bytes\n",
+                xmllintMaxmem);
+    }
+
     return(lint->progresult);
 }
 
 #ifndef XMLLINT_FUZZ
 int
 main(int argc, char **argv) {
-    return(xmllintMain(argc, (const char **) argv, NULL));
+    return(xmllintMain(argc, (const char **) argv, stderr, NULL));
 }
 #endif
 

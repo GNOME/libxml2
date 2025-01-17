@@ -202,7 +202,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlCatalogSetDefaults(XML_CATA_ALLOW_NONE);
 #endif
 
-    xmllintMain(vars.argi - 1, vars.argv, xmlFuzzResourceLoader);
+    xmllintMain(vars.argi - 1, vars.argv, stdout, xmlFuzzResourceLoader);
 
     xmlMemSetup(free, malloc, realloc, xmlMemStrdup);
 

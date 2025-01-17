@@ -1924,7 +1924,6 @@ doXPathDump(xmllintState *lint, xmlXPathObjectPtr cur) {
             }
             buf = xmlOutputBufferCreateFile(stdout, NULL);
             if (buf == NULL) {
-                fprintf(lint->errStream, "Out of memory for XPath\n");
                 lint->progresult = XMLLINT_ERR_MEM;
                 return;
             }
@@ -1981,7 +1980,6 @@ doXPathQuery(xmllintState *lint, xmlDocPtr doc, const char *query) {
 
     ctxt = xmlXPathNewContext(doc);
     if (ctxt == NULL) {
-        fprintf(lint->errStream, "Out of memory for XPath\n");
         lint->progresult = XMLLINT_ERR_MEM;
         goto error;
     }
@@ -2537,8 +2535,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 
 	    cvp = xmlNewValidCtxt();
 	    if (cvp == NULL) {
-		fprintf(errStream,
-			"Couldn't allocate validation context\n");
                 lint->progresult = XMLLINT_ERR_MEM;
                 xmlFreeDtd(dtd);
                 return;
@@ -2569,8 +2565,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 
 	cvp = xmlNewValidCtxt();
 	if (cvp == NULL) {
-	    fprintf(errStream,
-		    "Couldn't allocate validation context\n");
             lint->progresult = XMLLINT_ERR_MEM;
             xmlFreeDoc(doc);
             return;
@@ -3567,8 +3561,10 @@ error:
     xmlCleanupParser();
 
     if ((lint->maxmem) && (xmllintMaxmemReached)) {
-        fprintf(errStream, "Ran out of memory, needed > %d bytes\n",
+        fprintf(errStream, "Maximum memory exceeded (%d bytes)\n",
                 xmllintMaxmem);
+    } else if (lint->progresult == XMLLINT_ERR_MEM) {
+        fprintf(errStream, "Out-of-memory error reported\n");
     }
 
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION

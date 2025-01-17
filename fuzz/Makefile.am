@@ -143,7 +143,7 @@ seed/lint.stamp: genSeed$(EXEEXT)
 	./genSeed$(EXEEXT) lint $(XML_SEED_CORPUS_SRC)
 	@touch seed/lint.stamp
 
-lint_SOURCES = lint.c fuzz.c
+lint_SOURCES = lint.c fuzz.c ../xmllint.c ../shell.c
 lint_LDFLAGS = -fsanitize=fuzzer
 
 fuzz-lint: lint$(EXEEXT) seed/lint.stamp

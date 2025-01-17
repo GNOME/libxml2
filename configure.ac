@@ -41,7 +41,7 @@ AC_SUBST(LIBXML_VERSION_INFO)
 AC_SUBST(LIBXML_VERSION_NUMBER)
 AC_SUBST(LIBXML_VERSION_EXTRA)
 
-AM_INIT_AUTOMAKE([1.16.3 foreign no-dist-gzip dist-xz])
+AM_INIT_AUTOMAKE([1.16.3 foreign subdir-objects no-dist-gzip dist-xz])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 

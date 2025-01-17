@@ -494,7 +494,7 @@ meson.override_dependency('libxml-2.0', xml_dep)
 
 executable(
     'xmllint',
-    files('xmllint.c', 'shell.c'),
+    files('xmllint.c', 'shell.c', 'lintmain.c'),
     dependencies: [xml_dep, xmllint_deps],
     include_directories: config_dir,
     install: true,

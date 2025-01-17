@@ -14,10 +14,31 @@
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 
+#include "private/lint.h"
+
 #include "fuzz.h"
 
-#define XMLLINT_FUZZ
-#include "../xmllint.c"
+/*
+ * Untested options:
+ *
+ * --catalogs: Requires XML catalogs
+ *
+ * --dtdvalid:
+ * --dtdvalidfpi: Requires an external DTD
+ *
+ * --output: Writes to disk
+ *
+ * --path: Requires cooperation with resource loader
+ *
+ * --repeat: Could be limited to 2 when fuzzing
+ *
+ * --relaxng:
+ * --schema:
+ * --schematron: Requires schemas
+ *
+ * --shell: We could pipe fuzz data to stdin but this is probably
+ *          not worth it.
+ */
 
 static const char *const switches[] = {
     "--auto",

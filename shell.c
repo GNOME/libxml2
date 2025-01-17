@@ -35,7 +35,7 @@
 #include <libxml/relaxng.h>
 #endif
 
-#include "private/shell.h"
+#include "private/lint.h"
 
 #ifndef STDIN_FILENO
   #define STDIN_FILENO 0

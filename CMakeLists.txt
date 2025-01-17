@@ -461,7 +461,7 @@ if(MSVC AND BUILD_SHARED_LIBS)
 endif()
 
 if(LIBXML2_WITH_PROGRAMS)
-    add_executable(xmllint xmllint.c shell.c)
+    add_executable(xmllint xmllint.c shell.c lintmain.c)
     set(PROGRAMS xmllint)
     if(LIBXML2_WITH_CATALOG AND LIBXML2_WITH_OUTPUT)
         add_executable(xmlcatalog xmlcatalog.c)

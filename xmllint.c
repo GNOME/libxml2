@@ -67,7 +67,7 @@
 #include <libxml/xmlsave.h>
 #endif
 
-#include "private/shell.h"
+#include "private/lint.h"
 
 #ifndef STDIN_FILENO
   #define STDIN_FILENO 0
@@ -2201,7 +2201,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
     }
 #endif
 
-#ifndef XMLLINT_FUZZ
     /*
      * shell interaction
      */
@@ -2212,7 +2211,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
         xmllintShell(doc, filename, stdout);
         goto done;
     }
-#endif
 
 #ifdef LIBXML_XPATH_ENABLED
     if (lint->xpathquery != NULL) {
@@ -3234,7 +3232,7 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
     return(XMLLINT_RETURN_OK);
 }
 
-static int
+int
 xmllintMain(int argc, const char **argv, FILE *errStream,
             xmlResourceLoader loader) {
     xmllintState state, *lint;
@@ -3544,11 +3542,4 @@ error:
 
     return(lint->progresult);
 }
-
-#ifndef XMLLINT_FUZZ
-int
-main(int argc, char **argv) {
-    return(xmllintMain(argc, (const char **) argv, stderr, NULL));
-}
-#endif
 

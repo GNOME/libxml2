@@ -159,7 +159,6 @@ typedef struct {
     int htmlout;
 #ifdef LIBXML_PUSH_ENABLED
     int push;
-    const int pushsize;
 #endif /* LIBXML_PUSH_ENABLED */
 #if HAVE_DECL_MMAP
     int memory;
@@ -324,11 +323,37 @@ myClose(void *context) {
 
 static xmlDocPtr
 parseXml(xmllintState *lint, const char *filename) {
+    xmlParserCtxtPtr ctxt = lint->ctxt;
     xmlDocPtr doc;
 
-    xmlCtxtSetResourceLoader(lint->ctxt, xmllintResourceLoader, lint);
-    if (lint->maxAmpl > 0)
-        xmlCtxtSetMaxAmplification(lint->ctxt, lint->maxAmpl);
+#ifdef LIBXML_PUSH_ENABLED
+    if (lint->push) {
+        FILE *f;
+        int res;
+        char chars[4096];
+
+        if ((filename[0] == '-') && (filename[1] == 0)) {
+            f = stdin;
+        } else {
+            f = fopen(filename, "rb");
+            if (f == NULL) {
+                fprintf(lint->errStream, "Can't open %s\n", filename);
+                lint->progresult = XMLLINT_ERR_RDFILE;
+                return(NULL);
+            }
+        }
+
+        while ((res = fread(chars, 1, 4096, f)) > 0) {
+            xmlParseChunk(ctxt, chars, res, 0);
+        }
+        xmlParseChunk(ctxt, chars, 0, 1);
+
+        doc = ctxt->myDoc;
+        if (f != stdin)
+            fclose(f);
+        return(doc);
+    }
+#endif /* LIBXML_PUSH_ENABLED */
 
 #if HAVE_DECL_MMAP
     if (lint->memory) {
@@ -342,7 +367,7 @@ parseXml(xmllintState *lint, const char *filename) {
             lint->progresult = XMLLINT_ERR_MEM;
             return(NULL);
         }
-        doc = xmlCtxtParseDocument(lint->ctxt, input);
+        doc = xmlCtxtParseDocument(ctxt, input);
         return(doc);
     }
 #endif
@@ -361,14 +386,14 @@ parseXml(xmllintState *lint, const char *filename) {
             }
         }
 
-        doc = xmlCtxtReadIO(lint->ctxt, myRead, myClose, f, filename, NULL,
+        doc = xmlCtxtReadIO(ctxt, myRead, myClose, f, filename, NULL,
                             lint->options);
     } else {
         if (strcmp(filename, "-") == 0)
-            doc = xmlCtxtReadFd(lint->ctxt, STDIN_FILENO, "-", NULL,
+            doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
                                 lint->options);
         else
-            doc = xmlCtxtReadFile(lint->ctxt, filename, NULL, lint->options);
+            doc = xmlCtxtReadFile(ctxt, filename, NULL, lint->options);
     }
 
     return(doc);
@@ -377,7 +402,37 @@ parseXml(xmllintState *lint, const char *filename) {
 #ifdef LIBXML_HTML_ENABLED
 static xmlDocPtr
 parseHtml(xmllintState *lint, const char *filename) {
+    xmlParserCtxtPtr ctxt = lint->ctxt;
     xmlDocPtr doc;
+
+#ifdef LIBXML_PUSH_ENABLED
+    if (lint->push) {
+        FILE *f;
+        int res;
+        char chars[4096];
+
+        if ((filename[0] == '-') && (filename[1] == 0)) {
+            f = stdin;
+        } else {
+	    f = fopen(filename, "rb");
+            if (f == NULL) {
+                fprintf(lint->errStream, "Can't open %s\n", filename);
+                lint->progresult = XMLLINT_ERR_RDFILE;
+                return(NULL);
+            }
+        }
+
+        while ((res = fread(chars, 1, 4096, f)) > 0) {
+            htmlParseChunk(ctxt, chars, res, 0);
+        }
+        htmlParseChunk(ctxt, chars, 0, 1);
+        doc = ctxt->myDoc;
+        if (f != stdin)
+            fclose(f);
+
+        return(doc);
+    }
+#endif /* LIBXML_PUSH_ENABLED */
 
 #if HAVE_DECL_MMAP
     if (lint->memory) {
@@ -391,16 +446,16 @@ parseHtml(xmllintState *lint, const char *filename) {
             lint->progresult = XMLLINT_ERR_MEM;
             return(NULL);
         }
-        doc = htmlCtxtParseDocument(lint->ctxt, input);
+        doc = htmlCtxtParseDocument(ctxt, input);
         return(doc);
     }
 #endif
 
     if (strcmp(filename, "-") == 0)
-        doc = htmlCtxtReadFd(lint->ctxt, STDIN_FILENO, "-", NULL,
+        doc = htmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
                              lint->options);
     else
-        doc = htmlCtxtReadFile(lint->ctxt, filename, NULL, lint->options);
+        doc = htmlCtxtReadFile(ctxt, filename, NULL, lint->options);
 
     return(doc);
 }
@@ -1484,19 +1539,7 @@ static const xmlSAXHandler debugSAX2Handler = {
 
 static void
 testSAX(xmllintState *lint, const char *filename) {
-    const xmlSAXHandler *handler;
-
     lint->callbacks = 0;
-
-    if (lint->noout) {
-        handler = &emptySAXHandler;
-#ifdef LIBXML_SAX1_ENABLED
-    } else if (lint->options & XML_PARSE_SAX1) {
-        handler = &debugSAXHandler;
-#endif
-    } else {
-        handler = &debugSAX2Handler;
-    }
 
 #ifdef LIBXML_SCHEMAS_ENABLED
     if (lint->wxschemas != NULL) {
@@ -1521,7 +1564,7 @@ testSAX(xmllintState *lint, const char *filename) {
         }
 	xmlSchemaValidateSetFilename(vctxt, filename);
 
-	ret = xmlSchemaValidateStream(vctxt, buf, 0, handler, lint);
+	ret = xmlSchemaValidateStream(vctxt, buf, 0, lint->ctxt->sax, lint);
 	if (lint->repeat == 1) {
 	    if (ret == 0) {
 	        if (!lint->quiet) {
@@ -1541,36 +1584,11 @@ testSAX(xmllintState *lint, const char *filename) {
 #endif
 #ifdef LIBXML_HTML_ENABLED
     if (lint->html) {
-        htmlParserCtxtPtr ctxt = NULL;
-
-	ctxt = htmlNewSAXParserCtxt(handler, lint);
-	if (ctxt == NULL) {
-            lint->progresult = XMLLINT_ERR_MEM;
-	    return;
-	}
-
         parseHtml(lint, filename);
-
-        htmlFreeParserCtxt(ctxt);
     } else
 #endif
     {
-        xmlParserCtxtPtr ctxt = NULL;
-
-	ctxt = xmlNewSAXParserCtxt(handler, lint);
-	if (ctxt == NULL) {
-            lint->progresult = XMLLINT_ERR_MEM;
-	    return;
-	}
-
         parseXml(lint, filename);
-
-	if (ctxt->myDoc != NULL) {
-	    fprintf(lint->errStream, "SAX generated a doc !\n");
-	    xmlFreeDoc(ctxt->myDoc);
-	    ctxt->myDoc = NULL;
-	}
-        xmlFreeParserCtxt(ctxt);
     }
 }
 
@@ -2024,10 +2042,6 @@ error:
 static xmlDocPtr
 parseFile(xmllintState *lint, const char *filename) {
     xmlDocPtr doc = NULL;
-    int errNo;
-#ifdef LIBXML_VALID_ENABLED
-    int valid;
-#endif
 
     if ((lint->generate) && (filename == NULL)) {
         xmlNodePtr n;
@@ -2055,126 +2069,23 @@ parseFile(xmllintState *lint, const char *filename) {
     }
 
 #ifdef LIBXML_HTML_ENABLED
-#ifdef LIBXML_PUSH_ENABLED
-    if ((lint->html) && (lint->push)) {
-        htmlParserCtxtPtr ctxt;
-        FILE *f;
-        int res;
-        char chars[4096];
-
-        if ((filename[0] == '-') && (filename[1] == 0)) {
-            f = stdin;
-        } else {
-	    f = fopen(filename, "rb");
-            if (f == NULL) {
-                fprintf(lint->errStream, "Can't open %s\n", filename);
-                lint->progresult = XMLLINT_ERR_RDFILE;
-                return(NULL);
-            }
-        }
-
-        res = fread(chars, 1, 4, f);
-        ctxt = htmlCreatePushParserCtxt(NULL, NULL,
-                    chars, res, filename, XML_CHAR_ENCODING_NONE);
-        if (ctxt == NULL) {
-            lint->progresult = XMLLINT_ERR_MEM;
-            if (f != stdin)
-                fclose(f);
-            return(NULL);
-        }
-        htmlCtxtUseOptions(ctxt, lint->options);
-        while ((res = fread(chars, 1, lint->pushsize, f)) > 0) {
-            htmlParseChunk(ctxt, chars, res, 0);
-        }
-        htmlParseChunk(ctxt, chars, 0, 1);
-        doc = ctxt->myDoc;
-        htmlFreeParserCtxt(ctxt);
-        if (f != stdin)
-            fclose(f);
-
-        return(doc);
-    }
-#endif /* LIBXML_PUSH_ENABLED */
-
     if (lint->html) {
         doc = parseHtml(lint, filename);
         return(doc);
     }
 #endif /* LIBXML_HTML_ENABLED */
-
-#ifdef LIBXML_PUSH_ENABLED
-    if (lint->push) {
-        xmlParserCtxtPtr ctxt;
-        FILE *f;
-        int res;
-        char chars[4096];
-
-        if ((filename[0] == '-') && (filename[1] == 0)) {
-            f = stdin;
-        } else {
-            f = fopen(filename, "rb");
-            if (f == NULL) {
-                fprintf(lint->errStream, "Can't open %s\n", filename);
-                lint->progresult = XMLLINT_ERR_RDFILE;
-                return(NULL);
-            }
-        }
-
-        res = fread(chars, 1, 4, f);
-        ctxt = xmlCreatePushParserCtxt(NULL, NULL, chars, res, filename);
-        if (ctxt == NULL) {
-            lint->progresult = XMLLINT_ERR_MEM;
-            if (f != stdin)
-                fclose(f);
-            return(NULL);
-        }
-
-        xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, lint);
-        xmlCtxtUseOptions(ctxt, lint->options);
-        if (lint->maxAmpl > 0)
-            xmlCtxtSetMaxAmplification(ctxt, lint->maxAmpl);
-
-        if (lint->htmlout) {
-            ctxt->_private = lint;
-            xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
-        }
-
-        while ((res = fread(chars, 1, lint->pushsize, f)) > 0) {
-            xmlParseChunk(ctxt, chars, res, 0);
-        }
-        xmlParseChunk(ctxt, chars, 0, 1);
-
-        doc = ctxt->myDoc;
-        errNo = ctxt->errNo;
-#ifdef LIBXML_VALID_ENABLED
-        valid = ctxt->valid;
-#endif
-        xmlFreeParserCtxt(ctxt);
-        if (f != stdin)
-            fclose(f);
-    } else
-#endif /* LIBXML_PUSH_ENABLED */
     {
-        if (lint->htmlout) {
-            lint->ctxt->_private = lint;
-            xmlCtxtSetErrorHandler(lint->ctxt, xmlHTMLError, lint->ctxt);
-        }
-
         doc = parseXml(lint, filename);
-        errNo = lint->ctxt->errNo;
-#ifdef LIBXML_VALID_ENABLED
-        valid = lint->ctxt->valid;
-#endif
     }
 
     if (doc == NULL) {
-        if (errNo == XML_ERR_NO_MEMORY)
+        if (lint->ctxt->errNo == XML_ERR_NO_MEMORY)
             lint->progresult = XMLLINT_ERR_MEM;
         else
 	    lint->progresult = XMLLINT_ERR_RDFILE;
     } else {
 #ifdef LIBXML_VALID_ENABLED
-        if ((lint->options & XML_PARSE_DTDVALID) && (valid == 0))
+        if ((lint->options & XML_PARSE_DTDVALID) && (lint->ctxt->valid == 0))
             lint->progresult = XMLLINT_ERR_VALID;
 #endif /* LIBXML_VALID_ENABLED */
     }
@@ -3443,6 +3354,9 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
     }
 #endif /* LIBXML_READER_ENABLED && LIBXML_PATTERN_ENABLED */
 
+    /*
+     * The main loop over input documents
+     */
     for (i = 1; i < argc ; i++) {
         const char *filename = argv[i];
 #if HAVE_DECL_MMAP
@@ -3481,36 +3395,89 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
 	if ((lint->timing) && (lint->repeat > 1))
 	    startTimer(lint);
 
-#ifdef LIBXML_HTML_ENABLED
-        if (lint->html) {
-            lint->ctxt = htmlNewParserCtxt();
-        } else
-#endif
-        {
-            lint->ctxt = xmlNewParserCtxt();
-        }
-        if (lint->ctxt == NULL) {
-            lint->progresult = XMLLINT_ERR_MEM;
-            goto error;
-        }
-
-        for (j = 0; j < lint->repeat; j++) {
 #ifdef LIBXML_READER_ENABLED
-            if (lint->stream != 0) {
+        if (lint->stream != 0) {
+            for (j = 0; j < lint->repeat; j++)
                 streamFile(lint, filename);
-            } else {
+        } else
 #endif /* LIBXML_READER_ENABLED */
+        {
+            xmlParserCtxtPtr ctxt;
+
+#ifdef LIBXML_HTML_ENABLED
+            if (lint->html) {
+#ifdef LIBXML_PUSH_ENABLED
+                if (lint->push) {
+                    ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0,
+                                                    filename,
+                                                    XML_CHAR_ENCODING_NONE);
+                    htmlCtxtUseOptions(ctxt, lint->options);
+                } else
+#endif /* LIBXML_PUSH_ENABLED */
+                {
+                    ctxt = htmlNewParserCtxt();
+                }
+            } else
+#endif /* LIBXML_HTML_ENABLED */
+            {
+#ifdef LIBXML_PUSH_ENABLED
+                if (lint->push) {
+                    ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0,
+                                                   filename);
+                    xmlCtxtUseOptions(ctxt, lint->options);
+                } else
+#endif /* LIBXML_PUSH_ENABLED */
+                {
+                    ctxt = xmlNewParserCtxt();
+                }
+            }
+            if (ctxt == NULL) {
+                lint->progresult = XMLLINT_ERR_MEM;
+                goto error;
+            }
+
+            if (lint->sax) {
+                const xmlSAXHandler *handler;
+
+                if (lint->noout) {
+                    handler = &emptySAXHandler;
+#ifdef LIBXML_SAX1_ENABLED
+                } else if (lint->options & XML_PARSE_SAX1) {
+                    handler = &debugSAXHandler;
+#endif
+                } else {
+                    handler = &debugSAX2Handler;
+                }
+
+                *ctxt->sax = *handler;
+                ctxt->userData = lint;
+            }
+
+            xmlCtxtSetResourceLoader(ctxt, xmllintResourceLoader, lint);
+            if (lint->maxAmpl > 0)
+                xmlCtxtSetMaxAmplification(ctxt, lint->maxAmpl);
+
+            if (lint->htmlout) {
+                ctxt->_private = lint;
+                xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
+            }
+
+            lint->ctxt = ctxt;
+
+            for (j = 0; j < lint->repeat; j++) {
+#ifdef LIBXML_PUSH_ENABLED
+                if ((lint->push) && (j > 0))
+                    xmlCtxtResetPush(ctxt, NULL, 0, NULL, NULL);
+#endif
                 if (lint->sax) {
                     testSAX(lint, filename);
                 } else {
                     parseAndPrintFile(lint, filename);
                 }
-#ifdef LIBXML_READER_ENABLED
             }
-#endif /* LIBXML_READER_ENABLED */
-        }
 
-        xmlFreeParserCtxt(lint->ctxt);
+            xmlFreeParserCtxt(ctxt);
+        }
 
         if ((lint->timing) && (lint->repeat > 1)) {
             endTimer(lint, "%d iterations", lint->repeat);

@@ -217,7 +217,7 @@ XMLPUBFUN int
 	    xmlSchemaValidateStream	(xmlSchemaValidCtxtPtr ctxt,
 					 xmlParserInputBufferPtr input,
 					 xmlCharEncoding enc,
-					 xmlSAXHandlerPtr sax,
+					 const xmlSAXHandler *sax,
 					 void *user_data);
 XMLPUBFUN int
 	    xmlSchemaValidateFile	(xmlSchemaValidCtxtPtr ctxt,

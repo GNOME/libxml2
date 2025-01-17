@@ -28789,7 +28789,7 @@ done:
 int
 xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
                         xmlParserInputBufferPtr input, xmlCharEncoding enc,
-                        xmlSAXHandlerPtr sax, void *user_data)
+                        const xmlSAXHandler *sax, void *user_data)
 {
     xmlParserCtxtPtr pctxt = NULL;
     xmlParserInputPtr inputStream = NULL;

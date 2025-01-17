@@ -1684,6 +1684,7 @@ static void processNode(xmllintState *lint, xmlTextReaderPtr reader) {
 }
 
 static void streamFile(xmllintState *lint, const char *filename) {
+    xmlParserInputBufferPtr input = NULL;
     FILE *errStream = lint->errStream;
     xmlTextReaderPtr reader;
     int ret;
@@ -1694,10 +1695,50 @@ static void streamFile(xmllintState *lint, const char *filename) {
                                     filename, NULL, lint->options);
     } else
 #endif
-    if (strcmp(filename, "-") == 0)
-	reader = xmlReaderForFd(STDIN_FILENO, "-", NULL, lint->options);
-    else
-	reader = xmlReaderForFile(filename, NULL, lint->options);
+    {
+        if (strcmp(filename, "-") == 0) {
+            reader = xmlReaderForFd(STDIN_FILENO, "-", NULL, lint->options);
+        }
+        else {
+            /*
+             * There's still no easy way to get a reader for a file with
+             * adequate error repoting.
+             */
+
+            xmlResetLastError();
+            input = xmlParserInputBufferCreateFilename(filename,
+                                                       XML_CHAR_ENCODING_NONE);
+            if (input == NULL) {
+                const xmlError *error = xmlGetLastError();
+
+                if ((error != NULL) && (error->code == XML_ERR_NO_MEMORY)) {
+                    lint->progresult = XMLLINT_ERR_MEM;
+                } else {
+                    fprintf(errStream, "Unable to open %s\n", filename);
+                    lint->progresult = XMLLINT_ERR_RDFILE;
+                }
+                return;
+            }
+
+            reader = xmlNewTextReader(input, filename);
+            if (reader == NULL) {
+                lint->progresult = XMLLINT_ERR_MEM;
+                xmlFreeParserInputBuffer(input);
+                return;
+            }
+            if (xmlTextReaderSetup(reader, NULL, NULL, NULL,
+                                   lint->options) < 0) {
+                lint->progresult = XMLLINT_ERR_MEM;
+                xmlFreeParserInputBuffer(input);
+                return;
+            }
+        }
+    }
+    if (reader == NULL) {
+        lint->progresult = XMLLINT_ERR_MEM;
+        return;
+    }
+
 #ifdef LIBXML_PATTERN_ENABLED
     if (lint->patternc != NULL) {
         lint->patstream = xmlPatternGetStreamCtxt(lint->patternc);
@@ -1713,106 +1754,102 @@ static void streamFile(xmllintState *lint, const char *filename) {
 #endif
 
 
-    if (reader != NULL) {
-        xmlTextReaderSetResourceLoader(reader, xmllintResourceLoader, lint);
-        if (lint->maxAmpl > 0)
-            xmlTextReaderSetMaxAmplification(reader, lint->maxAmpl);
+    xmlTextReaderSetResourceLoader(reader, xmllintResourceLoader, lint);
+    if (lint->maxAmpl > 0)
+        xmlTextReaderSetMaxAmplification(reader, lint->maxAmpl);
 
 #ifdef LIBXML_SCHEMAS_ENABLED
-	if (lint->relaxng != NULL) {
-	    if ((lint->timing) && (lint->repeat == 1)) {
-		startTimer(lint);
-	    }
-	    ret = xmlTextReaderRelaxNGValidate(reader, lint->relaxng);
-	    if (ret < 0) {
-		fprintf(errStream, "Relax-NG schema %s failed to compile\n",
-                        lint->relaxng);
-		lint->progresult = XMLLINT_ERR_SCHEMACOMP;
-		lint->relaxng = NULL;
-	    }
-	    if ((lint->timing) && (lint->repeat == 1)) {
-		endTimer(lint, "Compiling the schemas");
-	    }
-	}
-	if (lint->schema != NULL) {
-	    if ((lint->timing) && (lint->repeat == 1)) {
-		startTimer(lint);
-	    }
-	    ret = xmlTextReaderSchemaValidate(reader, lint->schema);
-	    if (ret < 0) {
-		fprintf(errStream, "XSD schema %s failed to compile\n",
-                        lint->schema);
-		lint->progresult = XMLLINT_ERR_SCHEMACOMP;
-		lint->schema = NULL;
-	    }
-	    if ((lint->timing) && (lint->repeat == 1)) {
-		endTimer(lint, "Compiling the schemas");
-	    }
-	}
+    if (lint->relaxng != NULL) {
+        if ((lint->timing) && (lint->repeat == 1)) {
+            startTimer(lint);
+        }
+        ret = xmlTextReaderRelaxNGValidate(reader, lint->relaxng);
+        if (ret < 0) {
+            fprintf(errStream, "Relax-NG schema %s failed to compile\n",
+                    lint->relaxng);
+            lint->progresult = XMLLINT_ERR_SCHEMACOMP;
+            lint->relaxng = NULL;
+        }
+        if ((lint->timing) && (lint->repeat == 1)) {
+            endTimer(lint, "Compiling the schemas");
+        }
+    }
+    if (lint->schema != NULL) {
+        if ((lint->timing) && (lint->repeat == 1)) {
+            startTimer(lint);
+        }
+        ret = xmlTextReaderSchemaValidate(reader, lint->schema);
+        if (ret < 0) {
+            fprintf(errStream, "XSD schema %s failed to compile\n",
+                    lint->schema);
+            lint->progresult = XMLLINT_ERR_SCHEMACOMP;
+            lint->schema = NULL;
+        }
+        if ((lint->timing) && (lint->repeat == 1)) {
+            endTimer(lint, "Compiling the schemas");
+        }
+    }
 #endif
 
-	/*
-	 * Process all nodes in sequence
-	 */
-	if ((lint->timing) && (lint->repeat == 1)) {
-	    startTimer(lint);
-	}
-	ret = xmlTextReaderRead(reader);
-	while (ret == 1) {
-	    if ((lint->debug)
+    /*
+     * Process all nodes in sequence
+     */
+    if ((lint->timing) && (lint->repeat == 1)) {
+        startTimer(lint);
+    }
+    ret = xmlTextReaderRead(reader);
+    while (ret == 1) {
+        if ((lint->debug)
 #ifdef LIBXML_PATTERN_ENABLED
-	        || (lint->patternc)
+            || (lint->patternc)
 #endif
-	       )
-		processNode(lint, reader);
-	    ret = xmlTextReaderRead(reader);
-	}
-	if ((lint->timing) && (lint->repeat == 1)) {
+           )
+            processNode(lint, reader);
+        ret = xmlTextReaderRead(reader);
+    }
+    if ((lint->timing) && (lint->repeat == 1)) {
 #ifdef LIBXML_SCHEMAS_ENABLED
-	    if (lint->relaxng != NULL)
-		endTimer(lint, "Parsing and validating");
-	    else
+        if (lint->relaxng != NULL)
+            endTimer(lint, "Parsing and validating");
+        else
 #endif
 #ifdef LIBXML_VALID_ENABLED
-	    if (lint->options & XML_PARSE_DTDVALID)
-		endTimer(lint, "Parsing and validating");
-	    else
+        if (lint->options & XML_PARSE_DTDVALID)
+            endTimer(lint, "Parsing and validating");
+        else
 #endif
-	    endTimer(lint, "Parsing");
-	}
+        endTimer(lint, "Parsing");
+    }
 
 #ifdef LIBXML_VALID_ENABLED
-	if (lint->options & XML_PARSE_DTDVALID) {
-	    if (xmlTextReaderIsValid(reader) != 1) {
-		fprintf(errStream,
-			"Document %s does not validate\n", filename);
-		lint->progresult = XMLLINT_ERR_VALID;
-	    }
-	}
+    if (lint->options & XML_PARSE_DTDVALID) {
+        if (xmlTextReaderIsValid(reader) != 1) {
+            fprintf(errStream,
+                    "Document %s does not validate\n", filename);
+            lint->progresult = XMLLINT_ERR_VALID;
+        }
+    }
 #endif /* LIBXML_VALID_ENABLED */
 #ifdef LIBXML_SCHEMAS_ENABLED
-	if ((lint->relaxng != NULL) || (lint->schema != NULL)) {
-	    if (xmlTextReaderIsValid(reader) != 1) {
-		fprintf(errStream, "%s fails to validate\n", filename);
-		lint->progresult = XMLLINT_ERR_VALID;
-	    } else {
-	        if (!lint->quiet) {
-	            fprintf(errStream, "%s validates\n", filename);
-	        }
-	    }
-	}
+    if ((lint->relaxng != NULL) || (lint->schema != NULL)) {
+        if (xmlTextReaderIsValid(reader) != 1) {
+            fprintf(errStream, "%s fails to validate\n", filename);
+            lint->progresult = XMLLINT_ERR_VALID;
+        } else {
+            if (!lint->quiet) {
+                fprintf(errStream, "%s validates\n", filename);
+            }
+        }
+    }
 #endif
-	/*
-	 * Done, cleanup and status
-	 */
-	xmlFreeTextReader(reader);
-	if (ret != 0) {
-	    fprintf(errStream, "%s : failed to parse\n", filename);
-	    lint->progresult = XMLLINT_ERR_UNCLASS;
-	}
-    } else {
-	fprintf(errStream, "Unable to open %s\n", filename);
-	lint->progresult = XMLLINT_ERR_UNCLASS;
+    /*
+     * Done, cleanup and status
+     */
+    xmlFreeTextReader(reader);
+    xmlFreeParserInputBuffer(input);
+    if (ret != 0) {
+        fprintf(errStream, "%s : failed to parse\n", filename);
+        lint->progresult = XMLLINT_ERR_UNCLASS;
     }
 #ifdef LIBXML_PATTERN_ENABLED
     if (lint->patstream != NULL) {

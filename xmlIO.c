@@ -1494,11 +1494,25 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
+    int code;
 
     if (xmlParserInputBufferCreateFilenameValue != NULL)
         return(xmlParserInputBufferCreateFilenameValue(URI, enc));
 
-    xmlParserInputBufferCreateUrl(URI, enc, 0, &ret);
+    code = xmlParserInputBufferCreateUrl(URI, enc, 0, &ret);
+
+    /*
+     * xmlParserInputBufferCreateFilename has no way to return
+     * the kind of error although it really is crucial.
+     * All we can do is to set the global error.
+     */
+    if ((code != XML_ERR_OK) && (code != XML_IO_ENOENT)) {
+        if (xmlRaiseError(NULL, NULL, NULL, NULL, NULL, XML_FROM_IO, code,
+                          XML_ERR_ERROR, URI, 0, NULL, NULL, NULL, 0, 0,
+                          "Failed to open file\n") < 0)
+            xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_IO, NULL);
+    }
+
     return(ret);
 }
 

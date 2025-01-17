@@ -3405,12 +3405,16 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
 
 #if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
     if ((lint->pattern != NULL) && (lint->walker == 0)) {
-        lint->patternc = xmlPatterncompile(BAD_CAST lint->pattern, NULL, 0,
-                                           NULL);
+        res = xmlPatternCompileSafe(BAD_CAST lint->pattern, NULL, 0, NULL,
+                                    &lint->patternc);
 	if (lint->patternc == NULL) {
-	    fprintf(errStream, "Pattern %s failed to compile\n",
-                    lint->pattern);
-            lint->progresult = XMLLINT_ERR_SCHEMAPAT;
+            if (res < 0) {
+                lint->progresult = XMLLINT_ERR_MEM;
+            } else {
+                fprintf(errStream, "Pattern %s failed to compile\n",
+                        lint->pattern);
+                lint->progresult = XMLLINT_ERR_SCHEMAPAT;
+            }
             goto error;
 	}
     }

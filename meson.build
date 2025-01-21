@@ -77,7 +77,7 @@ global_args = [
     '-Wno-array-bounds',
 ]
 
-add_global_arguments(global_args, language: 'c')
+add_project_arguments(global_args, language: 'c')
 
 # options
 

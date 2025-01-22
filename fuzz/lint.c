@@ -30,8 +30,6 @@
  *
  * --path: Requires cooperation with resource loader
  *
- * --repeat: Could be limited to 2 when fuzzing
- *
  * --relaxng:
  * --schema:
  * --schematron: Requires schemas
@@ -79,6 +77,7 @@ static const char *const switches[] = {
     "--pushsmall",
     "--quiet",
     "--recover",
+    "--repeat",
     "--sax1",
     "--testIO",
     "--timing",

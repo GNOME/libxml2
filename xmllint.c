@@ -3023,10 +3023,14 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
             lint->generate = 1;
         } else if ((!strcmp(argv[i], "-repeat")) ||
                    (!strcmp(argv[i], "--repeat"))) {
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+            lint->repeat = 2;
+#else
             if (lint->repeat > 1)
                 lint->repeat *= 10;
             else
                 lint->repeat = 100;
+#endif
 #ifdef LIBXML_PUSH_ENABLED
         } else if ((!strcmp(argv[i], "-push")) ||
                    (!strcmp(argv[i], "--push"))) {

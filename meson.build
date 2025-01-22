@@ -76,7 +76,7 @@ global_args = [
     '-Wno-format-extra-args',
     '-Wno-array-bounds',
 ]
-
+global_args = cc.get_supported_arguments(global_args)
 add_project_arguments(global_args, language: 'c')
 
 # options

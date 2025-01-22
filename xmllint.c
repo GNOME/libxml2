@@ -349,6 +349,7 @@ parseXml(xmllintState *lint, const char *filename) {
         xmlParseChunk(ctxt, chars, 0, 1);
 
         doc = ctxt->myDoc;
+        ctxt->myDoc = NULL;
         if (f != stdin)
             fclose(f);
         return(doc);
@@ -427,6 +428,7 @@ parseHtml(xmllintState *lint, const char *filename) {
         }
         htmlParseChunk(ctxt, chars, 0, 1);
         doc = ctxt->myDoc;
+        ctxt->myDoc = NULL;
         if (f != stdin)
             fclose(f);
 

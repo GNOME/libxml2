@@ -3307,7 +3307,7 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  *
  * If @cur is an attribute node, it is appended to the attributes of
  * @parent. If the attribute list contains an attribute with a name
- * matching @elem, the old attribute is destroyed.
+ * matching @cur, the old attribute is destroyed.
  *
  * General notes:
  *
@@ -3334,7 +3334,7 @@ xmlAddChildList(xmlNodePtr parent, xmlNodePtr cur) {
  *
  * Moving DTDs between documents isn't supported.
  *
- * Returns @elem or a sibling if @elem was merged. Returns NULL
+ * Returns @cur or a sibling if @cur was merged. Returns NULL
  * if arguments are invalid or a memory allocation failed.
  */
 xmlNodePtr

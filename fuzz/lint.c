@@ -1,5 +1,5 @@
 /*
- * xml.c: a libFuzzer target to test several XML parser interfaces.
+ * lint.c: a libFuzzer target to test the xmllint executable.
  *
  * See Copyright for the status of this software.
  */

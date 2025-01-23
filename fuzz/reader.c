@@ -1,5 +1,5 @@
 /*
- * xml.c: a libFuzzer target to test several XML parser interfaces.
+ * reader.c: a libFuzzer target to test the XML Reader API.
  *
  * See Copyright for the status of this software.
  */

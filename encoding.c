@@ -1140,6 +1140,38 @@ xmlCharEncIconv(void *vctxt, const char *name, xmlCharEncConverter *conv) {
     iconv_t icv_out;
     int ret;
 
+    /*
+     * POSIX allows "indicator suffixes" like "//IGNORE" to be
+     * passed to iconv_open. This can change the behavior in
+     * unexpected ways.
+     *
+     * Many iconv implementations also support non-standard
+     * codesets like "wchar_t", "char" or the empty string "".
+     * It would make sense to disallow them, but codeset names
+     * are matched fuzzily, so a string like "w-C.hA_rt" could
+     * be interpreted as "wchar_t".
+     *
+     * When escaping characters that aren't supported in the
+     * target encoding, we also rely on GNU libiconv behavior to
+     * stop conversion without trying any kind of fallback.
+     * This violates the POSIX spec which says:
+     *
+     * > If iconv() encounters a character in the input buffer
+     * > that is valid, but for which an identical character does
+     * > not exist in the output codeset [...] iconv() shall
+     * > perform an implementation-defined conversion on the
+     * > character.
+     *
+     * See: https://sourceware.org/bugzilla/show_bug.cgi?id=29913
+     *
+     * Unfortunately, strict POSIX compliance makes it impossible
+     * to detect untranslatable characters.
+     */
+    if (strstr(name, "//") != NULL) {
+        ret = XML_ERR_UNSUPPORTED_ENCODING;
+        goto error;
+    }
+
     inputCtxt = xmlMalloc(sizeof(xmlIconvCtxt));
     if (inputCtxt == NULL) {
         ret = XML_ERR_NO_MEMORY;

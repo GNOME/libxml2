@@ -41,10 +41,14 @@ make fuzz.o
 for fuzzer in \
     api html lint reader regexp schema uri valid xinclude xml xpath
 do
-    make $fuzzer.o
+    OBJS="$fuzzer.o"
+    if [ "$fuzzer" = lint ]; then
+        OBJS="$OBJS ../xmllint.o ../shell.o"
+    fi
+    make $OBJS
     # Link with $CXX
     $CXX $CXXFLAGS \
-        $fuzzer.o fuzz.o \
+        $OBJS fuzz.o \
         -o $OUT/$fuzzer \
         $LIB_FUZZING_ENGINE \
         ../.libs/libxml2.a -Wl,-Bstatic -lz -llzma -Wl,-Bdynamic

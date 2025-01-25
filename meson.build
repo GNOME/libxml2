@@ -396,7 +396,7 @@ endif
 # icu
 if want_icu
     icu_dep = dependency('icu-uc')
-    defs = icu_dep.get_variable(pkgconfig: 'DEFS')
+    defs = icu_dep.get_variable(pkgconfig: 'DEFS', default_value: '')
     if cc.has_argument(defs)
         libxml2_cflags += defs
     endif

@@ -683,6 +683,81 @@ testBuildRelativeUri(void) {
     return err;
 }
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+static int
+testWindowsUri(void) {
+    const char *url = "c:/a%20b/file.txt";
+    xmlURIPtr uri;
+    xmlChar *res;
+    int err = 0;
+    int i;
+
+    static const xmlRelativeUriTest tests[] = {
+        {
+            "c:/a%20b/file.txt",
+            "base.xml",
+            "c:/a b/file.txt"
+        }, {
+            "file:///c:/a%20b/file.txt",
+            "base.xml",
+            "file:///c:/a%20b/file.txt"
+        }, {
+            "Z:/a%20b/file.txt",
+            "http://example.com/",
+            "Z:/a b/file.txt"
+        }, {
+            "a%20b/b1/c1",
+            "C:/a/b2/c2",
+            "C:/a/b2/a b/b1/c1"
+        }, {
+            "a%20b/b1/c1",
+            "\\a\\b2\\c2",
+            "/a/b2/a b/b1/c1"
+        }, {
+            "a%20b/b1/c1",
+            "\\\\?\\a\\b2\\c2",
+            "//?/a/b2/a b/b1/c1"
+        }, {
+            "a%20b/b1/c1",
+            "\\\\\\\\server\\b2\\c2",
+            "//server/b2/a b/b1/c1"
+        }
+    };
+
+    uri = xmlParseURI(url);
+    if (uri == NULL) {
+        fprintf(stderr, "xmlParseURI failed\n");
+        err = 1;
+    } else {
+        if (uri->scheme != NULL) {
+            fprintf(stderr, "invalid scheme: %s\n", uri->scheme);
+            err = 1;
+        }
+        if (uri->path == NULL || strcmp(uri->path, "c:/a b/file.txt") != 0) {
+            fprintf(stderr, "invalid path: %s\n", uri->path);
+            err = 1;
+        }
+
+        xmlFreeURI(uri);
+    }
+
+    for (i = 0; (size_t) i < sizeof(tests) / sizeof(tests[0]); i++) {
+        const xmlRelativeUriTest *test = tests + i;
+
+        res = xmlBuildURI(BAD_CAST test->uri, BAD_CAST test->base);
+        if (res == NULL || !xmlStrEqual(res, BAD_CAST test->result)) {
+            fprintf(stderr, "xmlBuildURI failed uri=%s base=%s "
+                    "result=%s expected=%s\n", test->uri, test->base,
+                    res, test->result);
+            err = 1;
+        }
+        xmlFree(res);
+    }
+
+    return err;
+}
+#endif /* WIN32 */
+
 int
 main(void) {
     int err = 0;
@@ -717,6 +792,9 @@ main(void) {
     err |= testWriterClose();
 #endif
     err |= testBuildRelativeUri();
+#if defined(_WIN32) || defined(__CYGWIN__)
+    err |= testWindowsUri();
+#endif
 
     return err;
 }

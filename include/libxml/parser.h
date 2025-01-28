@@ -1419,7 +1419,7 @@ typedef enum {
     /* since 2.14.0 */
     XML_PARSE_UNZIP          = 1<<24,/* allow compressed content */
     XML_PARSE_NO_SYS_CATALOG = 1<<25,/* disable global system catalog */
-    XML_PARSE_NO_CATALOG_PI  = 1<<26 /* ignore catalog PIs */
+    XML_PARSE_CATALOG_PI     = 1<<26 /* allow catalog PIs */
 } xmlParserOption;
 
 XMLPUBFUN void

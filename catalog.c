@@ -3420,7 +3420,7 @@ xmlCatalogConvert(void) {
  * xmlCatalogGetDefaults:
  *
  * DEPRECATED: Use XML_PARSE_NO_SYS_CATALOG and
- * XML_PARSE_NO_CATALOG_PI.
+ * XML_PARSE_CATALOG_PI.
  *
  * Used to get the user preference w.r.t. to what catalogs should
  * be accepted
@@ -3437,7 +3437,7 @@ xmlCatalogGetDefaults(void) {
  * @allow:  what catalogs should be accepted
  *
  * DEPRECATED: Use XML_PARSE_NO_SYS_CATALOG and
- * XML_PARSE_NO_CATALOG_PI.
+ * XML_PARSE_CATALOG_PI.
  *
  * Used to set the user preference w.r.t. to what catalogs should
  * be accepted

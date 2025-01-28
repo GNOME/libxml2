@@ -16,7 +16,7 @@ existing parser context was added.
 The xmlSave API now has additional options to replace global settings.
 
 Parser options XML_PARSE_UNZIP, XML_PARSE_NO_SYS_CATALOG and
-XML_PARSE_NO_CATALOG_PI were added.
+XML_PARSE_CATALOG_PI were added.
 
 The serialization API will now take user-provided or default encodings
 into account when serializing attribute values, matching the

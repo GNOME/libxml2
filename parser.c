@@ -5676,7 +5676,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
 		    (xmlStrEqual(target, XML_CATALOG_PI))) {
 		    xmlCatalogAllow allow = xmlCatalogGetDefaults();
 
-		    if (((ctxt->options & XML_PARSE_NO_CATALOG_PI) == 0) &&
+		    if ((ctxt->options & XML_PARSE_CATALOG_PI) &&
                         ((allow == XML_CATA_ALLOW_DOCUMENT) ||
 			 (allow == XML_CATA_ALLOW_ALL)))
 			xmlParseCatalogPI(ctxt, buf);
@@ -13580,7 +13580,7 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
               XML_PARSE_NO_XXE |
               XML_PARSE_UNZIP |
               XML_PARSE_NO_SYS_CATALOG |
-              XML_PARSE_NO_CATALOG_PI;
+              XML_PARSE_CATALOG_PI;
 
     ctxt->options = (ctxt->options & keepMask) | (options & allMask);
 
@@ -13788,9 +13788,9 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Available since 2.14.0.
  *
- * XML_PARSE_NO_CATALOG_PI
+ * XML_PARSE_CATALOG_PI
  *
- * Ignore XML catalog processing instructions.
+ * Enable XML catalog processing instructions.
  *
  * Available since 2.14.0.
  *

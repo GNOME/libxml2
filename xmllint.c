@@ -395,9 +395,10 @@ parseXml(xmllintState *lint, const char *filename) {
     } else {
         if (strcmp(filename, "-") == 0)
             doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
-                                lint->options);
+                                lint->options | XML_PARSE_UNZIP);
         else
-            doc = xmlCtxtReadFile(ctxt, filename, NULL, lint->options);
+            doc = xmlCtxtReadFile(ctxt, filename, NULL,
+                                  lint->options | XML_PARSE_UNZIP);
     }
 
     return(doc);

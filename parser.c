@@ -12836,6 +12836,8 @@ xmlCreateURLParserCtxt(const char *filename, int options)
     if (ctxt == NULL)
 	return(NULL);
 
+    options |= XML_PARSE_UNZIP;
+
     xmlCtxtUseOptions(ctxt, options);
     ctxt->linenumbers = 1;
 
@@ -13576,7 +13578,7 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
               XML_PARSE_IGNORE_ENC |
               XML_PARSE_BIG_LINES |
               XML_PARSE_NO_XXE |
-              XML_PARSE_NO_UNZIP |
+              XML_PARSE_UNZIP |
               XML_PARSE_NO_SYS_CATALOG |
               XML_PARSE_NO_CATALOG_PI;
 
@@ -13773,9 +13775,9 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Enable reporting of line numbers larger than 65535.
  *
- * XML_PARSE_NO_UNZIP
+ * XML_PARSE_UNZIP
  *
- * Disables input decompression. Setting this option is recommended
+ * Enable input decompression. Setting this option is discouraged
  * to avoid zip bombs.
  *
  * Available since 2.14.0.
@@ -13997,6 +13999,11 @@ xmlReadDoc(const xmlChar *cur, const char *URL, const char *encoding,
  * Convenience function to parse an XML file from the filesystem,
  * the network or a global user-define resource loader.
  *
+ * This function always enables the XML_PARSE_UNZIP option for
+ * backward compatibility. If a "-" filename is passed, it will
+ * read from stdin. Both of these features are potentially
+ * insecure and might be removed from later versions.
+ *
  * See xmlCtxtReadFile for details.
  *
  * Returns the resulting document tree
@@ -14012,6 +14019,8 @@ xmlReadFile(const char *filename, const char *encoding, int options)
     if (ctxt == NULL)
         return(NULL);
 
+    options |= XML_PARSE_UNZIP;
+
     xmlCtxtUseOptions(ctxt, options);
 
     /*
@@ -14021,7 +14030,7 @@ xmlReadFile(const char *filename, const char *encoding, int options)
      */
     if ((filename != NULL) && (filename[0] == '-') && (filename[1] == 0))
         input = xmlCtxtNewInputFromFd(ctxt, filename, STDIN_FILENO,
-                                      encoding, XML_INPUT_UNZIP);
+                                      encoding, 0);
     else
         input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, encoding, 0);
 
@@ -14198,6 +14207,10 @@ xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar *str,
  * Parse an XML file from the filesystem, the network or a user-defined
  * resource loader.
  *
+ * This function always enables the XML_PARSE_UNZIP option for
+ * backward compatibility. This feature is potentially insecure
+ * and might be removed from later versions.
+ *
  * Returns the resulting document tree
  */
 xmlDocPtr
@@ -14208,6 +14221,8 @@ xmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
 
     if (ctxt == NULL)
         return(NULL);
+
+    options |= XML_PARSE_UNZIP;
 
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
@@ -14283,7 +14298,6 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
               const char *URL, const char *encoding, int options)
 {
     xmlParserInputPtr input;
-    int inputFlags;
 
     if (ctxt == NULL)
         return(NULL);
@@ -14291,10 +14305,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    inputFlags = 0;
-    if ((options & XML_PARSE_NO_UNZIP) == 0)
-        inputFlags |= XML_INPUT_UNZIP;
-    input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, inputFlags);
+    input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, 0);
     if (input == NULL)
         return(NULL);
 

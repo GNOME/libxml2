@@ -1968,6 +1968,9 @@ xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
     if ((ctxt == NULL) || (fd < 0))
 	return(NULL);
 
+    if (ctxt->options & XML_PARSE_UNZIP)
+        flags |= XML_INPUT_UNZIP;
+
     input = xmlNewInputFromFd(url, fd, flags);
     if (input == NULL) {
 	xmlCtxtErrMemory(ctxt);
@@ -2457,7 +2460,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     if ((ctxt == NULL) || (filename == NULL))
         return(NULL);
 
-    if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
+    if (ctxt->options & XML_PARSE_UNZIP)
         flags |= XML_INPUT_UNZIP;
     if ((ctxt->options & XML_PARSE_NONET) == 0)
         flags |= XML_INPUT_NETWORK;
@@ -2629,7 +2632,7 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
             url = resource;
 #endif
 
-        if ((ctxt->options & XML_PARSE_NO_UNZIP) == 0)
+        if (ctxt->options & XML_PARSE_UNZIP)
             flags |= XML_INPUT_UNZIP;
         if ((ctxt->options & XML_PARSE_NONET) == 0)
             flags |= XML_INPUT_NETWORK;

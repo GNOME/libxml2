@@ -14021,7 +14021,7 @@ xmlReadFile(const char *filename, const char *encoding, int options)
      */
     if ((filename != NULL) && (filename[0] == '-') && (filename[1] == 0))
         input = xmlCtxtNewInputFromFd(ctxt, filename, STDIN_FILENO,
-                                      encoding, 0);
+                                      encoding, XML_INPUT_UNZIP);
     else
         input = xmlCtxtNewInputFromUrl(ctxt, filename, NULL, encoding, 0);
 
@@ -14283,6 +14283,7 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
               const char *URL, const char *encoding, int options)
 {
     xmlParserInputPtr input;
+    int inputFlags;
 
     if (ctxt == NULL)
         return(NULL);
@@ -14290,7 +14291,10 @@ xmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);
 
-    input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, 0);
+    inputFlags = 0;
+    if ((options & XML_PARSE_NO_UNZIP) == 0)
+        inputFlags |= XML_INPUT_UNZIP;
+    input = xmlCtxtNewInputFromFd(ctxt, URL, fd, encoding, inputFlags);
     if (input == NULL)
         return(NULL);
 

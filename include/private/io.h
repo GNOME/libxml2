@@ -31,6 +31,9 @@ XML_HIDDEN xmlParserInputBufferPtr
 xmlNewInputBufferMemory(const void *mem, size_t size, int flags,
                         xmlCharEncoding enc);
 
+XML_HIDDEN int
+xmlInputFromFd(xmlParserInputBufferPtr buf, int fd, int unzip);
+
 #ifdef LIBXML_OUTPUT_ENABLED
 XML_HIDDEN void
 xmlOutputBufferWriteQuotedString(xmlOutputBufferPtr buf,

@@ -1914,7 +1914,7 @@ xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
  * xmlNewInputFromFd:
  * @url:  base URL (optional)
  * @fd:  file descriptor
- * @flags:  unused, pass 0
+ * @flags:  input flags
  *
  * Creates a new parser input to read from a zero-terminated string.
  *
@@ -1923,20 +1923,29 @@ xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
  *
  * @fd is closed after parsing has finished.
  *
+ * Supported @flags are XML_INPUT_UNZIP to decompress data
+ * automatically. This feature is deprecated and will be removed
+ * in a future release.
+ *
  * Available since 2.14.0.
  *
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlNewInputFromFd(const char *url, int fd, int flags ATTRIBUTE_UNUSED) {
+xmlNewInputFromFd(const char *url, int fd, int flags) {
     xmlParserInputBufferPtr buf;
 
     if (fd < 0)
 	return(NULL);
 
-    buf = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (buf == NULL)
         return(NULL);
+
+    if (xmlInputFromFd(buf, fd, flags) < 0) {
+        xmlFreeParserInputBuffer(buf);
+        return(NULL);
+    }
 
     return(xmlNewInputInternal(buf, url));
 }

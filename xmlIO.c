@@ -1158,6 +1158,97 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
 
+int
+xmlInputFromFd(xmlParserInputBufferPtr buf, int fd, int unzip) {
+    int copy;
+
+    (void) unzip;
+
+#ifdef LIBXML_LZMA_ENABLED
+    if (unzip) {
+        xzFile xzStream;
+        off_t pos;
+
+        pos = lseek(fd, 0, SEEK_CUR);
+
+        copy = dup(fd);
+        if (copy == -1)
+            return(xmlIOErr(0, "dup()"));
+
+        xzStream = __libxml2_xzdopen("?", copy, "rb");
+
+        if (xzStream == NULL) {
+            close(copy);
+        } else {
+            if ((__libxml2_xzcompressed(xzStream) > 0) ||
+                /* Try to rewind if not gzip compressed */
+                (pos < 0) ||
+                (lseek(fd, pos, SEEK_SET) < 0)) {
+                /*
+                 * If a file isn't seekable, we pipe uncompressed
+                 * input through xzlib.
+                 */
+                buf->context = xzStream;
+                buf->readcallback = xmlXzfileRead;
+                buf->closecallback = xmlXzfileClose;
+                buf->compressed = 1;
+
+                return(XML_ERR_OK);
+            }
+
+            xmlXzfileClose(xzStream);
+        }
+    }
+#endif /* LIBXML_LZMA_ENABLED */
+
+#ifdef LIBXML_ZLIB_ENABLED
+    if (unzip) {
+        gzFile gzStream;
+        off_t pos;
+
+        pos = lseek(fd, 0, SEEK_CUR);
+
+        copy = dup(fd);
+        if (copy == -1)
+            return(xmlIOErr(0, "dup()"));
+
+        gzStream = gzdopen(copy, "rb");
+
+        if (gzStream == NULL) {
+            close(copy);
+        } else {
+            if ((gzdirect(gzStream) == 0) ||
+                /* Try to rewind if not gzip compressed */
+                (pos < 0) ||
+                (lseek(fd, pos, SEEK_SET) < 0)) {
+                /*
+                 * If a file isn't seekable, we pipe uncompressed
+                 * input through zlib.
+                 */
+                buf->context = gzStream;
+                buf->readcallback = xmlGzfileRead;
+                buf->closecallback = xmlGzfileClose;
+                buf->compressed = 1;
+
+                return(XML_ERR_OK);
+            }
+
+            xmlGzfileClose(gzStream);
+        }
+    }
+#endif /* LIBXML_ZLIB_ENABLED */
+
+    copy = dup(fd);
+    if (copy == -1)
+        return(xmlIOErr(0, "dup()"));
+
+    buf->context = (void *) (ptrdiff_t) copy;
+    buf->readcallback = xmlFdRead;
+    buf->closecallback = xmlFdClose;
+
+    return(XML_ERR_OK);
+}
+
 /**
  * xmlInputDefaultOpen:
  * @buf:  input buffer to be filled
@@ -1197,80 +1288,15 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename) {
     if (!xmlFileMatch(filename))
         return(XML_IO_ENOENT);
 
-#ifdef LIBXML_LZMA_ENABLED
-    {
-        xzFile xzStream;
-
-        ret = xmlFdOpen(filename, 0, &fd);
-        if (ret != XML_ERR_OK)
-            return(ret);
-
-        xzStream = __libxml2_xzdopen(filename, fd, "rb");
-
-        if (xzStream == NULL) {
-            close(fd);
-        } else {
-            /*
-             * Non-regular files like pipes can't be reopened.
-             * If a file isn't seekable, we pipe uncompressed
-             * input through xzlib.
-             */
-            if ((lseek(fd, 0, SEEK_CUR) < 0) ||
-                (__libxml2_xzcompressed(xzStream) > 0)) {
-                buf->context = xzStream;
-                buf->readcallback = xmlXzfileRead;
-                buf->closecallback = xmlXzfileClose;
-                buf->compressed = 1;
-
-                return(XML_ERR_OK);
-            }
-
-            xmlXzfileClose(xzStream);
-        }
-    }
-#endif /* LIBXML_LZMA_ENABLED */
-
-#ifdef LIBXML_ZLIB_ENABLED
-    {
-        gzFile gzStream;
-
-        ret = xmlFdOpen(filename, 0, &fd);
-        if (ret != XML_ERR_OK)
-            return(ret);
-
-        gzStream = gzdopen(fd, "rb");
-
-        if (gzStream == NULL) {
-            close(fd);
-        } else {
-            /*
-             * Non-regular files like pipes can't be reopened.
-             * If a file isn't seekable, we pipe uncompressed
-             * input through zlib.
-             */
-            if ((lseek(fd, 0, SEEK_CUR) < 0) ||
-                (gzdirect(gzStream) == 0)) {
-                buf->context = gzStream;
-                buf->readcallback = xmlGzfileRead;
-                buf->closecallback = xmlGzfileClose;
-                buf->compressed = 1;
-
-                return(XML_ERR_OK);
-            }
-
-            xmlGzfileClose(gzStream);
-        }
-    }
-#endif /* LIBXML_ZLIB_ENABLED */
-
     ret = xmlFdOpen(filename, 0, &fd);
     if (ret != XML_ERR_OK)
         return(ret);
 
-    buf->context = (void *) (ptrdiff_t) fd;
-    buf->readcallback = xmlFdRead;
-    buf->closecallback = xmlFdClose;
-    return(XML_ERR_OK);
+    ret = xmlInputFromFd(buf, fd, /* unzip */ 1);
+
+    close(fd);
+
+    return(ret);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

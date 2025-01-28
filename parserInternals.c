@@ -1715,15 +1715,20 @@ xmlNewInputString(xmlParserCtxtPtr ctxt, const char *url,
  */
 xmlParserInputPtr
 xmlNewInputFd(xmlParserCtxtPtr ctxt, const char *url,
-              int fd, const char *encoding, int flags ATTRIBUTE_UNUSED) {
+              int fd, const char *encoding, int flags) {
     xmlParserInputBufferPtr buf;
 
     if ((ctxt == NULL) || (fd < 0))
 	return(NULL);
 
-    buf = xmlParserInputBufferCreateFd(fd, XML_CHAR_ENCODING_NONE);
+    buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
     if (buf == NULL) {
 	xmlCtxtErrMemory(ctxt);
+        return(NULL);
+    }
+
+    if (xmlInputFromFd(buf, fd, (flags & XML_INPUT_UNZIP) != 0) < 0) {
+        xmlFreeParserInputBuffer(buf);
         return(NULL);
     }
 

@@ -113,9 +113,8 @@ Common CMake options include:
     -D CMAKE_BUILD_TYPE=Release         # specify build type
     -D CMAKE_INSTALL_PREFIX=/usr/local  # specify the install path
     -D LIBXML2_WITH_ICONV=OFF           # disable iconv
-    -D LIBXML2_WITH_LZMA=OFF            # disable liblzma
     -D LIBXML2_WITH_PYTHON=OFF          # disable Python
-    -D LIBXML2_WITH_ZLIB=OFF            # disable libz
+    -D LIBXML2_WITH_ZLIB=ON             # enable zlib
 
 You can also open the libxml source directory with its CMakeLists.txt
 directly in various IDEs such as CLion, QtCreator, or Visual Studio.

@@ -10,7 +10,9 @@ The git repository is hosted on GNOME's GitLab server:
 <https://gitlab.gnome.org/GNOME/libxml2>
 
 Bugs should be reported at
-<https://gitlab.gnome.org/GNOME/libxml2/-/issues>
+<https://gitlab.gnome.org/GNOME/libxml2/-/issues>.
+Please report *security issues* to our bug tracker as well. Make sure to
+mark the issue as *confidential*.
 
 Documentation is available at
 <https://gitlab.gnome.org/GNOME/libxml2/-/wikis>

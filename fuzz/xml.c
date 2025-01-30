@@ -4,6 +4,10 @@
  * See Copyright for the status of this software.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <libxml/catalog.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -29,9 +33,11 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     const char *docBuffer, *docUrl;
-    size_t failurePos, docSize;
+    size_t failurePos, docSize, maxChunkSize;
     int opts;
+    int errorCode;
 #ifdef LIBXML_OUTPUT_ENABLED
+    xmlBufferPtr outbuf = NULL;
     const char *saveEncoding;
     int saveOpts;
 #endif
@@ -45,6 +51,10 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             ~XML_PARSE_DTDVALID &
             ~XML_PARSE_SAX1;
     failurePos = xmlFuzzReadInt(4) % (size + 100);
+
+    maxChunkSize = xmlFuzzReadInt(4) % (size + 1);
+    if (maxChunkSize == 0)
+        maxChunkSize = 1;
 
 #ifdef LIBXML_OUTPUT_ENABLED
     /* TODO: Take from fuzz data */
@@ -62,30 +72,41 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzInjectFailure(failurePos);
     ctxt = xmlNewParserCtxt();
-    if (ctxt != NULL) {
+    if (ctxt == NULL) {
+        errorCode = XML_ERR_NO_MEMORY;
+    } else {
         xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
         xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
         doc = xmlCtxtReadMemory(ctxt, docBuffer, docSize, docUrl, NULL, opts);
+        errorCode = ctxt->errNo;
         xmlFuzzCheckFailureReport("xmlCtxtReadMemory",
-                doc == NULL && ctxt->errNo == XML_ERR_NO_MEMORY,
-                doc == NULL && ctxt->errNo == XML_IO_EIO);
+                doc == NULL && errorCode == XML_ERR_NO_MEMORY,
+                doc == NULL && errorCode == XML_IO_EIO);
 
         if (doc != NULL) {
 #ifdef LIBXML_OUTPUT_ENABLED
             xmlSaveCtxtPtr save;
 
-            /* Also test the serializer. */
-            save = xmlSaveToIO(xmlFuzzOutputWrite, xmlFuzzOutputClose, NULL,
-                               saveEncoding, saveOpts);
+            outbuf = xmlBufferCreate();
 
-            if (save != NULL) {
-                int errNo;
+            /* Also test the serializer. */
+            save = xmlSaveToBuffer(outbuf, saveEncoding, saveOpts);
+
+            if (save == NULL) {
+                xmlBufferFree(outbuf);
+                outbuf = NULL;
+            } else {
+                int saveErr;
 
                 xmlSaveDoc(save, doc);
-                errNo = xmlSaveFinish(save);
-                xmlFuzzCheckFailureReport("xmlSaveDoc",
-                                          errNo == XML_ERR_NO_MEMORY,
-                                          errNo == XML_IO_EIO);
+                saveErr = xmlSaveFinish(save);
+                xmlFuzzCheckFailureReport("xmlSaveToBuffer",
+                                          saveErr == XML_ERR_NO_MEMORY,
+                                          saveErr == XML_IO_EIO);
+                if (saveErr != XML_ERR_OK) {
+                    xmlBufferFree(outbuf);
+                    outbuf = NULL;
+                }
             }
 #endif
             xmlFreeDoc(doc);
@@ -97,41 +118,130 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Push parser */
 
 #ifdef LIBXML_PUSH_ENABLED
-    {
-        static const size_t maxChunkSize = 128;
-        size_t consumed, chunkSize;
+    xmlFuzzInjectFailure(failurePos);
+    /*
+     * FIXME: xmlCreatePushParserCtxt can still report OOM errors
+     * to stderr.
+     */
+    xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
+    ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
+    xmlSetGenericErrorFunc(NULL, NULL);
 
-        xmlFuzzInjectFailure(failurePos);
-        /*
-         * FIXME: xmlCreatePushParserCtxt can still report OOM errors
-         * to stderr.
-         */
-        xmlSetGenericErrorFunc(NULL, xmlFuzzErrorFunc);
-        ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, docUrl);
-        xmlSetGenericErrorFunc(NULL, NULL);
-        if (ctxt != NULL) {
-            xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
-            xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
-            xmlCtxtUseOptions(ctxt, opts);
+    if (ctxt != NULL) {
+        size_t consumed;
+        int errorCodePush, numChunks, maxChunks;
 
-            for (consumed = 0; consumed < docSize; consumed += chunkSize) {
-                chunkSize = docSize - consumed;
-                if (chunkSize > maxChunkSize)
-                    chunkSize = maxChunkSize;
-                xmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
+        xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
+        xmlCtxtSetResourceLoader(ctxt, xmlFuzzResourceLoader, NULL);
+        xmlCtxtUseOptions(ctxt, opts);
+
+        consumed = 0;
+        numChunks = 0;
+        maxChunks = 50 + docSize / 100;
+        while (numChunks == 0 ||
+               (consumed < docSize && numChunks < maxChunks)) {
+            size_t chunkSize;
+            int terminate;
+
+            numChunks += 1;
+            chunkSize = docSize - consumed;
+
+            if (numChunks < maxChunks && chunkSize > maxChunkSize) {
+                chunkSize = maxChunkSize;
+                terminate = 0;
+            } else {
+                terminate = 1;
             }
 
-            xmlParseChunk(ctxt, NULL, 0, 1);
-            xmlFuzzCheckFailureReport("xmlParseChunk",
-                                      ctxt->errNo == XML_ERR_NO_MEMORY,
-                                      ctxt->errNo == XML_IO_EIO);
-            xmlFreeDoc(ctxt->myDoc);
-            xmlFreeParserCtxt(ctxt);
+            xmlParseChunk(ctxt, docBuffer + consumed, chunkSize, terminate);
+            consumed += chunkSize;
         }
+
+        errorCodePush = ctxt->errNo;
+        xmlFuzzCheckFailureReport("xmlParseChunk",
+                                  errorCodePush == XML_ERR_NO_MEMORY,
+                                  errorCodePush == XML_IO_EIO);
+        doc = ctxt->myDoc;
+
+        /*
+         * Push and pull parser differ in when exactly they
+         * stop parsing, and the error code is the *last* error
+         * reported, so we can't check whether the codes match.
+         */
+        if (errorCode != XML_ERR_NO_MEMORY &&
+            errorCode != XML_IO_EIO &&
+            errorCodePush != XML_ERR_NO_MEMORY &&
+            errorCodePush != XML_IO_EIO &&
+            (errorCode == XML_ERR_OK) != (errorCodePush == XML_ERR_OK)) {
+            fprintf(stderr, "pull/push parser error mismatch: %d != %d\n",
+                    errorCode, errorCodePush);
+#if 0
+            FILE *f = fopen("c.xml", "wb");
+            fwrite(docBuffer, docSize, 1, f);
+            fclose(f);
+#endif
+            abort();
+        }
+
+#ifdef LIBXML_OUTPUT_ENABLED
+        /*
+         * Verify that pull and push parser produce the same result.
+         *
+         * The NOBLANKS option doesn't work reliably in push mode.
+         */
+        if ((opts & XML_PARSE_NOBLANKS) == 0 &&
+            errorCode == XML_ERR_OK &&
+            errorCodePush == XML_ERR_OK &&
+            outbuf != NULL) {
+            xmlBufferPtr outbufPush;
+            xmlSaveCtxtPtr save;
+
+            outbufPush = xmlBufferCreate();
+
+            save = xmlSaveToBuffer(outbufPush, saveEncoding, saveOpts);
+
+            if (save != NULL) {
+                int saveErr;
+
+                xmlSaveDoc(save, doc);
+                saveErr = xmlSaveFinish(save);
+
+                if (saveErr == XML_ERR_OK) {
+                    int outbufSize = xmlBufferLength(outbuf);
+
+                    if (outbufSize != xmlBufferLength(outbufPush) ||
+                        memcmp(xmlBufferContent(outbuf),
+                               xmlBufferContent(outbufPush),
+                               outbufSize) != 0) {
+                        fprintf(stderr, "pull/push parser roundtrip "
+                                "mismatch\n");
+#if 0
+                        FILE *f = fopen("c.xml", "wb");
+                        fwrite(docBuffer, docSize, 1, f);
+                        fclose(f);
+                        fprintf(stderr, "opts: %X\n", opts);
+                        fprintf(stderr, "---\n%s\n---\n%s\n---\n",
+                                xmlBufferContent(outbuf),
+                                xmlBufferContent(outbufPush));
+#endif
+                        abort();
+                    }
+                }
+            }
+
+            xmlBufferFree(outbufPush);
+        }
+#endif
+
+        xmlFreeDoc(doc);
+        xmlFreeParserCtxt(ctxt);
     }
 #endif
 
 exit:
+#ifdef LIBXML_OUTPUT_ENABLED
+    xmlBufferFree(outbuf);
+#endif
     xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();
     xmlResetLastError();

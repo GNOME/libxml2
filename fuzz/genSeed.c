@@ -29,6 +29,7 @@
 
 #define FLAG_READER (1 << 0)
 #define FLAG_LINT   (1 << 1)
+#define FLAG_XML    (1 << 2)
 
 typedef int
 (*fileFunc)(const char *base, FILE *out);
@@ -141,6 +142,11 @@ processXml(const char *docFile, FILE *out) {
         xmlFuzzWriteInt(out, opts, 4);
         /* Max allocations. */
         xmlFuzzWriteInt(out, 0, 4);
+
+        if (globalData.flags & FLAG_XML) {
+            /* Push chunk size. */
+            xmlFuzzWriteInt(out, 256, 4);
+        }
 
         if (globalData.flags & FLAG_READER) {
             /* Initial reader program with a couple of OP_READs */
@@ -488,6 +494,7 @@ main(int argc, const char **argv) {
     } else if (strcmp(fuzzer, "xml") == 0) {
 #ifdef HAVE_XML_FUZZER
         processArg = processPattern;
+        globalData.flags |= FLAG_XML;
         globalData.processFile = processXml;
 #endif
     } else if (strcmp(fuzzer, "xpath") == 0) {

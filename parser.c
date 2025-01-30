@@ -3028,6 +3028,10 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 
     /*
      * Otherwise, heuristic :-\
+     *
+     * When push parsing, we could be at the end of a chunk.
+     * This makes the look-ahead and consequently the NOBLANKS
+     * option unreliable.
      */
     if ((RAW != '<') && (RAW != 0xD)) return(0);
     if ((ctxt->node->children == NULL) &&
@@ -11623,8 +11627,6 @@ done:
  * ctxt->myDoc. So ctxt->myDoc should be set to NULL after extracting
  * the document.
  *
- * The push parser doesn't support recovery mode.
- *
  * Returns an xmlParserErrors code (0 on success).
  */
 int
@@ -11745,6 +11747,9 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
  * See xmlParseChunk.
  *
  * Passing an initial chunk is useless and deprecated.
+ *
+ * The push parser doesn't support recovery mode or the
+ * XML_PARSE_NOBLANKS option.
  *
  * @filename is used as base URI to fetch external entities and for
  * error reports.
@@ -13649,6 +13654,8 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * How this mode behaves exactly is unspecified and may change
  * without further notice. Use of this feature is DISCOURAGED.
  *
+ * Not supported by the push parser.
+ *
  * XML_PARSE_NOENT
  *
  * Despite the confusing name, this option enables substitution
@@ -13707,6 +13714,8 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * reindenting feature of the serialization code relies on this
  * option to be set when parsing. Use of this option is
  * DISCOURAGED.
+ *
+ * Not supported by the push parser.
  *
  * XML_PARSE_SAX1
  *

@@ -11615,9 +11615,14 @@ done:
  * The last chunk, which will often be empty, must be marked with
  * the @terminate flag. With the default SAX callbacks, the resulting
  * document will be available in ctxt->myDoc. This pointer will not
- * be freed by the library.
+ * be freed when calling xmlFreeParserCtxt and must be freed by the
+ * caller. If the document isn't well-formed, it will still be returned
+ * in ctxt->myDoc.
  *
- * If the document isn't well-formed, ctxt->myDoc is set to NULL.
+ * As an exception, xmlCtxtResetPush will free the document in
+ * ctxt->myDoc. So ctxt->myDoc should be set to NULL after extracting
+ * the document.
+ *
  * The push parser doesn't support recovery mode.
  *
  * Returns an xmlParserErrors code (0 on success).

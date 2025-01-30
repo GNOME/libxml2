@@ -355,6 +355,16 @@ parseXml(xmllintState *lint, const char *filename) {
         ctxt->myDoc = NULL;
         if (f != stdin)
             fclose(f);
+
+        /*
+         * The push parser leaves non-wellformed documents
+         * in ctxt->myDoc.
+         */
+        if (!ctxt->wellFormed) {
+            xmlFreeDoc(doc);
+            doc = NULL;
+        }
+
         return(doc);
     }
 #endif /* LIBXML_PUSH_ENABLED */

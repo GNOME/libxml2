@@ -2411,9 +2411,7 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
   } while (0)
 
 #define SHRINK \
-    if ((!PARSER_PROGRESSIVE(ctxt)) && \
-        (ctxt->input->cur - ctxt->input->base > 2 * INPUT_CHUNK) && \
-	(ctxt->input->end - ctxt->input->cur < 2 * INPUT_CHUNK)) \
+    if (!PARSER_PROGRESSIVE(ctxt)) \
 	xmlParserShrink(ctxt);
 
 #define GROW \

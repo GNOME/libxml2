@@ -2470,10 +2470,6 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
     const xmlChar *cur;
     int res = 0;
 
-    /*
-     * It's Okay to use CUR/NEXT here since all the blanks are on
-     * the ASCII range.
-     */
     cur = ctxt->input->cur;
     while (IS_BLANK_CH(*cur)) {
         if (*cur == '\n') {
@@ -2491,6 +2487,9 @@ xmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
         }
     }
     ctxt->input->cur = cur;
+
+    if (res > 4)
+        GROW;
 
     return(res);
 }
@@ -2562,6 +2561,10 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
     if (!inParam && !expandParam)
         return(xmlSkipBlankChars(ctxt));
 
+    /*
+     * It's Okay to use CUR/NEXT here since all the blanks are on
+     * the ASCII range.
+     */
     while (PARSER_STOPPED(ctxt) == 0) {
         if (IS_BLANK_CH(CUR)) { /* CHECKED tstblanks.xml */
             NEXT;

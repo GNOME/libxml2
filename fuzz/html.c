@@ -4,6 +4,10 @@
  * See Copyright for the status of this software.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
 #include <libxml/catalog.h>
@@ -27,12 +31,19 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     xmlParserCtxtPtr ctxt;
     htmlDocPtr doc;
     const char *docBuffer;
-    size_t failurePos, docSize;
-    int opts;
+    size_t failurePos, docSize, maxChunkSize;
+    int opts, errorCode;
+#ifdef LIBXML_OUTPUT_ENABLED
+    xmlOutputBufferPtr out = NULL;
+#endif
 
     xmlFuzzDataInit(data, size);
     opts = (int) xmlFuzzReadInt(4);
     failurePos = xmlFuzzReadInt(4) % (size + 100);
+
+    maxChunkSize = xmlFuzzReadInt(4) % (size + size / 8 + 1);
+    if (maxChunkSize == 0)
+        maxChunkSize = 1;
 
     docBuffer = xmlFuzzReadRemaining(&docSize);
     if (docBuffer == NULL) {
@@ -44,18 +55,20 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     xmlFuzzInjectFailure(failurePos);
     ctxt = htmlNewParserCtxt();
-    if (ctxt != NULL) {
+    if (ctxt == NULL) {
+        errorCode = XML_ERR_NO_MEMORY;
+    } else {
         xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
         doc = htmlCtxtReadMemory(ctxt, docBuffer, docSize, NULL, NULL, opts);
+        errorCode = ctxt->errNo;
         xmlFuzzCheckFailureReport("htmlCtxtReadMemory",
-                                  ctxt->errNo == XML_ERR_NO_MEMORY,
-                                  ctxt->errNo == XML_IO_EIO);
+                                  errorCode == XML_ERR_NO_MEMORY,
+                                  errorCode == XML_IO_EIO);
 
         if (doc != NULL) {
             xmlDocPtr copy;
 
 #ifdef LIBXML_OUTPUT_ENABLED
-            xmlOutputBufferPtr out;
             const xmlChar *content;
 
             /*
@@ -66,9 +79,12 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             out = xmlAllocOutputBuffer(NULL);
             htmlDocContentDumpOutput(out, doc, NULL);
             content = xmlOutputBufferGetContent(out);
-            xmlOutputBufferClose(out);
             xmlFuzzCheckFailureReport("htmlDocContentDumpOutput",
                                       content == NULL, 0);
+            if (content == NULL) {
+                xmlOutputBufferClose(out);
+                out = NULL;
+            }
 #endif
 
             copy = xmlCopyDoc(doc, 1);
@@ -85,36 +101,118 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
     /* Push parser */
 
 #ifdef LIBXML_PUSH_ENABLED
-    {
-        static const size_t maxChunkSize = 128;
-        size_t consumed, chunkSize;
+    xmlFuzzInjectFailure(failurePos);
+    ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
+                                    XML_CHAR_ENCODING_NONE);
 
-        xmlFuzzInjectFailure(failurePos);
-        ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
-                                        XML_CHAR_ENCODING_NONE);
+    if (ctxt != NULL) {
+        size_t consumed;
+        int errorCodePush, numChunks, maxChunks;
 
-        if (ctxt != NULL) {
-            xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
-            htmlCtxtUseOptions(ctxt, opts);
+        xmlCtxtSetErrorHandler(ctxt, xmlFuzzSErrorFunc, NULL);
+        htmlCtxtUseOptions(ctxt, opts);
 
-            for (consumed = 0; consumed < docSize; consumed += chunkSize) {
-                chunkSize = docSize - consumed;
-                if (chunkSize > maxChunkSize)
-                    chunkSize = maxChunkSize;
-                htmlParseChunk(ctxt, docBuffer + consumed, chunkSize, 0);
+        consumed = 0;
+        numChunks = 0;
+        maxChunks = 50 + docSize / 100;
+        while (numChunks == 0 ||
+               (consumed < docSize && numChunks < maxChunks)) {
+            size_t chunkSize;
+            int terminate;
+
+            numChunks += 1;
+            chunkSize = docSize - consumed;
+
+            if (numChunks < maxChunks && chunkSize > maxChunkSize) {
+                chunkSize = maxChunkSize;
+                terminate = 0;
+            } else {
+                terminate = 1;
             }
 
-            htmlParseChunk(ctxt, NULL, 0, 1);
-            xmlFuzzCheckFailureReport("htmlParseChunk",
-                                      ctxt->errNo == XML_ERR_NO_MEMORY,
-                                      ctxt->errNo == XML_IO_EIO);
-            xmlFreeDoc(ctxt->myDoc);
-            htmlFreeParserCtxt(ctxt);
+            htmlParseChunk(ctxt, docBuffer + consumed, chunkSize, terminate);
+            consumed += chunkSize;
         }
+
+        errorCodePush = ctxt->errNo;
+        xmlFuzzCheckFailureReport("htmlParseChunk",
+                                  errorCodePush == XML_ERR_NO_MEMORY,
+                                  errorCodePush == XML_IO_EIO);
+        doc = ctxt->myDoc;
+
+        /*
+         * Push and pull parser differ in when exactly they
+         * stop parsing, and the error code is the *last* error
+         * reported, so we can't check whether the codes match.
+         */
+        if (errorCode != XML_ERR_NO_MEMORY &&
+            errorCode != XML_IO_EIO &&
+            errorCodePush != XML_ERR_NO_MEMORY &&
+            errorCodePush != XML_IO_EIO &&
+            (errorCode == XML_ERR_OK) != (errorCodePush == XML_ERR_OK)) {
+            fprintf(stderr, "pull/push parser error mismatch: %d != %d\n",
+                    errorCode, errorCodePush);
+#if 0
+            FILE *f = fopen("c.html", "wb");
+            fwrite(docBuffer, docSize, 1, f);
+            fclose(f);
+            fprintf(stderr, "opts: %X\n", opts);
+#endif
+            abort();
+        }
+
+#ifdef LIBXML_OUTPUT_ENABLED
+        /*
+         * Verify that pull and push parser produce the same result.
+         *
+         * The NOBLANKS option doesn't work reliably in push mode.
+         */
+        if ((opts & XML_PARSE_NOBLANKS) == 0 &&
+            errorCode == XML_ERR_OK &&
+            errorCodePush == XML_ERR_OK &&
+            out != NULL) {
+            xmlOutputBufferPtr outPush;
+            const xmlChar *content, *contentPush;
+
+            outPush = xmlAllocOutputBuffer(NULL);
+            htmlDocContentDumpOutput(outPush, doc, NULL);
+            content = xmlOutputBufferGetContent(out);
+            contentPush = xmlOutputBufferGetContent(outPush);
+
+            if (content != NULL && contentPush != NULL) {
+                size_t outSize = xmlOutputBufferGetSize(out);
+
+                if (outSize != xmlOutputBufferGetSize(outPush) ||
+                    memcmp(content, contentPush, outSize) != 0) {
+                    fprintf(stderr, "pull/push parser roundtrip "
+                            "mismatch\n");
+#if 0
+                    FILE *f = fopen("c.html", "wb");
+                    fwrite(docBuffer, docSize, 1, f);
+                    fclose(f);
+                    fprintf(stderr, "opts: %X\n", opts);
+                    fprintf(stderr, "---\n%s\n---\n%s\n---\n",
+                            xmlOutputBufferGetContent(out),
+                            xmlOutputBufferGetContent(outPush));
+#endif
+                    abort();
+                }
+            }
+
+            xmlOutputBufferClose(outPush);
+        }
+#endif
+
+        xmlFreeDoc(doc);
+        htmlFreeParserCtxt(ctxt);
     }
 #endif
 
     /* Cleanup */
+
+#ifdef LIBXML_OUTPUT_ENABLED
+    xmlOutputBufferClose(out);
+#endif
 
     xmlFuzzInjectFailure(0);
     xmlFuzzDataCleanup();

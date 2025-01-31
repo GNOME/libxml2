@@ -27,9 +27,9 @@
 #define SEED_BUF_SIZE 16384
 #define EXPR_SIZE 4500
 
-#define FLAG_READER (1 << 0)
-#define FLAG_LINT   (1 << 1)
-#define FLAG_XML    (1 << 2)
+#define FLAG_READER             (1 << 0)
+#define FLAG_LINT               (1 << 1)
+#define FLAG_PUSH_CHUNK_SIZE    (1 << 2)
 
 typedef int
 (*fileFunc)(const char *base, FILE *out);
@@ -143,8 +143,8 @@ processXml(const char *docFile, FILE *out) {
         /* Max allocations. */
         xmlFuzzWriteInt(out, 0, 4);
 
-        if (globalData.flags & FLAG_XML) {
-            /* Push chunk size. */
+        if (globalData.flags & FLAG_PUSH_CHUNK_SIZE) {
+            /* Chunk size for push parser */
             xmlFuzzWriteInt(out, 256, 4);
         }
 
@@ -462,6 +462,7 @@ main(int argc, const char **argv) {
     if (strcmp(fuzzer, "html") == 0) {
 #ifdef HAVE_HTML_FUZZER
         processArg = processPattern;
+        globalData.flags |= FLAG_PUSH_CHUNK_SIZE;
         globalData.processFile = processHtml;
 #endif
     } else if (strcmp(fuzzer, "lint") == 0) {
@@ -494,7 +495,7 @@ main(int argc, const char **argv) {
     } else if (strcmp(fuzzer, "xml") == 0) {
 #ifdef HAVE_XML_FUZZER
         processArg = processPattern;
-        globalData.flags |= FLAG_XML;
+        globalData.flags |= FLAG_PUSH_CHUNK_SIZE;
         globalData.processFile = processXml;
 #endif
     } else if (strcmp(fuzzer, "xpath") == 0) {

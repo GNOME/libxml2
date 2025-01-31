@@ -372,7 +372,63 @@ testHugeEncodedChunk(void) {
 
     return err;
 }
-#endif
+
+static int
+testPushCDataEnd(void) {
+    int err = 0;
+    int k;
+
+    for (k = 0; k < 2; k++) {
+        xmlBufferPtr buf;
+        xmlChar *chunk;
+        xmlParserCtxtPtr ctxt;
+        int i;
+
+        ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+        xmlCtxtSetOptions(ctxt, XML_PARSE_NOERROR);
+
+        /*
+         * Push parse text data with ']]>' split across chunks.
+         */
+        buf = xmlBufferCreate();
+        xmlBufferCCat(buf, "<doc>");
+
+        /*
+         * Also test xmlParseCharDataCopmlex
+         */
+        if (k == 0)
+            xmlBufferCCat(buf, "x");
+        else
+            xmlBufferCCat(buf, "\xC3\xA4");
+
+        /*
+         * Create enough data to trigger a "characters" SAX callback.
+         * (XML_PARSER_BIG_BUFFER_SIZE = 300)
+         */
+        for (i = 0; i < 2000; i++)
+            xmlBufferCCat(buf, "x");
+
+        xmlBufferCCat(buf, "]");
+        chunk = xmlBufferDetach(buf);
+        xmlBufferFree(buf);
+
+        xmlParseChunk(ctxt, (char *) chunk, xmlStrlen(chunk), 0);
+        xmlParseChunk(ctxt, "]>xxx</doc>", 11, 1);
+
+        if (ctxt->errNo != XML_ERR_MISPLACED_CDATA_END) {
+            fprintf(stderr, "xmlParseChunk failed to detect CData end: %d\n",
+                    ctxt->errNo);
+            err = 1;
+        }
+
+        xmlFree(chunk);
+        xmlFreeDoc(ctxt->myDoc);
+        xmlFreeParserCtxt(ctxt);
+    }
+
+    return err;
+}
+#endif /* PUSH */
 
 #ifdef LIBXML_HTML_ENABLED
 static int
@@ -999,6 +1055,7 @@ main(void) {
 #ifdef LIBXML_PUSH_ENABLED
     err |= testHugePush();
     err |= testHugeEncodedChunk();
+    err |= testPushCDataEnd();
 #endif
 #ifdef LIBXML_HTML_ENABLED
     err |= testHtmlIds();

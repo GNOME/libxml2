@@ -4955,9 +4955,11 @@ get_more:
                 ctxt->input->cur = in + 1;
                 return;
             }
-            in++;
-            ctxt->input->col++;
-            goto get_more;
+            if ((!partial) || (ctxt->input->end - in >= 2)) {
+                in++;
+                ctxt->input->col++;
+                goto get_more;
+            }
         }
         nbchar = in - ctxt->input->cur;
         if (nbchar > 0) {
@@ -5008,6 +5010,9 @@ get_more:
         if (*in == '&') {
             return;
         }
+        if ((partial) && (*in == ']') && (ctxt->input->end - in < 2)) {
+            return;
+        }
         SHRINK;
         GROW;
         in = ctxt->input->cur;
@@ -5038,6 +5043,8 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     cur = xmlCurrentCharRecover(ctxt, &l);
     while ((cur != '<') && /* checked */
            (cur != '&') &&
+           ((!partial) || (cur != ']') ||
+            (ctxt->input->end - ctxt->input->cur >= 2)) &&
 	   (IS_CHAR(cur))) {
 	if ((cur == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
 	    xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
@@ -5102,7 +5109,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
                         "Incomplete UTF-8 sequence starting with %02X\n", CUR);
                 NEXTL(1);
             }
-        } else if ((cur != '<') && (cur != '&')) {
+        } else if ((cur != '<') && (cur != '&') && (cur != ']')) {
             /* Generate the error and skip the offending character */
             xmlFatalErrMsgInt(ctxt, XML_ERR_INVALID_CHAR,
                               "PCDATA invalid Char value %d\n", cur);

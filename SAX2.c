@@ -2733,7 +2733,7 @@ xmlSAXVersion(xmlSAXHandler *hdlr, int version)
     hdlr->reference = xmlSAX2Reference;
     hdlr->characters = xmlSAX2Characters;
     hdlr->cdataBlock = xmlSAX2CDataBlock;
-    hdlr->ignorableWhitespace = xmlSAX2Characters;
+    hdlr->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
     hdlr->processingInstruction = xmlSAX2ProcessingInstruction;
     hdlr->comment = xmlSAX2Comment;
     hdlr->warning = xmlParserWarning;

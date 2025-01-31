@@ -2979,13 +2979,6 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
     xmlNodePtr lastChild;
 
     /*
-     * Don't spend time trying to differentiate them, the same callback is
-     * used !
-     */
-    if (ctxt->sax->ignorableWhitespace == ctxt->sax->characters)
-	return(0);
-
-    /*
      * Check for xml:space value.
      */
     if ((ctxt->space == NULL) || (*(ctxt->space) == 1) ||
@@ -4865,6 +4858,34 @@ static const unsigned char test_char_data[256] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+static void
+xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size) {
+    if ((ctxt->sax == NULL) || (ctxt->disableSAX))
+        return;
+
+    /*
+     * Calling areBlanks with only parts of a text node
+     * is fundamentally broken, making the NOBLANKS option
+     * essentially unusable.
+     */
+    if ((!ctxt->keepBlanks) &&
+        (ctxt->sax->ignorableWhitespace != ctxt->sax->characters) &&
+        (areBlanks(ctxt, buf, size, 1))) {
+        if (ctxt->sax->ignorableWhitespace != NULL)
+            ctxt->sax->ignorableWhitespace(ctxt->userData, buf, size);
+    } else {
+        if (ctxt->sax->characters != NULL)
+            ctxt->sax->characters(ctxt->userData, buf, size);
+
+        /*
+         * The old code used to update this value for "complex" data
+         * even if keepBlanks was true. This was probably a bug.
+         */
+        if ((!ctxt->keepBlanks) && (*ctxt->space == -1))
+            *ctxt->space = -2;
+    }
+}
+
 /**
  * xmlParseCharDataInternal:
  * @ctxt:  an XML parser context
@@ -4910,32 +4931,7 @@ get_more_space:
                 const xmlChar *tmp = ctxt->input->cur;
                 ctxt->input->cur = in;
 
-                if ((ctxt->sax != NULL) &&
-                    (ctxt->disableSAX == 0) &&
-                    (ctxt->sax->ignorableWhitespace !=
-                     ctxt->sax->characters)) {
-                    /*
-                     * Calling areBlanks with only parts of a text node
-                     * is fundamentally broken, making the NOBLANKS option
-                     * essentially unusable.
-                     */
-                    if (areBlanks(ctxt, tmp, nbchar, 1)) {
-                        if (ctxt->sax->ignorableWhitespace != NULL)
-                            ctxt->sax->ignorableWhitespace(ctxt->userData,
-                                                   tmp, nbchar);
-                    } else {
-                        if (ctxt->sax->characters != NULL)
-                            ctxt->sax->characters(ctxt->userData,
-                                                  tmp, nbchar);
-                        if (*ctxt->space == -1)
-                            *ctxt->space = -2;
-                    }
-                } else if ((ctxt->sax != NULL) &&
-                           (ctxt->disableSAX == 0) &&
-                           (ctxt->sax->characters != NULL)) {
-                    ctxt->sax->characters(ctxt->userData,
-                                          tmp, nbchar);
-                }
+                xmlCharacters(ctxt, tmp, nbchar);
             }
             return;
         }
@@ -4968,35 +4964,13 @@ get_more:
         }
         nbchar = in - ctxt->input->cur;
         if (nbchar > 0) {
-            if ((ctxt->sax != NULL) &&
-                (ctxt->disableSAX == 0) &&
-                (ctxt->sax->ignorableWhitespace !=
-                 ctxt->sax->characters) &&
-                (IS_BLANK_CH(*ctxt->input->cur))) {
-                const xmlChar *tmp = ctxt->input->cur;
-                ctxt->input->cur = in;
+            const xmlChar *tmp = ctxt->input->cur;
+            ctxt->input->cur = in;
 
-                if (areBlanks(ctxt, tmp, nbchar, 0)) {
-                    if (ctxt->sax->ignorableWhitespace != NULL)
-                        ctxt->sax->ignorableWhitespace(ctxt->userData,
-                                                       tmp, nbchar);
-                } else {
-                    if (ctxt->sax->characters != NULL)
-                        ctxt->sax->characters(ctxt->userData,
-                                              tmp, nbchar);
-                    if (*ctxt->space == -1)
-                        *ctxt->space = -2;
-                }
-                line = ctxt->input->line;
-                col = ctxt->input->col;
-            } else if ((ctxt->sax != NULL) &&
-                       (ctxt->disableSAX == 0)) {
-                if (ctxt->sax->characters != NULL)
-                    ctxt->sax->characters(ctxt->userData,
-                                          ctxt->input->cur, nbchar);
-                line = ctxt->input->line;
-                col = ctxt->input->col;
-            }
+            xmlCharacters(ctxt, tmp, nbchar);
+
+            line = ctxt->input->line;
+            col = ctxt->input->col;
         }
         ctxt->input->cur = in;
         if (*in == 0xD) {
@@ -5060,23 +5034,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
 	if (nbchar >= XML_PARSER_BIG_BUFFER_SIZE) {
 	    buf[nbchar] = 0;
 
-	    /*
-	     * OK the segment is to be consumed as chars.
-	     */
-	    if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-		if (areBlanks(ctxt, buf, nbchar, 0)) {
-		    if (ctxt->sax->ignorableWhitespace != NULL)
-			ctxt->sax->ignorableWhitespace(ctxt->userData,
-			                               buf, nbchar);
-		} else {
-		    if (ctxt->sax->characters != NULL)
-			ctxt->sax->characters(ctxt->userData, buf, nbchar);
-		    if ((ctxt->sax->characters !=
-		         ctxt->sax->ignorableWhitespace) &&
-			(*ctxt->space == -1))
-			*ctxt->space = -2;
-		}
-	    }
+            xmlCharacters(ctxt, buf, nbchar);
 	    nbchar = 0;
             SHRINK;
 	}
@@ -5084,21 +5042,8 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     }
     if (nbchar != 0) {
         buf[nbchar] = 0;
-	/*
-	 * OK the segment is to be consumed as chars.
-	 */
-	if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-	    if (areBlanks(ctxt, buf, nbchar, 0)) {
-		if (ctxt->sax->ignorableWhitespace != NULL)
-		    ctxt->sax->ignorableWhitespace(ctxt->userData, buf, nbchar);
-	    } else {
-		if (ctxt->sax->characters != NULL)
-		    ctxt->sax->characters(ctxt->userData, buf, nbchar);
-		if ((ctxt->sax->characters != ctxt->sax->ignorableWhitespace) &&
-		    (*ctxt->space == -1))
-		    *ctxt->space = -2;
-	    }
-	}
+
+        xmlCharacters(ctxt, buf, nbchar);
     }
     /*
      * cur == 0 can mean
@@ -13633,9 +13578,6 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
     /*
      * Changing SAX callbacks is a bad idea. This should be fixed.
      */
-    if (options & XML_PARSE_NOBLANKS) {
-        ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
-    }
     if (options & XML_PARSE_NOCDATA) {
         ctxt->sax->cdataBlock = NULL;
     }

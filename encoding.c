@@ -1255,7 +1255,7 @@ struct _uconv_t {
 
 /**
  * xmlUconvConvert:
- * @vctxt:  converison context
+ * @vctxt:  conversion context
  * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
  * @in:  a pointer to an array of input bytes

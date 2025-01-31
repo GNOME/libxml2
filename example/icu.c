@@ -229,7 +229,7 @@ main(void) {
     printf("content: %s\n", content);
 
     if (!xmlStrEqual(content, BAD_CAST "\xC3\x9F")) {
-        fprintf(stderr, "converison failed\n");
+        fprintf(stderr, "conversion failed\n");
         ret = 1;
     }
 

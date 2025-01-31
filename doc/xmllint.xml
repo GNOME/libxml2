@@ -283,6 +283,10 @@
                     environment variable controls the indentation. The default value is two
                     spaces &quot;  &quot;).
                 </para>
+                <para>
+                    Especially in the absence of a DTD, this feature has never worked reliably
+                    and is fundamentally broken.
+                </para>
             </listitem>
         </varlistentry>
 

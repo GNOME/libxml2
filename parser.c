@@ -4914,6 +4914,11 @@ get_more_space:
                     (ctxt->disableSAX == 0) &&
                     (ctxt->sax->ignorableWhitespace !=
                      ctxt->sax->characters)) {
+                    /*
+                     * Calling areBlanks with only parts of a text node
+                     * is fundamentally broken, making the NOBLANKS option
+                     * essentially unusable.
+                     */
                     if (areBlanks(ctxt, tmp, nbchar, 1)) {
                         if (ctxt->sax->ignorableWhitespace != NULL)
                             ctxt->sax->ignorableWhitespace(ctxt->userData,
@@ -13715,11 +13720,9 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * XML_PARSE_NOBLANKS
  *
- * Remove some text nodes containing only whitespace from the
- * result document. Which nodes are removed depends on DTD
- * element declarations or a conservative heuristic. The
- * reindenting feature of the serialization code relies on this
- * option to be set when parsing. Use of this option is
+ * Remove some whitespace from the result document. Where to
+ * remove whitespace depends on DTD element declarations or a
+ * broken heuristic with unfixable bugs. Use of this option is
  * DISCOURAGED.
  *
  * Not supported by the push parser.

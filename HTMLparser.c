@@ -5097,6 +5097,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                                 goto done;
                             SKIP(4);
                             htmlParseComment(ctxt, /* bogus */ 0);
+                            /* don't change state */
                             break;
                         }
 
@@ -5113,7 +5114,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                             htmlParseDocTypeDecl(ctxt);
                             if (ctxt->instate == XML_PARSER_MISC)
                                 ctxt->instate = XML_PARSER_PROLOG;
+                            else
+                                ctxt->instate = XML_PARSER_CONTENT;
                         } else {
+                            ctxt->instate = XML_PARSER_CONTENT;
                             if ((!terminate) &&
                                 (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
                                 goto done;
@@ -5126,16 +5130,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                             goto done;
                         SKIP(1);
                         htmlParseComment(ctxt, /* bogus */ 1);
+                        /* don't change state */
                     } else if (next == '/') {
                         ctxt->instate = XML_PARSER_END_TAG;
                         ctxt->checkIndex = 0;
-                        break;
                     } else if (IS_ASCII_LETTER(next)) {
                         if ((!terminate) && (next == 0))
                             goto done;
                         ctxt->instate = XML_PARSER_START_TAG;
                         ctxt->checkIndex = 0;
-                        break;
                     } else {
                         ctxt->instate = XML_PARSER_CONTENT;
                         htmlCheckParagraph(ctxt);
@@ -5146,6 +5149,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         SKIP(1);
                     }
                 } else {
+                    ctxt->instate = XML_PARSER_CONTENT;
                     /*
                      * check that the text sequence is complete
                      * before handing out the data to the parser

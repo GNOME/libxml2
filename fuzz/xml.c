@@ -52,7 +52,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
             ~XML_PARSE_SAX1;
     failurePos = xmlFuzzReadInt(4) % (size + 100);
 
-    maxChunkSize = xmlFuzzReadInt(4) % (size + 1);
+    maxChunkSize = xmlFuzzReadInt(4) % (size + size / 8 + 1);
     if (maxChunkSize == 0)
         maxChunkSize = 1;
 

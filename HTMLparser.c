@@ -4937,8 +4937,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
     size_t avail = 0;
     int cur;
 
-    htmlParserNodeInfo node_info;
-
     while (PARSER_STOPPED(ctxt) == 0) {
 
 	in = ctxt->input;
@@ -4952,6 +4950,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		 * Document parsing is done !
 		 */
 	        goto done;
+
             case XML_PARSER_START:
                 /*
                  * Very first chars read from the document flow.
@@ -4992,91 +4991,17 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                     (ctxt->instate == XML_PARSER_XML_DECL))
                     ctxt->instate = XML_PARSER_MISC;
 		break;
-            case XML_PARSER_START_TAG: {
-	        const xmlChar *name;
-		int next;
-		const htmlElemDesc * info;
 
-		/*
-		 * not enough chars in buffer
-		 */
-		if (avail < 2)
-		    goto done;
-		cur = in->cur[0];
-		next = in->cur[1];
-	        if (cur != '<') {
-		    ctxt->instate = XML_PARSER_CONTENT;
-		    break;
-		}
-		if (next == '/') {
-		    ctxt->instate = XML_PARSER_END_TAG;
-		    ctxt->checkIndex = 0;
-		    break;
-		}
+            case XML_PARSER_START_TAG:
 		if ((!terminate) &&
 		    (htmlParseLookupGt(ctxt) < 0))
 		    goto done;
 
-                /* Capture start position */
-	        if (ctxt->record_info) {
-	             node_info.begin_pos = ctxt->input->consumed +
-	                                (CUR_PTR - ctxt->input->base);
-	             node_info.begin_line = ctxt->input->line;
-	        }
-
-
-		htmlParseStartTag(ctxt);
-		name = ctxt->name;
-		if (name == NULL)
-		    break;
-
-		/*
-		 * Check for an Empty Element labeled the XML/SGML way
-		 */
-		if ((CUR == '/') && (NXT(1) == '>')) {
-		    SKIP(2);
-                    htmlParserFinishElementParsing(ctxt);
-                    if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
-                        if ((ctxt->sax != NULL) &&
-                            (ctxt->sax->endElement != NULL))
-                            ctxt->sax->endElement(ctxt->userData, name);
-                    }
-		    htmlnamePop(ctxt);
-		    ctxt->instate = XML_PARSER_CONTENT;
-		    break;
-		}
-
-		if (CUR != '>')
-                    break;
-		SKIP(1);
-
-		/*
-		 * Lookup the info for that element.
-		 */
-		info = htmlTagLookup(name);
-
-		/*
-		 * Check for an Empty Element from DTD definition
-		 */
-		if ((info != NULL) && (info->empty)) {
-                    htmlParserFinishElementParsing(ctxt);
-                    if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
-                        if ((ctxt->sax != NULL) &&
-                            (ctxt->sax->endElement != NULL))
-                            ctxt->sax->endElement(ctxt->userData, name);
-                    }
-		    htmlnamePop(ctxt);
-		}
-
-		if (info != NULL)
-                    ctxt->endCheckState = info->dataMode;
-
-                if (ctxt->record_info)
-	            htmlNodeInfoPush(ctxt, &node_info);
+                htmlParseElementInternal(ctxt);
 
 		ctxt->instate = XML_PARSER_CONTENT;
                 break;
-	    }
+
             case XML_PARSER_MISC:
             case XML_PARSER_PROLOG:
             case XML_PARSER_CONTENT:
@@ -5092,6 +5017,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		if (avail < 1)
 		    goto done;
 		cur = in->cur[0];
+                /*
+                 * Note that endCheckState is also used by
+                 * xmlParseLookupGt.
+                 */
                 mode = ctxt->endCheckState;
 
                 if (mode != 0) {
@@ -5170,8 +5099,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         ctxt->instate = XML_PARSER_END_TAG;
                         ctxt->checkIndex = 0;
                     } else if (IS_ASCII_LETTER(next)) {
-                        if ((!terminate) && (next == 0))
-                            goto done;
                         ctxt->instate = XML_PARSER_START_TAG;
                         ctxt->checkIndex = 0;
                     } else {
@@ -5200,6 +5127,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 
 		break;
 	    }
+
             case XML_PARSER_END_TAG:
 		if ((terminate) && (avail == 2)) {
                     htmlCheckParagraph(ctxt);
@@ -5220,6 +5148,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		}
 		ctxt->checkIndex = 0;
 	        break;
+
 	    default:
 		htmlParseErr(ctxt, XML_ERR_INTERNAL_ERROR,
 			     "HPP: internal error\n", NULL, NULL);

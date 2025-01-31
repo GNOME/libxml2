@@ -4899,8 +4899,14 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
 	mark = htmlParseLookupString(ctxt, 2, "--", 2, 0);
 	if (mark < 0)
             break;
+        /*
+         * <!-->    is a complete comment, but
+         * <!--!>   is not
+         * <!---!>  is not
+         * <!----!> is
+         */
         if ((NXT(mark+2) == '>') ||
-	    ((NXT(mark+2) == '!') && (NXT(mark+3) == '>'))) {
+	    ((mark >= 4) && (NXT(mark+2) == '!') && (NXT(mark+3) == '>'))) {
             ctxt->checkIndex = 0;
 	    break;
 	}

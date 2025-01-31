@@ -3987,6 +3987,15 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
 
     SKIP(2);
 
+    if (ctxt->input->cur >= ctxt->input->end) {
+        htmlCheckParagraph(ctxt);
+        if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
+            (ctxt->sax->characters != NULL))
+            ctxt->sax->characters(ctxt->userData,
+                                  BAD_CAST "</", 2);
+        return;
+    }
+
     if (CUR == '>') {
         SKIP(1);
         return;
@@ -5129,14 +5138,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	    }
 
             case XML_PARSER_END_TAG:
-		if ((terminate) && (avail == 2)) {
-                    htmlCheckParagraph(ctxt);
-                    if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
-                        (ctxt->sax->characters != NULL))
-                        ctxt->sax->characters(ctxt->userData,
-                                              BAD_CAST "</", 2);
-		    goto done;
-                }
 		if ((!terminate) &&
 		    (htmlParseLookupGt(ctxt) < 0))
 		    goto done;

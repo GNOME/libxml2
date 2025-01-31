@@ -4936,6 +4936,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	        goto done;
             case XML_PARSER_START:
                 /*
+                 * Very first chars read from the document flow.
+                 */
+                if ((!terminate) && (avail < 4))
+                    goto done;
+
+                xmlDetectEncoding(ctxt);
+
+                /*
                  * This is wrong but matches long-standing behavior. In most
                  * cases, a document starting with an XML declaration will
                  * specify UTF-8.
@@ -4945,6 +4953,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                     xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_UTF8);
                 }
 
+                /* fall through */
+
+            case XML_PARSER_XML_DECL:
                 if ((ctxt->sax) && (ctxt->sax->setDocumentLocator)) {
                     ctxt->sax->setDocumentLocator(ctxt->userData,
                             (xmlSAXLocator *) &xmlDefaultSAXLocator);
@@ -4953,8 +4964,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	            (!ctxt->disableSAX))
 		    ctxt->sax->startDocument(ctxt->userData);
 
-                /* Allow callback to modify state */
-                if (ctxt->instate == XML_PARSER_START)
+                /* Allow callback to modify state for tests */
+                if ((ctxt->instate == XML_PARSER_START) ||
+                    (ctxt->instate == XML_PARSER_XML_DECL))
                     ctxt->instate = XML_PARSER_MISC;
 		break;
             case XML_PARSER_START_TAG: {

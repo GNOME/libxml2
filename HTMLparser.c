@@ -4926,20 +4926,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	in = ctxt->input;
 	if (in == NULL) break;
 	avail = in->end - in->cur;
-	if ((avail == 0) && (terminate)) {
-	    htmlAutoCloseOnEnd(ctxt);
-	    if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) {
-		/*
-		 * SAX: end of the document processing.
-		 */
-		ctxt->instate = XML_PARSER_EOF;
-		if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-		    ctxt->sax->endDocument(ctxt->userData);
-	    }
-	}
-        if (avail < 1)
-	    goto done;
-	cur = in->cur[0];
+        cur = in->cur[0];
 
         switch (ctxt->instate) {
             case XML_PARSER_EOF:
@@ -5202,31 +5189,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 	}
     }
 done:
-    if ((avail == 0) && (terminate)) {
-	htmlAutoCloseOnEnd(ctxt);
-	if ((ctxt->nameNr == 0) && (ctxt->instate != XML_PARSER_EOF)) {
-	    /*
-	     * SAX: end of the document processing.
-	     */
-	    ctxt->instate = XML_PARSER_EOF;
-	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-		ctxt->sax->endDocument(ctxt->userData);
-	}
-    }
-    if ((!(ctxt->options & HTML_PARSE_NODEFDTD)) && (ctxt->myDoc != NULL) &&
-	((terminate) || (ctxt->instate == XML_PARSER_EOF) ||
-	 (ctxt->instate == XML_PARSER_EPILOG))) {
-	xmlDtdPtr dtd;
-	dtd = xmlGetIntSubset(ctxt->myDoc);
-	if (dtd == NULL) {
-	    ctxt->myDoc->intSubset =
-		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "html",
-		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
-		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
-            if (ctxt->myDoc->intSubset == NULL)
-                htmlErrMemory(ctxt);
-        }
-    }
     return(ret);
 }
 
@@ -5272,14 +5234,32 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 	    return (ctxt->errNo);
 	}
     }
+
     htmlParseTryOrFinish(ctxt, terminate);
-    if (terminate) {
-	if (ctxt->instate != XML_PARSER_EOF) {
-	    if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
-		ctxt->sax->endDocument(ctxt->userData);
-	}
+
+    if ((terminate) && (ctxt->instate != XML_PARSER_EOF)) {
+        htmlAutoCloseOnEnd(ctxt);
+
+        if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
+            ctxt->sax->endDocument(ctxt->userData);
+
+        if ((!(ctxt->options & HTML_PARSE_NODEFDTD)) &&
+            (ctxt->myDoc != NULL)) {
+            xmlDtdPtr dtd;
+            dtd = xmlGetIntSubset(ctxt->myDoc);
+            if (dtd == NULL) {
+                ctxt->myDoc->intSubset =
+                    xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "html",
+                        BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+                        BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
+                if (ctxt->myDoc->intSubset == NULL)
+                    htmlErrMemory(ctxt);
+            }
+        }
+
 	ctxt->instate = XML_PARSER_EOF;
     }
+
     return((xmlParserErrors) ctxt->errNo);
 }
 

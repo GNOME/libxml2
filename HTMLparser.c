@@ -5013,8 +5013,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 
             case XML_PARSER_MISC:
             case XML_PARSER_PROLOG:
-            case XML_PARSER_CONTENT:
-            case XML_PARSER_EPILOG: {
+            case XML_PARSER_CONTENT: {
                 int mode;
 
                 if ((ctxt->instate == XML_PARSER_MISC) ||
@@ -5142,11 +5141,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		    (htmlParseLookupGt(ctxt) < 0))
 		    goto done;
 		htmlParseEndTag(ctxt);
-		if (ctxt->nameNr == 0) {
-		    ctxt->instate = XML_PARSER_EPILOG;
-		} else {
-		    ctxt->instate = XML_PARSER_CONTENT;
-		}
+		ctxt->instate = XML_PARSER_CONTENT;
 		ctxt->checkIndex = 0;
 	        break;
 

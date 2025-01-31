@@ -7559,7 +7559,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
             int len = xmlStrlen(cur->content);
 
             if ((cur->type == XML_TEXT_NODE) ||
-                (ctxt->sax->cdataBlock == NULL)) {
+                (ctxt->options & XML_PARSE_NOCDATA)) {
                 if (ctxt->sax->characters != NULL)
                     ctxt->sax->characters(ctxt, cur->content, len);
             } else {
@@ -7582,7 +7582,7 @@ xmlParseReference(xmlParserCtxtPtr ctxt) {
                 int len = xmlStrlen(cur->content);
 
                 if ((cur->type == XML_TEXT_NODE) ||
-                    (ctxt->sax->cdataBlock == NULL)) {
+                    (ctxt->options & XML_PARSE_NOCDATA)) {
                     if (ctxt->sax->characters != NULL)
                         ctxt->sax->characters(ctxt, cur->content, len);
                 } else {
@@ -9820,10 +9820,13 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
      * OK the buffer is to be consumed as cdata.
      */
     if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-	if (ctxt->sax->cdataBlock != NULL)
-	    ctxt->sax->cdataBlock(ctxt->userData, buf, len);
-	else if (ctxt->sax->characters != NULL)
-	    ctxt->sax->characters(ctxt->userData, buf, len);
+        if (ctxt->options & XML_PARSE_NOCDATA) {
+            if (ctxt->sax->characters != NULL)
+                ctxt->sax->characters(ctxt->userData, buf, len);
+        } else {
+            if (ctxt->sax->cdataBlock != NULL)
+                ctxt->sax->cdataBlock(ctxt->userData, buf, len);
+        }
     }
 
 out:
@@ -13575,12 +13578,6 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
     ctxt->keepBlanks = (options & XML_PARSE_NOBLANKS) ? 0 : 1;
     ctxt->dictNames = (options & XML_PARSE_NODICT) ? 0 : 1;
 
-    /*
-     * Changing SAX callbacks is a bad idea. This should be fixed.
-     */
-    if (options & XML_PARSE_NOCDATA) {
-        ctxt->sax->cdataBlock = NULL;
-    }
     if (options & XML_PARSE_HUGE) {
         if (ctxt->dict != NULL)
             xmlDictSetLimit(ctxt->dict, 0);

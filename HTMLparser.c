@@ -379,7 +379,8 @@ htmlMaskMatch(htmlAsciiMask mask, unsigned c) {
 }
 
 static int
-htmlValidateUtf8(xmlParserCtxtPtr ctxt, const xmlChar *str, size_t len) {
+htmlValidateUtf8(xmlParserCtxtPtr ctxt, const xmlChar *str, size_t len,
+                 int partial) {
     unsigned c = str[0];
     int size;
 
@@ -424,7 +425,8 @@ htmlValidateUtf8(xmlParserCtxtPtr ctxt, const xmlChar *str, size_t len) {
     return(size);
 
 incomplete:
-    return(0);
+    if (partial)
+        return(0);
 
 invalid:
     /* Only report the first error */
@@ -2424,7 +2426,7 @@ htmlParseHTMLName(htmlParserCtxtPtr ctxt, int attr) {
                 buf[nbchar++] = c;
             }
         } else {
-            size = htmlValidateUtf8(ctxt, in, avail);
+            size = htmlValidateUtf8(ctxt, in, avail, /* partial */ 0);
 
             if (size > 0) {
                 if (nbchar + size <= HTML_PARSER_BUFFER_SIZE) {
@@ -2811,7 +2813,7 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                     goto restart;
                 }
 
-                size = htmlValidateUtf8(ctxt, in, avail);
+                size = htmlValidateUtf8(ctxt, in, avail, /* partial */ 0);
 
                 if (size <= 0) {
                     skip = 1;
@@ -3260,7 +3262,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                     goto restart;
                 }
 
-                size = htmlValidateUtf8(ctxt, in, avail);
+                /*
+                 * We should handle partial data to allow the push
+                 * parser to pass incomplete chunks.
+                 */
+                size = htmlValidateUtf8(ctxt, in, avail, /* partial */ 0);
 
                 if (size <= 0) {
                     skip = 1;

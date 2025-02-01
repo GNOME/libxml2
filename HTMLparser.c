@@ -3113,6 +3113,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
             case '<':
                 if (mode == 0) {
                     done = 1;
+                    complete = 1;
                     goto next_chunk;
                 }
                 if (mode == DATA_PLAINTEXT)
@@ -5146,16 +5147,16 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 } else {
                     ctxt->instate = XML_PARSER_CONTENT;
                     /*
-                     * check that the text sequence is complete
-                     * before handing out the data to the parser
-                     * to avoid problems with erroneous end of
-                     * data detection.
+                     * We follow the logic of the XML push parser
                      */
-                    if ((!terminate) &&
-                        (htmlParseLookupString(ctxt, 0, "<", 1, 0) < 0))
-                        return;
+		    if (avail < HTML_PARSER_BIG_BUFFER_SIZE) {
+                        if ((!terminate) &&
+                            (htmlParseLookupString(ctxt, 0, "<", 1, 0) < 0))
+                            return;
+                    }
                     ctxt->checkIndex = 0;
-                    htmlParseCharData(ctxt, /* partial */ 0);
+                    if (htmlParseCharData(ctxt, !terminate) == 0)
+                        return;
 		}
 
 		break;

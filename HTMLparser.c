@@ -4939,33 +4939,29 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
  *
  * Returns zero if no parsing was possible
  */
-static int
+static void
 htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
-    int ret = 0;
-    htmlParserInputPtr in;
-    size_t avail = 0;
-    int cur;
-
     while (PARSER_STOPPED(ctxt) == 0) {
+        htmlParserInputPtr in;
+        size_t avail;
 
 	in = ctxt->input;
 	if (in == NULL) break;
 	avail = in->end - in->cur;
-        cur = in->cur[0];
 
         switch (ctxt->instate) {
             case XML_PARSER_EOF:
 	        /*
 		 * Document parsing is done !
 		 */
-	        goto done;
+	        return;
 
             case XML_PARSER_START:
                 /*
                  * Very first chars read from the document flow.
                  */
                 if ((!terminate) && (avail < 4))
-                    goto done;
+                    return;
 
                 xmlDetectEncoding(ctxt);
 
@@ -5004,7 +5000,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
             case XML_PARSER_START_TAG:
 		if ((!terminate) &&
 		    (htmlParseLookupGt(ctxt) < 0))
-		    goto done;
+		    return;
 
                 htmlParseElementInternal(ctxt);
 
@@ -5023,8 +5019,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 }
 
 		if (avail < 1)
-		    goto done;
-		cur = in->cur[0];
+		    return;
                 /*
                  * Note that endCheckState is also used by
                  * xmlParseLookupGt.
@@ -5041,7 +5036,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         if ((!terminate) &&
                             (htmlParseLookupString(ctxt, 0, "<", 1,
                                                    extra) < 0))
-                            goto done;
+                            return;
                         ctxt->checkIndex = 0;
 
                         if (htmlParseCharData(ctxt))
@@ -5049,12 +5044,12 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                     }
 
                     break;
-		} else if (cur == '<') {
+		} else if (in->cur[0] == '<') {
                     int next;
 
                     if (avail < 2) {
                         if (!terminate)
-                            goto done;
+                            return;
                         next = ' ';
                     } else {
                         next = in->cur[1];
@@ -5062,11 +5057,11 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 
                     if (next == '!') {
                         if ((!terminate) && (avail < 4))
-                            goto done;
+                            return;
                         if ((in->cur[2] == '-') && (in->cur[3] == '-')) {
                             if ((!terminate) &&
                                 (htmlParseLookupCommentEnd(ctxt) < 0))
-                                goto done;
+                                return;
                             SKIP(4);
                             htmlParseComment(ctxt, /* bogus */ 0);
                             /* don't change state */
@@ -5074,7 +5069,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         }
 
                         if ((!terminate) && (avail < 9))
-                            goto done;
+                            return;
                         if ((UPP(2) == 'D') && (UPP(3) == 'O') &&
                             (UPP(4) == 'C') && (UPP(5) == 'T') &&
                             (UPP(6) == 'Y') && (UPP(7) == 'P') &&
@@ -5082,7 +5077,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                             if ((!terminate) &&
                                 (htmlParseLookupString(ctxt, 9, ">", 1,
                                                        0) < 0))
-                                goto done;
+                                return;
                             htmlParseDocTypeDecl(ctxt);
                             if (ctxt->instate == XML_PARSER_MISC)
                                 ctxt->instate = XML_PARSER_PROLOG;
@@ -5092,14 +5087,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                             ctxt->instate = XML_PARSER_CONTENT;
                             if ((!terminate) &&
                                 (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
-                                goto done;
+                                return;
                             SKIP(2);
                             htmlParseComment(ctxt, /* bogus */ 1);
                         }
                     } else if (next == '?') {
                         if ((!terminate) &&
                             (htmlParseLookupString(ctxt, 2, ">", 1, 0) < 0))
-                            goto done;
+                            return;
                         SKIP(1);
                         htmlParseComment(ctxt, /* bogus */ 1);
                         /* don't change state */
@@ -5128,7 +5123,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                      */
                     if ((!terminate) &&
                         (htmlParseLookupString(ctxt, 0, "<", 1, 0) < 0))
-                        goto done;
+                        return;
                     ctxt->checkIndex = 0;
                     htmlParseCharData(ctxt);
 		}
@@ -5139,7 +5134,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
             case XML_PARSER_END_TAG:
 		if ((!terminate) &&
 		    (htmlParseLookupGt(ctxt) < 0))
-		    goto done;
+		    return;
 		htmlParseEndTag(ctxt);
 		ctxt->instate = XML_PARSER_CONTENT;
 		ctxt->checkIndex = 0;
@@ -5152,8 +5147,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		break;
 	}
     }
-done:
-    return(ret);
 }
 
 /**

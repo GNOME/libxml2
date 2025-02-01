@@ -3981,11 +3981,25 @@ failed:
         atts[nbatts] = NULL;
         atts[nbatts + 1] = NULL;
 
+    /*
+     * Apple's new libiconv is so broken that you routinely run into
+     * issues when fuzz testing (by accident with an uninstrumented
+     * libiconv). Here's a harmless (?) example:
+     *
+     * printf '>'             | iconv -f shift_jis -t utf-8 | hexdump -C
+     * printf '\xfc\x00\x00'  | iconv -f shift_jis -t utf-8 | hexdump -C
+     * printf '>\xfc\x00\x00' | iconv -f shift_jis -t utf-8 | hexdump -C
+     *
+     * The last command fails to detect the illegal sequence.
+     */
+#if !defined(__APPLE__) || \
+    !defined(FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION)
         /*
          * Handle specific association to the META tag
          */
         if (meta)
             htmlCheckMeta(ctxt, atts);
+#endif
     }
 
     /*

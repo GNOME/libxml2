@@ -3,8 +3,9 @@ SAX.startDocument()
 SAX.startElement(html)
 SAX.startElement(body)
 SAX.startElement(p)
-SAX.characters(&amp;:&ecirc;
-, 5)
+SAX.characters(&amp;:, 2)
+SAX.characters(&ecirc;
+, 3)
 SAX.endElement(p)
 SAX.endElement(body)
 SAX.endElement(html)

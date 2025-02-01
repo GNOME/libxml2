@@ -2985,13 +2985,15 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
 /**
  * htmlParseCharData:
  * @ctxt:  an HTML parser context
- * @terminate: true if the input buffer is complete
+ * @partial: true if the input buffer is incomplete
  *
  * Parse character data and references.
+ *
+ * Returns 1 if all data was parsed, 0 otherwise.
  */
 
 static int
-htmlParseCharData(htmlParserCtxtPtr ctxt) {
+htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
     xmlParserInputPtr input = ctxt->input;
     xmlChar utf8Char[4];
     int complete = 0;
@@ -3044,6 +3046,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                 }
 
                 if (avail == 0) {
+                    if ((partial) && (ncr)) {
+                        in -= ncrSize;
+                        ncrSize = 0;
+                    }
+
                     done = 1;
                     break;
                 }
@@ -3162,8 +3169,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                     }
                 }
 
-                if ((mode != 0) && (PARSER_PROGRESSIVE(ctxt))) {
-                    in += 1;
+                if ((partial) && (j >= avail)) {
                     done = 1;
                     goto next_chunk;
                 }
@@ -3181,6 +3187,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                     j += 1;
                     if ((j < avail) && (in[j] == '>'))
                         mode = DATA_SCRIPT;
+                }
+
+                if ((partial) && (j >= avail)) {
+                    done = 1;
+                    goto next_chunk;
                 }
 
                 break;
@@ -3210,6 +3221,26 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                         }
                     }
                 } else {
+                    if (partial) {
+                        int terminated = 0;
+                        size_t i;
+
+                        /*
+                         * &CounterClockwiseContourIntegral; has 33 bytes.
+                         */
+                        for (i = 1; i < avail; i++) {
+                            if ((i >= 32) || !IS_ASCII_LETTER(in[i])) {
+                                terminated = 1;
+                                break;
+                            }
+                        }
+
+                        if (!terminated) {
+                            done = 1;
+                            goto next_chunk;
+                        }
+                    }
+
                     repl = htmlFindEntityPrefix(in + j,
                                                 avail - j,
                                                 /* isAttr */ 0,
@@ -3220,6 +3251,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                     }
 
                     skip = 0;
+                }
+
+                if ((partial) && (j >= avail)) {
+                    done = 1;
+                    goto next_chunk;
                 }
 
                 break;
@@ -3236,6 +3272,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                 break;
 
             case '\r':
+                if (partial && avail < 2) {
+                    done = 1;
+                    goto next_chunk;
+                }
+
                 skip = 1;
                 if (in[1] != 0x0A) {
                     repl = BAD_CAST "\x0A";
@@ -3250,6 +3291,9 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                 if ((input->flags & XML_INPUT_HAS_ENCODING) == 0) {
                     xmlChar * guess;
 
+                    if (in > chunk)
+                        goto next_chunk;
+
                     guess = htmlFindEncoding(ctxt);
                     if (guess == NULL) {
                         xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
@@ -3262,11 +3306,12 @@ htmlParseCharData(htmlParserCtxtPtr ctxt) {
                     goto restart;
                 }
 
-                /*
-                 * We should handle partial data to allow the push
-                 * parser to pass incomplete chunks.
-                 */
-                size = htmlValidateUtf8(ctxt, in, avail, /* partial */ 0);
+                size = htmlValidateUtf8(ctxt, in, avail, partial);
+
+                if ((partial) && (size == 0)) {
+                    done = 1;
+                    goto next_chunk;
+                }
 
                 if (size <= 0) {
                     skip = 1;
@@ -4154,7 +4199,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
                 SKIP(1);
             }
         } else {
-            htmlParseCharData(ctxt);
+            htmlParseCharData(ctxt, /* partial */ 0);
         }
 
         SHRINK;
@@ -5027,23 +5072,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 mode = ctxt->endCheckState;
 
                 if (mode != 0) {
-                    while ((PARSER_STOPPED(ctxt) == 0) &&
-                           (in->cur < in->end)) {
-                        size_t extra;
-
-                        extra = strlen((const char *) ctxt->name) + 2;
-
-                        if ((!terminate) &&
-                            (htmlParseLookupString(ctxt, 0, "<", 1,
-                                                   extra) < 0))
-                            return;
-                        ctxt->checkIndex = 0;
-
-                        if (htmlParseCharData(ctxt))
-                            break;
-                    }
-
-                    break;
+                    if (htmlParseCharData(ctxt, !terminate) == 0)
+                        return;
 		} else if (in->cur[0] == '<') {
                     int next;
 
@@ -5125,7 +5155,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         (htmlParseLookupString(ctxt, 0, "<", 1, 0) < 0))
                         return;
                     ctxt->checkIndex = 0;
-                    htmlParseCharData(ctxt);
+                    htmlParseCharData(ctxt, /* partial */ 0);
 		}
 
 		break;

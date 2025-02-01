@@ -8238,7 +8238,10 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
      */
     SKIP(9);
 
-    SKIP_BLANKS;
+    if (SKIP_BLANKS == 0) {
+        xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
+                       "Space required after 'DOCTYPE'\n");
+    }
 
     /*
      * Parse the DOCTYPE name.
@@ -8272,20 +8275,9 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
 	(!ctxt->disableSAX))
 	ctxt->sax->internalSubset(ctxt->userData, name, ExternalID, URI);
 
-    /*
-     * Is there any internal subset declarations ?
-     * they are handled separately in xmlParseInternalSubset()
-     */
-    if (RAW == '[')
-	return;
-
-    /*
-     * We should be at the end of the DOCTYPE declaration.
-     */
-    if (RAW != '>') {
+    if ((RAW != '[') && (RAW != '>')) {
 	xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, NULL);
     }
-    NEXT;
 }
 
 /**
@@ -10782,7 +10774,9 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	xmlParseDocTypeDecl(ctxt);
 	if (RAW == '[') {
 	    xmlParseInternalSubset(ctxt);
-	}
+	} else if (RAW == '>') {
+            NEXT;
+        }
 
 	/*
 	 * Create and update the external subset.
@@ -11508,6 +11502,8 @@ xmlParseTryOrFinish(xmlParserCtxtPtr ctxt, int terminate) {
                                 if (RAW == '[') {
                                     ctxt->instate = XML_PARSER_DTD;
                                 } else {
+                                    if (RAW == '>')
+                                        NEXT;
                                     /*
                                      * Create and update the external subset.
                                      */

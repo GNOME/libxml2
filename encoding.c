@@ -1117,6 +1117,14 @@ xmlIconvConvert(unsigned char *out, int *outlen,
          */
         if (errno == EINVAL)
             return(XML_ENC_ERR_SUCCESS);
+#ifdef __APPLE__
+        /*
+         * Apple's new libiconv can return EOPNOTSUPP under
+         * unknown circumstances (detected when fuzzing).
+         */
+        if (errno == EOPNOTSUPP)
+            return(XML_ENC_ERR_INPUT);
+#endif
         return(XML_ENC_ERR_INTERNAL);
     }
     return(XML_ENC_ERR_SUCCESS);

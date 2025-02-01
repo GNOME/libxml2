@@ -2801,7 +2801,11 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                 if ((input->flags & XML_INPUT_HAS_ENCODING) == 0) {
                     xmlChar * guess;
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+                    guess = NULL;
+#else
                     guess = htmlFindEncoding(ctxt);
+#endif
                     if (guess == NULL) {
                         xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
                     } else {
@@ -3295,7 +3299,11 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
                     if (in > chunk)
                         goto next_chunk;
 
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+                    guess = NULL;
+#else
                     guess = htmlFindEncoding(ctxt);
+#endif
                     if (guess == NULL) {
                         xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
                     } else {

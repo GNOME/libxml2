@@ -1454,12 +1454,23 @@ xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
     enc = XML_CHAR_ENCODING_NONE;
     bomSize = 0;
 
+    /*
+     * BOM sniffing and detection of initial bytes of an XML
+     * declaration.
+     *
+     * The HTML5 spec doesn't cover UTF-32 (UCS-4) or EBCDIC.
+     */
     switch (in[0]) {
         case 0x00:
-            if ((in[1] == 0x00) && (in[2] == 0x00) && (in[3] == 0x3C)) {
+            if ((!ctxt->html) &&
+                (in[1] == 0x00) && (in[2] == 0x00) && (in[3] == 0x3C)) {
                 enc = XML_CHAR_ENCODING_UCS4BE;
                 autoFlag = XML_INPUT_AUTO_OTHER;
             } else if ((in[1] == 0x3C) && (in[2] == 0x00) && (in[3] == 0x3F)) {
+                /*
+                 * TODO: The HTML5 spec requires to check that the
+                 * next codepoint is an 'x'.
+                 */
                 enc = XML_CHAR_ENCODING_UTF16BE;
                 autoFlag = XML_INPUT_AUTO_UTF16BE;
             }
@@ -1467,10 +1478,15 @@ xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
 
         case 0x3C:
             if (in[1] == 0x00) {
-                if ((in[2] == 0x00) && (in[3] == 0x00)) {
+                if ((!ctxt->html) &&
+                    (in[2] == 0x00) && (in[3] == 0x00)) {
                     enc = XML_CHAR_ENCODING_UCS4LE;
                     autoFlag = XML_INPUT_AUTO_OTHER;
                 } else if ((in[2] == 0x3F) && (in[3] == 0x00)) {
+                    /*
+                     * TODO: The HTML5 spec requires to check that the
+                     * next codepoint is an 'x'.
+                     */
                     enc = XML_CHAR_ENCODING_UTF16LE;
                     autoFlag = XML_INPUT_AUTO_UTF16LE;
                 }
@@ -1478,7 +1494,8 @@ xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
             break;
 
         case 0x4C:
-	    if ((in[1] == 0x6F) && (in[2] == 0xA7) && (in[3] == 0x94)) {
+	    if ((!ctxt->html) &&
+                (in[1] == 0x6F) && (in[2] == 0xA7) && (in[3] == 0x94)) {
 	        enc = XML_CHAR_ENCODING_EBCDIC;
                 autoFlag = XML_INPUT_AUTO_OTHER;
             }

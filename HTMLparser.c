@@ -4346,8 +4346,14 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     xmlDetectEncoding(ctxt);
 
     /*
-     * This is wrong but matches long-standing behavior. In most cases,
-     * a document starting with an XML declaration will specify UTF-8.
+     * TODO: Implement HTML5 prescan algorithm
+     */
+
+    /*
+     * This is wrong but matches long-standing behavior. In most
+     * cases, a document starting with an XML declaration will
+     * specify UTF-8. The HTML5 prescan algorithm handles
+     * XML declarations in a better way.
      */
     if (((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) &&
         (xmlStrncmp(ctxt->input->cur, BAD_CAST "<?xm", 4) == 0))
@@ -4944,9 +4950,14 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                 xmlDetectEncoding(ctxt);
 
                 /*
+                 * TODO: Implement HTML5 prescan algorithm
+                 */
+
+                /*
                  * This is wrong but matches long-standing behavior. In most
                  * cases, a document starting with an XML declaration will
-                 * specify UTF-8.
+                 * specify UTF-8. The HTML5 prescan algorithm handles
+                 * XML declarations in a better way.
                  */
                 if (((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) &&
                     (xmlStrncmp(ctxt->input->cur, BAD_CAST "<?xm", 4) == 0)) {

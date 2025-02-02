@@ -154,6 +154,11 @@ cmake:linux:clang:static:
     CC: clang
     SUFFIX: linux-clang-static
 
+# cmake:mingw is currently broken for unknown reasons.
+#
+# Executing /mingw64/bin/cmake.exe with any arguments fails without error
+# message and exit code 127 since 2025-01-21.
+
 .cmake:mingw:
   tags:
     - win32-ps
@@ -193,6 +198,8 @@ cmake:mingw:w64-i686:static:
 
 cmake:mingw:w64-x86_64:shared:
   extends: .cmake:mingw
+  only:
+    - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
     MSYSTEM: MINGW64

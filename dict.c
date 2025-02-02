@@ -929,10 +929,13 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <bcrypt.h>
-#elif HAVE_DECL_GETENTROPY
-  #include <unistd.h>
-  #include <sys/random.h>
 #else
+  #if HAVE_DECL_GETENTROPY
+    /* POSIX 2024 */
+    #include <unistd.h>
+    /* Older platforms */
+    #include <sys/random.h>
+  #endif
   #include <time.h>
 #endif
 
@@ -954,24 +957,50 @@ xmlInitRandom(void) {
 #ifdef _WIN32
         NTSTATUS status;
 
+        /*
+         * You can find many (recent as of 2025) discussions how
+         * to get a pseudo-random seed on Windows in projects like
+         * Golang, Rust, Chromium and Firefox.
+         *
+         * TODO: Support ProcessPrng available since Windows 10.
+         */
         status = BCryptGenRandom(NULL, (unsigned char *) globalRngState,
                                  sizeof(globalRngState),
                                  BCRYPT_USE_SYSTEM_PREFERRED_RNG);
         if (!BCRYPT_SUCCESS(status))
             xmlAbort("libxml2: BCryptGenRandom failed with error code %lu\n",
                      GetLastError());
-#elif HAVE_DECL_GETENTROPY
+#else
+        int var;
+
+#if HAVE_DECL_GETENTROPY
         while (1) {
             if (getentropy(globalRngState, sizeof(globalRngState)) == 0)
+                return;
+
+            /*
+             * This most likely means that libxml2 was compiled on
+             * a system supporting certain system calls and is running
+             * on a system that doesn't support these calls, as can
+             * be the case on Linux.
+             */
+            if (errno == ENOSYS)
                 break;
 
+            /*
+             * We really don't want to fallback to the unsafe PRNG
+             * for possibly accidental reasons, so we abort on any
+             * unknown error.
+             */
             if (errno != EINTR)
                 xmlAbort("libxml2: getentropy failed with error code %d\n",
                          errno);
         }
-#else
-        int var;
+#endif
 
+        /*
+         * TODO: Fallback to /dev/urandom for older POSIX systems.
+         */
         globalRngState[0] =
                 (unsigned) time(NULL) ^
                 HASH_ROL((unsigned) ((size_t) &xmlInitRandom & 0xFFFFFFFF), 8);

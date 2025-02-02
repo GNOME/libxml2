@@ -928,14 +928,15 @@ xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <bcrypt.h>
-#elif defined(HAVE_GETENTROPY)
-  #ifdef HAVE_UNISTD_H
-    #include <unistd.h>
-  #endif
-  #ifdef HAVE_SYS_RANDOM_H
-    #include <sys/random.h>
-  #endif
 #else
+  #if defined(HAVE_GETENTROPY)
+    #ifdef HAVE_UNISTD_H
+      #include <unistd.h>
+    #endif
+    #ifdef HAVE_SYS_RANDOM_H
+      #include <sys/random.h>
+    #endif
+  #endif
   #include <time.h>
 #endif
 
@@ -965,9 +966,21 @@ xmlInitRandom(void) {
                     "error code %lu\n", GetLastError());
             abort();
         }
-#elif defined(HAVE_GETENTROPY)
+#else
+        int var;
+
+#if defined(HAVE_GETENTROPY)
         while (1) {
             if (getentropy(globalRngState, sizeof(globalRngState)) == 0)
+                return;
+
+            /*
+             * This most likely means that libxml2 was compiled on
+             * a system supporting certain system calls and is running
+             * on a system that doesn't support these calls, as can
+             * be the case on Linux.
+             */
+            if (errno == ENOSYS)
                 break;
 
             if (errno != EINTR) {
@@ -976,8 +989,7 @@ xmlInitRandom(void) {
                 abort();
             }
         }
-#else
-        int var;
+#endif
 
         globalRngState[0] =
                 (unsigned) time(NULL) ^

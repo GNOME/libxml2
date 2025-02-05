@@ -315,7 +315,10 @@ vstateVPush(xmlValidCtxtPtr ctxt, xmlElementContentPtr cont,
 
         newSize = xmlGrowCapacity(ctxt->vstateMax, sizeof(tmp[0]),
                                   8, MAX_RECURSE);
-	    return(-1);
+        if (newSize < 0) {
+            xmlVErrMemory(ctxt);
+            return(-1);
+        }
         tmp = xmlRealloc(ctxt->vstateTab, newSize * sizeof(tmp[0]));
         if (tmp == NULL) {
 	    xmlVErrMemory(ctxt);
@@ -6995,4 +6998,3 @@ xmlValidGetValidElements(xmlNode *prev, xmlNode *next, const xmlChar **names,
     return(nb_valid_elements);
 }
 #endif /* LIBXML_VALID_ENABLED */
-

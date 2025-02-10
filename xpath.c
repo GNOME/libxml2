@@ -8672,7 +8672,7 @@ xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
                     newSize = xmlGrowCapacity(max, 1, 1, XML_MAX_NAME_LENGTH);
                     if (newSize < 0) {
                         xmlFree(buffer);
-                        xmlXPathPErrMemory(ctxt);
+                        xmlXPathErr(ctxt, XPATH_EXPR_ERROR);
                         return(NULL);
                     }
 		    tmp = xmlRealloc(buffer, newSize);

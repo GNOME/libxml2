@@ -365,7 +365,8 @@ testHugeEncodedChunk(void) {
 
     xmlParseChunk(ctxt, (char *) chunk, xmlStrlen(chunk), 1);
 
-    err = ctxt->wellFormed ? 0 : 1;
+    if (!ctxt->wellFormed)
+        err = 1;
     xmlFreeDoc(ctxt->myDoc);
     xmlFreeParserCtxt(ctxt);
     xmlFree(chunk);

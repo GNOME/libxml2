@@ -314,7 +314,7 @@ testHugeEncodedChunk(void) {
     xmlBufferPtr buf;
     xmlChar *chunk;
     xmlParserCtxtPtr ctxt;
-    int err, i;
+    int err = 0, i;
 
     /*
      * Test the push parser with a built-in encoding handler like ISO-8859-1
@@ -335,7 +335,8 @@ testHugeEncodedChunk(void) {
     xmlParseChunk(ctxt, (char *) chunk, xmlStrlen(chunk), 0);
     xmlParseChunk(ctxt, NULL, 0, 1);
 
-    err = ctxt->wellFormed ? 0 : 1;
+    if (!ctxt->wellFormed)
+        err = 1;
     xmlFreeDoc(ctxt->myDoc);
     xmlFreeParserCtxt(ctxt);
     xmlFree(chunk);
@@ -365,7 +366,8 @@ testHugeEncodedChunk(void) {
 
     xmlParseChunk(ctxt, (char *) chunk, xmlStrlen(chunk), 1);
 
-    err = ctxt->wellFormed ? 0 : 1;
+    if (!ctxt->wellFormed)
+        err = 1;
     xmlFreeDoc(ctxt->myDoc);
     xmlFreeParserCtxt(ctxt);
     xmlFree(chunk);

@@ -2965,16 +2965,44 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
 
     if ((mode == 0) || (mode == DATA_RCDATA) ||
         (ctxt->sax->cdataBlock == NULL)) {
-        int blank = areBlanks(ctxt, buf, size);
+        if ((ctxt->name == NULL) ||
+            (xmlStrEqual(ctxt->name, BAD_CAST "html")) ||
+            (xmlStrEqual(ctxt->name, BAD_CAST "head"))) {
+            int i;
 
-        if ((mode == 0) && (blank > 0) && (!ctxt->keepBlanks)) {
+            /*
+             * Add leading whitespace to html or head elements before
+             * calling htmlCheckParagraph.
+             */
+            for (i = 0; i < size; i++)
+                if (!IS_WS_HTML(buf[i]))
+                    break;
+
+            if (i > 0) {
+                if (!ctxt->keepBlanks) {
+                    if (ctxt->sax->ignorableWhitespace != NULL)
+                        ctxt->sax->ignorableWhitespace(ctxt->userData, buf, i);
+                } else {
+                    if (ctxt->sax->characters != NULL)
+                        ctxt->sax->characters(ctxt->userData, buf, i);
+                }
+
+                buf += i;
+                size -= i;
+            }
+
+            if (size <= 0)
+                return;
+
+            htmlCheckParagraph(ctxt);
+        }
+
+        if ((mode == 0) &&
+            (!ctxt->keepBlanks) &&
+            (areBlanks(ctxt, buf, size))) {
             if (ctxt->sax->ignorableWhitespace != NULL)
-                ctxt->sax->ignorableWhitespace(ctxt->userData,
-                                               buf, size);
+                ctxt->sax->ignorableWhitespace(ctxt->userData, buf, size);
         } else {
-            if ((mode == 0) && (blank < 0))
-                htmlCheckParagraph(ctxt);
-
             if (ctxt->sax->characters != NULL)
                 ctxt->sax->characters(ctxt->userData, buf, size);
         }

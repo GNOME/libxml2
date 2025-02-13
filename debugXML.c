@@ -24,7 +24,6 @@
 #include <libxml/xmlerror.h>
 
 #include "private/error.h"
-#include "private/parser.h"
 
 #define DUMP_TEXT_TYPE 1
 

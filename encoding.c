@@ -1142,8 +1142,6 @@ xmlIconvFree(void *vctxt) {
 
 #if defined(FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION) && \
     defined(__GLIBC__)
-#include "private/parser.h"
-
 static int
 xmlEncodingMatch(const char *name1, const char *name2) {
     /*

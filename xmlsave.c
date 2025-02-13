@@ -26,7 +26,6 @@
 #include "private/entities.h"
 #include "private/error.h"
 #include "private/io.h"
-#include "private/parser.h"
 #include "private/save.h"
 
 #ifdef LIBXML_OUTPUT_ENABLED

@@ -31,7 +31,6 @@
 
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/parser.h"
 #include "private/regexp.h"
 
 #ifndef SIZE_MAX

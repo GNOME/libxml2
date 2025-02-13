@@ -46,7 +46,6 @@
 #include "private/entities.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/parser.h"
 #include "private/tree.h"
 
 /*

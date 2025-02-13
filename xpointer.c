@@ -45,7 +45,6 @@
 #define XPTR_XMLNS_SCHEME
 
 #include "private/error.h"
-#include "private/parser.h"
 #include "private/xpath.h"
 
 /************************************************************************

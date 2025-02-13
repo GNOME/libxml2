@@ -41,7 +41,6 @@
 #include "private/buf.h"
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/parser.h"
 #include "private/threads.h"
 
 #define MAX_DELEGATE	50

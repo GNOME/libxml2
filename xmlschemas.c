@@ -78,7 +78,6 @@
 
 #include "private/error.h"
 #include "private/memory.h"
-#include "private/parser.h"
 #include "private/string.h"
 
 /* #define WXS_ELEM_DECL_CONS_ENABLED */

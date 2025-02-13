@@ -1714,10 +1714,14 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
                 tmp = cur->children;
                 while (tmp != NULL) {
                     if (xmlStrEqual(tmp->name, BAD_CAST"meta")) {
+                        int res;
                         xmlChar *httpequiv;
 
-                        httpequiv = xmlGetProp(tmp, BAD_CAST"http-equiv");
-                        if (httpequiv != NULL) {
+                        res = xmlNodeGetAttrValue(tmp, BAD_CAST "http-equiv",
+                                                  NULL, &httpequiv);
+                        if (res < 0) {
+                            xmlSaveErrMemory(buf);
+                        } else if (res == 0) {
                             if (xmlStrcasecmp(httpequiv,
                                         BAD_CAST"Content-Type") == 0) {
                                 xmlFree(httpequiv);

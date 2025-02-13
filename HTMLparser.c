@@ -64,6 +64,12 @@
 #define IS_ALNUM(c) \
     (IS_ASCII_LETTER(c) || IS_ASCII_DIGIT(c))
 
+typedef enum {
+    INSERT_INITIAL = 1,
+    INSERT_IN_HEAD = 3,
+    INSERT_IN_BODY = 10
+} htmlInsertMode;
+
 typedef const unsigned htmlAsciiMask[2];
 
 static htmlAsciiMask MASK_DQ = {
@@ -155,10 +161,10 @@ htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 static int
 htmlnamePush(htmlParserCtxtPtr ctxt, const xmlChar * value)
 {
-    if ((ctxt->html < 3) && (xmlStrEqual(value, BAD_CAST "head")))
-        ctxt->html = 3;
-    if ((ctxt->html < 10) && (xmlStrEqual(value, BAD_CAST "body")))
-        ctxt->html = 10;
+    if ((ctxt->html < INSERT_IN_HEAD) && (xmlStrEqual(value, BAD_CAST "head")))
+        ctxt->html = INSERT_IN_HEAD;
+    if ((ctxt->html < INSERT_IN_BODY) && (xmlStrEqual(value, BAD_CAST "body")))
+        ctxt->html = INSERT_IN_BODY;
     if (ctxt->nameNr >= ctxt->nameMax) {
         const xmlChar **tmp;
         int newSize;
@@ -1521,7 +1527,7 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 	 (xmlStrEqual(newtag, BAD_CAST"link")) ||
 	 (xmlStrEqual(newtag, BAD_CAST"title")) ||
 	 (xmlStrEqual(newtag, BAD_CAST"base")))) {
-        if (ctxt->html >= 3) {
+        if (ctxt->html >= INSERT_IN_HEAD) {
             /* we already saw or generated an <head> before */
             return;
         }
@@ -1535,7 +1541,7 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
     } else if ((!xmlStrEqual(newtag, BAD_CAST"noframes")) &&
 	       (!xmlStrEqual(newtag, BAD_CAST"frame")) &&
 	       (!xmlStrEqual(newtag, BAD_CAST"frameset"))) {
-        if (ctxt->html >= 10) {
+        if (ctxt->html >= INSERT_IN_BODY) {
             /* we already saw or generated a <body> before */
             return;
         }
@@ -4600,7 +4606,7 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
     ctxt->replaceEntities = 0;
     ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
-    ctxt->html = 1;
+    ctxt->html = INSERT_INITIAL;
     ctxt->vctxt.flags = XML_VCTXT_USE_PCTXT;
     ctxt->vctxt.userData = ctxt;
     ctxt->vctxt.error = xmlParserValidityError;
@@ -5064,8 +5070,8 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 		ctxt->instate = XML_PARSER_CONTENT;
                 break;
 
-            case XML_PARSER_MISC:
-            case XML_PARSER_PROLOG:
+            case XML_PARSER_MISC: /* initial */
+            case XML_PARSER_PROLOG: /* before html */
             case XML_PARSER_CONTENT: {
                 int mode;
 
@@ -5640,7 +5646,7 @@ htmlCtxtReset(htmlParserCtxtPtr ctxt)
     ctxt->standalone = -1;
     ctxt->hasExternalSubset = 0;
     ctxt->hasPErefs = 0;
-    ctxt->html = 1;
+    ctxt->html = INSERT_INITIAL;
     ctxt->instate = XML_PARSER_START;
 
     ctxt->wellFormed = 1;
@@ -5902,7 +5908,7 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
         return(NULL);
     }
 
-    ctxt->html = 1;
+    ctxt->html = INSERT_INITIAL;
     htmlParseDocument(ctxt);
 
     if (ctxt->errNo != XML_ERR_NO_MEMORY) {

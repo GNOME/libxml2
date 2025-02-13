@@ -1165,19 +1165,6 @@ static const htmlStartCloseEntry htmlStartClose[] = {
 };
 
 /*
- * The list of HTML elements which are supposed not to have
- * CDATA content and where a p element will be implied
- *
- * TODO: extend that list by reading the HTML SGML DTD on
- *       implied paragraph
- */
-static const char *const htmlNoContentElements[] = {
-    "html",
-    "head",
-    NULL
-};
-
-/*
  * The list of HTML attributes which are of content %Script;
  * NOTE: when adding ones, check htmlIsScriptAttribute() since
  *       it assumes the name starts with 'on'
@@ -1568,48 +1555,22 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 }
 
 /**
- * htmlCheckParagraph
+ * htmlStartCharData
  * @ctxt:  an HTML parser context
  *
- * Check whether a p element need to be implied before inserting
- * characters in the current element.
- *
- * Returns 1 if a paragraph has been inserted, 0 if not and -1
- *         in case of error.
+ * Prepare for non-whitespace character data.
  */
 
-static int
-htmlCheckParagraph(htmlParserCtxtPtr ctxt) {
-    const xmlChar *tag;
-    int i;
-
-    if (ctxt == NULL)
-	return(-1);
-    if (ctxt->options & HTML_PARSE_HTML5)
-        return(0);
-
-    tag = ctxt->name;
-    if (tag == NULL) {
-	htmlAutoClose(ctxt, BAD_CAST"p");
-	htmlCheckImplied(ctxt, BAD_CAST"p");
-	htmlnamePush(ctxt, BAD_CAST"p");
-	if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
-	    ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
-	return(1);
-    }
+static void
+htmlStartCharData(htmlParserCtxtPtr ctxt) {
+    if (ctxt->options & (HTML_PARSE_NOIMPLIED | HTML_PARSE_HTML5))
+        return;
     if (!htmlOmittedDefaultValue)
-	return(0);
-    for (i = 0; htmlNoContentElements[i] != NULL; i++) {
-	if (xmlStrEqual(tag, BAD_CAST htmlNoContentElements[i])) {
-	    htmlAutoClose(ctxt, BAD_CAST"p");
-	    htmlCheckImplied(ctxt, BAD_CAST"p");
-	    htmlnamePush(ctxt, BAD_CAST"p");
-	    if ((ctxt->sax != NULL) && (ctxt->sax->startElement != NULL))
-		ctxt->sax->startElement(ctxt->userData, BAD_CAST"p", NULL);
-	    return(1);
-	}
-    }
-    return(0);
+	return;
+
+    if (xmlStrEqual(ctxt->name, BAD_CAST "head"))
+        htmlAutoClose(ctxt, BAD_CAST "p");
+    htmlCheckImplied(ctxt, BAD_CAST "p");
 }
 
 /**
@@ -2972,7 +2933,7 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
 
             /*
              * Add leading whitespace to html or head elements before
-             * calling htmlCheckParagraph.
+             * calling htmlStartCharData.
              */
             for (i = 0; i < size; i++)
                 if (!IS_WS_HTML(buf[i]))
@@ -2994,7 +2955,7 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
             if (size <= 0)
                 return;
 
-            htmlCheckParagraph(ctxt);
+            htmlStartCharData(ctxt);
         }
 
         if ((mode == 0) &&
@@ -4084,7 +4045,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
     SKIP(2);
 
     if (ctxt->input->cur >= ctxt->input->end) {
-        htmlCheckParagraph(ctxt);
+        htmlStartCharData(ctxt);
         if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
             (ctxt->sax->characters != NULL))
             ctxt->sax->characters(ctxt->userData,
@@ -4243,7 +4204,7 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
             } else if (IS_ASCII_LETTER(NXT(1))) {
                 htmlParseElementInternal(ctxt);
             } else {
-                htmlCheckParagraph(ctxt);
+                htmlStartCharData(ctxt);
                 if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
                     (ctxt->sax->characters != NULL))
                     ctxt->sax->characters(ctxt->userData, BAD_CAST "<", 1);
@@ -5187,7 +5148,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
                         ctxt->checkIndex = 0;
                     } else {
                         ctxt->instate = XML_PARSER_CONTENT;
-                        htmlCheckParagraph(ctxt);
+                        htmlStartCharData(ctxt);
                         if ((ctxt->sax != NULL) && (!ctxt->disableSAX) &&
                             (ctxt->sax->characters != NULL))
                             ctxt->sax->characters(ctxt->userData,

@@ -21,6 +21,8 @@
 /*
  * Untested options:
  *
+ * --memory: Requires temp file
+ *
  * --catalogs: Requires XML catalogs
  *
  * --dtdvalid:
@@ -55,7 +57,7 @@ static const char *const switches[] = {
     "--insert",
     "--loaddtd",
     "--load-trace",
-    "--memory",
+    NULL,
     "--noblanks",
     "--nocdata",
     "--nocompact",

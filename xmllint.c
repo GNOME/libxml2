@@ -375,8 +375,7 @@ parseXml(xmllintState *lint, const char *filename) {
 
         input = xmlNewInputFromMemory(filename,
                                       lint->memoryData, lint->memorySize,
-                                      XML_INPUT_BUF_STATIC |
-                                      XML_INPUT_BUF_ZERO_TERMINATED);
+                                      XML_INPUT_BUF_STATIC);
         if (input == NULL) {
             lint->progresult = XMLLINT_ERR_MEM;
             return(NULL);
@@ -456,8 +455,7 @@ parseHtml(xmllintState *lint, const char *filename) {
 
         input = xmlNewInputFromMemory(filename,
                                       lint->memoryData, lint->memorySize,
-                                      XML_INPUT_BUF_STATIC |
-                                      XML_INPUT_BUF_ZERO_TERMINATED);
+                                      XML_INPUT_BUF_STATIC);
         if (input == NULL) {
             lint->progresult = XMLLINT_ERR_MEM;
             return(NULL);
@@ -3437,7 +3435,7 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
                 lint->progresult = XMLLINT_ERR_RDFILE;
                 break;
             }
-            lint->memoryData = mmap(NULL, info.st_size + 1, PROT_READ,
+            lint->memoryData = mmap(NULL, info.st_size, PROT_READ,
                                     MAP_SHARED, memoryFd, 0);
             if (lint->memoryData == (void *) MAP_FAILED) {
                 close(memoryFd);

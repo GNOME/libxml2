@@ -1,19 +1,50 @@
 NEWS file for libxml2
 
+v2.13.6: Feb 18 2025
+
+### Security
+
+- [CVE-2025-24928] Fix stack-buffer-overflow in xmlSnprintfElements
+- [CVE-2024-56171] Fix use-after-free after xmlSchemaItemListAdd
+- pattern: Fix compilation of explicit child axis
+
+### Regressions
+
+- xmllint: Support compressed input from stdin
+- uri: Fix handling of Windows drive letters
+- reader: Fix return value of xmlTextReaderReadString again
+- SAX2: Fix xmlSAX2ResolveEntity if systemId is NULL
+
+### Portability
+
+- dict: Handle ENOSYS from getentropy gracefully
+- Fix compilation with uclibc (Dario Binacchi)
+- python: Declare init func with PyMODINIT_FUNC
+- tests: Fix sanitizer version check on old Apple clang
+- cmake: Work around broken sys/random.h in old macOS SDKs
+
+### Build
+
+- autotools: Set AC_CONFIG_AUX_DIR
+- cmake: Always build Python module as shared library
+- cmake: add missing `Bcrypt` link on Windows (Saleem Abdulrasool)
+- cmake: Fix compatibility in package version file
+
+
 v2.13.5: Nov 12 2024
 
 ### Regressions
 
-- xmlIO: Fix reading from non-regular files like pipes (Nick Wellnhofer)
-- xmlreader: Fix return value of xmlTextReaderReadString (Nick Wellnhofer)
-- parser: Fix loading of parameter entities in external DTDs (Nick Wellnhofer)
-- parser: Fix downstream code that swaps DTDs (Nick Wellnhofer)
-- parser: Fix detection of duplicate attributes (Nick Wellnhofer)
-- string: Fix va_copy fallback (Nick Wellnhofer)
+- xmlIO: Fix reading from non-regular files like pipes
+- xmlreader: Fix return value of xmlTextReaderReadString
+- parser: Fix loading of parameter entities in external DTDs
+- parser: Fix downstream code that swaps DTDs
+- parser: Fix detection of duplicate attributes
+- string: Fix va_copy fallback
 
 ### Bug fixes
 
-- xpath: Fix parsing of non-ASCII names (Nick Wellnhofer)
+- xpath: Fix parsing of non-ASCII names
 
 
 v2.13.4: Sep 18 2024

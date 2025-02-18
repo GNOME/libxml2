@@ -14,5 +14,6 @@ meson  setup \
        -Dlegacy=enabled \
        builddir
 
-ninja -C builddir test
+ninja -C builddir
 
+meson test --verbose -C builddir

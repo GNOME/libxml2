@@ -5,7 +5,7 @@
   before_script:
     - rm -rf libxml2-build
     - mkdir libxml2-build
-    - ln -s /tests/xmlconf libxml2-build
+    - ln -s /tests/xmlconf .
   script:
     - sh .gitlab-ci/test.sh
 
@@ -84,7 +84,7 @@ clang:msan:
   cache:
     key: "$MSYSTEM"
     paths:
-      - libxml2-build/xmlconf/
+      - xmlconf/
 
 mingw:w64-x86_64:shared:
   extends: .mingw
@@ -112,7 +112,7 @@ mingw:w64-i686:shared:
   before_script:
     - rm -rf libxml2-build
     - mkdir libxml2-build
-    - ln -s /tests/xmlconf libxml2-build
+    - ln -s /tests/xmlconf .
   script:
     - sh .gitlab-ci/test_cmake.sh
   artifacts:
@@ -172,7 +172,7 @@ cmake:linux:clang:static:
   cache:
     key: "$MSYSTEM"
     paths:
-      - libxml2-build/xmlconf/
+      - xmlconf/
   artifacts:
     paths:
       - libxml2-$Env:CI_COMMIT_SHORT_SHA-$Env:SUFFIX.tar.gz
@@ -228,7 +228,7 @@ cmake:mingw:w64-x86_64:static:
     key: "msvc"
     paths:
       - cmake-$Env:CMAKE_VERSION-win64-x64/
-      - libxml2-build/xmlconf/
+      - xmlconf/
       - 7za.exe
   artifacts:
     paths:
@@ -283,6 +283,8 @@ cmake:msvc:v141:x86:static:
 
 meson:
   image: registry.gitlab.gnome.org/gnome/libxml2
+  before_script:
+    - ln -s /tests/xmlconf .
   script:
     - sh .gitlab-ci/test_meson.sh
 

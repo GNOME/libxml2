@@ -15,11 +15,12 @@ if (-not (Test-Path 7za.exe)) {
     cmake -E tar xf 7z1900-extra.7z 7za.exe
 }
 
-if (-not (Test-Path libxml2-build/xmlconf)) {
+if (-not (Test-Path xmlconf)) {
     Invoke-WebRequest `
         -Uri https://www.w3.org/XML/Test/xmlts20080827.tar.gz `
         -OutFile xmlts20080827.tar.gz ;
-    .\7za.exe x xmlts20080827.tar.gz -olibxml2-build
+    .\7za.exe x xmlts20080827.tar.gz
+    .\7za.exe x xmlts20080827.tar
 }
 
 cmake `

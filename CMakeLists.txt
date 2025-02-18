@@ -76,8 +76,6 @@ cmake_dependent_option(
     LIBXML2_WITH_XPTR "Add the XPointer support" ON
     "LIBXML2_WITH_XPATH" OFF)
 
-set(LIBXML2_XMLCONF_WORKING_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH "Working directory for XML Conformance Test Suite")
-
 if(LIBXML2_WITH_PYTHON)
     find_package(Python COMPONENTS Interpreter Development REQUIRED)
     #set(LIBXML2_PYTHON_INSTALL_DIR ${Python_SITEARCH} CACHE PATH "Python bindings install directory")
@@ -506,8 +504,8 @@ if(LIBXML2_WITH_TESTS)
     endif()
     add_test(NAME runtest COMMAND runtest --out ${CMAKE_CURRENT_BINARY_DIR} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     add_test(NAME runsuite COMMAND runsuite WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    if(EXISTS ${LIBXML2_XMLCONF_WORKING_DIR}/xmlconf/xmlconf.xml)
-        add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${LIBXML2_XMLCONF_WORKING_DIR})
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/xmlconf/xmlconf.xml)
+        add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
     if(NOT WIN32)
         add_test(NAME testapi COMMAND testapi)

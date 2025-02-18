@@ -176,7 +176,7 @@ check-local:
 	$(CHECKER) ./testdict$(EXEEXT)
 	$(CHECKER) ./testparser$(EXEEXT)
 	$(CHECKER) ./testModule$(EXEEXT)
-	$(CHECKER) ./runxmlconf$(EXEEXT)
+	$(CHECKER) ./runxmlconf$(EXEEXT) -d $(srcdir)/xmlconf
 	$(CHECKER) ./runsuite$(EXEEXT)
 if WITH_DEBUG_SOURCES
 	test/scripts/test.sh ./xmllint$(EXEEXT)

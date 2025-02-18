@@ -1,5 +1,33 @@
 NEWS file for libxml2
 
+v2.12.10: Feb 18 2025
+
+### Security
+
+- [CVE-2025-24928] Fix stack-buffer-overflow in xmlSnprintfElements
+- [CVE-2024-56171] Fix use-after-free after xmlSchemaItemListAdd
+- pattern: Fix compilation of explicit child axis
+
+### Regressions
+
+- parser: Fix detection of duplicate attributes
+
+### Bug fixes
+
+- xpath: Fix parsing of non-ASCII names
+
+### Portability
+
+- python: Declare init func with PyMODINIT_FUNC
+- tests: Fix sanitizer version check on old Apple clang
+
+### Build
+
+- autotools: Set AC_CONFIG_AUX_DIR
+- cmake: Always build Python module as shared library
+- cmake: Fix compatibility in package version file
+
+
 v2.12.9: Jul 24 2024
 
 ### Security

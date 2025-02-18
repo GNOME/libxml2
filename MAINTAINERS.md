@@ -52,21 +52,14 @@ You can get started by running
 
 Update the version number in `VERSION` if you haven't done so already.
 
-### Build the tarball
+IMPORTANT: Update the version number of `tarball-artifact-path` in
+`.gitlab-ci.yml`. This must be done manually for now.
 
-I'd recommend to build the tarball by running
+### Commit and verify tarball
 
-    make distcheck
-
-which performs some useful checks as well.
-
-### Upload the tarball
-
-Follow the instructions at
-<https://wiki.gnome.org/MaintainersCorner/Releasing>:
-
-    scp libxml2-[version].tar.xz master.gnome.org:
-    ssh master.gnome.org ftpadmin install libxml2-[version].tar.xz
+Release tarballs are generated with a CI job and the `.gitlab-ci/dist.sh`
+script. Push the release commit and inspect the tarball artifact generated
+by Gitlab CI.
 
 ### Tag the release
 
@@ -75,9 +68,13 @@ Create an annotated tag and push it:
     git tag -a [version] -m 'Release [version]'
     git push origin [version]
 
+This will upload the release to the downloads server using the GNOME
+Release Service. For more details, see
+<https://handbook.gnome.org/maintainers/release-pipeline.html>
+
 ### Create a GitLab release
 
-Create a new GitLab release on
+Create or update a GitLab release on
 <https://gitlab.gnome.org/GNOME/libxml2/-/releases>.
 
 ### Announce the release

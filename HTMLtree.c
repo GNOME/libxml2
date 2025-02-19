@@ -382,25 +382,15 @@ htmlSaveErr(int code, xmlNodePtr node, const char *extra)
  *									*
  ************************************************************************/
 
-static xmlCharEncodingHandler *
-htmlFindOutputEncoder(const char *encoding) {
-    xmlCharEncodingHandler *handler = NULL;
+static int
+htmlFindOutputEncoder(const char *encoding, xmlCharEncodingHandler **out) {
+    /*
+     * Fallback to HTML if the encoding is unspecified
+     */
+    if (encoding == NULL)
+        encoding = "HTML";
 
-    if (encoding != NULL) {
-        int res;
-
-        res = xmlOpenCharEncodingHandler(encoding, /* output */ 1,
-                                         &handler);
-        if (res != XML_ERR_OK)
-            htmlSaveErr(XML_SAVE_UNKNOWN_ENCODING, NULL, encoding);
-    } else {
-        /*
-         * Fallback to HTML when the encoding is unspecified
-         */
-        xmlOpenCharEncodingHandler("HTML", /* output */ 1, &handler);
-    }
-
-    return(handler);
+    return(xmlOpenCharEncodingHandler(encoding, /* output */ 1, out));
 }
 
 /**
@@ -508,10 +498,11 @@ htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
     /*
      * save the content to a temp buffer.
      */
-    handler = htmlFindOutputEncoder(encoding);
+    if (htmlFindOutputEncoder(encoding, &handler) != XML_ERR_OK)
+        return(-1);
     buf = xmlOutputBufferCreateFile(out, handler);
     if (buf == NULL)
-        return(0);
+        return(-1);
 
     htmlNodeDumpFormatOutput(buf, doc, cur, NULL, format);
 
@@ -559,7 +550,8 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
 	return;
 
     encoding = (const char *) htmlGetMetaEncoding(cur);
-    handler = htmlFindOutputEncoder(encoding);
+    if (htmlFindOutputEncoder(encoding, &handler) != XML_ERR_OK)
+        return;
     buf = xmlAllocOutputBuffer(handler);
     if (buf == NULL)
 	return;
@@ -1025,7 +1017,8 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
     }
 
     encoding = (const char *) htmlGetMetaEncoding(cur);
-    handler = htmlFindOutputEncoder(encoding);
+    if (htmlFindOutputEncoder(encoding, &handler) != XML_ERR_OK)
+        return(-1);
     buf = xmlOutputBufferCreateFile(f, handler);
     if (buf == NULL)
         return(-1);
@@ -1057,10 +1050,11 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
     xmlInitParser();
 
     encoding = (const char *) htmlGetMetaEncoding(cur);
-    handler = htmlFindOutputEncoder(encoding);
+    if (htmlFindOutputEncoder(encoding, &handler) != XML_ERR_OK)
+        return(-1);
     buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
     if (buf == NULL)
-        return(0);
+        return(-1);
 
     htmlDocContentDumpOutput(buf, cur, NULL);
 
@@ -1091,7 +1085,8 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
 
     xmlInitParser();
 
-    handler = htmlFindOutputEncoder(encoding);
+    if (htmlFindOutputEncoder(encoding, &handler) != XML_ERR_OK)
+        return(-1);
     if (handler != NULL)
         htmlSetMetaEncoding(cur, (const xmlChar *) handler->name);
     else

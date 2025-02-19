@@ -333,51 +333,6 @@ htmlIsBooleanAttr(const xmlChar *name)
 #ifdef LIBXML_OUTPUT_ENABLED
 /************************************************************************
  *									*
- *			Output error handlers				*
- *									*
- ************************************************************************/
-
-/**
- * htmlSaveErr:
- * @code:  the error number
- * @node:  the location of the error.
- * @extra:  extra information
- *
- * Handle an out of memory condition
- */
-static void
-htmlSaveErr(int code, xmlNodePtr node, const char *extra)
-{
-    const char *msg = NULL;
-    int res;
-
-    switch(code) {
-        case XML_SAVE_NOT_UTF8:
-	    msg = "string is not in UTF-8\n";
-	    break;
-	case XML_SAVE_CHAR_INVALID:
-	    msg = "invalid character value\n";
-	    break;
-	case XML_SAVE_UNKNOWN_ENCODING:
-	    msg = "unknown encoding %s\n";
-	    break;
-	case XML_SAVE_NO_DOCTYPE:
-	    msg = "HTML has no DOCTYPE\n";
-	    break;
-	default:
-	    msg = "unexpected error number\n";
-    }
-
-    res = xmlRaiseError(NULL, NULL, NULL, NULL, node,
-                        XML_FROM_OUTPUT, code, XML_ERR_ERROR, NULL, 0,
-                        extra, NULL, NULL, 0, 0,
-                        msg, extra);
-    if (res < 0)
-        xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_OUTPUT, NULL);
-}
-
-/************************************************************************
- *									*
  *		Dumping HTML tree content to a simple buffer		*
  *									*
  ************************************************************************/
@@ -609,10 +564,8 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 	          const char *encoding ATTRIBUTE_UNUSED) {
     xmlDtdPtr cur = doc->intSubset;
 
-    if (cur == NULL) {
-	htmlSaveErr(XML_SAVE_NO_DOCTYPE, (xmlNodePtr) doc, NULL);
+    if (cur == NULL)
 	return;
-    }
     xmlOutputBufferWriteString(buf, "<!DOCTYPE ");
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if (cur->ExternalID != NULL) {

@@ -3229,7 +3229,9 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
                          * &CounterClockwiseContourIntegral; has 33 bytes.
                          */
                         for (i = 1; i < avail; i++) {
-                            if ((i >= 32) || !IS_ASCII_LETTER(in[i])) {
+                            if ((i >= 32) ||
+                                (!IS_ASCII_LETTER(in[i]) &&
+                                 ((i < 2) || !IS_ASCII_DIGIT(in[i])))) {
                                 terminated = 1;
                                 break;
                             }

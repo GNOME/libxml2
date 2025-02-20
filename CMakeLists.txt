@@ -521,9 +521,6 @@ if(LIBXML2_WITH_PYTHON)
         COMMAND
         ${Python_EXECUTABLE}
         ${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
-        ${CMAKE_CURRENT_SOURCE_DIR}/doc/libxml2-api.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/python/libxml2-python-api.xml
-        WORKING_DIRECTORY
         ${CMAKE_CURRENT_BINARY_DIR}
     )
     file(READ python/libxml.py LIBXML_PY)

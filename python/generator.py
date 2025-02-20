@@ -13,9 +13,14 @@ import string
 if __name__ == "__main__":
     # launched as a script
     srcPref = os.path.dirname(sys.argv[0])
+    try:
+        dstPref = sys.argv[1]
+    except IndexError:
+        dstPref = os.getcwd()
 else:
     # imported
     srcPref = os.path.dirname(__file__)
+    dstPref = os.getcwd()
 
 #######################################################################
 #
@@ -701,11 +706,11 @@ def buildStubs():
     failed = 0
     skipped = 0
 
-    include = open("libxml2-py.h", "w")
+    include = open(os.path.join(dstPref, "libxml2-py.h"), "w")
     include.write("/* Generated */\n\n")
-    export = open("libxml2-export.c", "w")
+    export = open(os.path.join(dstPref, "libxml2-export.c"), "w")
     export.write("/* Generated */\n\n")
-    wrapper = open("libxml2-py.c", "w")
+    wrapper = open(os.path.join(dstPref, "libxml2-py.c"), "w")
     wrapper.write("/* Generated */\n\n")
     wrapper.write("#define PY_SSIZE_T_CLEAN\n")
     wrapper.write("#include <Python.h>\n")
@@ -1087,8 +1092,8 @@ def buildWrappers():
         info = (0, func, name, ret, args, file)
         function_classes['None'].append(info)
    
-    classes = open("libxml2class.py", "w")
-    txt = open("libxml2class.txt", "w")
+    classes = open(os.path.join(dstPref, "libxml2class.py"), "w")
+    txt = open(os.path.join(dstPref, "libxml2class.txt"), "w")
     txt.write("          Generated Classes for libxml2-python\n\n")
 
     txt.write("#\n# Global functions of the module\n#\n\n")

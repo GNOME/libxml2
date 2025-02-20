@@ -1,13 +1,5 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-if (-not (Test-Path cmake-$Env:CMAKE_VERSION-win64-x64)) {
-    Invoke-WebRequest `
-        -Uri http://github.com/Kitware/CMake/releases/download/v$Env:CMAKE_VERSION/cmake-$Env:CMAKE_VERSION-win64-x64.zip `
-        -OutFile cmake-$Env:CMAKE_VERSION-win64-x64.zip
-    Expand-Archive cmake-$Env:CMAKE_VERSION-win64-x64.zip -DestinationPath .
-}
-$Env:Path="$Env:CI_PROJECT_DIR\cmake-$Env:CMAKE_VERSION-win64-x64\bin;$Env:Path"
-
 if (-not (Test-Path 7za.exe)) {
     Invoke-WebRequest `
         -Uri https://www.7-zip.org/a/7z1900-extra.7z `

@@ -29,7 +29,7 @@ dir_include = dir_prefix / get_option('includedir')
 dir_pkginclude = dir_include / meson.project_name()
 dir_lib = dir_prefix / get_option('libdir')
 dir_data = dir_prefix / get_option('datadir')
-dir_doc = dir_data / 'doc' / 'libxml2'
+dir_doc = dir_data / 'doc' / meson.project_name()
 dir_locale = dir_prefix / get_option('localedir')
 
 # host
@@ -589,7 +589,7 @@ configure_file(
     input: 'libxml2-config.cmake.in',
     output: 'libxml2-config.cmake',
     configuration: config_cmake,
-    install_dir: dir_lib / 'cmake' / 'libxml2',
+    install_dir: dir_lib / 'cmake' / meson.project_name(),
 )
 
 # summary

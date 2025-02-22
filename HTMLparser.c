@@ -2962,6 +2962,9 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
                 return;
 
             htmlStartCharData(ctxt);
+
+            if (PARSER_STOPPED(ctxt))
+                return;
         }
 
         if ((mode == 0) &&

@@ -4196,7 +4196,7 @@ xmlSchemaFree(xmlSchemaPtr schema)
  *									*
  ************************************************************************/
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
 
 static void
 xmlSchemaTypeDump(xmlSchemaTypePtr type, FILE * output); /* forward */
@@ -4569,7 +4569,7 @@ xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
     xmlHashScanFull(schema->elemDecl, xmlSchemaElementDump, output);
 }
 
-#endif /* LIBXML_OUTPUT_ENABLED */
+#endif /* LIBXML_DEBUG_ENABLED */
 
 /************************************************************************
  *									*

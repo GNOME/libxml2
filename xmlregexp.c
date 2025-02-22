@@ -1094,8 +1094,6 @@ xmlRegPrintAtom(FILE *output, xmlRegAtomPtr atom) {
 	fprintf(output, "%d entries\n", atom->nbRanges);
 	for (i = 0; i < atom->nbRanges;i++)
 	    xmlRegPrintRange(output, atom->ranges[i]);
-    } else if (atom->type == XML_REGEXP_SUBREG) {
-	fprintf(output, "start %d end %d\n", atom->start->no, atom->stop->no);
     } else {
 	fprintf(output, "\n");
     }
@@ -1615,6 +1613,9 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 	    default:
 		break;
 	}
+        atom->start = NULL;
+        atom->start0 = NULL;
+        atom->stop = NULL;
 	if (xmlRegAtomPush(ctxt, atom) < 0)
 	    return(-1);
 	return(0);

@@ -381,6 +381,7 @@ deprecated_funcs = {
     'xmlRecoverDoc': True,
     'xmlRecoverFile': True,
     'xmlRecoverMemory': True,
+    'xmlRegexpPrint': True,
     'xmlRegisterHTTPPostCallbacks': True,
     'xmlRelaxNGCleanupTypes': True,
     'xmlRelaxNGInitTypes': True,

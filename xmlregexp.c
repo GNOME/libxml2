@@ -37,6 +37,8 @@
 #define SIZE_MAX ((size_t) -1)
 #endif
 
+/* #define DEBUG_REGEXP */
+
 #define MAX_PUSH 10000000
 
 #ifdef ERROR
@@ -930,6 +932,7 @@ xmlRegFreeParserCtxt(xmlRegParserCtxtPtr ctxt) {
  *									*
  ************************************************************************/
 
+#ifdef DEBUG_REGEXP
 static void
 xmlRegPrintAtomType(FILE *output, xmlRegAtomType type) {
     switch (type) {
@@ -1301,6 +1304,42 @@ xmlRegPrintCompact(FILE* output, xmlRegexpPtr regexp)
 
     fprintf(output, "%d counters:\n", 0);
 }
+
+static void
+xmlRegexpPrintInternal(FILE *output, xmlRegexpPtr regexp) {
+    int i;
+
+    if (output == NULL)
+        return;
+    fprintf(output, " regexp: ");
+    if (regexp == NULL) {
+	fprintf(output, "NULL\n");
+	return;
+    }
+	if (regexp->compact) {
+		xmlRegPrintCompact(output, regexp);
+		return;
+	}
+
+    fprintf(output, "'%s' ", regexp->string);
+    fprintf(output, "\n");
+    fprintf(output, "%d atoms:\n", regexp->nbAtoms);
+    for (i = 0;i < regexp->nbAtoms; i++) {
+	fprintf(output, " %02d ", i);
+	xmlRegPrintAtom(output, regexp->atoms[i]);
+    }
+    fprintf(output, "%d states:", regexp->nbStates);
+    fprintf(output, "\n");
+    for (i = 0;i < regexp->nbStates; i++) {
+	xmlRegPrintState(output, regexp->states[i]);
+    }
+    fprintf(output, "%d counters:\n", regexp->nbCounters);
+    for (i = 0;i < regexp->nbCounters; i++) {
+	fprintf(output, " %d: min %d max %d\n", i, regexp->counters[i].min,
+		                                regexp->counters[i].max);
+    }
+}
+#endif /* DEBUG_REGEXP */
 
 /************************************************************************
  *									*
@@ -5359,41 +5398,13 @@ xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top) {
  * @output: the file for the output debug
  * @regexp: the compiled regexp
  *
- * Print the content of the compiled regular expression
+ * DEPRECATED: Don't use.
+ *
+ * No-op since 2.14.0.
  */
 void
-xmlRegexpPrint(FILE *output, xmlRegexpPtr regexp) {
-    int i;
-
-    if (output == NULL)
-        return;
-    fprintf(output, " regexp: ");
-    if (regexp == NULL) {
-	fprintf(output, "NULL\n");
-	return;
-    }
-	if (regexp->compact) {
-		xmlRegPrintCompact(output, regexp);
-		return;
-	}
-
-    fprintf(output, "'%s' ", regexp->string);
-    fprintf(output, "\n");
-    fprintf(output, "%d atoms:\n", regexp->nbAtoms);
-    for (i = 0;i < regexp->nbAtoms; i++) {
-	fprintf(output, " %02d ", i);
-	xmlRegPrintAtom(output, regexp->atoms[i]);
-    }
-    fprintf(output, "%d states:", regexp->nbStates);
-    fprintf(output, "\n");
-    for (i = 0;i < regexp->nbStates; i++) {
-	xmlRegPrintState(output, regexp->states[i]);
-    }
-    fprintf(output, "%d counters:\n", regexp->nbCounters);
-    for (i = 0;i < regexp->nbCounters; i++) {
-	fprintf(output, " %d: min %d max %d\n", i, regexp->counters[i].min,
-		                                regexp->counters[i].max);
-    }
+xmlRegexpPrint(FILE *output ATTRIBUTE_UNUSED,
+               xmlRegexpPtr regexp ATTRIBUTE_UNUSED) {
 }
 
 /**

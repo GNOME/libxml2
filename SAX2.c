@@ -21,7 +21,6 @@
 #include <libxml/valid.h>
 #include <libxml/entities.h>
 #include <libxml/xmlerror.h>
-#include <libxml/debugXML.h>
 #include <libxml/xmlIO.h>
 #include <libxml/uri.h>
 #include <libxml/valid.h>

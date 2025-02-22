@@ -19,8 +19,8 @@
 #include <stdarg.h>
 
 #include <libxml/xmlmemory.h>
-#include <libxml/debugXML.h>
 #include <libxml/xmlmodule.h>
+#include <libxml/xmlstring.h>
 
 #ifdef _WIN32
 #define MODULE_PATH "."

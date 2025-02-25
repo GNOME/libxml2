@@ -151,6 +151,7 @@ want_pattern = not want_minimum \
 
 feature = get_option('regexps')
 want_regexps = not want_minimum \
+    or get_option('relaxng').enabled() \
     or get_option('schemas').enabled() ? \
     feature.allowed() : feature.enabled()
 
@@ -187,7 +188,14 @@ want_reader = want_minimum ? feature.enabled() : feature.allowed()
 feature = get_option('schemas') \
     .require(want_pattern, error_message: 'schemas requires pattern') \
     .require(want_regexps, error_message: 'schemas requires regexps')
-want_schemas = want_minimum ? feature.enabled() : feature.allowed()
+want_schemas = not want_minimum \
+    or get_option('relaxng') ? \
+    feature.allowed() : feature.enabled()
+
+feature = get_option('relaxng') \
+    .require(want_regexps, error_message: 'relaxng requires regexps') \
+    .require(want_schemas, error_message: 'relaxng requires schemas')
+want_relaxng = want_minimum ? feature.enabled() : feature.allowed()
 
 feature = get_option('schematron') \
     .require(want_pattern, error_message: 'schematron requires pattern') \
@@ -451,7 +459,8 @@ xml_opt_src = [
     [want_pattern, ['pattern.c']],
     [want_reader, ['xmlreader.c']],
     [want_regexps, ['xmlregexp.c', 'xmlunicode.c']],
-    [want_schemas, ['relaxng.c', 'xmlschemas.c', 'xmlschemastypes.c']],
+    [want_relaxng, ['relaxng.c']],
+    [want_schemas, ['xmlschemas.c', 'xmlschemastypes.c']],
     [want_schematron, ['schematron.c']],
     [want_writer, ['xmlwriter.c']],
     [want_xinclude, ['xinclude.c']],
@@ -616,6 +625,7 @@ summary(
         'reader': want_reader,
         'readline': want_readline,
         'regexps': want_regexps,
+        'relaxng': want_relaxng,
         'sax1': want_sax1,
         'schemas': want_schemas,
         'schematron': want_schematron,

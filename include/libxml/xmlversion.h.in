@@ -270,6 +270,15 @@
 #endif
 
 /**
+ * LIBXML_RELAXNG_ENABLED:
+ *
+ * Whether the RelaxNG validation interfaces are compiled in
+ */
+#if @WITH_RELAXNG@
+#define LIBXML_RELAXNG_ENABLED
+#endif
+
+/**
  * LIBXML_SCHEMAS_ENABLED:
  *
  * Whether the Schemas validation interfaces are compiled in

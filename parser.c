@@ -658,6 +658,12 @@ xmlHasFeature(xmlFeature feature)
 #else
             return(0);
 #endif
+        case XML_WITH_RELAXNG:
+#ifdef LIBXML_RELAXNG_ENABLED
+            return(1);
+#else
+            return(0);
+#endif
         case XML_WITH_SCHEMAS:
 #ifdef LIBXML_SCHEMAS_ENABLED
             return(1);

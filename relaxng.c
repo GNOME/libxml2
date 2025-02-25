@@ -16,7 +16,7 @@
 #define IN_LIBXML
 #include "libxml.h"
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 
 #include <string.h>
 #include <stdio.h>
@@ -29,7 +29,6 @@
 
 #include <libxml/relaxng.h>
 
-#include <libxml/xmlschemastypes.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlschemastypes.h>
@@ -10867,4 +10866,4 @@ xmlRelaxNGValidateDoc(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
     return (ret);
 }
 
-#endif /* LIBXML_SCHEMAS_ENABLED */
+#endif /* LIBXML_RELAXNG_ENABLED */

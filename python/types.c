@@ -771,7 +771,7 @@ libxml_xmlTextReaderLocatorPtrWrap(xmlTextReaderLocatorPtr locator)
 }
 #endif /* LIBXML_READER_ENABLED */
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 PyObject *
 libxml_xmlRelaxNGPtrWrap(xmlRelaxNGPtr ctxt)
 {
@@ -815,7 +815,9 @@ libxml_xmlRelaxNGValidCtxtPtrWrap(xmlRelaxNGValidCtxtPtr valid)
                                      (char *) "xmlRelaxNGValidCtxtPtr", NULL);
     return (ret);
 }
+#endif /* LIBXML_RELAXNG_ENABLED */
 
+#ifdef LIBXML_SCHEMAS_ENABLED
 PyObject *
 libxml_xmlSchemaPtrWrap(xmlSchemaPtr ctxt)
 {

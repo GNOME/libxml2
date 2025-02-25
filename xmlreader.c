@@ -27,8 +27,10 @@
 #include <libxml/xmlIO.h>
 #include <libxml/xmlreader.h>
 #include <libxml/parserInternals.h>
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 #include <libxml/relaxng.h>
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/xmlschemas.h>
 #endif
 #include <libxml/uri.h>
@@ -127,13 +129,15 @@ struct _xmlTextReader {
     xmlTextReaderErrorFunc errorFunc;    /* callback function */
     void                  *errorFuncArg; /* callback function user argument */
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     /* Handling of RelaxNG validation */
     xmlRelaxNGPtr          rngSchemas;	/* The Relax NG schemas */
     xmlRelaxNGValidCtxtPtr rngValidCtxt;/* The Relax NG validation context */
     int                    rngPreserveCtxt; /* 1 if the context was provided by the user */
     int                    rngValidErrors;/* The number of errors detected */
     xmlNodePtr             rngFullNode;	/* the node if RNG not progressive */
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     /* Handling of Schemas validation */
     xmlSchemaPtr          xsdSchemas;	/* The Schemas schemas */
     xmlSchemaValidCtxtPtr xsdValidCtxt;/* The Schemas validation context */
@@ -916,7 +920,7 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
         }*/
     }
 #endif /* LIBXML_VALID_ENABLED */
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
                (reader->rngValidCtxt != NULL)) {
 	int ret;
@@ -965,7 +969,7 @@ xmlTextReaderValidateCData(xmlTextReaderPtr reader,
 	                                            data, len);
     }
 #endif /* LIBXML_VALID_ENABLED */
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
                (reader->rngValidCtxt != NULL)) {
 	int ret;
@@ -1015,7 +1019,7 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
         }*/
     }
 #endif /* LIBXML_VALID_ENABLED */
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if ((reader->validate == XML_TEXTREADER_VALIDATE_RNG) &&
                (reader->rngValidCtxt != NULL)) {
 	int ret;
@@ -2132,7 +2136,7 @@ void
 xmlFreeTextReader(xmlTextReaderPtr reader) {
     if (reader == NULL)
 	return;
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if (reader->rngSchemas != NULL) {
 	xmlRelaxNGFree(reader->rngSchemas);
 	reader->rngSchemas = NULL;
@@ -2142,6 +2146,8 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
 	    xmlRelaxNGFreeValidCtxt(reader->rngValidCtxt);
 	reader->rngValidCtxt = NULL;
     }
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     if (reader->xsdPlug != NULL) {
 	xmlSchemaSAXUnplug(reader->xsdPlug);
 	reader->xsdPlug = NULL;
@@ -4003,7 +4009,7 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
     return(reader->ctxt->myDoc);
 }
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 /**
  * xmlTextReaderRelaxNGSetSchema:
  * @reader:  the xmlTextReaderPtr used
@@ -4058,7 +4064,9 @@ xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
     reader->validate = XML_TEXTREADER_VALIDATE_RNG;
     return(0);
 }
+#endif /* LIBXML_RELAXNG_ENABLED */
 
+#ifdef LIBXML_SCHEMAS_ENABLED
 /**
  * xmlTextReaderLocator:
  * @ctx: the xmlTextReaderPtr used
@@ -4191,7 +4199,9 @@ xmlTextReaderSetSchema(xmlTextReaderPtr reader, xmlSchemaPtr schema) {
     reader->validate = XML_TEXTREADER_VALIDATE_XSD;
     return(0);
 }
+#endif /* LIBXML_SCHEMAS_ENABLED */
 
+#ifdef LIBXML_RELAXNG_ENABLED
 /**
  * xmlTextReaderRelaxNGValidateInternal:
  * @reader:  the xmlTextReaderPtr used
@@ -4279,7 +4289,9 @@ xmlTextReaderRelaxNGValidateInternal(xmlTextReaderPtr reader,
     reader->validate = XML_TEXTREADER_VALIDATE_RNG;
     return(0);
 }
+#endif /* LIBXML_RELAXNG_ENABLED */
 
+#ifdef LIBXML_SCHEMAS_ENABLED
 /**
  * xmlTextReaderSchemaValidateInternal:
  * @reader:  the xmlTextReaderPtr used
@@ -4427,7 +4439,9 @@ xmlTextReaderSchemaValidate(xmlTextReaderPtr reader, const char *xsd)
 {
     return(xmlTextReaderSchemaValidateInternal(reader, xsd, NULL, 0));
 }
+#endif /* LIBXML_SCHEMAS_ENABLED */
 
+#ifdef LIBXML_RELAXNG_ENABLED
 /**
  * xmlTextReaderRelaxNGValidateCtxt:
  * @reader:  the xmlTextReaderPtr used
@@ -4466,8 +4480,7 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng)
 {
     return(xmlTextReaderRelaxNGValidateInternal(reader, rng, NULL, 0));
 }
-
-#endif
+#endif /* LIBXML_RELAXNG_ENABLED */
 
 /**
  * xmlTextReaderIsNamespaceDecl:
@@ -4651,11 +4664,13 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
         reader->errorFuncArg = arg;
         xmlCtxtSetErrorHandler(reader->ctxt,
                 xmlTextReaderStructuredRelay, reader);
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         if (reader->rngValidCtxt) {
             xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt,
                     xmlTextReaderStructuredRelay, reader);
         }
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         if (reader->xsdValidCtxt) {
             xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt,
                     xmlTextReaderStructuredRelay, reader);
@@ -4667,11 +4682,13 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
         reader->sErrorFunc = NULL;
         reader->errorFuncArg = NULL;
         xmlCtxtSetErrorHandler(reader->ctxt, NULL, NULL);
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         if (reader->rngValidCtxt) {
             xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, NULL,
                                                NULL);
         }
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         if (reader->xsdValidCtxt) {
             xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, NULL,
                                               NULL);
@@ -4700,11 +4717,13 @@ xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
         reader->errorFuncArg = arg;
         xmlCtxtSetErrorHandler(reader->ctxt,
                 xmlTextReaderStructuredRelay, reader);
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         if (reader->rngValidCtxt) {
             xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt,
                     xmlTextReaderStructuredRelay, reader);
         }
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         if (reader->xsdValidCtxt) {
             xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt,
                     xmlTextReaderStructuredRelay, reader);
@@ -4716,11 +4735,13 @@ xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
         reader->sErrorFunc = NULL;
         reader->errorFuncArg = NULL;
         xmlCtxtSetErrorHandler(reader->ctxt, NULL, NULL);
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         if (reader->rngValidCtxt) {
             xmlRelaxNGSetValidStructuredErrors(reader->rngValidCtxt, NULL,
                                                NULL);
         }
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         if (reader->xsdValidCtxt) {
             xmlSchemaSetValidStructuredErrors(reader->xsdValidCtxt, NULL,
                                               NULL);
@@ -4783,9 +4804,11 @@ xmlTextReaderIsValid(xmlTextReaderPtr reader)
 {
     if (reader == NULL)
         return (-1);
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if (reader->validate == XML_TEXTREADER_VALIDATE_RNG)
         return (reader->rngValidErrors == 0);
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     if (reader->validate == XML_TEXTREADER_VALIDATE_XSD)
         return (reader->xsdValidErrors == 0);
 #endif

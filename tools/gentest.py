@@ -30,7 +30,7 @@ modules_defines = {
     "HTMLparser": "LIBXML_HTML_ENABLED",
     "catalog": "LIBXML_CATALOG_ENABLED",
     "xmlreader": "LIBXML_READER_ENABLED",
-    "relaxng": "LIBXML_SCHEMAS_ENABLED",
+    "relaxng": "LIBXML_RELAXNG_ENABLED",
     "schemasInternals": "LIBXML_SCHEMAS_ENABLED",
     "xmlschemas": "LIBXML_SCHEMAS_ENABLED",
     "xmlschemastypes": "LIBXML_SCHEMAS_ENABLED",

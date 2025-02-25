@@ -2876,14 +2876,13 @@ libxml_addLocalCatalog(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 }
 #endif /* LIBXML_CATALOG_ENABLED */
 
-#ifdef LIBXML_SCHEMAS_ENABLED
-
 /************************************************************************
  *                                                                      *
  * RelaxNG error handler registration                                   *
  *                                                                      *
  ************************************************************************/
 
+#ifdef LIBXML_RELAXNG_ENABLED
 typedef struct 
 {
     PyObject *warn;
@@ -3035,7 +3034,9 @@ libxml_xmlRelaxNGFreeValidCtxt(ATTRIBUTE_UNUSED PyObject *self, PyObject *args) 
     Py_INCREF(Py_None);
     return(Py_None);
 }
+#endif /* LIBXML_RELAXNG_ENABLED */
 
+#ifdef LIBXML_SCHEMAS_ENABLED
 typedef struct
 {
 	PyObject *warn;
@@ -3188,8 +3189,7 @@ libxml_xmlSchemaFreeValidCtxt(ATTRIBUTE_UNUSED PyObject * self, PyObject * args)
 	Py_INCREF(Py_None);
 	return(Py_None);
 }
-
-#endif
+#endif /* LIBXML_SCHEMAS_ENABLED */
 
 #ifdef LIBXML_C14N_ENABLED
 #ifdef LIBXML_OUTPUT_ENABLED
@@ -3594,9 +3594,11 @@ static PyMethodDef libxmlMethods[] = {
 #ifdef LIBXML_CATALOG_ENABLED
     {(char *)"addLocalCatalog", libxml_addLocalCatalog, METH_VARARGS, NULL },
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     {(char *)"xmlRelaxNGSetValidErrors", libxml_xmlRelaxNGSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlRelaxNGFreeValidCtxt", libxml_xmlRelaxNGFreeValidCtxt, METH_VARARGS, NULL},
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     {(char *)"xmlSchemaSetValidErrors", libxml_xmlSchemaSetValidErrors, METH_VARARGS, NULL},
     {(char *)"xmlSchemaFreeValidCtxt", libxml_xmlSchemaFreeValidCtxt, METH_VARARGS, NULL},
 #endif

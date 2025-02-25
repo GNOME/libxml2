@@ -19,8 +19,10 @@
 #include <libxml/xmlreader.h>
 #include <libxml/globals.h>
 #include <libxml/xmlsave.h>
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 #include <libxml/relaxng.h>
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/xmlschemas.h>
 #endif
 
@@ -204,7 +206,7 @@ void libxml_PyFileRelease(FILE *f);
 #define PyFile_Release(f)
 #endif
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 typedef struct {
     PyObject_HEAD
     xmlRelaxNGPtr obj;
@@ -229,6 +231,9 @@ typedef struct {
 #define PyrelaxNgValidCtxt_Get(v) (((v) == Py_None) ? NULL : \
 	(((PyrelaxNgValidCtxt_Object *)(v))->obj))
 
+#endif /* LIBXML_RELAXNG_ENABLED */
+
+#ifdef LIBXML_SCHEMAS_ENABLED
 typedef struct {
 	PyObject_HEAD
 	xmlSchemaPtr obj;
@@ -292,10 +297,12 @@ PyObject * libxml_xmlTextReaderPtrWrap(xmlTextReaderPtr reader);
 PyObject * libxml_xmlTextReaderLocatorPtrWrap(xmlTextReaderLocatorPtr locator);
 #endif
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 PyObject * libxml_xmlRelaxNGPtrWrap(xmlRelaxNGPtr ctxt);
 PyObject * libxml_xmlRelaxNGParserCtxtPtrWrap(xmlRelaxNGParserCtxtPtr ctxt);
 PyObject * libxml_xmlRelaxNGValidCtxtPtrWrap(xmlRelaxNGValidCtxtPtr valid);
+#endif /* LIBXML_RELAXNG_ENABLED */
+#ifdef LIBXML_SCHEMAS_ENABLED
 PyObject * libxml_xmlSchemaPtrWrap(xmlSchemaPtr ctxt);
 PyObject * libxml_xmlSchemaParserCtxtPtrWrap(xmlSchemaParserCtxtPtr ctxt);
 PyObject * libxml_xmlSchemaValidCtxtPtrWrap(xmlSchemaValidCtxtPtr valid);

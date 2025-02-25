@@ -89,8 +89,11 @@ endif
 if WITH_REGEXPS_SOURCES
 libxml2_la_SOURCES += xmlregexp.c xmlunicode.c
 endif
+if WITH_RELAXNG_SOURCES
+libxml2_la_SOURCES += relaxng.c
+endif
 if WITH_SCHEMAS_SOURCES
-libxml2_la_SOURCES += relaxng.c xmlschemas.c xmlschemastypes.c
+libxml2_la_SOURCES += xmlschemas.c xmlschemastypes.c
 endif
 if WITH_SCHEMATRON_SOURCES
 libxml2_la_SOURCES += schematron.c

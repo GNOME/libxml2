@@ -100,10 +100,12 @@ AC_ARG_WITH(reader,
 [  --with-reader           xmlReader parsing interface (on)])
 AC_ARG_WITH(regexps,
 [  --with-regexps          regular expressions support (on)])
+AC_ARG_WITH(relaxng,
+[  --with-relaxng          RELAX NG support (on)])
 AC_ARG_WITH(sax1,
 [  --with-sax1             older SAX1 interface (on)])
 AC_ARG_WITH(schemas,
-[  --with-schemas          XML Schemas 1.0 and RELAX NG support (on)])
+[  --with-schemas          XML Schemas 1.0 support (on)])
 AC_ARG_WITH(schematron,
 [  --with-schematron       Schematron support (on)])
 AC_ARG_WITH(threads,
@@ -158,6 +160,16 @@ if test "$with_c14n" = "yes"; then
         echo WARNING: --with-c14n overrides --without-xpath
     fi
     with_xpath=yes
+fi
+if test "$with_relaxng" = "yes"; then
+    if test "$with_regexps" = "no"; then
+        echo WARNING: --with-relaxng overrides --without-regexps
+    fi
+    with_regexps=yes
+    if test "$with_schemas" = "no"; then
+        echo WARNING: --with-relaxng overrides --without-schemas
+    fi
+    with_schemas=yes
 fi
 if test "$with_schemas" = "yes"; then
     if test "$with_pattern" = "no"; then
@@ -232,6 +244,7 @@ if test "$with_minimum" = "yes"; then
     test "$with_reader" = "" && with_reader=no
     test "$with_readline" = "" && with_readline=no
     test "$with_regexps" = "" && with_regexps=no
+    test "$with_relaxng" = "" && with_relaxng=no
     test "$with_sax1" = "" && with_sax1=no
     test "$with_schemas" = "" && with_schemas=no
     test "$with_schematron" = "" && with_schematron=no
@@ -261,7 +274,11 @@ else
         with_writer=no
     fi
     if test "$with_regexps" = "no"; then
+        with_relaxng=no
         with_schemas=no
+    fi
+    if test "$with_schemas" = "no"; then
+        with_relaxng=no
     fi
     if test "$with_xpath" = "no"; then
         with_c14n=no
@@ -577,8 +594,17 @@ else
 fi
 AC_SUBST(WITH_ISO8859X)
 
+if test "$with_relaxng" = "no" ; then
+    echo "Disabling Relax-NG support"
+    WITH_RELAXNG=0
+else
+    WITH_RELAXNG=1
+fi
+AC_SUBST(WITH_RELAXNG)
+AM_CONDITIONAL(WITH_RELAXNG_SOURCES, test "$WITH_RELAXNG" = "1")
+
 if test "$with_schemas" = "no" ; then
-    echo "Disabling Schemas/Relax-NG support"
+    echo "Disabling Schemas support"
     WITH_SCHEMAS=0
 else
     WITH_SCHEMAS=1

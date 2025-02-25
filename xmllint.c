@@ -53,8 +53,10 @@
 #ifdef LIBXML_SCHEMATRON_ENABLED
 #include <libxml/schematron.h>
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
 #include <libxml/relaxng.h>
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
 #include <libxml/xmlschemas.h>
 #endif
 #ifdef LIBXML_PATTERN_ENABLED
@@ -144,9 +146,11 @@ typedef struct {
     const char *dtdvalidfpi;
     int insert;
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     const char *relaxng;
     xmlRelaxNGPtr relaxngschemas;
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     const char *schema;
     xmlSchemaPtr wxschemas;
 #endif
@@ -1773,7 +1777,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
     if (lint->maxAmpl > 0)
         xmlTextReaderSetMaxAmplification(reader, lint->maxAmpl);
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if (lint->relaxng != NULL) {
         if ((lint->timing) && (lint->repeat == 1)) {
             startTimer(lint);
@@ -1789,6 +1793,8 @@ static void streamFile(xmllintState *lint, const char *filename) {
             endTimer(lint, "Compiling the schemas");
         }
     }
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     if (lint->schema != NULL) {
         if ((lint->timing) && (lint->repeat == 1)) {
             startTimer(lint);
@@ -1823,7 +1829,7 @@ static void streamFile(xmllintState *lint, const char *filename) {
         ret = xmlTextReaderRead(reader);
     }
     if ((lint->timing) && (lint->repeat == 1)) {
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         if (lint->relaxng != NULL)
             endTimer(lint, "Parsing and validating");
         else
@@ -1845,14 +1851,26 @@ static void streamFile(xmllintState *lint, const char *filename) {
         }
     }
 #endif /* LIBXML_VALID_ENABLED */
+#if defined(LIBXML_RELAXNG_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)
+    {
+        int hasSchema = 0;
+
+#ifdef LIBXML_RELAXNG_ENABLED
+        if (lint->relaxng != NULL)
+            hasSchema = 1;
+#endif
 #ifdef LIBXML_SCHEMAS_ENABLED
-    if ((lint->relaxng != NULL) || (lint->schema != NULL)) {
-        if (xmlTextReaderIsValid(reader) != 1) {
-            fprintf(errStream, "%s fails to validate\n", filename);
-            lint->progresult = XMLLINT_ERR_VALID;
-        } else {
-            if (!lint->quiet) {
-                fprintf(errStream, "%s validates\n", filename);
+        if (lint->schema != NULL)
+            hasSchema = 1;
+#endif
+        if (hasSchema) {
+            if (xmlTextReaderIsValid(reader) != 1) {
+                fprintf(errStream, "%s fails to validate\n", filename);
+                lint->progresult = XMLLINT_ERR_VALID;
+            } else {
+                if (!lint->quiet) {
+                    fprintf(errStream, "%s validates\n", filename);
+                }
             }
         }
     }
@@ -2588,7 +2606,8 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	}
     }
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+
+#ifdef LIBXML_RELAXNG_ENABLED
     if (lint->relaxngschemas != NULL) {
 	xmlRelaxNGValidCtxtPtr ctxt;
 	int ret;
@@ -2620,7 +2639,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	if ((lint->timing) && (lint->repeat == 1)) {
 	    endTimer(lint, "Validating");
 	}
-    } else if (lint->wxschemas != NULL) {
+    }
+#endif /* LIBXML_RELAXNG_ENABLED */
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+    if (lint->wxschemas != NULL) {
 	xmlSchemaValidCtxtPtr ctxt;
 	int ret;
 
@@ -2652,7 +2675,7 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	    endTimer(lint, "Validating");
 	}
     }
-#endif
+#endif /* LIBXML_SCHEMAS_ENABLED */
 
 #ifdef LIBXML_DEBUG_ENABLED
     if ((lint->debugent)
@@ -2712,6 +2735,7 @@ static void showVersion(FILE *errStream, const char *name) {
     if (xmlHasFeature(XML_WITH_REGEXP)) fprintf(errStream, "Regexps ");
     if (xmlHasFeature(XML_WITH_AUTOMATA)) fprintf(errStream, "Automata ");
     if (xmlHasFeature(XML_WITH_EXPR)) fprintf(errStream, "Expr ");
+    if (xmlHasFeature(XML_WITH_RELAXNG)) fprintf(errStream, "RelaxNG ");
     if (xmlHasFeature(XML_WITH_SCHEMAS)) fprintf(errStream, "Schemas ");
     if (xmlHasFeature(XML_WITH_SCHEMATRON)) fprintf(errStream, "Schematron ");
     if (xmlHasFeature(XML_WITH_MODULES)) fprintf(errStream, "Modules ");
@@ -2819,8 +2843,10 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--pattern pattern_value : test the pattern support\n");
 #endif
 #endif /* LIBXML_READER_ENABLED */
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     fprintf(f, "\t--relaxng schema : do RelaxNG validation against the schema\n");
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     fprintf(f, "\t--schema schema : do validation against the WXS schema\n");
 #endif
 #ifdef LIBXML_SCHEMATRON_ENABLED
@@ -2880,9 +2906,11 @@ skipArgs(const char *arg) {
         (!strcmp(arg, "-dtdvalidfpi")) ||
         (!strcmp(arg, "--dtdvalidfpi")) ||
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         (!strcmp(arg, "-relaxng")) ||
         (!strcmp(arg, "--relaxng")) ||
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         (!strcmp(arg, "-schema")) ||
         (!strcmp(arg, "--schema")) ||
 #endif
@@ -3159,12 +3187,14 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-sax")) ||
                    (!strcmp(argv[i], "--sax"))) {
             lint->sax = 1;
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
         } else if ((!strcmp(argv[i], "-relaxng")) ||
                    (!strcmp(argv[i], "--relaxng"))) {
             i++;
             lint->relaxng = argv[i];
             lint->options |= XML_PARSE_NOENT;
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
         } else if ((!strcmp(argv[i], "-schema")) ||
                  (!strcmp(argv[i], "--schema"))) {
             i++;
@@ -3333,7 +3363,7 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
     }
 #endif
 
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if ((lint->relaxng != NULL) && (lint->sax == 0)
 #ifdef LIBXML_READER_ENABLED
         && (lint->stream == 0)
@@ -3363,9 +3393,13 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
 	if (lint->timing) {
 	    endTimer(lint, "Compiling the schemas");
 	}
-    } else if ((lint->schema != NULL)
+    }
+#endif /* LIBXML_RELAXNG_ENABLED */
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+    if ((lint->schema != NULL)
 #ifdef LIBXML_READER_ENABLED
-		&& (lint->stream == 0)
+        && (lint->stream == 0)
 #endif
 	) {
 	xmlSchemaParserCtxtPtr ctxt;
@@ -3570,9 +3604,11 @@ error:
     if (lint->wxschematron != NULL)
 	xmlSchematronFree(lint->wxschematron);
 #endif
-#ifdef LIBXML_SCHEMAS_ENABLED
+#ifdef LIBXML_RELAXNG_ENABLED
     if (lint->relaxngschemas != NULL)
 	xmlRelaxNGFree(lint->relaxngschemas);
+#endif
+#ifdef LIBXML_SCHEMAS_ENABLED
     if (lint->wxschemas != NULL)
 	xmlSchemaFree(lint->wxschemas);
 #endif

@@ -615,6 +615,7 @@
      <exports symbol='XML_WITH_PUSH' type='enum'/>
      <exports symbol='XML_WITH_READER' type='enum'/>
      <exports symbol='XML_WITH_REGEXP' type='enum'/>
+     <exports symbol='XML_WITH_RELAXNG' type='enum'/>
      <exports symbol='XML_WITH_SAX1' type='enum'/>
      <exports symbol='XML_WITH_SCHEMAS' type='enum'/>
      <exports symbol='XML_WITH_SCHEMATRON' type='enum'/>
@@ -5659,6 +5660,7 @@ crash if you try to modify the tree)'/>
     <enum name='XML_WITH_PUSH' file='parser' value='4' type='xmlFeature'/>
     <enum name='XML_WITH_READER' file='parser' value='5' type='xmlFeature'/>
     <enum name='XML_WITH_REGEXP' file='parser' value='22' type='xmlFeature'/>
+    <enum name='XML_WITH_RELAXNG' file='parser' value='34' type='xmlFeature' info='since 2.14.0'/>
     <enum name='XML_WITH_SAX1' file='parser' value='8' type='xmlFeature'/>
     <enum name='XML_WITH_SCHEMAS' file='parser' value='25' type='xmlFeature'/>
     <enum name='XML_WITH_SCHEMATRON' file='parser' value='26' type='xmlFeature'/>
@@ -12270,44 +12272,44 @@ crash if you try to modify the tree)'/>
       <arg name='closeFunc' type='xmlOutputCloseCallback' info='the xmlOutputCloseCallback'/>
     </function>
     <function name='xmlRelaxNGCleanupTypes' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>DEPRECATED: This function will be made private. Call xmlCleanupParser to free global state but see the warnings there. xmlCleanupParser should be only called once at program exit. In most cases, you don&apos;t have call cleanup functions at all.  Cleanup the default Schemas type library associated to RelaxNG</info>
       <return type='void'/>
     </function>
     <function name='xmlRelaxNGDump' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Dump a RelaxNG structure back</info>
       <return type='void'/>
       <arg name='output' type='FILE *' info='the file output'/>
       <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
     </function>
     <function name='xmlRelaxNGDumpTree' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED) &amp;&amp; defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Dump the transformed RelaxNG tree.</info>
       <return type='void'/>
       <arg name='output' type='FILE *' info='the file output'/>
       <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
     </function>
     <function name='xmlRelaxNGFree' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Deallocate a RelaxNG structure.</info>
       <return type='void'/>
       <arg name='schema' type='xmlRelaxNGPtr' info='a schema structure'/>
     </function>
     <function name='xmlRelaxNGFreeParserCtxt' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Free the resources associated to the schema parser context</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='the schema parser context'/>
     </function>
     <function name='xmlRelaxNGFreeValidCtxt' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Free the resources associated to the schema validation context</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the schema validation context'/>
     </function>
     <function name='xmlRelaxNGGetParserErrors' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Get the callback information used to handle errors for a validation context</info>
       <return type='int' info='-1 in case of failure, 0 otherwise.'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG validation context'/>
@@ -12316,7 +12318,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void **' info='contextual data for the callbacks result'/>
     </function>
     <function name='xmlRelaxNGGetValidErrors' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Get the error and warning callback information</info>
       <return type='int' info='-1 in case of error and 0 otherwise'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
@@ -12325,43 +12327,43 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void **' info='the functions context result'/>
     </function>
     <function name='xmlRelaxNGInitTypes' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Initialize the default type libraries.</info>
       <return type='int' info='0 in case of success and -1 in case of error.'/>
     </function>
     <function name='xmlRelaxNGNewDocParserCtxt' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Create an XML RelaxNGs parser context for that document. Note: since the process of compiling a RelaxNG schemas modifies the document, the @doc parameter is duplicated internally.</info>
       <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
       <arg name='doc' type='xmlDocPtr' info='a preparsed document tree'/>
     </function>
     <function name='xmlRelaxNGNewMemParserCtxt' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Create an XML RelaxNGs parse context for that memory buffer expected to contain an XML RelaxNGs file.</info>
       <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
       <arg name='buffer' type='const char *' info='a pointer to a char array containing the schemas'/>
       <arg name='size' type='int' info='the size of the array'/>
     </function>
     <function name='xmlRelaxNGNewParserCtxt' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Create an XML RelaxNGs parse context for that file/resource expected to contain an XML RelaxNGs file.</info>
       <return type='xmlRelaxNGParserCtxtPtr' info='the parser context or NULL in case of error'/>
       <arg name='URL' type='const char *' info='the location of the schema'/>
     </function>
     <function name='xmlRelaxNGNewValidCtxt' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Create an XML RelaxNGs validation context based on the given schema</info>
       <return type='xmlRelaxNGValidCtxtPtr' info='the validation context or NULL in case of error'/>
       <arg name='schema' type='xmlRelaxNGPtr' info='a precompiled XML RelaxNGs'/>
     </function>
     <function name='xmlRelaxNGParse' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>parse a schema definition resource and build an internal XML Schema structure which can be used to validate instances.</info>
       <return type='xmlRelaxNGPtr' info='the internal XML RelaxNG structure built from the resource or NULL in case of error'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG parser context'/>
     </function>
     <function name='xmlRelaxNGSetParserErrors' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>DEPRECATED: Use xmlRelaxNGSetParserStructuredErrors.  Set the callback functions used to handle errors for a validation context</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG validation context'/>
@@ -12370,7 +12372,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='contextual data for the callbacks'/>
     </function>
     <function name='xmlRelaxNGSetParserStructuredErrors' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Set the callback functions used to handle errors for a parsing context</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG parser context'/>
@@ -12378,7 +12380,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='contextual data for the callbacks'/>
     </function>
     <function name='xmlRelaxNGSetResourceLoader' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Set the callback function used to load external resources.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a Relax-NG parser context'/>
@@ -12386,7 +12388,7 @@ crash if you try to modify the tree)'/>
       <arg name='vctxt' type='void *' info='contextual data for the callbacks'/>
     </function>
     <function name='xmlRelaxNGSetValidErrors' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>DEPRECATED: Use xmlRelaxNGSetValidStructuredErrors.  Set the error and warning callback information</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
@@ -12395,7 +12397,7 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the functions context'/>
     </function>
     <function name='xmlRelaxNGSetValidStructuredErrors' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Set the structured error callback</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
@@ -12403,14 +12405,14 @@ crash if you try to modify the tree)'/>
       <arg name='ctx' type='void *' info='the functions context'/>
     </function>
     <function name='xmlRelaxNGValidateDoc' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Validate a document tree in memory.</info>
       <return type='int' info='0 if the document is valid, a positive error code number otherwise and -1 in case of internal or API error.'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='a Relax-NG validation context'/>
       <arg name='doc' type='xmlDocPtr' info='a parsed document tree'/>
     </function>
     <function name='xmlRelaxNGValidateFullElement' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Validate a full subtree when xmlRelaxNGValidatePushElement() returned 0 and the content of the node has been expanded.</info>
       <return type='int' info='1 if no validation problem was found or -1 in case of error.'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the validation context'/>
@@ -12418,7 +12420,7 @@ crash if you try to modify the tree)'/>
       <arg name='elem' type='xmlNodePtr' info='an element instance'/>
     </function>
     <function name='xmlRelaxNGValidatePopElement' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Pop the element end from the RelaxNG validation stack.</info>
       <return type='int' info='1 if no validation problem was found or 0 otherwise'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the RelaxNG validation context'/>
@@ -12426,7 +12428,7 @@ crash if you try to modify the tree)'/>
       <arg name='elem' type='xmlNodePtr' info='an element instance'/>
     </function>
     <function name='xmlRelaxNGValidatePushCData' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>check the CData parsed for validation in the current stack</info>
       <return type='int' info='1 if no validation problem was found or -1 otherwise'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the RelaxNG validation context'/>
@@ -12434,7 +12436,7 @@ crash if you try to modify the tree)'/>
       <arg name='len' type='int' info='the length of the data'/>
     </function>
     <function name='xmlRelaxNGValidatePushElement' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Push a new element start on the RelaxNG validation stack.</info>
       <return type='int' info='1 if no validation problem was found or 0 if validating the element requires a full node, and -1 in case of error.'/>
       <arg name='ctxt' type='xmlRelaxNGValidCtxtPtr' info='the validation context'/>
@@ -12442,7 +12444,7 @@ crash if you try to modify the tree)'/>
       <arg name='elem' type='xmlNodePtr' info='an element instance'/>
     </function>
     <functype name='xmlRelaxNGValidityErrorFunc' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Signature of an error callback from a Relax-NG validation</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the validation context'/>
@@ -12450,7 +12452,7 @@ crash if you try to modify the tree)'/>
       <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <functype name='xmlRelaxNGValidityWarningFunc' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Signature of a warning callback from a Relax-NG validation</info>
       <return type='void'/>
       <arg name='ctx' type='void *' info='the validation context'/>
@@ -12458,7 +12460,7 @@ crash if you try to modify the tree)'/>
       <arg name='...' type='...' info='extra arguments'/>
     </functype>
     <function name='xmlRelaxParserSetFlag' file='relaxng' module='relaxng'>
-      <cond>defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Semi private function used to pass information to a parser context which are a combination of xmlRelaxNGParserFlag .</info>
       <return type='int' info='0 if success and -1 in case of error'/>
       <arg name='ctxt' type='xmlRelaxNGParserCtxtPtr' info='a RelaxNG parser context'/>
@@ -14277,21 +14279,21 @@ crash if you try to modify the tree)'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
     </function>
     <function name='xmlTextReaderRelaxNGSetSchema' file='xmlreader' module='xmlreader'>
-      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Use RelaxNG to validate the document as it is processed. Activation is only possible before the first Read(). if @schema is NULL, then RelaxNG validation is deactivated. @ The @schema should not be freed until the reader is deallocated or its use has been deactivated.</info>
       <return type='int' info='0 in case the RelaxNG validation could be (de)activated and -1 in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='schema' type='xmlRelaxNGPtr' info='a precompiled RelaxNG schema'/>
     </function>
     <function name='xmlTextReaderRelaxNGValidate' file='xmlreader' module='xmlreader'>
-      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Use RelaxNG schema to validate the document as it is processed. Activation is only possible before the first Read(). If @rng is NULL, then RelaxNG schema validation is deactivated.</info>
       <return type='int' info='0 in case the schemas validation could be (de)activated and -1 in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>
       <arg name='rng' type='const char *' info='the path to a RelaxNG schema or NULL'/>
     </function>
     <function name='xmlTextReaderRelaxNGValidateCtxt' file='xmlreader' module='xmlreader'>
-      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_SCHEMAS_ENABLED)</cond>
+      <cond>defined(LIBXML_READER_ENABLED) &amp;&amp; defined(LIBXML_RELAXNG_ENABLED)</cond>
       <info>Use RelaxNG schema context to validate the document as it is processed. Activation is only possible before the first Read(). If @ctxt is NULL, then RelaxNG schema validation is deactivated.</info>
       <return type='int' info='0 in case the schemas validation could be (de)activated and -1 in case of error.'/>
       <arg name='reader' type='xmlTextReaderPtr' info='the xmlTextReaderPtr used'/>

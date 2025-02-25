@@ -208,7 +208,8 @@ typedef struct {
     char *htmlBuf;
     int htmlBufLen;
 
-    xmlTime begin, end;
+    xmlTime begin;
+    xmlTime end;
 } xmllintState;
 
 static int xmllintMaxmem;

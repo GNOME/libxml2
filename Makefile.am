@@ -206,7 +206,7 @@ cleanup:
 	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm -f {} \;)
 
 dist-hook: cleanup
-	(cd $(srcdir) ; tar -cf - --exclude .git win32 os400 test result) | (cd $(distdir); tar xf -)
+	(cd $(srcdir) ; tar -cf - --exclude .git win32 test result) | (cd $(distdir); tar xf -)
 
 CLEANFILES = runsuite.log runxmlconf.log test.out *.gcda *.gcno *.res
 DISTCLEANFILES = COPYING missing.lst

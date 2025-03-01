@@ -18,4 +18,10 @@ T t (A)><!ENTITY % xx '&#37;<![INCLUDE[000&#37;&#3000;000&#37;z;'><!ENTITYz>%xx;
                                                                                ^
 Entity: line 1: 
 %<![INCLUDE[000%ஸ000%z;
+ ^
+./test/errors/759573.xml:1: parser error : Content error in the internal subset
+T t (A)><!ENTITY % xx '&#37;<![INCLUDE[000&#37;&#3000;000&#37;z;'><!ENTITYz>%xx;
+                                                                               ^
+Entity: line 1: 
+%<![INCLUDE[000%ஸ000%z;
    ^

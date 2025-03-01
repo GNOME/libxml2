@@ -21,4 +21,10 @@ Entity: line 1:
     ^
 Entity: line 2: 
 <![INCLUDE[
+^
+./test/errors/759573-2.xml:6: parser error : Content error in the internal subset
+%xx;
+    ^
+Entity: line 2: 
+<![INCLUDE[
   ^

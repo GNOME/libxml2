@@ -1,0 +1,4 @@
+./test/errors/issue868.xml:3: parser error : DOCTYPE improperly terminated
+<!]>
+^
+./test/errors/issue868.xml : failed to parse

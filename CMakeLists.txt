@@ -61,11 +61,11 @@ cmake_dependent_option(
     LIBXML2_WITH_READER "Add the xmlReader parsing interface" ON
     "LIBXML2_WITH_PUSH" OFF)
 cmake_dependent_option(
-    LIBXML2_WITH_RELAXNG "Add Relax-NG support" ON
-    "LIBXML2_WITH_REGEXPS;LIBXML2_WITH_SCHEMAS" OFF)
-cmake_dependent_option(
     LIBXML2_WITH_SCHEMAS "Add XML Schemas 1.0 support" ON
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_REGEXPS" OFF)
+cmake_dependent_option(
+    LIBXML2_WITH_RELAXNG "Add Relax-NG support" ON
+    "LIBXML2_WITH_REGEXPS;LIBXML2_WITH_SCHEMAS" OFF)
 cmake_dependent_option(
     LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_XPATH" OFF)

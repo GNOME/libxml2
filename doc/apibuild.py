@@ -21,7 +21,6 @@ debugsym=None
 ignored_files = {
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
-  "legacy.c": "legacy code",
   "testModule.c": "test tool",
   "testapi.c": "generated regression tests",
   "runtest.c": "regression tests program",

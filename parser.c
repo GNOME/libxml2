@@ -587,11 +587,7 @@ xmlHasFeature(xmlFeature feature)
             return(0);
 #endif
         case XML_WITH_LEGACY:
-#ifdef LIBXML_LEGACY_ENABLED
-            return(1);
-#else
             return(0);
-#endif
         case XML_WITH_C14N:
 #ifdef LIBXML_C14N_ENABLED
             return(1);

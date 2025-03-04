@@ -68,9 +68,6 @@ endif
 if WITH_HTTP_SOURCES
 libxml2_la_SOURCES += nanohttp.c
 endif
-if WITH_LEGACY_SOURCES
-libxml2_la_SOURCES += legacy.c
-endif
 if WITH_LZMA_SOURCES
 libxml2_la_SOURCES += xzlib.c
 endif

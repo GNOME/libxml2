@@ -452,15 +452,6 @@ fi
 AC_SUBST(WITH_HTTP)
 AM_CONDITIONAL(WITH_HTTP_SOURCES, test "$WITH_HTTP" = "1")
 
-if test "$with_legacy" != "yes" ; then
-    WITH_LEGACY=0
-else
-    echo Enabling deprecated APIs
-    WITH_LEGACY=1
-fi
-AC_SUBST(WITH_LEGACY)
-AM_CONDITIONAL(WITH_LEGACY_SOURCES, test "$WITH_LEGACY" = "1")
-
 if test "$with_reader" = "no" ; then
     echo Disabling the xmlReader parsing interface
     WITH_READER=0

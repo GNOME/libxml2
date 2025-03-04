@@ -3293,7 +3293,6 @@
      <exports symbol='LIBXML_ICONV_ENABLED' type='macro'/>
      <exports symbol='LIBXML_ICU_ENABLED' type='macro'/>
      <exports symbol='LIBXML_ISO8859X_ENABLED' type='macro'/>
-     <exports symbol='LIBXML_LEGACY_ENABLED' type='macro'/>
      <exports symbol='LIBXML_LZMA_ENABLED' type='macro'/>
      <exports symbol='LIBXML_MODULES_ENABLED' type='macro'/>
      <exports symbol='LIBXML_MODULE_EXTENSION' type='macro'/>
@@ -3849,9 +3848,6 @@
     </macro>
     <macro name='LIBXML_ISO8859X_ENABLED' file='xmlversion'>
       <info>Whether ISO-8859-* support is made available in case iconv is not</info>
-    </macro>
-    <macro name='LIBXML_LEGACY_ENABLED' file='xmlversion'>
-      <info>Whether the deprecated APIs are compiled in for compatibility</info>
     </macro>
     <macro name='LIBXML_LZMA_ENABLED' file='xmlversion'>
       <info>Whether the Lzma support is compiled in</info>

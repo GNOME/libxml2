@@ -452,7 +452,6 @@ xml_opt_src = [
     [want_debug, ['debugXML.c']],
     [want_html, ['HTMLparser.c', 'HTMLtree.c']],
     [want_http, ['nanohttp.c']],
-    [want_legacy, ['legacy.c']],
     [want_lzma, ['xzlib.c']],
     [want_modules, ['xmlmodule.c']],
     [want_output, ['xmlsave.c']],

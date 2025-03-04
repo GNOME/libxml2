@@ -2161,7 +2161,7 @@ done:
 }
 
 /**
- * isolat1ToUTF8:
+ * xmlIsolat1ToUTF8:
  * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
  * @in:  a pointer to an array of ISO Latin 1 chars
@@ -2177,8 +2177,8 @@ done:
  * The value of @outlen after return is the number of octets produced.
  */
 int
-isolat1ToUTF8(unsigned char* out, int *outlen,
-              const unsigned char* in, int *inlen) {
+xmlIsolat1ToUTF8(unsigned char* out, int *outlen,
+                 const unsigned char* in, int *inlen) {
     return(latin1ToUTF8(out, outlen, in, inlen, NULL));
 }
 
@@ -2264,7 +2264,7 @@ done:
 }
 
 /**
- * UTF8Toisolat1:
+ * xmlUTF8ToIsolat1:
  * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
  * @in:  a pointer to an array of UTF-8 chars
@@ -2280,7 +2280,7 @@ done:
  * The value of @outlen after return is the number of octets produced.
  */
 int
-UTF8Toisolat1(unsigned char* out, int *outlen,
+xmlUTF8ToIsolat1(unsigned char* out, int *outlen,
               const unsigned char* in, int *inlen) {
     if ((out == NULL) || (outlen == NULL) || (in == NULL) || (inlen == NULL))
         return(XML_ENC_ERR_INTERNAL);

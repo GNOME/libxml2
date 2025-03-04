@@ -22,6 +22,11 @@ extern "C" {
 #endif
 
 /*
+ * Backward compatibility
+ */
+#define UTF8ToHtml htmlUTF8ToHtml
+
+/*
  * Most of the back-end structures from XML and HTML are shared.
  */
 typedef xmlParserCtxt htmlParserCtxt;
@@ -150,7 +155,7 @@ XMLPUBFUN htmlDocPtr
 			htmlParseFile	(const char *filename,
 					 const char *encoding);
 XMLPUBFUN int
-			UTF8ToHtml	(unsigned char *out,
+			htmlUTF8ToHtml	(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);

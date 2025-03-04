@@ -28,6 +28,12 @@
 extern "C" {
 #endif
 
+/*
+ * Backward compatibility
+ */
+#define UTF8Toisolat1 xmlUTF8ToIsolat1
+#define isolat1ToUTF8 xmlIsolat1ToUTF8
+
 typedef enum {
     XML_ENC_ERR_SUCCESS     =  0,
     XML_ENC_ERR_INTERNAL    = -1,
@@ -268,13 +274,13 @@ XMLPUBFUN int
  */
 #ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN int
-	UTF8Toisolat1			(unsigned char *out,
+	xmlUTF8ToIsolat1		(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);
 #endif /* LIBXML_OUTPUT_ENABLED */
 XMLPUBFUN int
-	isolat1ToUTF8			(unsigned char *out,
+	xmlIsolat1ToUTF8		(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);

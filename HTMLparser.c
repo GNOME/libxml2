@@ -1957,7 +1957,7 @@ htmlEntityValueLookup(unsigned int value) {
 }
 
 /**
- * UTF8ToHtml:
+ * htmlUTF8ToHtml:
  * @out:  a pointer to an array of bytes to store the result
  * @outlen:  the length of @out
  * @in:  a pointer to an array of UTF-8 chars
@@ -1972,8 +1972,8 @@ htmlEntityValueLookup(unsigned int value) {
  * The value of @outlen after return is the number of octets consumed.
  */
 int
-UTF8ToHtml(unsigned char* out, int *outlen,
-           const unsigned char* in, int *inlen) {
+htmlUTF8ToHtml(unsigned char* out, int *outlen,
+               const unsigned char* in, int *inlen) {
     const unsigned char* instart = in;
     const unsigned char* inend;
     unsigned char* outstart = out;

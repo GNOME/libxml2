@@ -5,6 +5,7 @@
      <summary>interface for an HTML 4.0 non-verifying parser</summary>
      <description>this module implements an HTML 4.0 non-verifying parser with API compatible with the XML parser ones. It should be able to parse &quot;real world&quot; HTML, even if severely broken from a specification point of view. </description>
      <author>Daniel Veillard </author>
+     <exports symbol='UTF8ToHtml' type='macro'/>
      <exports symbol='htmlDefaultSubelement' type='macro'/>
      <exports symbol='htmlElementAllowedHereDesc' type='macro'/>
      <exports symbol='htmlRequiredAttrs' type='macro'/>
@@ -44,7 +45,6 @@
      <exports symbol='_htmlElemDesc' type='struct'/>
      <exports symbol='_htmlEntityDesc' type='struct'/>
      <exports symbol='htmlDefaultSAXHandler' type='variable'/>
-     <exports symbol='UTF8ToHtml' type='function'/>
      <exports symbol='htmlAttrAllowed' type='function'/>
      <exports symbol='htmlAutoCloseTag' type='function'/>
      <exports symbol='htmlCreateFileParserCtxt' type='function'/>
@@ -87,6 +87,7 @@
      <exports symbol='htmlSAXParseDoc' type='function'/>
      <exports symbol='htmlSAXParseFile' type='function'/>
      <exports symbol='htmlTagLookup' type='function'/>
+     <exports symbol='htmlUTF8ToHtml' type='function'/>
     </file>
     <file name='HTMLtree'>
      <summary>specific APIs to process HTML tree, especially serialization</summary>
@@ -309,6 +310,8 @@
      <summary>interface for the encoding conversion functions</summary>
      <description>interface for the encoding conversion functions needed for XML basic encoding and iconv() support.  Related specs are rfc2044        (UTF-8 and UTF-16) F. Yergeau Alis Technologies [ISO-10646]    UTF-8 and UTF-16 in Annexes [ISO-8859-1]   ISO Latin-1 characters codes. [UNICODE]      The Unicode Consortium, &quot;The Unicode Standard -- Worldwide Character Encoding -- Version 1.0&quot;, Addison- Wesley, Volume 1, 1991, Volume 2, 1992.  UTF-8 is described in Unicode Technical Report #4. [US-ASCII]     Coded Character Set--7-bit American Standard Code for Information Interchange, ANSI X3.4-1986. </description>
      <author>Daniel Veillard </author>
+     <exports symbol='UTF8Toisolat1' type='macro'/>
+     <exports symbol='isolat1ToUTF8' type='macro'/>
      <exports symbol='XML_CHAR_ENCODING_2022_JP' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_8859_1' type='enum'/>
      <exports symbol='XML_CHAR_ENCODING_8859_10' type='enum'/>
@@ -352,8 +355,6 @@
      <exports symbol='xmlCharEncodingHandlerPtr' type='typedef'/>
      <exports symbol='_xmlCharEncodingHandler' type='struct'/>
      <exports symbol='xmlCharEncConverter' type='struct'/>
-     <exports symbol='UTF8Toisolat1' type='function'/>
-     <exports symbol='isolat1ToUTF8' type='function'/>
      <exports symbol='xmlAddEncodingAlias' type='function'/>
      <exports symbol='xmlCharEncCloseFunc' type='function'/>
      <exports symbol='xmlCharEncConvCtxtDtor' type='function'/>
@@ -374,11 +375,13 @@
      <exports symbol='xmlGetCharEncodingName' type='function'/>
      <exports symbol='xmlGetEncodingAlias' type='function'/>
      <exports symbol='xmlInitCharEncodingHandlers' type='function'/>
+     <exports symbol='xmlIsolat1ToUTF8' type='function'/>
      <exports symbol='xmlLookupCharEncodingHandler' type='function'/>
      <exports symbol='xmlNewCharEncodingHandler' type='function'/>
      <exports symbol='xmlOpenCharEncodingHandler' type='function'/>
      <exports symbol='xmlParseCharEncoding' type='function'/>
      <exports symbol='xmlRegisterCharEncodingHandler' type='function'/>
+     <exports symbol='xmlUTF8ToIsolat1' type='function'/>
     </file>
     <file name='entities'>
      <summary>interface for the XML entities handling</summary>
@@ -3932,6 +3935,10 @@
     <macro name='LIBXML_ZLIB_ENABLED' file='xmlversion'>
       <info>Whether the Zlib support is compiled in</info>
     </macro>
+    <macro name='UTF8ToHtml' file='HTMLparser'>
+    </macro>
+    <macro name='UTF8Toisolat1' file='encoding'>
+    </macro>
     <macro name='XINCLUDE_FALLBACK' file='xinclude'>
       <info>Macro defining &quot;fallback&quot;</info>
     </macro>
@@ -4311,6 +4318,8 @@
     <macro name='htmlRequiredAttrs' file='HTMLparser'>
       <info>Returns the attributes required for the specified element.</info>
       <arg name='elt' info='HTML element'/>
+    </macro>
+    <macro name='isolat1ToUTF8' file='encoding'>
     </macro>
     <macro name='xmlChildrenNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1. Maps to &quot;children.&quot;</info>
@@ -6796,24 +6805,6 @@ crash if you try to modify the tree)'/>
     <variable name='xmlXPathNAN' file='xpath' type='double'/>
     <variable name='xmlXPathNINF' file='xpath' type='double'/>
     <variable name='xmlXPathPINF' file='xpath' type='double'/>
-    <function name='UTF8ToHtml' file='HTMLparser' module='HTMLparser'>
-      <cond>defined(LIBXML_HTML_ENABLED)</cond>
-      <info>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</info>
-      <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
-      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
-      <arg name='outlen' type='int *' info='the length of @out'/>
-      <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
-      <arg name='inlen' type='int *' info='the length of @in'/>
-    </function>
-    <function name='UTF8Toisolat1' file='encoding' module='encoding'>
-      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
-      <info>Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1 block of chars out.</info>
-      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.  The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.'/>
-      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
-      <arg name='outlen' type='int *' info='the length of @out'/>
-      <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
-      <arg name='inlen' type='int *' info='the length of @in'/>
-    </function>
     <functype name='attributeDeclSAXFunc' file='parser' module='parser'>
       <info>An attribute definition has been parsed.</info>
       <return type='void'/>
@@ -7405,6 +7396,15 @@ crash if you try to modify the tree)'/>
       <return type='const htmlElemDesc *' info='the related htmlElemDescPtr or NULL if not found.'/>
       <arg name='tag' type='const xmlChar *' info='The tag name in lowercase'/>
     </function>
+    <function name='htmlUTF8ToHtml' file='HTMLparser' module='HTMLparser'>
+      <cond>defined(LIBXML_HTML_ENABLED)</cond>
+      <info>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</info>
+      <return type='int' info='0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.'/>
+      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
+      <arg name='outlen' type='int *' info='the length of @out'/>
+      <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
+      <arg name='inlen' type='int *' info='the length of @in'/>
+    </function>
     <functype name='ignorableWhitespaceSAXFunc' file='parser' module='parser'>
       <info>Receiving some ignorable whitespaces from the parser. UNUSED: by default the DOM building will use characters.</info>
       <return type='void'/>
@@ -7441,14 +7441,6 @@ crash if you try to modify the tree)'/>
       <return type='int' info='1 if true'/>
       <arg name='ctx' type='void *' info='the user data (XML parser context)'/>
     </functype>
-    <function name='isolat1ToUTF8' file='encoding' module='encoding'>
-      <info>Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8 block of chars out.</info>
-      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.  The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.'/>
-      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
-      <arg name='outlen' type='int *' info='the length of @out'/>
-      <arg name='in' type='const unsigned char *' info='a pointer to an array of ISO Latin 1 chars'/>
-      <arg name='inlen' type='int *' info='the length of @in'/>
-    </function>
     <function name='namePop' file='parserInternals' module='parser'>
       <info>DEPRECATED: Internal function, do not use.  Pops the top element name from the name stack</info>
       <return type='const xmlChar *' info='the name just removed'/>
@@ -10177,6 +10169,14 @@ crash if you try to modify the tree)'/>
       <return type='int' info='1 if true, 0 if not and -1 in case of error'/>
       <arg name='systemID' type='const xmlChar *' info='the system identifier'/>
       <arg name='publicID' type='const xmlChar *' info='the public identifier'/>
+    </function>
+    <function name='xmlIsolat1ToUTF8' file='encoding' module='encoding'>
+      <info>Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8 block of chars out.</info>
+      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.  The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.'/>
+      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
+      <arg name='outlen' type='int *' info='the length of @out'/>
+      <arg name='in' type='const unsigned char *' info='a pointer to an array of ISO Latin 1 chars'/>
+      <arg name='inlen' type='int *' info='the length of @in'/>
     </function>
     <function name='xmlKeepBlanksDefault' file='parser' module='parserInternals'>
       <info>DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS.  Set and return the previous value for default blanks text nodes support. The 1.x version of the parser used an heuristic to try to detect ignorable white spaces. As a result the SAX callback was generating xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when using the DOM output text nodes containing those blanks were not generated. The 2.x and later version will switch to the XML standard way and ignorableWhitespace() are only generated when running the parser in validating mode and when the current element doesn&apos;t allow CDATA or mixed content. This function is provided as a way to force the standard behavior on 1.X libs and to switch back to the old mode for compatibility when running 1.X client code on 2.X . Upgrade of 1.X code should be done by using xmlIsBlankNode() commodity function to detect the &quot;empty&quot; nodes generated. This value also affect autogeneration of indentation when saving code if blanks sections are kept, indentation is not generated.</info>
@@ -16155,6 +16155,15 @@ crash if you try to modify the tree)'/>
       <arg name='utf' type='const xmlChar *' info='a sequence of UTF-8 encoded bytes'/>
       <arg name='start' type='int' info='relative pos of first char'/>
       <arg name='len' type='int' info='total number to copy'/>
+    </function>
+    <function name='xmlUTF8ToIsolat1' file='encoding' module='encoding'>
+      <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
+      <info>Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1 block of chars out.</info>
+      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.  The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.'/>
+      <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
+      <arg name='outlen' type='int *' info='the length of @out'/>
+      <arg name='in' type='const unsigned char *' info='a pointer to an array of UTF-8 chars'/>
+      <arg name='inlen' type='int *' info='the length of @in'/>
     </function>
     <function name='xmlUnlinkNode' file='tree' module='tree'>
       <info>Unlink a node from its tree.  The node is not freed. Unless it is reinserted, it must be managed manually and freed eventually by calling xmlFreeNode.</info>

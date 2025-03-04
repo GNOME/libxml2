@@ -15,14 +15,13 @@
 #include <string.h>
 
 #define XML_GLOBALS_NO_REDEFINITION
-#include <libxml/globals.h>
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
 #include <libxml/parser.h>
 #include <libxml/threads.h>
 #include <libxml/tree.h>
-#include <libxml/SAX.h>
+#include <libxml/xmlsave.h>
 #include <libxml/SAX2.h>
 
 #include "private/dict.h"
@@ -121,6 +120,9 @@ struct _xmlGlobalState {
     xmlParserInputBufferCreateFilenameFunc parserInputBufferCreateFilenameValue;
     xmlOutputBufferCreateFilenameFunc outputBufferCreateFilenameValue;
 };
+
+typedef struct _xmlGlobalState xmlGlobalState;
+typedef xmlGlobalState *xmlGlobalStatePtr;
 
 #ifdef LIBXML_THREAD_ENABLED
 
@@ -480,44 +482,6 @@ void xmlCleanupGlobalsInternal(void) {
 #endif
 
     xmlCleanupMutex(&xmlThrDefMutex);
-}
-
-/**
- * xmlInitializeGlobalState:
- * @gs: a pointer to a newly allocated global state
- *
- * DEPRECATED: No-op.
- */
-void
-xmlInitializeGlobalState(xmlGlobalStatePtr gs ATTRIBUTE_UNUSED)
-{
-}
-
-/**
- * xmlGetGlobalState:
- *
- * DEPRECATED
- *
- * Returns NULL.
- */
-xmlGlobalStatePtr
-xmlGetGlobalState(void)
-{
-    return(NULL);
-}
-
-/**
- * xmlIsMainThread:
- *
- * DEPRECATED: Internal function, do not use.
- *
- * Check whether the current thread is the main thread.
- *
- * Returns 1 if the current thread is the main thread, 0 otherwise
- */
-int
-xmlIsMainThread(void) {
-    return(0);
 }
 
 static void

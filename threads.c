@@ -302,35 +302,6 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
  ************************************************************************/
 
 /**
- * xmlGetThreadId:
- *
- * DEPRECATED: Internal function, do not use.
- *
- * xmlGetThreadId() find the current thread ID number
- * Note that this is likely to be broken on some platforms using pthreads
- * as the specification doesn't mandate pthread_t to be an integer type
- *
- * Returns the current thread ID number
- */
-int
-xmlGetThreadId(void)
-{
-#ifdef HAVE_POSIX_THREADS
-    pthread_t id;
-    int ret;
-
-    id = pthread_self();
-    /* horrible but preserves compat, see warning above */
-    memcpy(&ret, &id, sizeof(ret));
-    return (ret);
-#elif defined HAVE_WIN32_THREADS
-    return GetCurrentThreadId();
-#else
-    return ((int) 0);
-#endif
-}
-
-/**
  * xmlLockLibrary:
  *
  * xmlLockLibrary() is used to take out a re-entrant lock on the libxml2

@@ -417,10 +417,6 @@
     <file name='globals'>
      <summary>interface for all global variables of the library</summary>
      <description>Deprecated, don&apos;t use </description>
-     <exports symbol='xmlGlobalState' type='typedef'/>
-     <exports symbol='xmlGlobalStatePtr' type='typedef'/>
-     <exports symbol='xmlGetGlobalState' type='function'/>
-     <exports symbol='xmlInitializeGlobalState' type='function'/>
     </file>
     <file name='hash'>
      <summary>Chained hash tables</summary>
@@ -1289,9 +1285,7 @@
      <exports symbol='xmlCleanupThreads' type='function'/>
      <exports symbol='xmlFreeMutex' type='function'/>
      <exports symbol='xmlFreeRMutex' type='function'/>
-     <exports symbol='xmlGetThreadId' type='function'/>
      <exports symbol='xmlInitThreads' type='function'/>
-     <exports symbol='xmlIsMainThread' type='function'/>
      <exports symbol='xmlLockLibrary' type='function'/>
      <exports symbol='xmlMutexLock' type='function'/>
      <exports symbol='xmlMutexUnlock' type='function'/>
@@ -5867,8 +5861,6 @@ crash if you try to modify the tree)'/>
     <typedef name='xmlErrorLevel' file='xmlerror' type='enum'/>
     <typedef name='xmlErrorPtr' file='xmlerror' type='xmlError *'/>
     <typedef name='xmlFeature' file='parser' type='enum'/>
-    <struct name='xmlGlobalState' file='globals' type='struct _xmlGlobalState'/>
-    <typedef name='xmlGlobalStatePtr' file='globals' type='xmlGlobalState *'/>
     <struct name='xmlHashTable' file='hash' type='struct _xmlHashTable'/>
     <typedef name='xmlHashTablePtr' file='hash' type='xmlHashTable *'/>
     <struct name='xmlID' file='tree' type='struct _xmlID'>
@@ -9377,10 +9369,6 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: See xmlSetExternalEntityLoader.  Get the default external entity resolver function for the application</info>
       <return type='xmlExternalEntityLoader' info='the xmlExternalEntityLoader function pointer'/>
     </function>
-    <function name='xmlGetGlobalState' file='globals' module='globals'>
-      <info>DEPRECATED</info>
-      <return type='xmlGlobalStatePtr' info='NULL.'/>
-    </function>
     <function name='xmlGetID' file='valid' module='valid'>
       <info>Search the attribute declaring the given ID</info>
       <return type='xmlAttrPtr' info='NULL if not found, otherwise the xmlAttrPtr defining the ID'/>
@@ -9459,10 +9447,6 @@ crash if you try to modify the tree)'/>
       <return type='xmlListPtr' info='NULL if not found, otherwise node set for the ID.'/>
       <arg name='doc' type='xmlDocPtr' info='pointer to the document'/>
       <arg name='ID' type='const xmlChar *' info='the ID value'/>
-    </function>
-    <function name='xmlGetThreadId' file='threads' module='threads'>
-      <info>DEPRECATED: Internal function, do not use.  xmlGetThreadId() find the current thread ID number Note that this is likely to be broken on some platforms using pthreads as the specification doesn&apos;t mandate pthread_t to be an integer type</info>
-      <return type='int' info='the current thread ID number'/>
     </function>
     <function name='xmlGetUTF8Char' file='xmlstring' module='xmlstring'>
       <info>Read the first UTF8 character from @utf</info>
@@ -9818,11 +9802,6 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: Alias for xmlInitParser.</info>
       <return type='int' info='0.'/>
     </function>
-    <function name='xmlInitializeGlobalState' file='globals' module='globals'>
-      <info>DEPRECATED: No-op.</info>
-      <return type='void'/>
-      <arg name='gs' type='xmlGlobalStatePtr' info='a pointer to a newly allocated global state'/>
-    </function>
     <functype name='xmlInputCloseCallback' file='xmlIO' module='xmlIO'>
       <info>Callback used in the I/O Input API to close the resource</info>
       <return type='int' info='0 or -1 in case of error'/>
@@ -9902,10 +9881,6 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: Internal function, don&apos;t use.  Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</info>
       <return type='int' info='0 if not, non-zero otherwise'/>
       <arg name='c' type='int' info='an unicode character (int)'/>
-    </function>
-    <function name='xmlIsMainThread' file='threads' module='globals'>
-      <info>DEPRECATED: Internal function, do not use.  Check whether the current thread is the main thread.</info>
-      <return type='int' info='1 if the current thread is the main thread, 0 otherwise'/>
     </function>
     <function name='xmlIsMixedElement' file='valid' module='valid'>
       <info>Search in the DtDs whether an element accept Mixed content (or ANY) basically if it is supposed to accept text childs</info>

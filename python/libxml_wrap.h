@@ -16,7 +16,6 @@
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlreader.h>
-#include <libxml/globals.h>
 #include <libxml/xmlsave.h>
 #ifdef LIBXML_RELAXNG_ENABLED
 #include <libxml/relaxng.h>

@@ -1311,7 +1311,7 @@ xmlParseXMLCatalogFile(xmlCatalogPrefer prefer, const xmlChar *filename) {
 
     if (xmlDebugCatalogs)
 	xmlCatalogPrintDebug(
-		"%d Parsing catalog %s\n", xmlGetThreadId(), filename);
+		"Parsing catalog %s\n", filename);
 
     cur = xmlDocGetRootElement(doc);
     if ((cur != NULL) && (xmlStrEqual(cur->name, BAD_CAST "catalog")) &&

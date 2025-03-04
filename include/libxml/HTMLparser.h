@@ -81,11 +81,6 @@ struct _htmlEntityDesc {
 XML_DEPRECATED
 XMLPUBVAR const xmlSAXHandlerV1 htmlDefaultSAXHandler;
 
-#ifdef LIBXML_THREAD_ENABLED
-XML_DEPRECATED
-XMLPUBFUN const xmlSAXHandlerV1 *__htmlDefaultSAXHandler(void);
-#endif
-
 #endif /* LIBXML_SAX1_ENABLED */
 
 /*

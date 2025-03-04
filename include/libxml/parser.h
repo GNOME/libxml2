@@ -980,19 +980,6 @@ XML_DEPRECATED
 XMLPUBVAR const xmlSAXHandlerV1 xmlDefaultSAXHandler;
 #endif
 
-#ifdef LIBXML_THREAD_ENABLED
-/* backward compatibility */
-XMLPUBFUN const char *const *__xmlParserVersion(void);
-XML_DEPRECATED
-XMLPUBFUN const int *__xmlParserDebugEntities(void);
-XML_DEPRECATED
-XMLPUBFUN const xmlSAXLocator *__xmlDefaultSAXLocator(void);
-#ifdef LIBXML_SAX1_ENABLED
-XML_DEPRECATED
-XMLPUBFUN const xmlSAXHandlerV1 *__xmlDefaultSAXHandler(void);
-#endif
-#endif
-
 /** DOC_DISABLE */
 #define XML_GLOBALS_PARSER_CORE \
   XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \

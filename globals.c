@@ -912,37 +912,6 @@ xmlGetLocalRngState(void) {
     return(xmlGetThreadLocalStorage(0)->localRngState);
 }
 
-/* For backward compatibility */
-
-const char *const *
-__xmlParserVersion(void) {
-    return &xmlParserVersion;
-}
-
-const int *
-__xmlParserDebugEntities(void) {
-    return &xmlParserDebugEntities;
-}
-
-const xmlSAXLocator *
-__xmlDefaultSAXLocator(void) {
-    return &xmlDefaultSAXLocator;
-}
-
-#ifdef LIBXML_SAX1_ENABLED
-const xmlSAXHandlerV1 *
-__xmlDefaultSAXHandler(void) {
-    return &xmlDefaultSAXHandler;
-}
-
-#ifdef LIBXML_HTML_ENABLED
-const xmlSAXHandlerV1 *
-__htmlDefaultSAXHandler(void) {
-    return &htmlDefaultSAXHandler;
-}
-#endif /* LIBXML_HTML_ENABLED */
-#endif /* LIBXML_SAX1_ENABLED */
-
 #endif /* LIBXML_THREAD_ENABLED */
 
 /**

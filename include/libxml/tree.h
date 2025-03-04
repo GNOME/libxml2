@@ -683,14 +683,6 @@ XMLPUBVAR const xmlBufferAllocationScheme xmlBufferAllocScheme;
 XML_DEPRECATED
 XMLPUBVAR const int xmlDefaultBufferSize;
 
-#ifdef LIBXML_THREAD_ENABLED
-/* backward compatibility */
-XML_DEPRECATED
-XMLPUBFUN const xmlBufferAllocationScheme *__xmlBufferAllocScheme(void);
-XML_DEPRECATED
-XMLPUBFUN const int *__xmlDefaultBufferSize(void);
-#endif
-
 /** DOC_DISABLE */
 #define XML_GLOBALS_TREE \
   XML_OP(xmlRegisterNodeDefaultValue, xmlRegisterNodeFunc, XML_DEPRECATED) \

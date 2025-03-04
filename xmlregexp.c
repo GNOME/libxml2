@@ -27,11 +27,11 @@
 #include <libxml/parserInternals.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
-#include <libxml/xmlunicode.h>
 
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/regexp.h"
+#include "private/unicode.h"
 
 #ifndef SIZE_MAX
 #define SIZE_MAX ((size_t) -1)

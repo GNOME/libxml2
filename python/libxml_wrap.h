@@ -13,7 +13,6 @@
 #include <libxml/HTMLtree.h>
 #include <libxml/xinclude.h>
 #include <libxml/xpointer.h>
-#include <libxml/xmlunicode.h>
 #include <libxml/xmlregexp.h>
 #include <libxml/xmlautomata.h>
 #include <libxml/xmlreader.h>

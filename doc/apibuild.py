@@ -32,6 +32,7 @@ ignored_files = {
   "timsort.h": "Internal header only for xpath.c 2.9.0",
   "nanoftp.h": "empty",
   "SAX.h": "empty",
+  "xmlunicode.h": "empty",
 }
 
 ignored_words = {

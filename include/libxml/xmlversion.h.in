@@ -243,11 +243,9 @@
 /**
  * LIBXML_UNICODE_ENABLED:
  *
- * Whether the Unicode related interfaces are compiled in
+ * Removed in 2.14
  */
-#if @WITH_REGEXPS@
-#define LIBXML_UNICODE_ENABLED
-#endif
+#undef LIBXML_UNICODE_ENABLED
 
 /**
  * LIBXML_REGEXP_ENABLED:

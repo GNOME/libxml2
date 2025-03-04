@@ -27,12 +27,10 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(LIBXML2_WITH_CATALOG "Add the Catalog support" ON)
 option(LIBXML2_WITH_DEBUG "Add the debugging module" ON)
 option(LIBXML2_WITH_HTML "Add the HTML support" ON)
-option(LIBXML2_WITH_HTTP "Add the HTTP support" OFF)
 option(LIBXML2_WITH_ICONV "Add ICONV support" ON)
 option(LIBXML2_WITH_ICU "Add ICU support" OFF)
 option(LIBXML2_WITH_ISO8859X "Add ISO8859X support if no iconv" ON)
 option(LIBXML2_WITH_LEGACY "Add deprecated APIs for compatibility" OFF)
-option(LIBXML2_WITH_LZMA "Use liblzma" OFF)
 option(LIBXML2_WITH_MODULES "Add the dynamic modules support" ON)
 option(LIBXML2_WITH_OUTPUT "Add the serialization support" ON)
 option(LIBXML2_WITH_PATTERN "Add the xmlPattern selection interface" ON)
@@ -48,7 +46,16 @@ option(LIBXML2_WITH_TLS "Enable thread-local storage" OFF)
 option(LIBXML2_WITH_VALID "Add the DTD validation support" ON)
 option(LIBXML2_WITH_XINCLUDE "Add the XInclude support" ON)
 option(LIBXML2_WITH_XPATH "Add the XPATH support" ON)
-option(LIBXML2_WITH_ZLIB "Use libz" OFF)
+
+cmake_dependent_option(
+    LIBXML2_WITH_HTTP "Add the HTTP support" OFF
+    "NOT LIBXML2_WITH_LEGACY" ON)
+cmake_dependent_option(
+    LIBXML2_WITH_LZMA "Use liblzma" OFF
+    "NOT LIBXML2_WITH_LEGACY" ON)
+cmake_dependent_option(
+    LIBXML2_WITH_ZLIB "Use libz" OFF
+    "NOT LIBXML2_WITH_LEGACY" ON)
 
 cmake_dependent_option(
     LIBXML2_WITH_C14N "Add the Canonicalization support" ON
@@ -63,9 +70,6 @@ cmake_dependent_option(
     LIBXML2_WITH_SCHEMAS "Add XML Schemas 1.0 support" ON
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_REGEXPS" OFF)
 cmake_dependent_option(
-    LIBXML2_WITH_RELAXNG "Add Relax-NG support" ON
-    "LIBXML2_WITH_REGEXPS;LIBXML2_WITH_SCHEMAS" OFF)
-cmake_dependent_option(
     LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_XPATH" OFF)
 cmake_dependent_option(
@@ -77,6 +81,10 @@ cmake_dependent_option(
 cmake_dependent_option(
     LIBXML2_WITH_XPTR "Add the XPointer support" ON
     "LIBXML2_WITH_XPATH" OFF)
+
+cmake_dependent_option(
+    LIBXML2_WITH_RELAXNG "Add Relax-NG support" ON
+    "LIBXML2_WITH_REGEXPS;LIBXML2_WITH_SCHEMAS" OFF)
 
 if(LIBXML2_WITH_PYTHON)
     find_package(Python COMPONENTS Interpreter Development REQUIRED)

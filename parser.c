@@ -2049,33 +2049,6 @@ xmlCtxtPopInput(xmlParserCtxtPtr ctxt)
 }
 
 /**
- * inputPush:
- * @ctxt:  an XML parser context
- * @value:  the parser input
- *
- * Pushes a new parser input on top of the input stack
- *
- * Returns -1 in case of error, the index in the stack otherwise
- */
-int
-inputPush(xmlParserCtxtPtr ctxt, xmlParserInputPtr value)
-{
-    return(xmlCtxtPushInput(ctxt, value));
-}
-/**
- * inputPop:
- * @ctxt: an XML parser context
- *
- * Pops the top parser input from the input stack
- *
- * Returns the input just removed
- */
-xmlParserInputPtr
-inputPop(xmlParserCtxtPtr ctxt)
-{
-    return(xmlCtxtPopInput(ctxt));
-}
-/**
  * nodePush:
  * @ctxt:  an XML parser context
  * @value:  the element node

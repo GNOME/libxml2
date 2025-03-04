@@ -15626,77 +15626,6 @@ test_parser(void) {
 }
 
 static int
-test_inputPop(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlParserInputPtr ret_val;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-
-        ret_val = inputPop(ctxt);
-        desret_xmlParserInputPtr(ret_val);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in inputPop",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_inputPush(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-    xmlParserInputPtr value; /* the parser input */
-    int n_value;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-    for (n_value = 0;n_value < gen_nb_xmlParserInputPtr;n_value++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-        value = gen_xmlParserInputPtr(n_value, 1);
-
-        ret_val = inputPush(ctxt, value);
-        desret_int(ret_val);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        des_xmlParserInputPtr(n_value, value, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in inputPush",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf(" %d", n_value);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
 test_xmlCheckLanguageID(void) {
     int test_ret = 0;
 
@@ -16826,9 +16755,7 @@ static int
 test_parserInternals(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parserInternals : 30 of 77 functions ...\n");
-    test_ret += test_inputPop();
-    test_ret += test_inputPush();
+    if (quiet == 0) printf("Testing parserInternals : 28 of 75 functions ...\n");
     test_ret += test_xmlCheckLanguageID();
     test_ret += test_xmlCopyChar();
     test_ret += test_xmlCopyCharMultiByte();

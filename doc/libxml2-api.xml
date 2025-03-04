@@ -829,12 +829,12 @@
      <exports symbol='XML_SUBSTITUTE_NONE' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_PEREF' type='macro'/>
      <exports symbol='XML_SUBSTITUTE_REF' type='macro'/>
+     <exports symbol='inputPop' type='macro'/>
+     <exports symbol='inputPush' type='macro'/>
      <exports symbol='xmlParserMaxDepth' type='variable'/>
      <exports symbol='xmlStringComment' type='variable'/>
      <exports symbol='xmlStringText' type='variable'/>
      <exports symbol='xmlStringTextNoenc' type='variable'/>
-     <exports symbol='inputPop' type='function'/>
-     <exports symbol='inputPush' type='function'/>
      <exports symbol='xmlCheckLanguageID' type='function'/>
      <exports symbol='xmlCopyChar' type='function'/>
      <exports symbol='xmlCopyCharMultiByte' type='function'/>
@@ -4315,6 +4315,10 @@
       <info>Returns the attributes required for the specified element.</info>
       <arg name='elt' info='HTML element'/>
     </macro>
+    <macro name='inputPop' file='parserInternals'>
+    </macro>
+    <macro name='inputPush' file='parserInternals'>
+    </macro>
     <macro name='isolat1ToUTF8' file='encoding'>
     </macro>
     <macro name='xmlChildrenNode' file='tree'>
@@ -7412,17 +7416,6 @@ crash if you try to modify the tree)'/>
       <info>DEPRECATED: Use xmlSetGenericErrorFunc.  Set or reset (if NULL) the default handler for generic errors to the builtin error function.</info>
       <return type='void'/>
       <arg name='handler' type='xmlGenericErrorFunc *' info='the handler'/>
-    </function>
-    <function name='inputPop' file='parserInternals' module='parser'>
-      <info>Pops the top parser input from the input stack</info>
-      <return type='xmlParserInputPtr' info='the input just removed'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-    </function>
-    <function name='inputPush' file='parserInternals' module='parser'>
-      <info>Pushes a new parser input on top of the input stack</info>
-      <return type='int' info='-1 in case of error, the index in the stack otherwise'/>
-      <arg name='ctxt' type='xmlParserCtxtPtr' info='an XML parser context'/>
-      <arg name='value' type='xmlParserInputPtr' info='the parser input'/>
     </function>
     <functype name='internalSubsetSAXFunc' file='parser' module='parser'>
       <info>Callback on internal subset declaration.</info>

@@ -16,7 +16,6 @@ include(CheckCSourceCompiles)
 include(CheckFunctionExists)
 include(CheckIncludeFiles)
 include(CheckLibraryExists)
-include(CheckLinkerFlag)
 include(CheckStructHasMember)
 include(CheckSymbolExists)
 include(CMakeDependentOption)
@@ -403,14 +402,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
 -Wpointer-arith -Wcast-align -Wwrite-strings \
 -Wstrict-prototypes -Wmissing-prototypes \
 -Wno-long-long -Wno-format-extra-args -Wno-array-bounds")
-
-    if(LIBXML2_WITH_LEGACY AND BUILD_SHARED_LIBS AND UNIX AND NOT APPLE)
-        check_linker_flag(C "LINKER:--undefined-version" FLAG_UNDEFINED_VERSION)
-        if (FLAG_UNDEFINED_VERSION)
-            target_link_options(LibXml2 PRIVATE "LINKER:--undefined-version")
-        endif()
-        target_link_options(LibXml2 PRIVATE "LINKER:--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libxml2.syms")
-    endif()
 endif()
 
 set(LIBXML_MINOR_COMPAT 0)

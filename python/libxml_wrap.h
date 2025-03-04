@@ -65,19 +65,22 @@
  * Macros to ignore deprecation warnings
  */
 #if defined(__LCC__)
-#define XML_IGNORE_DEPRECATION_WARNINGS \
-    _Pragma("diag_suppress 1215")
+  #define XML_IGNORE_DEPRECATION_WARNINGS _Pragma("diag_suppress 1215")
+  #define XML_POP_WARNINGS _Pragma("diag_default 1215")
 #elif defined(__clang__) || \
-    (defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 406))
-#define XML_IGNORE_DEPRECATION_WARNINGS \
+      (defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 406))
+  #define XML_IGNORE_DEPRECATION_WARNINGS \
     _Pragma("GCC diagnostic push") \
     _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+  #define XML_POP_WARNINGS _Pragma("GCC diagnostic pop")
 #elif defined (_MSC_VER) && (_MSC_VER >= 1400)
-#define XML_IGNORE_DEPRECATION_WARNINGS \
+  #define XML_IGNORE_DEPRECATION_WARNINGS \
     __pragma(warning(push)) \
     __pragma(warning(disable : 4996))
+  #define XML_POP_WARNINGS __pragma(warning(pop))
 #else
-#define XML_IGNORE_DEPRECATION_WARNINGS
+  #define XML_IGNORE_DEPRECATION_WARNINGS
+  #define XML_POP_WARNINGS
 #endif
 
 #define PyxmlNode_Get(v) (((v) == Py_None) ? NULL : \

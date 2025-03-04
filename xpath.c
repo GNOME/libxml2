@@ -3819,6 +3819,7 @@ int
 xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 		       const xmlChar *ns_uri, xmlXPathFunction f) {
     int ret;
+    void *payload;
 
     if (ctxt == NULL)
 	return(-1);
@@ -3833,9 +3834,8 @@ xmlXPathRegisterFuncNS(xmlXPathContextPtr ctxt, const xmlChar *name,
     }
     if (f == NULL)
         return(xmlHashRemoveEntry2(ctxt->funcHash, name, ns_uri, NULL));
-XML_IGNORE_FPTR_CAST_WARNINGS
-    ret = xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, (void *) f);
-XML_POP_WARNINGS
+    memcpy(&payload, &f, sizeof(f));
+    ret = xmlHashAddEntry2(ctxt->funcHash, name, ns_uri, payload);
     if (ret < 0) {
         xmlXPathErrMemory(ctxt);
         return(-1);
@@ -3892,6 +3892,7 @@ xmlXPathFunction
 xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
 			 const xmlChar *ns_uri) {
     xmlXPathFunction ret;
+    void *payload;
 
     if (ctxt == NULL)
 	return(NULL);
@@ -3926,9 +3927,9 @@ xmlXPathFunctionLookupNS(xmlXPathContextPtr ctxt, const xmlChar *name,
     if (ctxt->funcHash == NULL)
 	return(NULL);
 
-XML_IGNORE_FPTR_CAST_WARNINGS
-    ret = (xmlXPathFunction) xmlHashLookup2(ctxt->funcHash, name, ns_uri);
-XML_POP_WARNINGS
+    payload = xmlHashLookup2(ctxt->funcHash, name, ns_uri);
+    memcpy(&ret, &payload, sizeof(payload));
+
     return(ret);
 }
 

@@ -112,9 +112,8 @@ libxml_PyFileGet(PyObject *f) {
 
     if (hntdll == NULL)
         return(NULL);
-XML_IGNORE_FPTR_CAST_WARNINGS
-    NtQueryInformationFile = (t_NtQueryInformationFile)GetProcAddress(hntdll, "NtQueryInformationFile");
-XML_POP_WARNINGS
+    NtQueryInformationFile = (t_NtQueryInformationFile) (void (*)(void))
+        GetProcAddress(hntdll, "NtQueryInformationFile");
 
     if (NtQueryInformationFile != NULL &&
         (NtQueryInformationFile((HANDLE)w_fh,

@@ -289,10 +289,10 @@ xmlModulePlatformClose(void *handle)
 static int
 xmlModulePlatformSymbol(void *handle, const char *name, void **symbol)
 {
-XML_IGNORE_FPTR_CAST_WARNINGS
-    *symbol = GetProcAddress(handle, name);
+    FARPROC proc = GetProcAddress(handle, name);
+
+    memcpy(symbol, &proc, sizeof(proc));
     return (NULL == *symbol) ? -1 : 0;
-XML_POP_WARNINGS
 }
 
 #endif /* _WIN32 */

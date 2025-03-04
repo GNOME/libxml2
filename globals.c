@@ -247,34 +247,9 @@ xmlPosixStrdup(const char *cur) {
  */
 xmlStrdupFunc xmlMemStrdup = xmlPosixStrdup;
 
-/**
- * xmlBufferAllocScheme:
- *
- * DEPRECATED: Don't use.
- *
- * Global setting, default allocation policy for buffers, default is
- * XML_BUFFER_ALLOC_EXACT
- */
-const xmlBufferAllocationScheme xmlBufferAllocScheme = XML_BUFFER_ALLOC_EXACT;
-/**
- * xmlDefaultBufferSize:
- *
- * DEPRECATED: Don't use.
- *
- * Global setting, default buffer size. Default value is BASE_BUFFER_SIZE
- */
-const int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
-
 /*
  * Parser defaults
  */
-
-/**
- * xmlParserDebugEntities:
- *
- * DEPRECATED, always 0.
- */
-const int xmlParserDebugEntities = 0;
 
 static int xmlDoValidityCheckingDefaultValueThrDef = 0;
 static int xmlGetWarningsDefaultValueThrDef = 1;
@@ -905,16 +880,6 @@ xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
     xmlMutexUnlock(&xmlThrDefMutex);
 }
 
-xmlBufferAllocationScheme
-xmlThrDefBufferAllocScheme(xmlBufferAllocationScheme v ATTRIBUTE_UNUSED) {
-    return xmlBufferAllocScheme;
-}
-
-int
-xmlThrDefDefaultBufferSize(int v ATTRIBUTE_UNUSED) {
-    return xmlDefaultBufferSize;
-}
-
 int xmlThrDefDoValidityCheckingDefaultValue(int v) {
     int ret;
     xmlMutexLock(&xmlThrDefMutex);
@@ -987,10 +952,6 @@ int xmlThrDefLoadExtDtdDefaultValue(int v) {
     xmlLoadExtDtdDefaultValueThrDef = v;
     xmlMutexUnlock(&xmlThrDefMutex);
     return ret;
-}
-
-int xmlThrDefParserDebugEntities(int v ATTRIBUTE_UNUSED) {
-    return(xmlParserDebugEntities);
 }
 
 int xmlThrDefPedanticParserDefaultValue(int v) {

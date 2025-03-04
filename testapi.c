@@ -15423,38 +15423,6 @@ test_xmlThrDefLoadExtDtdDefaultValue(void) {
 
 
 static int
-test_xmlThrDefParserDebugEntities(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    int v; /*  */
-    int n_v;
-
-    for (n_v = 0;n_v < gen_nb_int;n_v++) {
-        mem_base = xmlMemBlocks();
-        v = gen_int(n_v, 0);
-
-        ret_val = xmlThrDefParserDebugEntities(v);
-        desret_int(ret_val);
-        call_tests++;
-        des_int(n_v, v, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlThrDefParserDebugEntities",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_v);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
 test_xmlThrDefPedanticParserDefaultValue(void) {
     int test_ret = 0;
 
@@ -15521,7 +15489,7 @@ static int
 test_parser(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parser : 89 of 105 functions ...\n");
+    if (quiet == 0) printf("Testing parser : 88 of 104 functions ...\n");
     test_ret += test_xmlByteConsumed();
     test_ret += test_xmlCleanupGlobals();
     test_ret += test_xmlClearNodeInfoSeq();
@@ -15616,7 +15584,6 @@ test_parser(void) {
     test_ret += test_xmlThrDefKeepBlanksDefaultValue();
     test_ret += test_xmlThrDefLineNumbersDefaultValue();
     test_ret += test_xmlThrDefLoadExtDtdDefaultValue();
-    test_ret += test_xmlThrDefParserDebugEntities();
     test_ret += test_xmlThrDefPedanticParserDefaultValue();
     test_ret += test_xmlThrDefSubstituteEntitiesDefaultValue();
 
@@ -24056,70 +24023,6 @@ test_xmlTextMerge(void) {
 
 
 static int
-test_xmlThrDefBufferAllocScheme(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlBufferAllocationScheme ret_val;
-    xmlBufferAllocationScheme v; /*  */
-    int n_v;
-
-    for (n_v = 0;n_v < gen_nb_xmlBufferAllocationScheme;n_v++) {
-        mem_base = xmlMemBlocks();
-        v = gen_xmlBufferAllocationScheme(n_v, 0);
-
-        ret_val = xmlThrDefBufferAllocScheme(v);
-        desret_xmlBufferAllocationScheme(ret_val);
-        call_tests++;
-        des_xmlBufferAllocationScheme(n_v, v, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlThrDefBufferAllocScheme",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_v);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_xmlThrDefDefaultBufferSize(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    int v; /*  */
-    int n_v;
-
-    for (n_v = 0;n_v < gen_nb_int;n_v++) {
-        mem_base = xmlMemBlocks();
-        v = gen_int(n_v, 0);
-
-        ret_val = xmlThrDefDefaultBufferSize(v);
-        desret_int(ret_val);
-        call_tests++;
-        des_int(n_v, v, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in xmlThrDefDefaultBufferSize",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_v);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
 test_xmlThrDefDeregisterNodeDefault(void) {
     int test_ret = 0;
 
@@ -24383,7 +24286,7 @@ static int
 test_tree(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing tree : 146 of 172 functions ...\n");
+    if (quiet == 0) printf("Testing tree : 144 of 170 functions ...\n");
     test_ret += test_xmlAddChild();
     test_ret += test_xmlAddChildList();
     test_ret += test_xmlAddNextSibling();
@@ -24532,8 +24435,6 @@ test_tree(void) {
     test_ret += test_xmlStringLenGetNodeList();
     test_ret += test_xmlTextConcat();
     test_ret += test_xmlTextMerge();
-    test_ret += test_xmlThrDefBufferAllocScheme();
-    test_ret += test_xmlThrDefDefaultBufferSize();
     test_ret += test_xmlThrDefDeregisterNodeDefault();
     test_ret += test_xmlThrDefRegisterNodeDefault();
     test_ret += test_xmlUnsetNsProp();

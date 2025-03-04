@@ -974,8 +974,6 @@ XMLPUBVAR const char *const xmlParserVersion;
 
 /** DOC_DISABLE */
 XML_DEPRECATED
-XMLPUBVAR const int xmlParserDebugEntities;
-XML_DEPRECATED
 XMLPUBVAR const xmlSAXLocator xmlDefaultSAXLocator;
 #ifdef LIBXML_SAX1_ENABLED
 XML_DEPRECATED
@@ -1095,9 +1093,6 @@ XMLPUBFUN int
 XML_DEPRECATED
 XMLPUBFUN int
                 xmlThrDefLoadExtDtdDefaultValue(int v);
-XML_DEPRECATED
-XMLPUBFUN int
-                xmlThrDefParserDebugEntities(int v);
 
 #ifdef LIBXML_SAX1_ENABLED
 /*

@@ -33,6 +33,12 @@ extern "C" {
 #endif
 
 /*
+ * Backward compatibility
+ */
+#define xmlBufferAllocScheme XML_BUFFER_ALLOC_EXACT
+#define xmlDefaultBufferSize 4096
+
+/*
  * Some of the basic types pointer to structures:
  */
 /* xmlIO.h */
@@ -58,13 +64,6 @@ typedef xmlSAXHandler *xmlSAXHandlerPtr;
 /* entities.h */
 typedef struct _xmlEntity xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
-
-/**
- * BASE_BUFFER_SIZE:
- *
- * default buffer size 4000.
- */
-#define BASE_BUFFER_SIZE 4096
 
 /**
  * LIBXML_NAMESPACE_DICT:
@@ -679,11 +678,6 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  */
 
 /** DOC_DISABLE */
-XML_DEPRECATED
-XMLPUBVAR const xmlBufferAllocationScheme xmlBufferAllocScheme;
-XML_DEPRECATED
-XMLPUBVAR const int xmlDefaultBufferSize;
-
 XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
 XML_DEPRECATED
@@ -1321,11 +1315,6 @@ XMLPUBFUN xmlRegisterNodeFunc
 XML_DEPRECATED
 XMLPUBFUN xmlDeregisterNodeFunc
             xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
-
-XML_DEPRECATED XMLPUBFUN xmlBufferAllocationScheme
-            xmlThrDefBufferAllocScheme  (xmlBufferAllocationScheme v);
-XML_DEPRECATED XMLPUBFUN int
-            xmlThrDefDefaultBufferSize  (int v);
 
 #ifdef __cplusplus
 }

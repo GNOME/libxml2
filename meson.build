@@ -481,7 +481,7 @@ foreach file : xml_opt_src
     endif
 endforeach
 
-v_min_compat = 0
+v_min_compat = 14
 xml_lib = library(
     'xml2',
     files(xml_src),

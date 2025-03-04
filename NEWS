@@ -15,6 +15,9 @@ Support for RELAX NG can now be disabled with a new configuration
 option independently of XML Schemas support. It is still enabled by
 default.
 
+Binary compatibility is restricted to versions 2.14 or newer. On ELF
+systems, the soname was bumped from libxml2.so.2 to libxml2.so.16.
+
 ### New features
 
 Input callbacks can now be set on a parser context and an improved API
@@ -48,10 +51,12 @@ Support for the range and point extensions of the xpointer() scheme
 was removed. The rest of the XPointer implementation isn't affected.
 The xpointer() scheme now behaves like the xpath1() scheme.
 
-Several legacy functions were removed from the header files.
+Several legacy symbols and the functions in xmlunicode.h were removed.
 
 The shell was moved from libxml2 to xmllint. Several related functions
 are no longer available.
+
+ELF version information was removed.
 
 ### Planned removals
 

@@ -412,7 +412,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "GNU")
 -Wno-long-long -Wno-format-extra-args -Wno-array-bounds")
 endif()
 
-set(LIBXML_MINOR_COMPAT 0)
+set(LIBXML_MINOR_COMPAT 14)
 math(EXPR LIBXML_SOVERSION "${LIBXML_MAJOR_VERSION} + ${LIBXML_MINOR_COMPAT}")
 set_target_properties(
     LibXml2

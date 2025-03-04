@@ -16,6 +16,11 @@
 extern "C" {
 #endif
 
+/*
+ * Backward compatibility
+ */
+#define initGenericErrorDefaultFunc(h) xmlSetGenericErrorFunc(NULL, h)
+
 /**
  * xmlErrorLevel:
  *
@@ -904,9 +909,6 @@ XML_DEPRECATED
 XMLPUBFUN void
     xmlThrDefSetGenericErrorFunc(void *ctx,
                                  xmlGenericErrorFunc handler);
-XML_DEPRECATED
-XMLPUBFUN void
-    initGenericErrorDefaultFunc	(xmlGenericErrorFunc *handler);
 
 XMLPUBFUN void
     xmlSetStructuredErrorFunc	(void *ctx,

@@ -235,24 +235,6 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
 }
 
 /**
- * initGenericErrorDefaultFunc:
- * @handler:  the handler
- *
- * DEPRECATED: Use xmlSetGenericErrorFunc.
- *
- * Set or reset (if NULL) the default handler for generic errors
- * to the builtin error function.
- */
-void
-initGenericErrorDefaultFunc(xmlGenericErrorFunc * handler)
-{
-    if (handler == NULL)
-        xmlGenericError = xmlGenericErrorDefaultFunc;
-    else
-        xmlGenericError = (*handler);
-}
-
-/**
  * xmlSetGenericErrorFunc:
  * @ctx:  the new error handling context
  * @handler:  the new handler function

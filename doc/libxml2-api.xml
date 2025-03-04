@@ -1907,6 +1907,7 @@
      <summary>error handling</summary>
      <description>the API used to report errors </description>
      <author>Daniel Veillard </author>
+     <exports symbol='initGenericErrorDefaultFunc' type='macro'/>
      <exports symbol='XML_BUF_OVERFLOW' type='enum'/>
      <exports symbol='XML_C14N_CREATE_CTXT' type='enum'/>
      <exports symbol='XML_C14N_CREATE_STACK' type='enum'/>
@@ -2691,7 +2692,6 @@
      <exports symbol='xmlErrorPtr' type='typedef'/>
      <exports symbol='xmlParserErrors' type='typedef'/>
      <exports symbol='_xmlError' type='struct'/>
-     <exports symbol='initGenericErrorDefaultFunc' type='function'/>
      <exports symbol='xmlCopyError' type='function'/>
      <exports symbol='xmlCtxtGetLastError' type='function'/>
      <exports symbol='xmlCtxtResetLastError' type='function'/>
@@ -4314,6 +4314,8 @@
     <macro name='htmlRequiredAttrs' file='HTMLparser'>
       <info>Returns the attributes required for the specified element.</info>
       <arg name='elt' info='HTML element'/>
+    </macro>
+    <macro name='initGenericErrorDefaultFunc' file='xmlerror'>
     </macro>
     <macro name='inputPop' file='parserInternals'>
     </macro>
@@ -7412,11 +7414,6 @@ crash if you try to modify the tree)'/>
       <arg name='ch' type='const xmlChar *' info='a xmlChar string'/>
       <arg name='len' type='int' info='the number of xmlChar'/>
     </functype>
-    <function name='initGenericErrorDefaultFunc' file='xmlerror' module='error'>
-      <info>DEPRECATED: Use xmlSetGenericErrorFunc.  Set or reset (if NULL) the default handler for generic errors to the builtin error function.</info>
-      <return type='void'/>
-      <arg name='handler' type='xmlGenericErrorFunc *' info='the handler'/>
-    </function>
     <functype name='internalSubsetSAXFunc' file='parser' module='parser'>
       <info>Callback on internal subset declaration.</info>
       <return type='void'/>

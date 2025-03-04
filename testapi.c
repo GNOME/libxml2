@@ -29885,40 +29885,6 @@ test_xmlautomata(void) {
     return(test_ret);
 }
 
-#define gen_nb_xmlGenericErrorFunc_ptr 1
-#define gen_xmlGenericErrorFunc_ptr(no, nr) NULL
-#define des_xmlGenericErrorFunc_ptr(no, val, nr)
-
-static int
-test_initGenericErrorDefaultFunc(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlGenericErrorFunc * handler; /* the handler */
-    int n_handler;
-
-    for (n_handler = 0;n_handler < gen_nb_xmlGenericErrorFunc_ptr;n_handler++) {
-        mem_base = xmlMemBlocks();
-        handler = gen_xmlGenericErrorFunc_ptr(n_handler, 0);
-
-        initGenericErrorDefaultFunc(handler);
-        call_tests++;
-        des_xmlGenericErrorFunc_ptr(n_handler, handler, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in initGenericErrorDefaultFunc",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_handler);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
 #define gen_nb_const_xmlError_ptr 1
 #define gen_const_xmlError_ptr(no, nr) NULL
 #define des_const_xmlError_ptr(no, val, nr)
@@ -30214,8 +30180,7 @@ static int
 test_xmlerror(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing xmlerror : 7 of 18 functions ...\n");
-    test_ret += test_initGenericErrorDefaultFunc();
+    if (quiet == 0) printf("Testing xmlerror : 6 of 17 functions ...\n");
     test_ret += test_xmlCopyError();
     test_ret += test_xmlCtxtGetLastError();
     test_ret += test_xmlCtxtResetLastError();

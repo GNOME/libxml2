@@ -15697,148 +15697,6 @@ test_inputPush(void) {
 
 
 static int
-test_namePop(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    const xmlChar * ret_val;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-
-        ret_val = namePop(ctxt);
-        desret_const_xmlChar_ptr(ret_val);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in namePop",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_namePush(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-    const xmlChar * value; /* the element name */
-    int n_value;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-    for (n_value = 0;n_value < gen_nb_const_xmlChar_ptr;n_value++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-        value = gen_const_xmlChar_ptr(n_value, 1);
-
-        ret_val = namePush(ctxt, value);
-        desret_int(ret_val);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        des_const_xmlChar_ptr(n_value, value, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in namePush",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf(" %d", n_value);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_nodePop(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    xmlNodePtr ret_val;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-
-        ret_val = nodePop(ctxt);
-        desret_xmlNodePtr(ret_val);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in nodePop",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf("\n");
-        }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
-test_nodePush(void) {
-    int test_ret = 0;
-
-    int mem_base;
-    int ret_val;
-    xmlParserCtxtPtr ctxt; /* an XML parser context */
-    int n_ctxt;
-    xmlNodePtr value; /* the element node */
-    int n_value;
-
-    for (n_ctxt = 0;n_ctxt < gen_nb_xmlParserCtxtPtr;n_ctxt++) {
-    for (n_value = 0;n_value < gen_nb_xmlNodePtr;n_value++) {
-        mem_base = xmlMemBlocks();
-        ctxt = gen_xmlParserCtxtPtr(n_ctxt, 0);
-        value = gen_xmlNodePtr(n_value, 1);
-
-        ret_val = nodePush(ctxt, value);
-        desret_int(ret_val);
-        call_tests++;
-        des_xmlParserCtxtPtr(n_ctxt, ctxt, 0);
-        des_xmlNodePtr(n_value, value, 1);
-        xmlResetLastError();
-        if (mem_base != xmlMemBlocks()) {
-            printf("Leak of %d blocks found in nodePush",
-	           xmlMemBlocks() - mem_base);
-	    test_ret++;
-            printf(" %d", n_ctxt);
-            printf(" %d", n_value);
-            printf("\n");
-        }
-    }
-    }
-    function_tests++;
-
-    return(test_ret);
-}
-
-
-static int
 test_xmlCheckLanguageID(void) {
     int test_ret = 0;
 
@@ -16968,13 +16826,9 @@ static int
 test_parserInternals(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing parserInternals : 34 of 81 functions ...\n");
+    if (quiet == 0) printf("Testing parserInternals : 30 of 77 functions ...\n");
     test_ret += test_inputPop();
     test_ret += test_inputPush();
-    test_ret += test_namePop();
-    test_ret += test_namePush();
-    test_ret += test_nodePop();
-    test_ret += test_nodePush();
     test_ret += test_xmlCheckLanguageID();
     test_ret += test_xmlCopyChar();
     test_ret += test_xmlCopyCharMultiByte();

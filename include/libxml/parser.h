@@ -971,6 +971,8 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
  */
 
 XMLPUBVAR const char *const xmlParserVersion;
+
+/** DOC_DISABLE */
 XML_DEPRECATED
 XMLPUBVAR const int xmlParserDebugEntities;
 XML_DEPRECATED
@@ -980,50 +982,44 @@ XML_DEPRECATED
 XMLPUBVAR const xmlSAXHandlerV1 xmlDefaultSAXHandler;
 #endif
 
-/** DOC_DISABLE */
-#define XML_GLOBALS_PARSER_CORE \
-  XML_OP(xmlDoValidityCheckingDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlGetWarningsDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlKeepBlanksDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlLineNumbersDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlLoadExtDtdDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlPedanticParserDefaultValue, int, XML_DEPRECATED) \
-  XML_OP(xmlSubstituteEntitiesDefaultValue, int, XML_DEPRECATED)
+XML_DEPRECATED
+XMLPUBFUN int *__xmlDoValidityCheckingDefaultValue(void);
+XML_DEPRECATED
+XMLPUBFUN int *__xmlGetWarningsDefaultValue(void);
+XML_DEPRECATED
+XMLPUBFUN int *__xmlKeepBlanksDefaultValue(void);
+XML_DEPRECATED
+XMLPUBFUN int *__xmlLineNumbersDefaultValue(void);
+XML_DEPRECATED
+XMLPUBFUN int *__xmlLoadExtDtdDefaultValue(void);
+XML_DEPRECATED
+XMLPUBFUN int *__xmlPedanticParserDefaultValue(void);
+XML_DEPRECATED
+XMLPUBFUN int *__xmlSubstituteEntitiesDefaultValue(void);
 
 #ifdef LIBXML_OUTPUT_ENABLED
-  #define XML_GLOBALS_PARSER_OUTPUT \
-    XML_OP(xmlIndentTreeOutput, int, XML_NO_ATTR) \
-    XML_OP(xmlTreeIndentString, const char *, XML_NO_ATTR) \
-    XML_OP(xmlSaveNoEmptyTags, int, XML_NO_ATTR)
-#else
-  #define XML_GLOBALS_PARSER_OUTPUT
+XMLPUBFUN int *__xmlIndentTreeOutput(void);
+XMLPUBFUN const char **__xmlTreeIndentString(void);
+XMLPUBFUN int *__xmlSaveNoEmptyTags(void);
 #endif
 
-#define XML_GLOBALS_PARSER \
-  XML_GLOBALS_PARSER_CORE \
-  XML_GLOBALS_PARSER_OUTPUT
-
-#define XML_OP XML_DECLARE_GLOBAL
-XML_GLOBALS_PARSER
-#undef XML_OP
-
-#if defined(LIBXML_THREAD_ENABLED) && !defined(XML_GLOBALS_NO_REDEFINITION)
+#ifndef XML_GLOBALS_NO_REDEFINITION
   #define xmlDoValidityCheckingDefaultValue \
-    XML_GLOBAL_MACRO(xmlDoValidityCheckingDefaultValue)
+    (*__xmlDoValidityCheckingDefaultValue())
   #define xmlGetWarningsDefaultValue \
-    XML_GLOBAL_MACRO(xmlGetWarningsDefaultValue)
-  #define xmlKeepBlanksDefaultValue XML_GLOBAL_MACRO(xmlKeepBlanksDefaultValue)
+    (*__xmlGetWarningsDefaultValue())
+  #define xmlKeepBlanksDefaultValue (*__xmlKeepBlanksDefaultValue())
   #define xmlLineNumbersDefaultValue \
-    XML_GLOBAL_MACRO(xmlLineNumbersDefaultValue)
-  #define xmlLoadExtDtdDefaultValue XML_GLOBAL_MACRO(xmlLoadExtDtdDefaultValue)
+    (*__xmlLineNumbersDefaultValue())
+  #define xmlLoadExtDtdDefaultValue (*__xmlLoadExtDtdDefaultValue())
   #define xmlPedanticParserDefaultValue \
-    XML_GLOBAL_MACRO(xmlPedanticParserDefaultValue)
+    (*__xmlPedanticParserDefaultValue())
   #define xmlSubstituteEntitiesDefaultValue \
-    XML_GLOBAL_MACRO(xmlSubstituteEntitiesDefaultValue)
+    (*__xmlSubstituteEntitiesDefaultValue())
   #ifdef LIBXML_OUTPUT_ENABLED
-    #define xmlIndentTreeOutput XML_GLOBAL_MACRO(xmlIndentTreeOutput)
-    #define xmlTreeIndentString XML_GLOBAL_MACRO(xmlTreeIndentString)
-    #define xmlSaveNoEmptyTags XML_GLOBAL_MACRO(xmlSaveNoEmptyTags)
+    #define xmlIndentTreeOutput (*__xmlIndentTreeOutput())
+    #define xmlTreeIndentString (*__xmlTreeIndentString())
+    #define xmlSaveNoEmptyTags (*__xmlSaveNoEmptyTags())
   #endif
 #endif
 /** DOC_ENABLE */

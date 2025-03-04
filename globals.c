@@ -74,6 +74,54 @@ static xmlMutex xmlThrDefMutex;
  * pointer.
  */
 
+struct _xmlGlobalState {
+#ifdef USE_TLS
+    int initialized;
+#endif
+
+#ifdef USE_WAIT_DTOR
+    void *threadHandle;
+    void *waitHandle;
+#endif
+
+    unsigned localRngState[2];
+
+    xmlError lastError;
+
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+    xmlMallocFunc malloc;
+    xmlMallocFunc mallocAtomic;
+    xmlReallocFunc realloc;
+    xmlFreeFunc free;
+    xmlStrdupFunc memStrdup;
+#endif
+
+    int doValidityCheckingDefaultValue;
+    int getWarningsDefaultValue;
+    int keepBlanksDefaultValue;
+    int lineNumbersDefaultValue;
+    int loadExtDtdDefaultValue;
+    int pedanticParserDefaultValue;
+    int substituteEntitiesDefaultValue;
+
+#ifdef LIBXML_OUTPUT_ENABLED
+    int indentTreeOutput;
+    const char *treeIndentString;
+    int saveNoEmptyTags;
+#endif
+
+    xmlGenericErrorFunc genericError;
+    void *genericErrorContext;
+    xmlStructuredErrorFunc structuredError;
+    void *structuredErrorContext;
+
+    xmlRegisterNodeFunc registerNodeDefaultValue;
+    xmlDeregisterNodeFunc deregisterNodeDefaultValue;
+
+    xmlParserInputBufferCreateFilenameFunc parserInputBufferCreateFilenameValue;
+    xmlOutputBufferCreateFilenameFunc outputBufferCreateFilenameValue;
+};
+
 #ifdef LIBXML_THREAD_ENABLED
 
 /*
@@ -98,32 +146,6 @@ static xmlMutex xmlThrDefMutex;
   #endif
 #endif
 
-#define XML_DECLARE_MEMBER(name, type, attrs) \
-  type gs_##name;
-
-struct _xmlGlobalState {
-#ifdef USE_TLS
-    int initialized;
-#endif
-
-#ifdef USE_WAIT_DTOR
-    void *threadHandle;
-    void *waitHandle;
-#endif
-
-    unsigned localRngState[2];
-
-    xmlError lastError;
-
-#define XML_OP XML_DECLARE_MEMBER
-XML_GLOBALS_ALLOC
-XML_GLOBALS_PARSER
-XML_GLOBALS_ERROR
-XML_GLOBALS_TREE
-XML_GLOBALS_IO
-#undef XML_OP
-};
-
 #ifdef USE_TLS
 static XML_THREAD_LOCAL xmlGlobalState globalState;
 #endif
@@ -147,6 +169,10 @@ static DWORD globalkey = TLS_OUT_OF_INDEXES;
 
 static void
 xmlFreeGlobalState(void *state);
+
+#else /* LIBXML_THREAD_ENABLED */
+
+static xmlGlobalState globalState;
 
 #endif /* LIBXML_THREAD_ENABLED */
 
@@ -247,234 +273,31 @@ const int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
  * DEPRECATED, always 0.
  */
 const int xmlParserDebugEntities = 0;
-/**
- * xmlDoValidityCheckingDefaultValue:
- *
- * DEPRECATED: Use the modern options API with XML_PARSE_DTDVALID.
- *
- * Global setting, indicate that the parser should work in validating mode.
- * Disabled by default.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlDoValidityCheckingDefaultValue = 0;
-#endif
+
 static int xmlDoValidityCheckingDefaultValueThrDef = 0;
-/**
- * xmlGetWarningsDefaultValue:
- *
- * DEPRECATED: Use the modern options API with XML_PARSE_NOWARNING.
- *
- * Global setting, indicate that the DTD validation should provide warnings.
- * Activated by default.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlGetWarningsDefaultValue = 1;
-#endif
 static int xmlGetWarningsDefaultValueThrDef = 1;
-/**
- * xmlLoadExtDtdDefaultValue:
- *
- * DEPRECATED: Use the modern options API with XML_PARSE_DTDLOAD.
- *
- * Global setting, indicate that the parser should load DTD while not
- * validating.
- * Disabled by default.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlLoadExtDtdDefaultValue = 0;
-#endif
 static int xmlLoadExtDtdDefaultValueThrDef = 0;
-/**
- * xmlPedanticParserDefaultValue:
- *
- * DEPRECATED: Use the modern options API with XML_PARSE_PEDANTIC.
- *
- * Global setting, indicate that the parser be pedantic
- * Disabled by default.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlPedanticParserDefaultValue = 0;
-#endif
 static int xmlPedanticParserDefaultValueThrDef = 0;
-/**
- * xmlLineNumbersDefaultValue:
- *
- * DEPRECATED: The modern options API always enables line numbers.
- *
- * Global setting, indicate that the parser should store the line number
- * in the content field of elements in the DOM tree.
- * Disabled by default since this may not be safe for old classes of
- * application.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlLineNumbersDefaultValue = 0;
-#endif
 static int xmlLineNumbersDefaultValueThrDef = 0;
-/**
- * xmlKeepBlanksDefaultValue:
- *
- * DEPRECATED: Use the modern options API with XML_PARSE_NOBLANKS.
- *
- * Global setting, indicate that the parser should keep all blanks
- * nodes found in the content
- * Activated by default, this is actually needed to have the parser
- * conformant to the XML Recommendation, however the option is kept
- * for some applications since this was libxml1 default behaviour.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlKeepBlanksDefaultValue = 1;
-#endif
 static int xmlKeepBlanksDefaultValueThrDef = 1;
-/**
- * xmlSubstituteEntitiesDefaultValue:
- *
- * DEPRECATED: Use the modern options API with XML_PARSE_NOENT.
- *
- * Global setting, indicate that the parser should not generate entity
- * references but replace them with the actual content of the entity
- * Disabled by default, this should be activated when using XPath since
- * the XPath data model requires entities replacement and the XPath
- * engine does not handle entities references transparently.
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlSubstituteEntitiesDefaultValue = 0;
-#endif
 static int xmlSubstituteEntitiesDefaultValueThrDef = 0;
 
-/**
- * xmlRegisterNodeDefaultValue:
- *
- * DEPRECATED: Don't use
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlRegisterNodeFunc xmlRegisterNodeDefaultValue = NULL;
-#endif
 static xmlRegisterNodeFunc xmlRegisterNodeDefaultValueThrDef = NULL;
-
-/**
- * xmlDeregisterNodeDefaultValue:
- *
- * DEPRECATED: Don't use
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValue = NULL;
-#endif
 static xmlDeregisterNodeFunc xmlDeregisterNodeDefaultValueThrDef = NULL;
 
-/**
- * xmlParserInputBufferCreateFilenameValue:
- *
- * DEPRECATED: Don't use
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlParserInputBufferCreateFilenameFunc
-xmlParserInputBufferCreateFilenameValue = NULL;
-#endif
 static xmlParserInputBufferCreateFilenameFunc
 xmlParserInputBufferCreateFilenameValueThrDef = NULL;
-
-/**
- * xmlOutputBufferCreateFilenameValue:
- *
- * DEPRECATED: Don't use
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlOutputBufferCreateFilenameFunc xmlOutputBufferCreateFilenameValue = NULL;
-#endif
 static xmlOutputBufferCreateFilenameFunc
 xmlOutputBufferCreateFilenameValueThrDef = NULL;
 
-/**
- * xmlGenericError:
- *
- * DEPRECATED: Use xmlCtxtSetErrorHandler.
- *
- * Global setting: function used for generic error callbacks
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlGenericErrorFunc xmlGenericError = xmlGenericErrorDefaultFunc;
-#endif
 static xmlGenericErrorFunc xmlGenericErrorThrDef = xmlGenericErrorDefaultFunc;
-/**
- * xmlStructuredError:
- *
- * DEPRECATED: Use xmlCtxtSetErrorHandler.
- *
- * Global setting: function used for structured error callbacks
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlStructuredErrorFunc xmlStructuredError = NULL;
-#endif
 static xmlStructuredErrorFunc xmlStructuredErrorThrDef = NULL;
-/**
- * xmlGenericErrorContext:
- *
- * DEPRECATED: Use xmlCtxtSetErrorHandler.
- *
- * Global setting passed to generic error callbacks
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-void *xmlGenericErrorContext = NULL;
-#endif
 static void *xmlGenericErrorContextThrDef = NULL;
-/**
- * xmlStructuredErrorContext:
- *
- * DEPRECATED: Use xmlCtxtSetErrorHandler.
- *
- * Global setting passed to structured error callbacks
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-void *xmlStructuredErrorContext = NULL;
-#endif
 static void *xmlStructuredErrorContextThrDef = NULL;
-#if !defined(LIBXML_THREAD_ENABLED)
-xmlError xmlLastError;
-#endif
 
 #ifdef LIBXML_OUTPUT_ENABLED
-/*
- * output defaults
- */
-/**
- * xmlIndentTreeOutput:
- *
- * DEPRECATED: Use XML_SAVE_INDENT and XML_SAVE_NO_INDENT.
- *
- * Global setting, asking the serializer to indent the output tree by default
- * Enabled by default
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlIndentTreeOutput = 1;
-#endif
 static int xmlIndentTreeOutputThrDef = 1;
-
-/**
- * xmlTreeIndentString:
- *
- * DEPRECATED: Use xmlSaveSetIndentString.
- *
- * The string used to do one-level indent. By default is equal to
- * "  " (two spaces)
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-const char *xmlTreeIndentString = "  ";
-#endif
 static const char *xmlTreeIndentStringThrDef = "  ";
-
-/**
- * xmlSaveNoEmptyTags:
- *
- * DEPRECATED: Use XML_SAVE_EMPTY and XML_SAVE_NO_EMPTY.
- *
- * Global setting, asking the serializer to not output empty tags
- * as <empty/> but <empty></empty>. those two forms are indistinguishable
- * once parsed.
- * Disabled by default
- */
-#if !defined(LIBXML_THREAD_ENABLED)
-int xmlSaveNoEmptyTags = 0;
-#endif
 static int xmlSaveNoEmptyTagsThrDef = 0;
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -575,6 +398,9 @@ const xmlSAXHandlerV1 htmlDefaultSAXHandler = {
 };
 #endif /* LIBXML_HTML_ENABLED */
 
+static void
+xmlInitGlobalState(xmlGlobalStatePtr gs);
+
 /************************************************************************
  *									*
  *			Per thread global state handling		*
@@ -605,6 +431,8 @@ void xmlInitGlobalsInternal(void) {
     if (globalkey == TLS_OUT_OF_INDEXES)
         globalkey = TlsAlloc();
 #endif
+#else /* no thread support */
+    xmlInitGlobalState(&globalState);
 #endif
 }
 
@@ -648,7 +476,7 @@ void xmlCleanupGlobalsInternal(void) {
     }
 #endif
 #else /* no thread support */
-    xmlResetError(&xmlLastError);
+    xmlResetError(&globalState.lastError);
 #endif
 
     xmlCleanupMutex(&xmlThrDefMutex);
@@ -692,6 +520,74 @@ xmlIsMainThread(void) {
     return(0);
 }
 
+static void
+xmlInitGlobalState(xmlGlobalStatePtr gs) {
+    gs->localRngState[0] = xmlGlobalRandom();
+    gs->localRngState[1] = xmlGlobalRandom();
+
+    memset(&gs->lastError, 0, sizeof(xmlError));
+
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+    /* XML_GLOBALS_ALLOC */
+    gs->gs_xmlFree = free;
+    gs->gs_xmlMalloc = malloc;
+    gs->gs_xmlMallocAtomic = malloc;
+    gs->gs_xmlRealloc = realloc;
+    gs->gs_xmlMemStrdup = xmlPosixStrdup;
+#endif
+
+    xmlMutexLock(&xmlThrDefMutex);
+
+    /* XML_GLOBALS_PARSER */
+    gs->doValidityCheckingDefaultValue =
+         xmlDoValidityCheckingDefaultValueThrDef;
+    gs->getWarningsDefaultValue = xmlGetWarningsDefaultValueThrDef;
+    gs->keepBlanksDefaultValue = xmlKeepBlanksDefaultValueThrDef;
+    gs->lineNumbersDefaultValue = xmlLineNumbersDefaultValueThrDef;
+    gs->loadExtDtdDefaultValue = xmlLoadExtDtdDefaultValueThrDef;
+    gs->pedanticParserDefaultValue = xmlPedanticParserDefaultValueThrDef;
+    gs->substituteEntitiesDefaultValue =
+        xmlSubstituteEntitiesDefaultValueThrDef;
+#ifdef LIBXML_OUTPUT_ENABLED
+    gs->indentTreeOutput = xmlIndentTreeOutputThrDef;
+    gs->treeIndentString = xmlTreeIndentStringThrDef;
+    gs->saveNoEmptyTags = xmlSaveNoEmptyTagsThrDef;
+#endif
+
+    /* XML_GLOBALS_ERROR */
+    gs->genericError = xmlGenericErrorThrDef;
+    gs->structuredError = xmlStructuredErrorThrDef;
+    gs->genericErrorContext = xmlGenericErrorContextThrDef;
+    gs->structuredErrorContext = xmlStructuredErrorContextThrDef;
+
+    /* XML_GLOBALS_TREE */
+    gs->registerNodeDefaultValue = xmlRegisterNodeDefaultValueThrDef;
+    gs->deregisterNodeDefaultValue = xmlDeregisterNodeDefaultValueThrDef;
+
+    /* XML_GLOBALS_IO */
+    gs->parserInputBufferCreateFilenameValue =
+        xmlParserInputBufferCreateFilenameValueThrDef;
+    gs->outputBufferCreateFilenameValue =
+        xmlOutputBufferCreateFilenameValueThrDef;
+
+    xmlMutexUnlock(&xmlThrDefMutex);
+
+#ifdef USE_TLS
+    gs->initialized = 1;
+#endif
+
+#ifdef HAVE_POSIX_THREADS
+    pthread_setspecific(globalkey, gs);
+#elif defined HAVE_WIN32_THREADS
+#ifndef USE_TLS
+    TlsSetValue(globalkey, gs);
+#endif
+#ifdef USE_WAIT_DTOR
+    xmlRegisterGlobalStateDtor(gs);
+#endif
+#endif
+}
+
 #ifdef LIBXML_THREAD_ENABLED
 
 static void
@@ -700,14 +596,9 @@ xmlFreeGlobalState(void *state)
     xmlGlobalState *gs = (xmlGlobalState *) state;
 
     /*
-     * Free any memory allocated in the thread's xmlLastError. If it
+     * Free any memory allocated in the thread's error struct. If it
      * weren't for this indirect allocation, we wouldn't need
      * a destructor with thread-local storage at all!
-     *
-     * It would be nice if we could make xmlLastError a special error
-     * type which uses statically allocated, fixed-size buffers.
-     * But the xmlError struct is fully public and widely used,
-     * so changes are dangerous.
      */
     xmlResetError(&gs->lastError);
 #ifndef USE_TLS
@@ -747,74 +638,6 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
     return(0);
 }
 #endif /* USE_WAIT_DTOR */
-
-static void
-xmlInitGlobalState(xmlGlobalStatePtr gs) {
-    gs->localRngState[0] = xmlGlobalRandom();
-    gs->localRngState[1] = xmlGlobalRandom();
-
-    memset(&gs->lastError, 0, sizeof(xmlError));
-
-#ifdef LIBXML_THREAD_ALLOC_ENABLED
-    /* XML_GLOBALS_ALLOC */
-    gs->gs_xmlFree = free;
-    gs->gs_xmlMalloc = malloc;
-    gs->gs_xmlMallocAtomic = malloc;
-    gs->gs_xmlRealloc = realloc;
-    gs->gs_xmlMemStrdup = xmlPosixStrdup;
-#endif
-
-    xmlMutexLock(&xmlThrDefMutex);
-
-    /* XML_GLOBALS_PARSER */
-    gs->gs_xmlDoValidityCheckingDefaultValue =
-         xmlDoValidityCheckingDefaultValueThrDef;
-    gs->gs_xmlGetWarningsDefaultValue = xmlGetWarningsDefaultValueThrDef;
-    gs->gs_xmlKeepBlanksDefaultValue = xmlKeepBlanksDefaultValueThrDef;
-    gs->gs_xmlLineNumbersDefaultValue = xmlLineNumbersDefaultValueThrDef;
-    gs->gs_xmlLoadExtDtdDefaultValue = xmlLoadExtDtdDefaultValueThrDef;
-    gs->gs_xmlPedanticParserDefaultValue = xmlPedanticParserDefaultValueThrDef;
-    gs->gs_xmlSubstituteEntitiesDefaultValue =
-        xmlSubstituteEntitiesDefaultValueThrDef;
-#ifdef LIBXML_OUTPUT_ENABLED
-    gs->gs_xmlIndentTreeOutput = xmlIndentTreeOutputThrDef;
-    gs->gs_xmlTreeIndentString = xmlTreeIndentStringThrDef;
-    gs->gs_xmlSaveNoEmptyTags = xmlSaveNoEmptyTagsThrDef;
-#endif
-
-    /* XML_GLOBALS_ERROR */
-    gs->gs_xmlGenericError = xmlGenericErrorThrDef;
-    gs->gs_xmlStructuredError = xmlStructuredErrorThrDef;
-    gs->gs_xmlGenericErrorContext = xmlGenericErrorContextThrDef;
-    gs->gs_xmlStructuredErrorContext = xmlStructuredErrorContextThrDef;
-
-    /* XML_GLOBALS_TREE */
-    gs->gs_xmlRegisterNodeDefaultValue = xmlRegisterNodeDefaultValueThrDef;
-    gs->gs_xmlDeregisterNodeDefaultValue = xmlDeregisterNodeDefaultValueThrDef;
-
-    /* XML_GLOBALS_IO */
-    gs->gs_xmlParserInputBufferCreateFilenameValue =
-        xmlParserInputBufferCreateFilenameValueThrDef;
-    gs->gs_xmlOutputBufferCreateFilenameValue =
-        xmlOutputBufferCreateFilenameValueThrDef;
-
-    xmlMutexUnlock(&xmlThrDefMutex);
-
-#ifdef USE_TLS
-    gs->initialized = 1;
-#endif
-
-#ifdef HAVE_POSIX_THREADS
-    pthread_setspecific(globalkey, gs);
-#elif defined HAVE_WIN32_THREADS
-#ifndef USE_TLS
-    TlsSetValue(globalkey, gs);
-#endif
-#ifdef USE_WAIT_DTOR
-    xmlRegisterGlobalStateDtor(gs);
-#endif
-#endif
-}
 
 #ifndef USE_TLS
 /**
@@ -882,24 +705,110 @@ xmlGetThreadLocalStorage(int allowFailure) {
     return(gs);
 }
 
-/* Define thread-local storage accessors with macro magic */
+#else /* LIBXML_THREAD_ENABLED */
 
-#define XML_DEFINE_GLOBAL_WRAPPER(name, type, attrs) \
-    type *__##name(void) { \
-        return (&xmlGetThreadLocalStorage(0)->gs_##name); \
-    }
+static xmlGlobalStatePtr
+xmlGetThreadLocalStorage(int allowFailure ATTRIBUTE_UNUSED) {
+    return(&globalState);
+}
 
-#define XML_OP XML_DEFINE_GLOBAL_WRAPPER
-XML_GLOBALS_ALLOC
-XML_GLOBALS_PARSER
-XML_GLOBALS_ERROR
-XML_GLOBALS_TREE
-XML_GLOBALS_IO
-#undef XML_OP
+#endif /* LIBXML_THREAD_ENABLED */
 
 const xmlError *
 __xmlLastError(void) {
     return(&xmlGetThreadLocalStorage(0)->lastError);
+}
+
+int *
+__xmlDoValidityCheckingDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->doValidityCheckingDefaultValue);
+}
+
+int *
+__xmlGetWarningsDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->getWarningsDefaultValue);
+}
+
+int *
+__xmlKeepBlanksDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->keepBlanksDefaultValue);
+}
+
+int *
+__xmlLineNumbersDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->lineNumbersDefaultValue);
+}
+
+int *
+__xmlLoadExtDtdDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->loadExtDtdDefaultValue);
+}
+
+int *
+__xmlPedanticParserDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->pedanticParserDefaultValue);
+}
+
+int *
+__xmlSubstituteEntitiesDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->substituteEntitiesDefaultValue);
+}
+
+#ifdef LIBXML_OUTPUT_ENABLED
+int *
+__xmlIndentTreeOutput(void) {
+    return(&xmlGetThreadLocalStorage(0)->indentTreeOutput);
+}
+
+const char **
+__xmlTreeIndentString(void) {
+    return(&xmlGetThreadLocalStorage(0)->treeIndentString);
+}
+
+int *
+__xmlSaveNoEmptyTags(void) {
+    return(&xmlGetThreadLocalStorage(0)->saveNoEmptyTags);
+}
+#endif
+
+xmlGenericErrorFunc *
+__xmlGenericError(void) {
+    return(&xmlGetThreadLocalStorage(0)->genericError);
+}
+
+void **
+__xmlGenericErrorContext(void) {
+    return(&xmlGetThreadLocalStorage(0)->genericErrorContext);
+}
+
+xmlStructuredErrorFunc *
+__xmlStructuredError(void) {
+    return(&xmlGetThreadLocalStorage(0)->structuredError);
+}
+
+void **
+__xmlStructuredErrorContext(void) {
+    return(&xmlGetThreadLocalStorage(0)->structuredErrorContext);
+}
+
+xmlRegisterNodeFunc *
+__xmlRegisterNodeDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->registerNodeDefaultValue);
+}
+
+xmlDeregisterNodeFunc *
+__xmlDeregisterNodeDefaultValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->deregisterNodeDefaultValue);
+}
+
+xmlParserInputBufferCreateFilenameFunc *
+__xmlParserInputBufferCreateFilenameValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->parserInputBufferCreateFilenameValue);
+}
+
+xmlOutputBufferCreateFilenameFunc *
+__xmlOutputBufferCreateFilenameValue(void) {
+    return(&xmlGetThreadLocalStorage(0)->outputBufferCreateFilenameValue);
 }
 
 /**
@@ -911,8 +820,6 @@ unsigned *
 xmlGetLocalRngState(void) {
     return(xmlGetThreadLocalStorage(0)->localRngState);
 }
-
-#endif /* LIBXML_THREAD_ENABLED */
 
 /**
  * xmlCheckThreadLocalStorage:
@@ -946,11 +853,7 @@ xmlCheckThreadLocalStorage(void) {
  */
 xmlError *
 xmlGetLastErrorInternal(void) {
-#ifdef LIBXML_THREAD_ENABLED
     return(&xmlGetThreadLocalStorage(0)->lastError);
-#else
-    return(&xmlLastError);
-#endif
 }
 
 /** DOC_DISABLE */

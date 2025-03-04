@@ -1062,10 +1062,6 @@ xmlGlobalRandom(void) {
  */
 unsigned
 xmlRandom(void) {
-#ifdef LIBXML_THREAD_ENABLED
     return(xoroshiro64ss(xmlGetLocalRngState()));
-#else
-    return(xmlGlobalRandom());
-#endif
 }
 

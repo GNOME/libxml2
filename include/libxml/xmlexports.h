@@ -115,21 +115,6 @@
 #endif
 
 /*
- * Accessors for globals
- */
-
-#define XML_NO_ATTR
-
-#ifdef LIBXML_THREAD_ENABLED
-  #define XML_DECLARE_GLOBAL(name, type, attrs) \
-    attrs XMLPUBFUN type *__##name(void);
-  #define XML_GLOBAL_MACRO(name) (*__##name())
-#else
-  #define XML_DECLARE_GLOBAL(name, type, attrs) \
-    attrs XMLPUBVAR type name;
-#endif
-
-/*
  * Originally declared in xmlversion.h which is generated
  */
 

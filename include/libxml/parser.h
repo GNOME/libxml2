@@ -972,8 +972,6 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
 
 XMLPUBVAR const char *const xmlParserVersion;
 XML_DEPRECATED
-XMLPUBVAR const int oldXMLWDcompatibility;
-XML_DEPRECATED
 XMLPUBVAR const int xmlParserDebugEntities;
 XML_DEPRECATED
 XMLPUBVAR const xmlSAXLocator xmlDefaultSAXLocator;
@@ -985,8 +983,6 @@ XMLPUBVAR const xmlSAXHandlerV1 xmlDefaultSAXHandler;
 #ifdef LIBXML_THREAD_ENABLED
 /* backward compatibility */
 XMLPUBFUN const char *const *__xmlParserVersion(void);
-XML_DEPRECATED
-XMLPUBFUN const int *__oldXMLWDcompatibility(void);
 XML_DEPRECATED
 XMLPUBFUN const int *__xmlParserDebugEntities(void);
 XML_DEPRECATED

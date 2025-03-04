@@ -242,12 +242,6 @@ const int xmlDefaultBufferSize = BASE_BUFFER_SIZE;
  */
 
 /**
- * oldXMLWDcompatibility:
- *
- * DEPRECATED, always 0.
- */
-const int oldXMLWDcompatibility = 0; /* DEPRECATED */
-/**
  * xmlParserDebugEntities:
  *
  * DEPRECATED, always 0.
@@ -923,11 +917,6 @@ xmlGetLocalRngState(void) {
 const char *const *
 __xmlParserVersion(void) {
     return &xmlParserVersion;
-}
-
-const int *
-__oldXMLWDcompatibility(void) {
-    return &oldXMLWDcompatibility;
 }
 
 const int *

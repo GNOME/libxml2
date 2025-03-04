@@ -652,7 +652,6 @@
      <exports symbol='_xmlSAXHandler' type='struct'/>
      <exports symbol='_xmlSAXHandlerV1' type='struct'/>
      <exports symbol='_xmlSAXLocator' type='struct'/>
-     <exports symbol='oldXMLWDcompatibility' type='variable'/>
      <exports symbol='xmlDefaultSAXHandler' type='variable'/>
      <exports symbol='xmlDefaultSAXLocator' type='variable'/>
      <exports symbol='xmlParserDebugEntities' type='variable'/>
@@ -6750,9 +6749,6 @@ crash if you try to modify the tree)'/>
     <typedef name='xmlXPathVariablePtr' file='xpath' type='xmlXPathVariable *'/>
     <variable name='htmlDefaultSAXHandler' file='HTMLparser' type='const xmlSAXHandlerV1'>
       <info>DEPRECATED: This handler is unused and will be removed from future versions.  Default old SAX v1 handler for HTML, builds the DOM tree</info>
-    </variable>
-    <variable name='oldXMLWDcompatibility' file='parser' type='const int'>
-      <info>DEPRECATED, always 0.</info>
     </variable>
     <variable name='xmlBufferAllocScheme' file='tree' type='const xmlBufferAllocationScheme'>
       <info>DEPRECATED: Don&apos;t use.  Global setting, default allocation policy for buffers, default is XML_BUFFER_ALLOC_EXACT</info>

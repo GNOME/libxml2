@@ -2077,7 +2077,7 @@ libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs)
     list = PyTuple_New(nargs + 1);
     PyTuple_SetItem(list, 0, libxml_xmlXPathParserContextPtrWrap(ctxt));
     for (i = nargs - 1; i >= 0; i--) {
-        obj = valuePop(ctxt);
+        obj = xmlXPathValuePop(ctxt);
         cur = libxml_xmlXPathObjectPtrWrap(obj);
         PyTuple_SetItem(list, i + 1, cur);
     }
@@ -2085,7 +2085,7 @@ libxml_xmlXPathFuncCallback(xmlXPathParserContextPtr ctxt, int nargs)
     Py_DECREF(list);
 
     obj = libxml_xmlXPathObjectPtrConvert(result);
-    valuePush(ctxt, obj);
+    xmlXPathValuePush(ctxt, obj);
 }
 
 static xmlXPathFunction

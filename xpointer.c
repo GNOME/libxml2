@@ -196,21 +196,21 @@ xmlXPtrGetChildNo(xmlXPathParserContextPtr ctxt, int indx) {
     xmlNodeSetPtr oldset;
 
     CHECK_TYPE(XPATH_NODESET);
-    obj = valuePop(ctxt);
+    obj = xmlXPathValuePop(ctxt);
     oldset = obj->nodesetval;
     if ((indx <= 0) || (oldset == NULL) || (oldset->nodeNr != 1)) {
 	xmlXPathFreeObject(obj);
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
+	xmlXPathValuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
     }
     cur = xmlXPtrGetNthChild(oldset->nodeTab[0], indx);
     if (cur == NULL) {
 	xmlXPathFreeObject(obj);
-	valuePush(ctxt, xmlXPathNewNodeSet(NULL));
+	xmlXPathValuePush(ctxt, xmlXPathNewNodeSet(NULL));
 	return;
     }
     oldset->nodeTab[0] = cur;
-    valuePush(ctxt, obj);
+    xmlXPathValuePush(ctxt, obj);
 }
 
 /**
@@ -446,7 +446,7 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 	     * a sub-resource error, clean-up the stack
 	     */
 	    do {
-		obj = valuePop(ctxt);
+		obj = xmlXPathValuePop(ctxt);
 		if (obj != NULL) {
 		    xmlXPathFreeObject(obj);
 		}
@@ -484,7 +484,7 @@ xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
     }
 
     if (name != NULL) {
-	valuePush(ctxt, xmlXPathNewString(name));
+	xmlXPathValuePush(ctxt, xmlXPathNewString(name));
 	xmlFree(name);
 	xmlXPathIdFunction(ctxt, 1);
 	CHECK_ERROR;
@@ -631,11 +631,11 @@ xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
 		"xmlXPtrEval: evaluation failed to return a node set\n",
 		   NULL);
     } else {
-	res = valuePop(ctxt);
+	res = xmlXPathValuePop(ctxt);
     }
 
     do {
-        tmp = valuePop(ctxt);
+        tmp = xmlXPathValuePop(ctxt);
 	if (tmp != NULL) {
 	    if (tmp != init) {
 		if (tmp->type == XPATH_NODESET) {

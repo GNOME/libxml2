@@ -3362,6 +3362,8 @@
      <exports symbol='CHECK_TYPE0' type='macro'/>
      <exports symbol='XP_ERROR' type='macro'/>
      <exports symbol='XP_ERROR0' type='macro'/>
+     <exports symbol='valuePop' type='macro'/>
+     <exports symbol='valuePush' type='macro'/>
      <exports symbol='xmlXPathCheckError' type='macro'/>
      <exports symbol='xmlXPathEmptyNodeSet' type='macro'/>
      <exports symbol='xmlXPathGetContextNode' type='macro'/>
@@ -3381,8 +3383,6 @@
      <exports symbol='xmlXPathSetTypeError' type='macro'/>
      <exports symbol='xmlXPathStackIsExternal' type='macro'/>
      <exports symbol='xmlXPathStackIsNodeSet' type='macro'/>
-     <exports symbol='valuePop' type='function'/>
-     <exports symbol='valuePush' type='function'/>
      <exports symbol='xmlXPathAddValues' type='function'/>
      <exports symbol='xmlXPathBooleanFunction' type='function'/>
      <exports symbol='xmlXPathCeilingFunction' type='function'/>
@@ -3491,6 +3491,8 @@
      <exports symbol='xmlXPathTranslateFunction' type='function'/>
      <exports symbol='xmlXPathTrueFunction' type='function'/>
      <exports symbol='xmlXPathValueFlipSign' type='function'/>
+     <exports symbol='xmlXPathValuePop' type='function'/>
+     <exports symbol='xmlXPathValuePush' type='function'/>
      <exports symbol='xmlXPathVariableLookup' type='function'/>
      <exports symbol='xmlXPathVariableLookupNS' type='function'/>
      <exports symbol='xmlXPathWrapCString' type='function'/>
@@ -4131,6 +4133,10 @@
     <macro name='inputPush' file='parserInternals'>
     </macro>
     <macro name='isolat1ToUTF8' file='encoding'>
+    </macro>
+    <macro name='valuePop' file='xpathInternals'>
+    </macro>
+    <macro name='valuePush' file='xpathInternals'>
     </macro>
     <macro name='xmlChildrenNode' file='tree'>
       <info>Macro for compatibility naming layer with libxml1. Maps to &quot;children.&quot;</info>
@@ -7284,19 +7290,6 @@ crash if you try to modify the tree)'/>
       <arg name='systemId' type='const xmlChar *' info='The system ID of the entity'/>
       <arg name='notationName' type='const xmlChar *' info='the name of the notation'/>
     </functype>
-    <function name='valuePop' file='xpathInternals' module='xpath'>
-      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Pops the top XPath object from the value stack</info>
-      <return type='xmlXPathObjectPtr' info='the XPath object just removed'/>
-      <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context'/>
-    </function>
-    <function name='valuePush' file='xpathInternals' module='xpath'>
-      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
-      <info>Pushes a new XPath object on top of the value stack. If value is NULL, a memory error is recorded in the parser context.</info>
-      <return type='int' info='the number of items on the value stack, or -1 in case of error.  The object is destroyed in case of error.'/>
-      <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context'/>
-      <arg name='value' type='xmlXPathObjectPtr' info='the XPath object'/>
-    </function>
     <functype name='warningSAXFunc' file='parser' module='parser'>
       <info>Display and format a warning messages, callback.</info>
       <return type='void'/>
@@ -16289,6 +16282,19 @@ crash if you try to modify the tree)'/>
       <info>Implement the unary - operation on an XPath object The numeric operators convert their operands to numbers as if by calling the number function.</info>
       <return type='void'/>
       <arg name='ctxt' type='xmlXPathParserContextPtr' info='the XPath Parser context'/>
+    </function>
+    <function name='xmlXPathValuePop' file='xpathInternals' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Pops the top XPath object from the value stack</info>
+      <return type='xmlXPathObjectPtr' info='the XPath object just removed'/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context'/>
+    </function>
+    <function name='xmlXPathValuePush' file='xpathInternals' module='xpath'>
+      <cond>defined(LIBXML_XPATH_ENABLED)</cond>
+      <info>Pushes a new XPath object on top of the value stack. If value is NULL, a memory error is recorded in the parser context.</info>
+      <return type='int' info='the number of items on the value stack, or -1 in case of error.  The object is destroyed in case of error.'/>
+      <arg name='ctxt' type='xmlXPathParserContextPtr' info='an XPath evaluation context'/>
+      <arg name='value' type='xmlXPathObjectPtr' info='the XPath object'/>
     </function>
     <function name='xmlXPathVariableLookup' file='xpathInternals' module='xpath'>
       <cond>defined(LIBXML_XPATH_ENABLED)</cond>

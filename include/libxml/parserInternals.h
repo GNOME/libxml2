@@ -27,18 +27,7 @@ extern "C" {
  */
 #define inputPush xmlCtxtPushInput
 #define inputPop xmlCtxtPopInput
-
-/**
- * xmlParserMaxDepth:
- *
- * DEPRECATED: has no effect
- *
- * arbitrary depth limit for the XML documents that we allow to
- * process. This is not a limitation of the parser but a safety
- * boundary feature, use XML_PARSE_HUGE option to override it.
- */
-XML_DEPRECATED
-XMLPUBVAR const unsigned int xmlParserMaxDepth;
+#define xmlParserMaxDepth 256
 
 /**
  * XML_MAX_TEXT_LENGTH:

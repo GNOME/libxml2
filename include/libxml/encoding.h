@@ -182,10 +182,6 @@ struct _xmlCharEncodingHandler {
     char *name XML_DEPRECATED_MEMBER;
     xmlCharEncodingInputFunc input XML_DEPRECATED_MEMBER;
     xmlCharEncodingOutputFunc output XML_DEPRECATED_MEMBER;
-#ifdef LIBXML_ICONV_ENABLED
-    void *iconv_in XML_DEPRECATED_MEMBER;
-    void *iconv_out XML_DEPRECATED_MEMBER;
-#endif /* LIBXML_ICONV_ENABLED */
     void *inputCtxt XML_DEPRECATED_MEMBER;
     void *outputCtxt XML_DEPRECATED_MEMBER;
     xmlCharEncConvCtxtDtor ctxtDtor XML_DEPRECATED_MEMBER;

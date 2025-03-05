@@ -159,12 +159,6 @@ UTF8ToHtmlWrapper(unsigned char *out, int *outlen,
 #define UTF8ToHtmlWrapper NULL
 #endif
 
-#ifdef LIBXML_ICONV_ENABLED
-  #define EMPTY_ICONV , (iconv_t) 0, (iconv_t) 0
-#else
-  #define EMPTY_ICONV
-#endif
-
 #if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
     defined(LIBXML_ISO8859X_ENABLED)
 
@@ -180,8 +174,7 @@ UTF8ToISO8859x(unsigned char *out, int *outlen,
 #define MAKE_ISO_HANDLER(name, n) \
     { (char *) name, \
       (xmlCharEncodingInputFunc) (void (*)(void)) ISO8859xToUTF8, \
-      (xmlCharEncodingInputFunc) (void (*)(void)) UTF8ToISO8859x \
-      EMPTY_ICONV, \
+      (xmlCharEncodingInputFunc) (void (*)(void)) UTF8ToISO8859x, \
       (void *) xmlunicodetable_ISO8859_##n, \
       (void *) xmltranscodetable_ISO8859_##n, \
       NULL, XML_HANDLER_STATIC }
@@ -189,7 +182,7 @@ UTF8ToISO8859x(unsigned char *out, int *outlen,
 #else /* LIBXML_ISO8859X_ENABLED */
 
 #define MAKE_ISO_HANDLER(name, n) \
-    { (char *) name, NULL, NULL EMPTY_ICONV, NULL, NULL, NULL, \
+    { (char *) name, NULL, NULL, NULL, NULL, NULL, \
       XML_HANDLER_STATIC }
 
 #endif /* LIBXML_ISO8859X_ENABLED */
@@ -197,8 +190,8 @@ UTF8ToISO8859x(unsigned char *out, int *outlen,
 #define MAKE_HANDLER(name, in, out) \
     { (char *) name, \
       (xmlCharEncodingInputFunc) (void (*)(void)) in, \
-      (xmlCharEncodingOutputFunc) (void (*)(void)) out \
-      EMPTY_ICONV, NULL, NULL, NULL, XML_HANDLER_STATIC }
+      (xmlCharEncodingOutputFunc) (void (*)(void)) out, \
+      NULL, NULL, NULL, XML_HANDLER_STATIC }
 
 /*
  * The layout must match enum xmlCharEncoding.
@@ -644,11 +637,6 @@ xmlNewCharEncodingHandler(const char *name,
     handler->output = output;
     handler->name = up;
     handler->flags = XML_HANDLER_STATIC;
-
-#ifdef LIBXML_ICONV_ENABLED
-    handler->iconv_in = NULL;
-    handler->iconv_out = NULL;
-#endif
 
     /*
      * registers and returns the handler.
@@ -1167,8 +1155,8 @@ xmlEncodingMatch(const char *name1, const char *name2) {
 #endif /* FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION */
 
 static int
-xmlCharEncIconv(void *vctxt, const char *name, xmlCharEncConverter *conv) {
-    xmlCharEncodingHandler *handler = vctxt;
+xmlCharEncIconv(void *vctxt ATTRIBUTE_UNUSED, const char *name,
+                xmlCharEncConverter *conv) {
     xmlIconvCtxt *inputCtxt = NULL, *outputCtxt = NULL;
     iconv_t icv_in;
     iconv_t icv_out;
@@ -1264,12 +1252,6 @@ xmlCharEncIconv(void *vctxt, const char *name, xmlCharEncConverter *conv) {
     conv->ctxtDtor = xmlIconvFree;
     conv->inputCtxt = inputCtxt;
     conv->outputCtxt = outputCtxt;
-
-    /* Backward compatibility */
-    if (handler != NULL) {
-        handler->iconv_in = icv_in;
-        handler->iconv_out = icv_out;
-    }
 
     return(XML_ERR_OK);
 

@@ -180,8 +180,14 @@ typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
 typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 struct _xmlCharEncodingHandler {
     char *name XML_DEPRECATED_MEMBER;
-    xmlCharEncodingInputFunc input XML_DEPRECATED_MEMBER;
-    xmlCharEncodingOutputFunc output XML_DEPRECATED_MEMBER;
+    union {
+        xmlCharEncConvFunc func;
+        xmlCharEncodingInputFunc legacyFunc;
+    } input XML_DEPRECATED_MEMBER;
+    union {
+        xmlCharEncConvFunc func;
+        xmlCharEncodingOutputFunc legacyFunc;
+    } output XML_DEPRECATED_MEMBER;
     void *inputCtxt XML_DEPRECATED_MEMBER;
     void *outputCtxt XML_DEPRECATED_MEMBER;
     xmlCharEncConvCtxtDtor ctxtDtor XML_DEPRECATED_MEMBER;

@@ -51,7 +51,8 @@
 #include <unicode/ucnv.h>
 #endif
 
-#define XML_HANDLER_STATIC 1
+#define XML_HANDLER_STATIC (1 << 0)
+#define XML_HANDLER_LEGACY (1 << 1)
 
 typedef struct _xmlCharEncodingAlias xmlCharEncodingAlias;
 typedef xmlCharEncodingAlias *xmlCharEncodingAliasPtr;
@@ -172,9 +173,7 @@ UTF8ToISO8859x(unsigned char *out, int *outlen,
                const unsigned char *in, int *inlen, void *vctxt);
 
 #define MAKE_ISO_HANDLER(name, n) \
-    { (char *) name, \
-      (xmlCharEncodingInputFunc) (void (*)(void)) ISO8859xToUTF8, \
-      (xmlCharEncodingInputFunc) (void (*)(void)) UTF8ToISO8859x, \
+    { (char *) name, { ISO8859xToUTF8 }, { UTF8ToISO8859x }, \
       (void *) xmlunicodetable_ISO8859_##n, \
       (void *) xmltranscodetable_ISO8859_##n, \
       NULL, XML_HANDLER_STATIC }
@@ -182,16 +181,13 @@ UTF8ToISO8859x(unsigned char *out, int *outlen,
 #else /* LIBXML_ISO8859X_ENABLED */
 
 #define MAKE_ISO_HANDLER(name, n) \
-    { (char *) name, NULL, NULL, NULL, NULL, NULL, \
+    { (char *) name, { NULL }, { NULL }, NULL, NULL, NULL, \
       XML_HANDLER_STATIC }
 
 #endif /* LIBXML_ISO8859X_ENABLED */
 
 #define MAKE_HANDLER(name, in, out) \
-    { (char *) name, \
-      (xmlCharEncodingInputFunc) (void (*)(void)) in, \
-      (xmlCharEncodingOutputFunc) (void (*)(void)) out, \
-      NULL, NULL, NULL, XML_HANDLER_STATIC }
+    { (char *) name, { in }, { out }, NULL, NULL, NULL, XML_HANDLER_STATIC }
 
 /*
  * The layout must match enum xmlCharEncoding.
@@ -633,10 +629,10 @@ xmlNewCharEncodingHandler(const char *name,
 	return(NULL);
     }
     memset(handler, 0, sizeof(xmlCharEncodingHandler));
-    handler->input = input;
-    handler->output = output;
+    handler->input.legacyFunc = input;
+    handler->output.legacyFunc = output;
     handler->name = up;
-    handler->flags = XML_HANDLER_STATIC;
+    handler->flags = XML_HANDLER_STATIC | XML_HANDLER_LEGACY;
 
     /*
      * registers and returns the handler.
@@ -745,10 +741,8 @@ xmlInvokeConvImpl(xmlCharEncConvImpl impl, void *implCtxt,
     ret = impl(implCtxt, name, &conv);
 
     if (ret == XML_ERR_OK) {
-        handler->input =
-            (xmlCharEncodingInputFunc) (void (*)(void)) conv.input;
-        handler->output =
-            (xmlCharEncodingOutputFunc) (void (*)(void)) conv.output;
+        handler->input.func = conv.input;
+        handler->output.func = conv.output;
         handler->ctxtDtor = conv.ctxtDtor;
         handler->inputCtxt = conv.inputCtxt;
         handler->outputCtxt = conv.outputCtxt;
@@ -813,7 +807,7 @@ xmlFindExtraHandler(const char *norig, const char *name, int output,
 
             if (!xmlStrcasecmp((const xmlChar *) name,
                                (const xmlChar *) h->name)) {
-                if ((output ? h->output : h->input) != NULL) {
+                if ((output ? h->output.func : h->input.func) != NULL) {
                     *out = h;
                     ret = XML_ERR_OK;
                     goto done;
@@ -894,7 +888,7 @@ xmlLookupCharEncodingHandler(xmlCharEncoding enc,
         return(XML_ERR_OK);
 
     handler = &defaultHandlers[enc];
-    if ((handler->input != NULL) || (handler->output != NULL)) {
+    if ((handler->input.func != NULL) || (handler->output.func != NULL)) {
         *out = (xmlCharEncodingHandler *) handler;
         return(XML_ERR_OK);
     }
@@ -979,7 +973,7 @@ xmlCreateCharEncodingHandler(const char *name, int output,
 
     if ((enc > 0) && ((size_t) enc < NUM_DEFAULT_HANDLERS)) {
         handler = &defaultHandlers[enc];
-        if ((output ? handler->output : handler->input) != NULL) {
+        if ((output ? handler->output.func : handler->input.func) != NULL) {
             *out = (xmlCharEncodingHandler *) handler;
             return(XML_ERR_OK);
         }
@@ -1525,19 +1519,30 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
                  int *outlen, const unsigned char *in, int *inlen) {
     int ret;
 
-    if (handler->input != NULL) {
-        xmlCharEncConvFunc conv =
-            (xmlCharEncConvFunc) (void (*)(void)) handler->input;
+    if (handler->flags & XML_HANDLER_LEGACY) {
+        xmlCharEncodingInputFunc func = handler->input.legacyFunc;
 
-        ret = conv(out, outlen, in, inlen, handler->inputCtxt);
-        if (ret > 0)
-            ret = XML_ENC_ERR_SUCCESS;
+        if (func == NULL) {
+            *outlen = 0;
+            *inlen = 0;
+            return(XML_ENC_ERR_INTERNAL);
+        }
+
+        ret = func(out, outlen, in, inlen);
+    } else {
+        xmlCharEncConvFunc func = handler->input.func;
+
+        if (func == NULL) {
+            *outlen = 0;
+            *inlen = 0;
+            return(XML_ENC_ERR_INTERNAL);
+        }
+
+        ret = func(out, outlen, in, inlen, handler->inputCtxt);
     }
-    else {
-        *outlen = 0;
-        *inlen = 0;
-        ret = XML_ENC_ERR_INTERNAL;
-    }
+
+    if (ret > 0)
+        ret = XML_ENC_ERR_SUCCESS;
 
     return(ret);
 }
@@ -1561,19 +1566,30 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
                   int *outlen, const unsigned char *in, int *inlen) {
     int ret;
 
-    if (handler->output != NULL) {
-        xmlCharEncConvFunc conv =
-            (xmlCharEncConvFunc) (void (*)(void)) handler->output;
+    if (handler->flags & XML_HANDLER_LEGACY) {
+        xmlCharEncodingOutputFunc func = handler->output.legacyFunc;
 
-        ret = conv(out, outlen, in, inlen, handler->outputCtxt);
-        if (ret > 0)
-            ret = XML_ENC_ERR_SUCCESS;
+        if (func == NULL) {
+            *outlen = 0;
+            *inlen = 0;
+            return(XML_ENC_ERR_INTERNAL);
+        }
+
+        ret = func(out, outlen, in, inlen);
+    } else {
+        xmlCharEncConvFunc func = handler->output.func;
+
+        if (func == NULL) {
+            *outlen = 0;
+            *inlen = 0;
+            return(XML_ENC_ERR_INTERNAL);
+        }
+
+        ret = func(out, outlen, in, inlen, handler->outputCtxt);
     }
-    else {
-        *outlen = 0;
-        *inlen = 0;
-        ret = XML_ENC_ERR_INTERNAL;
-    }
+
+    if (ret > 0)
+        ret = XML_ENC_ERR_SUCCESS;
 
     return(ret);
 }

@@ -2768,6 +2768,9 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                 if ((input->flags & XML_INPUT_HAS_ENCODING) == 0) {
                     xmlChar * guess;
 
+                    if (in > chunk)
+                        goto next_chunk;
+
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
                     guess = NULL;
 #else
@@ -2781,6 +2784,7 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                     }
                     input->flags |= XML_INPUT_HAS_ENCODING;
 
+                    eof = PARSER_PROGRESSIVE(ctxt);
                     goto restart;
                 }
 
@@ -3312,6 +3316,7 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
                     }
                     input->flags |= XML_INPUT_HAS_ENCODING;
 
+                    eof = PARSER_PROGRESSIVE(ctxt);
                     goto restart;
                 }
 

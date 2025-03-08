@@ -3162,6 +3162,130 @@ xmlCtxtSetDict(xmlParserCtxtPtr ctxt, xmlDictPtr dict) {
     ctxt->dict = dict;
 }
 
+/**
+ * xmlCtxtGetSaxHandler:
+ * @ctxt:  parser context
+ *
+ * Available since 2.14.0.
+ *
+ * Returns the SAX handler struct. This is not a copy and must not
+ * be freed. Handlers can be updated.
+ */
+xmlSAXHandler *
+xmlCtxtGetSaxHandler(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(NULL);
+
+    return(ctxt->sax);
+}
+
+/**
+ * xmlCtxtSetSaxHandler:
+ * @ctxt:  parser context
+ * @sax:  SAX handler
+ *
+ * Available since 2.14.0.
+ *
+ * Set the SAX handler struct to a copy of @sax.
+ *
+ * Returns 0 on success or -1 if arguments are invalid or a memory
+ * allocation failed.
+ */
+int
+xmlCtxtSetSaxHandler(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax) {
+    xmlSAXHandler *copy;
+
+    if ((ctxt == NULL) || (sax == NULL))
+        return(-1);
+
+    copy = xmlMalloc(sizeof(*copy));
+    if (copy == NULL)
+        return(-1);
+
+    memcpy(copy, sax, sizeof(*copy));
+    ctxt->sax = copy;
+
+    return(0);
+}
+
+/**
+ * xmlCtxtGetDocument:
+ * @ctxt:  parser context
+ *
+ * Available since 2.14.0.
+ *
+ * Returns the parsed document or NULL if a fatal error occurred when
+ * parsing. The document must be freed by the caller. Resets the
+ * context's document to NULL.
+ */
+xmlDocPtr
+xmlCtxtGetDocument(xmlParserCtxtPtr ctxt) {
+    xmlDocPtr doc;
+
+    if (ctxt == NULL)
+        return(NULL);
+
+    if ((ctxt->wellFormed) ||
+        (((ctxt->recovery) || (ctxt->html)) &&
+         (!xmlCtxtIsCatastrophicError(ctxt)))) {
+        doc = ctxt->myDoc;
+    } else {
+        doc = NULL;
+        xmlFreeDoc(ctxt->myDoc);
+    }
+    ctxt->myDoc = NULL;
+
+    return(doc);
+}
+
+/**
+ * xmlCtxtIsHtml:
+ * @ctxt:  parser context
+ *
+ * Available since 2.14.0.
+ *
+ * Returns 1 if this is a HTML parser context, 0 otherwise.
+ */
+int
+xmlCtxtIsHtml(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(0);
+
+    return(ctxt->html ? 1 : 0);
+}
+
+/**
+ * xmlCtxtIsStopped:
+ * @ctxt:  parser context
+ *
+ * Available since 2.14.0.
+ *
+ * Returns 1 if the parser is stopped, 0 otherwise.
+ */
+int
+xmlCtxtIsStopped(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(0);
+
+    return(PARSER_STOPPED(ctxt));
+}
+
+/**
+ * xmlCtxtGetValidCtxt:
+ * @ctxt:  parser context
+ *
+ * Available since 2.14.0.
+ *
+ * Returns the validation context.
+ */
+xmlValidCtxtPtr
+xmlCtxtGetValidCtxt(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL)
+        return(NULL);
+
+    return(&ctxt->vctxt);
+}
+
 /************************************************************************
  *									*
  *		Handling of node information				*

@@ -13816,17 +13816,9 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 
     xmlParseDocument(ctxt);
 
-    if ((ctxt->wellFormed) ||
-        ((ctxt->recovery) && (!xmlCtxtIsCatastrophicError(ctxt)))) {
-        ret = ctxt->myDoc;
-    } else {
-        if (ctxt->errNo == XML_ERR_OK)
-            xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR, "unknown error\n");
-
-        ret = NULL;
-	xmlFreeDoc(ctxt->myDoc);
-    }
-    ctxt->myDoc = NULL;
+    ret = xmlCtxtGetDocument(ctxt);
+    if ((ret == NULL) && (ctxt->errNo == XML_ERR_OK))
+        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR, "unknown error\n");
 
     /* assert(ctxt->inputNr == 1); */
     while (ctxt->inputNr > 0)

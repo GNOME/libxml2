@@ -5927,13 +5927,7 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
     ctxt->html = INSERT_INITIAL;
     htmlParseDocument(ctxt);
 
-    if (ctxt->errNo != XML_ERR_NO_MEMORY) {
-        ret = ctxt->myDoc;
-    } else {
-        ret = NULL;
-        xmlFreeDoc(ctxt->myDoc);
-    }
-    ctxt->myDoc = NULL;
+    ret = xmlCtxtGetDocument(ctxt);
 
     /* assert(ctxt->inputNr == 1); */
     while (ctxt->inputNr > 0)

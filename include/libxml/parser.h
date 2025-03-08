@@ -1405,6 +1405,19 @@ XMLPUBFUN xmlDictPtr
 XMLPUBFUN void
 		xmlCtxtSetDict		(xmlParserCtxtPtr ctxt,
 					 xmlDictPtr);
+XMLPUBFUN xmlSAXHandler *
+		xmlCtxtGetSaxHandler	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
+		xmlCtxtSetSaxHandler	(xmlParserCtxtPtr ctxt,
+					 const xmlSAXHandler *sax);
+XMLPUBFUN xmlDocPtr
+		xmlCtxtGetDocument	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
+		xmlCtxtIsHtml		(xmlParserCtxtPtr ctxt);
+XMLPUBFUN int
+		xmlCtxtIsStopped	(xmlParserCtxtPtr ctxt);
+XMLPUBFUN xmlValidCtxtPtr
+		xmlCtxtGetValidCtxt	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN const xmlChar *
 		xmlCtxtGetVersion	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN const xmlChar *

@@ -1037,6 +1037,17 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
 
+/**
+ * xmlInputFromFd:
+ * @buf:  parser input buffer
+ * @fd:  file descriptor
+ * @flags:  flags
+ *
+ * Update the buffer to read from @fd. Supports the XML_INPUT_UNZIP
+ * flag.
+ *
+ * Returns an xmlParserError code.
+ */
 int
 xmlInputFromFd(xmlParserInputBufferPtr buf, int fd, int flags) {
     xmlFdIOCtxt *fdctxt;

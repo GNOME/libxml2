@@ -5724,10 +5724,6 @@ crash if you try to modify the tree)'/>
     <typedef name='xmlCharEncoding' file='encoding' type='enum'/>
     <struct name='xmlCharEncodingHandler' file='encoding' type='struct _xmlCharEncodingHandler'>
       <field name='name' type='char *'/>
-      <field name='input' type='xmlCharEncodingInputFunc'/>
-      <field name='output' type='xmlCharEncodingOutputFunc'/>
-      <field name='iconv_in' type='void *'/>
-      <field name='iconv_out' type='void *'/>
       <field name='inputCtxt' type='void *'/>
       <field name='outputCtxt' type='void *'/>
       <field name='ctxtDtor' type='xmlCharEncConvCtxtDtor'/>
@@ -12263,14 +12259,14 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
     </function>
     <functype name='xmlResourceLoader' file='parser' module='parser'>
-      <info></info>
-      <return type='int' info=''/>
-      <arg name='ctxt' type='void *' info=''/>
-      <arg name='url' type='const char *' info=''/>
-      <arg name='publicId' type='const char *' info=''/>
-      <arg name='type' type='xmlResourceType' info=''/>
-      <arg name='flags' type='int' info=''/>
-      <arg name='out' type='xmlParserInputPtr *' info=''/>
+      <info>Callback for custom resource loaders.  @flags can contain XML_INPUT_UNZIP and XML_INPUT_NETWORK.</info>
+      <return type='int' info='an xmlParserError code.'/>
+      <arg name='ctxt' type='void *' info='parser context'/>
+      <arg name='url' type='const char *' info='URL to load'/>
+      <arg name='publicId' type='const char *' info='publid ID from DTD (optional)'/>
+      <arg name='type' type='xmlResourceType' info='resource type'/>
+      <arg name='flags' type='int' info='flags'/>
+      <arg name='out' type='xmlParserInputPtr *' info='result pointer'/>
     </functype>
     <function name='xmlSAX2AttributeDecl' file='SAX2' module='SAX2'>
       <info>An attribute definition has been parsed</info>

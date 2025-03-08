@@ -21,6 +21,7 @@ debugsym=None
 ignored_files = {
   "config.h": "generated portability layer",
   "libxml.h": "internal only",
+  "lintmain.c": "executable",
   "testModule.c": "test tool",
   "testapi.c": "generated regression tests",
   "runtest.c": "regression tests program",
@@ -33,6 +34,8 @@ ignored_files = {
   "nanoftp.h": "empty",
   "SAX.h": "empty",
   "xmlunicode.h": "empty",
+  "xmllint.c": "executable",
+  "xmlcatalog.c": "executable",
 }
 
 ignored_words = {

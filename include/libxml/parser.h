@@ -193,6 +193,24 @@ typedef struct _xmlStartTag xmlStartTag;
 typedef struct _xmlParserNsData xmlParserNsData;
 typedef struct _xmlAttrHashBucket xmlAttrHashBucket;
 
+/**
+ * xmlResourceLoader:
+ * @ctxt:  parser context
+ * @url:  URL to load
+ * @publicId:  publid ID from DTD (optional)
+ * @type:  resource type
+ * @flags:  flags
+ * @out:  result pointer
+ *
+ * Callback for custom resource loaders.
+ *
+ * @flags can contain XML_INPUT_UNZIP and XML_INPUT_NETWORK.
+ *
+ * On success, @out should be set to a new parser input object and
+ * XML_ERR_OK should be returned.
+ *
+ * Returns an xmlParserError code.
+ */
 typedef int
 (*xmlResourceLoader)(void *ctxt, const char *url, const char *publicId,
                      xmlResourceType type, int flags, xmlParserInputPtr *out);

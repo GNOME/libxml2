@@ -94,7 +94,7 @@ struct _xmlParserInput {
     /* Current column */
     int col;
     /* How many xmlChars already consumed */
-    unsigned long consumed XML_DEPRECATED_MEMBER;
+    unsigned long consumed;
     /* function to deallocate the base */
     xmlParserInputDeallocate free XML_DEPRECATED_MEMBER;
     /* unused */

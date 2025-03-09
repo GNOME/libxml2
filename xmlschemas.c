@@ -7715,6 +7715,7 @@ xmlSchemaParseAttributeGroupDefinition(xmlSchemaParserCtxtPtr pctxt,
     xmlNodePtr child = NULL;
     xmlAttrPtr attr;
     int hasRefs = 0;
+    int res;
 
     if ((pctxt == NULL) || (schema == NULL) || (node == NULL))
         return (NULL);
@@ -7769,12 +7770,13 @@ xmlSchemaParseAttributeGroupDefinition(xmlSchemaParserCtxtPtr pctxt,
     /*
     * Parse contained attribute decls/refs.
     */
-    if (xmlSchemaParseLocalAttributes(pctxt, schema, &child,
+    res = xmlSchemaParseLocalAttributes(pctxt, schema, &child,
 	(xmlSchemaItemListPtr *) &(ret->attrUses),
-	XML_SCHEMA_TYPE_ATTRIBUTEGROUP, &hasRefs) == -1)
-	return(NULL);
+	XML_SCHEMA_TYPE_ATTRIBUTEGROUP, &hasRefs);
     if (hasRefs)
 	ret->flags |= XML_SCHEMAS_ATTRGROUP_HAS_REFS;
+    if (res == -1)
+	return(NULL);
     /*
     * Parse the attribute wildcard.
     */

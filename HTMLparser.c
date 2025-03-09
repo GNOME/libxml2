@@ -2973,7 +2973,7 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
 
         if ((mode == 0) &&
             (!ctxt->keepBlanks) &&
-            (areBlanks(ctxt, buf, size))) {
+            (areBlanks(ctxt, buf, size) > 0)) {
             if (ctxt->sax->ignorableWhitespace != NULL)
                 ctxt->sax->ignorableWhitespace(ctxt->userData, buf, size);
         } else {

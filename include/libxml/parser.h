@@ -358,7 +358,7 @@ struct _xmlParserCtxt {
     void *_private;
 
     /* should the external subset be loaded */
-    int loadsubset XML_DEPRECATED_MEMBER;
+    int loadsubset;
     /* set line number in element content */
     int linenumbers XML_DEPRECATED_MEMBER;
     /* document's own catalog */

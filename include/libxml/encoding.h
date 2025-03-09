@@ -147,30 +147,6 @@ typedef int
 typedef void
 (*xmlCharEncConvCtxtDtor)(void *vctxt);
 
-typedef struct {
-    xmlCharEncConvFunc input;
-    xmlCharEncConvFunc output;
-    xmlCharEncConvCtxtDtor ctxtDtor;
-    void *inputCtxt;
-    void *outputCtxt;
-} xmlCharEncConverter;
-
-/**
- * xmlCharEncConvImpl:
- * vctxt:  user data
- * name:  encoding name
- * conv:  pointer to xmlCharEncConverter struct
- *
- * If this function returns XML_ERR_OK, it must fill the @conv struct
- * with a conversion function, and optional destructor and optional
- * input and output conversion contexts.
- *
- * Returns an xmlParserErrors code.
- */
-typedef int
-(*xmlCharEncConvImpl)(void *vctxt, const char *name,
-                      xmlCharEncConverter *conv);
-
 /*
  * Block defining the handlers for non UTF-8 encodings.
  *
@@ -193,6 +169,23 @@ struct _xmlCharEncodingHandler {
     xmlCharEncConvCtxtDtor ctxtDtor XML_DEPRECATED_MEMBER;
     int flags XML_DEPRECATED_MEMBER;
 };
+
+/**
+ * xmlCharEncConvImpl:
+ * @vctxt:  user data
+ * @name:  encoding name
+ * @output:  true if output encoding, false if input
+ * @out:  pointer to resulting handler
+ *
+ * If this function returns XML_ERR_OK, it must fill the @out
+ * pointer with an encoding handler. The handler can be obtained
+ * from xmlCharEncNewCustomHandler.
+ *
+ * Returns an xmlParserErrors code.
+ */
+typedef int
+(*xmlCharEncConvImpl)(void *vctxt, const char *name, int output,
+                      xmlCharEncodingHandler **out);
 
 /*
  * Interfaces for encoding handlers.
@@ -226,6 +219,14 @@ XMLPUBFUN xmlCharEncodingHandlerPtr
 	xmlNewCharEncodingHandler	(const char *name,
 					 xmlCharEncodingInputFunc input,
 					 xmlCharEncodingOutputFunc output);
+XMLPUBFUN int
+	xmlCharEncNewCustomHandler	(const char *name,
+					 xmlCharEncConvFunc input,
+					 xmlCharEncConvFunc output,
+					 xmlCharEncConvCtxtDtor ctxtDtor,
+					 void *inputCtxt,
+					 void *outputCtxt,
+					 xmlCharEncodingHandler **out);
 
 /*
  * Interfaces for encoding names and aliases.

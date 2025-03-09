@@ -354,7 +354,6 @@
      <exports symbol='xmlCharEncodingHandler' type='typedef'/>
      <exports symbol='xmlCharEncodingHandlerPtr' type='typedef'/>
      <exports symbol='_xmlCharEncodingHandler' type='struct'/>
-     <exports symbol='xmlCharEncConverter' type='struct'/>
      <exports symbol='xmlAddEncodingAlias' type='function'/>
      <exports symbol='xmlCharEncCloseFunc' type='function'/>
      <exports symbol='xmlCharEncConvCtxtDtor' type='function'/>
@@ -362,6 +361,7 @@
      <exports symbol='xmlCharEncConvImpl' type='function'/>
      <exports symbol='xmlCharEncFirstLine' type='function'/>
      <exports symbol='xmlCharEncInFunc' type='function'/>
+     <exports symbol='xmlCharEncNewCustomHandler' type='function'/>
      <exports symbol='xmlCharEncOutFunc' type='function'/>
      <exports symbol='xmlCharEncodingInputFunc' type='function'/>
      <exports symbol='xmlCharEncodingOutputFunc' type='function'/>
@@ -8116,11 +8116,12 @@ crash if you try to modify the tree)'/>
       <arg name='vctxt' type='void *' info='conversion context'/>
     </functype>
     <functype name='xmlCharEncConvImpl' file='encoding' module='encoding'>
-      <info>vctxt:  user data name:  encoding name conv:  pointer to xmlCharEncConverter struct  If this function returns XML_ERR_OK, it must fill the @conv struct with a conversion function, and optional destructor and optional input and output conversion contexts.</info>
+      <info>If this function returns XML_ERR_OK, it must fill the @out pointer with an encoding handler. The handler can be obtained from xmlCharEncNewCustomHandler.</info>
       <return type='int' info='an xmlParserErrors code.'/>
-      <arg name='vctxt' type='void *' info=''/>
-      <arg name='name' type='const char *' info=''/>
-      <arg name='conv' type='xmlCharEncConverter *' info=''/>
+      <arg name='vctxt' type='void *' info='user data'/>
+      <arg name='name' type='const char *' info='encoding name'/>
+      <arg name='output' type='int' info='true if output encoding, false if input'/>
+      <arg name='out' type='xmlCharEncodingHandler **' info='pointer to resulting handler'/>
     </functype>
     <function name='xmlCharEncFirstLine' file='encoding' module='encoding'>
       <info>DEPERECATED: Don&apos;t use.</info>
@@ -8135,6 +8136,17 @@ crash if you try to modify the tree)'/>
       <arg name='handler' type='xmlCharEncodingHandler *' info='char encoding transformation data structure'/>
       <arg name='out' type='xmlBufferPtr' info='an xmlBuffer for the output.'/>
       <arg name='in' type='xmlBufferPtr' info='an xmlBuffer for the input'/>
+    </function>
+    <function name='xmlCharEncNewCustomHandler' file='encoding' module='encoding'>
+      <info>Create a custom xmlCharEncodingHandler.</info>
+      <return type='int' info='an xmlParserError code.'/>
+      <arg name='name' type='const char *' info='the encoding name'/>
+      <arg name='input' type='xmlCharEncConvFunc' info='input callback which converts to UTF-8'/>
+      <arg name='output' type='xmlCharEncConvFunc' info='output callback which converts from UTF-8'/>
+      <arg name='ctxtDtor' type='xmlCharEncConvCtxtDtor' info='context destructor'/>
+      <arg name='inputCtxt' type='void *' info='context for input callback'/>
+      <arg name='outputCtxt' type='void *' info='context for output callback'/>
+      <arg name='out' type='xmlCharEncodingHandler **' info='pointer to resulting handler'/>
     </function>
     <function name='xmlCharEncOutFunc' file='encoding' module='encoding'>
       <info>Generic front-end for the encoding handler output function a first call with @in == NULL has to be made firs to initiate the output in case of non-stateless encoding needing to initiate their state or the output (like the BOM in UTF16). In case of UTF8 sequence conversion errors for the given encoder, the content will be automatically remapped to a CharRef sequence.</info>
@@ -12259,7 +12271,7 @@ crash if you try to modify the tree)'/>
       <return type='void'/>
     </function>
     <functype name='xmlResourceLoader' file='parser' module='parser'>
-      <info>Callback for custom resource loaders.  @flags can contain XML_INPUT_UNZIP and XML_INPUT_NETWORK.</info>
+      <info>Callback for custom resource loaders.  @flags can contain XML_INPUT_UNZIP and XML_INPUT_NETWORK.  On success, @out should be set to a new parser input object and XML_ERR_OK should be returned.</info>
       <return type='int' info='an xmlParserError code.'/>
       <arg name='ctxt' type='void *' info='parser context'/>
       <arg name='url' type='const char *' info='URL to load'/>

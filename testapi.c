@@ -8074,6 +8074,16 @@ test_xmlCharEncInFunc(void) {
 
 
 static int
+test_xmlCharEncNewCustomHandler(void) {
+    int test_ret = 0;
+
+
+    /* missing type support */
+    return(test_ret);
+}
+
+
+static int
 test_xmlCharEncOutFunc(void) {
     int test_ret = 0;
 
@@ -8544,11 +8554,12 @@ static int
 test_encoding(void) {
     int test_ret = 0;
 
-    if (quiet == 0) printf("Testing encoding : 16 of 22 functions ...\n");
+    if (quiet == 0) printf("Testing encoding : 16 of 23 functions ...\n");
     test_ret += test_xmlAddEncodingAlias();
     test_ret += test_xmlCharEncCloseFunc();
     test_ret += test_xmlCharEncFirstLine();
     test_ret += test_xmlCharEncInFunc();
+    test_ret += test_xmlCharEncNewCustomHandler();
     test_ret += test_xmlCharEncOutFunc();
     test_ret += test_xmlCleanupCharEncodingHandlers();
     test_ret += test_xmlCleanupEncodingAliases();

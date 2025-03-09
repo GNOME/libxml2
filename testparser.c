@@ -987,26 +987,22 @@ rot13ConvCtxtDtor(void *vctxt) {
 }
 
 static int
-rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name,
-              xmlCharEncConverter *conv) {
+rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name, int output,
+              xmlCharEncodingHandler **out) {
     int *inputCtxt;
 
-    if (strcmp(name, "rot13") != 0) {
-        fprintf(stderr, "rot13ConvImpl received wrong name\n");
-        charEncConvImplError = 1;
+    if (strcmp(name, "rot13") != 0)
+        return xmlCreateCharEncodingHandler(name, output, NULL, NULL, out);
 
+    if (output)
         return XML_ERR_UNSUPPORTED_ENCODING;
-    }
 
-    conv->input = rot13Convert;
-    conv->output = rot13Convert;
-    conv->ctxtDtor = rot13ConvCtxtDtor;
-    
     inputCtxt = xmlMalloc(sizeof(*inputCtxt));
     *inputCtxt = 13;
-    conv->inputCtxt = inputCtxt;
 
-    return XML_ERR_OK;
+    return xmlCharEncNewCustomHandler(name, rot13Convert, rot13Convert,
+                                      rot13ConvCtxtDtor, inputCtxt, NULL,
+                                      out);
 }
 
 static int

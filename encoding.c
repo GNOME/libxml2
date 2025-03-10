@@ -668,15 +668,13 @@ xmlCharEncNewCustomHandler(const char *name,
 
     handler = xmlMalloc(sizeof(*handler));
     if (handler == NULL)
-        return(XML_ERR_NO_MEMORY);
+        goto error;
     memset(handler, 0, sizeof(*handler));
 
     if (name != NULL) {
         handler->name = xmlMemStrdup(name);
-        if (handler->name == NULL) {
-            xmlFree(handler);
-            return(XML_ERR_NO_MEMORY);
-        }
+        if (handler->name == NULL)
+            goto error;
     }
 
     handler->input.func = input;
@@ -687,6 +685,18 @@ xmlCharEncNewCustomHandler(const char *name,
 
     *out = handler;
     return(XML_ERR_OK);
+
+error:
+    xmlFree(handler);
+
+    if (ctxtDtor != NULL) {
+        if (inputCtxt != NULL)
+            ctxtDtor(inputCtxt);
+        if (outputCtxt != NULL)
+            ctxtDtor(outputCtxt);
+    }
+
+    return(XML_ERR_NO_MEMORY);
 }
 
 /**

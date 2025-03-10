@@ -597,6 +597,49 @@ xmlParserGrow(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * xmlParserCheckEOF:
+ * @ctxt:  parser ctxt
+ * @code:  error code
+ *
+ * Raises an error with @code if the input wasn't consumed
+ * completely.
+ */
+void
+xmlParserCheckEOF(xmlParserCtxtPtr ctxt, xmlParserErrors code) {
+    xmlParserInputPtr in = ctxt->input;
+    xmlParserInputBufferPtr buf;
+
+    if (ctxt->errNo != XML_ERR_OK)
+        return;
+
+    if (in->cur < in->end) {
+        xmlFatalErr(ctxt, code, NULL);
+        return;
+    }
+
+    buf = in->buf;
+    if ((buf != NULL) && (buf->encoder != NULL)) {
+        size_t curBase = in->cur - in->base;
+        size_t sizeOut = 64;
+        int ret;
+
+        /*
+         * Check for truncated multi-byte sequence
+         */
+        ret = xmlCharEncInput(buf, &sizeOut, /* flush */ 1);
+        xmlBufUpdateInput(buf->buffer, in, curBase);
+        if (ret < 0) {
+            xmlCtxtErrIO(ctxt, buf->error, NULL);
+            return;
+        }
+
+        /* Shouldn't happen */
+        if (in->cur < in->end)
+            xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "expected EOF");
+    }
+}
+
+/**
  * xmlParserInputGrow:
  * @in:  an XML parser input
  * @len:  an indicative size for the lookahead
@@ -1105,7 +1148,8 @@ xmlDetectEBCDIC(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr *hout) {
         return(res);
     outlen = sizeof(out) - 1;
     inlen = input->end - input->cur;
-    res = xmlEncInputChunk(handler, out, &outlen, input->cur, &inlen);
+    res = xmlEncInputChunk(handler, out, &outlen, input->cur, &inlen,
+                           /* flush */ 0);
     /*
      * Return the EBCDIC handler if decoding failed. The error will
      * be reported later.
@@ -1354,7 +1398,7 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
             nbchars = SIZE_MAX;
         else
             nbchars = 4000 /* MINLEN */;
-        res = xmlCharEncInput(in, &nbchars);
+        res = xmlCharEncInput(in, &nbchars, /* flush */ 0);
         if (res < 0)
             code = in->error;
     }

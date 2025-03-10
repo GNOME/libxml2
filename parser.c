@@ -7300,9 +7300,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
     while (ctxt->inputNr > oldInputNr)
         xmlPopPE(ctxt);
 
-    if (RAW != 0) {
-	xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-    }
+    xmlParserCheckEOF(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED);
 }
 
 /**
@@ -9875,8 +9873,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
 
     xmlParseContentInternal(ctxt);
 
-    if (ctxt->input->cur < ctxt->input->end)
-	xmlFatalErr(ctxt, XML_ERR_NOT_WELL_BALANCED, NULL);
+    xmlParserCheckEOF(ctxt, XML_ERR_NOT_WELL_BALANCED);
 }
 
 /**
@@ -10737,16 +10734,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
 	 */
 	xmlParseMisc(ctxt);
 
-        if (ctxt->input->cur < ctxt->input->end) {
-            if (ctxt->wellFormed)
-	        xmlFatalErr(ctxt, XML_ERR_DOCUMENT_END, NULL);
-        } else if ((ctxt->input->buf != NULL) &&
-                   (ctxt->input->buf->encoder != NULL) &&
-                   (ctxt->input->buf->error == 0) &&
-                   (!xmlBufIsEmpty(ctxt->input->buf->raw))) {
-            xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,
-                           "Truncated multi-byte sequence at EOF\n");
-        }
+        xmlParserCheckEOF(ctxt, XML_ERR_DOCUMENT_END);
     }
 
     ctxt->instate = XML_PARSER_EOF;
@@ -11596,11 +11584,8 @@ xmlParseChunk(xmlParserCtxtPtr ctxt, const char *chunk, int size,
                 xmlFatalErrMsg(ctxt, XML_ERR_DOCUMENT_EMPTY,
                                "Start tag expected, '<' not found\n");
             }
-        } else if ((ctxt->input->buf->encoder != NULL) &&
-                   (ctxt->input->buf->error == 0) &&
-                   (!xmlBufIsEmpty(ctxt->input->buf->raw))) {
-            xmlFatalErrMsg(ctxt, XML_ERR_INVALID_CHAR,
-                           "Truncated multi-byte sequence at EOF\n");
+        } else {
+            xmlParserCheckEOF(ctxt, XML_ERR_DOCUMENT_END);
         }
 	if (ctxt->instate != XML_PARSER_EOF) {
             ctxt->instate = XML_PARSER_EOF;

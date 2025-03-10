@@ -2201,7 +2201,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	 * convert as much as possible to the parser reading buffer.
 	 */
         nbchars = SIZE_MAX;
-	if (xmlCharEncInput(in, &nbchars) < 0)
+	if (xmlCharEncInput(in, &nbchars, /* flush */ 0) < 0)
             return(-1);
         if (nbchars > INT_MAX)
             nbchars = INT_MAX;
@@ -2312,7 +2312,7 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         else
             sizeOut = SIZE_MAX;
 
-	if (xmlCharEncInput(in, &sizeOut) < 0)
+	if (xmlCharEncInput(in, &sizeOut, /* flush */ 0) < 0)
 	    return(-1);
         res = sizeOut;
     }

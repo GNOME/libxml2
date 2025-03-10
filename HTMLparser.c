@@ -4385,6 +4385,11 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 
     htmlParseContent(ctxt);
 
+    /*
+     * Only check for truncated multi-byte sequences
+     */
+    xmlParserCheckEOF(ctxt, XML_ERR_INTERNAL_ERROR);
+
     /* TODO: Use xmlCtxtIsCatastrophicError */
     if (ctxt->errNo != XML_ERR_NO_MEMORY) {
         xmlNodePtr cur;
@@ -4509,11 +4514,9 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     htmlParseContent(ctxt);
 
     /*
-     * autoclose
+     * Only check for truncated multi-byte sequences
      */
-    if (CUR == 0)
-	htmlAutoCloseOnEnd(ctxt);
-
+    xmlParserCheckEOF(ctxt, XML_ERR_INTERNAL_ERROR);
 
     /*
      * SAX: end of the document processing.
@@ -5237,12 +5240,15 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 int
 htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
               int terminate) {
-    if ((ctxt == NULL) || (ctxt->input == NULL))
+    if ((ctxt == NULL) ||
+        (ctxt->input == NULL) || (ctxt->input->buf == NULL) ||
+        (size < 0) ||
+        ((size > 0) && (chunk == NULL)))
 	return(XML_ERR_ARGUMENT);
     if (PARSER_STOPPED(ctxt) != 0)
         return(ctxt->errNo);
-    if ((size > 0) && (chunk != NULL) && (ctxt->input != NULL) &&
-        (ctxt->input->buf != NULL))  {
+
+    if (size > 0)  {
 	size_t pos = ctxt->input->cur - ctxt->input->base;
 	int res;
 
@@ -5260,6 +5266,11 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 
     if ((terminate) && (ctxt->instate != XML_PARSER_EOF)) {
         htmlAutoCloseOnEnd(ctxt);
+
+        /*
+         * Only check for truncated multi-byte sequences
+         */
+        xmlParserCheckEOF(ctxt, XML_ERR_INTERNAL_ERROR);
 
         if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
             ctxt->sax->endDocument(ctxt->userData);

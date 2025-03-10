@@ -113,35 +113,35 @@ static const xmlEncTableEntry xmlEncTable[] = {
 };
 
 static int
-asciiToAscii(unsigned char* out, int *outlen,
-             const unsigned char* in, int *inlen, void *vctxt);
+asciiToAscii(void *vctxt, unsigned char* out, int *outlen,
+             const unsigned char* in, int *inlen, int flush);
 static int
-UTF8ToUTF8(unsigned char* out, int *outlen,
-           const unsigned char* inb, int *inlenb, void *vctxt);
+UTF8ToUTF8(void *vctxt, unsigned char* out, int *outlen,
+           const unsigned char* inb, int *inlenb, int flush);
 static int
-latin1ToUTF8(unsigned char* out, int *outlen,
-             const unsigned char* in, int *inlen, void *vctxt);
+latin1ToUTF8(void *vctxt, unsigned char* out, int *outlen,
+             const unsigned char* in, int *inlen, int flush);
 static int
-UTF16LEToUTF8(unsigned char* out, int *outlen,
-              const unsigned char* inb, int *inlenb, void *vctxt);
+UTF16LEToUTF8(void *vctxt, unsigned char* out, int *outlen,
+              const unsigned char* inb, int *inlenb, int flush);
 static int
-UTF16BEToUTF8(unsigned char* out, int *outlen,
-              const unsigned char* inb, int *inlenb, void *vctxt);
+UTF16BEToUTF8(void *vctxt, unsigned char* out, int *outlen,
+              const unsigned char* inb, int *inlenb, int flush);
 
 #ifdef LIBXML_OUTPUT_ENABLED
 
 static int
-UTF8ToLatin1(unsigned char* outb, int *outlen,
-             const unsigned char* in, int *inlen, void *vctxt);
+UTF8ToLatin1(void *vctxt, unsigned char* outb, int *outlen,
+             const unsigned char* in, int *inlen, int flush);
 static int
-UTF8ToUTF16(unsigned char* outb, int *outlen,
-            const unsigned char* in, int *inlen, void *vctxt);
+UTF8ToUTF16(void *vctxt, unsigned char* outb, int *outlen,
+            const unsigned char* in, int *inlen, int flush);
 static int
-UTF8ToUTF16LE(unsigned char* outb, int *outlen,
-              const unsigned char* in, int *inlen, void *vctxt);
+UTF8ToUTF16LE(void *vctxt, unsigned char* outb, int *outlen,
+              const unsigned char* in, int *inlen, int flush);
 static int
-UTF8ToUTF16BE(unsigned char* outb, int *outlen,
-              const unsigned char* in, int *inlen, void *vctxt);
+UTF8ToUTF16BE(void *vctxt, unsigned char* outb, int *outlen,
+              const unsigned char* in, int *inlen, int flush);
 
 #else /* LIBXML_OUTPUT_ENABLED */
 
@@ -154,8 +154,8 @@ UTF8ToUTF16BE(unsigned char* outb, int *outlen,
 
 #if defined(LIBXML_OUTPUT_ENABLED) && defined(LIBXML_HTML_ENABLED)
 static int
-UTF8ToHtmlWrapper(unsigned char *out, int *outlen,
-                  const unsigned char *in, int *inlen, void *vctxt);
+UTF8ToHtmlWrapper(void *vctxt, unsigned char *out, int *outlen,
+                  const unsigned char *in, int *inlen, int flush);
 #else
 #define UTF8ToHtmlWrapper NULL
 #endif
@@ -166,11 +166,11 @@ UTF8ToHtmlWrapper(unsigned char *out, int *outlen,
 #include "iso8859x.inc"
 
 static int
-ISO8859xToUTF8(unsigned char* out, int *outlen,
-               const unsigned char* in, int *inlen, void *vctxt);
+ISO8859xToUTF8(void *vctxt, unsigned char* out, int *outlen,
+               const unsigned char* in, int *inlen, int flush);
 static int
-UTF8ToISO8859x(unsigned char *out, int *outlen,
-               const unsigned char *in, int *inlen, void *vctxt);
+UTF8ToISO8859x(void *vctxt, unsigned char *out, int *outlen,
+               const unsigned char *in, int *inlen, int flush);
 
 #define MAKE_ISO_HANDLER(name, n) \
     { (char *) name, { ISO8859xToUTF8 }, { UTF8ToISO8859x }, \
@@ -1073,6 +1073,7 @@ typedef struct {
  * @outlen:  the length of @out
  * @in:  a pointer to an array of input bytes
  * @inlen:  the length of @in
+ * @flush:  end of input
  *
  * Returns an XML_ENC_ERR code.
  *
@@ -1081,8 +1082,9 @@ typedef struct {
  * The value of @outlen after return is the number of octets produced.
  */
 static int
-xmlIconvConvert(unsigned char *out, int *outlen,
-                const unsigned char *in, int *inlen, void *vctxt) {
+xmlIconvConvert(void *vctxt, unsigned char *out, int *outlen,
+                const unsigned char *in, int *inlen,
+                int flush ATTRIBUTE_UNUSED) {
     xmlIconvCtxt *ctxt = vctxt;
     size_t icv_inlen, icv_outlen;
     const char *icv_in = (const char *) in;
@@ -1293,6 +1295,7 @@ struct _uconv_t {
  * @outlen:  the length of @out
  * @in:  a pointer to an array of input bytes
  * @inlen:  the length of @in
+ * @flush:  end of input
  *
  * Returns an XML_ENC_ERR code.
  *
@@ -1301,8 +1304,8 @@ struct _uconv_t {
  * The value of @outlen after return is the number of octets produced.
  */
 static int
-xmlUconvConvert(unsigned char *out, int *outlen,
-                const unsigned char *in, int *inlen, void *vctxt) {
+xmlUconvConvert(void *vctxt, unsigned char *out, int *outlen,
+                const unsigned char *in, int *inlen, int flush) {
     xmlUconvCtxt *cd = vctxt;
     const char *ucv_in = (const char *) in;
     char *ucv_out = (char *) out;
@@ -1317,14 +1320,10 @@ xmlUconvConvert(unsigned char *out, int *outlen,
     }
 
     /*
-     * Note that the ICU API is stateful. It can always consume a certain
-     * amount of input even if the output buffer would overflow. The
-     * remaining input must be processed by calling ucnv_convertEx with a
-     * possibly empty input buffer.
-     *
-     * ucnv_convertEx is always called with reset and flush set to 0,
-     * so we don't mess up the state. This should never generate
-     * U_TRUNCATED_CHAR_FOUND errors.
+     * The ICU API can consume input, including partial sequences,
+     * even if the output buffer would overflow. The remaining input
+     * must be processed by calling ucnv_convertEx with a possibly
+     * empty input buffer.
      */
     if (cd->isInput) {
         source = cd->uconv;
@@ -1337,7 +1336,8 @@ xmlUconvConvert(unsigned char *out, int *outlen,
     ucnv_convertEx(target, source, &ucv_out, ucv_out + *outlen,
                    &ucv_in, ucv_in + *inlen, cd->pivot_buf,
                    &cd->pivot_source, &cd->pivot_target,
-                   cd->pivot_buf + ICU_PIVOT_BUF_SIZE, 0, 0, &err);
+                   cd->pivot_buf + ICU_PIVOT_BUF_SIZE,
+                   /* reset */ 0, flush, &err);
 
     *inlen = ucv_in - (const char*) in;
     *outlen = ucv_out - (char *) out;
@@ -1347,8 +1347,8 @@ xmlUconvConvert(unsigned char *out, int *outlen,
     } else {
         switch (err) {
             case U_TRUNCATED_CHAR_FOUND:
-                /* Shouldn't happen without flush */
-                ret = XML_ENC_ERR_SUCCESS;
+                /* Should only happen with flush */
+                ret = XML_ENC_ERR_INPUT;
                 break;
 
             case U_BUFFER_OVERFLOW_ERROR:
@@ -1510,6 +1510,7 @@ xmlEncConvertError(int code) {
  * @outlen:  the length of @out
  * @in:  a pointer to an array of input bytes
  * @inlen:  the length of @in
+ * @flush:  end of input
  *
  * The value of @inlen after return is the number of octets consumed
  *     as the return value is 0, else unpredictable.
@@ -1519,7 +1520,8 @@ xmlEncConvertError(int code) {
  */
 int
 xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
-                 int *outlen, const unsigned char *in, int *inlen) {
+                 int *outlen, const unsigned char *in, int *inlen,
+                 int flush) {
     int ret;
 
     if (handler->flags & XML_HANDLER_LEGACY) {
@@ -1534,6 +1536,7 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
         ret = func(out, outlen, in, inlen);
     } else {
         xmlCharEncConvFunc func = handler->input.func;
+        int oldInlen;
 
         if (func == NULL) {
             *outlen = 0;
@@ -1541,7 +1544,14 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
             return(XML_ENC_ERR_INTERNAL);
         }
 
-        ret = func(out, outlen, in, inlen, handler->inputCtxt);
+        oldInlen = *inlen;
+        ret = func(handler->inputCtxt, out, outlen, in, inlen, flush);
+
+        /*
+         * Check for truncated multi-byte sequence.
+         */
+        if ((flush) && (ret == XML_ENC_ERR_SUCCESS) && (*inlen != oldInlen))
+            ret = XML_ENC_ERR_INPUT;
     }
 
     if (ret > 0)
@@ -1588,7 +1598,7 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
             return(XML_ENC_ERR_INTERNAL);
         }
 
-        ret = func(out, outlen, in, inlen, handler->outputCtxt);
+        ret = func(handler->outputCtxt, out, outlen, in, inlen, /* flush */ 0);
     }
 
     if (ret > 0)
@@ -1617,6 +1627,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
  * xmlCharEncInput:
  * @input: a parser input buffer
  * @sizeOut:  pointer to output size
+ * @flush:  end of input
  *
  * @sizeOut should be set to the maximum output size (or SIZE_MAX).
  * After return, it is set to the number of bytes written.
@@ -1626,7 +1637,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
  * Returns an XML_ENC_ERR code.
  */
 int
-xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut)
+xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut, int flush)
 {
     xmlBufPtr out, in;
     const xmlChar *dataIn;
@@ -1644,7 +1655,7 @@ xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut)
     *sizeOut = 0;
 
     availIn = xmlBufUse(in);
-    if (availIn == 0)
+    if ((availIn == 0) && (!flush))
         return(0);
     dataIn = xmlBufContent(in);
     totalIn = 0;
@@ -1675,7 +1686,7 @@ xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut)
         }
 
         ret = xmlEncInputChunk(input->encoder, xmlBufEnd(out), &c_out,
-                               dataIn, &c_in);
+                               dataIn, &c_in, flush && completeIn);
 
         totalIn += c_in;
         dataIn += c_in;
@@ -1750,7 +1761,7 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
         written = out->size - out->use - 1;
     }
     ret = xmlEncInputChunk(handler, &out->content[out->use], &written,
-                           in->content, &toconv);
+                           in->content, &toconv, /* flush */ 0);
     xmlBufferShrink(in, toconv);
     out->use += written;
     out->content[out->use] = 0;
@@ -2077,9 +2088,10 @@ xmlByteConsumed(xmlParserCtxtPtr ctxt) {
  ************************************************************************/
 
 static int
-asciiToAscii(unsigned char* out, int *poutlen,
+asciiToAscii(void *vctxt ATTRIBUTE_UNUSED,
+             unsigned char* out, int *poutlen,
              const unsigned char* in, int *pinlen,
-             void *vctxt ATTRIBUTE_UNUSED) {
+             int flush ATTRIBUTE_UNUSED) {
     const unsigned char *inend;
     const unsigned char *instart = in;
     int inlen, outlen, ret;
@@ -2121,9 +2133,10 @@ asciiToAscii(unsigned char* out, int *poutlen,
 }
 
 static int
-latin1ToUTF8(unsigned char* out, int *outlen,
+latin1ToUTF8(void *vctxt ATTRIBUTE_UNUSED,
+             unsigned char* out, int *outlen,
              const unsigned char* in, int *inlen,
-             void *vctxt ATTRIBUTE_UNUSED) {
+             int flush ATTRIBUTE_UNUSED) {
     unsigned char* outstart = out;
     const unsigned char* instart = in;
     unsigned char* outend;
@@ -2180,13 +2193,15 @@ done:
 int
 xmlIsolat1ToUTF8(unsigned char* out, int *outlen,
                  const unsigned char* in, int *inlen) {
-    return(latin1ToUTF8(out, outlen, in, inlen, NULL));
+    return(latin1ToUTF8(/* ctxt */ NULL, out, outlen, in, inlen,
+                        /* flush */ 0));
 }
 
 static int
-UTF8ToUTF8(unsigned char* out, int *outlen,
+UTF8ToUTF8(void *vctxt ATTRIBUTE_UNUSED,
+           unsigned char* out, int *outlen,
            const unsigned char* in, int *inlen,
-           void *vctxt ATTRIBUTE_UNUSED) {
+           int flush ATTRIBUTE_UNUSED) {
     int len;
     int ret;
 
@@ -2214,9 +2229,10 @@ UTF8ToUTF8(unsigned char* out, int *outlen,
 
 #ifdef LIBXML_OUTPUT_ENABLED
 static int
-UTF8ToLatin1(unsigned char* out, int *outlen,
+UTF8ToLatin1(void *vctxt ATTRIBUTE_UNUSED,
+             unsigned char* out, int *outlen,
              const unsigned char* in, int *inlen,
-             void *vctxt ATTRIBUTE_UNUSED) {
+             int flush ATTRIBUTE_UNUSED) {
     const unsigned char* outend;
     const unsigned char* outstart = out;
     const unsigned char* instart = in;
@@ -2286,14 +2302,16 @@ xmlUTF8ToIsolat1(unsigned char* out, int *outlen,
     if ((out == NULL) || (outlen == NULL) || (in == NULL) || (inlen == NULL))
         return(XML_ENC_ERR_INTERNAL);
 
-    return(UTF8ToLatin1(out, outlen, in, inlen, NULL));
+    return(UTF8ToLatin1(/* ctxt */ NULL, out, outlen, in, inlen,
+                        /* flush */ 0));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 static int
-UTF16LEToUTF8(unsigned char *out, int *outlen,
+UTF16LEToUTF8(void *vctxt ATTRIBUTE_UNUSED,
+              unsigned char *out, int *outlen,
               const unsigned char *in, int *inlen,
-              void *vctxt ATTRIBUTE_UNUSED) {
+              int flush ATTRIBUTE_UNUSED) {
     const unsigned char *instart = in;
     const unsigned char *inend = in + (*inlen & ~1);
     unsigned char *outstart = out;
@@ -2360,9 +2378,10 @@ done:
 
 #ifdef LIBXML_OUTPUT_ENABLED
 static int
-UTF8ToUTF16LE(unsigned char *out, int *outlen,
+UTF8ToUTF16LE(void *vctxt ATTRIBUTE_UNUSED,
+              unsigned char *out, int *outlen,
               const unsigned char *in, int *inlen,
-              void *vctxt ATTRIBUTE_UNUSED) {
+              int flush ATTRIBUTE_UNUSED) {
     const unsigned char *instart = in;
     const unsigned char *inend;
     unsigned char *outstart = out;
@@ -2462,9 +2481,10 @@ done:
 }
 
 static int
-UTF8ToUTF16(unsigned char* outb, int *outlen,
+UTF8ToUTF16(void *vctxt,
+            unsigned char* outb, int *outlen,
             const unsigned char* in, int *inlen,
-            void *vctxt ATTRIBUTE_UNUSED) {
+            int flush) {
     if (in == NULL) {
 	/*
 	 * initialization, add the Byte Order Mark for UTF-16LE
@@ -2480,14 +2500,15 @@ UTF8ToUTF16(unsigned char* outb, int *outlen,
 	*inlen = 0;
 	return(0);
     }
-    return (UTF8ToUTF16LE(outb, outlen, in, inlen, NULL));
+    return (UTF8ToUTF16LE(vctxt, outb, outlen, in, inlen, flush));
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 static int
-UTF16BEToUTF8(unsigned char *out, int *outlen,
+UTF16BEToUTF8(void *vctxt ATTRIBUTE_UNUSED,
+              unsigned char *out, int *outlen,
               const unsigned char *in, int *inlen,
-              void *vctxt ATTRIBUTE_UNUSED) {
+              int flush ATTRIBUTE_UNUSED) {
     const unsigned char *instart = in;
     const unsigned char *inend = in + (*inlen & ~1);
     unsigned char *outstart = out;
@@ -2554,9 +2575,10 @@ done:
 
 #ifdef LIBXML_OUTPUT_ENABLED
 static int
-UTF8ToUTF16BE(unsigned char *out, int *outlen,
+UTF8ToUTF16BE(void *vctxt ATTRIBUTE_UNUSED,
+              unsigned char *out, int *outlen,
               const unsigned char *in, int *inlen,
-              void *vctxt ATTRIBUTE_UNUSED) {
+              int flush ATTRIBUTE_UNUSED) {
     const unsigned char *instart = in;
     const unsigned char *inend;
     unsigned char *outstart = out;
@@ -2657,10 +2679,11 @@ done:
 
 #if defined(LIBXML_OUTPUT_ENABLED) && defined(LIBXML_HTML_ENABLED)
 static int
-UTF8ToHtmlWrapper(unsigned char *out, int *outlen,
+UTF8ToHtmlWrapper(void *vctxt ATTRIBUTE_UNUSED,
+                  unsigned char *out, int *outlen,
                   const unsigned char *in, int *inlen,
-                  void *vctxt ATTRIBUTE_UNUSED) {
-    return(UTF8ToHtml(out, outlen, in, inlen));
+                  int flush ATTRIBUTE_UNUSED) {
+    return(htmlUTF8ToHtml(out, outlen, in, inlen));
 }
 #endif
 
@@ -2668,8 +2691,10 @@ UTF8ToHtmlWrapper(unsigned char *out, int *outlen,
     defined(LIBXML_ISO8859X_ENABLED)
 
 static int
-UTF8ToISO8859x(unsigned char *out, int *outlen,
-               const unsigned char *in, int *inlen, void *vctxt) {
+UTF8ToISO8859x(void *vctxt,
+               unsigned char *out, int *outlen,
+               const unsigned char *in, int *inlen,
+               int flush ATTRIBUTE_UNUSED) {
     const unsigned char *xlattable = vctxt;
     const unsigned char *instart = in;
     const unsigned char *inend;
@@ -2748,8 +2773,10 @@ done:
 }
 
 static int
-ISO8859xToUTF8(unsigned char* out, int *outlen,
-               const unsigned char* in, int *inlen, void *vctxt) {
+ISO8859xToUTF8(void *vctxt,
+               unsigned char* out, int *outlen,
+               const unsigned char* in, int *inlen,
+               int flush ATTRIBUTE_UNUSED) {
     unsigned short const *unicodetable = vctxt;
     const unsigned char* instart = in;
     const unsigned char* inend;

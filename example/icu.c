@@ -31,8 +31,8 @@ typedef struct {
 } myConvCtxt;
 
 static int
-icuConvert(unsigned char *out, int *outlen,
-           const unsigned char *in, int *inlen, void *vctxt) {
+icuConvert(void *vctxt, unsigned char *out, int *outlen,
+           const unsigned char *in, int *inlen, int flush) {
     myConvCtxt *cd = vctxt;
     const char *ucv_in = (const char *) in;
     char *ucv_out = (char *) out;
@@ -47,14 +47,10 @@ icuConvert(unsigned char *out, int *outlen,
     }
 
     /*
-     * Note that the ICU API is stateful. It can always consume a certain
-     * amount of input even if the output buffer would overflow. The
-     * remaining input must be processed by calling ucnv_convertEx with a
-     * possibly empty input buffer.
-     *
-     * ucnv_convertEx is always called with reset and flush set to 0,
-     * so we don't mess up the state. This should never generate
-     * U_TRUNCATED_CHAR_FOUND errors.
+     * The ICU API can consume input, including partial sequences,
+     * even if the output buffer would overflow. The remaining input
+     * must be processed by calling ucnv_convertEx with a possibly
+     * empty input buffer.
      */
     if (cd->isInput) {
         source = cd->uconv;
@@ -67,7 +63,8 @@ icuConvert(unsigned char *out, int *outlen,
     ucnv_convertEx(target, source, &ucv_out, ucv_out + *outlen,
                    &ucv_in, ucv_in + *inlen, cd->pivot_buf,
                    &cd->pivot_source, &cd->pivot_target,
-                   cd->pivot_buf + ICU_PIVOT_BUF_SIZE, 0, 0, &err);
+                   cd->pivot_buf + ICU_PIVOT_BUF_SIZE,
+                   /* reset */ 0, flush, &err);
 
     *inlen = ucv_in - (const char*) in;
     *outlen = ucv_out - (char *) out;
@@ -77,8 +74,8 @@ icuConvert(unsigned char *out, int *outlen,
     } else {
         switch (err) {
             case U_TRUNCATED_CHAR_FOUND:
-                /* Shouldn't happen without flush */
-                ret = XML_ENC_ERR_SUCCESS;
+                /* Should only happen with flush */
+                ret = XML_ENC_ERR_INPUT;
                 break;
 
             case U_BUFFER_OVERFLOW_ERROR:

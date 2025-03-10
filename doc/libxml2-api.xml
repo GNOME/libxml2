@@ -8107,13 +8107,14 @@ crash if you try to modify the tree)'/>
       <arg name='vctxt' type='void *' info='conversion context'/>
     </functype>
     <functype name='xmlCharEncConvFunc' file='encoding' module='encoding'>
-      <info>Convert between character encodings.  On success, the value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.</info>
-      <return type='int' info='the number of bytes written or an XML_ENC_ERR code.'/>
+      <info>Convert between character encodings.  The value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.  If the converter can consume partial multi-byte sequences, the @flush flag can be used to detect truncated sequences at EOF. Otherwise, the flag can be ignored.</info>
+      <return type='int' info='a non-negative number on success or an XML_ENC_ERR code.'/>
+      <arg name='vctxt' type='void *' info='conversion context'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
       <arg name='in' type='const unsigned char *' info='a pointer to an array of input bytes'/>
       <arg name='inlen' type='int *' info='the length of @in'/>
-      <arg name='vctxt' type='void *' info='conversion context'/>
+      <arg name='flush' type='int' info='end of input'/>
     </functype>
     <functype name='xmlCharEncConvImpl' file='encoding' module='encoding'>
       <info>If this function returns XML_ERR_OK, it must fill the @out pointer with an encoding handler. The handler can be obtained from xmlCharEncNewCustomHandler.</info>

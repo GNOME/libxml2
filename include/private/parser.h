@@ -140,4 +140,7 @@ XML_HIDDEN xmlChar *
 xmlExpandEntitiesInAttValue(xmlParserCtxtPtr ctxt, const xmlChar *str,
                             int normalize);
 
+XML_HIDDEN void
+xmlParserCheckEOF(xmlParserCtxtPtr ctxt, xmlParserErrors code);
+
 #endif /* XML_PARSER_H_PRIVATE__ */

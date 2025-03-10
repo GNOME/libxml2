@@ -126,17 +126,22 @@ typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
  * @outlen:  the length of @out
  * @in:  a pointer to an array of input bytes
  * @inlen:  the length of @in
+ * @flush:  end of input
  *
  * Convert between character encodings.
  *
- * On success, the value of @inlen after return is the number of
- * bytes consumed and @outlen is the number of bytes produced.
+ * The value of @inlen after return is the number of bytes consumed
+ * and @outlen is the number of bytes produced.
  *
- * Returns the number of bytes written or an XML_ENC_ERR code.
+ * If the converter can consume partial multi-byte sequences, the
+ * @flush flag can be used to detect truncated sequences at EOF.
+ * Otherwise, the flag can be ignored.
+ *
+ * Returns a non-negative number on success or an XML_ENC_ERR code.
  */
 typedef int
-(*xmlCharEncConvFunc)(unsigned char *out, int *outlen,
-                      const unsigned char *in, int *inlen, void *vctxt);
+(*xmlCharEncConvFunc)(void *vctxt, unsigned char *out, int *outlen,
+                      const unsigned char *in, int *inlen, int flush);
 
 /**
  * xmlCharEncConvCtxtDtor:

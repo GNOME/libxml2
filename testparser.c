@@ -952,11 +952,88 @@ testWindowsUri(void) {
 }
 #endif /* WIN32 */
 
+#if defined(LIBXML_ICONV_ENABLED) || defined(LIBXML_ICU_ENABLED)
+static int
+testTruncatedMultiByte(void) {
+    const char xml[] =
+        "<?xml version=\"1.0\" encoding=\"EUC-JP\"?>\n"
+        "<doc/>\xC3";
+#ifdef LIBXML_HTML_ENABLED
+    const char html[] =
+        "<meta charset=\"EUC-JP\">\n"
+        "<div/>\xC3";
+#endif
+    xmlDocPtr doc;
+    const xmlError *error;
+    int err = 0;
+
+    xmlResetLastError();
+    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL, XML_PARSE_NOERROR);
+    error = xmlGetLastError();
+    if (error == NULL || error->code != XML_ERR_INVALID_ENCODING) {
+        fprintf(stderr, "xml, pull: expected XML_ERR_INVALID_ENCODING\n");
+        err = 1;
+    }
+    xmlFreeDoc(doc);
+
+#ifdef LIBXML_HTML_ENABLED
+    xmlResetLastError();
+    doc = htmlReadDoc(BAD_CAST html, NULL, NULL, XML_PARSE_NOERROR);
+    error = xmlGetLastError();
+    if (error == NULL || error->code != XML_ERR_INVALID_ENCODING) {
+        fprintf(stderr, "html, pull: expected XML_ERR_INVALID_ENCODING\n");
+        err = 1;
+    }
+    xmlFreeDoc(doc);
+#endif /* LIBXML_HTML_ENABLED */
+
+#ifdef LIBXML_PUSH_ENABLED
+    {
+        xmlParserCtxtPtr ctxt;
+
+        ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
+        xmlCtxtSetOptions(ctxt, XML_PARSE_NOERROR);
+
+        xmlParseChunk(ctxt, xml, sizeof(xml) - 1, 0);
+        xmlParseChunk(ctxt, "", 0, 1);
+
+        if (ctxt->errNo != XML_ERR_INVALID_ENCODING) {
+            fprintf(stderr, "xml, push: expected XML_ERR_INVALID_ENCODING\n");
+            err = 1;
+        }
+
+        xmlFreeDoc(ctxt->myDoc);
+        xmlFreeParserCtxt(ctxt);
+
+#ifdef LIBXML_HTML_ENABLED
+        ctxt = htmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL,
+                                        XML_CHAR_ENCODING_NONE);
+        xmlCtxtSetOptions(ctxt, XML_PARSE_NOERROR);
+
+        htmlParseChunk(ctxt, html, sizeof(html) - 1, 0);
+        htmlParseChunk(ctxt, "", 0, 1);
+
+        if (ctxt->errNo != XML_ERR_INVALID_ENCODING) {
+            fprintf(stderr, "html, push: expected XML_ERR_INVALID_ENCODING\n");
+            err = 1;
+        }
+
+        xmlFreeDoc(ctxt->myDoc);
+        htmlFreeParserCtxt(ctxt);
+#endif /* LIBXML_HTML_ENABLED */
+    }
+#endif /* LIBXML_PUSH_ENABLED */
+
+    return err;
+}
+#endif /* iconv || icu */
+
 static int charEncConvImplError;
 
 static int
-rot13Convert(unsigned char *out, int *outlen,
-             const unsigned char *in, int *inlen, void *vctxt) {
+rot13Convert(void *vctxt, unsigned char *out, int *outlen,
+             const unsigned char *in, int *inlen,
+             int flush ATTRIBUTE_UNUSED) {
     int *ctxt = vctxt;
     int inSize = *inlen;
     int outSize = *outlen;
@@ -1075,6 +1152,9 @@ main(void) {
     err |= testBuildRelativeUri();
 #if defined(_WIN32) || defined(__CYGWIN__)
     err |= testWindowsUri();
+#endif
+#if defined(LIBXML_ICONV_ENABLED) || defined(LIBXML_ICU_ENABLED)
+    err |= testTruncatedMultiByte();
 #endif
     err |= testCharEncConvImpl();
 

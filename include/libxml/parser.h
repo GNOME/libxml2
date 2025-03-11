@@ -879,18 +879,23 @@ typedef void (*endElementNsSAX2Func)   (void *ctx,
 
 
 struct _xmlSAXHandler {
-    internalSubsetSAXFunc internalSubset;
-    isStandaloneSAXFunc isStandalone;
-    hasInternalSubsetSAXFunc hasInternalSubset;
-    hasExternalSubsetSAXFunc hasExternalSubset;
-    resolveEntitySAXFunc resolveEntity;
-    getEntitySAXFunc getEntity;
-    entityDeclSAXFunc entityDecl;
-    notationDeclSAXFunc notationDecl;
-    attributeDeclSAXFunc attributeDecl;
-    elementDeclSAXFunc elementDecl;
-    unparsedEntityDeclSAXFunc unparsedEntityDecl;
-    setDocumentLocatorSAXFunc setDocumentLocator;
+    /*
+     * For DTD-related handlers, it's recommended to either use the
+     * original libxml2 handler or set them to NULL if DTDs can be
+     * ignored.
+     */
+    internalSubsetSAXFunc internalSubset; /* DTD */
+    isStandaloneSAXFunc isStandalone; /* unused */
+    hasInternalSubsetSAXFunc hasInternalSubset; /* DTD */
+    hasExternalSubsetSAXFunc hasExternalSubset; /* DTD */
+    resolveEntitySAXFunc resolveEntity; /* DTD */
+    getEntitySAXFunc getEntity; /* DTD */
+    entityDeclSAXFunc entityDecl; /* DTD */
+    notationDeclSAXFunc notationDecl; /* DTD */
+    attributeDeclSAXFunc attributeDecl; /* DTD */
+    elementDeclSAXFunc elementDecl; /* DTD */
+    unparsedEntityDeclSAXFunc unparsedEntityDecl; /* DTD */
+    setDocumentLocatorSAXFunc setDocumentLocator; /* deprecated */
     startDocumentSAXFunc startDocument;
     endDocumentSAXFunc endDocument;
     /*
@@ -910,15 +915,20 @@ struct _xmlSAXHandler {
     endElementSAXFunc endElement;
     referenceSAXFunc reference;
     charactersSAXFunc characters;
+    /*
+     * `ignorableWhitespace` should always be set to the same value
+     * as `characters`. Otherwise, the parser will try to detect
+     * whitespace which is unreliable.
+     */
     ignorableWhitespaceSAXFunc ignorableWhitespace;
     processingInstructionSAXFunc processingInstruction;
     commentSAXFunc comment;
     warningSAXFunc warning;
     errorSAXFunc error;
-    fatalErrorSAXFunc fatalError; /* unused error() get all the errors */
-    getParameterEntitySAXFunc getParameterEntity;
+    fatalErrorSAXFunc fatalError; /* unused, `error` gets all the errors */
+    getParameterEntitySAXFunc getParameterEntity; /* DTD */
     cdataBlockSAXFunc cdataBlock;
-    externalSubsetSAXFunc externalSubset;
+    externalSubsetSAXFunc externalSubset; /* DTD */
     /*
      * `initialized` should always be set to XML_SAX2_MAGIC to enable the
      * modern SAX2 interface.
@@ -930,6 +940,10 @@ struct _xmlSAXHandler {
     void *_private;
     startElementNsSAX2Func startElementNs;
     endElementNsSAX2Func endElementNs;
+    /*
+     * Takes precedence over `error` or `warning`, but modern code
+     * should use xmlCtxtSetErrorHandler.
+     */
     xmlStructuredErrorFunc serror;
 };
 

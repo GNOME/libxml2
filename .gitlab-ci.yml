@@ -321,3 +321,8 @@ downstream-perl:
   image: registry.gitlab.gnome.org/gnome/libxml2
   script:
     - sh .gitlab-ci/downstream-perl.sh
+
+downstream-php:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/downstream-php.sh

@@ -38,3 +38,7 @@ RUN apt-get install -y --no-install-recommends \
         libyaml-perl
 RUN cpanm -n Alien::Libxml2
 RUN apt-get remove -y libxml2-dev
+
+# PHP
+RUN apt-get install -y --no-install-recommends \
+        bison re2c libsqlite3-dev

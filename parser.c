@@ -4779,18 +4779,23 @@ static const unsigned char test_char_data[256] = {
 
 static void
 xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size) {
+    int checkBlanks;
+
     if ((ctxt->sax == NULL) || (ctxt->disableSAX))
         return;
+
+    checkBlanks = (!ctxt->keepBlanks) ||
+                  (ctxt->sax->ignorableWhitespace != ctxt->sax->characters);
 
     /*
      * Calling areBlanks with only parts of a text node
      * is fundamentally broken, making the NOBLANKS option
      * essentially unusable.
      */
-    if ((!ctxt->keepBlanks) &&
-        (ctxt->sax->ignorableWhitespace != ctxt->sax->characters) &&
+    if ((checkBlanks) &&
         (areBlanks(ctxt, buf, size, 1))) {
-        if (ctxt->sax->ignorableWhitespace != NULL)
+        if ((ctxt->sax->ignorableWhitespace != NULL) &&
+            (ctxt->keepBlanks))
             ctxt->sax->ignorableWhitespace(ctxt->userData, buf, size);
     } else {
         if (ctxt->sax->characters != NULL)
@@ -4798,9 +4803,9 @@ xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size) {
 
         /*
          * The old code used to update this value for "complex" data
-         * even if keepBlanks was true. This was probably a bug.
+         * even if checkBlanks was false. This was probably a bug.
          */
-        if ((!ctxt->keepBlanks) && (*ctxt->space == -1))
+        if ((checkBlanks) && (*ctxt->space == -1))
             *ctxt->space = -2;
     }
 }

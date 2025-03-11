@@ -13817,8 +13817,6 @@ xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input)
     xmlParseDocument(ctxt);
 
     ret = xmlCtxtGetDocument(ctxt);
-    if ((ret == NULL) && (ctxt->errNo == XML_ERR_OK))
-        xmlFatalErrMsg(ctxt, XML_ERR_INTERNAL_ERROR, "unknown error\n");
 
     /* assert(ctxt->inputNr == 1); */
     while (ctxt->inputNr > 0)

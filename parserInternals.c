@@ -3230,6 +3230,8 @@ xmlCtxtGetDocument(xmlParserCtxtPtr ctxt) {
          (!xmlCtxtIsCatastrophicError(ctxt)))) {
         doc = ctxt->myDoc;
     } else {
+        if (ctxt->errNo == XML_ERR_OK)
+            xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR, "unknown error");
         doc = NULL;
         xmlFreeDoc(ctxt->myDoc);
     }

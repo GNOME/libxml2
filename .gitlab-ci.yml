@@ -311,6 +311,11 @@ pages:
   only:
     - master@GNOME/libxml2
 
+downstream-lxml:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  script:
+    - sh .gitlab-ci/downstream-lxml.sh
+
 downstream-nokogiri:
   # owner: @flavorjones
   image: ghcr.io/sparklemotion/nokogiri-test:upstream-libxml

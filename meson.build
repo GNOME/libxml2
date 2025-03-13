@@ -254,7 +254,7 @@ endforeach
 # [X] libxml-2.0.pc.in
 # [X] libxml2-config.cmake.in
 # [X] python/setup.py.in
-# [N] xml2-config.in
+# [X] xml2-config.in
 
 ## config.h
 config_h = configuration_data()
@@ -598,6 +598,15 @@ configure_file(
     output: 'libxml2-config.cmake',
     configuration: config_cmake,
     install_dir: dir_lib / 'cmake' / meson.project_name(),
+)
+
+## xml2-config script
+
+install_data(
+    'xml2-config-meson',
+    install_dir: dir_bin,
+    install_mode: 'rwxr-xr-x',
+    rename: 'xml2-config',
 )
 
 # summary

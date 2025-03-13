@@ -1030,7 +1030,7 @@ testTruncatedMultiByte(void) {
 
 static int charEncConvImplError;
 
-static int
+static xmlCharEncError
 rot13Convert(void *vctxt, unsigned char *out, int *outlen,
              const unsigned char *in, int *inlen,
              int flush ATTRIBUTE_UNUSED) {
@@ -1063,7 +1063,7 @@ rot13ConvCtxtDtor(void *vctxt) {
     xmlFree(vctxt);
 }
 
-static int
+static xmlParserErrors
 rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name,
               xmlCharEncFlags flags, xmlCharEncodingHandler **out) {
     int *inputCtxt;

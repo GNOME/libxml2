@@ -122,10 +122,10 @@ static int xmlOutputCallbackNr;
  *
  * Returns an xmlParserErrors code.
  */
-static int
+static xmlParserErrors
 xmlIOErr(int err)
 {
-    int code;
+    xmlParserErrors code;
 
     if (err == 0) code = XML_IO_UNKNOWN;
 #ifdef EACCES
@@ -449,12 +449,12 @@ typedef struct {
  *
  * Returns an xmlParserErrors code
  */
-static int
+static xmlParserErrors
 xmlFdOpen(const char *filename, int write, int *out) {
     char *fromUri = NULL;
     int flags;
     int fd;
-    int ret;
+    xmlParserErrors ret;
 
     *out = -1;
     if (filename == NULL)
@@ -628,13 +628,13 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
  *
  * input from FILE *
  *
- * Returns an I/O context or NULL in case of error
+ * Returns an xmlParserErrors code
  */
-static int
+static xmlParserErrors
 xmlFileOpenSafe(const char *filename, int write, void **out) {
     char *fromUri = NULL;
     FILE *fd;
-    int ret = XML_ERR_OK;
+    xmlParserErrors ret = XML_ERR_OK;
 
     *out = NULL;
     if (filename == NULL)
@@ -1046,9 +1046,9 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
  * Update the buffer to read from @fd. Supports the XML_INPUT_UNZIP
  * flag.
  *
- * Returns an xmlParserError code.
+ * Returns an xmlParserErrors code.
  */
-int
+xmlParserErrors
 xmlInputFromFd(xmlParserInputBufferPtr buf, int fd,
                xmlParserInputFlags flags) {
     xmlFdIOCtxt *fdctxt;
@@ -1160,10 +1160,10 @@ xmlInputFromFd(xmlParserInputBufferPtr buf, int fd,
  *
  * Returns an xmlParserErrors code.
  */
-static int
+static xmlParserErrors
 xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
                     xmlParserInputFlags flags) {
-    int ret;
+    xmlParserErrors ret;
     int fd;
 
 #ifdef LIBXML_HTTP_ENABLED
@@ -1205,7 +1205,7 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
  *
  * Returns an xmlParserErrors code.
  */
-static int
+static xmlParserErrors
 xmlOutputDefaultOpen(xmlOutputBufferPtr buf, const char *filename,
                      int compression) {
     xmlFdIOCtxt *fdctxt;
@@ -1290,7 +1290,7 @@ xmlAllocParserInputBuffer(xmlCharEncoding enc) {
 	return(NULL);
     }
     if (enc != XML_CHAR_ENCODING_NONE) {
-        if (xmlLookupCharEncodingHandler(enc, &ret->encoder) != 0) {
+        if (xmlLookupCharEncodingHandler(enc, &ret->encoder) != XML_ERR_OK) {
             /* We can't handle errors properly here. */
             xmlFreeParserInputBuffer(ret);
             return(NULL);
@@ -1454,12 +1454,12 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
  *
  * Returns an xmlParserErrors code.
  */
-int
+xmlParserErrors
 xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
                               xmlParserInputFlags flags,
                               xmlParserInputBufferPtr *out) {
     xmlParserInputBufferPtr buf;
-    int ret;
+    xmlParserErrors ret;
     int i;
 
     xmlInitParser();
@@ -1534,7 +1534,7 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 xmlParserInputBufferPtr
 xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
-    int code;
+    xmlParserErrors code;
 
     if (xmlParserInputBufferCreateFilenameValue != NULL)
         return(xmlParserInputBufferCreateFilenameValue(URI, enc));
@@ -1601,7 +1601,7 @@ __xmlOutputBufferCreateFilename(const char *URI,
      */
     for (i = xmlOutputCallbackNr - 1; i >= 0; i--) {
         xmlOutputCallback *cb = &xmlOutputCallbackTable[i];
-        int code;
+        xmlParserErrors code;
 
         if (cb->matchcallback == xmlIODefaultMatch) {
             code = xmlOutputDefaultOpen(ret, URI, compression);
@@ -2203,7 +2203,8 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
 	 * convert as much as possible to the parser reading buffer.
 	 */
         nbchars = SIZE_MAX;
-	if (xmlCharEncInput(in, &nbchars, /* flush */ 0) < 0)
+	if (xmlCharEncInput(in, &nbchars, /* flush */ 0) !=
+            XML_ENC_ERR_SUCCESS)
             return(-1);
         if (nbchars > INT_MAX)
             nbchars = INT_MAX;
@@ -2314,7 +2315,8 @@ xmlParserInputBufferGrow(xmlParserInputBufferPtr in, int len) {
         else
             sizeOut = SIZE_MAX;
 
-	if (xmlCharEncInput(in, &sizeOut, /* flush */ 0) < 0)
+	if (xmlCharEncInput(in, &sizeOut, /* flush */ 0) !=
+            XML_ENC_ERR_SUCCESS)
 	    return(-1);
         res = sizeOut;
     }

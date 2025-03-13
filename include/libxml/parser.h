@@ -218,9 +218,9 @@ typedef struct _xmlAttrHashBucket xmlAttrHashBucket;
  * On success, @out should be set to a new parser input object and
  * XML_ERR_OK should be returned.
  *
- * Returns an xmlParserError code.
+ * Returns an xmlParserErrors code.
  */
-typedef int
+typedef xmlParserErrors
 (*xmlResourceLoader)(void *ctxt, const char *url, const char *publicId,
                      xmlResourceType type, xmlParserInputFlags flags,
                      xmlParserInputPtr *out);
@@ -1555,7 +1555,7 @@ XMLPUBFUN xmlDocPtr
  * New input API
  */
 
-XMLPUBFUN int
+XMLPUBFUN xmlParserErrors
 xmlNewInputFromUrl(const char *url, xmlParserInputFlags flags,
                    xmlParserInputPtr *out);
 XMLPUBFUN xmlParserInputPtr
@@ -1570,7 +1570,7 @@ XMLPUBFUN xmlParserInputPtr
 xmlNewInputFromIO(const char *url, xmlInputReadCallback ioRead,
                   xmlInputCloseCallback ioClose, void *ioCtxt,
                   xmlParserInputFlags flags);
-XMLPUBFUN int
+XMLPUBFUN xmlParserErrors
 xmlInputSetEncodingHandler(xmlParserInputPtr input,
                            xmlCharEncodingHandlerPtr handler);
 

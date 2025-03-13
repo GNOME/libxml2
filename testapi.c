@@ -13222,7 +13222,7 @@ test_xmlInputSetEncodingHandler(void) {
     int test_ret = 0;
 
     int mem_base;
-    int ret_val;
+    xmlParserErrors ret_val;
     xmlParserInputPtr input; /* the input stream */
     int n_input;
     xmlCharEncodingHandlerPtr handler; /* the encoding handler */
@@ -13235,7 +13235,7 @@ test_xmlInputSetEncodingHandler(void) {
         handler = gen_xmlCharEncodingHandlerPtr(n_handler, 1);
 
         ret_val = xmlInputSetEncodingHandler(input, handler);
-        desret_int(ret_val);
+        desret_xmlParserErrors(ret_val);
         call_tests++;
         des_xmlParserInputPtr(n_input, input, 0);
         des_xmlCharEncodingHandlerPtr(n_handler, handler, 1);
@@ -13534,7 +13534,7 @@ test_xmlNewInputFromUrl(void) {
     int test_ret = 0;
 
     int mem_base;
-    int ret_val;
+    xmlParserErrors ret_val;
     const char * filename; /* the filename to use as entity */
     int n_filename;
     xmlParserInputFlags flags; /* XML_INPUT flags */
@@ -13551,7 +13551,7 @@ test_xmlNewInputFromUrl(void) {
         out = gen_xmlParserInputPtr_ptr(n_out, 2);
 
         ret_val = xmlNewInputFromUrl(filename, flags, out);
-        desret_int(ret_val);
+        desret_xmlParserErrors(ret_val);
         call_tests++;
         des_filepath(n_filename, filename, 0);
         des_xmlParserInputFlags(n_flags, flags, 1);
@@ -33991,7 +33991,7 @@ test_xmlSaveFinish(void) {
 
 #if defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
-    int ret_val;
+    xmlParserErrors ret_val;
     xmlSaveCtxtPtr ctxt; /* a document saving context */
     int n_ctxt;
 
@@ -34000,7 +34000,7 @@ test_xmlSaveFinish(void) {
         ctxt = gen_xmlSaveCtxtPtr(n_ctxt, 0);
 
         ret_val = xmlSaveFinish(ctxt);
-        desret_int(ret_val);
+        desret_xmlParserErrors(ret_val);
         call_tests++;
         des_xmlSaveCtxtPtr(n_ctxt, ctxt, 0);
         xmlResetLastError();

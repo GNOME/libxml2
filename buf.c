@@ -1092,7 +1092,7 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
  *
- * Returns a xmlParserError code.
+ * Returns a xmlParserErrors code.
  */
 int
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
@@ -1124,7 +1124,7 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
  * Add a string range to the beginning of an XML buffer.
  * if len == -1, the length of @str is recomputed.
  *
- * Returns a xmlParserError code.
+ * Returns a xmlParserErrors code.
  */
 int
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {

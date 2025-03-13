@@ -319,7 +319,7 @@ xmlNewSaveCtxt(const char *encoding, int options)
     memset(ret, 0, sizeof(xmlSaveCtxt));
 
     if (encoding != NULL) {
-        int res;
+        xmlParserErrors res;
 
         res = xmlOpenCharEncodingHandler(encoding, /* output */ 1,
                                          &ret->handler);
@@ -771,7 +771,7 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
 
     if ((encoding != NULL) && (buf->encoder == NULL) && (buf->conv == NULL)) {
         xmlCharEncodingHandler *handler;
-        int res;
+        xmlParserErrors res;
 
 	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
         if (res != XML_ERR_OK) {
@@ -2196,7 +2196,7 @@ xmlSaveClose(xmlSaveCtxtPtr ctxt)
  *
  * Returns an xmlParserErrors code.
  */
-int
+xmlParserErrors
 xmlSaveFinish(xmlSaveCtxtPtr ctxt)
 {
     int ret;
@@ -2549,7 +2549,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
     if (txt_encoding == NULL)
 	txt_encoding = (const char *) out_doc->encoding;
     if (txt_encoding != NULL) {
-        int res;
+        xmlParserErrors res;
 
 	res = xmlOpenCharEncodingHandler(txt_encoding, /* output */ 1,
                                          &conv_hdlr);
@@ -2671,7 +2671,7 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
     encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-        int res;
+        xmlParserErrors res;
 
 	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
 	if (res != XML_ERR_OK) {
@@ -2817,7 +2817,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 	encoding = (const char *) cur->encoding;
 
     if (encoding != NULL) {
-        int res;
+        xmlParserErrors res;
 
         res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
         if (res != XML_ERR_OK)

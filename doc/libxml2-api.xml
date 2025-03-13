@@ -7764,14 +7764,14 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlBufferAdd' file='tree' module='buf'>
       <info>Add a string range to an XML buffer. if len == -1, the length of str is recomputed.</info>
-      <return type='int' info='a xmlParserError code.'/>
+      <return type='int' info='a xmlParserErrors code.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer to dump'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
       <arg name='len' type='int' info='the number of #xmlChar to add'/>
     </function>
     <function name='xmlBufferAddHead' file='tree' module='buf'>
       <info>Add a string range to the beginning of an XML buffer. if len == -1, the length of @str is recomputed.</info>
-      <return type='int' info='a xmlParserError code.'/>
+      <return type='int' info='a xmlParserErrors code.'/>
       <arg name='buf' type='xmlBufferPtr' info='the buffer'/>
       <arg name='str' type='const xmlChar *' info='the #xmlChar string'/>
       <arg name='len' type='int' info='the number of #xmlChar to add'/>
@@ -8110,7 +8110,7 @@ crash if you try to modify the tree)'/>
     </functype>
     <functype name='xmlCharEncConvFunc' file='encoding' module='encoding'>
       <info>Convert between character encodings.  The value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.  If the converter can consume partial multi-byte sequences, the @flush flag can be used to detect truncated sequences at EOF. Otherwise, the flag can be ignored.</info>
-      <return type='int' info='a non-negative number on success or an XML_ENC_ERR code.'/>
+      <return type='xmlCharEncError' info='an XML_ENC_ERR code.'/>
       <arg name='vctxt' type='void *' info='conversion context'/>
       <arg name='out' type='unsigned char *' info='a pointer to an array of bytes to store the result'/>
       <arg name='outlen' type='int *' info='the length of @out'/>
@@ -8120,7 +8120,7 @@ crash if you try to modify the tree)'/>
     </functype>
     <functype name='xmlCharEncConvImpl' file='encoding' module='encoding'>
       <info>If this function returns XML_ERR_OK, it must fill the @out pointer with an encoding handler. The handler can be obtained from xmlCharEncNewCustomHandler.  @flags can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.</info>
-      <return type='int' info='an xmlParserErrors code.'/>
+      <return type='xmlParserErrors' info='an xmlParserErrors code.'/>
       <arg name='vctxt' type='void *' info='user data'/>
       <arg name='name' type='const char *' info='encoding name'/>
       <arg name='flags' type='xmlCharEncFlags' info='bit mask of flags'/>
@@ -8142,7 +8142,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlCharEncNewCustomHandler' file='encoding' module='encoding'>
       <info>Create a custom xmlCharEncodingHandler.</info>
-      <return type='int' info='an xmlParserError code.'/>
+      <return type='xmlParserErrors' info='an xmlParserErrors code.'/>
       <arg name='name' type='const char *' info='the encoding name'/>
       <arg name='input' type='xmlCharEncConvFunc' info='input callback which converts to UTF-8'/>
       <arg name='output' type='xmlCharEncConvFunc' info='output callback which converts from UTF-8'/>
@@ -8371,7 +8371,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlCreateCharEncodingHandler' file='encoding' module='encoding'>
       <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - Custom implementation if provided - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  @flags can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.  Available since 2.14.0.</info>
-      <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
+      <return type='xmlParserErrors' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
       <arg name='flags' type='xmlCharEncFlags' info='bit mask of flags'/>
       <arg name='impl' type='xmlCharEncConvImpl' info='a conversion implementation (optional)'/>
@@ -9865,7 +9865,7 @@ crash if you try to modify the tree)'/>
     </functype>
     <function name='xmlInputSetEncodingHandler' file='parser' module='parserInternals'>
       <info>Use encoding handler to decode input data.  Closes the handler on error.</info>
-      <return type='int' info='an xmlParserErrors code.'/>
+      <return type='xmlParserErrors' info='an xmlParserErrors code.'/>
       <arg name='input' type='xmlParserInputPtr' info='the input stream'/>
       <arg name='handler' type='xmlCharEncodingHandlerPtr' info='the encoding handler'/>
     </function>
@@ -10168,7 +10168,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlLookupCharEncodingHandler' file='encoding' module='encoding'>
       <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.13.0.</info>
-      <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
+      <return type='xmlParserErrors' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
       <arg name='enc' type='xmlCharEncoding' info='an xmlCharEncoding value.'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>
     </function>
@@ -10619,7 +10619,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlNewInputFromUrl' file='parser' module='parserInternals'>
       <info>Create a new input stream based on a file or a URL.  The flag XML_INPUT_UNZIP allows decompression.  The flag XML_INPUT_NETWORK allows network access.  The following resource loaders will be called if they were registered (in order of precedence):  - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault (deprecated) - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks (deprecated) - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.  Available since 2.14.0.</info>
-      <return type='int' info='an xmlParserErrors code.'/>
+      <return type='xmlParserErrors' info='an xmlParserErrors code.'/>
       <arg name='filename' type='const char *' info='the filename to use as entity'/>
       <arg name='flags' type='xmlParserInputFlags' info='XML_INPUT flags'/>
       <arg name='out' type='xmlParserInputPtr *' info='pointer to new parser input'/>
@@ -10947,7 +10947,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlOpenCharEncodingHandler' file='encoding' module='encoding'>
       <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.13.0.</info>
-      <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
+      <return type='xmlParserErrors' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
       <arg name='output' type='int' info='boolean, use handler for output'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>
@@ -12275,7 +12275,7 @@ crash if you try to modify the tree)'/>
     </function>
     <functype name='xmlResourceLoader' file='parser' module='parser'>
       <info>Callback for custom resource loaders.  @flags can contain XML_INPUT_UNZIP and XML_INPUT_NETWORK.  On success, @out should be set to a new parser input object and XML_ERR_OK should be returned.</info>
-      <return type='int' info='an xmlParserError code.'/>
+      <return type='xmlParserErrors' info='an xmlParserErrors code.'/>
       <arg name='ctxt' type='void *' info='parser context'/>
       <arg name='url' type='const char *' info='URL to load'/>
       <arg name='publicId' type='const char *' info='publid ID from DTD (optional)'/>
@@ -12628,7 +12628,7 @@ crash if you try to modify the tree)'/>
     <function name='xmlSaveFinish' file='xmlsave' module='xmlsave'>
       <cond>defined(LIBXML_OUTPUT_ENABLED)</cond>
       <info>Close a document saving context, i.e. make sure that all bytes have been output and free the associated data.  Available since 2.13.0.</info>
-      <return type='int' info='an xmlParserErrors code.'/>
+      <return type='xmlParserErrors' info='an xmlParserErrors code.'/>
       <arg name='ctxt' type='xmlSaveCtxtPtr' info='a document saving context'/>
     </function>
     <function name='xmlSaveFlush' file='xmlsave' module='xmlsave'>

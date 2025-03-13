@@ -1398,18 +1398,20 @@ xmlXIncludeLoadTxt(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
 	encoding = xmlXIncludeGetProp(ctxt, ref->elem, XINCLUDE_PARSE_ENCODING);
     }
     if (encoding != NULL) {
-        res = xmlOpenCharEncodingHandler((const char *) encoding,
-                                         /* output */ 0, &handler);
+        xmlParserErrors code;
 
-        if (res != 0) {
-            if (res == XML_ERR_NO_MEMORY) {
+        code = xmlOpenCharEncodingHandler((const char *) encoding,
+                                          /* output */ 0, &handler);
+
+        if (code != XML_ERR_OK) {
+            if (code == XML_ERR_NO_MEMORY) {
                 xmlXIncludeErrMemory(ctxt);
-            } else if (res == XML_ERR_UNSUPPORTED_ENCODING) {
+            } else if (code == XML_ERR_UNSUPPORTED_ENCODING) {
                 xmlXIncludeErr(ctxt, ref->elem, XML_XINCLUDE_UNKNOWN_ENCODING,
                                "encoding %s not supported\n", encoding);
                 goto error;
             } else {
-                xmlXIncludeErr(ctxt, ref->elem, res,
+                xmlXIncludeErr(ctxt, ref->elem, code,
                                "unexpected error from iconv or ICU\n", NULL);
                 goto error;
             }

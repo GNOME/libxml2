@@ -30,7 +30,7 @@ typedef struct {
     UChar      pivot_buf[ICU_PIVOT_BUF_SIZE];
 } myConvCtxt;
 
-static int
+static xmlCharEncError
 icuConvert(void *vctxt, unsigned char *out, int *outlen,
            const unsigned char *in, int *inlen, int flush) {
     myConvCtxt *cd = vctxt;
@@ -102,7 +102,7 @@ icuConvert(void *vctxt, unsigned char *out, int *outlen,
     return ret;
 }
 
-static int
+static xmlParserErrors
 icuOpen(const char* name, int isInput, myConvCtxt **out)
 {
     UErrorCode status;
@@ -170,13 +170,13 @@ icuConvCtxtDtor(void *vctxt) {
     icuClose(vctxt);
 }
 
-static int
+static xmlParserErrors
 icuConvImpl(void *vctxt, const char *name, xmlCharEncFlags flags,
             xmlCharEncodingHandler **result) {
     xmlCharEncConvFunc inFunc = NULL, outFunc = NULL;
     myConvCtxt *inputCtxt = NULL;
     myConvCtxt *outputCtxt = NULL;
-    int ret;
+    xmlParserErrors ret;
 
     if (flags & XML_ENC_INPUT) {
         ret = icuOpen(name, 1, &inputCtxt);

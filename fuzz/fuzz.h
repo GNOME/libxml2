@@ -135,7 +135,7 @@ xmlFuzzSecondaryUrl(void);
 const char *
 xmlFuzzSecondaryEntity(size_t *size);
 
-int
+xmlParserErrors
 xmlFuzzResourceLoader(void *data, const char *URL, const char *ID,
                       xmlResourceType type, xmlParserInputFlags flags,
                       xmlParserInputPtr *out);

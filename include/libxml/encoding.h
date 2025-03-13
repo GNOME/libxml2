@@ -23,6 +23,7 @@
 #define __XML_CHAR_ENCODING_H__
 
 #include <libxml/xmlversion.h>
+#include <libxml/xmlerror.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -142,9 +143,9 @@ typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
  * @flush flag can be used to detect truncated sequences at EOF.
  * Otherwise, the flag can be ignored.
  *
- * Returns a non-negative number on success or an XML_ENC_ERR code.
+ * Returns an XML_ENC_ERR code.
  */
-typedef int
+typedef xmlCharEncError
 (*xmlCharEncConvFunc)(void *vctxt, unsigned char *out, int *outlen,
                       const unsigned char *in, int *inlen, int flush);
 
@@ -195,7 +196,7 @@ struct _xmlCharEncodingHandler {
  *
  * Returns an xmlParserErrors code.
  */
-typedef int
+typedef xmlParserErrors
 (*xmlCharEncConvImpl)(void *vctxt, const char *name, xmlCharEncFlags flags,
                       xmlCharEncodingHandler **out);
 
@@ -210,14 +211,14 @@ XMLPUBFUN void
 	xmlCleanupCharEncodingHandlers	(void);
 XMLPUBFUN void
 	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
-XMLPUBFUN int
+XMLPUBFUN xmlParserErrors
 	xmlLookupCharEncodingHandler	(xmlCharEncoding enc,
 					 xmlCharEncodingHandlerPtr *out);
-XMLPUBFUN int
+XMLPUBFUN xmlParserErrors
 	xmlOpenCharEncodingHandler	(const char *name,
 					 int output,
 					 xmlCharEncodingHandlerPtr *out);
-XMLPUBFUN int
+XMLPUBFUN xmlParserErrors
 	xmlCreateCharEncodingHandler	(const char *name,
 					 xmlCharEncFlags flags,
 					 xmlCharEncConvImpl impl,
@@ -231,7 +232,7 @@ XMLPUBFUN xmlCharEncodingHandlerPtr
 	xmlNewCharEncodingHandler	(const char *name,
 					 xmlCharEncodingInputFunc input,
 					 xmlCharEncodingOutputFunc output);
-XMLPUBFUN int
+XMLPUBFUN xmlParserErrors
 	xmlCharEncNewCustomHandler	(const char *name,
 					 xmlCharEncConvFunc input,
 					 xmlCharEncConvFunc output,

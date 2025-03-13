@@ -337,7 +337,7 @@ htmlIsBooleanAttr(const xmlChar *name)
  *									*
  ************************************************************************/
 
-static int
+static xmlParserErrors
 htmlFindOutputEncoder(const char *encoding, xmlCharEncodingHandler **out) {
     /*
      * Fallback to HTML if the encoding is unspecified

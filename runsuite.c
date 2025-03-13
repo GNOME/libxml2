@@ -241,7 +241,7 @@ static int addEntity(char *name, char *content) {
     return(0);
 }
 
-static int
+static xmlParserErrors
 testResourceLoader(void *vctxt ATTRIBUTE_UNUSED, const char *URL,
                    const char *ID ATTRIBUTE_UNUSED,
                    xmlResourceType type ATTRIBUTE_UNUSED,

@@ -253,12 +253,12 @@ parsePath(xmllintState *lint, const xmlChar *path) {
     }
 }
 
-static int
+static xmlParserErrors
 xmllintResourceLoader(void *ctxt, const char *URL,
                       const char *ID, xmlResourceType type,
                       xmlParserInputFlags flags, xmlParserInputPtr *out) {
     xmllintState *lint = ctxt;
-    int code;
+    xmlParserErrors code;
     int i;
     const char *lastsegment = URL;
     const char *iter = URL;

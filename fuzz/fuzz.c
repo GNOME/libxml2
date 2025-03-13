@@ -457,7 +457,7 @@ xmlFuzzSecondaryEntity(size_t *size) {
  *
  * The resource loader for fuzz data.
  */
-int
+xmlParserErrors
 xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
                       const char *ID ATTRIBUTE_UNUSED,
                       xmlResourceType type ATTRIBUTE_UNUSED,

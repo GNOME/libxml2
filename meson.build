@@ -500,7 +500,7 @@ meson.override_dependency('libxml-2.0', xml_dep)
 
 ## xmllint tool
 
-executable(
+xmllint = executable(
     'xmllint',
     files('xmllint.c', 'shell.c', 'lintmain.c'),
     dependencies: [xml_dep, xmllint_deps],
@@ -511,7 +511,7 @@ executable(
 ## xmlcatalog tool
 
 if want_catalog and want_output
-    executable(
+    xmlcatalog = executable(
         'xmlcatalog',
         files('xmlcatalog.c'),
         dependencies: [xml_dep, xmllint_deps],
@@ -557,6 +557,21 @@ foreach check, deps : checks
         test(check, exe, timeout: 0, workdir: meson.current_source_dir())
     endif
 endforeach
+
+sh = find_program('sh', required: false)
+
+if sh.found()
+    if want_debug
+        test('xmllint shell', sh,
+             args: [ 'test/scripts/test.sh', xmllint.full_path() ],
+             workdir: meson.current_source_dir())
+    endif
+    if want_catalog and want_output
+        test('xmlcatalog shell', sh,
+             args: [ 'test/catalogs/test.sh', xmlcatalog.full_path() ],
+             workdir: meson.current_source_dir())
+    endif
+endif
 
 subdir('example')
 subdir('doc')

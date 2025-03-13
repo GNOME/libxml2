@@ -527,15 +527,11 @@
      <description>Interfaces, constants and types related to the XML parser </description>
      <author>Daniel Veillard </author>
      <exports symbol='XML_DEFAULT_VERSION' type='macro'/>
-     <exports symbol='XML_INPUT_BUF_STATIC' type='macro'/>
-     <exports symbol='XML_INPUT_BUF_ZERO_TERMINATED' type='macro'/>
-     <exports symbol='XML_INPUT_NETWORK' type='macro'/>
-     <exports symbol='XML_INPUT_UNZIP' type='macro'/>
      <exports symbol='XML_SAX2_MAGIC' type='macro'/>
-     <exports symbol='XML_STATUS_CATASTROPHIC_ERROR' type='macro'/>
-     <exports symbol='XML_STATUS_DTD_VALIDATION_FAILED' type='macro'/>
-     <exports symbol='XML_STATUS_NOT_NS_WELL_FORMED' type='macro'/>
-     <exports symbol='XML_STATUS_NOT_WELL_FORMED' type='macro'/>
+     <exports symbol='XML_INPUT_BUF_STATIC' type='enum'/>
+     <exports symbol='XML_INPUT_BUF_ZERO_TERMINATED' type='enum'/>
+     <exports symbol='XML_INPUT_NETWORK' type='enum'/>
+     <exports symbol='XML_INPUT_UNZIP' type='enum'/>
      <exports symbol='XML_PARSER_ATTRIBUTE_VALUE' type='enum'/>
      <exports symbol='XML_PARSER_CDATA_SECTION' type='enum'/>
      <exports symbol='XML_PARSER_COMMENT' type='enum'/>
@@ -595,6 +591,10 @@
      <exports symbol='XML_RESOURCE_UNKNOWN' type='enum'/>
      <exports symbol='XML_RESOURCE_XINCLUDE' type='enum'/>
      <exports symbol='XML_RESOURCE_XINCLUDE_TEXT' type='enum'/>
+     <exports symbol='XML_STATUS_CATASTROPHIC_ERROR' type='enum'/>
+     <exports symbol='XML_STATUS_DTD_VALIDATION_FAILED' type='enum'/>
+     <exports symbol='XML_STATUS_NOT_NS_WELL_FORMED' type='enum'/>
+     <exports symbol='XML_STATUS_NOT_WELL_FORMED' type='enum'/>
      <exports symbol='XML_WITH_AUTOMATA' type='enum'/>
      <exports symbol='XML_WITH_C14N' type='enum'/>
      <exports symbol='XML_WITH_CATALOG' type='enum'/>
@@ -632,6 +632,7 @@
      <exports symbol='XML_WITH_ZLIB' type='enum'/>
      <exports symbol='xmlAttrHashBucket' type='typedef'/>
      <exports symbol='xmlFeature' type='typedef'/>
+     <exports symbol='xmlParserInputFlags' type='typedef'/>
      <exports symbol='xmlParserInputState' type='typedef'/>
      <exports symbol='xmlParserMode' type='typedef'/>
      <exports symbol='xmlParserNodeInfo' type='typedef'/>
@@ -640,6 +641,7 @@
      <exports symbol='xmlParserNodeInfoSeqPtr' type='typedef'/>
      <exports symbol='xmlParserNsData' type='typedef'/>
      <exports symbol='xmlParserOption' type='typedef'/>
+     <exports symbol='xmlParserStatus' type='typedef'/>
      <exports symbol='xmlResourceType' type='typedef'/>
      <exports symbol='xmlSAXHandlerV1' type='typedef'/>
      <exports symbol='xmlSAXHandlerV1Ptr' type='typedef'/>
@@ -3799,14 +3801,6 @@
     <macro name='XML_GET_LINE' file='tree'>
       <info>Macro to extract the line number of an element node.</info>
     </macro>
-    <macro name='XML_INPUT_BUF_STATIC' file='parser'>
-    </macro>
-    <macro name='XML_INPUT_BUF_ZERO_TERMINATED' file='parser'>
-    </macro>
-    <macro name='XML_INPUT_NETWORK' file='parser'>
-    </macro>
-    <macro name='XML_INPUT_UNZIP' file='parser'>
-    </macro>
     <macro name='XML_LOCAL_NAMESPACE' file='tree'>
       <info>A namespace declaration node.</info>
     </macro>
@@ -4076,14 +4070,6 @@
     </macro>
     <macro name='XML_SCHEMAS_WILDCARD_COMPLETE' file='schemasInternals'>
       <info>If the wildcard is complete.</info>
-    </macro>
-    <macro name='XML_STATUS_CATASTROPHIC_ERROR' file='parser'>
-    </macro>
-    <macro name='XML_STATUS_DTD_VALIDATION_FAILED' file='parser'>
-    </macro>
-    <macro name='XML_STATUS_NOT_NS_WELL_FORMED' file='parser'>
-    </macro>
-    <macro name='XML_STATUS_NOT_WELL_FORMED' file='parser'>
     </macro>
     <macro name='XML_SUBSTITUTE_BOTH' file='parserInternals'>
       <info>Both general and parameter entities need to be substituted.</info>
@@ -4699,6 +4685,10 @@ and not by parsing an instance'/>
     <enum name='XML_I18N_NO_HANDLER' file='xmlerror' value='6001' type='xmlParserErrors' info='6001'/>
     <enum name='XML_I18N_NO_NAME' file='xmlerror' value='6000' type='xmlParserErrors'/>
     <enum name='XML_I18N_NO_OUTPUT' file='xmlerror' value='6004' type='xmlParserErrors' info='6004'/>
+    <enum name='XML_INPUT_BUF_STATIC' file='parser' value='2' type='xmlParserInputFlags'/>
+    <enum name='XML_INPUT_BUF_ZERO_TERMINATED' file='parser' value='4' type='xmlParserInputFlags'/>
+    <enum name='XML_INPUT_NETWORK' file='parser' value='16' type='xmlParserInputFlags'/>
+    <enum name='XML_INPUT_UNZIP' file='parser' value='8' type='xmlParserInputFlags'/>
     <enum name='XML_INTERNAL_GENERAL_ENTITY' file='entities' value='1' type='xmlEntityType'/>
     <enum name='XML_INTERNAL_PARAMETER_ENTITY' file='entities' value='4' type='xmlEntityType'/>
     <enum name='XML_INTERNAL_PREDEFINED_ENTITY' file='entities' value='6' type='xmlEntityType'/>
@@ -5455,6 +5445,10 @@ crash if you try to modify the tree)'/>
     <enum name='XML_SCHEMA_WHITESPACE_PRESERVE' file='xmlschemastypes' value='1' type='xmlSchemaWhitespaceValueType'/>
     <enum name='XML_SCHEMA_WHITESPACE_REPLACE' file='xmlschemastypes' value='2' type='xmlSchemaWhitespaceValueType'/>
     <enum name='XML_SCHEMA_WHITESPACE_UNKNOWN' file='xmlschemastypes' value='0' type='xmlSchemaWhitespaceValueType'/>
+    <enum name='XML_STATUS_CATASTROPHIC_ERROR' file='parser' value='8' type='xmlParserStatus'/>
+    <enum name='XML_STATUS_DTD_VALIDATION_FAILED' file='parser' value='4' type='xmlParserStatus'/>
+    <enum name='XML_STATUS_NOT_NS_WELL_FORMED' file='parser' value='2' type='xmlParserStatus'/>
+    <enum name='XML_STATUS_NOT_WELL_FORMED' file='parser' value='1' type='xmlParserStatus'/>
     <enum name='XML_TEXTREADER_MODE_CLOSED' file='xmlreader' value='4' type='xmlTextReaderMode'/>
     <enum name='XML_TEXTREADER_MODE_EOF' file='xmlreader' value='3' type='xmlTextReaderMode'/>
     <enum name='XML_TEXTREADER_MODE_ERROR' file='xmlreader' value='2' type='xmlTextReaderMode'/>
@@ -6091,6 +6085,7 @@ crash if you try to modify the tree)'/>
       <field name='rawconsumed' type='unsigned long'/>
     </struct>
     <typedef name='xmlParserInputBufferPtr' file='tree' type='xmlParserInputBuffer *'/>
+    <typedef name='xmlParserInputFlags' file='parser' type='enum'/>
     <typedef name='xmlParserInputPtr' file='tree' type='xmlParserInput *'/>
     <typedef name='xmlParserInputState' file='parser' type='enum'/>
     <typedef name='xmlParserMode' file='parser' type='enum'/>
@@ -6112,6 +6107,7 @@ crash if you try to modify the tree)'/>
     <typedef name='xmlParserOption' file='parser' type='enum'/>
     <typedef name='xmlParserProperties' file='xmlreader' type='enum'/>
     <typedef name='xmlParserSeverities' file='xmlreader' type='enum'/>
+    <typedef name='xmlParserStatus' file='parser' type='enum'/>
     <struct name='xmlPattern' file='pattern' type='struct _xmlPattern'/>
     <typedef name='xmlPatternFlags' file='pattern' type='enum'/>
     <typedef name='xmlPatternPtr' file='pattern' type='xmlPattern *'/>
@@ -8504,7 +8500,7 @@ crash if you try to modify the tree)'/>
     </function>
     <function name='xmlCtxtGetStatus' file='parser' module='parserInternals'>
       <info>Get well-formedness and validation status after parsing. Also reports catastrophic errors which are not related to parsing like out-of-memory, I/O or other errors.  Available since 2.14.0.</info>
-      <return type='int' info='a bitmask of XML_STATUS_* flags ORed together.'/>
+      <return type='xmlParserStatus' info='a bitmask of XML_STATUS_* flags ORed together.'/>
       <arg name='ctxt' type='xmlParserCtxt *' info='an XML parser context'/>
     </function>
     <function name='xmlCtxtGetValidCtxt' file='parser' module='parserInternals'>
@@ -10589,7 +10585,7 @@ crash if you try to modify the tree)'/>
       <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
       <arg name='url' type='const char *' info='base URL (optional)'/>
       <arg name='fd' type='int' info='file descriptor'/>
-      <arg name='flags' type='int' info='input flags'/>
+      <arg name='flags' type='xmlParserInputFlags' info='input flags'/>
     </function>
     <function name='xmlNewInputFromFile' file='parserInternals' module='parserInternals'>
       <info>DEPRECATED: Use xmlNewInputFromUrl.  Create a new input stream based on a file or an URL.</info>
@@ -10604,7 +10600,7 @@ crash if you try to modify the tree)'/>
       <arg name='ioRead' type='xmlInputReadCallback' info='read callback'/>
       <arg name='ioClose' type='xmlInputCloseCallback' info='close callback (optional)'/>
       <arg name='ioCtxt' type='void *' info='IO context'/>
-      <arg name='flags' type='int' info='unused, pass 0'/>
+      <arg name='flags' type='xmlParserInputFlags' info='unused, pass 0'/>
     </function>
     <function name='xmlNewInputFromMemory' file='parser' module='parserInternals'>
       <info>Creates a new parser input to read from a memory area.  @url is used as base to resolve external entities and for error reporting.  If the XML_INPUT_BUF_STATIC flag is set, the memory area must stay unchanged until parsing has finished. This can avoid temporary copies.  If the XML_INPUT_BUF_ZERO_TERMINATED flag is set, the memory area must contain a zero byte after the buffer at position @size. This can avoid temporary copies.  Available since 2.14.0.</info>
@@ -10612,20 +10608,20 @@ crash if you try to modify the tree)'/>
       <arg name='url' type='const char *' info='base URL (optional)'/>
       <arg name='mem' type='const void *' info='pointer to char array'/>
       <arg name='size' type='size_t' info='size of array'/>
-      <arg name='flags' type='int' info='optimization hints'/>
+      <arg name='flags' type='xmlParserInputFlags' info='optimization hints'/>
     </function>
     <function name='xmlNewInputFromString' file='parser' module='parserInternals'>
       <info>Creates a new parser input to read from a zero-terminated string.  @url is used as base to resolve external entities and for error reporting.  If the XML_INPUT_BUF_STATIC flag is set, the string must stay unchanged until parsing has finished. This can avoid temporary copies.  Available since 2.14.0.</info>
       <return type='xmlParserInputPtr' info='a new parser input or NULL if a memory allocation failed.'/>
       <arg name='url' type='const char *' info='base URL (optional)'/>
       <arg name='str' type='const char *' info='zero-terminated string'/>
-      <arg name='flags' type='int' info='optimization hints'/>
+      <arg name='flags' type='xmlParserInputFlags' info='optimization hints'/>
     </function>
     <function name='xmlNewInputFromUrl' file='parser' module='parserInternals'>
       <info>Create a new input stream based on a file or a URL.  The flag XML_INPUT_UNZIP allows decompression.  The flag XML_INPUT_NETWORK allows network access.  The following resource loaders will be called if they were registered (in order of precedence):  - the per-thread xmlParserInputBufferCreateFilenameFunc set with xmlParserInputBufferCreateFilenameDefault (deprecated) - the default loader which will return - the result from a matching global input callback set with xmlRegisterInputCallbacks (deprecated) - a HTTP resource if support is compiled in. - a file opened from the filesystem, with automatic detection of compressed files if support is compiled in.  Available since 2.14.0.</info>
       <return type='int' info='an xmlParserErrors code.'/>
       <arg name='filename' type='const char *' info='the filename to use as entity'/>
-      <arg name='flags' type='int' info='XML_INPUT flags'/>
+      <arg name='flags' type='xmlParserInputFlags' info='XML_INPUT flags'/>
       <arg name='out' type='xmlParserInputPtr *' info='pointer to new parser input'/>
     </function>
     <function name='xmlNewInputStream' file='parserInternals' module='parserInternals'>
@@ -12284,7 +12280,7 @@ crash if you try to modify the tree)'/>
       <arg name='url' type='const char *' info='URL to load'/>
       <arg name='publicId' type='const char *' info='publid ID from DTD (optional)'/>
       <arg name='type' type='xmlResourceType' info='resource type'/>
-      <arg name='flags' type='int' info='flags'/>
+      <arg name='flags' type='xmlParserInputFlags' info='flags'/>
       <arg name='out' type='xmlParserInputPtr *' info='result pointer'/>
     </functype>
     <function name='xmlSAX2AttributeDecl' file='SAX2' module='SAX2'>

@@ -443,9 +443,9 @@ xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
  *
  * Returns a bitmask of XML_STATUS_* flags ORed together.
  */
-int
+xmlParserStatus
 xmlCtxtGetStatus(xmlParserCtxt *ctxt) {
-    int bits = 0;
+    xmlParserStatus bits = 0;
 
     if (xmlCtxtIsCatastrophicError(ctxt)) {
         bits |= XML_STATUS_CATASTROPHIC_ERROR |
@@ -1798,7 +1798,7 @@ xmlNewInputStream(xmlParserCtxtPtr ctxt) {
 xmlParserInputPtr
 xmlCtxtNewInputFromUrl(xmlParserCtxtPtr ctxt, const char *url,
                        const char *publicId, const char *encoding,
-                       int flags ATTRIBUTE_UNUSED) {
+                       xmlParserInputFlags flags ATTRIBUTE_UNUSED) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (url == NULL))
@@ -1876,7 +1876,7 @@ xmlNewInputInternal(xmlParserInputBufferPtr buf, const char *filename) {
  */
 xmlParserInputPtr
 xmlNewInputFromMemory(const char *url, const void *mem, size_t size,
-                      int flags) {
+                      xmlParserInputFlags flags) {
     xmlParserInputBufferPtr buf;
 
     if (mem == NULL)
@@ -1903,7 +1903,7 @@ xmlNewInputFromMemory(const char *url, const void *mem, size_t size,
 xmlParserInputPtr
 xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
                           const void *mem, size_t size,
-                          const char *encoding, int flags) {
+                          const char *encoding, xmlParserInputFlags flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (mem == NULL))
@@ -1941,7 +1941,8 @@ xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlNewInputFromString(const char *url, const char *str, int flags) {
+xmlNewInputFromString(const char *url, const char *str,
+                      xmlParserInputFlags flags) {
     xmlParserInputBufferPtr buf;
 
     if (str == NULL)
@@ -1966,7 +1967,8 @@ xmlNewInputFromString(const char *url, const char *str, int flags) {
  */
 xmlParserInputPtr
 xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
-                          const char *str, const char *encoding, int flags) {
+                          const char *str, const char *encoding,
+                          xmlParserInputFlags flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (str == NULL))
@@ -2006,7 +2008,7 @@ xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
  * Returns a new parser input or NULL if a memory allocation failed.
  */
 xmlParserInputPtr
-xmlNewInputFromFd(const char *url, int fd, int flags) {
+xmlNewInputFromFd(const char *url, int fd, xmlParserInputFlags flags) {
     xmlParserInputBufferPtr buf;
 
     if (fd < 0)
@@ -2036,7 +2038,8 @@ xmlNewInputFromFd(const char *url, int fd, int flags) {
  */
 xmlParserInputPtr
 xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
-                      int fd, const char *encoding, int flags) {
+                      int fd, const char *encoding,
+                      xmlParserInputFlags flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (fd < 0))
@@ -2086,7 +2089,7 @@ xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *url,
 xmlParserInputPtr
 xmlNewInputFromIO(const char *url, xmlInputReadCallback ioRead,
                   xmlInputCloseCallback ioClose, void *ioCtxt,
-                  int flags ATTRIBUTE_UNUSED) {
+                  xmlParserInputFlags flags ATTRIBUTE_UNUSED) {
     xmlParserInputBufferPtr buf;
 
     if (ioRead == NULL)
@@ -2122,7 +2125,8 @@ xmlParserInputPtr
 xmlCtxtNewInputFromIO(xmlParserCtxtPtr ctxt, const char *url,
                       xmlInputReadCallback ioRead,
                       xmlInputCloseCallback ioClose,
-                      void *ioCtxt, const char *encoding, int flags) {
+                      void *ioCtxt, const char *encoding,
+                      xmlParserInputFlags flags) {
     xmlParserInputPtr input;
 
     if ((ctxt == NULL) || (ioRead == NULL))
@@ -2475,7 +2479,8 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  * Returns an xmlParserErrors code.
  */
 int
-xmlNewInputFromUrl(const char *filename, int flags, xmlParserInputPtr *out) {
+xmlNewInputFromUrl(const char *filename, xmlParserInputFlags flags,
+                   xmlParserInputPtr *out) {
     xmlParserInputBufferPtr buf;
     xmlParserInputPtr input;
     int code = XML_ERR_OK;
@@ -2528,7 +2533,7 @@ xmlNewInputFromUrl(const char *filename, int flags, xmlParserInputPtr *out) {
 xmlParserInputPtr
 xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
     xmlParserInputPtr input;
-    int flags = 0;
+    xmlParserInputFlags flags = 0;
     int code;
 
     if ((ctxt == NULL) || (filename == NULL))
@@ -2697,7 +2702,7 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
 
     if ((ctxt != NULL) && (ctxt->resourceLoader != NULL)) {
         char *resource = NULL;
-        int flags = 0;
+        xmlParserInputFlags flags = 0;
         int code;
 
 #ifdef LIBXML_CATALOG_ENABLED

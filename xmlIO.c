@@ -1049,7 +1049,8 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
  * Returns an xmlParserError code.
  */
 int
-xmlInputFromFd(xmlParserInputBufferPtr buf, int fd, int flags) {
+xmlInputFromFd(xmlParserInputBufferPtr buf, int fd,
+               xmlParserInputFlags flags) {
     xmlFdIOCtxt *fdctxt;
     int copy;
 
@@ -1161,7 +1162,7 @@ xmlInputFromFd(xmlParserInputBufferPtr buf, int fd, int flags) {
  */
 static int
 xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
-                    int flags) {
+                    xmlParserInputFlags flags) {
     int ret;
     int fd;
 
@@ -1455,7 +1456,8 @@ xmlOutputBufferClose(xmlOutputBufferPtr out)
  */
 int
 xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
-                              int flags, xmlParserInputBufferPtr *out) {
+                              xmlParserInputFlags flags,
+                              xmlParserInputBufferPtr *out) {
     xmlParserInputBufferPtr buf;
     int ret;
     int i;
@@ -1862,8 +1864,8 @@ xmlMemClose(void *vctxt) {
  * Returns the new input buffer or NULL.
  */
 xmlParserInputBufferPtr
-xmlNewInputBufferMemory(const void *mem, size_t size, int flags,
-                        xmlCharEncoding enc) {
+xmlNewInputBufferMemory(const void *mem, size_t size,
+                        xmlParserInputFlags flags, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
 
     if ((flags & XML_INPUT_BUF_STATIC) &&
@@ -1978,7 +1980,7 @@ xmlParserInputBufferCreateStatic(const char *mem, int size,
  * Returns the new input buffer or NULL.
  */
 xmlParserInputBufferPtr
-xmlNewInputBufferString(const char *str, int flags) {
+xmlNewInputBufferString(const char *str, xmlParserInputFlags flags) {
     xmlParserInputBufferPtr ret;
 
     ret = xmlMalloc(sizeof(*ret));

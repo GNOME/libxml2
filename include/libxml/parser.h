@@ -40,10 +40,12 @@ extern "C" {
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
-#define XML_STATUS_NOT_WELL_FORMED          (1 << 0)
-#define XML_STATUS_NOT_NS_WELL_FORMED       (1 << 1)
-#define XML_STATUS_DTD_VALIDATION_FAILED    (1 << 2)
-#define XML_STATUS_CATASTROPHIC_ERROR       (1 << 3)
+typedef enum {
+    XML_STATUS_NOT_WELL_FORMED          = (1 << 0),
+    XML_STATUS_NOT_NS_WELL_FORMED       = (1 << 1),
+    XML_STATUS_DTD_VALIDATION_FAILED    = (1 << 2),
+    XML_STATUS_CATASTROPHIC_ERROR       = (1 << 3)
+} xmlParserStatus;
 
 typedef enum {
     XML_RESOURCE_UNKNOWN = 0,
@@ -54,6 +56,13 @@ typedef enum {
     XML_RESOURCE_XINCLUDE,
     XML_RESOURCE_XINCLUDE_TEXT
 } xmlResourceType;
+
+typedef enum {
+    XML_INPUT_BUF_STATIC            = (1 << 1),
+    XML_INPUT_BUF_ZERO_TERMINATED   = (1 << 2),
+    XML_INPUT_UNZIP                 = (1 << 3),
+    XML_INPUT_NETWORK               = (1 << 4)
+} xmlParserInputFlags;
 
 /**
  * xmlParserInput:
@@ -213,7 +222,8 @@ typedef struct _xmlAttrHashBucket xmlAttrHashBucket;
  */
 typedef int
 (*xmlResourceLoader)(void *ctxt, const char *url, const char *publicId,
-                     xmlResourceType type, int flags, xmlParserInputPtr *out);
+                     xmlResourceType type, xmlParserInputFlags flags,
+                     xmlParserInputPtr *out);
 
 /**
  * xmlParserCtxt:
@@ -1456,7 +1466,7 @@ XMLPUBFUN const xmlChar *
 		xmlCtxtGetDeclaredEncoding(xmlParserCtxtPtr ctxt);
 XMLPUBFUN int
 		xmlCtxtGetStandalone	(xmlParserCtxtPtr ctxt);
-XMLPUBFUN int
+XMLPUBFUN xmlParserStatus
 		xmlCtxtGetStatus	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxtPtr ctxt,
@@ -1545,23 +1555,21 @@ XMLPUBFUN xmlDocPtr
  * New input API
  */
 
-#define XML_INPUT_BUF_STATIC		(1 << 1)
-#define XML_INPUT_BUF_ZERO_TERMINATED	(1 << 2)
-#define XML_INPUT_UNZIP                 (1 << 3)
-#define XML_INPUT_NETWORK               (1 << 4)
-
 XMLPUBFUN int
-xmlNewInputFromUrl(const char *url, int flags, xmlParserInputPtr *out);
+xmlNewInputFromUrl(const char *url, xmlParserInputFlags flags,
+                   xmlParserInputPtr *out);
 XMLPUBFUN xmlParserInputPtr
 xmlNewInputFromMemory(const char *url, const void *mem, size_t size,
-                      int flags);
+                      xmlParserInputFlags flags);
 XMLPUBFUN xmlParserInputPtr
-xmlNewInputFromString(const char *url, const char *str, int flags);
+xmlNewInputFromString(const char *url, const char *str,
+                      xmlParserInputFlags flags);
 XMLPUBFUN xmlParserInputPtr
-xmlNewInputFromFd(const char *url, int fd, int flags);
+xmlNewInputFromFd(const char *url, int fd, xmlParserInputFlags flags);
 XMLPUBFUN xmlParserInputPtr
 xmlNewInputFromIO(const char *url, xmlInputReadCallback ioRead,
-                  xmlInputCloseCallback ioClose, void *ioCtxt, int flags);
+                  xmlInputCloseCallback ioClose, void *ioCtxt,
+                  xmlParserInputFlags flags);
 XMLPUBFUN int
 xmlInputSetEncodingHandler(xmlParserInputPtr input,
                            xmlCharEncodingHandlerPtr handler);

@@ -21,6 +21,9 @@
  */
 #define XML_VCTXT_USE_PCTXT (1u << 1)
 
+/*
+ * TODO: Rename to avoid confusion with xmlParserInputFlags
+ */
 #define XML_INPUT_HAS_ENCODING      (1u << 0)
 #define XML_INPUT_AUTO_ENCODING     (7u << 1)
 #define XML_INPUT_AUTO_UTF8         (1u << 1)
@@ -116,23 +119,26 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
                 xmlResourceType type);
 XML_HIDDEN xmlParserInputPtr
 xmlCtxtNewInputFromUrl(xmlParserCtxtPtr ctxt, const char *url,
-                       const char *publicId, const char *encoding, int flags);
+                       const char *publicId, const char *encoding,
+                       xmlParserInputFlags flags);
 XML_HIDDEN xmlParserInputPtr
 xmlCtxtNewInputFromMemory(xmlParserCtxtPtr ctxt, const char *url,
                           const void *mem, size_t size,
-                          const char *encoding, int flags);
+                          const char *encoding,
+                          xmlParserInputFlags flags);
 XML_HIDDEN xmlParserInputPtr
 xmlCtxtNewInputFromString(xmlParserCtxtPtr ctxt, const char *url,
-                          const char *str, const char *encoding, int flags);
+                          const char *str, const char *encoding,
+                          xmlParserInputFlags flags);
 XML_HIDDEN xmlParserInputPtr
 xmlCtxtNewInputFromFd(xmlParserCtxtPtr ctxt, const char *filename, int fd,
-                      const char *encoding, int flags);
+                      const char *encoding, xmlParserInputFlags flags);
 XML_HIDDEN xmlParserInputPtr
 xmlCtxtNewInputFromIO(xmlParserCtxtPtr ctxt, const char *url,
                       xmlInputReadCallback ioRead,
                       xmlInputCloseCallback ioClose,
                       void *ioCtxt,
-                      const char *encoding, int flags);
+                      const char *encoding, xmlParserInputFlags flags);
 XML_HIDDEN xmlParserInputPtr
 xmlNewPushInput(const char *url, const char *chunk, int size);
 

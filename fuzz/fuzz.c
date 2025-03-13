@@ -461,7 +461,8 @@ int
 xmlFuzzResourceLoader(void *data ATTRIBUTE_UNUSED, const char *URL,
                       const char *ID ATTRIBUTE_UNUSED,
                       xmlResourceType type ATTRIBUTE_UNUSED,
-                      int flags ATTRIBUTE_UNUSED, xmlParserInputPtr *out) {
+                      xmlParserInputFlags flags ATTRIBUTE_UNUSED,
+                      xmlParserInputPtr *out) {
     xmlParserInputPtr input;
     xmlFuzzEntityInfo *entity;
 

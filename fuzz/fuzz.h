@@ -137,7 +137,8 @@ xmlFuzzSecondaryEntity(size_t *size);
 
 int
 xmlFuzzResourceLoader(void *data, const char *URL, const char *ID,
-                      xmlResourceType type, int flags, xmlParserInputPtr *out);
+                      xmlResourceType type, xmlParserInputFlags flags,
+                      xmlParserInputPtr *out);
 
 char *
 xmlSlurpFile(const char *path, size_t *size);

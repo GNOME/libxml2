@@ -1107,6 +1107,21 @@ static void des_xmlFeature(int no ATTRIBUTE_UNUSED, xmlFeature val ATTRIBUTE_UNU
 static void desret_xmlParserErrors(xmlParserErrors val ATTRIBUTE_UNUSED) {
 }
 
+#define gen_nb_xmlParserInputFlags 4
+static xmlParserInputFlags gen_xmlParserInputFlags(int no, int nr ATTRIBUTE_UNUSED) {
+    if (no == 1) return(XML_INPUT_BUF_STATIC);
+    if (no == 2) return(XML_INPUT_BUF_ZERO_TERMINATED);
+    if (no == 3) return(XML_INPUT_NETWORK);
+    if (no == 4) return(XML_INPUT_UNZIP);
+    return(0);
+}
+
+static void des_xmlParserInputFlags(int no ATTRIBUTE_UNUSED, xmlParserInputFlags val ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED) {
+}
+
+static void desret_xmlParserStatus(xmlParserStatus val ATTRIBUTE_UNUSED) {
+}
+
 #ifdef LIBXML_SCHEMAS_ENABLED
 #define gen_nb_xmlSchemaValType 4
 static xmlSchemaValType gen_xmlSchemaValType(int no, int nr ATTRIBUTE_UNUSED) {
@@ -12095,7 +12110,7 @@ test_xmlCtxtGetStatus(void) {
     int test_ret = 0;
 
     int mem_base;
-    int ret_val;
+    xmlParserStatus ret_val;
     xmlParserCtxt * ctxt; /* an XML parser context */
     int n_ctxt;
 
@@ -12104,7 +12119,7 @@ test_xmlCtxtGetStatus(void) {
         ctxt = gen_xmlParserCtxt_ptr(n_ctxt, 0);
 
         ret_val = xmlCtxtGetStatus(ctxt);
-        desret_int(ret_val);
+        desret_xmlParserStatus(ret_val);
         call_tests++;
         des_xmlParserCtxt_ptr(n_ctxt, ctxt, 0);
         xmlResetLastError();
@@ -13408,23 +13423,23 @@ test_xmlNewInputFromFd(void) {
     int n_url;
     int fd; /* file descriptor */
     int n_fd;
-    int flags; /* input flags */
+    xmlParserInputFlags flags; /* input flags */
     int n_flags;
 
     for (n_url = 0;n_url < gen_nb_filepath;n_url++) {
     for (n_fd = 0;n_fd < gen_nb_int;n_fd++) {
-    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+    for (n_flags = 0;n_flags < gen_nb_xmlParserInputFlags;n_flags++) {
         mem_base = xmlMemBlocks();
         url = gen_filepath(n_url, 0);
         fd = gen_int(n_fd, 1);
-        flags = gen_int(n_flags, 2);
+        flags = gen_xmlParserInputFlags(n_flags, 2);
 
         ret_val = xmlNewInputFromFd(url, fd, flags);
         desret_xmlParserInputPtr(ret_val);
         call_tests++;
         des_filepath(n_url, url, 0);
         des_int(n_fd, fd, 1);
-        des_int(n_flags, flags, 2);
+        des_xmlParserInputFlags(n_flags, flags, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlNewInputFromFd",
@@ -13474,23 +13489,23 @@ test_xmlNewInputFromString(void) {
     int n_url;
     const char * str; /* zero-terminated string */
     int n_str;
-    int flags; /* optimization hints */
+    xmlParserInputFlags flags; /* optimization hints */
     int n_flags;
 
     for (n_url = 0;n_url < gen_nb_filepath;n_url++) {
     for (n_str = 0;n_str < gen_nb_const_char_ptr;n_str++) {
-    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+    for (n_flags = 0;n_flags < gen_nb_xmlParserInputFlags;n_flags++) {
         mem_base = xmlMemBlocks();
         url = gen_filepath(n_url, 0);
         str = gen_const_char_ptr(n_str, 1);
-        flags = gen_int(n_flags, 2);
+        flags = gen_xmlParserInputFlags(n_flags, 2);
 
         ret_val = xmlNewInputFromString(url, str, flags);
         desret_xmlParserInputPtr(ret_val);
         call_tests++;
         des_filepath(n_url, url, 0);
         des_const_char_ptr(n_str, str, 1);
-        des_int(n_flags, flags, 2);
+        des_xmlParserInputFlags(n_flags, flags, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {
             printf("Leak of %d blocks found in xmlNewInputFromString",
@@ -13522,24 +13537,24 @@ test_xmlNewInputFromUrl(void) {
     int ret_val;
     const char * filename; /* the filename to use as entity */
     int n_filename;
-    int flags; /* XML_INPUT flags */
+    xmlParserInputFlags flags; /* XML_INPUT flags */
     int n_flags;
     xmlParserInputPtr * out; /* pointer to new parser input */
     int n_out;
 
     for (n_filename = 0;n_filename < gen_nb_filepath;n_filename++) {
-    for (n_flags = 0;n_flags < gen_nb_int;n_flags++) {
+    for (n_flags = 0;n_flags < gen_nb_xmlParserInputFlags;n_flags++) {
     for (n_out = 0;n_out < gen_nb_xmlParserInputPtr_ptr;n_out++) {
         mem_base = xmlMemBlocks();
         filename = gen_filepath(n_filename, 0);
-        flags = gen_int(n_flags, 1);
+        flags = gen_xmlParserInputFlags(n_flags, 1);
         out = gen_xmlParserInputPtr_ptr(n_out, 2);
 
         ret_val = xmlNewInputFromUrl(filename, flags, out);
         desret_int(ret_val);
         call_tests++;
         des_filepath(n_filename, filename, 0);
-        des_int(n_flags, flags, 1);
+        des_xmlParserInputFlags(n_flags, flags, 1);
         des_xmlParserInputPtr_ptr(n_out, out, 2);
         xmlResetLastError();
         if (mem_base != xmlMemBlocks()) {

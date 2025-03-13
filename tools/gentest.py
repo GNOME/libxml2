@@ -523,6 +523,8 @@ for enum in enums:
     #
     if (name == None) or ((name not in argtypes) and (name not in rettypes)):
         continue;
+    if name == 'xmlCharEncFlags':
+        continue
     define = 0
 
     if (name in argtypes) and is_known_param_type(name) == 0:

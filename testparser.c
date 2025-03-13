@@ -1064,20 +1064,20 @@ rot13ConvCtxtDtor(void *vctxt) {
 }
 
 static int
-rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name, int output,
-              xmlCharEncodingHandler **out) {
+rot13ConvImpl(void *vctxt ATTRIBUTE_UNUSED, const char *name,
+              xmlCharEncFlags flags, xmlCharEncodingHandler **out) {
     int *inputCtxt;
 
     if (strcmp(name, "rot13") != 0)
-        return xmlCreateCharEncodingHandler(name, output, NULL, NULL, out);
+        return xmlCreateCharEncodingHandler(name, flags, NULL, NULL, out);
 
-    if (output)
+    if (flags & XML_ENC_OUTPUT)
         return XML_ERR_UNSUPPORTED_ENCODING;
 
     inputCtxt = xmlMalloc(sizeof(*inputCtxt));
     *inputCtxt = 13;
 
-    return xmlCharEncNewCustomHandler(name, rot13Convert, rot13Convert,
+    return xmlCharEncNewCustomHandler(name, rot13Convert, NULL,
                                       rot13ConvCtxtDtor, inputCtxt, NULL,
                                       out);
 }

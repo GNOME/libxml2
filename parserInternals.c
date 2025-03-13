@@ -1142,7 +1142,7 @@ xmlDetectEBCDIC(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr *hout) {
      * To detect the EBCDIC code page, we convert the first 200 bytes
      * to IBM037 (EBCDIC-US) and try to find the encoding declaration.
      */
-    res = xmlCreateCharEncodingHandler("IBM037", /* output */ 0,
+    res = xmlCreateCharEncodingHandler("IBM037", XML_ENC_INPUT,
             ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res != 0)
         return(res);
@@ -1188,7 +1188,7 @@ xmlDetectEBCDIC(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr *hout) {
             out[i] = 0;
             xmlCharEncCloseFunc(handler);
             res = xmlCreateCharEncodingHandler((char *) out + start,
-                    /* output */ 0, ctxt->convImpl, ctxt->convCtxt,
+                    XML_ENC_INPUT, ctxt->convImpl, ctxt->convCtxt,
                     &handler);
             if (res != 0)
                 return(res);
@@ -1202,7 +1202,7 @@ done:
      * Encoding handlers are stateful, so we have to recreate them.
      */
     xmlCharEncCloseFunc(handler);
-    res = xmlCreateCharEncodingHandler("IBM037", /* output */ 0,
+    res = xmlCreateCharEncodingHandler("IBM037", XML_ENC_INPUT,
             ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res != 0)
         return(res);
@@ -1265,7 +1265,7 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
     if (encoding == NULL)
         return(-1);
 
-    res = xmlCreateCharEncodingHandler(encoding, /* output */ 0,
+    res = xmlCreateCharEncodingHandler(encoding, XML_ENC_INPUT,
             ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res == XML_ERR_UNSUPPORTED_ENCODING) {
         xmlWarningMsg(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
@@ -1618,7 +1618,7 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
          * declaration.
          */
         res = xmlCreateCharEncodingHandler((const char *) encoding,
-                /* output */ 0, ctxt->convImpl, ctxt->convCtxt, &handler);
+                XML_ENC_INPUT, ctxt->convImpl, ctxt->convCtxt, &handler);
         if (res != XML_ERR_OK) {
             xmlFatalErr(ctxt, res, (const char *) encoding);
             xmlFree(encoding);

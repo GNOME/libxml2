@@ -349,7 +349,10 @@
      <exports symbol='XML_ENC_ERR_MEMORY' type='enum'/>
      <exports symbol='XML_ENC_ERR_SPACE' type='enum'/>
      <exports symbol='XML_ENC_ERR_SUCCESS' type='enum'/>
+     <exports symbol='XML_ENC_INPUT' type='enum'/>
+     <exports symbol='XML_ENC_OUTPUT' type='enum'/>
      <exports symbol='xmlCharEncError' type='typedef'/>
+     <exports symbol='xmlCharEncFlags' type='typedef'/>
      <exports symbol='xmlCharEncoding' type='typedef'/>
      <exports symbol='xmlCharEncodingHandler' type='typedef'/>
      <exports symbol='xmlCharEncodingHandlerPtr' type='typedef'/>
@@ -4528,6 +4531,8 @@ and not by parsing an instance'/>
     <enum name='XML_ENC_ERR_MEMORY' file='encoding' value='-4' type='xmlCharEncError'/>
     <enum name='XML_ENC_ERR_SPACE' file='encoding' value='-3' type='xmlCharEncError'/>
     <enum name='XML_ENC_ERR_SUCCESS' file='encoding' value='0' type='xmlCharEncError'/>
+    <enum name='XML_ENC_INPUT' file='encoding' value='1' type='xmlCharEncFlags'/>
+    <enum name='XML_ENC_OUTPUT' file='encoding' value='2' type='xmlCharEncFlags'/>
     <enum name='XML_ENTITY_DECL' file='tree' value='17' type='xmlElementType'/>
     <enum name='XML_ENTITY_NODE' file='tree' value='6' type='xmlElementType' info='unused'/>
     <enum name='XML_ENTITY_REF_NODE' file='tree' value='5' type='xmlElementType'/>
@@ -5721,6 +5726,7 @@ crash if you try to modify the tree)'/>
       <info>This is a basic byte in an UTF-8 encoded string. It&apos;s unsigned allowing to pinpoint case where char * are assigned to xmlChar * (possibly making serialization back impossible).</info>
     </typedef>
     <typedef name='xmlCharEncError' file='encoding' type='enum'/>
+    <typedef name='xmlCharEncFlags' file='encoding' type='enum'/>
     <typedef name='xmlCharEncoding' file='encoding' type='enum'/>
     <struct name='xmlCharEncodingHandler' file='encoding' type='struct _xmlCharEncodingHandler'>
       <field name='name' type='char *'/>
@@ -8117,11 +8123,11 @@ crash if you try to modify the tree)'/>
       <arg name='flush' type='int' info='end of input'/>
     </functype>
     <functype name='xmlCharEncConvImpl' file='encoding' module='encoding'>
-      <info>If this function returns XML_ERR_OK, it must fill the @out pointer with an encoding handler. The handler can be obtained from xmlCharEncNewCustomHandler.</info>
+      <info>If this function returns XML_ERR_OK, it must fill the @out pointer with an encoding handler. The handler can be obtained from xmlCharEncNewCustomHandler.  @flags can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.</info>
       <return type='int' info='an xmlParserErrors code.'/>
       <arg name='vctxt' type='void *' info='user data'/>
       <arg name='name' type='const char *' info='encoding name'/>
-      <arg name='output' type='int' info='true if output encoding, false if input'/>
+      <arg name='flags' type='xmlCharEncFlags' info='bit mask of flags'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to resulting handler'/>
     </functype>
     <function name='xmlCharEncFirstLine' file='encoding' module='encoding'>
@@ -8368,10 +8374,10 @@ crash if you try to modify the tree)'/>
       <arg name='cur' type='xmlAttrPtr' info='the first attribute'/>
     </function>
     <function name='xmlCreateCharEncodingHandler' file='encoding' module='encoding'>
-      <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - Custom implementation if provided - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  Available since 2.14.0.</info>
+      <info>Find or create a handler matching the encoding. The following converters are looked up in order:  - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - Custom implementation if provided - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled  The handler must be closed with xmlCharEncCloseFunc.  If the encoding is UTF-8, a NULL handler and no error code will be returned.  @flags can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.  Available since 2.14.0.</info>
       <return type='int' info='XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another xmlParserErrors error code.'/>
       <arg name='name' type='const char *' info='a string describing the char encoding.'/>
-      <arg name='output' type='int' info='boolean, use handler for output'/>
+      <arg name='flags' type='xmlCharEncFlags' info='bit mask of flags'/>
       <arg name='impl' type='xmlCharEncConvImpl' info='a conversion implementation (optional)'/>
       <arg name='implCtxt' type='void *' info='user data for conversion implementation (optional)'/>
       <arg name='out' type='xmlCharEncodingHandler **' info='pointer to result'/>

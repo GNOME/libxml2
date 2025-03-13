@@ -83,6 +83,11 @@ typedef enum {
     XML_CHAR_ENCODING_8859_16=	30 /* ISO-8859-16 */
 } xmlCharEncoding;
 
+typedef enum {
+    XML_ENC_INPUT = (1 << 0),
+    XML_ENC_OUTPUT = (1 << 1)
+} xmlCharEncFlags;
+
 /**
  * xmlCharEncodingInputFunc:
  * @out:  a pointer to an array of bytes to store the UTF-8 result
@@ -179,17 +184,19 @@ struct _xmlCharEncodingHandler {
  * xmlCharEncConvImpl:
  * @vctxt:  user data
  * @name:  encoding name
- * @output:  true if output encoding, false if input
+ * @flags:  bit mask of flags
  * @out:  pointer to resulting handler
  *
  * If this function returns XML_ERR_OK, it must fill the @out
  * pointer with an encoding handler. The handler can be obtained
  * from xmlCharEncNewCustomHandler.
  *
+ * @flags can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.
+ *
  * Returns an xmlParserErrors code.
  */
 typedef int
-(*xmlCharEncConvImpl)(void *vctxt, const char *name, int output,
+(*xmlCharEncConvImpl)(void *vctxt, const char *name, xmlCharEncFlags flags,
                       xmlCharEncodingHandler **out);
 
 /*
@@ -212,9 +219,9 @@ XMLPUBFUN int
 					 xmlCharEncodingHandlerPtr *out);
 XMLPUBFUN int
 	xmlCreateCharEncodingHandler	(const char *name,
-					 int output,
+					 xmlCharEncFlags flags,
 					 xmlCharEncConvImpl impl,
-                                         void *implCtxt,
+					 void *implCtxt,
 					 xmlCharEncodingHandlerPtr *out);
 XMLPUBFUN xmlCharEncodingHandlerPtr
 	xmlGetCharEncodingHandler	(xmlCharEncoding enc);

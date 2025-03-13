@@ -171,22 +171,29 @@ icuConvCtxtDtor(void *vctxt) {
 }
 
 static int
-icuConvImpl(void *vctxt, const char *name, int output,
-            xmlCharEncodingHandler **out) {
+icuConvImpl(void *vctxt, const char *name, xmlCharEncFlags flags,
+            xmlCharEncodingHandler **result) {
+    xmlCharEncConvFunc inFunc = NULL, outFunc = NULL;
     myConvCtxt *inputCtxt = NULL;
     myConvCtxt *outputCtxt = NULL;
     int ret;
 
-    ret = icuOpen(name, 1, &inputCtxt);
-    if (ret != 0)
-        goto error;
-    ret = icuOpen(name, 0, &outputCtxt);
-    if (ret != 0)
-        goto error;
+    if (flags & XML_ENC_INPUT) {
+        ret = icuOpen(name, 1, &inputCtxt);
+        if (ret != 0)
+            goto error;
+        inFunc = icuConvert;
+    }
 
-    return xmlCharEncNewCustomHandler(name, icuConvert, icuConvert,
-                                      icuConvCtxtDtor, inputCtxt, outputCtxt,
-                                      out);
+    if (flags & XML_ENC_OUTPUT) {
+        ret = icuOpen(name, 0, &outputCtxt);
+        if (ret != 0)
+            goto error;
+        outFunc = icuConvert;
+    }
+
+    return xmlCharEncNewCustomHandler(name, inFunc, outFunc, icuConvCtxtDtor,
+                                      inputCtxt, outputCtxt, result);
 
 error:
     if (inputCtxt != NULL)

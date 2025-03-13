@@ -179,7 +179,9 @@ if WITH_DEBUG_SOURCES
 	test/scripts/test.sh ./xmllint$(EXEEXT)
 endif
 if WITH_CATALOG_SOURCES
+if WITH_OUTPUT_SOURCES
 	ASAN_OPTIONS=detect_leaks=0 test/catalogs/test.sh ./xmlcatalog$(EXEEXT)
+endif
 endif
 
 # Compatibility name of the check target

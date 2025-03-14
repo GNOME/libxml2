@@ -137,12 +137,6 @@ dnl
 dnl Legacy defaults
 dnl
 if test "$with_legacy" = "yes"; then
-    if test "$with_http" = ""; then
-        with_http=yes
-    fi
-    if test "$with_lzma" = ""; then
-        with_lzma=yes
-    fi
     if test "$with_zlib" = ""; then
         with_zlib=yes
     fi

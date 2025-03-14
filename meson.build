@@ -82,8 +82,10 @@ add_project_arguments(global_args, language: 'c')
 # options
 
 # disabled by default
+want_http = get_option('http').enabled()
 want_icu = get_option('icu').enabled()
 want_legacy = get_option('legacy').enabled()
+want_lzma = get_option('lzma').enabled()
 want_thread_alloc = get_option('thread-alloc').enabled()
 want_tls = get_option('tls').enabled()
 
@@ -125,12 +127,6 @@ feature = get_option('xinclude')
 want_xinclude = want_minimum ? feature.enabled() : feature.allowed()
 
 # default depends on legacy option
-
-feature = get_option('http')
-want_http = want_legacy ? feature.allowed() : feature.enabled()
-
-feature = get_option('lzma')
-want_lzma = want_legacy ? feature.allowed() : feature.enabled()
 
 feature = get_option('zlib')
 want_zlib = want_legacy ? feature.allowed() : feature.enabled()

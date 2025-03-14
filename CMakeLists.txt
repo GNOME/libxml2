@@ -27,10 +27,12 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(LIBXML2_WITH_CATALOG "Add the Catalog support" ON)
 option(LIBXML2_WITH_DEBUG "Add the debugging module" ON)
 option(LIBXML2_WITH_HTML "Add the HTML support" ON)
+option(LIBXML2_WITH_HTTP "Add the HTTP support" OFF)
 option(LIBXML2_WITH_ICONV "Add ICONV support" ON)
 option(LIBXML2_WITH_ICU "Add ICU support" OFF)
 option(LIBXML2_WITH_ISO8859X "Add ISO8859X support if no iconv" ON)
 option(LIBXML2_WITH_LEGACY "Add deprecated APIs for compatibility" OFF)
+option(LIBXML2_WITH_LZMA "Use liblzma" OFF)
 option(LIBXML2_WITH_MODULES "Add the dynamic modules support" ON)
 option(LIBXML2_WITH_OUTPUT "Add the serialization support" ON)
 option(LIBXML2_WITH_PATTERN "Add the xmlPattern selection interface" ON)
@@ -47,12 +49,6 @@ option(LIBXML2_WITH_VALID "Add the DTD validation support" ON)
 option(LIBXML2_WITH_XINCLUDE "Add the XInclude support" ON)
 option(LIBXML2_WITH_XPATH "Add the XPATH support" ON)
 
-cmake_dependent_option(
-    LIBXML2_WITH_HTTP "Add the HTTP support" OFF
-    "NOT LIBXML2_WITH_LEGACY" ON)
-cmake_dependent_option(
-    LIBXML2_WITH_LZMA "Use liblzma" OFF
-    "NOT LIBXML2_WITH_LEGACY" ON)
 cmake_dependent_option(
     LIBXML2_WITH_ZLIB "Use libz" OFF
     "NOT LIBXML2_WITH_LEGACY" ON)

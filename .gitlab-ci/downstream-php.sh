@@ -28,6 +28,8 @@ cd php-src
 ./configure --with-xsl --enable-soap --enable-debug
 make -j$(nproc)
 make TESTS=" \
+    -g FAIL \
+    --no-progress \
     ext/dom \
     ext/libxml \
     ext/simplexml \

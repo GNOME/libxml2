@@ -5858,15 +5858,21 @@ xmlNodeAddContent(xmlNodePtr cur, const xmlChar *content) {
  * @first:  the first text node
  * @second:  the second text node being merged
  *
- * Merge the second text node into the first. The second node is
- * unlinked and freed.
+ * Merge the second text node into the first. If @first is NULL,
+ * @second is returned. Otherwise, the second node is unlinked and
+ * freed.
  *
  * Returns the first text node augmented or NULL in case of error.
  */
 xmlNodePtr
 xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
-    if ((first == NULL) || (first->type != XML_TEXT_NODE) ||
-        (second == NULL) || (second->type != XML_TEXT_NODE) ||
+    if (first == NULL)
+        return(second);
+    if (second == NULL)
+        return(first);
+
+    if ((first->type != XML_TEXT_NODE) ||
+        (second->type != XML_TEXT_NODE) ||
         (first == second) ||
         (first->name != second->name))
 	return(NULL);

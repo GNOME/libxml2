@@ -2449,11 +2449,14 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 first = getNode(0);
                 second = getNode(1);
                 argsOk =
-                    (first != NULL && first->type == XML_TEXT_NODE &&
-                     second != NULL && second->type == XML_TEXT_NODE &&
-                     first != second &&
-                     first->name == second->name);
-                if (argsOk) {
+                    first == NULL ?
+                        second != NULL :
+                        second == NULL ||
+                        (first->type == XML_TEXT_NODE &&
+                         second->type == XML_TEXT_NODE &&
+                         first != second &&
+                         first->name == second->name);
+                if (argsOk && second != NULL) {
                     if (second->parent != NULL)
                         parent = second->parent;
                     else
@@ -2462,7 +2465,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                 }
                 res = xmlTextMerge(first, second);
                 oomReport = (argsOk && res == NULL);
-                if (res != NULL) {
+                if (res != NULL && first != NULL) {
                     removeNode(second);
                     dropNode(parent);
                     checkContent(first);

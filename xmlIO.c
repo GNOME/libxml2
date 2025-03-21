@@ -263,17 +263,11 @@ xmlIOErr(int err)
 #ifdef ECONNREFUSED
     else if (err == ECONNREFUSED) code = XML_IO_ECONNREFUSED;
 #endif
-#ifdef ETIMEDOUT
-    else if (err == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
-#endif
 #ifdef ENETUNREACH
     else if (err == ENETUNREACH) code = XML_IO_ENETUNREACH;
 #endif
 #ifdef EADDRINUSE
     else if (err == EADDRINUSE) code = XML_IO_EADDRINUSE;
-#endif
-#ifdef EINPROGRESS
-    else if (err == EINPROGRESS) code = XML_IO_EINPROGRESS;
 #endif
 #ifdef EALREADY
     else if (err == EALREADY) code = XML_IO_EALREADY;

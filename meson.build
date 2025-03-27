@@ -478,6 +478,8 @@ foreach file : xml_opt_src
 endforeach
 
 v_min_compat = 14
+so_version = v_maj + v_min_compat
+age = v_min - v_min_compat
 xml_lib = library(
     'xml2',
     files(xml_src),
@@ -485,8 +487,8 @@ xml_lib = library(
     dependencies: xml_deps,
     include_directories: config_dir,
     install: true,
-    version: meson.project_version(),
-    soversion: v_maj + v_min_compat,
+    version: f'@so_version@.@age@.@v_mic@',
+    soversion: so_version,
 )
 
 dep_inc = include_directories('include')

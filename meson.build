@@ -1,7 +1,7 @@
 project(
     'libxml2',
     'c',
-    version: '2.13.6',
+    version: '2.13.7',
     license: 'MIT',
     default_options: ['buildtype=debug', 'warning_level=3'],
     meson_version: '>= 0.61',

@@ -1,5 +1,14 @@
 NEWS file for libxml2
 
+v2.13.7: Mar 27 2025
+
+### Regressions
+
+- tree: Fix xmlTextMerge with NULL args
+- io: Fix `compressed` flag for uncompressed stdin
+- parser: Fix parsing of DTD content
+
+
 v2.13.6: Feb 18 2025
 
 ### Security

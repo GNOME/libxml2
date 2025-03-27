@@ -2,7 +2,7 @@ include:
   - component: "gitlab.gnome.org/GNOME/citemplates/release-service@master"
     inputs:
       dist-job-name: "dist"
-      tarball-artifact-path: "libxml2-dist/libxml2-2.13.6.tar.xz"
+      tarball-artifact-path: "libxml2-dist/libxml2-2.13.7.tar.xz"
 
 .test:
   image: registry.gitlab.gnome.org/gnome/libxml2

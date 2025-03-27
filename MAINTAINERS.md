@@ -52,9 +52,6 @@ You can get started by running
 
 Update the version number in `VERSION` if you haven't done so already.
 
-IMPORTANT: Update the version number of `tarball-artifact-path` in
-`.gitlab-ci.yml`. This must be done manually for now.
-
 ### Commit and verify tarball
 
 Release tarballs are generated with a CI job and the `.gitlab-ci/dist.sh`

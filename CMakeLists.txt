@@ -547,7 +547,6 @@ if(LIBXML2_WITH_PYTHON)
         IMPORT_PREFIX lib
         OUTPUT_NAME xml2mod
         PREFIX lib
-        VERSION ${PROJECT_VERSION}
     )
     if (WIN32)
         set_target_properties(LibXml2Mod PROPERTIES SUFFIX ".pyd")

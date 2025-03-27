@@ -188,7 +188,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlGcMemGet"></a>xmlGcMemGet ()</h3>
 <pre class="programlisting">int	xmlGcMemGet			(<a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> * freeFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> * mallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> * mallocAtomicFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> * reallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> * strdupFunc)<br>
 </pre>
-<p>Provides the memory access functions set currently in use The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas useful for garbage collected memory allocators</p>
+<p>DEPRECATED: <a href="libxml2-xmlmemory.html#xmlMemGet">xmlMemGet</a>. Provides the memory access functions set currently in use The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas useful for garbage collected memory allocators</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -225,7 +225,7 @@ typedef char * <a href="#xmlStrdupFunc">xmlStrdupFunc</a>			(const char * str);
 <a name="xmlGcMemSetup"></a>xmlGcMemSetup ()</h3>
 <pre class="programlisting">int	xmlGcMemSetup			(<a href="libxml2-xmlmemory.html#xmlFreeFunc">xmlFreeFunc</a> freeFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlMallocFunc">xmlMallocFunc</a> mallocAtomicFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlReallocFunc">xmlReallocFunc</a> reallocFunc, <br>					 <a href="libxml2-xmlmemory.html#xmlStrdupFunc">xmlStrdupFunc</a> strdupFunc)<br>
 </pre>
-<p>Override the default memory access functions with a new set This has to be called before any other libxml routines ! The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas useful for garbage collected memory allocators Should this be blocked if there was already some allocations done ?</p>
+<p>DEPRECATED: Use <a href="libxml2-xmlmemory.html#xmlMemSetup">xmlMemSetup</a>. Override the default memory access functions with a new set This has to be called before any other libxml routines ! The mallocAtomicFunc is specialized for atomic block allocations (i.e. of areas useful for garbage collected memory allocators Should this be blocked if there was already some allocations done ?</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

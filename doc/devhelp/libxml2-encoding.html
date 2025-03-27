@@ -22,21 +22,27 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">typedef enum <a href="#xmlCharEncError">xmlCharEncError</a>;
+<pre class="synopsis">#define <a href="#UTF8Toisolat1">UTF8Toisolat1</a>;
+#define <a href="#isolat1ToUTF8">isolat1ToUTF8</a>;
+typedef enum <a href="#xmlCharEncError">xmlCharEncError</a>;
+typedef enum <a href="#xmlCharEncFlags">xmlCharEncFlags</a>;
 typedef enum <a href="#xmlCharEncoding">xmlCharEncoding</a>;
 typedef struct _xmlCharEncodingHandler <a href="#xmlCharEncodingHandler">xmlCharEncodingHandler</a>;
 typedef <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * <a href="#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>;
-int	<a href="#UTF8Toisolat1">UTF8Toisolat1</a>			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
-int	<a href="#isolat1ToUTF8">isolat1ToUTF8</a>			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
 int	<a href="#xmlAddEncodingAlias">xmlAddEncodingAlias</a>		(const char * name, <br>					 const char * alias);
 int	<a href="#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler);
+typedef void <a href="#xmlCharEncConvCtxtDtor">xmlCharEncConvCtxtDtor</a>		(void * vctxt);
+typedef <a href="libxml2-encoding.html#xmlCharEncError">xmlCharEncError</a> <a href="#xmlCharEncConvFunc">xmlCharEncConvFunc</a>	(void * vctxt, <br>					 unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen, <br>					 int flush);
+typedef <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> <a href="#xmlCharEncConvImpl">xmlCharEncConvImpl</a>	(void * vctxt, <br>					 const char * name, <br>					 <a href="libxml2-encoding.html#xmlCharEncFlags">xmlCharEncFlags</a> flags, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 int	<a href="#xmlCharEncFirstLine">xmlCharEncFirstLine</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
 int	<a href="#xmlCharEncInFunc">xmlCharEncInFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
+<a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	<a href="#xmlCharEncNewCustomHandler">xmlCharEncNewCustomHandler</a>	(const char * name, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvFunc">xmlCharEncConvFunc</a> input, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvFunc">xmlCharEncConvFunc</a> output, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvCtxtDtor">xmlCharEncConvCtxtDtor</a> ctxtDtor, <br>						 void * inputCtxt, <br>						 void * outputCtxt, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 int	<a href="#xmlCharEncOutFunc">xmlCharEncOutFunc</a>		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in);
 typedef int <a href="#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a>	(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
 typedef int <a href="#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a>	(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
 void	<a href="#xmlCleanupCharEncodingHandlers">xmlCleanupCharEncodingHandlers</a>	(void);
 void	<a href="#xmlCleanupEncodingAliases">xmlCleanupEncodingAliases</a>	(void);
+<a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	<a href="#xmlCreateCharEncodingHandler">xmlCreateCharEncodingHandler</a>	(const char * name, <br>						 <a href="libxml2-encoding.html#xmlCharEncFlags">xmlCharEncFlags</a> flags, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvImpl">xmlCharEncConvImpl</a> impl, <br>						 void * implCtxt, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 int	<a href="#xmlDelEncodingAlias">xmlDelEncodingAlias</a>		(const char * alias);
 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlDetectCharEncoding">xmlDetectCharEncoding</a>	(const unsigned char * in, <br>					 int len);
 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlFindCharEncodingHandler">xmlFindCharEncodingHandler</a>	(const char * name);
@@ -44,11 +50,13 @@ int	<a href="#xmlDelEncodingAlias">xmlDelEncodingAlias</a>		(const char * alias)
 const char *	<a href="#xmlGetCharEncodingName">xmlGetCharEncodingName</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc);
 const char *	<a href="#xmlGetEncodingAlias">xmlGetEncodingAlias</a>	(const char * alias);
 void	<a href="#xmlInitCharEncodingHandlers">xmlInitCharEncodingHandlers</a>	(void);
-int	<a href="#xmlLookupCharEncodingHandler">xmlLookupCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
+int	<a href="#xmlIsolat1ToUTF8">xmlIsolat1ToUTF8</a>		(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
+<a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	<a href="#xmlLookupCharEncodingHandler">xmlLookupCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	<a href="#xmlNewCharEncodingHandler">xmlNewCharEncodingHandler</a>	(const char * name, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output);
-int	<a href="#xmlOpenCharEncodingHandler">xmlOpenCharEncodingHandler</a>	(const char * name, <br>					 int output, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
+<a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	<a href="#xmlOpenCharEncodingHandler">xmlOpenCharEncodingHandler</a>	(const char * name, <br>						 int output, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out);
 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a>	<a href="#xmlParseCharEncoding">xmlParseCharEncoding</a>	(const char * name);
 void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a>	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler);
+int	<a href="#xmlUTF8ToIsolat1">xmlUTF8ToIsolat1</a>		(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -57,14 +65,40 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <div class="refsect2" lang="en">
 <div class="refsect2" lang="en">
 <h3>
+<a name="UTF8Toisolat1">Macro </a>UTF8Toisolat1</h3>
+<pre class="programlisting">#define <a href="#UTF8Toisolat1">UTF8Toisolat1</a>;
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="isolat1ToUTF8">Macro </a>isolat1ToUTF8</h3>
+<pre class="programlisting">#define <a href="#isolat1ToUTF8">isolat1ToUTF8</a>;
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlCharEncError">Enum </a>xmlCharEncError</h3>
 <pre class="programlisting">enum <a href="#xmlCharEncError">xmlCharEncError</a> {
-    <a name="XML_ENC_ERR_MEMORY">XML_ENC_ERR_MEMORY</a> = -5
-    <a name="XML_ENC_ERR_INTERNAL">XML_ENC_ERR_INTERNAL</a> = -4
-    <a name="XML_ENC_ERR_PARTIAL">XML_ENC_ERR_PARTIAL</a> = -3
+    <a name="XML_ENC_ERR_MEMORY">XML_ENC_ERR_MEMORY</a> = -4
+    <a name="XML_ENC_ERR_SPACE">XML_ENC_ERR_SPACE</a> = -3
     <a name="XML_ENC_ERR_INPUT">XML_ENC_ERR_INPUT</a> = -2
-    <a name="XML_ENC_ERR_SPACE">XML_ENC_ERR_SPACE</a> = -1
+    <a name="XML_ENC_ERR_INTERNAL">XML_ENC_ERR_INTERNAL</a> = -1
     <a name="XML_ENC_ERR_SUCCESS">XML_ENC_ERR_SUCCESS</a> = 0
+};
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlCharEncFlags">Enum </a>xmlCharEncFlags</h3>
+<pre class="programlisting">enum <a href="#xmlCharEncFlags">xmlCharEncFlags</a> {
+    <a name="XML_ENC_INPUT">XML_ENC_INPUT</a> = 1
+    <a name="XML_ENC_OUTPUT">XML_ENC_OUTPUT</a> = 2
 };
 </pre>
 <p></p>
@@ -97,7 +131,15 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
     <a name="XML_CHAR_ENCODING_2022_JP">XML_CHAR_ENCODING_2022_JP</a> = 19 /* ISO-2022-JP */
     <a name="XML_CHAR_ENCODING_SHIFT_JIS">XML_CHAR_ENCODING_SHIFT_JIS</a> = 20 /* Shift_JIS */
     <a name="XML_CHAR_ENCODING_EUC_JP">XML_CHAR_ENCODING_EUC_JP</a> = 21 /* EUC-JP */
-    <a name="XML_CHAR_ENCODING_ASCII">XML_CHAR_ENCODING_ASCII</a> = 22 /*  pure ASCII */
+    <a name="XML_CHAR_ENCODING_ASCII">XML_CHAR_ENCODING_ASCII</a> = 22 /* pure ASCII Available since 2.14.0 */
+    <a name="XML_CHAR_ENCODING_UTF16">XML_CHAR_ENCODING_UTF16</a> = 23 /* UTF-16 native */
+    <a name="XML_CHAR_ENCODING_HTML">XML_CHAR_ENCODING_HTML</a> = 24 /* HTML (output only) */
+    <a name="XML_CHAR_ENCODING_8859_10">XML_CHAR_ENCODING_8859_10</a> = 25 /* ISO-8859-10 */
+    <a name="XML_CHAR_ENCODING_8859_11">XML_CHAR_ENCODING_8859_11</a> = 26 /* ISO-8859-11 */
+    <a name="XML_CHAR_ENCODING_8859_13">XML_CHAR_ENCODING_8859_13</a> = 27 /* ISO-8859-13 */
+    <a name="XML_CHAR_ENCODING_8859_14">XML_CHAR_ENCODING_8859_14</a> = 28 /* ISO-8859-14 */
+    <a name="XML_CHAR_ENCODING_8859_15">XML_CHAR_ENCODING_8859_15</a> = 29 /* ISO-8859-15 */
+    <a name="XML_CHAR_ENCODING_8859_16">XML_CHAR_ENCODING_8859_16</a> = 30 /*  ISO-8859-16 */
 };
 </pre>
 <p></p>
@@ -108,12 +150,10 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlCharEncodingHandler">Structure </a>xmlCharEncodingHandler</h3>
 <pre class="programlisting">struct _xmlCharEncodingHandler {
     char *	name
-    <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a>	input
-    <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a>	output
-    iconv_t	iconv_in
-    iconv_t	iconv_out
-    struct _uconv_t *	uconv_in
-    struct _uconv_t *	uconv_out
+    void *	inputCtxt
+    void *	outputCtxt
+    <a href="libxml2-encoding.html#xmlCharEncConvCtxtDtor">xmlCharEncConvCtxtDtor</a>	ctxtDtor
+    int	flags
 } xmlCharEncodingHandler;
 </pre>
 <p></p>
@@ -129,10 +169,99 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlCharEncConvCtxtDtor"></a>Function type xmlCharEncConvCtxtDtor</h3>
+<pre class="programlisting">void	xmlCharEncConvCtxtDtor		(void * vctxt)<br>
+</pre>
+<p>Free a conversion context.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody><tr>
+<td><span class="term"><i><tt>vctxt</tt></i>:</span></td>
+<td>conversion context</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlCharEncConvFunc"></a>Function type xmlCharEncConvFunc</h3>
+<pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncError">xmlCharEncError</a>	xmlCharEncConvFunc	(void * vctxt, <br>					 unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen, <br>					 int flush)<br>
+</pre>
+<p>Convert between character encodings. The value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced. If the converter can consume partial multi-byte sequences, the @flush flag can be used to detect truncated sequences at EOF. Otherwise, the flag can be ignored.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>vctxt</tt></i>:</span></td>
+<td>conversion context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>a pointer to an array of bytes to store the result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
+<td>the length of @out</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>in</tt></i>:</span></td>
+<td>a pointer to an array of input bytes</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
+<td>the length of @in</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>flush</tt></i>:</span></td>
+<td>end of input</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an XML_ENC_ERR code.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlCharEncConvImpl"></a>Function type xmlCharEncConvImpl</h3>
+<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	xmlCharEncConvImpl	(void * vctxt, <br>					 const char * name, <br>					 <a href="libxml2-encoding.html#xmlCharEncFlags">xmlCharEncFlags</a> flags, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+</pre>
+<p>If this function returns XML_ERR_OK, it must fill the @out pointer with an encoding handler. The handler can be obtained from <a href="libxml2-encoding.html#xmlCharEncNewCustomHandler">xmlCharEncNewCustomHandler</a>. @flags can contain XML_ENC_INPUT, <a href="libxml2-encoding.html#XML_ENC_OUTPUT">XML_ENC_OUTPUT</a> or both.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>vctxt</tt></i>:</span></td>
+<td>user data</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>name</tt></i>:</span></td>
+<td>encoding name</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>flags</tt></i>:</span></td>
+<td>bit mask of flags</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>pointer to resulting handler</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> code.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlCharEncodingInputFunc"></a>Function type xmlCharEncodingInputFunc</h3>
 <pre class="programlisting">int	xmlCharEncodingInputFunc	(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
 </pre>
-<p>Take a block of chars in the original encoding and try to convert it to an UTF-8 block of chars out.</p>
+<p>Convert characters to UTF-8. On success, the value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -154,7 +283,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets consumed.</td>
+<td>the number of bytes written or an XML_ENC_ERR code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -165,7 +294,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlCharEncodingOutputFunc"></a>Function type xmlCharEncodingOutputFunc</h3>
 <pre class="programlisting">int	xmlCharEncodingOutputFunc	(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
 </pre>
-<p>Take a block of UTF-8 chars in and try to convert it to another encoding. Note: a first call designed to produce heading info is called with in = NULL. If stateful this should also initialize the encoder state.</p>
+<p>Convert characters from UTF-8. On success, the value of @inlen after return is the number of bytes consumed and @outlen is the number of bytes produced.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -187,73 +316,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written, -1 if lack of space, or -2 if the transcoding failed. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictiable. The value of @outlen after return is the number of octets produced.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="UTF8Toisolat1"></a>UTF8Toisolat1 ()</h3>
-<pre class="programlisting">int	UTF8Toisolat1			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
-</pre>
-<p>Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1 block of chars out.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>out</tt></i>:</span></td>
-<td>a pointer to an array of bytes to store the result</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
-<td>the length of @out</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>in</tt></i>:</span></td>
-<td>a pointer to an array of UTF-8 chars</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
-<td>the length of @in</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written or an XML_ENC_ERR code. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="isolat1ToUTF8"></a>isolat1ToUTF8 ()</h3>
-<pre class="programlisting">int	isolat1ToUTF8			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
-</pre>
-<p>Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8 block of chars out.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>out</tt></i>:</span></td>
-<td>a pointer to an array of bytes to store the result</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
-<td>the length of @out</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>in</tt></i>:</span></td>
-<td>a pointer to an array of ISO Latin 1 chars</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
-<td>the length of @in</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written or an XML_ENC_ERR code. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
+<td>the number of bytes written or an XML_ENC_ERR code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -264,7 +327,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlAddEncodingAlias"></a>xmlAddEncodingAlias ()</h3>
 <pre class="programlisting">int	xmlAddEncodingAlias		(const char * name, <br>					 const char * alias)<br>
 </pre>
-<p>Registers an alias @alias for an encoding named @name. Existing alias will be overwritten.</p>
+<p>DEPRECATED: This function modifies global state and is not thread-safe. Registers an alias @alias for an encoding named @name. Existing alias will be overwritten.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -289,7 +352,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlCharEncCloseFunc"></a>xmlCharEncCloseFunc ()</h3>
 <pre class="programlisting">int	xmlCharEncCloseFunc		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler)<br>
 </pre>
-<p>Generic front-end for encoding handler close function</p>
+<p>Releases an <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a>. Must be called after a handler is no longer in use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -299,7 +362,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if success, or -1 in case of error</td>
+<td>0.</td>
 </tr>
 </tbody>
 </table></div>
@@ -365,6 +428,51 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlCharEncNewCustomHandler"></a>xmlCharEncNewCustomHandler ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	xmlCharEncNewCustomHandler	(const char * name, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvFunc">xmlCharEncConvFunc</a> input, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvFunc">xmlCharEncConvFunc</a> output, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvCtxtDtor">xmlCharEncConvCtxtDtor</a> ctxtDtor, <br>						 void * inputCtxt, <br>						 void * outputCtxt, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+</pre>
+<p>Create a custom <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a>.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>name</tt></i>:</span></td>
+<td>the encoding name</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>input</tt></i>:</span></td>
+<td>input callback which converts to UTF-8</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>output</tt></i>:</span></td>
+<td>output callback which converts from UTF-8</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>ctxtDtor</tt></i>:</span></td>
+<td>context destructor</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>inputCtxt</tt></i>:</span></td>
+<td>context for input callback</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>outputCtxt</tt></i>:</span></td>
+<td>context for output callback</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>pointer to resulting handler</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> code.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlCharEncOutFunc"></a>xmlCharEncOutFunc ()</h3>
 <pre class="programlisting">int	xmlCharEncOutFunc		(<a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> * handler, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> out, <br>					 <a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> in)<br>
 </pre>
@@ -405,7 +513,44 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlCleanupEncodingAliases"></a>xmlCleanupEncodingAliases ()</h3>
 <pre class="programlisting">void	xmlCleanupEncodingAliases	(void)<br>
 </pre>
-<p>Unregisters all aliases</p>
+<p>DEPRECATED: This function modifies global state and is not thread-safe. Unregisters all aliases</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlCreateCharEncodingHandler"></a>xmlCreateCharEncodingHandler ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	xmlCreateCharEncodingHandler	(const char * name, <br>						 <a href="libxml2-encoding.html#xmlCharEncFlags">xmlCharEncFlags</a> flags, <br>						 <a href="libxml2-encoding.html#xmlCharEncConvImpl">xmlCharEncConvImpl</a> impl, <br>						 void * implCtxt, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+</pre>
+<p>Find or create a handler matching the encoding. The following converters are looked up in order: - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - Custom implementation if provided - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. If the encoding is UTF-8, a NULL handler and no error code will be returned. @flags can contain XML_ENC_INPUT, <a href="libxml2-encoding.html#XML_ENC_OUTPUT">XML_ENC_OUTPUT</a> or both. Available since 2.14.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>name</tt></i>:</span></td>
+<td>a string describing the char encoding.</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>flags</tt></i>:</span></td>
+<td>bit mask of flags</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>impl</tt></i>:</span></td>
+<td>a conversion implementation (optional)</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>implCtxt</tt></i>:</span></td>
+<td>user data for conversion implementation (optional)</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>pointer to result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>XML_ERR_OK, <a href="libxml2-xmlerror.html#XML_ERR_UNSUPPORTED_ENCODING">XML_ERR_UNSUPPORTED_ENCODING</a> or another <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -413,7 +558,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlDelEncodingAlias"></a>xmlDelEncodingAlias ()</h3>
 <pre class="programlisting">int	xmlDelEncodingAlias		(const char * alias)<br>
 </pre>
-<p>Unregisters an encoding alias @alias</p>
+<p>DEPRECATED: This function modifies global state and is not thread-safe. Unregisters an encoding alias @alias</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -459,7 +604,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlFindCharEncodingHandler"></a>xmlFindCharEncodingHandler ()</h3>
 <pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlFindCharEncodingHandler	(const char * name)<br>
 </pre>
-<p>DEPRECATED: Use <a href="libxml2-encoding.html#xmlOpenCharEncodingHandler">xmlOpenCharEncodingHandler</a> which has better error reporting.</p>
+<p>DEPRECATED: Use <a href="libxml2-encoding.html#xmlOpenCharEncodingHandler">xmlOpenCharEncodingHandler</a> which has better error reporting. If the encoding is UTF-8, this will return a no-op handler that shouldn't be used.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -522,7 +667,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlGetEncodingAlias"></a>xmlGetEncodingAlias ()</h3>
 <pre class="programlisting">const char *	xmlGetEncodingAlias	(const char * alias)<br>
 </pre>
-<p>Lookup an encoding name for the given alias.</p>
+<p>DEPRECATED: This function is not thread-safe. Lookup an encoding name for the given alias.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -548,10 +693,43 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlLookupCharEncodingHandler"></a>xmlLookupCharEncodingHandler ()</h3>
-<pre class="programlisting">int	xmlLookupCharEncodingHandler	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+<a name="xmlIsolat1ToUTF8"></a>xmlIsolat1ToUTF8 ()</h3>
+<pre class="programlisting">int	xmlIsolat1ToUTF8		(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
 </pre>
-<p>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported. The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. Available since 2.13.0.</p>
+<p>Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8 block of chars out.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>a pointer to an array of bytes to store the result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
+<td>the length of @out</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>in</tt></i>:</span></td>
+<td>a pointer to an array of ISO Latin 1 chars</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
+<td>the length of @in</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the number of bytes written or an XML_ENC_ERR code. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlLookupCharEncodingHandler"></a>xmlLookupCharEncodingHandler ()</h3>
+<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	xmlLookupCharEncodingHandler	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+</pre>
+<p>Find or create a handler matching the encoding. The following converters are looked up in order: - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. If the encoding is UTF-8, a NULL handler and no error code will be returned. Available since 2.13.0.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -565,7 +743,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
+<td>XML_ERR_OK, <a href="libxml2-xmlerror.html#XML_ERR_UNSUPPORTED_ENCODING">XML_ERR_UNSUPPORTED_ENCODING</a> or another <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -576,7 +754,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlNewCharEncodingHandler"></a>xmlNewCharEncodingHandler ()</h3>
 <pre class="programlisting"><a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a>	xmlNewCharEncodingHandler	(const char * name, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingInputFunc">xmlCharEncodingInputFunc</a> input, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> output)<br>
 </pre>
-<p>Create and registers an <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a>.</p>
+<p>DEPRECATED: This function modifies global state and is not thread-safe. Create and registers an <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -603,9 +781,9 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlOpenCharEncodingHandler"></a>xmlOpenCharEncodingHandler ()</h3>
-<pre class="programlisting">int	xmlOpenCharEncodingHandler	(const char * name, <br>					 int output, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
+<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	xmlOpenCharEncodingHandler	(const char * name, <br>						 int output, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandler">xmlCharEncodingHandler</a> ** out)<br>
 </pre>
-<p>Find or create a handler matching the encoding. If no default or registered handler could be found, try to create a handler using iconv or ICU if supported. The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. Available since 2.13.0.</p>
+<p>Find or create a handler matching the encoding. The following converters are looked up in order: - Built-in handler (UTF-8, UTF-16, ISO-8859-1, ASCII) - User-registered global handler (deprecated) - iconv if enabled - ICU if enabled The handler must be closed with <a href="libxml2-encoding.html#xmlCharEncCloseFunc">xmlCharEncCloseFunc</a>. If the encoding is UTF-8, a NULL handler and no error code will be returned. Available since 2.13.0.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -623,7 +801,7 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>an <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
+<td>XML_ERR_OK, <a href="libxml2-xmlerror.html#XML_ERR_UNSUPPORTED_ENCODING">XML_ERR_UNSUPPORTED_ENCODING</a> or another <a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a> error code.</td>
 </tr>
 </tbody>
 </table></div>
@@ -655,13 +833,46 @@ void	<a href="#xmlRegisterCharEncodingHandler">xmlRegisterCharEncodingHandler</a
 <a name="xmlRegisterCharEncodingHandler"></a>xmlRegisterCharEncodingHandler ()</h3>
 <pre class="programlisting">void	xmlRegisterCharEncodingHandler	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler)<br>
 </pre>
-<p>Register the char encoding handler, surprising, isn't it ?</p>
+<p>DEPRECATED: This function modifies global state and is not thread-safe. Register the char encoding handler.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
 <td><span class="term"><i><tt>handler</tt></i>:</span></td>
 <td>the <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> handler block</td>
 </tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlUTF8ToIsolat1"></a>xmlUTF8ToIsolat1 ()</h3>
+<pre class="programlisting">int	xmlUTF8ToIsolat1		(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
+</pre>
+<p>Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1 block of chars out.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>a pointer to an array of bytes to store the result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
+<td>the length of @out</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>in</tt></i>:</span></td>
+<td>a pointer to an array of UTF-8 chars</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
+<td>the length of @in</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the number of bytes written or an XML_ENC_ERR code. The value of @inlen after return is the number of octets consumed if the return value is positive, else unpredictable. The value of @outlen after return is the number of octets produced.</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <hr>

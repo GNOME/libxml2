@@ -22,12 +22,12 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">typedef struct _xmlError <a href="#xmlError">xmlError</a>;
+<pre class="synopsis">#define <a href="#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>;
+typedef struct _xmlError <a href="#xmlError">xmlError</a>;
 typedef enum <a href="#xmlErrorDomain">xmlErrorDomain</a>;
 typedef enum <a href="#xmlErrorLevel">xmlErrorLevel</a>;
 typedef <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * <a href="#xmlErrorPtr">xmlErrorPtr</a>;
 typedef enum <a href="#xmlParserErrors">xmlParserErrors</a>;
-void	<a href="#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>	(<a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler);
 int	<a href="#xmlCopyError">xmlCopyError</a>			(const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> * from, <br>					 <a href="libxml2-xmlerror.html#xmlErrorPtr">xmlErrorPtr</a> to);
 const <a href="libxml2-xmlerror.html#xmlError">xmlError</a> *	<a href="#xmlCtxtGetLastError">xmlCtxtGetLastError</a>	(void * ctx);
 void	<a href="#xmlCtxtResetLastError">xmlCtxtResetLastError</a>		(void * ctx);
@@ -55,21 +55,29 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <div class="refsect2" lang="en">
 <div class="refsect2" lang="en">
 <h3>
+<a name="initGenericErrorDefaultFunc">Macro </a>initGenericErrorDefaultFunc</h3>
+<pre class="programlisting">#define <a href="#initGenericErrorDefaultFunc">initGenericErrorDefaultFunc</a>;
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlError">Structure </a>xmlError</h3>
 <pre class="programlisting">struct _xmlError {
-    int	domain	: What part of the library raised this error
-    int	code	: The error code, e.g. an <a href="libxml2-xmlerror.html#xmlParserError">xmlParserError</a>
-    char *	message	: human-readable informative error message
-    <a href="libxml2-xmlerror.html#xmlErrorLevel">xmlErrorLevel</a>	level	: how consequent is the error
-    char *	file	: the filename
-    int	line	: the line number if available
-    char *	str1	: extra string information
-    char *	str2	: extra string information
-    char *	str3	: extra string information
-    int	int1	: extra number information
-    int	int2	: error column # or 0 if N/A (todo: rename field when we would brk ABI)
-    void *	ctxt	: the parser context if available
-    void *	node	: the node in the tree
+    int	domain
+    int	code
+    char *	message
+    <a href="libxml2-xmlerror.html#xmlErrorLevel">xmlErrorLevel</a>	level
+    char *	file
+    int	line
+    char *	str1
+    char *	str2
+    char *	str3
+    int	int1
+    int	int2
+    void *	ctxt
+    void *	node
 } xmlError;
 </pre>
 <p></p>
@@ -931,21 +939,6 @@ void	<a href="#xmlThrDefSetStructuredErrorFunc">xmlThrDefSetStructuredErrorFunc<
 <td>the error being raised.</td>
 </tr>
 </tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="initGenericErrorDefaultFunc"></a>initGenericErrorDefaultFunc ()</h3>
-<pre class="programlisting">void	initGenericErrorDefaultFunc	(<a href="libxml2-xmlerror.html#xmlGenericErrorFunc">xmlGenericErrorFunc</a> * handler)<br>
-</pre>
-<p>DEPRECATED: Use <a href="libxml2-xmlerror.html#xmlSetGenericErrorFunc">xmlSetGenericErrorFunc</a>. Set or reset (if NULL) the default handler for generic errors to the builtin error function.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody><tr>
-<td><span class="term"><i><tt>handler</tt></i>:</span></td>
-<td>the handler</td>
-</tr></tbody>
 </table></div>
 </div>
 <hr>

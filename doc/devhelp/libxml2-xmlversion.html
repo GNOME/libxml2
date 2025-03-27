@@ -10,7 +10,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="libxml2-xmlunicode.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libxml2-xmlstring.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <td><a accesskey="n" href="libxml2-xmlwriter.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -27,13 +27,11 @@
 #define <a href="#LIBXML_CATALOG_ENABLED">LIBXML_CATALOG_ENABLED</a>;
 #define <a href="#LIBXML_DEBUG_ENABLED">LIBXML_DEBUG_ENABLED</a>;
 #define <a href="#LIBXML_DOTTED_VERSION">LIBXML_DOTTED_VERSION</a>;
-#define <a href="#LIBXML_FTP_ENABLED">LIBXML_FTP_ENABLED</a>;
 #define <a href="#LIBXML_HTML_ENABLED">LIBXML_HTML_ENABLED</a>;
 #define <a href="#LIBXML_HTTP_ENABLED">LIBXML_HTTP_ENABLED</a>;
 #define <a href="#LIBXML_ICONV_ENABLED">LIBXML_ICONV_ENABLED</a>;
 #define <a href="#LIBXML_ICU_ENABLED">LIBXML_ICU_ENABLED</a>;
 #define <a href="#LIBXML_ISO8859X_ENABLED">LIBXML_ISO8859X_ENABLED</a>;
-#define <a href="#LIBXML_LEGACY_ENABLED">LIBXML_LEGACY_ENABLED</a>;
 #define <a href="#LIBXML_LZMA_ENABLED">LIBXML_LZMA_ENABLED</a>;
 #define <a href="#LIBXML_MODULES_ENABLED">LIBXML_MODULES_ENABLED</a>;
 #define <a href="#LIBXML_MODULE_EXTENSION">LIBXML_MODULE_EXTENSION</a>;
@@ -42,6 +40,7 @@
 #define <a href="#LIBXML_PUSH_ENABLED">LIBXML_PUSH_ENABLED</a>;
 #define <a href="#LIBXML_READER_ENABLED">LIBXML_READER_ENABLED</a>;
 #define <a href="#LIBXML_REGEXP_ENABLED">LIBXML_REGEXP_ENABLED</a>;
+#define <a href="#LIBXML_RELAXNG_ENABLED">LIBXML_RELAXNG_ENABLED</a>;
 #define <a href="#LIBXML_SAX1_ENABLED">LIBXML_SAX1_ENABLED</a>;
 #define <a href="#LIBXML_SCHEMAS_ENABLED">LIBXML_SCHEMAS_ENABLED</a>;
 #define <a href="#LIBXML_SCHEMATRON_ENABLED">LIBXML_SCHEMATRON_ENABLED</a>;
@@ -49,7 +48,6 @@
 #define <a href="#LIBXML_THREAD_ALLOC_ENABLED">LIBXML_THREAD_ALLOC_ENABLED</a>;
 #define <a href="#LIBXML_THREAD_ENABLED">LIBXML_THREAD_ENABLED</a>;
 #define <a href="#LIBXML_TREE_ENABLED">LIBXML_TREE_ENABLED</a>;
-#define <a href="#LIBXML_UNICODE_ENABLED">LIBXML_UNICODE_ENABLED</a>;
 #define <a href="#LIBXML_VALID_ENABLED">LIBXML_VALID_ENABLED</a>;
 #define <a href="#LIBXML_VERSION">LIBXML_VERSION</a>;
 #define <a href="#LIBXML_VERSION_EXTRA">LIBXML_VERSION_EXTRA</a>;
@@ -58,7 +56,6 @@
 #define <a href="#LIBXML_XINCLUDE_ENABLED">LIBXML_XINCLUDE_ENABLED</a>;
 #define <a href="#LIBXML_XPATH_ENABLED">LIBXML_XPATH_ENABLED</a>;
 #define <a href="#LIBXML_XPTR_ENABLED">LIBXML_XPTR_ENABLED</a>;
-#define <a href="#LIBXML_XPTR_LOCS_ENABLED">LIBXML_XPTR_LOCS_ENABLED</a>;
 #define <a href="#LIBXML_ZLIB_ENABLED">LIBXML_ZLIB_ENABLED</a>;
 </pre>
 </div>
@@ -108,14 +105,6 @@
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="LIBXML_FTP_ENABLED">Macro </a>LIBXML_FTP_ENABLED</h3>
-<pre class="programlisting">#define <a href="#LIBXML_FTP_ENABLED">LIBXML_FTP_ENABLED</a>;
-</pre>
-<p>Whether the FTP support is configured in</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="LIBXML_HTML_ENABLED">Macro </a>LIBXML_HTML_ENABLED</h3>
 <pre class="programlisting">#define <a href="#LIBXML_HTML_ENABLED">LIBXML_HTML_ENABLED</a>;
 </pre>
@@ -152,14 +141,6 @@
 <pre class="programlisting">#define <a href="#LIBXML_ISO8859X_ENABLED">LIBXML_ISO8859X_ENABLED</a>;
 </pre>
 <p>Whether ISO-8859-* support is made available in case iconv is not</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="LIBXML_LEGACY_ENABLED">Macro </a>LIBXML_LEGACY_ENABLED</h3>
-<pre class="programlisting">#define <a href="#LIBXML_LEGACY_ENABLED">LIBXML_LEGACY_ENABLED</a>;
-</pre>
-<p>Whether the deprecated APIs are compiled in for compatibility</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -228,6 +209,14 @@
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="LIBXML_RELAXNG_ENABLED">Macro </a>LIBXML_RELAXNG_ENABLED</h3>
+<pre class="programlisting">#define <a href="#LIBXML_RELAXNG_ENABLED">LIBXML_RELAXNG_ENABLED</a>;
+</pre>
+<p>Whether the RelaxNG validation interfaces are compiled in</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="LIBXML_SAX1_ENABLED">Macro </a>LIBXML_SAX1_ENABLED</h3>
 <pre class="programlisting">#define <a href="#LIBXML_SAX1_ENABLED">LIBXML_SAX1_ENABLED</a>;
 </pre>
@@ -279,15 +268,7 @@
 <a name="LIBXML_TREE_ENABLED">Macro </a>LIBXML_TREE_ENABLED</h3>
 <pre class="programlisting">#define <a href="#LIBXML_TREE_ENABLED">LIBXML_TREE_ENABLED</a>;
 </pre>
-<p>Whether the DOM like tree manipulation API support is configured in</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="LIBXML_UNICODE_ENABLED">Macro </a>LIBXML_UNICODE_ENABLED</h3>
-<pre class="programlisting">#define <a href="#LIBXML_UNICODE_ENABLED">LIBXML_UNICODE_ENABLED</a>;
-</pre>
-<p>Whether the Unicode related interfaces are compiled in</p>
+<p>Always enabled since 2.14.0</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -352,14 +333,6 @@
 <pre class="programlisting">#define <a href="#LIBXML_XPTR_ENABLED">LIBXML_XPTR_ENABLED</a>;
 </pre>
 <p>Whether XPointer is configured in</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="LIBXML_XPTR_LOCS_ENABLED">Macro </a>LIBXML_XPTR_LOCS_ENABLED</h3>
-<pre class="programlisting">#define <a href="#LIBXML_XPTR_LOCS_ENABLED">LIBXML_XPTR_LOCS_ENABLED</a>;
-</pre>
-<p>Whether support for XPointer locations is configured in</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

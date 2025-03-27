@@ -46,6 +46,7 @@ int	<a href="#xmlXIncludeProcessTreeFlags">xmlXIncludeProcessTreeFlags</a>	(<a h
 int	<a href="#xmlXIncludeProcessTreeFlagsData">xmlXIncludeProcessTreeFlagsData</a>	(<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> tree, <br>					 int flags, <br>					 void * data);
 void	<a href="#xmlXIncludeSetErrorHandler">xmlXIncludeSetErrorHandler</a>	(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> handler, <br>					 void * data);
 int	<a href="#xmlXIncludeSetFlags">xmlXIncludeSetFlags</a>		(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 int flags);
+void	<a href="#xmlXIncludeSetResourceLoader">xmlXIncludeSetResourceLoader</a>	(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 <a href="libxml2-parser.html#xmlResourceLoader">xmlResourceLoader</a> loader, <br>					 void * data);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
@@ -427,6 +428,31 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>0 in case of success and -1 in case of error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlXIncludeSetResourceLoader"></a>xmlXIncludeSetResourceLoader ()</h3>
+<pre class="programlisting">void	xmlXIncludeSetResourceLoader	(<a href="libxml2-xinclude.html#xmlXIncludeCtxtPtr">xmlXIncludeCtxtPtr</a> ctxt, <br>					 <a href="libxml2-parser.html#xmlResourceLoader">xmlResourceLoader</a> loader, <br>					 void * data)<br>
+</pre>
+<p>Register a callback function that will be called to load included documents. Available since 2.14.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XInclude processing context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>loader</tt></i>:</span></td>
+<td>resource loader</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>data</tt></i>:</span></td>
+<td>user data which will be passed to the loader</td>
 </tr>
 </tbody>
 </table></div>

@@ -242,7 +242,7 @@ The content of this structure is not made public by the API.
 <a name="xmlACatalogResolvePublic"></a>xmlACatalogResolvePublic ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlACatalogResolvePublic	(<a href="libxml2-catalog.html#xmlCatalogPtr">xmlCatalogPtr</a> catal, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pubID)<br>
 </pre>
-<p>Try to lookup the catalog local <a href="libxml2-SAX.html#reference">reference</a> associated to a public ID in that catalog</p>
+<p>Try to lookup the catalog local reference associated to a public ID in that catalog</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -424,7 +424,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCatalogGetDefaults"></a>xmlCatalogGetDefaults ()</h3>
 <pre class="programlisting"><a href="libxml2-catalog.html#xmlCatalogAllow">xmlCatalogAllow</a>	xmlCatalogGetDefaults	(void)<br>
 </pre>
-<p>Used to get the user preference w.r.t. to what catalogs should be accepted</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#XML_PARSE_NO_SYS_CATALOG">XML_PARSE_NO_SYS_CATALOG</a> and <a href="libxml2-parser.html#XML_PARSE_CATALOG_PI">XML_PARSE_CATALOG_PI</a>. Used to get the user preference w.r.t. to what catalogs should be accepted</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -439,7 +439,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCatalogGetPublic"></a>xmlCatalogGetPublic ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlCatalogGetPublic	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pubID)<br>
 </pre>
-<p>Try to lookup the catalog <a href="libxml2-SAX.html#reference">reference</a> associated to a public ID DEPRECATED, use xmlCatalogResolvePublic()</p>
+<p>Try to lookup the catalog reference associated to a public ID DEPRECATED, use xmlCatalogResolvePublic()</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -460,7 +460,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCatalogGetSystem"></a>xmlCatalogGetSystem ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlCatalogGetSystem	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * sysID)<br>
 </pre>
-<p>Try to lookup the catalog <a href="libxml2-SAX.html#reference">reference</a> associated to a system ID DEPRECATED, use xmlCatalogResolveSystem()</p>
+<p>Try to lookup the catalog reference associated to a system ID DEPRECATED, use xmlCatalogResolveSystem()</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -602,7 +602,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCatalogResolvePublic"></a>xmlCatalogResolvePublic ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlCatalogResolvePublic	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * pubID)<br>
 </pre>
-<p>Try to lookup the catalog <a href="libxml2-SAX.html#reference">reference</a> associated to a public ID</p>
+<p>Try to lookup the catalog reference associated to a public ID</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -686,7 +686,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCatalogSetDefaultPrefer"></a>xmlCatalogSetDefaultPrefer ()</h3>
 <pre class="programlisting"><a href="libxml2-catalog.html#xmlCatalogPrefer">xmlCatalogPrefer</a>	xmlCatalogSetDefaultPrefer	(<a href="libxml2-catalog.html#xmlCatalogPrefer">xmlCatalogPrefer</a> prefer)<br>
 </pre>
-<p>Allows to set the preference between public and system for deletion in XML Catalog resolution. C.f. section 4.1.1 of the spec Values accepted are <a href="libxml2-catalog.html#XML_CATA_PREFER_PUBLIC">XML_CATA_PREFER_PUBLIC</a> or <a href="libxml2-catalog.html#XML_CATA_PREFER_SYSTEM">XML_CATA_PREFER_SYSTEM</a></p>
+<p>DEPRECATED: This setting is global and not thread-safe. Allows to set the preference between public and system for deletion in XML Catalog resolution. C.f. section 4.1.1 of the spec Values accepted are <a href="libxml2-catalog.html#XML_CATA_PREFER_PUBLIC">XML_CATA_PREFER_PUBLIC</a> or <a href="libxml2-catalog.html#XML_CATA_PREFER_SYSTEM">XML_CATA_PREFER_SYSTEM</a></p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -707,7 +707,7 @@ The content of this structure is not made public by the API.
 <a name="xmlCatalogSetDefaults"></a>xmlCatalogSetDefaults ()</h3>
 <pre class="programlisting">void	xmlCatalogSetDefaults		(<a href="libxml2-catalog.html#xmlCatalogAllow">xmlCatalogAllow</a> allow)<br>
 </pre>
-<p>Used to set the user preference w.r.t. to what catalogs should be accepted</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#XML_PARSE_NO_SYS_CATALOG">XML_PARSE_NO_SYS_CATALOG</a> and <a href="libxml2-parser.html#XML_PARSE_CATALOG_PI">XML_PARSE_CATALOG_PI</a>. Used to set the user preference w.r.t. to what catalogs should be accepted</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -758,7 +758,7 @@ The content of this structure is not made public by the API.
 <a name="xmlInitializeCatalog"></a>xmlInitializeCatalog ()</h3>
 <pre class="programlisting">void	xmlInitializeCatalog		(void)<br>
 </pre>
-<p>Do the catalog initialization. this function is not thread safe, catalog initialization should preferably be done once at startup</p>
+<p>Load the default system catalog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

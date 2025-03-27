@@ -52,17 +52,17 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <h3>
 <a name="xmlURI">Structure </a>xmlURI</h3>
 <pre class="programlisting">struct _xmlURI {
-    char *	scheme	: the URI scheme
-    char *	opaque	: opaque part
-    char *	authority	: the authority part
-    char *	server	: the server part
-    char *	user	: the user part
-    int	port	: the port number
-    char *	path	: the path string
-    char *	query	: the query string (deprecated - use with caution)
-    char *	fragment	: the fragment identifier
-    int	cleanup	: parsing potentially unclean URI
-    char *	query_raw	: the query string (as it appears in the URI)
+    char *	scheme
+    char *	opaque
+    char *	authority
+    char *	server
+    char *	user
+    int	port
+    char *	path
+    char *	query
+    char *	fragment
+    int	cleanup
+    char *	query_raw
 } xmlURI;
 </pre>
 <p></p>
@@ -87,7 +87,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <tbody>
 <tr>
 <td><span class="term"><i><tt>URI</tt></i>:</span></td>
-<td>the URI <a href="libxml2-SAX.html#reference">reference</a> under consideration</td>
+<td>the URI reference under consideration</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>base</tt></i>:</span></td>
@@ -106,13 +106,13 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a name="xmlBuildRelativeURISafe"></a>xmlBuildRelativeURISafe ()</h3>
 <pre class="programlisting">int	xmlBuildRelativeURISafe		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** valPtr)<br>
 </pre>
-<p>Expresses the URI of the <a href="libxml2-SAX.html#reference">reference</a> in terms relative to the base. Some examples of this operation include: base = "http://site1.com/docs/book1.html" URI input URI returned docs/pic1.gif pic1.gif docs/img/pic1.gif img/pic1.gif img/pic1.gif ../img/pic1.gif http://site1.com/docs/pic1.gif pic1.gif http://site2.com/docs/pic1.gif http://site2.com/docs/pic1.gif base = "docs/book1.html" URI input URI returned docs/pic1.gif pic1.gif docs/img/pic1.gif img/pic1.gif img/pic1.gif ../img/pic1.gif http://site1.com/docs/pic1.gif http://site1.com/docs/pic1.gif Note: if the URI <a href="libxml2-SAX.html#reference">reference</a> is really weird or complicated, it may be worthwhile to first convert it into a "nice" one by calling <a href="libxml2-uri.html#xmlBuildURI">xmlBuildURI</a> (using 'base') before calling this routine, since this routine (for reasonable efficiency) assumes URI has already been through some validation. Available since 2.13.0.</p>
+<p>Expresses the URI of the reference in terms relative to the base. Some examples of this operation include: base = "http://site1.com/docs/book1.html" URI input URI returned http://site1.com/docs/pic1.gif pic1.gif http://site2.com/docs/pic1.gif http://site2.com/docs/pic1.gif base = "docs/book1.html" URI input URI returned docs/pic1.gif pic1.gif docs/img/pic1.gif img/pic1.gif img/pic1.gif ../img/pic1.gif http://site1.com/docs/pic1.gif http://site1.com/docs/pic1.gif Available since 2.13.0.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>URI</tt></i>:</span></td>
-<td>the URI <a href="libxml2-SAX.html#reference">reference</a> under consideration</td>
+<td>the URI reference under consideration</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>base</tt></i>:</span></td>
@@ -135,7 +135,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a name="xmlBuildURI"></a>xmlBuildURI ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlBuildURI		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base)<br>
 </pre>
-<p>Computes he final URI of the <a href="libxml2-SAX.html#reference">reference</a> done by checking that the given URI is valid, and building the final URI using the base URI. This is processed according to section 5.2 of the RFC 2396 5.2. Resolving Relative References to Absolute Form</p>
+<p>Computes he final URI of the reference done by checking that the given URI is valid, and building the final URI using the base URI. This is processed according to section 5.2 of the RFC 2396 5.2. Resolving Relative References to Absolute Form</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -160,7 +160,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a name="xmlBuildURISafe"></a>xmlBuildURISafe ()</h3>
 <pre class="programlisting">int	xmlBuildURISafe			(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URI, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** valPtr)<br>
 </pre>
-<p>Computes he final URI of the <a href="libxml2-SAX.html#reference">reference</a> done by checking that the given URI is valid, and building the final URI using the base URI. This is processed according to section 5.2 of the RFC 2396 5.2. Resolving Relative References to Absolute Form Available since 2.13.0.</p>
+<p>Computes he final URI of the reference done by checking that the given URI is valid, and building the final URI using the base URI. This is processed according to section 5.2 of the RFC 2396 5.2. Resolving Relative References to Absolute Form Available since 2.13.0.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -308,7 +308,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a name="xmlParseURIReference"></a>xmlParseURIReference ()</h3>
 <pre class="programlisting">int	xmlParseURIReference		(<a href="libxml2-uri.html#xmlURIPtr">xmlURIPtr</a> uri, <br>					 const char * str)<br>
 </pre>
-<p>Parse an URI <a href="libxml2-SAX.html#reference">reference</a> string based on RFC 3986 and fills in the appropriate fields of the @uri structure URI-reference = URI / relative-ref</p>
+<p>Parse an URI reference string based on RFC 3986 and fills in the appropriate fields of the @uri structure URI-reference = URI / relative-ref</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -444,7 +444,7 @@ char *	<a href="#xmlURIUnescapeString">xmlURIUnescapeString</a>		(const char * s
 <a name="xmlURIEscapeStr"></a>xmlURIEscapeStr ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlURIEscapeStr		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * list)<br>
 </pre>
-<p>This routine escapes a string to hex, ignoring unreserved <a href="libxml2-SAX.html#characters">characters</a> a-z, A-Z, 0-9, "-._~", a few sub-delims "!*'()", the gen-delim "@" (why?) and the <a href="libxml2-SAX.html#characters">characters</a> in the exception list.</p>
+<p>This routine escapes a string to hex, ignoring unreserved characters a-z, A-Z, 0-9, "-._~", a few sub-delims "!*'()", the gen-delim "@" (why?) and the characters in the exception list.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

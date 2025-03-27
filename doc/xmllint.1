@@ -2,12 +2,12 @@
 .\"     Title: xmllint
 .\"    Author: John Fleck <jfleck@inkstain.net>
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 12/26/2024
+.\"      Date: 03/27/2025
 .\"    Manual: xmllint Manual
 .\"    Source: libxml2
 .\"  Language: English
 .\"
-.TH "XMLLINT" "1" "12/26/2024" "libxml2" "xmllint Manual"
+.TH "XMLLINT" "1" "03/27/2025" "libxml2" "xmllint Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -147,6 +147,8 @@ Output in the given encoding\&. Note that this works for full document not fragm
 Reformat and reindent the output\&. The
 \fBXMLLINT_INDENT\fR
 environment variable controls the indentation\&. The default value is two spaces " ")\&.
+.sp
+Especially in the absence of a DTD, this feature has never worked reliably and is fundamentally broken\&.
 .RE
 .PP
 \fB\-\-html\fR

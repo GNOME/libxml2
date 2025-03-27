@@ -112,6 +112,7 @@ int	<a href="#xmlTextReaderSchemaValidateCtxt">xmlTextReaderSchemaValidateCtxt</
 void	<a href="#xmlTextReaderSetErrorHandler">xmlTextReaderSetErrorHandler</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlreader.html#xmlTextReaderErrorFunc">xmlTextReaderErrorFunc</a> f, <br>					 void * arg);
 void	<a href="#xmlTextReaderSetMaxAmplification">xmlTextReaderSetMaxAmplification</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 unsigned maxAmpl);
 int	<a href="#xmlTextReaderSetParserProp">xmlTextReaderSetParserProp</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 int prop, <br>					 int value);
+void	<a href="#xmlTextReaderSetResourceLoader">xmlTextReaderSetResourceLoader</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-parser.html#xmlResourceLoader">xmlResourceLoader</a> loader, <br>					 void * data);
 int	<a href="#xmlTextReaderSetSchema">xmlTextReaderSetSchema</a>		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-xmlschemas.html#xmlSchemaPtr">xmlSchemaPtr</a> schema);
 void	<a href="#xmlTextReaderSetStructuredErrorHandler">xmlTextReaderSetStructuredErrorHandler</a>	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a> f, <br>						 void * arg);
 int	<a href="#xmlTextReaderSetup">xmlTextReaderSetup</a>		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> input, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
@@ -746,7 +747,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 i no attributes, -1 in case of error or the <a href="libxml2-SAX.html#attribute">attribute</a> count</td>
+<td>0 i no attributes, -1 in case of error or the attribute count</td>
 </tr>
 </tbody>
 </table></div>
@@ -778,7 +779,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderByteConsumed"></a>xmlTextReaderByteConsumed ()</h3>
 <pre class="programlisting">long	xmlTextReaderByteConsumed	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>This function provides the current index of the parser used by the reader, relative to the start of the current entity. This function actually just wraps a call to xmlBytesConsumed() for the parser context associated with the reader. See xmlBytesConsumed() for more information.</p>
+<p>DEPRECATED: The returned value is mostly random and useless. It reflects the parser reading ahead and is in no way related to the current node. This function provides the current index of the parser used by the reader, relative to the start of the current entity. This function actually just wraps a call to xmlBytesConsumed() for the parser context associated with the reader. See xmlBytesConsumed() for more information.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -925,7 +926,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderConstPrefix"></a>xmlTextReaderConstPrefix ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderConstPrefix	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>A shorthand <a href="libxml2-SAX.html#reference">reference</a> to the namespace associated with the node.</p>
+<p>A shorthand reference to the namespace associated with the node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1118,7 +1119,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderGetAttribute"></a>xmlTextReaderGetAttribute ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderGetAttribute	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Provides the value of the <a href="libxml2-SAX.html#attribute">attribute</a> with the specified qualified name.</p>
+<p>Provides the value of the attribute with the specified qualified name.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1128,7 +1129,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the qualified name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
+<td>the qualified name of the attribute.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1143,7 +1144,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderGetAttributeNo"></a>xmlTextReaderGetAttributeNo ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderGetAttributeNo	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 int no)<br>
 </pre>
-<p>Provides the value of the <a href="libxml2-SAX.html#attribute">attribute</a> with the specified index relative to the containing element.</p>
+<p>Provides the value of the attribute with the specified index relative to the containing element.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1153,7 +1154,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>no</tt></i>:</span></td>
-<td>the zero-based index of the <a href="libxml2-SAX.html#attribute">attribute</a> relative to the containing element</td>
+<td>the zero-based index of the attribute relative to the containing element</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1168,7 +1169,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderGetAttributeNs"></a>xmlTextReaderGetAttributeNs ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderGetAttributeNs	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * localName, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespaceURI)<br>
 </pre>
-<p>Provides the value of the specified <a href="libxml2-SAX.html#attribute">attribute</a></p>
+<p>Provides the value of the specified attribute</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1178,11 +1179,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>localName</tt></i>:</span></td>
-<td>the local name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
+<td>the local name of the attribute.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
-<td>the namespace URI of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
+<td>the namespace URI of the attribute.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1415,7 +1416,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderIsNamespaceDecl"></a>xmlTextReaderIsNamespaceDecl ()</h3>
 <pre class="programlisting">int	xmlTextReaderIsNamespaceDecl	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Determine whether the current node is a namespace declaration rather than a regular <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Determine whether the current node is a namespace declaration rather than a regular attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1425,7 +1426,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>1 if the current node is a namespace declaration, 0 if it is a regular <a href="libxml2-SAX.html#attribute">attribute</a> or other type of node, or -1 in case of error.</td>
+<td>1 if the current node is a namespace declaration, 0 if it is a regular attribute or other type of node, or -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1545,7 +1546,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderMoveToAttribute"></a>xmlTextReaderMoveToAttribute ()</h3>
 <pre class="programlisting">int	xmlTextReaderMoveToAttribute	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Moves the position of the current instance to the <a href="libxml2-SAX.html#attribute">attribute</a> with the specified qualified name.</p>
+<p>Moves the position of the current instance to the attribute with the specified qualified name.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1555,7 +1556,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the qualified name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
+<td>the qualified name of the attribute.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1570,7 +1571,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderMoveToAttributeNo"></a>xmlTextReaderMoveToAttributeNo ()</h3>
 <pre class="programlisting">int	xmlTextReaderMoveToAttributeNo	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 int no)<br>
 </pre>
-<p>Moves the position of the current instance to the <a href="libxml2-SAX.html#attribute">attribute</a> with the specified index relative to the containing element.</p>
+<p>Moves the position of the current instance to the attribute with the specified index relative to the containing element.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1580,7 +1581,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>no</tt></i>:</span></td>
-<td>the zero-based index of the <a href="libxml2-SAX.html#attribute">attribute</a> relative to the containing element.</td>
+<td>the zero-based index of the attribute relative to the containing element.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1595,7 +1596,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderMoveToAttributeNs"></a>xmlTextReaderMoveToAttributeNs ()</h3>
 <pre class="programlisting">int	xmlTextReaderMoveToAttributeNs	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * localName, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespaceURI)<br>
 </pre>
-<p>Moves the position of the current instance to the <a href="libxml2-SAX.html#attribute">attribute</a> with the specified local name and namespace URI.</p>
+<p>Moves the position of the current instance to the attribute with the specified local name and namespace URI.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1605,11 +1606,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>localName</tt></i>:</span></td>
-<td>the local name of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
+<td>the local name of the attribute.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
-<td>the namespace URI of the <a href="libxml2-SAX.html#attribute">attribute</a>.</td>
+<td>the namespace URI of the attribute.</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1645,7 +1646,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderMoveToFirstAttribute"></a>xmlTextReaderMoveToFirstAttribute ()</h3>
 <pre class="programlisting">int	xmlTextReaderMoveToFirstAttribute	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Moves the position of the current instance to the first <a href="libxml2-SAX.html#attribute">attribute</a> associated with the current node.</p>
+<p>Moves the position of the current instance to the first attribute associated with the current node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1666,7 +1667,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderMoveToNextAttribute"></a>xmlTextReaderMoveToNextAttribute ()</h3>
 <pre class="programlisting">int	xmlTextReaderMoveToNextAttribute	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Moves the position of the current instance to the next <a href="libxml2-SAX.html#attribute">attribute</a> associated with the current node.</p>
+<p>Moves the position of the current instance to the next attribute associated with the current node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1792,7 +1793,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderNormalization"></a>xmlTextReaderNormalization ()</h3>
 <pre class="programlisting">int	xmlTextReaderNormalization	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>The value indicating whether to normalize white space and <a href="libxml2-SAX.html#attribute">attribute</a> values. Since <a href="libxml2-SAX.html#attribute">attribute</a> value and end of line normalizations are a MUST in the XML specification only the value true is accepted. The broken behaviour of accepting out of range character entities like &amp;#0; is of course not supported either.</p>
+<p>The value indicating whether to normalize white space and attribute values. Since attribute value and end of line normalizations are a MUST in the XML specification only the value true is accepted. The broken behaviour of accepting out of range character entities like &amp;#0; is of course not supported either.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1813,7 +1814,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderPrefix"></a>xmlTextReaderPrefix ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlTextReaderPrefix	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>A shorthand <a href="libxml2-SAX.html#reference">reference</a> to the namespace associated with the node.</p>
+<p>A shorthand reference to the namespace associated with the node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1884,7 +1885,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderQuoteChar"></a>xmlTextReaderQuoteChar ()</h3>
 <pre class="programlisting">int	xmlTextReaderQuoteChar		(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>The quotation mark character used to enclose the value of an <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>The quotation mark character used to enclose the value of an attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1926,7 +1927,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextReaderReadAttributeValue"></a>xmlTextReaderReadAttributeValue ()</h3>
 <pre class="programlisting">int	xmlTextReaderReadAttributeValue	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader)<br>
 </pre>
-<p>Parses an <a href="libxml2-SAX.html#attribute">attribute</a> value into one or more Text and EntityReference nodes.</p>
+<p>Parses an attribute value into one or more Text and EntityReference nodes.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1936,7 +1937,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>1 in case of success, 0 if the reader was not positioned on an <a href="libxml2-SAX.html#attribute">attribute</a> node or all the <a href="libxml2-SAX.html#attribute">attribute</a> values have been read, or -1 in case of error.</td>
+<td>1 in case of success, 0 if the reader was not positioned on an attribute node or all the attribute values have been read, or -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2020,7 +2021,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>a string containing the contents of the Element or Text node, or NULL if the reader is positioned on any other type of node. The string must be deallocated by the caller.</td>
+<td>a string containing the contents of the non-empty Element or Text node (including CDATA sections), or NULL if the reader is positioned on any other type of node. The string must be deallocated by the caller.</td>
 </tr>
 </tbody>
 </table></div>
@@ -2229,6 +2230,31 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>0 if the call was successful, or -1 in case of error</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlTextReaderSetResourceLoader"></a>xmlTextReaderSetResourceLoader ()</h3>
+<pre class="programlisting">void	xmlTextReaderSetResourceLoader	(<a href="libxml2-xmlreader.html#xmlTextReaderPtr">xmlTextReaderPtr</a> reader, <br>					 <a href="libxml2-parser.html#xmlResourceLoader">xmlResourceLoader</a> loader, <br>					 void * data)<br>
+</pre>
+<p>Register a callback function that will be called to load external resources like entities. Available since 2.14.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>reader</tt></i>:</span></td>
+<td>thr reader</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>loader</tt></i>:</span></td>
+<td>resource loader</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>data</tt></i>:</span></td>
+<td>user data which will be passed to the loader</td>
 </tr>
 </tbody>
 </table></div>

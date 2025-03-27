@@ -10,7 +10,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="libxml2-SAX.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libxml2-HTMLtree.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <td><a accesskey="n" href="libxml2-c14n.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -85,7 +85,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 <a name="xmlSAX2AttributeDecl"></a>xmlSAX2AttributeDecl ()</h3>
 <pre class="programlisting">void	xmlSAX2AttributeDecl		(void * ctx, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elem, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br>					 int type, <br>					 int def, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * defaultValue, <br>					 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> tree)<br>
 </pre>
-<p>An <a href="libxml2-SAX.html#attribute">attribute</a> definition has been parsed</p>
+<p>An attribute definition has been parsed</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -99,11 +99,11 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 </tr>
 <tr>
 <td><span class="term"><i><tt>fullname</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> name</td>
+<td>the attribute name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>type</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> type</td>
+<td>the attribute type</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>def</tt></i>:</span></td>
@@ -111,7 +111,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 </tr>
 <tr>
 <td><span class="term"><i><tt>defaultValue</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> default value</td>
+<td>the attribute default value</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>tree</tt></i>:</span></td>
@@ -242,7 +242,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 <a name="xmlSAX2EndElement"></a>xmlSAX2EndElement ()</h3>
 <pre class="programlisting">void	xmlSAX2EndElement		(void * ctx, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>called when the end of an element has been detected.</p>
+<p>DEPRECATED: Don't call this function directly. called when the end of an element has been detected. Used for HTML and SAX1.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -721,7 +721,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 <a name="xmlSAX2ResolveEntity"></a>xmlSAX2ResolveEntity ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlSAX2ResolveEntity	(void * ctx, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * publicId, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * systemId)<br>
 </pre>
-<p>The entity loader, to control the loading of external entities, the application can either: - override this xmlSAX2ResolveEntity() callback in the SAX block - or better use the xmlSetExternalEntityLoader() function to set up it's own entity resolution routine</p>
+<p>This is only used to load DTDs. The preferred way to install custom resolvers is <a href="libxml2-parser.html#xmlCtxtSetResourceLoader">xmlCtxtSetResourceLoader</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -739,7 +739,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> if inlined or NULL for DOM behaviour.</td>
+<td>a parser input.</td>
 </tr>
 </tbody>
 </table></div>
@@ -750,7 +750,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 <a name="xmlSAX2SetDocumentLocator"></a>xmlSAX2SetDocumentLocator ()</h3>
 <pre class="programlisting">void	xmlSAX2SetDocumentLocator	(void * ctx, <br>					 <a href="libxml2-tree.html#xmlSAXLocatorPtr">xmlSAXLocatorPtr</a> loc)<br>
 </pre>
-<p>Receive the document locator at startup, actually <a href="libxml2-parser.html#xmlDefaultSAXLocator">xmlDefaultSAXLocator</a> Everything is available on the context, so this is useless in our case.</p>
+<p>Receive the document locator at startup, actually xmlDefaultSAXLocator Everything is available on the context, so this is useless in our case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -786,7 +786,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 <a name="xmlSAX2StartElement"></a>xmlSAX2StartElement ()</h3>
 <pre class="programlisting">void	xmlSAX2StartElement		(void * ctx, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * fullname, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** atts)<br>
 </pre>
-<p>called when an opening tag has been processed.</p>
+<p>DEPRECATED: Don't call this function directly. Called when an opening tag has been processed. Used for HTML and SAX1.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -849,7 +849,7 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 </tr>
 <tr>
 <td><span class="term"><i><tt>attributes</tt></i>:</span></td>
-<td>pointer to the array of (localname/prefix/URI/value/end) <a href="libxml2-SAX.html#attribute">attribute</a> values.</td>
+<td>pointer to the array of (localname/prefix/URI/value/end) attribute values.</td>
 </tr>
 </tbody>
 </table></div>
@@ -893,17 +893,17 @@ int	<a href="#xmlSAXVersion">xmlSAXVersion</a>			(<a href="libxml2-tree.html#xml
 <a name="xmlSAXDefaultVersion"></a>xmlSAXDefaultVersion ()</h3>
 <pre class="programlisting">int	xmlSAXDefaultVersion		(int version)<br>
 </pre>
-<p>DEPRECATED: Use parser option <a href="libxml2-parser.html#XML_PARSE_SAX1">XML_PARSE_SAX1</a>. Set the default version of SAX used globally by the library. By default, during initialization the default is set to 2. Note that it is generally a better coding style to use xmlSAXVersion() to set up the version explicitly for a given parsing context.</p>
+<p>DEPRECATED: Use parser option <a href="libxml2-parser.html#XML_PARSE_SAX1">XML_PARSE_SAX1</a>. Has no effect.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>version</tt></i>:</span></td>
-<td>the version, 1 or 2</td>
+<td>the version, must be 2</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the previous value in case of success and -1 in case of error.</td>
+<td>2 in case of success and -1 in case of error.</td>
 </tr>
 </tbody>
 </table></div>

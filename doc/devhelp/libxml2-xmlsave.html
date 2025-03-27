@@ -27,10 +27,11 @@ typedef <a href="libxml2-xmlsave.html#xmlSaveCtxt">xmlSaveCtxt</a> * <a href="#x
 typedef enum <a href="#xmlSaveOption">xmlSaveOption</a>;
 int	<a href="#xmlSaveClose">xmlSaveClose</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 long	<a href="#xmlSaveDoc">xmlSaveDoc</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> doc);
-int	<a href="#xmlSaveFinish">xmlSaveFinish</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
+<a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	<a href="#xmlSaveFinish">xmlSaveFinish</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 int	<a href="#xmlSaveFlush">xmlSaveFlush</a>			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt);
 int	<a href="#xmlSaveSetAttrEscape">xmlSaveSetAttrEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
 int	<a href="#xmlSaveSetEscape">xmlSaveSetEscape</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape);
+int	<a href="#xmlSaveSetIndentString">xmlSaveSetIndentString</a>		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 const char * indent);
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToBuffer">xmlSaveToBuffer</a>		(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFd">xmlSaveToFd</a>		(int fd, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a>	<a href="#xmlSaveToFilename">xmlSaveToFilename</a>	(const char * filename, <br>					 const char * encoding, <br>					 int options);
@@ -74,7 +75,10 @@ The content of this structure is not made public by the API.
     <a name="XML_SAVE_XHTML">XML_SAVE_XHTML</a> = 16 /* force XHTML1 specific rules */
     <a name="XML_SAVE_AS_XML">XML_SAVE_AS_XML</a> = 32 /* force XML serialization on HTML doc */
     <a name="XML_SAVE_AS_HTML">XML_SAVE_AS_HTML</a> = 64 /* force HTML serialization on XML doc */
-    <a name="XML_SAVE_WSNONSIG">XML_SAVE_WSNONSIG</a> = 128 /*  format with non-significant whitespace */
+    <a name="XML_SAVE_WSNONSIG">XML_SAVE_WSNONSIG</a> = 128 /* format with non-significant whitespace Available since 2.14.0 */
+    <a name="XML_SAVE_EMPTY">XML_SAVE_EMPTY</a> = 256 /* force empty tags, overriding global */
+    <a name="XML_SAVE_NO_INDENT">XML_SAVE_NO_INDENT</a> = 512 /* disable indenting */
+    <a name="XML_SAVE_INDENT">XML_SAVE_INDENT</a> = 1024 /*  force indenting, overriding global */
 };
 </pre>
 <p></p>
@@ -129,7 +133,7 @@ The content of this structure is not made public by the API.
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlSaveFinish"></a>xmlSaveFinish ()</h3>
-<pre class="programlisting">int	xmlSaveFinish			(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt)<br>
+<pre class="programlisting"><a href="libxml2-xmlerror.html#xmlParserErrors">xmlParserErrors</a>	xmlSaveFinish		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt)<br>
 </pre>
 <p>Close a document saving context, i.e. make sure that all bytes have been output and free the associated data. Available since 2.13.0.</p>
 <div class="variablelist"><table border="0">
@@ -173,7 +177,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSaveSetAttrEscape"></a>xmlSaveSetAttrEscape ()</h3>
 <pre class="programlisting">int	xmlSaveSetAttrEscape		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape)<br>
 </pre>
-<p>Set a custom escaping function to be used for text in <a href="libxml2-SAX.html#attribute">attribute</a> content</p>
+<p>DEPRECATED: Don't use. Has no effect.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -198,7 +202,7 @@ The content of this structure is not made public by the API.
 <a name="xmlSaveSetEscape"></a>xmlSaveSetEscape ()</h3>
 <pre class="programlisting">int	xmlSaveSetEscape		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escape)<br>
 </pre>
-<p>Set a custom escaping function to be used for text in element content</p>
+<p>DEPRECATED: Don't use. Set a custom escaping function to be used for text in element content</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -213,6 +217,31 @@ The content of this structure is not made public by the API.
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>0 if successful or -1 in case of error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlSaveSetIndentString"></a>xmlSaveSetIndentString ()</h3>
+<pre class="programlisting">int	xmlSaveSetIndentString		(<a href="libxml2-xmlsave.html#xmlSaveCtxtPtr">xmlSaveCtxtPtr</a> ctxt, <br>					 const char * indent)<br>
+</pre>
+<p>Sets the indent string. Available since 2.14.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>save context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>indent</tt></i>:</span></td>
+<td>indent string</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 on success, -1 if the string is NULL, empty or too long.</td>
 </tr>
 </tbody>
 </table></div>

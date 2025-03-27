@@ -171,9 +171,9 @@ typedef <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> <a 
 <h3>
 <a name="xmlNodeSet">Structure </a>xmlNodeSet</h3>
 <pre class="programlisting">struct _xmlNodeSet {
-    int	nodeNr	: number of nodes in the set
-    int	nodeMax	: size of the array as allocated
-    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> *	nodeTab	: array of nodes in no particular order @@ with_ns to check whether nam
+    int	nodeNr
+    int	nodeMax
+    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> *	nodeTab
 } xmlNodeSet;
 </pre>
 <p></p>
@@ -191,8 +191,8 @@ typedef <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> <a 
 <h3>
 <a name="xmlXPathAxis">Structure </a>xmlXPathAxis</h3>
 <pre class="programlisting">struct _xmlXPathAxis {
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name	: the axis name
-    <a href="libxml2-xpath.html#xmlXPathAxisFunc">xmlXPathAxisFunc</a>	func	: the search function
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml2-xpath.html#xmlXPathAxisFunc">xmlXPathAxisFunc</a>	func
 } xmlXPathAxis;
 </pre>
 <p></p>
@@ -228,45 +228,45 @@ The content of this structure is not made public by the API.
 <h3>
 <a name="xmlXPathContext">Structure </a>xmlXPathContext</h3>
 <pre class="programlisting">struct _xmlXPathContext {
-    <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	doc	: The current document
-    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	node	: The current node
-    int	nb_variables_unused	: unused (hash table)
-    int	max_variables_unused	: unused (hash table)
-    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	varHash	: Hash table of defined variables
-    int	nb_types	: number of defined types
-    int	max_types	: max number of types
-    <a href="libxml2-xpath.html#xmlXPathTypePtr">xmlXPathTypePtr</a>	types	: Array of defined types
-    int	nb_funcs_unused	: unused (hash table)
-    int	max_funcs_unused	: unused (hash table)
-    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	funcHash	: Hash table of defined funcs
-    int	nb_axis	: number of defined axis
-    int	max_axis	: max number of axis
-    <a href="libxml2-xpath.html#xmlXPathAxisPtr">xmlXPathAxisPtr</a>	axis	: Array of defined axis the namespace nodes of the context node
-    <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	namespaces	: Array of namespaces
-    int	nsNr	: number of namespace in scope
-    void *	user	: function to free extra variables
-    int	contextSize	: the context size
-    int	proximityPosition	: the proximity position extra stuff for XPointer
-    int	xptr	: is this an XPointer context?
-    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	here	: for here()
-    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	origin	: for origin() the set of namespace declarations in scope for the expre
-    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	nsHash	: The namespaces hash table
-    <a href="libxml2-xpath.html#xmlXPathVariableLookupFunc">xmlXPathVariableLookupFunc</a>	varLookupFunc	: variable lookup func
-    void *	varLookupData	: variable lookup data Possibility to link in an extra item
-    void *	extra	: needed for XSLT The function name and URI when calling a function
+    <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a>	doc
+    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	node
+    int	nb_variables_unused
+    int	max_variables_unused
+    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	varHash
+    int	nb_types
+    int	max_types
+    <a href="libxml2-xpath.html#xmlXPathTypePtr">xmlXPathTypePtr</a>	types
+    int	nb_funcs_unused
+    int	max_funcs_unused
+    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	funcHash
+    int	nb_axis
+    int	max_axis
+    <a href="libxml2-xpath.html#xmlXPathAxisPtr">xmlXPathAxisPtr</a>	axis
+    <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	namespaces
+    int	nsNr
+    void *	user
+    int	contextSize
+    int	proximityPosition
+    int	xptr
+    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	here
+    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	origin
+    <a href="libxml2-hash.html#xmlHashTablePtr">xmlHashTablePtr</a>	nsHash
+    <a href="libxml2-xpath.html#xmlXPathVariableLookupFunc">xmlXPathVariableLookupFunc</a>	varLookupFunc
+    void *	varLookupData
+    void *	extra
     const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	function
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	functionURI	: function lookup function and data
-    <a href="libxml2-xpath.html#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>	funcLookupFunc	: function lookup func
-    void *	funcLookupData	: function lookup data temporary namespace lists kept for walking the n
-    <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	tmpNsList	: Array of namespaces
-    int	tmpNsNr	: number of namespaces in scope error reporting mechanism
-    void *	userData	: user specific data block
-    <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>	error	: the callback in case of errors
-    <a href="libxml2-xmlerror.html#xmlError">xmlError</a>	lastError	: the last error
-    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	debugNode	: the source node XSLT dictionary
-    <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	dict	: dictionary if any
-    int	flags	: flags to control compilation Cache for reusal of XPath objects
-    void *	cache	: Resource limits
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	functionURI
+    <a href="libxml2-xpath.html#xmlXPathFuncLookupFunc">xmlXPathFuncLookupFunc</a>	funcLookupFunc
+    void *	funcLookupData
+    <a href="libxml2-tree.html#xmlNsPtr">xmlNsPtr</a> *	tmpNsList
+    int	tmpNsNr
+    void *	userData
+    <a href="libxml2-xmlerror.html#xmlStructuredErrorFunc">xmlStructuredErrorFunc</a>	error
+    <a href="libxml2-xmlerror.html#xmlError">xmlError</a>	lastError
+    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	debugNode
+    <a href="libxml2-dict.html#xmlDictPtr">xmlDictPtr</a>	dict
+    int	flags
+    void *	cache
     unsigned long	opLimit
     unsigned long	opCount
     int	depth
@@ -331,8 +331,8 @@ The content of this structure is not made public by the API.
 <h3>
 <a name="xmlXPathFunct">Structure </a>xmlXPathFunct</h3>
 <pre class="programlisting">struct _xmlXPathFunct {
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name	: the function name
-    <a href="libxml2-xpath.html#xmlXPathEvalFunc">xmlXPathEvalFunc</a>	func	: the evaluation function
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml2-xpath.html#xmlXPathEvalFunc">xmlXPathEvalFunc</a>	func
 } xmlXPathFunct;
 </pre>
 <p></p>
@@ -373,9 +373,6 @@ The content of this structure is not made public by the API.
     <a name="XPATH_BOOLEAN">XPATH_BOOLEAN</a> = 2
     <a name="XPATH_NUMBER">XPATH_NUMBER</a> = 3
     <a name="XPATH_STRING">XPATH_STRING</a> = 4
-    <a name="XPATH_POINT">XPATH_POINT</a> = 5
-    <a name="XPATH_RANGE">XPATH_RANGE</a> = 6
-    <a name="XPATH_LOCATIONSET">XPATH_LOCATIONSET</a> = 7
     <a name="XPATH_USERS">XPATH_USERS</a> = 8
     <a name="XPATH_XSLT_TREE">XPATH_XSLT_TREE</a> = 9 /*  An XSLT value tree, non modifiable */
 };
@@ -387,18 +384,18 @@ The content of this structure is not made public by the API.
 <h3>
 <a name="xmlXPathParserContext">Structure </a>xmlXPathParserContext</h3>
 <pre class="programlisting">struct _xmlXPathParserContext {
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	cur	: the current char being parsed
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	base	: the full expression
-    int	error	: error code
-    <a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a>	context	: the evaluation context
-    <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	value	: the current value
-    int	valueNr	: number of values stacked
-    int	valueMax	: max number of values stacked
-    <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> *	valueTab	: stack of values
-    <a href="libxml2-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a>	comp	: the precompiled expression
-    int	xptr	: it this an XPointer expression
-    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	ancestor	: used for walking preceding axis
-    int	valueFrame	: always zero for compatibility
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	cur
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	base
+    int	error
+    <a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a>	context
+    <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	value
+    int	valueNr
+    int	valueMax
+    <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> *	valueTab
+    <a href="libxml2-xpath.html#xmlXPathCompExprPtr">xmlXPathCompExprPtr</a>	comp
+    int	xptr
+    <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	ancestor
+    int	valueFrame
 } xmlXPathParserContext;
 </pre>
 <p></p>
@@ -416,8 +413,8 @@ The content of this structure is not made public by the API.
 <h3>
 <a name="xmlXPathType">Structure </a>xmlXPathType</h3>
 <pre class="programlisting">struct _xmlXPathType {
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name	: the type name
-    <a href="libxml2-xpath.html#xmlXPathConvertFunc">xmlXPathConvertFunc</a>	func	: the conversion function
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml2-xpath.html#xmlXPathConvertFunc">xmlXPathConvertFunc</a>	func
 } xmlXPathType;
 </pre>
 <p></p>
@@ -435,8 +432,8 @@ The content of this structure is not made public by the API.
 <h3>
 <a name="xmlXPathVariable">Structure </a>xmlXPathVariable</h3>
 <pre class="programlisting">struct _xmlXPathVariable {
-    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name	: the variable name
-    <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	value	: the value
+    const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	name
+    <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	value
 } xmlXPathVariable;
 </pre>
 <p></p>

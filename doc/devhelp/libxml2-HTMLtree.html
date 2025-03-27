@@ -13,7 +13,7 @@
 <td><a accesskey="p" href="libxml2-HTMLparser.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<td><a accesskey="n" href="libxml2-SAX.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="libxml2-SAX2.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 <th width="100%" align="center">libxml2 Reference Manual</th>
 </tr></table>
 <h2><span class="refentrytitle">HTMLtree</span></h2>
@@ -56,7 +56,7 @@ int	<a href="#htmlSetMetaEncoding">htmlSetMetaEncoding</a>		(<a href="libxml2-HT
 <a name="HTML_COMMENT_NODE">Macro </a>HTML_COMMENT_NODE</h3>
 <pre class="programlisting">#define <a href="#HTML_COMMENT_NODE">HTML_COMMENT_NODE</a>;
 </pre>
-<p>Macro. A <a href="libxml2-SAX.html#comment">comment</a> in a HTML document is really implemented the same way as a <a href="libxml2-SAX.html#comment">comment</a> in an XML document.</p>
+<p>Macro. A comment in a HTML document is really implemented the same way as a comment in an XML document.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -64,7 +64,7 @@ int	<a href="#htmlSetMetaEncoding">htmlSetMetaEncoding</a>		(<a href="libxml2-HT
 <a name="HTML_ENTITY_REF_NODE">Macro </a>HTML_ENTITY_REF_NODE</h3>
 <pre class="programlisting">#define <a href="#HTML_ENTITY_REF_NODE">HTML_ENTITY_REF_NODE</a>;
 </pre>
-<p>Macro. An entity <a href="libxml2-SAX.html#reference">reference</a> in a HTML document is really implemented the same way as an entity <a href="libxml2-SAX.html#reference">reference</a> in an XML document.</p>
+<p>Macro. An entity reference in a HTML document is really implemented the same way as an entity reference in an XML document.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -250,17 +250,17 @@ int	<a href="#htmlSetMetaEncoding">htmlSetMetaEncoding</a>		(<a href="libxml2-HT
 <a name="htmlIsBooleanAttr"></a>htmlIsBooleanAttr ()</h3>
 <pre class="programlisting">int	htmlIsBooleanAttr		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Determine if a given <a href="libxml2-SAX.html#attribute">attribute</a> is a boolean <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>DEPRECATED: Internal function, don't use. Determine if a given attribute is a boolean attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>the name of the <a href="libxml2-SAX.html#attribute">attribute</a> to check</td>
+<td>the name of the attribute to check</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>false if the <a href="libxml2-SAX.html#attribute">attribute</a> is not boolean, true otherwise.</td>
+<td>false if the attribute is not boolean, true otherwise.</td>
 </tr>
 </tbody>
 </table></div>

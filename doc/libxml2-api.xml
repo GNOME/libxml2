@@ -13670,7 +13670,7 @@ crash if you try to modify the tree)'/>
       <arg name='len' type='int' info='@content length'/>
     </function>
     <function name='xmlTextMerge' file='tree' module='tree'>
-      <info>Merge the second text node into the first. The second node is unlinked and freed.</info>
+      <info>Merge the second text node into the first. If @first is NULL, @second is returned. Otherwise, the second node is unlinked and freed.</info>
       <return type='xmlNodePtr' info='the first text node augmented or NULL in case of error.'/>
       <arg name='first' type='xmlNodePtr' info='the first text node'/>
       <arg name='second' type='xmlNodePtr' info='the second text node being merged'/>

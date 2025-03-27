@@ -21,7 +21,8 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">#define <a href="#htmlDefaultSubelement">htmlDefaultSubelement</a>(elt);
+<pre class="synopsis">#define <a href="#UTF8ToHtml">UTF8ToHtml</a>;
+#define <a href="#htmlDefaultSubelement">htmlDefaultSubelement</a>(elt);
 #define <a href="#htmlElementAllowedHereDesc">htmlElementAllowedHereDesc</a>(parent, elt);
 #define <a href="#htmlRequiredAttrs">htmlRequiredAttrs</a>(elt);
 typedef <a href="libxml2-tree.html#xmlDocPtr">xmlDocPtr</a> <a href="#htmlDocPtr">htmlDocPtr</a>;
@@ -39,7 +40,6 @@ typedef enum <a href="#htmlParserOption">htmlParserOption</a>;
 typedef <a href="libxml2-tree.html#xmlSAXHandler">xmlSAXHandler</a> <a href="#htmlSAXHandler">htmlSAXHandler</a>;
 typedef <a href="libxml2-tree.html#xmlSAXHandlerPtr">xmlSAXHandlerPtr</a> <a href="#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a>;
 typedef enum <a href="#htmlStatus">htmlStatus</a>;
-int	<a href="#UTF8ToHtml">UTF8ToHtml</a>			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
 <a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	<a href="#htmlAttrAllowed">htmlAttrAllowed</a>		(const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * elt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * attr, <br>					 int legacy);
 int	<a href="#htmlAutoCloseTag">htmlAutoCloseTag</a>		(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> elem);
 <a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	<a href="#htmlCreateFileParserCtxt">htmlCreateFileParserCtxt</a>	(const char * filename, <br>							 const char * encoding);
@@ -52,6 +52,7 @@ int	<a href="#htmlAutoCloseTag">htmlAutoCloseTag</a>		(<a href="libxml2-HTMLpars
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadIO">htmlCtxtReadIO</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlCtxtReadMemory">htmlCtxtReadMemory</a>	(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const char * buffer, <br>					 int size, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options);
 void	<a href="#htmlCtxtReset">htmlCtxtReset</a>			(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt);
+int	<a href="#htmlCtxtSetOptions">htmlCtxtSetOptions</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int options);
 int	<a href="#htmlCtxtUseOptions">htmlCtxtUseOptions</a>		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 int options);
 int	<a href="#htmlElementAllowedHere">htmlElementAllowedHere</a>		(const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * parent, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elt);
 <a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	<a href="#htmlElementStatusHere">htmlElementStatusHere</a>	(const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * parent, <br>					 const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * elt);
@@ -81,12 +82,21 @@ const <a href="libxml2-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a> *	<a h
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlSAXParseDoc">htmlSAXParseDoc</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 const char * encoding, <br>					 <a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>					 void * userData);
 <a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	<a href="#htmlSAXParseFile">htmlSAXParseFile</a>	(const char * filename, <br>					 const char * encoding, <br>					 <a href="libxml2-HTMLparser.html#htmlSAXHandlerPtr">htmlSAXHandlerPtr</a> sax, <br>					 void * userData);
 const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href="#htmlTagLookup">htmlTagLookup</a>	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * tag);
+int	<a href="#htmlUTF8ToHtml">htmlUTF8ToHtml</a>			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen);
 </pre>
 </div>
 <div class="refsect1" lang="en"><h2>Description</h2></div>
 <div class="refsect1" lang="en">
 <h2>Details</h2>
 <div class="refsect2" lang="en">
+<div class="refsect2" lang="en">
+<h3>
+<a name="UTF8ToHtml">Macro </a>UTF8ToHtml</h3>
+<pre class="programlisting">#define <a href="#UTF8ToHtml">UTF8ToHtml</a>;
+</pre>
+<p></p>
+</div>
+<hr>
 <div class="refsect2" lang="en">
 <h3>
 <a name="htmlDefaultSubelement">Macro </a>htmlDefaultSubelement</h3>
@@ -150,20 +160,21 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <h3>
 <a name="htmlElemDesc">Structure </a>htmlElemDesc</h3>
 <pre class="programlisting">struct _htmlElemDesc {
-    const char *	name	: The tag name
-    char	startTag	: Whether the start tag can be implied
-    char	endTag	: Whether the end tag can be implied
-    char	saveEndTag	: Whether the end tag should be saved
-    char	empty	: Is this an empty element ?
-    char	depr	: Is this a deprecated element ?
-    char	dtd	: 1: only in Loose DTD, 2: only Frameset one
-    char	isinline	: is this a block 0 or inline 1 element
-    const char *	desc	: the description NRK Jan.2003 * New fields encapsulating HTML structur
-    const char **	subelts	: allowed sub-elements of this element
-    const char *	defaultsubelt	: subelement for suggested auto-repair if necessary or NULL
-    const char **	attrs_opt	: Optional Attributes
-    const char **	attrs_depr	: Additional deprecated attributes
-    const char **	attrs_req	: Required attributes
+    const char *	name
+    char	startTag
+    char	endTag
+    char	saveEndTag
+    char	empty
+    char	depr
+    char	dtd
+    char	isinline
+    const char *	desc
+    const char **	subelts
+    const char *	defaultsubelt
+    const char **	attrs_opt
+    const char **	attrs_depr
+    const char **	attrs_req
+    int	dataMode
 } htmlElemDesc;
 </pre>
 <p></p>
@@ -181,9 +192,9 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <h3>
 <a name="htmlEntityDesc">Structure </a>htmlEntityDesc</h3>
 <pre class="programlisting">struct _htmlEntityDesc {
-    unsigned int	value	: the UNICODE value for the character
-    const char *	name	: The entity name
-    const char *	desc	: the description
+    unsigned int	value
+    const char *	name
+    const char *	desc
 } htmlEntityDesc;
 </pre>
 <p></p>
@@ -249,16 +260,19 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <h3>
 <a name="htmlParserOption">Enum </a>htmlParserOption</h3>
 <pre class="programlisting">enum <a href="#htmlParserOption">htmlParserOption</a> {
-    <a name="HTML_PARSE_RECOVER">HTML_PARSE_RECOVER</a> = 1 /* Relaxed parsing */
+    <a name="HTML_PARSE_RECOVER">HTML_PARSE_RECOVER</a> = 1 /* No effect */
+    <a name="HTML_PARSE_HTML5">HTML_PARSE_HTML5</a> = 2 /* HTML5 support */
     <a name="HTML_PARSE_NODEFDTD">HTML_PARSE_NODEFDTD</a> = 4 /* do not default a doctype if not found */
     <a name="HTML_PARSE_NOERROR">HTML_PARSE_NOERROR</a> = 32 /* suppress error reports */
     <a name="HTML_PARSE_NOWARNING">HTML_PARSE_NOWARNING</a> = 64 /* suppress warning reports */
-    <a name="HTML_PARSE_PEDANTIC">HTML_PARSE_PEDANTIC</a> = 128 /* pedantic error reporting */
+    <a name="HTML_PARSE_PEDANTIC">HTML_PARSE_PEDANTIC</a> = 128 /* No effect */
     <a name="HTML_PARSE_NOBLANKS">HTML_PARSE_NOBLANKS</a> = 256 /* remove blank nodes */
-    <a name="HTML_PARSE_NONET">HTML_PARSE_NONET</a> = 2048 /* Forbid network access */
+    <a name="HTML_PARSE_NONET">HTML_PARSE_NONET</a> = 2048 /* No effect */
     <a name="HTML_PARSE_NOIMPLIED">HTML_PARSE_NOIMPLIED</a> = 8192 /* Do not add implied html/body... elements */
     <a name="HTML_PARSE_COMPACT">HTML_PARSE_COMPACT</a> = 65536 /* compact small text nodes */
-    <a name="HTML_PARSE_IGNORE_ENC">HTML_PARSE_IGNORE_ENC</a> = 2097152 /*  ignore internal document encoding hint */
+    <a name="HTML_PARSE_HUGE">HTML_PARSE_HUGE</a> = 524288 /* relax any hardcoded limit from the parser */
+    <a name="HTML_PARSE_IGNORE_ENC">HTML_PARSE_IGNORE_ENC</a> = 2097152 /* ignore internal document encoding hint */
+    <a name="HTML_PARSE_BIG_LINES">HTML_PARSE_BIG_LINES</a> = 4194304 /*  Store big lines numbers in text PSVI field */
 };
 </pre>
 <p></p>
@@ -304,43 +318,10 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="UTF8ToHtml"></a>UTF8ToHtml ()</h3>
-<pre class="programlisting">int	UTF8ToHtml			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
-</pre>
-<p>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>out</tt></i>:</span></td>
-<td>a pointer to an array of bytes to store the result</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
-<td>the length of @out</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>in</tt></i>:</span></td>
-<td>a pointer to an array of UTF-8 chars</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
-<td>the length of @in</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="htmlAttrAllowed"></a>htmlAttrAllowed ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	htmlAttrAllowed		(const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * elt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * attr, <br>					 int legacy)<br>
 </pre>
-<p>Checks whether an <a href="libxml2-SAX.html#attribute">attribute</a> is valid for an element Has full knowledge of Required and Deprecated attributes</p>
+<p>DEPRECATED: Don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -350,8 +331,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>attr</tt></i>:</span></td>
-<td>HTML <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>HTML attribute</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>legacy</tt></i>:</span></td>
@@ -359,8 +339,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>one of HTML_REQUIRED, HTML_VALID, HTML_DEPRECATED, <a href="libxml2-HTMLparser.html#HTML_INVALID">HTML_INVALID</a>
-</td>
+<td><a href="libxml2-HTMLparser.html#HTML_VALID">HTML_VALID</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -371,7 +350,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlAutoCloseTag"></a>htmlAutoCloseTag ()</h3>
 <pre class="programlisting">int	htmlAutoCloseTag		(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> elem)<br>
 </pre>
-<p>The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if the element or one of it's children would autoclose the given tag.</p>
+<p>DEPRECATED: Internal function, don't use. The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if the element or one of it's children would autoclose the given tag.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -590,7 +569,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlCtxtReadFile"></a>htmlCtxtReadFile ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlCtxtReadFile	(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 const char * filename, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Parse an HTML file from the filesystem, the network or a user-defined resource loader. See xmlNewInputURL and <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a> for details.</p>
+<p>Parse an HTML file from the filesystem, the network or a user-defined resource loader. See <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a> for details.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -623,7 +602,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlCtxtReadIO"></a>htmlCtxtReadIO ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlCtxtReadIO		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>					 void * ioctx, <br>					 const char * URL, <br>					 const char * encoding, <br>					 int options)<br>
 </pre>
-<p>Parse an HTML document from I/O functions and source and build a tree. See xmlNewInputIO and <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a> for details.</p>
+<p>Parse an HTML document from I/O functions and source and build a tree. See <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a> for details.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -721,10 +700,35 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="htmlCtxtSetOptions"></a>htmlCtxtSetOptions ()</h3>
+<pre class="programlisting">int	htmlCtxtSetOptions		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int options)<br>
+</pre>
+<p>Applies the options to the parser context. Unset options are cleared. Available since 2.14.0. With older versions, you can use <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a>. <a href="libxml2-HTMLparser.html#HTML_PARSE_RECOVER">HTML_PARSE_RECOVER</a> No effect as of 2.14.0. <a href="libxml2-HTMLparser.html#HTML_PARSE_HTML5">HTML_PARSE_HTML5</a> Make the tokenizer emit a SAX callback for each token. This results in unbalanced invocations of startElement and endElement. For now, this is only usable with custom SAX callbacks. <a href="libxml2-HTMLparser.html#HTML_PARSE_NODEFDTD">HTML_PARSE_NODEFDTD</a> Do not default to a doctype if none was found. <a href="libxml2-HTMLparser.html#HTML_PARSE_NOERROR">HTML_PARSE_NOERROR</a> Disable error and warning reports to the error handlers. Errors are still accessible with <a href="libxml2-xmlerror.html#xmlCtxtGetLastError">xmlCtxtGetLastError</a>. <a href="libxml2-HTMLparser.html#HTML_PARSE_NOWARNING">HTML_PARSE_NOWARNING</a> Disable warning reports. <a href="libxml2-HTMLparser.html#HTML_PARSE_PEDANTIC">HTML_PARSE_PEDANTIC</a> No effect. <a href="libxml2-HTMLparser.html#HTML_PARSE_NOBLANKS">HTML_PARSE_NOBLANKS</a> Remove some text nodes containing only whitespace from the result document. Which nodes are removed depends on a conservative heuristic. The reindenting feature of the serialization code relies on this option to be set when parsing. Use of this option is DISCOURAGED. <a href="libxml2-HTMLparser.html#HTML_PARSE_NONET">HTML_PARSE_NONET</a> No effect. <a href="libxml2-HTMLparser.html#HTML_PARSE_NOIMPLIED">HTML_PARSE_NOIMPLIED</a> Do not add implied html, head or body elements. <a href="libxml2-HTMLparser.html#HTML_PARSE_COMPACT">HTML_PARSE_COMPACT</a> Store small strings directly in the node struct to save memory. <a href="libxml2-HTMLparser.html#HTML_PARSE_HUGE">HTML_PARSE_HUGE</a> Relax some internal limits. Available since 2.14.0. Use <a href="libxml2-parser.html#XML_PARSE_HUGE">XML_PARSE_HUGE</a> works with older versions. Maximum size of text nodes, tags, comments, CDATA sections normal: 10M huge: 1B Maximum size of names, system literals, pubid literals normal: 50K huge: 10M Maximum nesting depth of elements normal: 256 huge: 2048 <a href="libxml2-HTMLparser.html#HTML_PARSE_IGNORE_ENC">HTML_PARSE_IGNORE_ENC</a> Ignore the encoding in the HTML declaration. This option is mostly unneeded these days. The only effect is to enforce UTF-8 decoding of ASCII-like data. <a href="libxml2-HTMLparser.html#HTML_PARSE_BIG_LINES">HTML_PARSE_BIG_LINES</a> Enable reporting of line numbers larger than 65535. Available since 2.14.0.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an HTML parser context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>options</tt></i>:</span></td>
+<td>a bitmask of <a href="libxml2-parser.html#xmlParserOption">xmlParserOption</a> values</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 in case of success, the set of unknown or unimplemented options in case of error.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="htmlCtxtUseOptions"></a>htmlCtxtUseOptions ()</h3>
 <pre class="programlisting">int	htmlCtxtUseOptions		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>					 int options)<br>
 </pre>
-<p>Applies the options to the parser context</p>
+<p>DEPRECATED: Use <a href="libxml2-HTMLparser.html#htmlCtxtSetOptions">htmlCtxtSetOptions</a>. Applies the options to the parser context. The following options are never cleared and can only be enabled: <a href="libxml2-HTMLparser.html#HTML_PARSE_NODEFDTD">HTML_PARSE_NODEFDTD</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_NOERROR">HTML_PARSE_NOERROR</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_NOWARNING">HTML_PARSE_NOWARNING</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_NOIMPLIED">HTML_PARSE_NOIMPLIED</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_COMPACT">HTML_PARSE_COMPACT</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_HUGE">HTML_PARSE_HUGE</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_IGNORE_ENC">HTML_PARSE_IGNORE_ENC</a> <a href="libxml2-HTMLparser.html#HTML_PARSE_BIG_LINES">HTML_PARSE_BIG_LINES</a></p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -749,7 +753,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlElementAllowedHere"></a>htmlElementAllowedHere ()</h3>
 <pre class="programlisting">int	htmlElementAllowedHere		(const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * parent, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * elt)<br>
 </pre>
-<p>Checks whether an HTML element may be a direct child of a parent element. Note - doesn't check for deprecated elements</p>
+<p>DEPRECATED: Don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -763,7 +767,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>1 if allowed; 0 otherwise.</td>
+<td>1</td>
 </tr>
 </tbody>
 </table></div>
@@ -774,7 +778,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlElementStatusHere"></a>htmlElementStatusHere ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	htmlElementStatusHere	(const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * parent, <br>					 const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> * elt)<br>
 </pre>
-<p>Checks whether an HTML element may be a direct child of a parent element. and if so whether it is valid or deprecated.</p>
+<p>DEPRECATED: Don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -788,8 +792,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>one of HTML_VALID, HTML_DEPRECATED, <a href="libxml2-HTMLparser.html#HTML_INVALID">HTML_INVALID</a>
-</td>
+<td><a href="libxml2-HTMLparser.html#HTML_VALID">HTML_VALID</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -923,7 +926,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlIsAutoClosed"></a>htmlIsAutoClosed ()</h3>
 <pre class="programlisting">int	htmlIsAutoClosed		(<a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a> doc, <br>					 <a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> elem)<br>
 </pre>
-<p>The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if a tag is autoclosed by one of it's child</p>
+<p>DEPRECATED: Internal function, don't use. The HTML DTD allows a tag to implicitly close other tags. The list is kept in htmlStartClose array. This function checks if a tag is autoclosed by one of it's child</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -948,17 +951,17 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlIsScriptAttribute"></a>htmlIsScriptAttribute ()</h3>
 <pre class="programlisting">int	htmlIsScriptAttribute		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Check if an <a href="libxml2-SAX.html#attribute">attribute</a> is of content type Script</p>
+<p>Check if an attribute is of content type Script</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>an <a href="libxml2-SAX.html#attribute">attribute</a> name</td>
+<td>an attribute name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>1 is the <a href="libxml2-SAX.html#attribute">attribute</a> is a script 0 otherwise</td>
+<td>1 is the attribute is a script 0 otherwise</td>
 </tr>
 </tbody>
 </table></div>
@@ -969,7 +972,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlNewParserCtxt"></a>htmlNewParserCtxt ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a>	htmlNewParserCtxt	(void)<br>
 </pre>
-<p>Allocate and initialize a new HTML parser context. This can be used to parse HTML documents into DOM trees with functions like <a href="libxml2-parser.html#xmlCtxtReadFile">xmlCtxtReadFile</a> or <a href="libxml2-parser.html#xmlCtxtReadMemory">xmlCtxtReadMemory</a>. See <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a> for parser options. See <a href="libxml2-parser.html#xmlCtxtSetErrorHandler">xmlCtxtSetErrorHandler</a> for advanced error handling. See xmlNewInputURL, xmlNewInputMemory, xmlNewInputIO and similar functions for advanced input control. See <a href="libxml2-HTMLparser.html#htmlNewSAXParserCtxt">htmlNewSAXParserCtxt</a> for custom SAX parsers.</p>
+<p>Allocate and initialize a new HTML parser context. This can be used to parse HTML documents into DOM trees with functions like <a href="libxml2-parser.html#xmlCtxtReadFile">xmlCtxtReadFile</a> or <a href="libxml2-parser.html#xmlCtxtReadMemory">xmlCtxtReadMemory</a>. See <a href="libxml2-HTMLparser.html#htmlCtxtUseOptions">htmlCtxtUseOptions</a> for parser options. See <a href="libxml2-parser.html#xmlCtxtSetErrorHandler">xmlCtxtSetErrorHandler</a> for advanced error handling. See <a href="libxml2-HTMLparser.html#htmlNewSAXParserCtxt">htmlNewSAXParserCtxt</a> for custom SAX parsers.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1009,7 +1012,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlNodeStatus"></a>htmlNodeStatus ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlStatus">htmlStatus</a>	htmlNodeStatus		(<a href="libxml2-HTMLparser.html#htmlNodePtr">htmlNodePtr</a> node, <br>					 int legacy)<br>
 </pre>
-<p>Checks whether the tree node is valid. Experimental (the author only uses the HTML enhancements in a SAX parser)</p>
+<p>DEPRECATED: Don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1023,7 +1026,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>for Element nodes, a return from <a href="libxml2-HTMLparser.html#htmlElementAllowedHere">htmlElementAllowedHere</a> (if legacy allowed) or <a href="libxml2-HTMLparser.html#htmlElementStatusHere">htmlElementStatusHere</a> (otherwise). for Attribute nodes, a return from <a href="libxml2-HTMLparser.html#htmlAttrAllowed">htmlAttrAllowed</a> for other nodes, <a href="libxml2-HTMLparser.html#HTML_NA">HTML_NA</a> (no checks performed)</td>
+<td><a href="libxml2-HTMLparser.html#HTML_VALID">HTML_VALID</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -1034,7 +1037,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlParseCharRef"></a>htmlParseCharRef ()</h3>
 <pre class="programlisting">int	htmlParseCharRef		(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse Reference declarations [66] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';'</p>
+<p>DEPRECATED: Internal function, don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1044,7 +1047,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the value parsed (as an int)</td>
+<td>0</td>
 </tr>
 </tbody>
 </table></div>
@@ -1150,7 +1153,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlParseEntityRef"></a>htmlParseEntityRef ()</h3>
 <pre class="programlisting">const <a href="libxml2-HTMLparser.html#htmlEntityDesc">htmlEntityDesc</a> *	htmlParseEntityRef	(<a href="libxml2-HTMLparser.html#htmlParserCtxtPtr">htmlParserCtxtPtr</a> ctxt, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** str)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse an HTML ENTITY references [68] EntityRef ::= '&amp;' Name ';'</p>
+<p>DEPRECATED: Internal function, don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1164,7 +1167,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the associated <a href="libxml2-HTMLparser.html#htmlEntityDescPtr">htmlEntityDescPtr</a> if found, or NULL otherwise, if non-NULL *str will have to be freed by the caller.</td>
+<td>NULL.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1175,7 +1178,7 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <a name="htmlParseFile"></a>htmlParseFile ()</h3>
 <pre class="programlisting"><a href="libxml2-HTMLparser.html#htmlDocPtr">htmlDocPtr</a>	htmlParseFile		(const char * filename, <br>					 const char * encoding)<br>
 </pre>
-<p>Parse an HTML file and build a tree. See xmlNewInputURL for details.</p>
+<p>Parse an HTML file and build a tree.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1451,6 +1454,39 @@ const <a href="libxml2-HTMLparser.html#htmlElemDesc">htmlElemDesc</a> *	<a href=
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>the related <a href="libxml2-HTMLparser.html#htmlElemDescPtr">htmlElemDescPtr</a> or NULL if not found.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="htmlUTF8ToHtml"></a>htmlUTF8ToHtml ()</h3>
+<pre class="programlisting">int	htmlUTF8ToHtml			(unsigned char * out, <br>					 int * outlen, <br>					 const unsigned char * in, <br>					 int * inlen)<br>
+</pre>
+<p>Take a block of UTF-8 chars in and try to convert it to an ASCII plus HTML entities block of chars out.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>out</tt></i>:</span></td>
+<td>a pointer to an array of bytes to store the result</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>outlen</tt></i>:</span></td>
+<td>the length of @out</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>in</tt></i>:</span></td>
+<td>a pointer to an array of UTF-8 chars</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>inlen</tt></i>:</span></td>
+<td>the length of @in</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>0 if success, -2 if the transcoding fails, or -1 otherwise The value of @inlen after return is the number of octets consumed as the return value is positive, else unpredictable. The value of @outlen after return is the number of octets consumed.</td>
 </tr>
 </tbody>
 </table></div>

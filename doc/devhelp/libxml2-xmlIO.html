@@ -33,10 +33,6 @@ int	<a href="#xmlFileMatch">xmlFileMatch</a>			(const char * filename);
 void *	<a href="#xmlFileOpen">xmlFileOpen</a>			(const char * filename);
 int	<a href="#xmlFileRead">xmlFileRead</a>			(void * context, <br>					 char * buffer, <br>					 int len);
 void	<a href="#xmlFreeParserInputBuffer">xmlFreeParserInputBuffer</a>	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in);
-int	<a href="#xmlIOFTPClose">xmlIOFTPClose</a>			(void * context);
-int	<a href="#xmlIOFTPMatch">xmlIOFTPMatch</a>			(const char * filename);
-void *	<a href="#xmlIOFTPOpen">xmlIOFTPOpen</a>			(const char * filename);
-int	<a href="#xmlIOFTPRead">xmlIOFTPRead</a>			(void * context, <br>					 char * buffer, <br>					 int len);
 int	<a href="#xmlIOHTTPClose">xmlIOHTTPClose</a>			(void * context);
 int	<a href="#xmlIOHTTPMatch">xmlIOHTTPMatch</a>			(const char * filename);
 void *	<a href="#xmlIOHTTPOpen">xmlIOHTTPOpen</a>			(const char * filename);
@@ -59,7 +55,7 @@ typedef <a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> <a
 int	<a href="#xmlOutputBufferFlush">xmlOutputBufferFlush</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlOutputBufferGetContent">xmlOutputBufferGetContent</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);
 size_t	<a href="#xmlOutputBufferGetSize">xmlOutputBufferGetSize</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out);
-int	<a href="#xmlOutputBufferWrite">xmlOutputBufferWrite</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 int len, <br>					 const char * buf);
+int	<a href="#xmlOutputBufferWrite">xmlOutputBufferWrite</a>		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 int len, <br>					 const char * data);
 int	<a href="#xmlOutputBufferWriteEscape">xmlOutputBufferWriteEscape</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escaping);
 int	<a href="#xmlOutputBufferWriteString">xmlOutputBufferWriteString</a>	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 const char * str);
 typedef int <a href="#xmlOutputCloseCallback">xmlOutputCloseCallback</a>		(void * context);
@@ -336,7 +332,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlAllocOutputBuffer"></a>xmlAllocOutputBuffer ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlAllocOutputBuffer	(<a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br>
 </pre>
-<p>Create a buffered parser output</p>
+<p>Create a buffered parser output Consumes @encoder even in error case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -357,7 +353,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlAllocParserInputBuffer"></a>xmlAllocParserInputBuffer ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlAllocParserInputBuffer	(<a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a buffered parser input for progressive parsing. The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
+<p>DEPRECATED: Use xmlNewInputFrom*. Create a buffered parser input for progressive parsing. The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -544,98 +540,6 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlIOFTPClose"></a>xmlIOFTPClose ()</h3>
-<pre class="programlisting">int	xmlIOFTPClose			(void * context)<br>
-</pre>
-<p>DEPRECATED: Internal function, don't use. Close an FTP I/O channel</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>context</tt></i>:</span></td>
-<td>the I/O context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>0</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlIOFTPMatch"></a>xmlIOFTPMatch ()</h3>
-<pre class="programlisting">int	xmlIOFTPMatch			(const char * filename)<br>
-</pre>
-<p>DEPRECATED: Internal function, don't use. check if the URI matches an FTP one</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>filename</tt></i>:</span></td>
-<td>the URI for matching</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>1 if matches, 0 otherwise</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlIOFTPOpen"></a>xmlIOFTPOpen ()</h3>
-<pre class="programlisting">void *	xmlIOFTPOpen			(const char * filename)<br>
-</pre>
-<p>DEPRECATED: Internal function, don't use. open an FTP I/O channel</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>filename</tt></i>:</span></td>
-<td>the URI for matching</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>an I/O context or NULL in case of error</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlIOFTPRead"></a>xmlIOFTPRead ()</h3>
-<pre class="programlisting">int	xmlIOFTPRead			(void * context, <br>					 char * buffer, <br>					 int len)<br>
-</pre>
-<p>DEPRECATED: Internal function, don't use. Read @len bytes to @buffer from the I/O channel.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>context</tt></i>:</span></td>
-<td>the I/O context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>buffer</tt></i>:</span></td>
-<td>where to drop data</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>number of bytes to write</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of bytes written</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlIOHTTPClose"></a>xmlIOHTTPClose ()</h3>
 <pre class="programlisting">int	xmlIOHTTPClose			(void * context)<br>
 </pre>
@@ -756,7 +660,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlNoNetExternalEntityLoader"></a>xmlNoNetExternalEntityLoader ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlNoNetExternalEntityLoader	(const char * URL, <br>							 const char * ID, <br>							 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>A specific entity loader disabling network accesses, though still allowing local catalog accesses for resolution.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#XML_PARSE_NONET">XML_PARSE_NONET</a>. A specific entity loader disabling network accesses, though still allowing local catalog accesses for resolution.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -827,7 +731,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlOutputBufferCreateBuffer"></a>xmlOutputBufferCreateBuffer ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateBuffer	(<a href="libxml2-tree.html#xmlBufferPtr">xmlBufferPtr</a> buffer, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br>
 </pre>
-<p>Create a buffered output for the progressive saving to a <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a></p>
+<p>Create a buffered output for the progressive saving to a <a href="libxml2-tree.html#xmlBuffer">xmlBuffer</a> Consumes @encoder even in error case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -853,7 +757,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlOutputBufferCreateFd"></a>xmlOutputBufferCreateFd ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateFd	(int fd, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br>
 </pre>
-<p>Create a buffered output for the progressive saving to a file descriptor</p>
+<p>Create a buffered output for the progressive saving to a file descriptor Consumes @encoder even in error case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -878,7 +782,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlOutputBufferCreateFile"></a>xmlOutputBufferCreateFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateFile	(FILE * file, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br>
 </pre>
-<p>Create a buffered output for the progressive saving to a FILE * buffered C I/O</p>
+<p>Create a buffered output for the progressive saving to a FILE * buffered C I/O Consumes @encoder even in error case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -903,7 +807,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlOutputBufferCreateFilename"></a>xmlOutputBufferCreateFilename ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateFilename	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder, <br>							 int compression)<br>
 </pre>
-<p>Create a buffered output for the progressive saving of a file If filename is "-' then we use stdout as the output. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. TODO: currently if compression is set, the library only support writing to a local file.</p>
+<p>Create a buffered output for the progressive saving of a file If filename is "-' then we use stdout as the output. Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. TODO: currently if compression is set, the library only support writing to a local file. Consumes @encoder even in error case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -953,7 +857,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlOutputBufferCreateIO"></a>xmlOutputBufferCreateIO ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a>	xmlOutputBufferCreateIO	(<a href="libxml2-xmlIO.html#xmlOutputWriteCallback">xmlOutputWriteCallback</a> iowrite, <br>						 <a href="libxml2-xmlIO.html#xmlOutputCloseCallback">xmlOutputCloseCallback</a> ioclose, <br>						 void * ioctx, <br>						 <a href="libxml2-encoding.html#xmlCharEncodingHandlerPtr">xmlCharEncodingHandlerPtr</a> encoder)<br>
 </pre>
-<p>Create a buffered output for the progressive saving to an I/O handler</p>
+<p>Create a buffered output for the progressive saving to an I/O handler Consumes @encoder even in error case.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1049,7 +953,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <div class="refsect2" lang="en">
 <h3>
 <a name="xmlOutputBufferWrite"></a>xmlOutputBufferWrite ()</h3>
-<pre class="programlisting">int	xmlOutputBufferWrite		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 int len, <br>					 const char * buf)<br>
+<pre class="programlisting">int	xmlOutputBufferWrite		(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 int len, <br>					 const char * data)<br>
 </pre>
 <p>Write the content of the array in the output I/O buffer This routine handle the I18N transcoding from internal UTF-8 The buffer is lossless, i.e. will store in case of partial or delayed writes.</p>
 <div class="variablelist"><table border="0">
@@ -1064,7 +968,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <td>the size in bytes of the array.</td>
 </tr>
 <tr>
-<td><span class="term"><i><tt>buf</tt></i>:</span></td>
+<td><span class="term"><i><tt>data</tt></i>:</span></td>
 <td>an char array</td>
 </tr>
 <tr>
@@ -1080,7 +984,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlOutputBufferWriteEscape"></a>xmlOutputBufferWriteEscape ()</h3>
 <pre class="programlisting">int	xmlOutputBufferWriteEscape	(<a href="libxml2-tree.html#xmlOutputBufferPtr">xmlOutputBufferPtr</a> out, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * str, <br>					 <a href="libxml2-encoding.html#xmlCharEncodingOutputFunc">xmlCharEncodingOutputFunc</a> escaping)<br>
 </pre>
-<p>Write the content of the string in the output I/O buffer This routine escapes the <a href="libxml2-SAX.html#characters">characters</a> and then handle the I18N transcoding from internal UTF-8 The buffer is lossless, i.e. will store in case of partial or delayed writes.</p>
+<p>Write the content of the string in the output I/O buffer This routine escapes the characters and then handle the I18N transcoding from internal UTF-8 The buffer is lossless, i.e. will store in case of partial or delayed writes.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1155,7 +1059,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateFd"></a>xmlParserInputBufferCreateFd ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateFd	(int fd, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a buffered parser input for the progressive parsing for the input from a file descriptor The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromFd">xmlNewInputFromFd</a>. Create a buffered parser input for the progressive parsing for the input from a file descriptor The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1180,7 +1084,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateFile"></a>xmlParserInputBufferCreateFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateFile	(FILE * file, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a buffered parser input for the progressive parsing of a FILE * buffered C I/O The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
+<p>DEPRECATED: Don't use. Create a buffered parser input for the progressive parsing of a FILE * buffered C I/O The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1205,7 +1109,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateFilename"></a>xmlParserInputBufferCreateFilename ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateFilename	(const char * URI, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a buffered parser input for the progressive parsing of a file Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. Do an encoding check if enc == <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a></p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromUrl">xmlNewInputFromUrl</a>. Create a buffered parser input for the progressive parsing of a file Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time. Do an encoding check if enc == <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a></p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1230,7 +1134,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateFilenameDefault"></a>xmlParserInputBufferCreateFilenameDefault ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a>	xmlParserInputBufferCreateFilenameDefault	(<a href="libxml2-xmlIO.html#xmlParserInputBufferCreateFilenameFunc">xmlParserInputBufferCreateFilenameFunc</a> func)<br>
 </pre>
-<p>Registers a callback for URI input file handling</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlCtxtSetResourceLoader">xmlCtxtSetResourceLoader</a> or similar functions. Registers a callback for URI input file handling</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1251,7 +1155,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateIO"></a>xmlParserInputBufferCreateIO ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateIO	(<a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> ioread, <br>							 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> ioclose, <br>							 void * ioctx, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a buffered parser input for the progressive parsing for the input from an I/O handler The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromIO">xmlNewInputFromIO</a>. Create a buffered parser input for the progressive parsing for the input from an I/O handler The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1284,7 +1188,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateMem"></a>xmlParserInputBufferCreateMem ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateMem	(const char * mem, <br>							 int size, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a parser input buffer for parsing from a memory area. This function makes a copy of the whole input buffer. If you are sure that the contents of the buffer will remain valid until the document was parsed, you can avoid the copy by using <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateStatic">xmlParserInputBufferCreateStatic</a>. The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromMemory">xmlNewInputFromMemory</a>. Create a parser input buffer for parsing from a memory area. This function makes a copy of the whole input buffer. If you are sure that the contents of the buffer will remain valid until the document was parsed, you can avoid the copy by using <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateStatic">xmlParserInputBufferCreateStatic</a>. The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1313,7 +1217,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferCreateStatic"></a>xmlParserInputBufferCreateStatic ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a>	xmlParserInputBufferCreateStatic	(const char * mem, <br>							 int size, <br>							 <a href="libxml2-encoding.html#xmlCharEncoding">xmlCharEncoding</a> enc)<br>
 </pre>
-<p>Create a parser input buffer for parsing from a memory area. This functions assumes that the contents of the input buffer remain valid until the document was parsed. Use <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateMem">xmlParserInputBufferCreateMem</a> otherwise. The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromMemory">xmlNewInputFromMemory</a>. Create a parser input buffer for parsing from a memory area. This functions assumes that the contents of the input buffer remain valid until the document was parsed. Use <a href="libxml2-xmlIO.html#xmlParserInputBufferCreateMem">xmlParserInputBufferCreateMem</a> otherwise. The encoding argument is deprecated and should be set to <a href="libxml2-encoding.html#XML_CHAR_ENCODING_NONE">XML_CHAR_ENCODING_NONE</a>. The encoding can be changed with <a href="libxml2-parserInternals.html#xmlSwitchEncoding">xmlSwitchEncoding</a> or <a href="libxml2-parserInternals.html#xmlSwitchEncodingName">xmlSwitchEncodingName</a> later on.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1342,7 +1246,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferGrow"></a>xmlParserInputBufferGrow ()</h3>
 <pre class="programlisting">int	xmlParserInputBufferGrow	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in, <br>					 int len)<br>
 </pre>
-<p>Grow up the content of the input buffer, the old data are preserved This routine handle the I18N transcoding to internal UTF-8 This routine is used when operating the parser in normal (pull) mode TODO: one should be able to remove one extra copy by copying directly onto in-&gt;buffer or in-&gt;raw</p>
+<p>DEPRECATED: Internal function, don't use. Grow up the content of the input buffer, the old data are preserved This routine handle the I18N transcoding to internal UTF-8 This routine is used when operating the parser in normal (pull) mode</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1367,7 +1271,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferPush"></a>xmlParserInputBufferPush ()</h3>
 <pre class="programlisting">int	xmlParserInputBufferPush	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in, <br>					 int len, <br>					 const char * buf)<br>
 </pre>
-<p>Push the content of the arry in the input buffer This routine handle the I18N transcoding to internal UTF-8 This is used when operating the parser in progressive (push) mode.</p>
+<p>DEPRECATED: Internal function, don't use. Push the content of the arry in the input buffer This routine handle the I18N transcoding to internal UTF-8 This is used when operating the parser in progressive (push) mode.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1396,7 +1300,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlParserInputBufferRead"></a>xmlParserInputBufferRead ()</h3>
 <pre class="programlisting">int	xmlParserInputBufferRead	(<a href="libxml2-tree.html#xmlParserInputBufferPtr">xmlParserInputBufferPtr</a> in, <br>					 int len)<br>
 </pre>
-<p>Refresh the content of the input buffer, the old data are considered consumed This routine handle the I18N transcoding to internal UTF-8</p>
+<p>DEPRECATED: Internal function, don't use. Same as <a href="libxml2-xmlIO.html#xmlParserInputBufferGrow">xmlParserInputBufferGrow</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1475,7 +1379,7 @@ int	<a href="#xmlRegisterOutputCallbacks">xmlRegisterOutputCallbacks</a>	(<a hre
 <a name="xmlRegisterInputCallbacks"></a>xmlRegisterInputCallbacks ()</h3>
 <pre class="programlisting">int	xmlRegisterInputCallbacks	(<a href="libxml2-xmlIO.html#xmlInputMatchCallback">xmlInputMatchCallback</a> matchFunc, <br>					 <a href="libxml2-xmlIO.html#xmlInputOpenCallback">xmlInputOpenCallback</a> openFunc, <br>					 <a href="libxml2-xmlIO.html#xmlInputReadCallback">xmlInputReadCallback</a> readFunc, <br>					 <a href="libxml2-xmlIO.html#xmlInputCloseCallback">xmlInputCloseCallback</a> closeFunc)<br>
 </pre>
-<p>Register a new set of I/O callback for handling parser input.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlCtxtSetResourceLoader">xmlCtxtSetResourceLoader</a> or similar functions. Register a new set of I/O callback for handling parser input.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

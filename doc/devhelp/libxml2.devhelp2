@@ -4,7 +4,6 @@
     <sub name="API" link="general.html">
       <sub name="HTMLparser" link="libxml2-HTMLparser.html"/>
       <sub name="HTMLtree" link="libxml2-HTMLtree.html"/>
-      <sub name="SAX" link="libxml2-SAX.html"/>
       <sub name="SAX2" link="libxml2-SAX2.html"/>
       <sub name="c14n" link="libxml2-c14n.html"/>
       <sub name="catalog" link="libxml2-catalog.html"/>
@@ -16,7 +15,6 @@
       <sub name="globals" link="libxml2-globals.html"/>
       <sub name="hash" link="libxml2-hash.html"/>
       <sub name="list" link="libxml2-list.html"/>
-      <sub name="nanoftp" link="libxml2-nanoftp.html"/>
       <sub name="nanohttp" link="libxml2-nanohttp.html"/>
       <sub name="parser" link="libxml2-parser.html"/>
       <sub name="parserInternals" link="libxml2-parserInternals.html"/>
@@ -42,7 +40,6 @@
       <sub name="xmlschemas" link="libxml2-xmlschemas.html"/>
       <sub name="xmlschemastypes" link="libxml2-xmlschemastypes.html"/>
       <sub name="xmlstring" link="libxml2-xmlstring.html"/>
-      <sub name="xmlunicode" link="libxml2-xmlunicode.html"/>
       <sub name="xmlversion" link="libxml2-xmlversion.html"/>
       <sub name="xmlwriter" link="libxml2-xmlwriter.html"/>
       <sub name="xpath" link="libxml2-xpath.html"/>
@@ -52,7 +49,6 @@
   </chapters>
   <functions>
     <keyword type="macro" name="BAD_CAST" link="libxml2-xmlstring.html#BAD_CAST"/>
-    <keyword type="macro" name="BASE_BUFFER_SIZE" link="libxml2-tree.html#BASE_BUFFER_SIZE"/>
     <keyword type="macro" name="CAST_TO_BOOLEAN" link="libxml2-xpathInternals.html#CAST_TO_BOOLEAN"/>
     <keyword type="macro" name="CAST_TO_NUMBER" link="libxml2-xpathInternals.html#CAST_TO_NUMBER"/>
     <keyword type="macro" name="CAST_TO_STRING" link="libxml2-xpathInternals.html#CAST_TO_STRING"/>
@@ -66,8 +62,6 @@
     <keyword type="macro" name="HTML_PI_NODE" link="libxml2-HTMLtree.html#HTML_PI_NODE"/>
     <keyword type="macro" name="HTML_PRESERVE_NODE" link="libxml2-HTMLtree.html#HTML_PRESERVE_NODE"/>
     <keyword type="macro" name="HTML_TEXT_NODE" link="libxml2-HTMLtree.html#HTML_TEXT_NODE"/>
-    <keyword type="macro" name="INPUT_CHUNK" link="libxml2-parserInternals.html#INPUT_CHUNK"/>
-    <keyword type="macro" name="INVALID_SOCKET" link="libxml2-nanoftp.html#INVALID_SOCKET"/>
     <keyword type="macro" name="IS_ASCII_DIGIT" link="libxml2-parserInternals.html#IS_ASCII_DIGIT"/>
     <keyword type="macro" name="IS_ASCII_LETTER" link="libxml2-parserInternals.html#IS_ASCII_LETTER"/>
     <keyword type="macro" name="IS_BASECHAR" link="libxml2-parserInternals.html#IS_BASECHAR"/>
@@ -93,13 +87,11 @@
     <keyword type="macro" name="LIBXML_CATALOG_ENABLED" link="libxml2-xmlversion.html#LIBXML_CATALOG_ENABLED"/>
     <keyword type="macro" name="LIBXML_DEBUG_ENABLED" link="libxml2-xmlversion.html#LIBXML_DEBUG_ENABLED"/>
     <keyword type="macro" name="LIBXML_DOTTED_VERSION" link="libxml2-xmlversion.html#LIBXML_DOTTED_VERSION"/>
-    <keyword type="macro" name="LIBXML_FTP_ENABLED" link="libxml2-xmlversion.html#LIBXML_FTP_ENABLED"/>
     <keyword type="macro" name="LIBXML_HTML_ENABLED" link="libxml2-xmlversion.html#LIBXML_HTML_ENABLED"/>
     <keyword type="macro" name="LIBXML_HTTP_ENABLED" link="libxml2-xmlversion.html#LIBXML_HTTP_ENABLED"/>
     <keyword type="macro" name="LIBXML_ICONV_ENABLED" link="libxml2-xmlversion.html#LIBXML_ICONV_ENABLED"/>
     <keyword type="macro" name="LIBXML_ICU_ENABLED" link="libxml2-xmlversion.html#LIBXML_ICU_ENABLED"/>
     <keyword type="macro" name="LIBXML_ISO8859X_ENABLED" link="libxml2-xmlversion.html#LIBXML_ISO8859X_ENABLED"/>
-    <keyword type="macro" name="LIBXML_LEGACY_ENABLED" link="libxml2-xmlversion.html#LIBXML_LEGACY_ENABLED"/>
     <keyword type="macro" name="LIBXML_LZMA_ENABLED" link="libxml2-xmlversion.html#LIBXML_LZMA_ENABLED"/>
     <keyword type="macro" name="LIBXML_MODULES_ENABLED" link="libxml2-xmlversion.html#LIBXML_MODULES_ENABLED"/>
     <keyword type="macro" name="LIBXML_MODULE_EXTENSION" link="libxml2-xmlversion.html#LIBXML_MODULE_EXTENSION"/>
@@ -108,6 +100,7 @@
     <keyword type="macro" name="LIBXML_PUSH_ENABLED" link="libxml2-xmlversion.html#LIBXML_PUSH_ENABLED"/>
     <keyword type="macro" name="LIBXML_READER_ENABLED" link="libxml2-xmlversion.html#LIBXML_READER_ENABLED"/>
     <keyword type="macro" name="LIBXML_REGEXP_ENABLED" link="libxml2-xmlversion.html#LIBXML_REGEXP_ENABLED"/>
+    <keyword type="macro" name="LIBXML_RELAXNG_ENABLED" link="libxml2-xmlversion.html#LIBXML_RELAXNG_ENABLED"/>
     <keyword type="macro" name="LIBXML_SAX1_ENABLED" link="libxml2-xmlversion.html#LIBXML_SAX1_ENABLED"/>
     <keyword type="macro" name="LIBXML_SCHEMAS_ENABLED" link="libxml2-xmlversion.html#LIBXML_SCHEMAS_ENABLED"/>
     <keyword type="macro" name="LIBXML_SCHEMATRON_ENABLED" link="libxml2-xmlversion.html#LIBXML_SCHEMATRON_ENABLED"/>
@@ -115,7 +108,6 @@
     <keyword type="macro" name="LIBXML_THREAD_ALLOC_ENABLED" link="libxml2-xmlversion.html#LIBXML_THREAD_ALLOC_ENABLED"/>
     <keyword type="macro" name="LIBXML_THREAD_ENABLED" link="libxml2-xmlversion.html#LIBXML_THREAD_ENABLED"/>
     <keyword type="macro" name="LIBXML_TREE_ENABLED" link="libxml2-xmlversion.html#LIBXML_TREE_ENABLED"/>
-    <keyword type="macro" name="LIBXML_UNICODE_ENABLED" link="libxml2-xmlversion.html#LIBXML_UNICODE_ENABLED"/>
     <keyword type="macro" name="LIBXML_VALID_ENABLED" link="libxml2-xmlversion.html#LIBXML_VALID_ENABLED"/>
     <keyword type="macro" name="LIBXML_VERSION" link="libxml2-xmlversion.html#LIBXML_VERSION"/>
     <keyword type="macro" name="LIBXML_VERSION_EXTRA" link="libxml2-xmlversion.html#LIBXML_VERSION_EXTRA"/>
@@ -124,9 +116,9 @@
     <keyword type="macro" name="LIBXML_XINCLUDE_ENABLED" link="libxml2-xmlversion.html#LIBXML_XINCLUDE_ENABLED"/>
     <keyword type="macro" name="LIBXML_XPATH_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPATH_ENABLED"/>
     <keyword type="macro" name="LIBXML_XPTR_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPTR_ENABLED"/>
-    <keyword type="macro" name="LIBXML_XPTR_LOCS_ENABLED" link="libxml2-xmlversion.html#LIBXML_XPTR_LOCS_ENABLED"/>
     <keyword type="macro" name="LIBXML_ZLIB_ENABLED" link="libxml2-xmlversion.html#LIBXML_ZLIB_ENABLED"/>
-    <keyword type="macro" name="SOCKET" link="libxml2-nanoftp.html#SOCKET"/>
+    <keyword type="macro" name="UTF8ToHtml" link="libxml2-HTMLparser.html#UTF8ToHtml"/>
+    <keyword type="macro" name="UTF8Toisolat1" link="libxml2-encoding.html#UTF8Toisolat1"/>
     <keyword type="macro" name="XINCLUDE_FALLBACK" link="libxml2-xinclude.html#XINCLUDE_FALLBACK"/>
     <keyword type="macro" name="XINCLUDE_HREF" link="libxml2-xinclude.html#XINCLUDE_HREF"/>
     <keyword type="macro" name="XINCLUDE_NODE" link="libxml2-xinclude.html#XINCLUDE_NODE"/>
@@ -246,7 +238,15 @@
     <keyword type="macro" name="htmlDefaultSubelement" link="libxml2-HTMLparser.html#htmlDefaultSubelement"/>
     <keyword type="macro" name="htmlElementAllowedHereDesc" link="libxml2-HTMLparser.html#htmlElementAllowedHereDesc"/>
     <keyword type="macro" name="htmlRequiredAttrs" link="libxml2-HTMLparser.html#htmlRequiredAttrs"/>
+    <keyword type="macro" name="initGenericErrorDefaultFunc" link="libxml2-xmlerror.html#initGenericErrorDefaultFunc"/>
+    <keyword type="macro" name="inputPop" link="libxml2-parserInternals.html#inputPop"/>
+    <keyword type="macro" name="inputPush" link="libxml2-parserInternals.html#inputPush"/>
+    <keyword type="macro" name="isolat1ToUTF8" link="libxml2-encoding.html#isolat1ToUTF8"/>
+    <keyword type="macro" name="valuePop" link="libxml2-xpathInternals.html#valuePop"/>
+    <keyword type="macro" name="valuePush" link="libxml2-xpathInternals.html#valuePush"/>
+    <keyword type="macro" name="xmlBufferAllocScheme" link="libxml2-tree.html#xmlBufferAllocScheme"/>
     <keyword type="macro" name="xmlChildrenNode" link="libxml2-tree.html#xmlChildrenNode"/>
+    <keyword type="macro" name="xmlDefaultBufferSize" link="libxml2-tree.html#xmlDefaultBufferSize"/>
     <keyword type="macro" name="xmlIsBaseCharQ" link="libxml2-chvalid.html#xmlIsBaseCharQ"/>
     <keyword type="macro" name="xmlIsBaseChar_ch" link="libxml2-chvalid.html#xmlIsBaseChar_ch"/>
     <keyword type="macro" name="xmlIsBlankQ" link="libxml2-chvalid.html#xmlIsBlankQ"/>
@@ -261,6 +261,7 @@
     <keyword type="macro" name="xmlIsIdeographicQ" link="libxml2-chvalid.html#xmlIsIdeographicQ"/>
     <keyword type="macro" name="xmlIsPubidCharQ" link="libxml2-chvalid.html#xmlIsPubidCharQ"/>
     <keyword type="macro" name="xmlIsPubidChar_ch" link="libxml2-chvalid.html#xmlIsPubidChar_ch"/>
+    <keyword type="macro" name="xmlParserMaxDepth" link="libxml2-parserInternals.html#xmlParserMaxDepth"/>
     <keyword type="macro" name="xmlRootNode" link="libxml2-tree.html#xmlRootNode"/>
     <keyword type="macro" name="xmlTextWriterWriteDocType" link="libxml2-xmlwriter.html#xmlTextWriterWriteDocType"/>
     <keyword type="macro" name="xmlTextWriterWriteProcessingInstruction" link="libxml2-xmlwriter.html#xmlTextWriterWriteProcessingInstruction"/>
@@ -289,7 +290,10 @@
     <keyword type="enum" name="HTML_DEPRECATED" link="libxml2-HTMLparser.html#HTML_DEPRECATED"/>
     <keyword type="enum" name="HTML_INVALID" link="libxml2-HTMLparser.html#HTML_INVALID"/>
     <keyword type="enum" name="HTML_NA" link="libxml2-HTMLparser.html#HTML_NA"/>
+    <keyword type="enum" name="HTML_PARSE_BIG_LINES" link="libxml2-HTMLparser.html#HTML_PARSE_BIG_LINES"/>
     <keyword type="enum" name="HTML_PARSE_COMPACT" link="libxml2-HTMLparser.html#HTML_PARSE_COMPACT"/>
+    <keyword type="enum" name="HTML_PARSE_HTML5" link="libxml2-HTMLparser.html#HTML_PARSE_HTML5"/>
+    <keyword type="enum" name="HTML_PARSE_HUGE" link="libxml2-HTMLparser.html#HTML_PARSE_HUGE"/>
     <keyword type="enum" name="HTML_PARSE_IGNORE_ENC" link="libxml2-HTMLparser.html#HTML_PARSE_IGNORE_ENC"/>
     <keyword type="enum" name="HTML_PARSE_NOBLANKS" link="libxml2-HTMLparser.html#HTML_PARSE_NOBLANKS"/>
     <keyword type="enum" name="HTML_PARSE_NODEFDTD" link="libxml2-HTMLparser.html#HTML_PARSE_NODEFDTD"/>
@@ -359,6 +363,12 @@
     <keyword type="enum" name="XML_CDATA_SECTION_NODE" link="libxml2-tree.html#XML_CDATA_SECTION_NODE"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_2022_JP" link="libxml2-encoding.html#XML_CHAR_ENCODING_2022_JP"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_8859_1" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_1"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_8859_10" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_10"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_8859_11" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_11"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_8859_13" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_13"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_8859_14" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_14"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_8859_15" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_15"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_8859_16" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_16"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_8859_2" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_2"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_8859_3" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_3"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_8859_4" link="libxml2-encoding.html#XML_CHAR_ENCODING_8859_4"/>
@@ -371,6 +381,7 @@
     <keyword type="enum" name="XML_CHAR_ENCODING_EBCDIC" link="libxml2-encoding.html#XML_CHAR_ENCODING_EBCDIC"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_ERROR" link="libxml2-encoding.html#XML_CHAR_ENCODING_ERROR"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_EUC_JP" link="libxml2-encoding.html#XML_CHAR_ENCODING_EUC_JP"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_HTML" link="libxml2-encoding.html#XML_CHAR_ENCODING_HTML"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_NONE" link="libxml2-encoding.html#XML_CHAR_ENCODING_NONE"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_SHIFT_JIS" link="libxml2-encoding.html#XML_CHAR_ENCODING_SHIFT_JIS"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_UCS2" link="libxml2-encoding.html#XML_CHAR_ENCODING_UCS2"/>
@@ -378,6 +389,7 @@
     <keyword type="enum" name="XML_CHAR_ENCODING_UCS4LE" link="libxml2-encoding.html#XML_CHAR_ENCODING_UCS4LE"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_UCS4_2143" link="libxml2-encoding.html#XML_CHAR_ENCODING_UCS4_2143"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_UCS4_3412" link="libxml2-encoding.html#XML_CHAR_ENCODING_UCS4_3412"/>
+    <keyword type="enum" name="XML_CHAR_ENCODING_UTF16" link="libxml2-encoding.html#XML_CHAR_ENCODING_UTF16"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_UTF16BE" link="libxml2-encoding.html#XML_CHAR_ENCODING_UTF16BE"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_UTF16LE" link="libxml2-encoding.html#XML_CHAR_ENCODING_UTF16LE"/>
     <keyword type="enum" name="XML_CHAR_ENCODING_UTF8" link="libxml2-encoding.html#XML_CHAR_ENCODING_UTF8"/>
@@ -492,9 +504,10 @@
     <keyword type="enum" name="XML_ENC_ERR_INPUT" link="libxml2-encoding.html#XML_ENC_ERR_INPUT"/>
     <keyword type="enum" name="XML_ENC_ERR_INTERNAL" link="libxml2-encoding.html#XML_ENC_ERR_INTERNAL"/>
     <keyword type="enum" name="XML_ENC_ERR_MEMORY" link="libxml2-encoding.html#XML_ENC_ERR_MEMORY"/>
-    <keyword type="enum" name="XML_ENC_ERR_PARTIAL" link="libxml2-encoding.html#XML_ENC_ERR_PARTIAL"/>
     <keyword type="enum" name="XML_ENC_ERR_SPACE" link="libxml2-encoding.html#XML_ENC_ERR_SPACE"/>
     <keyword type="enum" name="XML_ENC_ERR_SUCCESS" link="libxml2-encoding.html#XML_ENC_ERR_SUCCESS"/>
+    <keyword type="enum" name="XML_ENC_INPUT" link="libxml2-encoding.html#XML_ENC_INPUT"/>
+    <keyword type="enum" name="XML_ENC_OUTPUT" link="libxml2-encoding.html#XML_ENC_OUTPUT"/>
     <keyword type="enum" name="XML_ENTITY_DECL" link="libxml2-tree.html#XML_ENTITY_DECL"/>
     <keyword type="enum" name="XML_ENTITY_NODE" link="libxml2-tree.html#XML_ENTITY_NODE"/>
     <keyword type="enum" name="XML_ENTITY_REF_NODE" link="libxml2-tree.html#XML_ENTITY_REF_NODE"/>
@@ -611,12 +624,6 @@
     <keyword type="enum" name="XML_ERR_WARNING" link="libxml2-xmlerror.html#XML_ERR_WARNING"/>
     <keyword type="enum" name="XML_ERR_XMLDECL_NOT_FINISHED" link="libxml2-xmlerror.html#XML_ERR_XMLDECL_NOT_FINISHED"/>
     <keyword type="enum" name="XML_ERR_XMLDECL_NOT_STARTED" link="libxml2-xmlerror.html#XML_ERR_XMLDECL_NOT_STARTED"/>
-    <keyword type="enum" name="XML_EXP_ATOM" link="libxml2-xmlregexp.html#XML_EXP_ATOM"/>
-    <keyword type="enum" name="XML_EXP_COUNT" link="libxml2-xmlregexp.html#XML_EXP_COUNT"/>
-    <keyword type="enum" name="XML_EXP_EMPTY" link="libxml2-xmlregexp.html#XML_EXP_EMPTY"/>
-    <keyword type="enum" name="XML_EXP_FORBID" link="libxml2-xmlregexp.html#XML_EXP_FORBID"/>
-    <keyword type="enum" name="XML_EXP_OR" link="libxml2-xmlregexp.html#XML_EXP_OR"/>
-    <keyword type="enum" name="XML_EXP_SEQ" link="libxml2-xmlregexp.html#XML_EXP_SEQ"/>
     <keyword type="enum" name="XML_EXTERNAL_GENERAL_PARSED_ENTITY" link="libxml2-entities.html#XML_EXTERNAL_GENERAL_PARSED_ENTITY"/>
     <keyword type="enum" name="XML_EXTERNAL_GENERAL_UNPARSED_ENTITY" link="libxml2-entities.html#XML_EXTERNAL_GENERAL_UNPARSED_ENTITY"/>
     <keyword type="enum" name="XML_EXTERNAL_PARAMETER_ENTITY" link="libxml2-entities.html#XML_EXTERNAL_PARAMETER_ENTITY"/>
@@ -667,6 +674,10 @@
     <keyword type="enum" name="XML_I18N_NO_HANDLER" link="libxml2-xmlerror.html#XML_I18N_NO_HANDLER"/>
     <keyword type="enum" name="XML_I18N_NO_NAME" link="libxml2-xmlerror.html#XML_I18N_NO_NAME"/>
     <keyword type="enum" name="XML_I18N_NO_OUTPUT" link="libxml2-xmlerror.html#XML_I18N_NO_OUTPUT"/>
+    <keyword type="enum" name="XML_INPUT_BUF_STATIC" link="libxml2-parser.html#XML_INPUT_BUF_STATIC"/>
+    <keyword type="enum" name="XML_INPUT_BUF_ZERO_TERMINATED" link="libxml2-parser.html#XML_INPUT_BUF_ZERO_TERMINATED"/>
+    <keyword type="enum" name="XML_INPUT_NETWORK" link="libxml2-parser.html#XML_INPUT_NETWORK"/>
+    <keyword type="enum" name="XML_INPUT_UNZIP" link="libxml2-parser.html#XML_INPUT_UNZIP"/>
     <keyword type="enum" name="XML_INTERNAL_GENERAL_ENTITY" link="libxml2-entities.html#XML_INTERNAL_GENERAL_ENTITY"/>
     <keyword type="enum" name="XML_INTERNAL_PARAMETER_ENTITY" link="libxml2-entities.html#XML_INTERNAL_PARAMETER_ENTITY"/>
     <keyword type="enum" name="XML_INTERNAL_PREDEFINED_ENTITY" link="libxml2-entities.html#XML_INTERNAL_PREDEFINED_ENTITY"/>
@@ -768,6 +779,7 @@
     <keyword type="enum" name="XML_PARSER_VALIDATE" link="libxml2-xmlreader.html#XML_PARSER_VALIDATE"/>
     <keyword type="enum" name="XML_PARSER_XML_DECL" link="libxml2-parser.html#XML_PARSER_XML_DECL"/>
     <keyword type="enum" name="XML_PARSE_BIG_LINES" link="libxml2-parser.html#XML_PARSE_BIG_LINES"/>
+    <keyword type="enum" name="XML_PARSE_CATALOG_PI" link="libxml2-parser.html#XML_PARSE_CATALOG_PI"/>
     <keyword type="enum" name="XML_PARSE_COMPACT" link="libxml2-parser.html#XML_PARSE_COMPACT"/>
     <keyword type="enum" name="XML_PARSE_DOM" link="libxml2-parser.html#XML_PARSE_DOM"/>
     <keyword type="enum" name="XML_PARSE_DTDATTR" link="libxml2-parser.html#XML_PARSE_DTDATTR"/>
@@ -784,6 +796,7 @@
     <keyword type="enum" name="XML_PARSE_NONET" link="libxml2-parser.html#XML_PARSE_NONET"/>
     <keyword type="enum" name="XML_PARSE_NOWARNING" link="libxml2-parser.html#XML_PARSE_NOWARNING"/>
     <keyword type="enum" name="XML_PARSE_NOXINCNODE" link="libxml2-parser.html#XML_PARSE_NOXINCNODE"/>
+    <keyword type="enum" name="XML_PARSE_NO_SYS_CATALOG" link="libxml2-parser.html#XML_PARSE_NO_SYS_CATALOG"/>
     <keyword type="enum" name="XML_PARSE_NO_XXE" link="libxml2-parser.html#XML_PARSE_NO_XXE"/>
     <keyword type="enum" name="XML_PARSE_NSCLEAN" link="libxml2-parser.html#XML_PARSE_NSCLEAN"/>
     <keyword type="enum" name="XML_PARSE_OLD10" link="libxml2-parser.html#XML_PARSE_OLD10"/>
@@ -796,6 +809,7 @@
     <keyword type="enum" name="XML_PARSE_SAX" link="libxml2-parser.html#XML_PARSE_SAX"/>
     <keyword type="enum" name="XML_PARSE_SAX1" link="libxml2-parser.html#XML_PARSE_SAX1"/>
     <keyword type="enum" name="XML_PARSE_UNKNOWN" link="libxml2-parser.html#XML_PARSE_UNKNOWN"/>
+    <keyword type="enum" name="XML_PARSE_UNZIP" link="libxml2-parser.html#XML_PARSE_UNZIP"/>
     <keyword type="enum" name="XML_PARSE_XINCLUDE" link="libxml2-parser.html#XML_PARSE_XINCLUDE"/>
     <keyword type="enum" name="XML_PATTERN_DEFAULT" link="libxml2-pattern.html#XML_PATTERN_DEFAULT"/>
     <keyword type="enum" name="XML_PATTERN_XPATH" link="libxml2-pattern.html#XML_PATTERN_XPATH"/>
@@ -864,6 +878,13 @@
     <keyword type="enum" name="XML_RELAXNG_ERR_VALELEM" link="libxml2-relaxng.html#XML_RELAXNG_ERR_VALELEM"/>
     <keyword type="enum" name="XML_RELAXNG_ERR_VALUE" link="libxml2-relaxng.html#XML_RELAXNG_ERR_VALUE"/>
     <keyword type="enum" name="XML_RELAXNG_OK" link="libxml2-relaxng.html#XML_RELAXNG_OK"/>
+    <keyword type="enum" name="XML_RESOURCE_DTD" link="libxml2-parser.html#XML_RESOURCE_DTD"/>
+    <keyword type="enum" name="XML_RESOURCE_GENERAL_ENTITY" link="libxml2-parser.html#XML_RESOURCE_GENERAL_ENTITY"/>
+    <keyword type="enum" name="XML_RESOURCE_MAIN_DOCUMENT" link="libxml2-parser.html#XML_RESOURCE_MAIN_DOCUMENT"/>
+    <keyword type="enum" name="XML_RESOURCE_PARAMETER_ENTITY" link="libxml2-parser.html#XML_RESOURCE_PARAMETER_ENTITY"/>
+    <keyword type="enum" name="XML_RESOURCE_UNKNOWN" link="libxml2-parser.html#XML_RESOURCE_UNKNOWN"/>
+    <keyword type="enum" name="XML_RESOURCE_XINCLUDE" link="libxml2-parser.html#XML_RESOURCE_XINCLUDE"/>
+    <keyword type="enum" name="XML_RESOURCE_XINCLUDE_TEXT" link="libxml2-parser.html#XML_RESOURCE_XINCLUDE_TEXT"/>
     <keyword type="enum" name="XML_RNGP_ANYNAME_ATTR_ANCESTOR" link="libxml2-xmlerror.html#XML_RNGP_ANYNAME_ATTR_ANCESTOR"/>
     <keyword type="enum" name="XML_RNGP_ATTRIBUTE_CHILDREN" link="libxml2-xmlerror.html#XML_RNGP_ATTRIBUTE_CHILDREN"/>
     <keyword type="enum" name="XML_RNGP_ATTRIBUTE_CONTENT" link="libxml2-xmlerror.html#XML_RNGP_ATTRIBUTE_CONTENT"/>
@@ -990,11 +1011,14 @@
     <keyword type="enum" name="XML_SAVE_AS_HTML" link="libxml2-xmlsave.html#XML_SAVE_AS_HTML"/>
     <keyword type="enum" name="XML_SAVE_AS_XML" link="libxml2-xmlsave.html#XML_SAVE_AS_XML"/>
     <keyword type="enum" name="XML_SAVE_CHAR_INVALID" link="libxml2-xmlerror.html#XML_SAVE_CHAR_INVALID"/>
+    <keyword type="enum" name="XML_SAVE_EMPTY" link="libxml2-xmlsave.html#XML_SAVE_EMPTY"/>
     <keyword type="enum" name="XML_SAVE_FORMAT" link="libxml2-xmlsave.html#XML_SAVE_FORMAT"/>
+    <keyword type="enum" name="XML_SAVE_INDENT" link="libxml2-xmlsave.html#XML_SAVE_INDENT"/>
     <keyword type="enum" name="XML_SAVE_NOT_UTF8" link="libxml2-xmlerror.html#XML_SAVE_NOT_UTF8"/>
     <keyword type="enum" name="XML_SAVE_NO_DECL" link="libxml2-xmlsave.html#XML_SAVE_NO_DECL"/>
     <keyword type="enum" name="XML_SAVE_NO_DOCTYPE" link="libxml2-xmlerror.html#XML_SAVE_NO_DOCTYPE"/>
     <keyword type="enum" name="XML_SAVE_NO_EMPTY" link="libxml2-xmlsave.html#XML_SAVE_NO_EMPTY"/>
+    <keyword type="enum" name="XML_SAVE_NO_INDENT" link="libxml2-xmlsave.html#XML_SAVE_NO_INDENT"/>
     <keyword type="enum" name="XML_SAVE_NO_XHTML" link="libxml2-xmlsave.html#XML_SAVE_NO_XHTML"/>
     <keyword type="enum" name="XML_SAVE_UNKNOWN_ENCODING" link="libxml2-xmlerror.html#XML_SAVE_UNKNOWN_ENCODING"/>
     <keyword type="enum" name="XML_SAVE_WSNONSIG" link="libxml2-xmlsave.html#XML_SAVE_WSNONSIG"/>
@@ -1406,6 +1430,10 @@
     <keyword type="enum" name="XML_SCHEMA_WHITESPACE_PRESERVE" link="libxml2-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_PRESERVE"/>
     <keyword type="enum" name="XML_SCHEMA_WHITESPACE_REPLACE" link="libxml2-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_REPLACE"/>
     <keyword type="enum" name="XML_SCHEMA_WHITESPACE_UNKNOWN" link="libxml2-xmlschemastypes.html#XML_SCHEMA_WHITESPACE_UNKNOWN"/>
+    <keyword type="enum" name="XML_STATUS_CATASTROPHIC_ERROR" link="libxml2-parser.html#XML_STATUS_CATASTROPHIC_ERROR"/>
+    <keyword type="enum" name="XML_STATUS_DTD_VALIDATION_FAILED" link="libxml2-parser.html#XML_STATUS_DTD_VALIDATION_FAILED"/>
+    <keyword type="enum" name="XML_STATUS_NOT_NS_WELL_FORMED" link="libxml2-parser.html#XML_STATUS_NOT_NS_WELL_FORMED"/>
+    <keyword type="enum" name="XML_STATUS_NOT_WELL_FORMED" link="libxml2-parser.html#XML_STATUS_NOT_WELL_FORMED"/>
     <keyword type="enum" name="XML_TEXTREADER_MODE_CLOSED" link="libxml2-xmlreader.html#XML_TEXTREADER_MODE_CLOSED"/>
     <keyword type="enum" name="XML_TEXTREADER_MODE_EOF" link="libxml2-xmlreader.html#XML_TEXTREADER_MODE_EOF"/>
     <keyword type="enum" name="XML_TEXTREADER_MODE_ERROR" link="libxml2-xmlreader.html#XML_TEXTREADER_MODE_ERROR"/>
@@ -1449,6 +1477,7 @@
     <keyword type="enum" name="XML_WITH_PUSH" link="libxml2-parser.html#XML_WITH_PUSH"/>
     <keyword type="enum" name="XML_WITH_READER" link="libxml2-parser.html#XML_WITH_READER"/>
     <keyword type="enum" name="XML_WITH_REGEXP" link="libxml2-parser.html#XML_WITH_REGEXP"/>
+    <keyword type="enum" name="XML_WITH_RELAXNG" link="libxml2-parser.html#XML_WITH_RELAXNG"/>
     <keyword type="enum" name="XML_WITH_SAX1" link="libxml2-parser.html#XML_WITH_SAX1"/>
     <keyword type="enum" name="XML_WITH_SCHEMAS" link="libxml2-parser.html#XML_WITH_SCHEMAS"/>
     <keyword type="enum" name="XML_WITH_SCHEMATRON" link="libxml2-parser.html#XML_WITH_SCHEMATRON"/>
@@ -1521,14 +1550,11 @@
     <keyword type="enum" name="XPATH_INVALID_OPERAND" link="libxml2-xpath.html#XPATH_INVALID_OPERAND"/>
     <keyword type="enum" name="XPATH_INVALID_PREDICATE_ERROR" link="libxml2-xpath.html#XPATH_INVALID_PREDICATE_ERROR"/>
     <keyword type="enum" name="XPATH_INVALID_TYPE" link="libxml2-xpath.html#XPATH_INVALID_TYPE"/>
-    <keyword type="enum" name="XPATH_LOCATIONSET" link="libxml2-xpath.html#XPATH_LOCATIONSET"/>
     <keyword type="enum" name="XPATH_MEMORY_ERROR" link="libxml2-xpath.html#XPATH_MEMORY_ERROR"/>
     <keyword type="enum" name="XPATH_NODESET" link="libxml2-xpath.html#XPATH_NODESET"/>
     <keyword type="enum" name="XPATH_NUMBER" link="libxml2-xpath.html#XPATH_NUMBER"/>
     <keyword type="enum" name="XPATH_NUMBER_ERROR" link="libxml2-xpath.html#XPATH_NUMBER_ERROR"/>
     <keyword type="enum" name="XPATH_OP_LIMIT_EXCEEDED" link="libxml2-xpath.html#XPATH_OP_LIMIT_EXCEEDED"/>
-    <keyword type="enum" name="XPATH_POINT" link="libxml2-xpath.html#XPATH_POINT"/>
-    <keyword type="enum" name="XPATH_RANGE" link="libxml2-xpath.html#XPATH_RANGE"/>
     <keyword type="enum" name="XPATH_RECURSION_LIMIT_EXCEEDED" link="libxml2-xpath.html#XPATH_RECURSION_LIMIT_EXCEEDED"/>
     <keyword type="enum" name="XPATH_STACK_ERROR" link="libxml2-xpath.html#XPATH_STACK_ERROR"/>
     <keyword type="enum" name="XPATH_START_LITERAL_ERROR" link="libxml2-xpath.html#XPATH_START_LITERAL_ERROR"/>
@@ -1584,6 +1610,7 @@
     <keyword type="typedef" name="xmlChSRangePtr" link="libxml2-chvalid.html#xmlChSRangePtr"/>
     <keyword type="typedef" name="xmlChar" link="libxml2-xmlstring.html#xmlChar"/>
     <keyword type="typedef" name="xmlCharEncError" link="libxml2-encoding.html#xmlCharEncError"/>
+    <keyword type="typedef" name="xmlCharEncFlags" link="libxml2-encoding.html#xmlCharEncFlags"/>
     <keyword type="typedef" name="xmlCharEncoding" link="libxml2-encoding.html#xmlCharEncoding"/>
     <keyword type="typedef" name="xmlCharEncodingHandlerPtr" link="libxml2-encoding.html#xmlCharEncodingHandlerPtr"/>
     <keyword type="typedef" name="xmlDOMWrapCtxtPtr" link="libxml2-tree.html#xmlDOMWrapCtxtPtr"/>
@@ -1605,17 +1632,12 @@
     <keyword type="typedef" name="xmlErrorDomain" link="libxml2-xmlerror.html#xmlErrorDomain"/>
     <keyword type="typedef" name="xmlErrorLevel" link="libxml2-xmlerror.html#xmlErrorLevel"/>
     <keyword type="typedef" name="xmlErrorPtr" link="libxml2-xmlerror.html#xmlErrorPtr"/>
-    <keyword type="typedef" name="xmlExpCtxtPtr" link="libxml2-xmlregexp.html#xmlExpCtxtPtr"/>
-    <keyword type="typedef" name="xmlExpNodePtr" link="libxml2-xmlregexp.html#xmlExpNodePtr"/>
-    <keyword type="typedef" name="xmlExpNodeType" link="libxml2-xmlregexp.html#xmlExpNodeType"/>
     <keyword type="typedef" name="xmlFeature" link="libxml2-parser.html#xmlFeature"/>
-    <keyword type="typedef" name="xmlGlobalStatePtr" link="libxml2-globals.html#xmlGlobalStatePtr"/>
     <keyword type="typedef" name="xmlHashTablePtr" link="libxml2-hash.html#xmlHashTablePtr"/>
     <keyword type="typedef" name="xmlIDPtr" link="libxml2-tree.html#xmlIDPtr"/>
     <keyword type="typedef" name="xmlIDTablePtr" link="libxml2-valid.html#xmlIDTablePtr"/>
     <keyword type="typedef" name="xmlLinkPtr" link="libxml2-list.html#xmlLinkPtr"/>
     <keyword type="typedef" name="xmlListPtr" link="libxml2-list.html#xmlListPtr"/>
-    <keyword type="typedef" name="xmlLocationSetPtr" link="libxml2-xpointer.html#xmlLocationSetPtr"/>
     <keyword type="typedef" name="xmlModuleOption" link="libxml2-xmlmodule.html#xmlModuleOption"/>
     <keyword type="typedef" name="xmlModulePtr" link="libxml2-xmlmodule.html#xmlModulePtr"/>
     <keyword type="typedef" name="xmlMutexPtr" link="libxml2-threads.html#xmlMutexPtr"/>
@@ -1629,6 +1651,7 @@
     <keyword type="typedef" name="xmlParserCtxtPtr" link="libxml2-tree.html#xmlParserCtxtPtr"/>
     <keyword type="typedef" name="xmlParserErrors" link="libxml2-xmlerror.html#xmlParserErrors"/>
     <keyword type="typedef" name="xmlParserInputBufferPtr" link="libxml2-tree.html#xmlParserInputBufferPtr"/>
+    <keyword type="typedef" name="xmlParserInputFlags" link="libxml2-parser.html#xmlParserInputFlags"/>
     <keyword type="typedef" name="xmlParserInputPtr" link="libxml2-tree.html#xmlParserInputPtr"/>
     <keyword type="typedef" name="xmlParserInputState" link="libxml2-parser.html#xmlParserInputState"/>
     <keyword type="typedef" name="xmlParserMode" link="libxml2-parser.html#xmlParserMode"/>
@@ -1637,6 +1660,7 @@
     <keyword type="typedef" name="xmlParserOption" link="libxml2-parser.html#xmlParserOption"/>
     <keyword type="typedef" name="xmlParserProperties" link="libxml2-xmlreader.html#xmlParserProperties"/>
     <keyword type="typedef" name="xmlParserSeverities" link="libxml2-xmlreader.html#xmlParserSeverities"/>
+    <keyword type="typedef" name="xmlParserStatus" link="libxml2-parser.html#xmlParserStatus"/>
     <keyword type="typedef" name="xmlPatternFlags" link="libxml2-pattern.html#xmlPatternFlags"/>
     <keyword type="typedef" name="xmlPatternPtr" link="libxml2-pattern.html#xmlPatternPtr"/>
     <keyword type="typedef" name="xmlRMutexPtr" link="libxml2-threads.html#xmlRMutexPtr"/>
@@ -1650,6 +1674,7 @@
     <keyword type="typedef" name="xmlRelaxNGPtr" link="libxml2-relaxng.html#xmlRelaxNGPtr"/>
     <keyword type="typedef" name="xmlRelaxNGValidCtxtPtr" link="libxml2-relaxng.html#xmlRelaxNGValidCtxtPtr"/>
     <keyword type="typedef" name="xmlRelaxNGValidErr" link="libxml2-relaxng.html#xmlRelaxNGValidErr"/>
+    <keyword type="typedef" name="xmlResourceType" link="libxml2-parser.html#xmlResourceType"/>
     <keyword type="typedef" name="xmlSAXHandlerPtr" link="libxml2-tree.html#xmlSAXHandlerPtr"/>
     <keyword type="typedef" name="xmlSAXHandlerV1Ptr" link="libxml2-parser.html#xmlSAXHandlerV1Ptr"/>
     <keyword type="typedef" name="xmlSAXLocatorPtr" link="libxml2-tree.html#xmlSAXLocatorPtr"/>
@@ -1682,7 +1707,6 @@
     <keyword type="typedef" name="xmlSchematronPtr" link="libxml2-schematron.html#xmlSchematronPtr"/>
     <keyword type="typedef" name="xmlSchematronValidCtxtPtr" link="libxml2-schematron.html#xmlSchematronValidCtxtPtr"/>
     <keyword type="typedef" name="xmlSchematronValidOptions" link="libxml2-schematron.html#xmlSchematronValidOptions"/>
-    <keyword type="typedef" name="xmlShellCtxtPtr" link="libxml2-debugXML.html#xmlShellCtxtPtr"/>
     <keyword type="typedef" name="xmlStreamCtxtPtr" link="libxml2-pattern.html#xmlStreamCtxtPtr"/>
     <keyword type="typedef" name="xmlTextReaderLocatorPtr" link="libxml2-xmlreader.html#xmlTextReaderLocatorPtr"/>
     <keyword type="typedef" name="xmlTextReaderMode" link="libxml2-xmlreader.html#xmlTextReaderMode"/>
@@ -1729,15 +1753,11 @@
     <keyword type="struct" name="xmlEntity" link="libxml2-tree.html#xmlEntity"/>
     <keyword type="struct" name="xmlEnumeration" link="libxml2-tree.html#xmlEnumeration"/>
     <keyword type="struct" name="xmlError" link="libxml2-xmlerror.html#xmlError"/>
-    <keyword type="struct" name="xmlExpCtxt" link="libxml2-xmlregexp.html#xmlExpCtxt"/>
-    <keyword type="struct" name="xmlExpNode" link="libxml2-xmlregexp.html#xmlExpNode"/>
-    <keyword type="struct" name="xmlGlobalState" link="libxml2-globals.html#xmlGlobalState"/>
     <keyword type="struct" name="xmlHashTable" link="libxml2-hash.html#xmlHashTable"/>
     <keyword type="struct" name="xmlID" link="libxml2-tree.html#xmlID"/>
     <keyword type="struct" name="xmlIDTable" link="libxml2-valid.html#xmlIDTable"/>
     <keyword type="struct" name="xmlLink" link="libxml2-list.html#xmlLink"/>
     <keyword type="struct" name="xmlList" link="libxml2-list.html#xmlList"/>
-    <keyword type="struct" name="xmlLocationSet" link="libxml2-xpointer.html#xmlLocationSet"/>
     <keyword type="struct" name="xmlModule" link="libxml2-xmlmodule.html#xmlModule"/>
     <keyword type="struct" name="xmlMutex" link="libxml2-threads.html#xmlMutex"/>
     <keyword type="struct" name="xmlNode" link="libxml2-tree.html#xmlNode"/>
@@ -1785,7 +1805,6 @@
     <keyword type="struct" name="xmlSchematron" link="libxml2-schematron.html#xmlSchematron"/>
     <keyword type="struct" name="xmlSchematronParserCtxt" link="libxml2-schematron.html#xmlSchematronParserCtxt"/>
     <keyword type="struct" name="xmlSchematronValidCtxt" link="libxml2-schematron.html#xmlSchematronValidCtxt"/>
-    <keyword type="struct" name="xmlShellCtxt" link="libxml2-debugXML.html#xmlShellCtxt"/>
     <keyword type="struct" name="xmlStartTag" link="libxml2-parser.html#xmlStartTag"/>
     <keyword type="struct" name="xmlStreamCtxt" link="libxml2-pattern.html#xmlStreamCtxt"/>
     <keyword type="struct" name="xmlTextReader" link="libxml2-xmlreader.html#xmlTextReader"/>
@@ -1815,8 +1834,6 @@
     <keyword type="function" name="errorSAXFunc" link="libxml2-parser.html#errorSAXFunc"/>
     <keyword type="function" name="externalSubsetSAXFunc" link="libxml2-parser.html#externalSubsetSAXFunc"/>
     <keyword type="function" name="fatalErrorSAXFunc" link="libxml2-parser.html#fatalErrorSAXFunc"/>
-    <keyword type="function" name="ftpDataCallback" link="libxml2-nanoftp.html#ftpDataCallback"/>
-    <keyword type="function" name="ftpListCallback" link="libxml2-nanoftp.html#ftpListCallback"/>
     <keyword type="function" name="getEntitySAXFunc" link="libxml2-parser.html#getEntitySAXFunc"/>
     <keyword type="function" name="getParameterEntitySAXFunc" link="libxml2-parser.html#getParameterEntitySAXFunc"/>
     <keyword type="function" name="hasExternalSubsetSAXFunc" link="libxml2-parser.html#hasExternalSubsetSAXFunc"/>
@@ -1839,11 +1856,13 @@
     <keyword type="function" name="xlinkNodeDetectFunc" link="libxml2-xlink.html#xlinkNodeDetectFunc"/>
     <keyword type="function" name="xlinkSimpleLinkFunk" link="libxml2-xlink.html#xlinkSimpleLinkFunk"/>
     <keyword type="function" name="xmlC14NIsVisibleCallback" link="libxml2-c14n.html#xmlC14NIsVisibleCallback"/>
+    <keyword type="function" name="xmlCharEncConvCtxtDtor" link="libxml2-encoding.html#xmlCharEncConvCtxtDtor"/>
+    <keyword type="function" name="xmlCharEncConvFunc" link="libxml2-encoding.html#xmlCharEncConvFunc"/>
+    <keyword type="function" name="xmlCharEncConvImpl" link="libxml2-encoding.html#xmlCharEncConvImpl"/>
     <keyword type="function" name="xmlCharEncodingInputFunc" link="libxml2-encoding.html#xmlCharEncodingInputFunc"/>
     <keyword type="function" name="xmlCharEncodingOutputFunc" link="libxml2-encoding.html#xmlCharEncodingOutputFunc"/>
     <keyword type="function" name="xmlDOMWrapAcquireNsFunction" link="libxml2-tree.html#xmlDOMWrapAcquireNsFunction"/>
     <keyword type="function" name="xmlDeregisterNodeFunc" link="libxml2-tree.html#xmlDeregisterNodeFunc"/>
-    <keyword type="function" name="xmlEntityReferenceFunc" link="libxml2-parserInternals.html#xmlEntityReferenceFunc"/>
     <keyword type="function" name="xmlExternalEntityLoader" link="libxml2-parser.html#xmlExternalEntityLoader"/>
     <keyword type="function" name="xmlFreeFunc" link="libxml2-xmlmemory.html#xmlFreeFunc"/>
     <keyword type="function" name="xmlGenericErrorFunc" link="libxml2-xmlerror.html#xmlGenericErrorFunc"/>
@@ -1871,13 +1890,12 @@
     <keyword type="function" name="xmlRegisterNodeFunc" link="libxml2-tree.html#xmlRegisterNodeFunc"/>
     <keyword type="function" name="xmlRelaxNGValidityErrorFunc" link="libxml2-relaxng.html#xmlRelaxNGValidityErrorFunc"/>
     <keyword type="function" name="xmlRelaxNGValidityWarningFunc" link="libxml2-relaxng.html#xmlRelaxNGValidityWarningFunc"/>
+    <keyword type="function" name="xmlResourceLoader" link="libxml2-parser.html#xmlResourceLoader"/>
     <keyword type="function" name="xmlSchemaValidityErrorFunc" link="libxml2-xmlschemas.html#xmlSchemaValidityErrorFunc"/>
     <keyword type="function" name="xmlSchemaValidityLocatorFunc" link="libxml2-xmlschemas.html#xmlSchemaValidityLocatorFunc"/>
     <keyword type="function" name="xmlSchemaValidityWarningFunc" link="libxml2-xmlschemas.html#xmlSchemaValidityWarningFunc"/>
     <keyword type="function" name="xmlSchematronValidityErrorFunc" link="libxml2-schematron.html#xmlSchematronValidityErrorFunc"/>
     <keyword type="function" name="xmlSchematronValidityWarningFunc" link="libxml2-schematron.html#xmlSchematronValidityWarningFunc"/>
-    <keyword type="function" name="xmlShellCmd" link="libxml2-debugXML.html#xmlShellCmd"/>
-    <keyword type="function" name="xmlShellReadlineFunc" link="libxml2-debugXML.html#xmlShellReadlineFunc"/>
     <keyword type="function" name="xmlStrdupFunc" link="libxml2-xmlmemory.html#xmlStrdupFunc"/>
     <keyword type="function" name="xmlStructuredErrorFunc" link="libxml2-xmlerror.html#xmlStructuredErrorFunc"/>
     <keyword type="function" name="xmlTextReaderErrorFunc" link="libxml2-xmlreader.html#xmlTextReaderErrorFunc"/>
@@ -1889,12 +1907,7 @@
     <keyword type="function" name="xmlXPathFuncLookupFunc" link="libxml2-xpath.html#xmlXPathFuncLookupFunc"/>
     <keyword type="function" name="xmlXPathFunction" link="libxml2-xpath.html#xmlXPathFunction"/>
     <keyword type="function" name="xmlXPathVariableLookupFunc" link="libxml2-xpath.html#xmlXPathVariableLookupFunc"/>
-    <keyword type="macro" name="emptyExp" link="libxml2-xmlregexp.html#emptyExp"/>
-    <keyword type="macro" name="forbiddenExp" link="libxml2-xmlregexp.html#forbiddenExp"/>
     <keyword type="macro" name="htmlDefaultSAXHandler" link="libxml2-HTMLparser.html#htmlDefaultSAXHandler"/>
-    <keyword type="macro" name="oldXMLWDcompatibility" link="libxml2-parser.html#oldXMLWDcompatibility"/>
-    <keyword type="macro" name="xmlDefaultSAXHandler" link="libxml2-parser.html#xmlDefaultSAXHandler"/>
-    <keyword type="macro" name="xmlDefaultSAXLocator" link="libxml2-parser.html#xmlDefaultSAXLocator"/>
     <keyword type="macro" name="xmlFree" link="libxml2-xmlmemory.html#xmlFree"/>
     <keyword type="macro" name="xmlIsBaseCharGroup" link="libxml2-chvalid.html#xmlIsBaseCharGroup"/>
     <keyword type="macro" name="xmlIsCharGroup" link="libxml2-chvalid.html#xmlIsCharGroup"/>
@@ -1906,8 +1919,6 @@
     <keyword type="macro" name="xmlMalloc" link="libxml2-xmlmemory.html#xmlMalloc"/>
     <keyword type="macro" name="xmlMallocAtomic" link="libxml2-xmlmemory.html#xmlMallocAtomic"/>
     <keyword type="macro" name="xmlMemStrdup" link="libxml2-xmlmemory.html#xmlMemStrdup"/>
-    <keyword type="macro" name="xmlParserDebugEntities" link="libxml2-parser.html#xmlParserDebugEntities"/>
-    <keyword type="macro" name="xmlParserMaxDepth" link="libxml2-parserInternals.html#xmlParserMaxDepth"/>
     <keyword type="macro" name="xmlParserVersion" link="libxml2-parser.html#xmlParserVersion"/>
     <keyword type="macro" name="xmlRealloc" link="libxml2-xmlmemory.html#xmlRealloc"/>
     <keyword type="macro" name="xmlStringComment" link="libxml2-parserInternals.html#xmlStringComment"/>
@@ -1916,29 +1927,6 @@
     <keyword type="macro" name="xmlXPathNAN" link="libxml2-xpath.html#xmlXPathNAN"/>
     <keyword type="macro" name="xmlXPathNINF" link="libxml2-xpath.html#xmlXPathNINF"/>
     <keyword type="macro" name="xmlXPathPINF" link="libxml2-xpath.html#xmlXPathPINF"/>
-    <keyword type="function" name="UTF8ToHtml ()" link="libxml2-HTMLparser.html#UTF8ToHtml"/>
-    <keyword type="function" name="UTF8Toisolat1 ()" link="libxml2-encoding.html#UTF8Toisolat1"/>
-    <keyword type="function" name="attribute ()" link="libxml2-SAX.html#attribute"/>
-    <keyword type="function" name="attributeDecl ()" link="libxml2-SAX.html#attributeDecl"/>
-    <keyword type="function" name="cdataBlock ()" link="libxml2-SAX.html#cdataBlock"/>
-    <keyword type="function" name="characters ()" link="libxml2-SAX.html#characters"/>
-    <keyword type="function" name="checkNamespace ()" link="libxml2-SAX.html#checkNamespace"/>
-    <keyword type="function" name="comment ()" link="libxml2-SAX.html#comment"/>
-    <keyword type="function" name="elementDecl ()" link="libxml2-SAX.html#elementDecl"/>
-    <keyword type="function" name="endDocument ()" link="libxml2-SAX.html#endDocument"/>
-    <keyword type="function" name="endElement ()" link="libxml2-SAX.html#endElement"/>
-    <keyword type="function" name="entityDecl ()" link="libxml2-SAX.html#entityDecl"/>
-    <keyword type="function" name="externalSubset ()" link="libxml2-SAX.html#externalSubset"/>
-    <keyword type="function" name="getColumnNumber ()" link="libxml2-SAX.html#getColumnNumber"/>
-    <keyword type="function" name="getEntity ()" link="libxml2-SAX.html#getEntity"/>
-    <keyword type="function" name="getLineNumber ()" link="libxml2-SAX.html#getLineNumber"/>
-    <keyword type="function" name="getNamespace ()" link="libxml2-SAX.html#getNamespace"/>
-    <keyword type="function" name="getParameterEntity ()" link="libxml2-SAX.html#getParameterEntity"/>
-    <keyword type="function" name="getPublicId ()" link="libxml2-SAX.html#getPublicId"/>
-    <keyword type="function" name="getSystemId ()" link="libxml2-SAX.html#getSystemId"/>
-    <keyword type="function" name="globalNamespace ()" link="libxml2-SAX.html#globalNamespace"/>
-    <keyword type="function" name="hasExternalSubset ()" link="libxml2-SAX.html#hasExternalSubset"/>
-    <keyword type="function" name="hasInternalSubset ()" link="libxml2-SAX.html#hasInternalSubset"/>
     <keyword type="function" name="htmlAttrAllowed ()" link="libxml2-HTMLparser.html#htmlAttrAllowed"/>
     <keyword type="function" name="htmlAutoCloseTag ()" link="libxml2-HTMLparser.html#htmlAutoCloseTag"/>
     <keyword type="function" name="htmlCreateFileParserCtxt ()" link="libxml2-HTMLparser.html#htmlCreateFileParserCtxt"/>
@@ -1951,6 +1939,7 @@
     <keyword type="function" name="htmlCtxtReadIO ()" link="libxml2-HTMLparser.html#htmlCtxtReadIO"/>
     <keyword type="function" name="htmlCtxtReadMemory ()" link="libxml2-HTMLparser.html#htmlCtxtReadMemory"/>
     <keyword type="function" name="htmlCtxtReset ()" link="libxml2-HTMLparser.html#htmlCtxtReset"/>
+    <keyword type="function" name="htmlCtxtSetOptions ()" link="libxml2-HTMLparser.html#htmlCtxtSetOptions"/>
     <keyword type="function" name="htmlCtxtUseOptions ()" link="libxml2-HTMLparser.html#htmlCtxtUseOptions"/>
     <keyword type="function" name="htmlDefaultSAXHandlerInit ()" link="libxml2-SAX2.html#htmlDefaultSAXHandlerInit"/>
     <keyword type="function" name="htmlDocContentDumpFormatOutput ()" link="libxml2-HTMLtree.html#htmlDocContentDumpFormatOutput"/>
@@ -1999,31 +1988,7 @@
     <keyword type="function" name="htmlSaveFileFormat ()" link="libxml2-HTMLtree.html#htmlSaveFileFormat"/>
     <keyword type="function" name="htmlSetMetaEncoding ()" link="libxml2-HTMLtree.html#htmlSetMetaEncoding"/>
     <keyword type="function" name="htmlTagLookup ()" link="libxml2-HTMLparser.html#htmlTagLookup"/>
-    <keyword type="function" name="ignorableWhitespace ()" link="libxml2-SAX.html#ignorableWhitespace"/>
-    <keyword type="function" name="initGenericErrorDefaultFunc ()" link="libxml2-xmlerror.html#initGenericErrorDefaultFunc"/>
-    <keyword type="function" name="inithtmlDefaultSAXHandler ()" link="libxml2-SAX.html#inithtmlDefaultSAXHandler"/>
-    <keyword type="function" name="initxmlDefaultSAXHandler ()" link="libxml2-SAX.html#initxmlDefaultSAXHandler"/>
-    <keyword type="function" name="inputPop ()" link="libxml2-parserInternals.html#inputPop"/>
-    <keyword type="function" name="inputPush ()" link="libxml2-parserInternals.html#inputPush"/>
-    <keyword type="function" name="internalSubset ()" link="libxml2-SAX.html#internalSubset"/>
-    <keyword type="function" name="isStandalone ()" link="libxml2-SAX.html#isStandalone"/>
-    <keyword type="function" name="isolat1ToUTF8 ()" link="libxml2-encoding.html#isolat1ToUTF8"/>
-    <keyword type="function" name="namePop ()" link="libxml2-parserInternals.html#namePop"/>
-    <keyword type="function" name="namePush ()" link="libxml2-parserInternals.html#namePush"/>
-    <keyword type="function" name="namespaceDecl ()" link="libxml2-SAX.html#namespaceDecl"/>
-    <keyword type="function" name="nodePop ()" link="libxml2-parserInternals.html#nodePop"/>
-    <keyword type="function" name="nodePush ()" link="libxml2-parserInternals.html#nodePush"/>
-    <keyword type="function" name="notationDecl ()" link="libxml2-SAX.html#notationDecl"/>
-    <keyword type="function" name="processingInstruction ()" link="libxml2-SAX.html#processingInstruction"/>
-    <keyword type="function" name="reference ()" link="libxml2-SAX.html#reference"/>
-    <keyword type="function" name="resolveEntity ()" link="libxml2-SAX.html#resolveEntity"/>
-    <keyword type="function" name="setDocumentLocator ()" link="libxml2-SAX.html#setDocumentLocator"/>
-    <keyword type="function" name="setNamespace ()" link="libxml2-SAX.html#setNamespace"/>
-    <keyword type="function" name="startDocument ()" link="libxml2-SAX.html#startDocument"/>
-    <keyword type="function" name="startElement ()" link="libxml2-SAX.html#startElement"/>
-    <keyword type="function" name="unparsedEntityDecl ()" link="libxml2-SAX.html#unparsedEntityDecl"/>
-    <keyword type="function" name="valuePop ()" link="libxml2-xpathInternals.html#valuePop"/>
-    <keyword type="function" name="valuePush ()" link="libxml2-xpathInternals.html#valuePush"/>
+    <keyword type="function" name="htmlUTF8ToHtml ()" link="libxml2-HTMLparser.html#htmlUTF8ToHtml"/>
     <keyword type="function" name="xlinkGetDefaultDetect ()" link="libxml2-xlink.html#xlinkGetDefaultDetect"/>
     <keyword type="function" name="xlinkGetDefaultHandler ()" link="libxml2-xlink.html#xlinkGetDefaultHandler"/>
     <keyword type="function" name="xlinkIsLink ()" link="libxml2-xlink.html#xlinkIsLink"/>
@@ -2071,7 +2036,6 @@
     <keyword type="function" name="xmlAutomataNewTransition ()" link="libxml2-xmlautomata.html#xmlAutomataNewTransition"/>
     <keyword type="function" name="xmlAutomataNewTransition2 ()" link="libxml2-xmlautomata.html#xmlAutomataNewTransition2"/>
     <keyword type="function" name="xmlAutomataSetFinalState ()" link="libxml2-xmlautomata.html#xmlAutomataSetFinalState"/>
-    <keyword type="function" name="xmlBoolToText ()" link="libxml2-debugXML.html#xmlBoolToText"/>
     <keyword type="function" name="xmlBufContent ()" link="libxml2-tree.html#xmlBufContent"/>
     <keyword type="function" name="xmlBufEnd ()" link="libxml2-tree.html#xmlBufEnd"/>
     <keyword type="function" name="xmlBufGetNodeContent ()" link="libxml2-tree.html#xmlBufGetNodeContent"/>
@@ -2132,6 +2096,7 @@
     <keyword type="function" name="xmlCharEncCloseFunc ()" link="libxml2-encoding.html#xmlCharEncCloseFunc"/>
     <keyword type="function" name="xmlCharEncFirstLine ()" link="libxml2-encoding.html#xmlCharEncFirstLine"/>
     <keyword type="function" name="xmlCharEncInFunc ()" link="libxml2-encoding.html#xmlCharEncInFunc"/>
+    <keyword type="function" name="xmlCharEncNewCustomHandler ()" link="libxml2-encoding.html#xmlCharEncNewCustomHandler"/>
     <keyword type="function" name="xmlCharEncOutFunc ()" link="libxml2-encoding.html#xmlCharEncOutFunc"/>
     <keyword type="function" name="xmlCharInRange ()" link="libxml2-chvalid.html#xmlCharInRange"/>
     <keyword type="function" name="xmlCharStrdup ()" link="libxml2-xmlstring.html#xmlCharStrdup"/>
@@ -2149,7 +2114,6 @@
     <keyword type="function" name="xmlCleanupMemory ()" link="libxml2-xmlmemory.html#xmlCleanupMemory"/>
     <keyword type="function" name="xmlCleanupOutputCallbacks ()" link="libxml2-xmlIO.html#xmlCleanupOutputCallbacks"/>
     <keyword type="function" name="xmlCleanupParser ()" link="libxml2-parser.html#xmlCleanupParser"/>
-    <keyword type="function" name="xmlCleanupPredefinedEntities ()" link="libxml2-entities.html#xmlCleanupPredefinedEntities"/>
     <keyword type="function" name="xmlCleanupThreads ()" link="libxml2-threads.html#xmlCleanupThreads"/>
     <keyword type="function" name="xmlClearNodeInfoSeq ()" link="libxml2-parser.html#xmlClearNodeInfoSeq"/>
     <keyword type="function" name="xmlClearParserCtxt ()" link="libxml2-parser.html#xmlClearParserCtxt"/>
@@ -2172,6 +2136,7 @@
     <keyword type="function" name="xmlCopyNotationTable ()" link="libxml2-valid.html#xmlCopyNotationTable"/>
     <keyword type="function" name="xmlCopyProp ()" link="libxml2-tree.html#xmlCopyProp"/>
     <keyword type="function" name="xmlCopyPropList ()" link="libxml2-tree.html#xmlCopyPropList"/>
+    <keyword type="function" name="xmlCreateCharEncodingHandler ()" link="libxml2-encoding.html#xmlCreateCharEncodingHandler"/>
     <keyword type="function" name="xmlCreateDocParserCtxt ()" link="libxml2-parser.html#xmlCreateDocParserCtxt"/>
     <keyword type="function" name="xmlCreateEntitiesTable ()" link="libxml2-entities.html#xmlCreateEntitiesTable"/>
     <keyword type="function" name="xmlCreateEntityParserCtxt ()" link="libxml2-parserInternals.html#xmlCreateEntityParserCtxt"/>
@@ -2184,8 +2149,25 @@
     <keyword type="function" name="xmlCreateURI ()" link="libxml2-uri.html#xmlCreateURI"/>
     <keyword type="function" name="xmlCreateURLParserCtxt ()" link="libxml2-parserInternals.html#xmlCreateURLParserCtxt"/>
     <keyword type="function" name="xmlCtxtErrMemory ()" link="libxml2-parserInternals.html#xmlCtxtErrMemory"/>
+    <keyword type="function" name="xmlCtxtGetCatalogs ()" link="libxml2-parser.html#xmlCtxtGetCatalogs"/>
+    <keyword type="function" name="xmlCtxtGetDeclaredEncoding ()" link="libxml2-parser.html#xmlCtxtGetDeclaredEncoding"/>
+    <keyword type="function" name="xmlCtxtGetDict ()" link="libxml2-parser.html#xmlCtxtGetDict"/>
+    <keyword type="function" name="xmlCtxtGetDocument ()" link="libxml2-parser.html#xmlCtxtGetDocument"/>
     <keyword type="function" name="xmlCtxtGetLastError ()" link="libxml2-xmlerror.html#xmlCtxtGetLastError"/>
+    <keyword type="function" name="xmlCtxtGetOptions ()" link="libxml2-parser.html#xmlCtxtGetOptions"/>
+    <keyword type="function" name="xmlCtxtGetPrivate ()" link="libxml2-parser.html#xmlCtxtGetPrivate"/>
+    <keyword type="function" name="xmlCtxtGetSaxHandler ()" link="libxml2-parser.html#xmlCtxtGetSaxHandler"/>
+    <keyword type="function" name="xmlCtxtGetStandalone ()" link="libxml2-parser.html#xmlCtxtGetStandalone"/>
+    <keyword type="function" name="xmlCtxtGetStatus ()" link="libxml2-parser.html#xmlCtxtGetStatus"/>
+    <keyword type="function" name="xmlCtxtGetValidCtxt ()" link="libxml2-parser.html#xmlCtxtGetValidCtxt"/>
+    <keyword type="function" name="xmlCtxtGetVersion ()" link="libxml2-parser.html#xmlCtxtGetVersion"/>
+    <keyword type="function" name="xmlCtxtIsHtml ()" link="libxml2-parser.html#xmlCtxtIsHtml"/>
+    <keyword type="function" name="xmlCtxtIsStopped ()" link="libxml2-parser.html#xmlCtxtIsStopped"/>
+    <keyword type="function" name="xmlCtxtParseContent ()" link="libxml2-parser.html#xmlCtxtParseContent"/>
     <keyword type="function" name="xmlCtxtParseDocument ()" link="libxml2-parser.html#xmlCtxtParseDocument"/>
+    <keyword type="function" name="xmlCtxtParseDtd ()" link="libxml2-parser.html#xmlCtxtParseDtd"/>
+    <keyword type="function" name="xmlCtxtPopInput ()" link="libxml2-parserInternals.html#xmlCtxtPopInput"/>
+    <keyword type="function" name="xmlCtxtPushInput ()" link="libxml2-parserInternals.html#xmlCtxtPushInput"/>
     <keyword type="function" name="xmlCtxtReadDoc ()" link="libxml2-parser.html#xmlCtxtReadDoc"/>
     <keyword type="function" name="xmlCtxtReadFd ()" link="libxml2-parser.html#xmlCtxtReadFd"/>
     <keyword type="function" name="xmlCtxtReadFile ()" link="libxml2-parser.html#xmlCtxtReadFile"/>
@@ -2194,10 +2176,18 @@
     <keyword type="function" name="xmlCtxtReset ()" link="libxml2-parser.html#xmlCtxtReset"/>
     <keyword type="function" name="xmlCtxtResetLastError ()" link="libxml2-xmlerror.html#xmlCtxtResetLastError"/>
     <keyword type="function" name="xmlCtxtResetPush ()" link="libxml2-parser.html#xmlCtxtResetPush"/>
+    <keyword type="function" name="xmlCtxtSetCatalogs ()" link="libxml2-parser.html#xmlCtxtSetCatalogs"/>
+    <keyword type="function" name="xmlCtxtSetCharEncConvImpl ()" link="libxml2-parser.html#xmlCtxtSetCharEncConvImpl"/>
+    <keyword type="function" name="xmlCtxtSetDict ()" link="libxml2-parser.html#xmlCtxtSetDict"/>
     <keyword type="function" name="xmlCtxtSetErrorHandler ()" link="libxml2-parser.html#xmlCtxtSetErrorHandler"/>
     <keyword type="function" name="xmlCtxtSetMaxAmplification ()" link="libxml2-parser.html#xmlCtxtSetMaxAmplification"/>
     <keyword type="function" name="xmlCtxtSetOptions ()" link="libxml2-parser.html#xmlCtxtSetOptions"/>
+    <keyword type="function" name="xmlCtxtSetPrivate ()" link="libxml2-parser.html#xmlCtxtSetPrivate"/>
+    <keyword type="function" name="xmlCtxtSetResourceLoader ()" link="libxml2-parser.html#xmlCtxtSetResourceLoader"/>
+    <keyword type="function" name="xmlCtxtSetSaxHandler ()" link="libxml2-parser.html#xmlCtxtSetSaxHandler"/>
     <keyword type="function" name="xmlCtxtUseOptions ()" link="libxml2-parser.html#xmlCtxtUseOptions"/>
+    <keyword type="function" name="xmlCtxtValidateDocument ()" link="libxml2-parser.html#xmlCtxtValidateDocument"/>
+    <keyword type="function" name="xmlCtxtValidateDtd ()" link="libxml2-parser.html#xmlCtxtValidateDtd"/>
     <keyword type="function" name="xmlCurrentChar ()" link="libxml2-parserInternals.html#xmlCurrentChar"/>
     <keyword type="function" name="xmlDOMWrapAdoptNode ()" link="libxml2-tree.html#xmlDOMWrapAdoptNode"/>
     <keyword type="function" name="xmlDOMWrapCloneNode ()" link="libxml2-tree.html#xmlDOMWrapCloneNode"/>
@@ -2216,7 +2206,6 @@
     <keyword type="function" name="xmlDebugDumpNodeList ()" link="libxml2-debugXML.html#xmlDebugDumpNodeList"/>
     <keyword type="function" name="xmlDebugDumpOneNode ()" link="libxml2-debugXML.html#xmlDebugDumpOneNode"/>
     <keyword type="function" name="xmlDebugDumpString ()" link="libxml2-debugXML.html#xmlDebugDumpString"/>
-    <keyword type="function" name="xmlDecodeEntities ()" link="libxml2-parserInternals.html#xmlDecodeEntities"/>
     <keyword type="function" name="xmlDefaultSAXHandlerInit ()" link="libxml2-SAX2.html#xmlDefaultSAXHandlerInit"/>
     <keyword type="function" name="xmlDelEncodingAlias ()" link="libxml2-encoding.html#xmlDelEncodingAlias"/>
     <keyword type="function" name="xmlDeregisterNodeDefault ()" link="libxml2-tree.html#xmlDeregisterNodeDefault"/>
@@ -2252,28 +2241,8 @@
     <keyword type="function" name="xmlDumpNotationDecl ()" link="libxml2-valid.html#xmlDumpNotationDecl"/>
     <keyword type="function" name="xmlDumpNotationTable ()" link="libxml2-valid.html#xmlDumpNotationTable"/>
     <keyword type="function" name="xmlElemDump ()" link="libxml2-tree.html#xmlElemDump"/>
-    <keyword type="function" name="xmlEncodeEntities ()" link="libxml2-entities.html#xmlEncodeEntities"/>
     <keyword type="function" name="xmlEncodeEntitiesReentrant ()" link="libxml2-entities.html#xmlEncodeEntitiesReentrant"/>
     <keyword type="function" name="xmlEncodeSpecialChars ()" link="libxml2-entities.html#xmlEncodeSpecialChars"/>
-    <keyword type="function" name="xmlExpCtxtNbCons ()" link="libxml2-xmlregexp.html#xmlExpCtxtNbCons"/>
-    <keyword type="function" name="xmlExpCtxtNbNodes ()" link="libxml2-xmlregexp.html#xmlExpCtxtNbNodes"/>
-    <keyword type="function" name="xmlExpDump ()" link="libxml2-xmlregexp.html#xmlExpDump"/>
-    <keyword type="function" name="xmlExpExpDerive ()" link="libxml2-xmlregexp.html#xmlExpExpDerive"/>
-    <keyword type="function" name="xmlExpFree ()" link="libxml2-xmlregexp.html#xmlExpFree"/>
-    <keyword type="function" name="xmlExpFreeCtxt ()" link="libxml2-xmlregexp.html#xmlExpFreeCtxt"/>
-    <keyword type="function" name="xmlExpGetLanguage ()" link="libxml2-xmlregexp.html#xmlExpGetLanguage"/>
-    <keyword type="function" name="xmlExpGetStart ()" link="libxml2-xmlregexp.html#xmlExpGetStart"/>
-    <keyword type="function" name="xmlExpIsNillable ()" link="libxml2-xmlregexp.html#xmlExpIsNillable"/>
-    <keyword type="function" name="xmlExpMaxToken ()" link="libxml2-xmlregexp.html#xmlExpMaxToken"/>
-    <keyword type="function" name="xmlExpNewAtom ()" link="libxml2-xmlregexp.html#xmlExpNewAtom"/>
-    <keyword type="function" name="xmlExpNewCtxt ()" link="libxml2-xmlregexp.html#xmlExpNewCtxt"/>
-    <keyword type="function" name="xmlExpNewOr ()" link="libxml2-xmlregexp.html#xmlExpNewOr"/>
-    <keyword type="function" name="xmlExpNewRange ()" link="libxml2-xmlregexp.html#xmlExpNewRange"/>
-    <keyword type="function" name="xmlExpNewSeq ()" link="libxml2-xmlregexp.html#xmlExpNewSeq"/>
-    <keyword type="function" name="xmlExpParse ()" link="libxml2-xmlregexp.html#xmlExpParse"/>
-    <keyword type="function" name="xmlExpRef ()" link="libxml2-xmlregexp.html#xmlExpRef"/>
-    <keyword type="function" name="xmlExpStringDerive ()" link="libxml2-xmlregexp.html#xmlExpStringDerive"/>
-    <keyword type="function" name="xmlExpSubsume ()" link="libxml2-xmlregexp.html#xmlExpSubsume"/>
     <keyword type="function" name="xmlFileClose ()" link="libxml2-xmlIO.html#xmlFileClose"/>
     <keyword type="function" name="xmlFileMatch ()" link="libxml2-xmlIO.html#xmlFileMatch"/>
     <keyword type="function" name="xmlFileOpen ()" link="libxml2-xmlIO.html#xmlFileOpen"/>
@@ -2329,9 +2298,6 @@
     <keyword type="function" name="xmlGetDtdQElementDesc ()" link="libxml2-valid.html#xmlGetDtdQElementDesc"/>
     <keyword type="function" name="xmlGetEncodingAlias ()" link="libxml2-encoding.html#xmlGetEncodingAlias"/>
     <keyword type="function" name="xmlGetExternalEntityLoader ()" link="libxml2-parser.html#xmlGetExternalEntityLoader"/>
-    <keyword type="function" name="xmlGetFeature ()" link="libxml2-parser.html#xmlGetFeature"/>
-    <keyword type="function" name="xmlGetFeaturesList ()" link="libxml2-parser.html#xmlGetFeaturesList"/>
-    <keyword type="function" name="xmlGetGlobalState ()" link="libxml2-globals.html#xmlGetGlobalState"/>
     <keyword type="function" name="xmlGetID ()" link="libxml2-valid.html#xmlGetID"/>
     <keyword type="function" name="xmlGetIntSubset ()" link="libxml2-tree.html#xmlGetIntSubset"/>
     <keyword type="function" name="xmlGetLastChild ()" link="libxml2-tree.html#xmlGetLastChild"/>
@@ -2346,9 +2312,7 @@
     <keyword type="function" name="xmlGetPredefinedEntity ()" link="libxml2-entities.html#xmlGetPredefinedEntity"/>
     <keyword type="function" name="xmlGetProp ()" link="libxml2-tree.html#xmlGetProp"/>
     <keyword type="function" name="xmlGetRefs ()" link="libxml2-valid.html#xmlGetRefs"/>
-    <keyword type="function" name="xmlGetThreadId ()" link="libxml2-threads.html#xmlGetThreadId"/>
     <keyword type="function" name="xmlGetUTF8Char ()" link="libxml2-xmlstring.html#xmlGetUTF8Char"/>
-    <keyword type="function" name="xmlHandleEntity ()" link="libxml2-parserInternals.html#xmlHandleEntity"/>
     <keyword type="function" name="xmlHasFeature ()" link="libxml2-parser.html#xmlHasFeature"/>
     <keyword type="function" name="xmlHasNsProp ()" link="libxml2-tree.html#xmlHasNsProp"/>
     <keyword type="function" name="xmlHasProp ()" link="libxml2-tree.html#xmlHasProp"/>
@@ -2381,10 +2345,6 @@
     <keyword type="function" name="xmlHashUpdateEntry ()" link="libxml2-hash.html#xmlHashUpdateEntry"/>
     <keyword type="function" name="xmlHashUpdateEntry2 ()" link="libxml2-hash.html#xmlHashUpdateEntry2"/>
     <keyword type="function" name="xmlHashUpdateEntry3 ()" link="libxml2-hash.html#xmlHashUpdateEntry3"/>
-    <keyword type="function" name="xmlIOFTPClose ()" link="libxml2-xmlIO.html#xmlIOFTPClose"/>
-    <keyword type="function" name="xmlIOFTPMatch ()" link="libxml2-xmlIO.html#xmlIOFTPMatch"/>
-    <keyword type="function" name="xmlIOFTPOpen ()" link="libxml2-xmlIO.html#xmlIOFTPOpen"/>
-    <keyword type="function" name="xmlIOFTPRead ()" link="libxml2-xmlIO.html#xmlIOFTPRead"/>
     <keyword type="function" name="xmlIOHTTPClose ()" link="libxml2-xmlIO.html#xmlIOHTTPClose"/>
     <keyword type="function" name="xmlIOHTTPMatch ()" link="libxml2-xmlIO.html#xmlIOHTTPMatch"/>
     <keyword type="function" name="xmlIOHTTPOpen ()" link="libxml2-xmlIO.html#xmlIOHTTPOpen"/>
@@ -2400,8 +2360,7 @@
     <keyword type="function" name="xmlInitThreads ()" link="libxml2-threads.html#xmlInitThreads"/>
     <keyword type="function" name="xmlInitializeCatalog ()" link="libxml2-catalog.html#xmlInitializeCatalog"/>
     <keyword type="function" name="xmlInitializeDict ()" link="libxml2-dict.html#xmlInitializeDict"/>
-    <keyword type="function" name="xmlInitializeGlobalState ()" link="libxml2-globals.html#xmlInitializeGlobalState"/>
-    <keyword type="function" name="xmlInitializePredefinedEntities ()" link="libxml2-entities.html#xmlInitializePredefinedEntities"/>
+    <keyword type="function" name="xmlInputSetEncodingHandler ()" link="libxml2-parser.html#xmlInputSetEncodingHandler"/>
     <keyword type="function" name="xmlIsBaseChar ()" link="libxml2-chvalid.html#xmlIsBaseChar"/>
     <keyword type="function" name="xmlIsBlank ()" link="libxml2-chvalid.html#xmlIsBlank"/>
     <keyword type="function" name="xmlIsBlankNode ()" link="libxml2-tree.html#xmlIsBlankNode"/>
@@ -2412,11 +2371,11 @@
     <keyword type="function" name="xmlIsID ()" link="libxml2-valid.html#xmlIsID"/>
     <keyword type="function" name="xmlIsIdeographic ()" link="libxml2-chvalid.html#xmlIsIdeographic"/>
     <keyword type="function" name="xmlIsLetter ()" link="libxml2-parserInternals.html#xmlIsLetter"/>
-    <keyword type="function" name="xmlIsMainThread ()" link="libxml2-threads.html#xmlIsMainThread"/>
     <keyword type="function" name="xmlIsMixedElement ()" link="libxml2-valid.html#xmlIsMixedElement"/>
     <keyword type="function" name="xmlIsPubidChar ()" link="libxml2-chvalid.html#xmlIsPubidChar"/>
     <keyword type="function" name="xmlIsRef ()" link="libxml2-valid.html#xmlIsRef"/>
     <keyword type="function" name="xmlIsXHTML ()" link="libxml2-tree.html#xmlIsXHTML"/>
+    <keyword type="function" name="xmlIsolat1ToUTF8 ()" link="libxml2-encoding.html#xmlIsolat1ToUTF8"/>
     <keyword type="function" name="xmlKeepBlanksDefault ()" link="libxml2-parser.html#xmlKeepBlanksDefault"/>
     <keyword type="function" name="xmlLastElementChild ()" link="libxml2-tree.html#xmlLastElementChild"/>
     <keyword type="function" name="xmlLineNumbersDefault ()" link="libxml2-parser.html#xmlLineNumbersDefault"/>
@@ -2453,8 +2412,6 @@
     <keyword type="function" name="xmlLoadSGMLSuperCatalog ()" link="libxml2-catalog.html#xmlLoadSGMLSuperCatalog"/>
     <keyword type="function" name="xmlLockLibrary ()" link="libxml2-threads.html#xmlLockLibrary"/>
     <keyword type="function" name="xmlLookupCharEncodingHandler ()" link="libxml2-encoding.html#xmlLookupCharEncodingHandler"/>
-    <keyword type="function" name="xmlLsCountNode ()" link="libxml2-debugXML.html#xmlLsCountNode"/>
-    <keyword type="function" name="xmlLsOneNode ()" link="libxml2-debugXML.html#xmlLsOneNode"/>
     <keyword type="function" name="xmlMallocAtomicLoc ()" link="libxml2-xmlmemory.html#xmlMallocAtomicLoc"/>
     <keyword type="function" name="xmlMallocLoc ()" link="libxml2-xmlmemory.html#xmlMallocLoc"/>
     <keyword type="function" name="xmlMemBlocks ()" link="libxml2-xmlmemory.html#xmlMemBlocks"/>
@@ -2477,31 +2434,6 @@
     <keyword type="function" name="xmlModuleSymbol ()" link="libxml2-xmlmodule.html#xmlModuleSymbol"/>
     <keyword type="function" name="xmlMutexLock ()" link="libxml2-threads.html#xmlMutexLock"/>
     <keyword type="function" name="xmlMutexUnlock ()" link="libxml2-threads.html#xmlMutexUnlock"/>
-    <keyword type="function" name="xmlNamespaceParseNCName ()" link="libxml2-parserInternals.html#xmlNamespaceParseNCName"/>
-    <keyword type="function" name="xmlNamespaceParseNSDef ()" link="libxml2-parserInternals.html#xmlNamespaceParseNSDef"/>
-    <keyword type="function" name="xmlNamespaceParseQName ()" link="libxml2-parserInternals.html#xmlNamespaceParseQName"/>
-    <keyword type="function" name="xmlNanoFTPCheckResponse ()" link="libxml2-nanoftp.html#xmlNanoFTPCheckResponse"/>
-    <keyword type="function" name="xmlNanoFTPCleanup ()" link="libxml2-nanoftp.html#xmlNanoFTPCleanup"/>
-    <keyword type="function" name="xmlNanoFTPClose ()" link="libxml2-nanoftp.html#xmlNanoFTPClose"/>
-    <keyword type="function" name="xmlNanoFTPCloseConnection ()" link="libxml2-nanoftp.html#xmlNanoFTPCloseConnection"/>
-    <keyword type="function" name="xmlNanoFTPConnect ()" link="libxml2-nanoftp.html#xmlNanoFTPConnect"/>
-    <keyword type="function" name="xmlNanoFTPConnectTo ()" link="libxml2-nanoftp.html#xmlNanoFTPConnectTo"/>
-    <keyword type="function" name="xmlNanoFTPCwd ()" link="libxml2-nanoftp.html#xmlNanoFTPCwd"/>
-    <keyword type="function" name="xmlNanoFTPDele ()" link="libxml2-nanoftp.html#xmlNanoFTPDele"/>
-    <keyword type="function" name="xmlNanoFTPFreeCtxt ()" link="libxml2-nanoftp.html#xmlNanoFTPFreeCtxt"/>
-    <keyword type="function" name="xmlNanoFTPGet ()" link="libxml2-nanoftp.html#xmlNanoFTPGet"/>
-    <keyword type="function" name="xmlNanoFTPGetConnection ()" link="libxml2-nanoftp.html#xmlNanoFTPGetConnection"/>
-    <keyword type="function" name="xmlNanoFTPGetResponse ()" link="libxml2-nanoftp.html#xmlNanoFTPGetResponse"/>
-    <keyword type="function" name="xmlNanoFTPGetSocket ()" link="libxml2-nanoftp.html#xmlNanoFTPGetSocket"/>
-    <keyword type="function" name="xmlNanoFTPInit ()" link="libxml2-nanoftp.html#xmlNanoFTPInit"/>
-    <keyword type="function" name="xmlNanoFTPList ()" link="libxml2-nanoftp.html#xmlNanoFTPList"/>
-    <keyword type="function" name="xmlNanoFTPNewCtxt ()" link="libxml2-nanoftp.html#xmlNanoFTPNewCtxt"/>
-    <keyword type="function" name="xmlNanoFTPOpen ()" link="libxml2-nanoftp.html#xmlNanoFTPOpen"/>
-    <keyword type="function" name="xmlNanoFTPProxy ()" link="libxml2-nanoftp.html#xmlNanoFTPProxy"/>
-    <keyword type="function" name="xmlNanoFTPQuit ()" link="libxml2-nanoftp.html#xmlNanoFTPQuit"/>
-    <keyword type="function" name="xmlNanoFTPRead ()" link="libxml2-nanoftp.html#xmlNanoFTPRead"/>
-    <keyword type="function" name="xmlNanoFTPScanProxy ()" link="libxml2-nanoftp.html#xmlNanoFTPScanProxy"/>
-    <keyword type="function" name="xmlNanoFTPUpdateURL ()" link="libxml2-nanoftp.html#xmlNanoFTPUpdateURL"/>
     <keyword type="function" name="xmlNanoHTTPAuthHeader ()" link="libxml2-nanohttp.html#xmlNanoHTTPAuthHeader"/>
     <keyword type="function" name="xmlNanoHTTPCleanup ()" link="libxml2-nanohttp.html#xmlNanoHTTPCleanup"/>
     <keyword type="function" name="xmlNanoHTTPClose ()" link="libxml2-nanohttp.html#xmlNanoHTTPClose"/>
@@ -2541,9 +2473,13 @@
     <keyword type="function" name="xmlNewElementContent ()" link="libxml2-valid.html#xmlNewElementContent"/>
     <keyword type="function" name="xmlNewEntity ()" link="libxml2-entities.html#xmlNewEntity"/>
     <keyword type="function" name="xmlNewEntityInputStream ()" link="libxml2-parserInternals.html#xmlNewEntityInputStream"/>
-    <keyword type="function" name="xmlNewGlobalNs ()" link="libxml2-tree.html#xmlNewGlobalNs"/>
     <keyword type="function" name="xmlNewIOInputStream ()" link="libxml2-parser.html#xmlNewIOInputStream"/>
+    <keyword type="function" name="xmlNewInputFromFd ()" link="libxml2-parser.html#xmlNewInputFromFd"/>
     <keyword type="function" name="xmlNewInputFromFile ()" link="libxml2-parserInternals.html#xmlNewInputFromFile"/>
+    <keyword type="function" name="xmlNewInputFromIO ()" link="libxml2-parser.html#xmlNewInputFromIO"/>
+    <keyword type="function" name="xmlNewInputFromMemory ()" link="libxml2-parser.html#xmlNewInputFromMemory"/>
+    <keyword type="function" name="xmlNewInputFromString ()" link="libxml2-parser.html#xmlNewInputFromString"/>
+    <keyword type="function" name="xmlNewInputFromUrl ()" link="libxml2-parser.html#xmlNewInputFromUrl"/>
     <keyword type="function" name="xmlNewInputStream ()" link="libxml2-parserInternals.html#xmlNewInputStream"/>
     <keyword type="function" name="xmlNewMutex ()" link="libxml2-threads.html#xmlNewMutex"/>
     <keyword type="function" name="xmlNewNode ()" link="libxml2-tree.html#xmlNewNode"/>
@@ -2653,7 +2589,6 @@
     <keyword type="function" name="xmlParseMemory ()" link="libxml2-parser.html#xmlParseMemory"/>
     <keyword type="function" name="xmlParseMisc ()" link="libxml2-parserInternals.html#xmlParseMisc"/>
     <keyword type="function" name="xmlParseName ()" link="libxml2-parserInternals.html#xmlParseName"/>
-    <keyword type="function" name="xmlParseNamespace ()" link="libxml2-parserInternals.html#xmlParseNamespace"/>
     <keyword type="function" name="xmlParseNmtoken ()" link="libxml2-parserInternals.html#xmlParseNmtoken"/>
     <keyword type="function" name="xmlParseNotationDecl ()" link="libxml2-parserInternals.html#xmlParseNotationDecl"/>
     <keyword type="function" name="xmlParseNotationType ()" link="libxml2-parserInternals.html#xmlParseNotationType"/>
@@ -2661,7 +2596,6 @@
     <keyword type="function" name="xmlParsePI ()" link="libxml2-parserInternals.html#xmlParsePI"/>
     <keyword type="function" name="xmlParsePITarget ()" link="libxml2-parserInternals.html#xmlParsePITarget"/>
     <keyword type="function" name="xmlParsePubidLiteral ()" link="libxml2-parserInternals.html#xmlParsePubidLiteral"/>
-    <keyword type="function" name="xmlParseQuotedString ()" link="libxml2-parserInternals.html#xmlParseQuotedString"/>
     <keyword type="function" name="xmlParseReference ()" link="libxml2-parserInternals.html#xmlParseReference"/>
     <keyword type="function" name="xmlParseSDDecl ()" link="libxml2-parserInternals.html#xmlParseSDDecl"/>
     <keyword type="function" name="xmlParseStartTag ()" link="libxml2-parserInternals.html#xmlParseStartTag"/>
@@ -2680,7 +2614,6 @@
     <keyword type="function" name="xmlParserFindNodeInfoIndex ()" link="libxml2-parser.html#xmlParserFindNodeInfoIndex"/>
     <keyword type="function" name="xmlParserGetDirectory ()" link="libxml2-xmlIO.html#xmlParserGetDirectory"/>
     <keyword type="function" name="xmlParserHandlePEReference ()" link="libxml2-parserInternals.html#xmlParserHandlePEReference"/>
-    <keyword type="function" name="xmlParserHandleReference ()" link="libxml2-parserInternals.html#xmlParserHandleReference"/>
     <keyword type="function" name="xmlParserInputBufferCreateFd ()" link="libxml2-xmlIO.html#xmlParserInputBufferCreateFd"/>
     <keyword type="function" name="xmlParserInputBufferCreateFile ()" link="libxml2-xmlIO.html#xmlParserInputBufferCreateFile"/>
     <keyword type="function" name="xmlParserInputBufferCreateFilename ()" link="libxml2-xmlIO.html#xmlParserInputBufferCreateFilename"/>
@@ -2773,6 +2706,7 @@
     <keyword type="function" name="xmlRelaxNGParse ()" link="libxml2-relaxng.html#xmlRelaxNGParse"/>
     <keyword type="function" name="xmlRelaxNGSetParserErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetParserErrors"/>
     <keyword type="function" name="xmlRelaxNGSetParserStructuredErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetParserStructuredErrors"/>
+    <keyword type="function" name="xmlRelaxNGSetResourceLoader ()" link="libxml2-relaxng.html#xmlRelaxNGSetResourceLoader"/>
     <keyword type="function" name="xmlRelaxNGSetValidErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetValidErrors"/>
     <keyword type="function" name="xmlRelaxNGSetValidStructuredErrors ()" link="libxml2-relaxng.html#xmlRelaxNGSetValidStructuredErrors"/>
     <keyword type="function" name="xmlRelaxNGValidateDoc ()" link="libxml2-relaxng.html#xmlRelaxNGValidateDoc"/>
@@ -2842,13 +2776,13 @@
     <keyword type="function" name="xmlSaveFormatFileTo ()" link="libxml2-tree.html#xmlSaveFormatFileTo"/>
     <keyword type="function" name="xmlSaveSetAttrEscape ()" link="libxml2-xmlsave.html#xmlSaveSetAttrEscape"/>
     <keyword type="function" name="xmlSaveSetEscape ()" link="libxml2-xmlsave.html#xmlSaveSetEscape"/>
+    <keyword type="function" name="xmlSaveSetIndentString ()" link="libxml2-xmlsave.html#xmlSaveSetIndentString"/>
     <keyword type="function" name="xmlSaveToBuffer ()" link="libxml2-xmlsave.html#xmlSaveToBuffer"/>
     <keyword type="function" name="xmlSaveToFd ()" link="libxml2-xmlsave.html#xmlSaveToFd"/>
     <keyword type="function" name="xmlSaveToFilename ()" link="libxml2-xmlsave.html#xmlSaveToFilename"/>
     <keyword type="function" name="xmlSaveToIO ()" link="libxml2-xmlsave.html#xmlSaveToIO"/>
     <keyword type="function" name="xmlSaveTree ()" link="libxml2-xmlsave.html#xmlSaveTree"/>
     <keyword type="function" name="xmlSaveUri ()" link="libxml2-uri.html#xmlSaveUri"/>
-    <keyword type="function" name="xmlScanName ()" link="libxml2-parserInternals.html#xmlScanName"/>
     <keyword type="function" name="xmlSchemaCheckFacet ()" link="libxml2-xmlschemastypes.html#xmlSchemaCheckFacet"/>
     <keyword type="function" name="xmlSchemaCleanupTypes ()" link="libxml2-xmlschemastypes.html#xmlSchemaCleanupTypes"/>
     <keyword type="function" name="xmlSchemaCollapseString ()" link="libxml2-xmlschemastypes.html#xmlSchemaCollapseString"/>
@@ -2888,6 +2822,7 @@
     <keyword type="function" name="xmlSchemaSAXUnplug ()" link="libxml2-xmlschemas.html#xmlSchemaSAXUnplug"/>
     <keyword type="function" name="xmlSchemaSetParserErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetParserErrors"/>
     <keyword type="function" name="xmlSchemaSetParserStructuredErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetParserStructuredErrors"/>
+    <keyword type="function" name="xmlSchemaSetResourceLoader ()" link="libxml2-xmlschemas.html#xmlSchemaSetResourceLoader"/>
     <keyword type="function" name="xmlSchemaSetValidErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetValidErrors"/>
     <keyword type="function" name="xmlSchemaSetValidOptions ()" link="libxml2-xmlschemas.html#xmlSchemaSetValidOptions"/>
     <keyword type="function" name="xmlSchemaSetValidStructuredErrors ()" link="libxml2-xmlschemas.html#xmlSchemaSetValidStructuredErrors"/>
@@ -2927,9 +2862,7 @@
     <keyword type="function" name="xmlSetBufferAllocationScheme ()" link="libxml2-tree.html#xmlSetBufferAllocationScheme"/>
     <keyword type="function" name="xmlSetCompressMode ()" link="libxml2-tree.html#xmlSetCompressMode"/>
     <keyword type="function" name="xmlSetDocCompressMode ()" link="libxml2-tree.html#xmlSetDocCompressMode"/>
-    <keyword type="function" name="xmlSetEntityReferenceFunc ()" link="libxml2-parserInternals.html#xmlSetEntityReferenceFunc"/>
     <keyword type="function" name="xmlSetExternalEntityLoader ()" link="libxml2-parser.html#xmlSetExternalEntityLoader"/>
-    <keyword type="function" name="xmlSetFeature ()" link="libxml2-parser.html#xmlSetFeature"/>
     <keyword type="function" name="xmlSetGenericErrorFunc ()" link="libxml2-xmlerror.html#xmlSetGenericErrorFunc"/>
     <keyword type="function" name="xmlSetListDoc ()" link="libxml2-tree.html#xmlSetListDoc"/>
     <keyword type="function" name="xmlSetNs ()" link="libxml2-tree.html#xmlSetNs"/>
@@ -2938,20 +2871,6 @@
     <keyword type="function" name="xmlSetStructuredErrorFunc ()" link="libxml2-xmlerror.html#xmlSetStructuredErrorFunc"/>
     <keyword type="function" name="xmlSetTreeDoc ()" link="libxml2-tree.html#xmlSetTreeDoc"/>
     <keyword type="function" name="xmlSetupParserForBuffer ()" link="libxml2-parser.html#xmlSetupParserForBuffer"/>
-    <keyword type="function" name="xmlShell ()" link="libxml2-debugXML.html#xmlShell"/>
-    <keyword type="function" name="xmlShellBase ()" link="libxml2-debugXML.html#xmlShellBase"/>
-    <keyword type="function" name="xmlShellCat ()" link="libxml2-debugXML.html#xmlShellCat"/>
-    <keyword type="function" name="xmlShellDir ()" link="libxml2-debugXML.html#xmlShellDir"/>
-    <keyword type="function" name="xmlShellDu ()" link="libxml2-debugXML.html#xmlShellDu"/>
-    <keyword type="function" name="xmlShellList ()" link="libxml2-debugXML.html#xmlShellList"/>
-    <keyword type="function" name="xmlShellLoad ()" link="libxml2-debugXML.html#xmlShellLoad"/>
-    <keyword type="function" name="xmlShellPrintNode ()" link="libxml2-debugXML.html#xmlShellPrintNode"/>
-    <keyword type="function" name="xmlShellPrintXPathError ()" link="libxml2-debugXML.html#xmlShellPrintXPathError"/>
-    <keyword type="function" name="xmlShellPrintXPathResult ()" link="libxml2-debugXML.html#xmlShellPrintXPathResult"/>
-    <keyword type="function" name="xmlShellPwd ()" link="libxml2-debugXML.html#xmlShellPwd"/>
-    <keyword type="function" name="xmlShellSave ()" link="libxml2-debugXML.html#xmlShellSave"/>
-    <keyword type="function" name="xmlShellValidate ()" link="libxml2-debugXML.html#xmlShellValidate"/>
-    <keyword type="function" name="xmlShellWrite ()" link="libxml2-debugXML.html#xmlShellWrite"/>
     <keyword type="function" name="xmlSkipBlankChars ()" link="libxml2-parserInternals.html#xmlSkipBlankChars"/>
     <keyword type="function" name="xmlSnprintfElementContent ()" link="libxml2-valid.html#xmlSnprintfElementContent"/>
     <keyword type="function" name="xmlSplitQName ()" link="libxml2-parserInternals.html#xmlSplitQName"/>
@@ -3061,6 +2980,7 @@
     <keyword type="function" name="xmlTextReaderSetErrorHandler ()" link="libxml2-xmlreader.html#xmlTextReaderSetErrorHandler"/>
     <keyword type="function" name="xmlTextReaderSetMaxAmplification ()" link="libxml2-xmlreader.html#xmlTextReaderSetMaxAmplification"/>
     <keyword type="function" name="xmlTextReaderSetParserProp ()" link="libxml2-xmlreader.html#xmlTextReaderSetParserProp"/>
+    <keyword type="function" name="xmlTextReaderSetResourceLoader ()" link="libxml2-xmlreader.html#xmlTextReaderSetResourceLoader"/>
     <keyword type="function" name="xmlTextReaderSetSchema ()" link="libxml2-xmlreader.html#xmlTextReaderSetSchema"/>
     <keyword type="function" name="xmlTextReaderSetStructuredErrorHandler ()" link="libxml2-xmlreader.html#xmlTextReaderSetStructuredErrorHandler"/>
     <keyword type="function" name="xmlTextReaderSetup ()" link="libxml2-xmlreader.html#xmlTextReaderSetup"/>
@@ -3141,8 +3061,6 @@
     <keyword type="function" name="xmlTextWriterWriteVFormatPI ()" link="libxml2-xmlwriter.html#xmlTextWriterWriteVFormatPI"/>
     <keyword type="function" name="xmlTextWriterWriteVFormatRaw ()" link="libxml2-xmlwriter.html#xmlTextWriterWriteVFormatRaw"/>
     <keyword type="function" name="xmlTextWriterWriteVFormatString ()" link="libxml2-xmlwriter.html#xmlTextWriterWriteVFormatString"/>
-    <keyword type="function" name="xmlThrDefBufferAllocScheme ()" link="libxml2-tree.html#xmlThrDefBufferAllocScheme"/>
-    <keyword type="function" name="xmlThrDefDefaultBufferSize ()" link="libxml2-tree.html#xmlThrDefDefaultBufferSize"/>
     <keyword type="function" name="xmlThrDefDeregisterNodeDefault ()" link="libxml2-tree.html#xmlThrDefDeregisterNodeDefault"/>
     <keyword type="function" name="xmlThrDefDoValidityCheckingDefaultValue ()" link="libxml2-parser.html#xmlThrDefDoValidityCheckingDefaultValue"/>
     <keyword type="function" name="xmlThrDefGetWarningsDefaultValue ()" link="libxml2-parser.html#xmlThrDefGetWarningsDefaultValue"/>
@@ -3151,7 +3069,6 @@
     <keyword type="function" name="xmlThrDefLineNumbersDefaultValue ()" link="libxml2-parser.html#xmlThrDefLineNumbersDefaultValue"/>
     <keyword type="function" name="xmlThrDefLoadExtDtdDefaultValue ()" link="libxml2-parser.html#xmlThrDefLoadExtDtdDefaultValue"/>
     <keyword type="function" name="xmlThrDefOutputBufferCreateFilenameDefault ()" link="libxml2-xmlIO.html#xmlThrDefOutputBufferCreateFilenameDefault"/>
-    <keyword type="function" name="xmlThrDefParserDebugEntities ()" link="libxml2-parser.html#xmlThrDefParserDebugEntities"/>
     <keyword type="function" name="xmlThrDefParserInputBufferCreateFilenameDefault ()" link="libxml2-xmlIO.html#xmlThrDefParserInputBufferCreateFilenameDefault"/>
     <keyword type="function" name="xmlThrDefPedanticParserDefaultValue ()" link="libxml2-parser.html#xmlThrDefPedanticParserDefaultValue"/>
     <keyword type="function" name="xmlThrDefRegisterNodeDefault ()" link="libxml2-tree.html#xmlThrDefRegisterNodeDefault"/>
@@ -3160,172 +3077,6 @@
     <keyword type="function" name="xmlThrDefSetStructuredErrorFunc ()" link="libxml2-xmlerror.html#xmlThrDefSetStructuredErrorFunc"/>
     <keyword type="function" name="xmlThrDefSubstituteEntitiesDefaultValue ()" link="libxml2-parser.html#xmlThrDefSubstituteEntitiesDefaultValue"/>
     <keyword type="function" name="xmlThrDefTreeIndentString ()" link="libxml2-xmlsave.html#xmlThrDefTreeIndentString"/>
-    <keyword type="function" name="xmlUCSIsAegeanNumbers ()" link="libxml2-xmlunicode.html#xmlUCSIsAegeanNumbers"/>
-    <keyword type="function" name="xmlUCSIsAlphabeticPresentationForms ()" link="libxml2-xmlunicode.html#xmlUCSIsAlphabeticPresentationForms"/>
-    <keyword type="function" name="xmlUCSIsArabic ()" link="libxml2-xmlunicode.html#xmlUCSIsArabic"/>
-    <keyword type="function" name="xmlUCSIsArabicPresentationFormsA ()" link="libxml2-xmlunicode.html#xmlUCSIsArabicPresentationFormsA"/>
-    <keyword type="function" name="xmlUCSIsArabicPresentationFormsB ()" link="libxml2-xmlunicode.html#xmlUCSIsArabicPresentationFormsB"/>
-    <keyword type="function" name="xmlUCSIsArmenian ()" link="libxml2-xmlunicode.html#xmlUCSIsArmenian"/>
-    <keyword type="function" name="xmlUCSIsArrows ()" link="libxml2-xmlunicode.html#xmlUCSIsArrows"/>
-    <keyword type="function" name="xmlUCSIsBasicLatin ()" link="libxml2-xmlunicode.html#xmlUCSIsBasicLatin"/>
-    <keyword type="function" name="xmlUCSIsBengali ()" link="libxml2-xmlunicode.html#xmlUCSIsBengali"/>
-    <keyword type="function" name="xmlUCSIsBlock ()" link="libxml2-xmlunicode.html#xmlUCSIsBlock"/>
-    <keyword type="function" name="xmlUCSIsBlockElements ()" link="libxml2-xmlunicode.html#xmlUCSIsBlockElements"/>
-    <keyword type="function" name="xmlUCSIsBopomofo ()" link="libxml2-xmlunicode.html#xmlUCSIsBopomofo"/>
-    <keyword type="function" name="xmlUCSIsBopomofoExtended ()" link="libxml2-xmlunicode.html#xmlUCSIsBopomofoExtended"/>
-    <keyword type="function" name="xmlUCSIsBoxDrawing ()" link="libxml2-xmlunicode.html#xmlUCSIsBoxDrawing"/>
-    <keyword type="function" name="xmlUCSIsBraillePatterns ()" link="libxml2-xmlunicode.html#xmlUCSIsBraillePatterns"/>
-    <keyword type="function" name="xmlUCSIsBuhid ()" link="libxml2-xmlunicode.html#xmlUCSIsBuhid"/>
-    <keyword type="function" name="xmlUCSIsByzantineMusicalSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsByzantineMusicalSymbols"/>
-    <keyword type="function" name="xmlUCSIsCJKCompatibility ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKCompatibility"/>
-    <keyword type="function" name="xmlUCSIsCJKCompatibilityForms ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKCompatibilityForms"/>
-    <keyword type="function" name="xmlUCSIsCJKCompatibilityIdeographs ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKCompatibilityIdeographs"/>
-    <keyword type="function" name="xmlUCSIsCJKCompatibilityIdeographsSupplement ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKCompatibilityIdeographsSupplement"/>
-    <keyword type="function" name="xmlUCSIsCJKRadicalsSupplement ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKRadicalsSupplement"/>
-    <keyword type="function" name="xmlUCSIsCJKSymbolsandPunctuation ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKSymbolsandPunctuation"/>
-    <keyword type="function" name="xmlUCSIsCJKUnifiedIdeographs ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKUnifiedIdeographs"/>
-    <keyword type="function" name="xmlUCSIsCJKUnifiedIdeographsExtensionA ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKUnifiedIdeographsExtensionA"/>
-    <keyword type="function" name="xmlUCSIsCJKUnifiedIdeographsExtensionB ()" link="libxml2-xmlunicode.html#xmlUCSIsCJKUnifiedIdeographsExtensionB"/>
-    <keyword type="function" name="xmlUCSIsCat ()" link="libxml2-xmlunicode.html#xmlUCSIsCat"/>
-    <keyword type="function" name="xmlUCSIsCatC ()" link="libxml2-xmlunicode.html#xmlUCSIsCatC"/>
-    <keyword type="function" name="xmlUCSIsCatCc ()" link="libxml2-xmlunicode.html#xmlUCSIsCatCc"/>
-    <keyword type="function" name="xmlUCSIsCatCf ()" link="libxml2-xmlunicode.html#xmlUCSIsCatCf"/>
-    <keyword type="function" name="xmlUCSIsCatCo ()" link="libxml2-xmlunicode.html#xmlUCSIsCatCo"/>
-    <keyword type="function" name="xmlUCSIsCatCs ()" link="libxml2-xmlunicode.html#xmlUCSIsCatCs"/>
-    <keyword type="function" name="xmlUCSIsCatL ()" link="libxml2-xmlunicode.html#xmlUCSIsCatL"/>
-    <keyword type="function" name="xmlUCSIsCatLl ()" link="libxml2-xmlunicode.html#xmlUCSIsCatLl"/>
-    <keyword type="function" name="xmlUCSIsCatLm ()" link="libxml2-xmlunicode.html#xmlUCSIsCatLm"/>
-    <keyword type="function" name="xmlUCSIsCatLo ()" link="libxml2-xmlunicode.html#xmlUCSIsCatLo"/>
-    <keyword type="function" name="xmlUCSIsCatLt ()" link="libxml2-xmlunicode.html#xmlUCSIsCatLt"/>
-    <keyword type="function" name="xmlUCSIsCatLu ()" link="libxml2-xmlunicode.html#xmlUCSIsCatLu"/>
-    <keyword type="function" name="xmlUCSIsCatM ()" link="libxml2-xmlunicode.html#xmlUCSIsCatM"/>
-    <keyword type="function" name="xmlUCSIsCatMc ()" link="libxml2-xmlunicode.html#xmlUCSIsCatMc"/>
-    <keyword type="function" name="xmlUCSIsCatMe ()" link="libxml2-xmlunicode.html#xmlUCSIsCatMe"/>
-    <keyword type="function" name="xmlUCSIsCatMn ()" link="libxml2-xmlunicode.html#xmlUCSIsCatMn"/>
-    <keyword type="function" name="xmlUCSIsCatN ()" link="libxml2-xmlunicode.html#xmlUCSIsCatN"/>
-    <keyword type="function" name="xmlUCSIsCatNd ()" link="libxml2-xmlunicode.html#xmlUCSIsCatNd"/>
-    <keyword type="function" name="xmlUCSIsCatNl ()" link="libxml2-xmlunicode.html#xmlUCSIsCatNl"/>
-    <keyword type="function" name="xmlUCSIsCatNo ()" link="libxml2-xmlunicode.html#xmlUCSIsCatNo"/>
-    <keyword type="function" name="xmlUCSIsCatP ()" link="libxml2-xmlunicode.html#xmlUCSIsCatP"/>
-    <keyword type="function" name="xmlUCSIsCatPc ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPc"/>
-    <keyword type="function" name="xmlUCSIsCatPd ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPd"/>
-    <keyword type="function" name="xmlUCSIsCatPe ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPe"/>
-    <keyword type="function" name="xmlUCSIsCatPf ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPf"/>
-    <keyword type="function" name="xmlUCSIsCatPi ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPi"/>
-    <keyword type="function" name="xmlUCSIsCatPo ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPo"/>
-    <keyword type="function" name="xmlUCSIsCatPs ()" link="libxml2-xmlunicode.html#xmlUCSIsCatPs"/>
-    <keyword type="function" name="xmlUCSIsCatS ()" link="libxml2-xmlunicode.html#xmlUCSIsCatS"/>
-    <keyword type="function" name="xmlUCSIsCatSc ()" link="libxml2-xmlunicode.html#xmlUCSIsCatSc"/>
-    <keyword type="function" name="xmlUCSIsCatSk ()" link="libxml2-xmlunicode.html#xmlUCSIsCatSk"/>
-    <keyword type="function" name="xmlUCSIsCatSm ()" link="libxml2-xmlunicode.html#xmlUCSIsCatSm"/>
-    <keyword type="function" name="xmlUCSIsCatSo ()" link="libxml2-xmlunicode.html#xmlUCSIsCatSo"/>
-    <keyword type="function" name="xmlUCSIsCatZ ()" link="libxml2-xmlunicode.html#xmlUCSIsCatZ"/>
-    <keyword type="function" name="xmlUCSIsCatZl ()" link="libxml2-xmlunicode.html#xmlUCSIsCatZl"/>
-    <keyword type="function" name="xmlUCSIsCatZp ()" link="libxml2-xmlunicode.html#xmlUCSIsCatZp"/>
-    <keyword type="function" name="xmlUCSIsCatZs ()" link="libxml2-xmlunicode.html#xmlUCSIsCatZs"/>
-    <keyword type="function" name="xmlUCSIsCherokee ()" link="libxml2-xmlunicode.html#xmlUCSIsCherokee"/>
-    <keyword type="function" name="xmlUCSIsCombiningDiacriticalMarks ()" link="libxml2-xmlunicode.html#xmlUCSIsCombiningDiacriticalMarks"/>
-    <keyword type="function" name="xmlUCSIsCombiningDiacriticalMarksforSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsCombiningDiacriticalMarksforSymbols"/>
-    <keyword type="function" name="xmlUCSIsCombiningHalfMarks ()" link="libxml2-xmlunicode.html#xmlUCSIsCombiningHalfMarks"/>
-    <keyword type="function" name="xmlUCSIsCombiningMarksforSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsCombiningMarksforSymbols"/>
-    <keyword type="function" name="xmlUCSIsControlPictures ()" link="libxml2-xmlunicode.html#xmlUCSIsControlPictures"/>
-    <keyword type="function" name="xmlUCSIsCurrencySymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsCurrencySymbols"/>
-    <keyword type="function" name="xmlUCSIsCypriotSyllabary ()" link="libxml2-xmlunicode.html#xmlUCSIsCypriotSyllabary"/>
-    <keyword type="function" name="xmlUCSIsCyrillic ()" link="libxml2-xmlunicode.html#xmlUCSIsCyrillic"/>
-    <keyword type="function" name="xmlUCSIsCyrillicSupplement ()" link="libxml2-xmlunicode.html#xmlUCSIsCyrillicSupplement"/>
-    <keyword type="function" name="xmlUCSIsDeseret ()" link="libxml2-xmlunicode.html#xmlUCSIsDeseret"/>
-    <keyword type="function" name="xmlUCSIsDevanagari ()" link="libxml2-xmlunicode.html#xmlUCSIsDevanagari"/>
-    <keyword type="function" name="xmlUCSIsDingbats ()" link="libxml2-xmlunicode.html#xmlUCSIsDingbats"/>
-    <keyword type="function" name="xmlUCSIsEnclosedAlphanumerics ()" link="libxml2-xmlunicode.html#xmlUCSIsEnclosedAlphanumerics"/>
-    <keyword type="function" name="xmlUCSIsEnclosedCJKLettersandMonths ()" link="libxml2-xmlunicode.html#xmlUCSIsEnclosedCJKLettersandMonths"/>
-    <keyword type="function" name="xmlUCSIsEthiopic ()" link="libxml2-xmlunicode.html#xmlUCSIsEthiopic"/>
-    <keyword type="function" name="xmlUCSIsGeneralPunctuation ()" link="libxml2-xmlunicode.html#xmlUCSIsGeneralPunctuation"/>
-    <keyword type="function" name="xmlUCSIsGeometricShapes ()" link="libxml2-xmlunicode.html#xmlUCSIsGeometricShapes"/>
-    <keyword type="function" name="xmlUCSIsGeorgian ()" link="libxml2-xmlunicode.html#xmlUCSIsGeorgian"/>
-    <keyword type="function" name="xmlUCSIsGothic ()" link="libxml2-xmlunicode.html#xmlUCSIsGothic"/>
-    <keyword type="function" name="xmlUCSIsGreek ()" link="libxml2-xmlunicode.html#xmlUCSIsGreek"/>
-    <keyword type="function" name="xmlUCSIsGreekExtended ()" link="libxml2-xmlunicode.html#xmlUCSIsGreekExtended"/>
-    <keyword type="function" name="xmlUCSIsGreekandCoptic ()" link="libxml2-xmlunicode.html#xmlUCSIsGreekandCoptic"/>
-    <keyword type="function" name="xmlUCSIsGujarati ()" link="libxml2-xmlunicode.html#xmlUCSIsGujarati"/>
-    <keyword type="function" name="xmlUCSIsGurmukhi ()" link="libxml2-xmlunicode.html#xmlUCSIsGurmukhi"/>
-    <keyword type="function" name="xmlUCSIsHalfwidthandFullwidthForms ()" link="libxml2-xmlunicode.html#xmlUCSIsHalfwidthandFullwidthForms"/>
-    <keyword type="function" name="xmlUCSIsHangulCompatibilityJamo ()" link="libxml2-xmlunicode.html#xmlUCSIsHangulCompatibilityJamo"/>
-    <keyword type="function" name="xmlUCSIsHangulJamo ()" link="libxml2-xmlunicode.html#xmlUCSIsHangulJamo"/>
-    <keyword type="function" name="xmlUCSIsHangulSyllables ()" link="libxml2-xmlunicode.html#xmlUCSIsHangulSyllables"/>
-    <keyword type="function" name="xmlUCSIsHanunoo ()" link="libxml2-xmlunicode.html#xmlUCSIsHanunoo"/>
-    <keyword type="function" name="xmlUCSIsHebrew ()" link="libxml2-xmlunicode.html#xmlUCSIsHebrew"/>
-    <keyword type="function" name="xmlUCSIsHighPrivateUseSurrogates ()" link="libxml2-xmlunicode.html#xmlUCSIsHighPrivateUseSurrogates"/>
-    <keyword type="function" name="xmlUCSIsHighSurrogates ()" link="libxml2-xmlunicode.html#xmlUCSIsHighSurrogates"/>
-    <keyword type="function" name="xmlUCSIsHiragana ()" link="libxml2-xmlunicode.html#xmlUCSIsHiragana"/>
-    <keyword type="function" name="xmlUCSIsIPAExtensions ()" link="libxml2-xmlunicode.html#xmlUCSIsIPAExtensions"/>
-    <keyword type="function" name="xmlUCSIsIdeographicDescriptionCharacters ()" link="libxml2-xmlunicode.html#xmlUCSIsIdeographicDescriptionCharacters"/>
-    <keyword type="function" name="xmlUCSIsKanbun ()" link="libxml2-xmlunicode.html#xmlUCSIsKanbun"/>
-    <keyword type="function" name="xmlUCSIsKangxiRadicals ()" link="libxml2-xmlunicode.html#xmlUCSIsKangxiRadicals"/>
-    <keyword type="function" name="xmlUCSIsKannada ()" link="libxml2-xmlunicode.html#xmlUCSIsKannada"/>
-    <keyword type="function" name="xmlUCSIsKatakana ()" link="libxml2-xmlunicode.html#xmlUCSIsKatakana"/>
-    <keyword type="function" name="xmlUCSIsKatakanaPhoneticExtensions ()" link="libxml2-xmlunicode.html#xmlUCSIsKatakanaPhoneticExtensions"/>
-    <keyword type="function" name="xmlUCSIsKhmer ()" link="libxml2-xmlunicode.html#xmlUCSIsKhmer"/>
-    <keyword type="function" name="xmlUCSIsKhmerSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsKhmerSymbols"/>
-    <keyword type="function" name="xmlUCSIsLao ()" link="libxml2-xmlunicode.html#xmlUCSIsLao"/>
-    <keyword type="function" name="xmlUCSIsLatin1Supplement ()" link="libxml2-xmlunicode.html#xmlUCSIsLatin1Supplement"/>
-    <keyword type="function" name="xmlUCSIsLatinExtendedA ()" link="libxml2-xmlunicode.html#xmlUCSIsLatinExtendedA"/>
-    <keyword type="function" name="xmlUCSIsLatinExtendedAdditional ()" link="libxml2-xmlunicode.html#xmlUCSIsLatinExtendedAdditional"/>
-    <keyword type="function" name="xmlUCSIsLatinExtendedB ()" link="libxml2-xmlunicode.html#xmlUCSIsLatinExtendedB"/>
-    <keyword type="function" name="xmlUCSIsLetterlikeSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsLetterlikeSymbols"/>
-    <keyword type="function" name="xmlUCSIsLimbu ()" link="libxml2-xmlunicode.html#xmlUCSIsLimbu"/>
-    <keyword type="function" name="xmlUCSIsLinearBIdeograms ()" link="libxml2-xmlunicode.html#xmlUCSIsLinearBIdeograms"/>
-    <keyword type="function" name="xmlUCSIsLinearBSyllabary ()" link="libxml2-xmlunicode.html#xmlUCSIsLinearBSyllabary"/>
-    <keyword type="function" name="xmlUCSIsLowSurrogates ()" link="libxml2-xmlunicode.html#xmlUCSIsLowSurrogates"/>
-    <keyword type="function" name="xmlUCSIsMalayalam ()" link="libxml2-xmlunicode.html#xmlUCSIsMalayalam"/>
-    <keyword type="function" name="xmlUCSIsMathematicalAlphanumericSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsMathematicalAlphanumericSymbols"/>
-    <keyword type="function" name="xmlUCSIsMathematicalOperators ()" link="libxml2-xmlunicode.html#xmlUCSIsMathematicalOperators"/>
-    <keyword type="function" name="xmlUCSIsMiscellaneousMathematicalSymbolsA ()" link="libxml2-xmlunicode.html#xmlUCSIsMiscellaneousMathematicalSymbolsA"/>
-    <keyword type="function" name="xmlUCSIsMiscellaneousMathematicalSymbolsB ()" link="libxml2-xmlunicode.html#xmlUCSIsMiscellaneousMathematicalSymbolsB"/>
-    <keyword type="function" name="xmlUCSIsMiscellaneousSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsMiscellaneousSymbols"/>
-    <keyword type="function" name="xmlUCSIsMiscellaneousSymbolsandArrows ()" link="libxml2-xmlunicode.html#xmlUCSIsMiscellaneousSymbolsandArrows"/>
-    <keyword type="function" name="xmlUCSIsMiscellaneousTechnical ()" link="libxml2-xmlunicode.html#xmlUCSIsMiscellaneousTechnical"/>
-    <keyword type="function" name="xmlUCSIsMongolian ()" link="libxml2-xmlunicode.html#xmlUCSIsMongolian"/>
-    <keyword type="function" name="xmlUCSIsMusicalSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsMusicalSymbols"/>
-    <keyword type="function" name="xmlUCSIsMyanmar ()" link="libxml2-xmlunicode.html#xmlUCSIsMyanmar"/>
-    <keyword type="function" name="xmlUCSIsNumberForms ()" link="libxml2-xmlunicode.html#xmlUCSIsNumberForms"/>
-    <keyword type="function" name="xmlUCSIsOgham ()" link="libxml2-xmlunicode.html#xmlUCSIsOgham"/>
-    <keyword type="function" name="xmlUCSIsOldItalic ()" link="libxml2-xmlunicode.html#xmlUCSIsOldItalic"/>
-    <keyword type="function" name="xmlUCSIsOpticalCharacterRecognition ()" link="libxml2-xmlunicode.html#xmlUCSIsOpticalCharacterRecognition"/>
-    <keyword type="function" name="xmlUCSIsOriya ()" link="libxml2-xmlunicode.html#xmlUCSIsOriya"/>
-    <keyword type="function" name="xmlUCSIsOsmanya ()" link="libxml2-xmlunicode.html#xmlUCSIsOsmanya"/>
-    <keyword type="function" name="xmlUCSIsPhoneticExtensions ()" link="libxml2-xmlunicode.html#xmlUCSIsPhoneticExtensions"/>
-    <keyword type="function" name="xmlUCSIsPrivateUse ()" link="libxml2-xmlunicode.html#xmlUCSIsPrivateUse"/>
-    <keyword type="function" name="xmlUCSIsPrivateUseArea ()" link="libxml2-xmlunicode.html#xmlUCSIsPrivateUseArea"/>
-    <keyword type="function" name="xmlUCSIsRunic ()" link="libxml2-xmlunicode.html#xmlUCSIsRunic"/>
-    <keyword type="function" name="xmlUCSIsShavian ()" link="libxml2-xmlunicode.html#xmlUCSIsShavian"/>
-    <keyword type="function" name="xmlUCSIsSinhala ()" link="libxml2-xmlunicode.html#xmlUCSIsSinhala"/>
-    <keyword type="function" name="xmlUCSIsSmallFormVariants ()" link="libxml2-xmlunicode.html#xmlUCSIsSmallFormVariants"/>
-    <keyword type="function" name="xmlUCSIsSpacingModifierLetters ()" link="libxml2-xmlunicode.html#xmlUCSIsSpacingModifierLetters"/>
-    <keyword type="function" name="xmlUCSIsSpecials ()" link="libxml2-xmlunicode.html#xmlUCSIsSpecials"/>
-    <keyword type="function" name="xmlUCSIsSuperscriptsandSubscripts ()" link="libxml2-xmlunicode.html#xmlUCSIsSuperscriptsandSubscripts"/>
-    <keyword type="function" name="xmlUCSIsSupplementalArrowsA ()" link="libxml2-xmlunicode.html#xmlUCSIsSupplementalArrowsA"/>
-    <keyword type="function" name="xmlUCSIsSupplementalArrowsB ()" link="libxml2-xmlunicode.html#xmlUCSIsSupplementalArrowsB"/>
-    <keyword type="function" name="xmlUCSIsSupplementalMathematicalOperators ()" link="libxml2-xmlunicode.html#xmlUCSIsSupplementalMathematicalOperators"/>
-    <keyword type="function" name="xmlUCSIsSupplementaryPrivateUseAreaA ()" link="libxml2-xmlunicode.html#xmlUCSIsSupplementaryPrivateUseAreaA"/>
-    <keyword type="function" name="xmlUCSIsSupplementaryPrivateUseAreaB ()" link="libxml2-xmlunicode.html#xmlUCSIsSupplementaryPrivateUseAreaB"/>
-    <keyword type="function" name="xmlUCSIsSyriac ()" link="libxml2-xmlunicode.html#xmlUCSIsSyriac"/>
-    <keyword type="function" name="xmlUCSIsTagalog ()" link="libxml2-xmlunicode.html#xmlUCSIsTagalog"/>
-    <keyword type="function" name="xmlUCSIsTagbanwa ()" link="libxml2-xmlunicode.html#xmlUCSIsTagbanwa"/>
-    <keyword type="function" name="xmlUCSIsTags ()" link="libxml2-xmlunicode.html#xmlUCSIsTags"/>
-    <keyword type="function" name="xmlUCSIsTaiLe ()" link="libxml2-xmlunicode.html#xmlUCSIsTaiLe"/>
-    <keyword type="function" name="xmlUCSIsTaiXuanJingSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsTaiXuanJingSymbols"/>
-    <keyword type="function" name="xmlUCSIsTamil ()" link="libxml2-xmlunicode.html#xmlUCSIsTamil"/>
-    <keyword type="function" name="xmlUCSIsTelugu ()" link="libxml2-xmlunicode.html#xmlUCSIsTelugu"/>
-    <keyword type="function" name="xmlUCSIsThaana ()" link="libxml2-xmlunicode.html#xmlUCSIsThaana"/>
-    <keyword type="function" name="xmlUCSIsThai ()" link="libxml2-xmlunicode.html#xmlUCSIsThai"/>
-    <keyword type="function" name="xmlUCSIsTibetan ()" link="libxml2-xmlunicode.html#xmlUCSIsTibetan"/>
-    <keyword type="function" name="xmlUCSIsUgaritic ()" link="libxml2-xmlunicode.html#xmlUCSIsUgaritic"/>
-    <keyword type="function" name="xmlUCSIsUnifiedCanadianAboriginalSyllabics ()" link="libxml2-xmlunicode.html#xmlUCSIsUnifiedCanadianAboriginalSyllabics"/>
-    <keyword type="function" name="xmlUCSIsVariationSelectors ()" link="libxml2-xmlunicode.html#xmlUCSIsVariationSelectors"/>
-    <keyword type="function" name="xmlUCSIsVariationSelectorsSupplement ()" link="libxml2-xmlunicode.html#xmlUCSIsVariationSelectorsSupplement"/>
-    <keyword type="function" name="xmlUCSIsYiRadicals ()" link="libxml2-xmlunicode.html#xmlUCSIsYiRadicals"/>
-    <keyword type="function" name="xmlUCSIsYiSyllables ()" link="libxml2-xmlunicode.html#xmlUCSIsYiSyllables"/>
-    <keyword type="function" name="xmlUCSIsYijingHexagramSymbols ()" link="libxml2-xmlunicode.html#xmlUCSIsYijingHexagramSymbols"/>
     <keyword type="function" name="xmlURIEscape ()" link="libxml2-uri.html#xmlURIEscape"/>
     <keyword type="function" name="xmlURIEscapeStr ()" link="libxml2-uri.html#xmlURIEscapeStr"/>
     <keyword type="function" name="xmlURIUnescapeString ()" link="libxml2-uri.html#xmlURIUnescapeString"/>
@@ -3337,6 +3088,7 @@
     <keyword type="function" name="xmlUTF8Strpos ()" link="libxml2-xmlstring.html#xmlUTF8Strpos"/>
     <keyword type="function" name="xmlUTF8Strsize ()" link="libxml2-xmlstring.html#xmlUTF8Strsize"/>
     <keyword type="function" name="xmlUTF8Strsub ()" link="libxml2-xmlstring.html#xmlUTF8Strsub"/>
+    <keyword type="function" name="xmlUTF8ToIsolat1 ()" link="libxml2-encoding.html#xmlUTF8ToIsolat1"/>
     <keyword type="function" name="xmlUnlinkNode ()" link="libxml2-tree.html#xmlUnlinkNode"/>
     <keyword type="function" name="xmlUnlockLibrary ()" link="libxml2-threads.html#xmlUnlockLibrary"/>
     <keyword type="function" name="xmlUnsetNsProp ()" link="libxml2-tree.html#xmlUnsetNsProp"/>
@@ -3383,6 +3135,7 @@
     <keyword type="function" name="xmlXIncludeProcessTreeFlagsData ()" link="libxml2-xinclude.html#xmlXIncludeProcessTreeFlagsData"/>
     <keyword type="function" name="xmlXIncludeSetErrorHandler ()" link="libxml2-xinclude.html#xmlXIncludeSetErrorHandler"/>
     <keyword type="function" name="xmlXIncludeSetFlags ()" link="libxml2-xinclude.html#xmlXIncludeSetFlags"/>
+    <keyword type="function" name="xmlXIncludeSetResourceLoader ()" link="libxml2-xinclude.html#xmlXIncludeSetResourceLoader"/>
     <keyword type="function" name="xmlXPathAddValues ()" link="libxml2-xpathInternals.html#xmlXPathAddValues"/>
     <keyword type="function" name="xmlXPathBooleanFunction ()" link="libxml2-xpathInternals.html#xmlXPathBooleanFunction"/>
     <keyword type="function" name="xmlXPathCastBooleanToNumber ()" link="libxml2-xpath.html#xmlXPathCastBooleanToNumber"/>
@@ -3532,6 +3285,8 @@
     <keyword type="function" name="xmlXPathTranslateFunction ()" link="libxml2-xpathInternals.html#xmlXPathTranslateFunction"/>
     <keyword type="function" name="xmlXPathTrueFunction ()" link="libxml2-xpathInternals.html#xmlXPathTrueFunction"/>
     <keyword type="function" name="xmlXPathValueFlipSign ()" link="libxml2-xpathInternals.html#xmlXPathValueFlipSign"/>
+    <keyword type="function" name="xmlXPathValuePop ()" link="libxml2-xpathInternals.html#xmlXPathValuePop"/>
+    <keyword type="function" name="xmlXPathValuePush ()" link="libxml2-xpathInternals.html#xmlXPathValuePush"/>
     <keyword type="function" name="xmlXPathVariableLookup ()" link="libxml2-xpathInternals.html#xmlXPathVariableLookup"/>
     <keyword type="function" name="xmlXPathVariableLookupNS ()" link="libxml2-xpathInternals.html#xmlXPathVariableLookupNS"/>
     <keyword type="function" name="xmlXPathWrapCString ()" link="libxml2-xpathInternals.html#xmlXPathWrapCString"/>
@@ -3539,26 +3294,7 @@
     <keyword type="function" name="xmlXPathWrapNodeSet ()" link="libxml2-xpathInternals.html#xmlXPathWrapNodeSet"/>
     <keyword type="function" name="xmlXPathWrapString ()" link="libxml2-xpathInternals.html#xmlXPathWrapString"/>
     <keyword type="function" name="xmlXPatherror ()" link="libxml2-xpathInternals.html#xmlXPatherror"/>
-    <keyword type="function" name="xmlXPtrBuildNodeList ()" link="libxml2-xpointer.html#xmlXPtrBuildNodeList"/>
     <keyword type="function" name="xmlXPtrEval ()" link="libxml2-xpointer.html#xmlXPtrEval"/>
-    <keyword type="function" name="xmlXPtrEvalRangePredicate ()" link="libxml2-xpointer.html#xmlXPtrEvalRangePredicate"/>
-    <keyword type="function" name="xmlXPtrFreeLocationSet ()" link="libxml2-xpointer.html#xmlXPtrFreeLocationSet"/>
-    <keyword type="function" name="xmlXPtrLocationSetAdd ()" link="libxml2-xpointer.html#xmlXPtrLocationSetAdd"/>
-    <keyword type="function" name="xmlXPtrLocationSetCreate ()" link="libxml2-xpointer.html#xmlXPtrLocationSetCreate"/>
-    <keyword type="function" name="xmlXPtrLocationSetDel ()" link="libxml2-xpointer.html#xmlXPtrLocationSetDel"/>
-    <keyword type="function" name="xmlXPtrLocationSetMerge ()" link="libxml2-xpointer.html#xmlXPtrLocationSetMerge"/>
-    <keyword type="function" name="xmlXPtrLocationSetRemove ()" link="libxml2-xpointer.html#xmlXPtrLocationSetRemove"/>
-    <keyword type="function" name="xmlXPtrNewCollapsedRange ()" link="libxml2-xpointer.html#xmlXPtrNewCollapsedRange"/>
     <keyword type="function" name="xmlXPtrNewContext ()" link="libxml2-xpointer.html#xmlXPtrNewContext"/>
-    <keyword type="function" name="xmlXPtrNewLocationSetNodeSet ()" link="libxml2-xpointer.html#xmlXPtrNewLocationSetNodeSet"/>
-    <keyword type="function" name="xmlXPtrNewLocationSetNodes ()" link="libxml2-xpointer.html#xmlXPtrNewLocationSetNodes"/>
-    <keyword type="function" name="xmlXPtrNewRange ()" link="libxml2-xpointer.html#xmlXPtrNewRange"/>
-    <keyword type="function" name="xmlXPtrNewRangeNodeObject ()" link="libxml2-xpointer.html#xmlXPtrNewRangeNodeObject"/>
-    <keyword type="function" name="xmlXPtrNewRangeNodePoint ()" link="libxml2-xpointer.html#xmlXPtrNewRangeNodePoint"/>
-    <keyword type="function" name="xmlXPtrNewRangeNodes ()" link="libxml2-xpointer.html#xmlXPtrNewRangeNodes"/>
-    <keyword type="function" name="xmlXPtrNewRangePointNode ()" link="libxml2-xpointer.html#xmlXPtrNewRangePointNode"/>
-    <keyword type="function" name="xmlXPtrNewRangePoints ()" link="libxml2-xpointer.html#xmlXPtrNewRangePoints"/>
-    <keyword type="function" name="xmlXPtrRangeToFunction ()" link="libxml2-xpointer.html#xmlXPtrRangeToFunction"/>
-    <keyword type="function" name="xmlXPtrWrapLocationSet ()" link="libxml2-xpointer.html#xmlXPtrWrapLocationSet"/>
   </functions>
 </book>

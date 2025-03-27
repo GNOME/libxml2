@@ -32,6 +32,8 @@
 #define <a href="#CHECK_TYPE0">CHECK_TYPE0</a>(typeval);
 #define <a href="#XP_ERROR">XP_ERROR</a>(X);
 #define <a href="#XP_ERROR0">XP_ERROR0</a>(X);
+#define <a href="#valuePop">valuePop</a>;
+#define <a href="#valuePush">valuePush</a>;
 #define <a href="#xmlXPathCheckError">xmlXPathCheckError</a>(ctxt);
 #define <a href="#xmlXPathEmptyNodeSet">xmlXPathEmptyNodeSet</a>(ns);
 #define <a href="#xmlXPathGetContextNode">xmlXPathGetContextNode</a>(ctxt);
@@ -51,8 +53,6 @@
 #define <a href="#xmlXPathSetTypeError">xmlXPathSetTypeError</a>(ctxt);
 #define <a href="#xmlXPathStackIsExternal">xmlXPathStackIsExternal</a>(ctxt);
 #define <a href="#xmlXPathStackIsNodeSet">xmlXPathStackIsNodeSet</a>(ctxt);
-<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#valuePop">valuePop</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
-int	<a href="#valuePush">valuePush</a>			(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> value);
 void	<a href="#xmlXPathAddValues">xmlXPathAddValues</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
 void	<a href="#xmlXPathBooleanFunction">xmlXPathBooleanFunction</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs);
 void	<a href="#xmlXPathCeilingFunction">xmlXPathCeilingFunction</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs);
@@ -161,6 +161,8 @@ void	<a href="#xmlXPathSumFunction">xmlXPathSumFunction</a>		(<a href="libxml2-x
 void	<a href="#xmlXPathTranslateFunction">xmlXPathTranslateFunction</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs);
 void	<a href="#xmlXPathTrueFunction">xmlXPathTrueFunction</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs);
 void	<a href="#xmlXPathValueFlipSign">xmlXPathValueFlipSign</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
+<a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathValuePop">xmlXPathValuePop</a>	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt);
+int	<a href="#xmlXPathValuePush">xmlXPathValuePush</a>		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> value);
 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathVariableLookup">xmlXPathVariableLookup</a>	(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name);
 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathVariableLookupNS">xmlXPathVariableLookupNS</a>	(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ns_uri);
 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	<a href="#xmlXPathWrapCString">xmlXPathWrapCString</a>	(char * val);
@@ -287,6 +289,22 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <td>the error code</td>
 </tr></tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="valuePop">Macro </a>valuePop</h3>
+<pre class="programlisting">#define <a href="#valuePop">valuePop</a>;
+</pre>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="valuePush">Macro </a>valuePush</h3>
+<pre class="programlisting">#define <a href="#valuePush">valuePush</a>;
+</pre>
+<p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -607,52 +625,6 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
 <td>an XPath parser context</td>
 </tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="valuePop"></a>valuePop ()</h3>
-<pre class="programlisting"><a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	valuePop	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt)<br>
-</pre>
-<p>Pops the top XPath object from the value stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XPath evaluation context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the XPath object just removed</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="valuePush"></a>valuePush ()</h3>
-<pre class="programlisting">int	valuePush			(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> value)<br>
-</pre>
-<p>Pushes a new XPath object on top of the value stack. If value is NULL, a memory error is recorded in the parser context.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XPath evaluation context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the XPath object</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the number of items on the value stack, or -1 in case of error. The object is destroyed in case of error.</td>
-</tr>
-</tbody>
 </table></div>
 </div>
 <hr>
@@ -984,7 +956,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathEvalExpr"></a>xmlXPathEvalExpr ()</h3>
 <pre class="programlisting">void	xmlXPathEvalExpr		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt)<br>
 </pre>
-<p>Parse and evaluate an XPath expression in the given context, then push the result on the context stack</p>
+<p>DEPRECATED: Internal function, don't use. Parse and evaluate an XPath expression in the given context, then push the result on the context stack</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1160,7 +1132,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathIdFunction"></a>xmlXPathIdFunction ()</h3>
 <pre class="programlisting">void	xmlXPathIdFunction		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the id() XPath function node-set id(object) The id function selects elements by their unique ID (see [5.2.1 Unique IDs]). When the argument to id is of type node-set, then the result is the union of the result of applying id to the string value of each of the nodes in the argument node-set. When the argument to id is of any other type, the argument is converted to a string as if by a call to the string function; the string is split into a whitespace-separated list of tokens (whitespace is any sequence of <a href="libxml2-SAX.html#characters">characters</a> matching the production S); the result is a node-set containing the elements in the same document as the context node that have a unique ID equal to any of the tokens in the list.</p>
+<p>Implement the id() XPath function node-set id(object) The id function selects elements by their unique ID (see [5.2.1 Unique IDs]). When the argument to id is of type node-set, then the result is the union of the result of applying id to the string value of each of the nodes in the argument node-set. When the argument to id is of any other type, the argument is converted to a string as if by a call to the string function; the string is split into a whitespace-separated list of tokens (whitespace is any sequence of characters matching the production S); the result is a node-set containing the elements in the same document as the context node that have a unique ID equal to any of the tokens in the list.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1227,7 +1199,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathLangFunction"></a>xmlXPathLangFunction ()</h3>
 <pre class="programlisting">void	xmlXPathLangFunction		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the lang() XPath function boolean lang(string) The lang function returns true or false depending on whether the language of the context node as specified by xml:lang attributes is the same as or is a sublanguage of the language specified by the argument string. The language of the context node is determined by the value of the xml:lang <a href="libxml2-SAX.html#attribute">attribute</a> on the context node, or, if the context node has no xml:lang attribute, by the value of the xml:lang <a href="libxml2-SAX.html#attribute">attribute</a> on the nearest ancestor of the context node that has an xml:lang <a href="libxml2-SAX.html#attribute">attribute</a>. If there is no such attribute, then lang</p>
+<p>Implement the lang() XPath function boolean lang(string) The lang function returns true or false depending on whether the language of the context node as specified by xml:lang attributes is the same as or is a sublanguage of the language specified by the argument string. The language of the context node is determined by the value of the xml:lang attribute on the context node, or, if the context node has no xml:lang attribute, by the value of the xml:lang attribute on the nearest ancestor of the context node that has an xml:lang attribute. If there is no such attribute, then lang</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1623,7 +1595,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 </tr>
 <tr>
 <td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the current <a href="libxml2-SAX.html#attribute">attribute</a> in the traversal</td>
+<td>the current attribute in the traversal</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1713,7 +1685,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathNextFollowing"></a>xmlXPathNextFollowing ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlXPathNextFollowing	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Traversal function for the "following" direction The following axis contains all nodes in the same document as the context node that are after the context node in document order, excluding any descendants and excluding <a href="libxml2-SAX.html#attribute">attribute</a> nodes and namespace nodes; the nodes are ordered in document order</p>
+<p>Traversal function for the "following" direction The following axis contains all nodes in the same document as the context node that are after the context node in document order, excluding any descendants and excluding attribute nodes and namespace nodes; the nodes are ordered in document order</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1773,7 +1745,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 </tr>
 <tr>
 <td><span class="term"><i><tt>cur</tt></i>:</span></td>
-<td>the current <a href="libxml2-SAX.html#attribute">attribute</a> in the traversal</td>
+<td>the current attribute in the traversal</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1813,7 +1785,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathNextPreceding"></a>xmlXPathNextPreceding ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	xmlXPathNextPreceding	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> cur)<br>
 </pre>
-<p>Traversal function for the "preceding" direction the preceding axis contains all nodes in the same document as the context node that are before the context node in document order, excluding any ancestors and excluding <a href="libxml2-SAX.html#attribute">attribute</a> nodes and namespace nodes; the nodes are ordered in reverse document order</p>
+<p>Traversal function for the "preceding" direction the preceding axis contains all nodes in the same document as the context node that are before the context node in document order, excluding any ancestors and excluding attribute nodes and namespace nodes; the nodes are ordered in reverse document order</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2192,7 +2164,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathNormalizeFunction"></a>xmlXPathNormalizeFunction ()</h3>
 <pre class="programlisting">void	xmlXPathNormalizeFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the normalize-space() XPath function string normalize-space(string?) The normalize-space function returns the argument string with white space normalized by stripping leading and trailing whitespace and replacing sequences of whitespace <a href="libxml2-SAX.html#characters">characters</a> by a single space. Whitespace <a href="libxml2-SAX.html#characters">characters</a> are the same allowed by the S production in XML. If the argument is omitted, it defaults to the context node converted to a string, in other words the value of the context node.</p>
+<p>Implement the normalize-space() XPath function string normalize-space(string?) The normalize-space function returns the argument string with white space normalized by stripping leading and trailing whitespace and replacing sequences of whitespace characters by a single space. Whitespace characters are the same allowed by the S production in XML. If the argument is omitted, it defaults to the context node converted to a string, in other words the value of the context node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2469,7 +2441,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathRegisterAllFunctions"></a>xmlXPathRegisterAllFunctions ()</h3>
 <pre class="programlisting">void	xmlXPathRegisterAllFunctions	(<a href="libxml2-xpath.html#xmlXPathContextPtr">xmlXPathContextPtr</a> ctxt)<br>
 </pre>
-<p>Registers all default XPath functions in this context</p>
+<p>DEPRECATED: No-op since 2.14.0. Registers all default XPath functions in this context</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2831,7 +2803,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathStringLengthFunction"></a>xmlXPathStringLengthFunction ()</h3>
 <pre class="programlisting">void	xmlXPathStringLengthFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the string-length() XPath function number string-length(string?) The string-length returns the number of <a href="libxml2-SAX.html#characters">characters</a> in the string (see [3.6 Strings]). If the argument is omitted, it defaults to the context node converted to a string, in other words the value of the context node.</p>
+<p>Implement the string-length() XPath function number string-length(string?) The string-length returns the number of characters in the string (see [3.6 Strings]). If the argument is omitted, it defaults to the context node converted to a string, in other words the value of the context node.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2909,7 +2881,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathSubstringFunction"></a>xmlXPathSubstringFunction ()</h3>
 <pre class="programlisting">void	xmlXPathSubstringFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the substring() XPath function string substring(string, number, number?) The substring function returns the substring of the first argument starting at the position specified in the second argument with length specified in the third argument. For example, substring("12345",2,3) returns "234". If the third argument is not specified, it returns the substring starting at the position specified in the second argument and continuing to the end of the string. For example, substring("12345",2) returns "2345". More precisely, each character in the string (see [3.6 Strings]) is considered to have a numeric position: the position of the first character is 1, the position of the second character is 2 and so on. The returned substring contains those <a href="libxml2-SAX.html#characters">characters</a> for which the position of the character is greater than or equal to the second argument and, if the third argument is specified, less than the sum of the second and third arguments; the comparisons and addition used for the above follow the standard IEEE 754 rules. Thus: - substring("12345", 1.5, 2.6) returns "234" - substring("12345", 0, 3) returns "12" - substring("12345", 0 div 0, 3) returns "" - substring("12345", 1, 0 div 0) returns "" - substring("12345", -42, 1 div 0) returns "12345" - substring("12345", -1 div 0, 1 div 0) returns ""</p>
+<p>Implement the substring() XPath function string substring(string, number, number?) The substring function returns the substring of the first argument starting at the position specified in the second argument with length specified in the third argument. For example, substring("12345",2,3) returns "234". If the third argument is not specified, it returns the substring starting at the position specified in the second argument and continuing to the end of the string. For example, substring("12345",2) returns "2345". More precisely, each character in the string (see [3.6 Strings]) is considered to have a numeric position: the position of the first character is 1, the position of the second character is 2 and so on. The returned substring contains those characters for which the position of the character is greater than or equal to the second argument and, if the third argument is specified, less than the sum of the second and third arguments; the comparisons and addition used for the above follow the standard IEEE 754 rules. Thus: - substring("12345", 1.5, 2.6) returns "234" - substring("12345", 0, 3) returns "12" - substring("12345", 0 div 0, 3) returns "" - substring("12345", 1, 0 div 0) returns "" - substring("12345", -42, 1 div 0) returns "12345" - substring("12345", -1 div 0, 1 div 0) returns ""</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3001,7 +2973,7 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <a name="xmlXPathTranslateFunction"></a>xmlXPathTranslateFunction ()</h3>
 <pre class="programlisting">void	xmlXPathTranslateFunction	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 int nargs)<br>
 </pre>
-<p>Implement the translate() XPath function string translate(string, string, string) The translate function returns the first argument string with occurrences of <a href="libxml2-SAX.html#characters">characters</a> in the second argument string replaced by the character at the corresponding position in the third argument string. For example, translate("bar","abc","ABC") returns the string BAr. If there is a character in the second argument string with no character at a corresponding position in the third argument string (because the second argument string is longer than the third argument string), then occurrences of that character in the first argument string are removed. For example, translate("--aaa--","abc-","ABC")</p>
+<p>Implement the translate() XPath function string translate(string, string, string) The translate function returns the first argument string with occurrences of characters in the second argument string replaced by the character at the corresponding position in the third argument string. For example, translate("bar","abc","ABC") returns the string BAr. If there is a character in the second argument string with no character at a corresponding position in the third argument string (because the second argument string is longer than the third argument string), then occurrences of that character in the first argument string are removed. For example, translate("--aaa--","abc-","ABC")</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -3050,6 +3022,52 @@ void	<a href="#xmlXPatherror">xmlXPatherror</a>			(<a href="libxml2-xpath.html#x
 <td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
 <td>the XPath Parser context</td>
 </tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlXPathValuePop"></a>xmlXPathValuePop ()</h3>
+<pre class="programlisting"><a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a>	xmlXPathValuePop	(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt)<br>
+</pre>
+<p>Pops the top XPath object from the value stack</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XPath evaluation context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the XPath object just removed</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlXPathValuePush"></a>xmlXPathValuePush ()</h3>
+<pre class="programlisting">int	xmlXPathValuePush		(<a href="libxml2-xpath.html#xmlXPathParserContextPtr">xmlXPathParserContextPtr</a> ctxt, <br>					 <a href="libxml2-xpath.html#xmlXPathObjectPtr">xmlXPathObjectPtr</a> value)<br>
+</pre>
+<p>Pushes a new XPath object on top of the value stack. If value is NULL, a memory error is recorded in the parser context.</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XPath evaluation context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>value</tt></i>:</span></td>
+<td>the XPath object</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the number of items on the value stack, or -1 in case of error. The object is destroyed in case of error.</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <hr>

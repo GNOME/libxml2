@@ -22,8 +22,7 @@
 <p>Author(s): Daniel Veillard </p>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
-<pre class="synopsis">#define <a href="#INPUT_CHUNK">INPUT_CHUNK</a>;
-#define <a href="#IS_ASCII_DIGIT">IS_ASCII_DIGIT</a>(c);
+<pre class="synopsis">#define <a href="#IS_ASCII_DIGIT">IS_ASCII_DIGIT</a>(c);
 #define <a href="#IS_ASCII_LETTER">IS_ASCII_LETTER</a>(c);
 #define <a href="#IS_BASECHAR">IS_BASECHAR</a>(c);
 #define <a href="#IS_BLANK">IS_BLANK</a>(c);
@@ -52,12 +51,9 @@
 #define <a href="#XML_SUBSTITUTE_NONE">XML_SUBSTITUTE_NONE</a>;
 #define <a href="#XML_SUBSTITUTE_PEREF">XML_SUBSTITUTE_PEREF</a>;
 #define <a href="#XML_SUBSTITUTE_REF">XML_SUBSTITUTE_REF</a>;
-<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#inputPop">inputPop</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-int	<a href="#inputPush">inputPush</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value);
-const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#namePop">namePop</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-int	<a href="#namePush">namePush</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value);
-<a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	<a href="#nodePop">nodePop</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-int	<a href="#nodePush">nodePush</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> value);
+#define <a href="#inputPop">inputPop</a>;
+#define <a href="#inputPush">inputPush</a>;
+#define <a href="#xmlParserMaxDepth">xmlParserMaxDepth</a>;
 int	<a href="#xmlCheckLanguageID">xmlCheckLanguageID</a>		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang);
 int	<a href="#xmlCopyChar">xmlCopyChar</a>			(int len, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * out, <br>					 int val);
 int	<a href="#xmlCopyCharMultiByte">xmlCopyCharMultiByte</a>		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * out, <br>					 int val);
@@ -66,15 +62,11 @@ int	<a href="#xmlCopyCharMultiByte">xmlCopyCharMultiByte</a>		(<a href="libxml2-
 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlCreateMemoryParserCtxt">xmlCreateMemoryParserCtxt</a>	(const char * buffer, <br>							 int size);
 <a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	<a href="#xmlCreateURLParserCtxt">xmlCreateURLParserCtxt</a>	(const char * filename, <br>						 int options);
 void	<a href="#xmlCtxtErrMemory">xmlCtxtErrMemory</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlCtxtPopInput">xmlCtxtPopInput</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
+int	<a href="#xmlCtxtPushInput">xmlCtxtPushInput</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value);
 int	<a href="#xmlCurrentChar">xmlCurrentChar</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int * len);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlDecodeEntities">xmlDecodeEntities</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int len, <br>					 int what, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> end, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> end2, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> end3);
-typedef void <a href="#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a>		(<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> firstNode, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> lastNode);
 void	<a href="#xmlFreeInputStream">xmlFreeInputStream</a>		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
-void	<a href="#xmlHandleEntity">xmlHandleEntity</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity);
 int	<a href="#xmlIsLetter">xmlIsLetter</a>			(int c);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNamespaceParseNCName">xmlNamespaceParseNCName</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNamespaceParseNSDef">xmlNamespaceParseNSDef</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlNamespaceParseQName">xmlNamespaceParseQName</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** prefix);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlNewEntityInputStream">xmlNewEntityInputStream</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>						 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlNewInputFromFile">xmlNewInputFromFile</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>						 const char * filename);
 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	<a href="#xmlNewInputStream">xmlNewInputStream</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
@@ -109,7 +101,6 @@ void	<a href="#xmlParseExternalSubset">xmlParseExternalSubset</a>		(<a href="lib
 void	<a href="#xmlParseMarkupDecl">xmlParseMarkupDecl</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void	<a href="#xmlParseMisc">xmlParseMisc</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParseName">xmlParseName</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-void	<a href="#xmlParseNamespace">xmlParseNamespace</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParseNmtoken">xmlParseNmtoken</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void	<a href="#xmlParseNotationDecl">xmlParseNotationDecl</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a>	<a href="#xmlParseNotationType">xmlParseNotationType</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
@@ -117,7 +108,6 @@ void	<a href="#xmlParsePEReference">xmlParsePEReference</a>		(<a href="libxml2-t
 void	<a href="#xmlParsePI">xmlParsePI</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParsePITarget">xmlParsePITarget</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParsePubidLiteral">xmlParsePubidLiteral</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParseQuotedString">xmlParseQuotedString</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void	<a href="#xmlParseReference">xmlParseReference</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 int	<a href="#xmlParseSDDecl">xmlParseSDDecl</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParseStartTag">xmlParseStartTag</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
@@ -127,12 +117,9 @@ void	<a href="#xmlParseTextDecl">xmlParseTextDecl</a>		(<a href="libxml2-tree.ht
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlParseVersionNum">xmlParseVersionNum</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void	<a href="#xmlParseXMLDecl">xmlParseXMLDecl</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void	<a href="#xmlParserHandlePEReference">xmlParserHandlePEReference</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-void	<a href="#xmlParserHandleReference">xmlParserHandleReference</a>	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 void	<a href="#xmlParserInputShrink">xmlParserInputShrink</a>		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> in);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a>	<a href="#xmlPopInput">xmlPopInput</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 int	<a href="#xmlPushInput">xmlPushInput</a>			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input);
-<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlScanName">xmlScanName</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
-void	<a href="#xmlSetEntityReferenceFunc">xmlSetEntityReferenceFunc</a>	(<a href="libxml2-parserInternals.html#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a> func);
 int	<a href="#xmlSkipBlankChars">xmlSkipBlankChars</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt);
 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	<a href="#xmlSplitQName">xmlSplitQName</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** prefixOut);
 int	<a href="#xmlStringCurrentChar">xmlStringCurrentChar</a>		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * cur, <br>					 int * len);
@@ -148,14 +135,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <div class="refsect1" lang="en">
 <h2>Details</h2>
 <div class="refsect2" lang="en">
-<div class="refsect2" lang="en">
-<h3>
-<a name="INPUT_CHUNK">Macro </a>INPUT_CHUNK</h3>
-<pre class="programlisting">#define <a href="#INPUT_CHUNK">INPUT_CHUNK</a>;
-</pre>
-<p>The parser tries to always have that amount of input ready. One of the point is providing context when reporting errors.</p>
-</div>
-<hr>
 <div class="refsect2" lang="en">
 <h3>
 <a name="IS_ASCII_DIGIT">Macro </a>IS_ASCII_DIGIT</h3>
@@ -523,35 +502,26 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlEntityReferenceFunc"></a>Function type xmlEntityReferenceFunc</h3>
-<pre class="programlisting">void	xmlEntityReferenceFunc		(<a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> ent, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> firstNode, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> lastNode)<br>
+<a name="inputPop">Macro </a>inputPop</h3>
+<pre class="programlisting">#define <a href="#inputPop">inputPop</a>;
 </pre>
-<p>Callback function used when one needs to be able to track back the provenance of a chunk of nodes inherited from an entity replacement.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ent</tt></i>:</span></td>
-<td>the entity</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>firstNode</tt></i>:</span></td>
-<td>the fist node in the chunk</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>lastNode</tt></i>:</span></td>
-<td>the last nod in the chunk</td>
-</tr>
-</tbody>
-</table></div>
+<p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlParserMaxDepth">Variable </a>xmlParserMaxDepth</h3>
-<pre class="programlisting">const unsigned int xmlParserMaxDepth;
+<a name="inputPush">Macro </a>inputPush</h3>
+<pre class="programlisting">#define <a href="#inputPush">inputPush</a>;
 </pre>
-<p>arbitrary depth limit for the XML documents that we allow to process. This is not a limitation of the parser but a safety boundary feature. It can be disabled with the <a href="libxml2-parser.html#XML_PARSE_HUGE">XML_PARSE_HUGE</a> parser option.</p>
+<p></p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlParserMaxDepth">Macro </a>xmlParserMaxDepth</h3>
+<pre class="programlisting">#define <a href="#xmlParserMaxDepth">xmlParserMaxDepth</a>;
+</pre>
+<p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -580,148 +550,10 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="inputPop"></a>inputPop ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	inputPop	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>Pops the top parser input from the input stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the input just removed</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="inputPush"></a>inputPush ()</h3>
-<pre class="programlisting">int	inputPush			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value)<br>
-</pre>
-<p>Pushes a new parser input on top of the input stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the parser input</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>-1 in case of error, the index in the stack otherwise</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="namePop"></a>namePop ()</h3>
-<pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	namePop			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>DEPRECATED: Internal function, do not use. Pops the top element name from the name stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the name just removed</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="namePush"></a>namePush ()</h3>
-<pre class="programlisting">int	namePush			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * value)<br>
-</pre>
-<p>DEPRECATED: Internal function, do not use. Pushes a new element name on top of the name stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the element name</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>-1 in case of error, the index in the stack otherwise</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="nodePop"></a>nodePop ()</h3>
-<pre class="programlisting"><a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a>	nodePop			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>DEPRECATED: Internal function, do not use. Pops the top element node from the node stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the node just removed</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="nodePush"></a>nodePush ()</h3>
-<pre class="programlisting">int	nodePush			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlNodePtr">xmlNodePtr</a> value)<br>
-</pre>
-<p>DEPRECATED: Internal function, do not use. Pushes a new element node on top of the node stack</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>the element node</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>-1 in case of error, the index in the stack otherwise</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlCheckLanguageID"></a>xmlCheckLanguageID ()</h3>
 <pre class="programlisting">int	xmlCheckLanguageID		(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * lang)<br>
 </pre>
-<p>DEPRECATED: Internal function, do not use. Checks that the value conforms to the LanguageID production: NOTE: this is somewhat deprecated, those productions were removed from the XML Second edition. [33] LanguageID ::= Langcode ('-' Subcode)* [34] Langcode ::= ISO639Code | IanaCode | UserCode [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z]) [36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+ [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+ [38] Subcode ::= ([a-z] | [A-Z])+ The current REC <a href="libxml2-SAX.html#reference">reference</a> the successors of RFC 1766, currently 5646 http://www.rfc-editor.org/rfc/rfc5646.txt langtag = language ["-" script] ["-" region] *("-" variant) *("-" extension) ["-" privateuse] language = 2*3ALPHA ; shortest ISO 639 code ["-" extlang] ; sometimes followed by ; extended language subtags / 4ALPHA ; or reserved for future use / 5*8ALPHA ; or registered language subtag extlang = 3ALPHA ; selected ISO 639 codes *2("-" 3ALPHA) ; permanently reserved script = 4ALPHA ; ISO 15924 code region = 2ALPHA ; ISO 3166-1 code / 3DIGIT ; UN M.49 code variant = 5*8alphanum ; registered variants / (DIGIT 3alphanum) extension = singleton 1*("-" (2*8alphanum)) ; Single alphanumerics ; "x" reserved for private use singleton = DIGIT ; 0 - 9 / %x41-57 ; A - W / %x59-5A ; Y - Z / %x61-77 ; a - w / %x79-7A ; y - z it sounds right to still allow Irregular i-xxx IANA and user codes too The parser below doesn't try to cope with extension or privateuse that could be added but that's not interoperable anyway</p>
+<p>DEPRECATED: Internal function, do not use. Checks that the value conforms to the LanguageID production: NOTE: this is somewhat deprecated, those productions were removed from the XML Second edition. [33] LanguageID ::= Langcode ('-' Subcode)* [34] Langcode ::= ISO639Code | IanaCode | UserCode [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z]) [36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+ [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+ [38] Subcode ::= ([a-z] | [A-Z])+ The current REC reference the successors of RFC 1766, currently 5646 http://www.rfc-editor.org/rfc/rfc5646.txt langtag = language ["-" script] ["-" region] *("-" variant) *("-" extension) ["-" privateuse] language = 2*3ALPHA ; shortest ISO 639 code ["-" extlang] ; sometimes followed by ; extended language subtags / 4ALPHA ; or reserved for future use / 5*8ALPHA ; or registered language subtag extlang = 3ALPHA ; selected ISO 639 codes *2("-" 3ALPHA) ; permanently reserved script = 4ALPHA ; ISO 15924 code region = 2ALPHA ; ISO 3166-1 code / 3DIGIT ; UN M.49 code variant = 5*8alphanum ; registered variants / (DIGIT 3alphanum) extension = singleton 1*("-" (2*8alphanum)) ; Single alphanumerics ; "x" reserved for private use singleton = DIGIT ; 0 - 9 / %x41-57 ; A - W / %x59-5A ; Y - Z / %x61-77 ; a - w / %x79-7A ; y - z it sounds right to still allow Irregular i-xxx IANA and user codes too The parser below doesn't try to cope with extension or privateuse that could be added but that's not interoperable anyway</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -742,7 +574,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlCopyChar"></a>xmlCopyChar ()</h3>
 <pre class="programlisting">int	xmlCopyChar			(int len, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * out, <br>					 int val)<br>
 </pre>
-<p>append the char value in the array</p>
+<p>DEPRECATED: Don't use. append the char value in the array</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -772,7 +604,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlCopyCharMultiByte"></a>xmlCopyCharMultiByte ()</h3>
 <pre class="programlisting">int	xmlCopyCharMultiByte		(<a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * out, <br>					 int val)<br>
 </pre>
-<p>append the char value in the array</p>
+<p>DEPRECATED: Internal function, don't use. append the char value in the array</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -798,7 +630,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlCreateEntityParserCtxt"></a>xmlCreateEntityParserCtxt ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a>	xmlCreateEntityParserCtxt	(const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * URL, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ID, <br>							 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * base)<br>
 </pre>
-<p>DEPRECATED: Use xmlNewInputURL. Create a parser context for an external entity Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
+<p>DEPRECATED: Don't use. Create a parser context for an external entity Automatic support for ZLIB/Compress compressed document is provided by default if found at compile-time.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -911,6 +743,52 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
+<a name="xmlCtxtPopInput"></a>xmlCtxtPopInput ()</h3>
+<pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlCtxtPopInput	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
+</pre>
+<p>Pops the top parser input from the input stack</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XML parser context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>the input just removed</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
+<a name="xmlCtxtPushInput"></a>xmlCtxtPushInput ()</h3>
+<pre class="programlisting">int	xmlCtxtPushInput		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> value)<br>
+</pre>
+<p>Pushes a new parser input on top of the input stack</p>
+<div class="variablelist"><table border="0">
+<col align="left">
+<tbody>
+<tr>
+<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
+<td>an XML parser context</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>value</tt></i>:</span></td>
+<td>the parser input</td>
+</tr>
+<tr>
+<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
+<td>-1 in case of error, the index in the stack otherwise</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<h3>
 <a name="xmlCurrentChar"></a>xmlCurrentChar ()</h3>
 <pre class="programlisting">int	xmlCurrentChar			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int * len)<br>
 </pre>
@@ -936,48 +814,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlDecodeEntities"></a>xmlDecodeEntities ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlDecodeEntities	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 int len, <br>					 int what, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> end, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> end2, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> end3)<br>
-</pre>
-<p>This function is deprecated, we now always process entities content through <a href="libxml2-parserInternals.html#xmlStringDecodeEntities">xmlStringDecodeEntities</a> TODO: remove it in next major release. [67] Reference ::= EntityRef | CharRef [69] PEReference ::= '%' Name ';'</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>the parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>len</tt></i>:</span></td>
-<td>the len to decode (in bytes !), -1 for no size limit</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>what</tt></i>:</span></td>
-<td>combination of <a href="libxml2-parserInternals.html#XML_SUBSTITUTE_REF">XML_SUBSTITUTE_REF</a> and <a href="libxml2-parserInternals.html#XML_SUBSTITUTE_PEREF">XML_SUBSTITUTE_PEREF</a>
-</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>end</tt></i>:</span></td>
-<td>an end marker xmlChar, 0 if none</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>end2</tt></i>:</span></td>
-<td>an end marker xmlChar, 0 if none</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>end3</tt></i>:</span></td>
-<td>an end marker xmlChar, 0 if none</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>A newly allocated string with the substitution done. The caller must deallocate it !</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlFreeInputStream"></a>xmlFreeInputStream ()</h3>
 <pre class="programlisting">void	xmlFreeInputStream		(<a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br>
 </pre>
@@ -994,31 +830,10 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlHandleEntity"></a>xmlHandleEntity ()</h3>
-<pre class="programlisting">void	xmlHandleEntity			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlEntityPtr">xmlEntityPtr</a> entity)<br>
-</pre>
-<p>Default handling of defined entities, when should we define a new input stream ? When do we just handle that as a set of chars ? OBSOLETE: to be removed at some point.</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>entity</tt></i>:</span></td>
-<td>an XML entity pointer.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlIsLetter"></a>xmlIsLetter ()</h3>
 <pre class="programlisting">int	xmlIsLetter			(int c)<br>
 </pre>
-<p>Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</p>
+<p>DEPRECATED: Internal function, don't use. Check whether the character is allowed by the production [84] Letter ::= BaseChar | Ideographic</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1029,73 +844,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
 <td>0 if not, non-zero otherwise</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlNamespaceParseNCName"></a>xmlNamespaceParseNCName ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlNamespaceParseNCName	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>parse an XML namespace name. TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input. [NS 3] NCName ::= (Letter | '_') (NCNameChar)* [NS 4] NCNameChar ::= Letter | Digit | '.' | '-' | '_' | CombiningChar | Extender</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the namespace name or NULL</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlNamespaceParseNSDef"></a>xmlNamespaceParseNSDef ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlNamespaceParseNSDef	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>parse a namespace prefix declaration TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input. [NS 1] NSDef ::= PrefixDef Eq SystemLiteral [NS 2] PrefixDef ::= 'xmlns' (':' NCName)?</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the namespace name</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlNamespaceParseQName"></a>xmlNamespaceParseQName ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlNamespaceParseQName	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** prefix)<br>
-</pre>
-<p>TODO: this seems not in use anymore, the namespace handling is done on top of the SAX interfaces, i.e. not on raw input. parse an XML qualified name [NS 5] QName ::= (Prefix ':')? LocalPart [NS 6] Prefix ::= NCName [NS 7] LocalPart ::= NCName</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>prefix</tt></i>:</span></td>
-<td>a <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> **</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the local part, and prefix is updated to get the Prefix if any.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1131,7 +879,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlNewInputFromFile"></a>xmlNewInputFromFile ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlNewInputFromFile	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>						 const char * filename)<br>
 </pre>
-<p>Create a new input stream based on a file or an URL.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromUrl">xmlNewInputFromUrl</a>. Create a new input stream based on a file or an URL.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1156,7 +904,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlNewInputStream"></a>xmlNewInputStream ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlNewInputStream	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>Create a new input stream structure.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromUrl">xmlNewInputFromUrl</a> or similar functions. Create a new input stream structure.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1177,7 +925,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlNewStringInputStream"></a>xmlNewStringInputStream ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a>	xmlNewStringInputStream	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * buffer)<br>
 </pre>
-<p>Create a new input stream based on a memory buffer.</p>
+<p>DEPRECATED: Use <a href="libxml2-parser.html#xmlNewInputFromString">xmlNewInputFromString</a>. Create a new input stream based on a memory buffer.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1217,7 +965,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseAttValue"></a>xmlParseAttValue ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseAttValue	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse a value for an <a href="libxml2-SAX.html#attribute">attribute</a> Note: the parser won't do substitution of entities here, this will be handled later in <a href="libxml2-tree.html#xmlStringGetNodeList">xmlStringGetNodeList</a> [10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' | "'" ([^&lt;&amp;'] | Reference)* "'" 3.3.3 Attribute-Value Normalization: Before the value of an <a href="libxml2-SAX.html#attribute">attribute</a> is passed to the application or checked for validity, the XML processor must normalize it as follows: - a character <a href="libxml2-SAX.html#reference">reference</a> is processed by appending the referenced character to the <a href="libxml2-SAX.html#attribute">attribute</a> value - an entity <a href="libxml2-SAX.html#reference">reference</a> is processed by recursively processing the replacement text of the entity - a whitespace character (#x20, #xD, #xA, #x9) is processed by appending #x20 to the normalized value, except that only a single #x20 is appended for a "#xD#xA" sequence that is part of an external parsed entity or the literal entity value of an internal parsed entity - other <a href="libxml2-SAX.html#characters">characters</a> are processed by appending them to the normalized value If the declared value is not CDATA, then the XML processor must further process the normalized <a href="libxml2-SAX.html#attribute">attribute</a> value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) <a href="libxml2-SAX.html#characters">characters</a> by a single space (#x20) character. All attributes for which no declaration has been read should be treated by a non-validating parser as if declared CDATA.</p>
+<p>DEPRECATED: Internal function, don't use. parse a value for an attribute Note: the parser won't do substitution of entities here, this will be handled later in <a href="libxml2-tree.html#xmlStringGetNodeList">xmlStringGetNodeList</a> [10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"' | "'" ([^&lt;&amp;'] | Reference)* "'" 3.3.3 Attribute-Value Normalization: Before the value of an attribute is passed to the application or checked for validity, the XML processor must normalize it as follows: - a character reference is processed by appending the referenced character to the attribute value - an entity reference is processed by recursively processing the replacement text of the entity - a whitespace character (#x20, #xD, #xA, #x9) is processed by appending #x20 to the normalized value, except that only a single #x20 is appended for a "#xD#xA" sequence that is part of an external parsed entity or the literal entity value of an internal parsed entity - other characters are processed by appending them to the normalized value If the declared value is not CDATA, then the XML processor must further process the normalized attribute value by discarding any leading and trailing space (#x20) characters, and by replacing sequences of space (#x20) characters by a single space (#x20) character. All attributes for which no declaration has been read should be treated by a non-validating parser as if declared CDATA.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1238,7 +986,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseAttribute"></a>xmlParseAttribute ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseAttribute	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** value)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse an <a href="libxml2-SAX.html#attribute">attribute</a> [41] Attribute ::= Name Eq AttValue [ WFC: No External Entity References ] Attribute values cannot contain direct or indirect entity references to external entities. [ WFC: No &lt; in Attribute Values ] The replacement text of any entity referred to directly or indirectly in an <a href="libxml2-SAX.html#attribute">attribute</a> value (other than "&amp;lt;") must not contain a &lt;. [ VC: Attribute Value Type ] The <a href="libxml2-SAX.html#attribute">attribute</a> must have been declared; the value must be of the type declared for it. [25] Eq ::= S? '=' S? With namespace: [NS 11] Attribute ::= QName Eq AttValue Also the case QName == xmlns:??? is handled independently as a namespace definition.</p>
+<p>DEPRECATED: Internal function, don't use. parse an attribute [41] Attribute ::= Name Eq AttValue [ WFC: No External Entity References ] Attribute values cannot contain direct or indirect entity references to external entities. [ WFC: No &lt; in Attribute Values ] The replacement text of any entity referred to directly or indirectly in an attribute value (other than "&amp;lt;") must not contain a &lt;. [ VC: Attribute Value Type ] The attribute must have been declared; the value must be of the type declared for it. [25] Eq ::= S? '=' S? With namespace: [NS 11] Attribute ::= QName Eq AttValue Also the case QName == xmlns:??? is handled independently as a namespace definition.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1248,12 +996,11 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>a <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** used to store the value of the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>a <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** used to store the value of the attribute</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> name, and the value in *value.</td>
+<td>the attribute name, and the value in *value.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1264,7 +1011,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseAttributeListDecl"></a>xmlParseAttributeListDecl ()</h3>
 <pre class="programlisting">void	xmlParseAttributeListDecl	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse an <a href="libxml2-SAX.html#attribute">attribute</a> list declaration for an element. Always consumes '&lt;!'. [52] AttlistDecl ::= '&lt;!ATTLIST' S Name AttDef* S? '&gt;' [53] AttDef ::= S Name S AttType S DefaultDecl</p>
+<p>DEPRECATED: Internal function, don't use. Parse an attribute list declaration for an element. Always consumes '&lt;!'. [52] AttlistDecl ::= '&lt;!ATTLIST' S Name AttDef* S? '&gt;' [53] AttDef ::= S Name S AttType S DefaultDecl</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1279,7 +1026,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseAttributeType"></a>xmlParseAttributeType ()</h3>
 <pre class="programlisting">int	xmlParseAttributeType		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> * tree)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse the Attribute list def for an element [54] AttType ::= StringType | TokenizedType | EnumeratedType [55] StringType ::= 'CDATA' [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' | 'ENTITIES' | 'NMTOKEN' | 'NMTOKENS' Validity constraints for <a href="libxml2-SAX.html#attribute">attribute</a> values syntax are checked in xmlValidateAttributeValue() [ VC: ID ] Values of type ID must match the Name production. A name must not appear more than once in an XML document as a value of this type; i.e., ID values must uniquely identify the elements which bear them. [ VC: One ID per Element Type ] No element type may have more than one ID <a href="libxml2-SAX.html#attribute">attribute</a> specified. [ VC: ID Attribute Default ] An ID <a href="libxml2-SAX.html#attribute">attribute</a> must have a declared default of #IMPLIED or #REQUIRED. [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names; each IDREF Name must match the value of an ID <a href="libxml2-SAX.html#attribute">attribute</a> on some element in the XML document; i.e. IDREF values must match the value of some ID <a href="libxml2-SAX.html#attribute">attribute</a>. [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names; each Entity Name must match the name of an unparsed entity declared in the DTD. [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</p>
+<p>DEPRECATED: Internal function, don't use. parse the Attribute list def for an element [54] AttType ::= StringType | TokenizedType | EnumeratedType [55] StringType ::= 'CDATA' [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' | 'ENTITIES' | 'NMTOKEN' | 'NMTOKENS' Validity constraints for attribute values syntax are checked in xmlValidateAttributeValue() [ VC: ID ] Values of type ID must match the Name production. A name must not appear more than once in an XML document as a value of this type; i.e., ID values must uniquely identify the elements which bear them. [ VC: One ID per Element Type ] No element type may have more than one ID attribute specified. [ VC: ID Attribute Default ] An ID attribute must have a declared default of #IMPLIED or #REQUIRED. [ VC: IDREF ] Values of type IDREF must match the Name production, and values of type IDREFS must match Names; each IDREF Name must match the value of an ID attribute on some element in the XML document; i.e. IDREF values must match the value of some ID attribute. [ VC: Entity Name ] Values of type ENTITY must match the Name production, values of type ENTITIES must match Names; each Entity Name must match the name of an unparsed entity declared in the DTD. [ VC: Name Token ] Values of type NMTOKEN must match the Nmtoken production; values of type NMTOKENS must match Nmtokens.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1293,7 +1040,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the <a href="libxml2-SAX.html#attribute">attribute</a> type</td>
+<td>the attribute type</td>
 </tr>
 </tbody>
 </table></div>
@@ -1340,7 +1087,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseCharRef"></a>xmlParseCharRef ()</h3>
 <pre class="programlisting">int	xmlParseCharRef			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse a numeric character <a href="libxml2-SAX.html#reference">reference</a>. Always consumes '&amp;'. [66] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';' [ WFC: Legal Character ] Characters referred to using character references must match the production for Char.</p>
+<p>DEPRECATED: Internal function, don't use. Parse a numeric character reference. Always consumes '&amp;'. [66] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';' [ WFC: Legal Character ] Characters referred to using character references must match the production for Char.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1361,7 +1108,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseComment"></a>xmlParseComment ()</h3>
 <pre class="programlisting">void	xmlParseComment			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse an XML (SGML) <a href="libxml2-SAX.html#comment">comment</a>. Always consumes '&lt;!'. The spec says that "For compatibility, the string "--" (double-hyphen) must not occur within comments. " [15] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* '--&gt;'</p>
+<p>DEPRECATED: Internal function, don't use. Parse an XML (SGML) comment. Always consumes '&lt;!'. The spec says that "For compatibility, the string "--" (double-hyphen) must not occur within comments. " [15] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* '--&gt;'</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1376,7 +1123,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseContent"></a>xmlParseContent ()</h3>
 <pre class="programlisting">void	xmlParseContent			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>Parse XML element content. This is useful if you're only interested in custom SAX callbacks. If you want a node list, use <a href="libxml2-parser.html#xmlParseInNodeContext">xmlParseInNodeContext</a>.</p>
+<p>Parse XML element content. This is useful if you're only interested in custom SAX callbacks. If you want a node list, use <a href="libxml2-parser.html#xmlCtxtParseContent">xmlCtxtParseContent</a>.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1391,7 +1138,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseDefaultDecl"></a>xmlParseDefaultDecl ()</h3>
 <pre class="programlisting">int	xmlParseDefaultDecl		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** value)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse an <a href="libxml2-SAX.html#attribute">attribute</a> default declaration [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue) [ VC: Required Attribute ] if the default declaration is the keyword #REQUIRED, then the <a href="libxml2-SAX.html#attribute">attribute</a> must be specified for all elements of the type in the attribute-list declaration. [ VC: Attribute Default Legal ] The declared default value must meet the lexical constraints of the declared <a href="libxml2-SAX.html#attribute">attribute</a> type c.f. xmlValidateAttributeDecl() [ VC: Fixed Attribute Default ] if an <a href="libxml2-SAX.html#attribute">attribute</a> has a default value declared with the #FIXED keyword, instances of that <a href="libxml2-SAX.html#attribute">attribute</a> must match the default value. [ WFC: No &lt; in Attribute Values ] handled in xmlParseAttValue()</p>
+<p>DEPRECATED: Internal function, don't use. Parse an attribute default declaration [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue) [ VC: Required Attribute ] if the default declaration is the keyword #REQUIRED, then the attribute must be specified for all elements of the type in the attribute-list declaration. [ VC: Attribute Default Legal ] The declared default value must meet the lexical constraints of the declared attribute type c.f. xmlValidateAttributeDecl() [ VC: Fixed Attribute Default ] if an attribute has a default value declared with the #FIXED keyword, instances of that attribute must match the default value. [ WFC: No &lt; in Attribute Values ] handled in xmlParseAttValue()</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1401,8 +1148,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>value</tt></i>:</span></td>
-<td>Receive a possible fixed default value for the <a href="libxml2-SAX.html#attribute">attribute</a>
-</td>
+<td>Receive a possible fixed default value for the attribute</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1447,7 +1193,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseElementChildrenContentDecl"></a>xmlParseElementChildrenContentDecl ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlElementContentPtr">xmlElementContentPtr</a>	xmlParseElementChildrenContentDecl	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>							 int inputchk)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse the declaration for a Mixed Element content The leading '(' and spaces have been skipped in <a href="libxml2-parserInternals.html#xmlParseElementContentDecl">xmlParseElementContentDecl</a> [47] children ::= (choice | seq) ('?' | '*' | '+')? [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')? [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')' [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')' [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity <a href="libxml2-SAX.html#reference">reference</a> appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</p>
+<p>DEPRECATED: Internal function, don't use. parse the declaration for a Mixed Element content The leading '(' and spaces have been skipped in <a href="libxml2-parserInternals.html#xmlParseElementContentDecl">xmlParseElementContentDecl</a> [47] children ::= (choice | seq) ('?' | '*' | '+')? [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')? [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')' [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')' [ VC: Proper Group/PE Nesting ] applies to [49] and [50] TODO Parameter-entity replacement text must be properly nested with parenthesized groups. That is to say, if either of the opening or closing parentheses in a choice, seq, or Mixed construct is contained in the replacement text for a parameter entity, both must be contained in the same replacement text. For interoperability, if a parameter-entity reference appears in a choice, seq, or Mixed construct, its replacement text should not be empty, and neither the first nor last non-blank character of the replacement text should be a connector (| or ,).</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1654,7 +1400,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the EntityValue parsed with <a href="libxml2-SAX.html#reference">reference</a> substituted or NULL</td>
+<td>the EntityValue parsed with reference substituted or NULL</td>
 </tr>
 </tbody>
 </table></div>
@@ -1665,7 +1411,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseEnumeratedType"></a>xmlParseEnumeratedType ()</h3>
 <pre class="programlisting">int	xmlParseEnumeratedType		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a> * tree)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse an Enumerated <a href="libxml2-SAX.html#attribute">attribute</a> type. [57] EnumeratedType ::= NotationType | Enumeration [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'</p>
+<p>DEPRECATED: Internal function, don't use. parse an Enumerated attribute type. [57] EnumeratedType ::= NotationType | Enumeration [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1692,7 +1438,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseEnumerationType"></a>xmlParseEnumerationType ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a>	xmlParseEnumerationType	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse an Enumeration <a href="libxml2-SAX.html#attribute">attribute</a> type. [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')' [ VC: Enumeration ] Values of this type must match one of the Nmtoken tokens in the declaration</p>
+<p>DEPRECATED: Internal function, don't use. parse an Enumeration attribute type. [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')' [ VC: Enumeration ] Values of this type must match one of the Nmtoken tokens in the declaration</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1702,7 +1448,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the enumeration <a href="libxml2-SAX.html#attribute">attribute</a> tree built while parsing</td>
+<td>the enumeration attribute tree built while parsing</td>
 </tr>
 </tbody>
 </table></div>
@@ -1742,7 +1488,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseExternalSubset"></a>xmlParseExternalSubset ()</h3>
 <pre class="programlisting">void	xmlParseExternalSubset		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * ExternalID, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * SystemID)<br>
 </pre>
-<p>parse Markup declarations from an external subset [30] extSubset ::= textDecl? extSubsetDecl [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *</p>
+<p>DEPRECATED: Internal function, don't use. parse Markup declarations from an external subset [30] extSubset ::= textDecl? extSubsetDecl [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1815,21 +1561,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlParseNamespace"></a>xmlParseNamespace ()</h3>
-<pre class="programlisting">void	xmlParseNamespace		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>xmlParseNamespace: parse specific PI '&lt;?namespace ...' constructs. This is what the older xml-name Working Draft specified, a bunch of other stuff may still rely on it, so support is still here as if it was declared on the root of the Tree:-( TODO: remove from library To be removed at next drop of binary compatibility</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody><tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlParseNmtoken"></a>xmlParseNmtoken ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseNmtoken		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
@@ -1869,7 +1600,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseNotationType"></a>xmlParseNotationType ()</h3>
 <pre class="programlisting"><a href="libxml2-tree.html#xmlEnumerationPtr">xmlEnumerationPtr</a>	xmlParseNotationType	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse an Notation <a href="libxml2-SAX.html#attribute">attribute</a> type. Note: the leading 'NOTATION' S part has already being parsed... [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')' [ VC: Notation Attributes ] Values of this type must match one of the notation names included in the declaration; all notation names in the declaration must be declared.</p>
+<p>DEPRECATED: Internal function, don't use. parse an Notation attribute type. Note: the leading 'NOTATION' S part has already being parsed... [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')' [ VC: Notation Attributes ] Values of this type must match one of the notation names included in the declaration; all notation names in the declaration must be declared.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1879,7 +1610,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the notation <a href="libxml2-SAX.html#attribute">attribute</a> tree built while parsing</td>
+<td>the notation attribute tree built while parsing</td>
 </tr>
 </tbody>
 </table></div>
@@ -1890,7 +1621,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParsePEReference"></a>xmlParsePEReference ()</h3>
 <pre class="programlisting">void	xmlParsePEReference		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse a parameter entity <a href="libxml2-SAX.html#reference">reference</a>. Always consumes '%'. The entity content is handled directly by pushing it's content as a new input stream. [69] PEReference ::= '%' Name ';' [ WFC: No Recursion ] A parsed entity must not contain a recursive <a href="libxml2-SAX.html#reference">reference</a> to itself, either directly or indirectly. [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with "standalone='yes'", ... ... The declaration of a parameter entity must precede any <a href="libxml2-SAX.html#reference">reference</a> to it... [ VC: Entity Declared ] In a document with an external subset or external parameter entities with "standalone='no'", ... ... The declaration of a parameter entity must precede any <a href="libxml2-SAX.html#reference">reference</a> to it... [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.</p>
+<p>DEPRECATED: Internal function, don't use. Parse a parameter entity reference. Always consumes '%'. The entity content is handled directly by pushing it's content as a new input stream. [69] PEReference ::= '%' Name ';' [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly. [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with "standalone='yes'", ... ... The declaration of a parameter entity must precede any reference to it... [ VC: Entity Declared ] In a document with an external subset or external parameter entities with "standalone='no'", ... ... The declaration of a parameter entity must precede any reference to it... [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -1959,27 +1690,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <hr>
 <div class="refsect2" lang="en">
 <h3>
-<a name="xmlParseQuotedString"></a>xmlParseQuotedString ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseQuotedString	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>Parse and return a string between quotes or doublequotes TODO: Deprecated, to be removed at next drop of binary compatibility</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the string parser or NULL.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
 <a name="xmlParseReference"></a>xmlParseReference ()</h3>
 <pre class="programlisting">void	xmlParseReference		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
@@ -1998,7 +1708,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseSDDecl"></a>xmlParseSDDecl ()</h3>
 <pre class="programlisting">int	xmlParseSDDecl			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. parse the XML standalone declaration [32] SDDecl ::= S 'standalone' Eq (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"')) [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value "no" if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the <a href="libxml2-SAX.html#attribute">attribute</a> appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</p>
+<p>DEPRECATED: Internal function, don't use. parse the XML standalone declaration [32] SDDecl ::= S 'standalone' Eq (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"')) [ VC: Standalone Document Declaration ] TODO The standalone document declaration must have the value "no" if any external markup declarations contain declarations of: - attributes with default values, if elements to which these attributes apply appear in the document without specifications of values for these attributes, or - entities (other than amp, lt, gt, apos, quot), if references to those entities appear in the document, or - attributes with values subject to normalization, where the attribute appears in the document with a value which will change as a result of normalization, or - element types with element content, if white space occurs directly within any instance of those types.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2008,7 +1718,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>1 if standalone="yes" 0 if standalone="no" -2 if standalone <a href="libxml2-SAX.html#attribute">attribute</a> is missing or invalid (A standalone value of -2 means that the XML declaration was found, but no value was specified for the standalone attribute).</td>
+<td>1 if standalone="yes" 0 if standalone="no" -2 if standalone attribute is missing or invalid (A standalone value of -2 means that the XML declaration was found, but no value was specified for the standalone attribute).</td>
 </tr>
 </tbody>
 </table></div>
@@ -2019,7 +1729,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParseStartTag"></a>xmlParseStartTag ()</h3>
 <pre class="programlisting">const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlParseStartTag	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, don't use. Parse a start tag. Always consumes '&lt;'. [40] STag ::= '&lt;' Name (S Attribute)* S? '&gt;' [ WFC: Unique Att Spec ] No <a href="libxml2-SAX.html#attribute">attribute</a> name may appear more than once in the same start-tag or empty-element tag. [44] EmptyElemTag ::= '&lt;' Name (S Attribute)* S? '/&gt;' [ WFC: Unique Att Spec ] No <a href="libxml2-SAX.html#attribute">attribute</a> name may appear more than once in the same start-tag or empty-element tag. With namespace: [NS 8] STag ::= '&lt;' QName (S Attribute)* S? '&gt;' [NS 10] EmptyElement ::= '&lt;' QName (S Attribute)* S? '/&gt;'</p>
+<p>DEPRECATED: Internal function, don't use. Parse a start tag. Always consumes '&lt;'. [40] STag ::= '&lt;' Name (S Attribute)* S? '&gt;' [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag. [44] EmptyElemTag ::= '&lt;' Name (S Attribute)* S? '/&gt;' [ WFC: Unique Att Spec ] No attribute name may appear more than once in the same start-tag or empty-element tag. With namespace: [NS 8] STag ::= '&lt;' QName (S Attribute)* S? '&gt;' [NS 10] EmptyElement ::= '&lt;' QName (S Attribute)* S? '/&gt;'</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2133,22 +1843,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlParserHandlePEReference"></a>xmlParserHandlePEReference ()</h3>
 <pre class="programlisting">void	xmlParserHandlePEReference	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>DEPRECATED: Internal function, do not use. [69] PEReference ::= '%' Name ';' [ WFC: No Recursion ] A parsed entity must not contain a recursive <a href="libxml2-SAX.html#reference">reference</a> to itself, either directly or indirectly. [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with "standalone='yes'", ... ... The declaration of a parameter entity must precede any <a href="libxml2-SAX.html#reference">reference</a> to it... [ VC: Entity Declared ] In a document with an external subset or external parameter entities with "standalone='no'", ... ... The declaration of a parameter entity must precede any <a href="libxml2-SAX.html#reference">reference</a> to it... [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled. A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc i.e. - Included in literal in entity values - Included as Parameter Entity <a href="libxml2-SAX.html#reference">reference</a> within DTDs</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody><tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>the parser context</td>
-</tr></tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlParserHandleReference"></a>xmlParserHandleReference ()</h3>
-<pre class="programlisting">void	xmlParserHandleReference	(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>TODO: Remove, now deprecated ... the test is done directly in the content parsing routines. [67] Reference ::= EntityRef | CharRef [68] EntityRef ::= '&amp;' Name ';' [ WFC: Entity Declared ] the Name given in the entity <a href="libxml2-SAX.html#reference">reference</a> must match that in an entity declaration, except that well-formed documents need not declare any of the following entities: amp, lt, gt, apos, quot. [ WFC: Parsed Entity ] An entity <a href="libxml2-SAX.html#reference">reference</a> must not contain the name of an unparsed entity [66] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';' A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc</p>
+<p>DEPRECATED: Internal function, do not use. [69] PEReference ::= '%' Name ';' [ WFC: No Recursion ] A parsed entity must not contain a recursive reference to itself, either directly or indirectly. [ WFC: Entity Declared ] In a document without any DTD, a document with only an internal DTD subset which contains no parameter entity references, or a document with "standalone='yes'", ... ... The declaration of a parameter entity must precede any reference to it... [ VC: Entity Declared ] In a document with an external subset or external parameter entities with "standalone='no'", ... ... The declaration of a parameter entity must precede any reference to it... [ WFC: In DTD ] Parameter-entity references may only appear in the DTD. NOTE: misleading but this is handled. A PEReference may have been detected in the current input stream the handling is done accordingly to http://www.w3.org/TR/REC-xml#entproc i.e. - Included in literal in entity values - Included as Parameter Entity reference within DTDs</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody><tr>
@@ -2178,7 +1873,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlPopInput"></a>xmlPopInput ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a>	xmlPopInput			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
 </pre>
-<p>xmlPopInput: the current input pointed by ctxt-&gt;input came to an end pop it and return the next char.</p>
+<p>DEPRECATED: Internal function, don't use.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2199,7 +1894,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlPushInput"></a>xmlPushInput ()</h3>
 <pre class="programlisting">int	xmlPushInput			(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 <a href="libxml2-tree.html#xmlParserInputPtr">xmlParserInputPtr</a> input)<br>
 </pre>
-<p>Push an input stream onto the stack. This makes the parser use an input returned from advanced functions like xmlNewInputURL or xmlNewInputMemory.</p>
+<p>DEPRECATED: Internal function, don't use. Push an input stream onto the stack.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2216,42 +1911,6 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <td>-1 in case of error or the index in the input stack</td>
 </tr>
 </tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlScanName"></a>xmlScanName ()</h3>
-<pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlScanName		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt)<br>
-</pre>
-<p>Trickery: parse an XML name but without consuming the input flow Needed for rollback cases. Used only when parsing entities references. TODO: seems deprecated now, only used in the default part of <a href="libxml2-parserInternals.html#xmlParserHandleReference">xmlParserHandleReference</a> [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' | CombiningChar | Extender [5] Name ::= (Letter | '_' | ':') (NameChar)* [6] Names ::= Name (S Name)*</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody>
-<tr>
-<td><span class="term"><i><tt>ctxt</tt></i>:</span></td>
-<td>an XML parser context</td>
-</tr>
-<tr>
-<td><span class="term"><i><tt>Returns</tt></i>:</span></td>
-<td>the Name parsed or NULL</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<h3>
-<a name="xmlSetEntityReferenceFunc"></a>xmlSetEntityReferenceFunc ()</h3>
-<pre class="programlisting">void	xmlSetEntityReferenceFunc	(<a href="libxml2-parserInternals.html#xmlEntityReferenceFunc">xmlEntityReferenceFunc</a> func)<br>
-</pre>
-<p>Set the function to call call back when a xml <a href="libxml2-SAX.html#reference">reference</a> has been made</p>
-<div class="variablelist"><table border="0">
-<col align="left">
-<tbody><tr>
-<td><span class="term"><i><tt>func</tt></i>:</span></td>
-<td>A valid function</td>
-</tr></tbody>
 </table></div>
 </div>
 <hr>
@@ -2281,7 +1940,7 @@ int	<a href="#xmlSwitchToEncoding">xmlSwitchToEncoding</a>		(<a href="libxml2-tr
 <a name="xmlSplitQName"></a>xmlSplitQName ()</h3>
 <pre class="programlisting"><a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> *	xmlSplitQName		(<a href="libxml2-tree.html#xmlParserCtxtPtr">xmlParserCtxtPtr</a> ctxt, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> ** prefixOut)<br>
 </pre>
-<p>parse an UTF8 encoded XML qualified name string [NS 5] QName ::= (Prefix ':')? LocalPart [NS 6] Prefix ::= NCName [NS 7] LocalPart ::= NCName</p>
+<p>DEPRECATED: Don't use. parse an UTF8 encoded XML qualified name string [NS 5] QName ::= (Prefix ':')? LocalPart [NS 6] Prefix ::= NCName [NS 7] LocalPart ::= NCName</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

@@ -387,7 +387,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterEndComment"></a>xmlTextWriterEndComment ()</h3>
 <pre class="programlisting">int	xmlTextWriterEndComment		(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer)<br>
 </pre>
-<p>End the current xml <a href="libxml2-SAX.html#comment">comment</a>.</p>
+<p>End the current xml comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -431,7 +431,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterEndDTDAttlist"></a>xmlTextWriterEndDTDAttlist ()</h3>
 <pre class="programlisting">int	xmlTextWriterEndDTDAttlist	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer)<br>
 </pre>
-<p>End an xml DTD <a href="libxml2-SAX.html#attribute">attribute</a> list.</p>
+<p>End an xml DTD attribute list.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -685,7 +685,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterStartAttribute"></a>xmlTextWriterStartAttribute ()</h3>
 <pre class="programlisting">int	xmlTextWriterStartAttribute	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name)<br>
 </pre>
-<p>Start an xml <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Start an xml attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -711,7 +711,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterStartAttributeNS"></a>xmlTextWriterStartAttributeNS ()</h3>
 <pre class="programlisting">int	xmlTextWriterStartAttributeNS	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespaceURI)<br>
 </pre>
-<p>Start an xml <a href="libxml2-SAX.html#attribute">attribute</a> with namespace support.</p>
+<p>Start an xml attribute with namespace support.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -767,7 +767,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterStartComment"></a>xmlTextWriterStartComment ()</h3>
 <pre class="programlisting">int	xmlTextWriterStartComment	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer)<br>
 </pre>
-<p>Start an xml <a href="libxml2-SAX.html#comment">comment</a>.</p>
+<p>Start an xml comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1025,7 +1025,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteAttribute"></a>xmlTextWriterWriteAttribute ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteAttribute	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Write an xml <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Write an xml attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1036,13 +1036,11 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> name</td>
+<td>attribute name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> content</td>
+<td>attribute content</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1057,7 +1055,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteAttributeNS"></a>xmlTextWriterWriteAttributeNS ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteAttributeNS	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * prefix, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * namespaceURI, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Write an xml <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Write an xml attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1072,8 +1070,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> local name</td>
+<td>attribute local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
@@ -1081,8 +1078,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> content</td>
+<td>attribute content</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1191,7 +1187,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteComment"></a>xmlTextWriterWriteComment ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteComment	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>					 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * content)<br>
 </pre>
-<p>Write an xml <a href="libxml2-SAX.html#comment">comment</a>.</p>
+<p>Write an xml comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1202,8 +1198,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>content</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#comment">comment</a> string</td>
+<td>comment string</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>Returns</tt></i>:</span></td>
@@ -1574,7 +1569,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteFormatAttribute"></a>xmlTextWriterWriteFormatAttribute ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteFormatAttribute	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>						 const char * format, <br>						 ... ...)<br>
 </pre>
-<p>Write a formatted xml <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Write a formatted xml attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -1585,8 +1580,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> name</td>
+<td>attribute name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>format</tt></i>:</span></td>
@@ -1624,8 +1618,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> local name</td>
+<td>attribute local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
@@ -1682,7 +1675,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteFormatComment"></a>xmlTextWriterWriteFormatComment ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteFormatComment	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>					 const char * format, <br>					 ... ...)<br>
 </pre>
-<p>Write an xml <a href="libxml2-SAX.html#comment">comment</a>.</p>
+<p>Write an xml comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2142,7 +2135,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteVFormatAttribute"></a>xmlTextWriterWriteVFormatAttribute ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteVFormatAttribute	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>						 const <a href="libxml2-xmlstring.html#xmlChar">xmlChar</a> * name, <br>						 const char * format, <br>						 va_list argptr)<br>
 </pre>
-<p>Write a formatted xml <a href="libxml2-SAX.html#attribute">attribute</a>.</p>
+<p>Write a formatted xml attribute.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>
@@ -2153,8 +2146,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> name</td>
+<td>attribute name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>format</tt></i>:</span></td>
@@ -2192,8 +2184,7 @@ The content of this structure is not made public by the API.
 </tr>
 <tr>
 <td><span class="term"><i><tt>name</tt></i>:</span></td>
-<td>
-<a href="libxml2-SAX.html#attribute">attribute</a> local name</td>
+<td>attribute local name</td>
 </tr>
 <tr>
 <td><span class="term"><i><tt>namespaceURI</tt></i>:</span></td>
@@ -2250,7 +2241,7 @@ The content of this structure is not made public by the API.
 <a name="xmlTextWriterWriteVFormatComment"></a>xmlTextWriterWriteVFormatComment ()</h3>
 <pre class="programlisting">int	xmlTextWriterWriteVFormatComment	(<a href="libxml2-xmlwriter.html#xmlTextWriterPtr">xmlTextWriterPtr</a> writer, <br>						 const char * format, <br>						 va_list argptr)<br>
 </pre>
-<p>Write an xml <a href="libxml2-SAX.html#comment">comment</a>.</p>
+<p>Write an xml comment.</p>
 <div class="variablelist"><table border="0">
 <col align="left">
 <tbody>

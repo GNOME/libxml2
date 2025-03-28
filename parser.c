@@ -4778,7 +4778,8 @@ static const unsigned char test_char_data[256] = {
 };
 
 static void
-xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size) {
+xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size,
+              int isBlank) {
     int checkBlanks;
 
     if ((ctxt->sax == NULL) || (ctxt->disableSAX))
@@ -4793,7 +4794,7 @@ xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size) {
      * essentially unusable.
      */
     if ((checkBlanks) &&
-        (areBlanks(ctxt, buf, size, 1))) {
+        (areBlanks(ctxt, buf, size, isBlank))) {
         if ((ctxt->sax->ignorableWhitespace != NULL) &&
             (ctxt->keepBlanks))
             ctxt->sax->ignorableWhitespace(ctxt->userData, buf, size);
@@ -4855,7 +4856,7 @@ get_more_space:
                 const xmlChar *tmp = ctxt->input->cur;
                 ctxt->input->cur = in;
 
-                xmlCharacters(ctxt, tmp, nbchar);
+                xmlCharacters(ctxt, tmp, nbchar, 1);
             }
             return;
         }
@@ -4891,7 +4892,7 @@ get_more:
             const xmlChar *tmp = ctxt->input->cur;
             ctxt->input->cur = in;
 
-            xmlCharacters(ctxt, tmp, nbchar);
+            xmlCharacters(ctxt, tmp, nbchar, 0);
 
             line = ctxt->input->line;
             col = ctxt->input->col;
@@ -4958,7 +4959,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
 	if (nbchar >= XML_PARSER_BIG_BUFFER_SIZE) {
 	    buf[nbchar] = 0;
 
-            xmlCharacters(ctxt, buf, nbchar);
+            xmlCharacters(ctxt, buf, nbchar, 0);
 	    nbchar = 0;
             SHRINK;
 	}
@@ -4967,7 +4968,7 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     if (nbchar != 0) {
         buf[nbchar] = 0;
 
-        xmlCharacters(ctxt, buf, nbchar);
+        xmlCharacters(ctxt, buf, nbchar, 0);
     }
     /*
      * cur == 0 can mean

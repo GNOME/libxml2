@@ -14,7 +14,7 @@ var srcDirUtils = "..";
 var baseName = "libxml2";
 /* Configure file which contains the version and the output file where
    we can store our build configuration. */
-var configFile = srcDirXml + "\\configure.ac";
+var libxmlVersionFile = srcDirXml + "\\VERSION";
 var versionFile = ".\\config.msvc";
 /* Input and output files regarding the libxml features. */
 var optsFileIn = srcDirXml + "\\include\\libxml\\xmlversion.h.in";
@@ -45,6 +45,7 @@ var withDebug = true;
 var withSchemas = true;
 var withSchematron = true;
 var withRegExps = true;
+var withRelaxNg = true;
 var withModules = true;
 var withTree = true;
 var withReader = true;
@@ -124,6 +125,7 @@ function usage()
 	txt += "  lzma:       Enable lzma support (" + (withLzma? "yes" : "no")  + ")\n";
 	txt += "  xml_debug:  Enable XML debbugging module (" + (withDebug? "yes" : "no")  + ")\n";
 	txt += "  regexps:    Enable regular expressions (" + (withRegExps? "yes" : "no") + ")\n";
+	txt += "  relaxng:    Enable RELAX NG support (" + (withRelaxNg ? "yes" : "no") + ")\n";
 	txt += "  modules:    Enable module support (" + (withModules? "yes" : "no") + ")\n";
 	txt += "  tree:       Enable tree api (" + (withTree? "yes" : "no") + ")\n";
 	txt += "  reader:     Enable xmlReader api (" + (withReader? "yes" : "no") + ")\n";
@@ -170,7 +172,7 @@ function discoverVersion()
 	var fso, cf, vf, ln, s, iDot, iSlash;
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	verCvs = "";
-	cf = fso.OpenTextFile(configFile, 1);
+	cf = fso.OpenTextFile(libxmlVersionFile, 1);
 	if (compiler == "msvc")
 		versionFile = ".\\config.msvc";
 	else if (compiler == "mingw")
@@ -184,19 +186,13 @@ function discoverVersion()
 	while (cf.AtEndOfStream != true) {
 		ln = cf.ReadLine();
 		s = new String(ln);
-		if (m = s.match(/^m4_define\(\[MAJOR_VERSION\], (\w+)\)/)) {
-			vf.WriteLine("LIBXML_MAJOR_VERSION=" + m[1]);
-			verMajor = m[1];
-		} else if(m = s.match(/^m4_define\(\[MINOR_VERSION\], (\w+)\)/)) {
-			vf.WriteLine("LIBXML_MINOR_VERSION=" + m[1]);
-			verMinor = m[1];
-		} else if(m = s.match(/^m4_define\(\[MICRO_VERSION\], (\w+)\)/)) {
-			vf.WriteLine("LIBXML_MICRO_VERSION=" + m[1]);
-			verMicro = m[1];
-		} else if(s.search(/^LIBXML_MICRO_VERSION_SUFFIX=/) != -1) {
-			vf.WriteLine(s);
-			verMicroSuffix = s.substring(s.indexOf("=") + 1, s.length);
-		}
+		versionSplit = s.split(".");
+		verMajor = versionSplit[0];
+		vf.WriteLine("LIBXML_MAJOR_VERSION=" + verMajor);
+		verMinor = versionSplit[1];
+		vf.WriteLine("LIBXML_MINOR_VERSION=" + verMinor);
+		verMicro = versionSplit[2];
+		vf.WriteLine("LIBXML_MICRO_VERSION=" + verMicro);
 	}
 	cf.Close();
 	vf.WriteLine("XML_SRCDIR=" + srcDirXml);
@@ -218,6 +214,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_SCHEMAS=" + (withSchemas? "1" : "0"));
 	vf.WriteLine("WITH_SCHEMATRON=" + (withSchematron? "1" : "0"));
 	vf.WriteLine("WITH_REGEXPS=" + (withRegExps? "1" : "0"));
+	vf.WriteLine("WITH_RELAXNG=" + (withRelaxNg ? "1" : "0"));
 	vf.WriteLine("WITH_MODULES=" + (withModules? "1" : "0"));
 	vf.WriteLine("WITH_TREE=" + (withTree? "1" : "0"));
 	vf.WriteLine("WITH_READER=" + (withReader? "1" : "0"));
@@ -320,6 +317,8 @@ function configureLibxml()
 			of.WriteLine(s.replace(/\@WITH_SCHEMATRON\@/, withSchematron? "1" : "0"));
 		} else if (s.search(/\@WITH_REGEXPS\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_REGEXPS\@/, withRegExps? "1" : "0"));
+		} else if (s.search(/\@WITH_RELAXNG\@/) != -1) {
+			of.WriteLine(s.replace(/\@WITH_RELAXNG\@/, withRelaxNg? "1" : "0"));
 		} else if (s.search(/\@WITH_MODULES\@/) != -1) {
 			of.WriteLine(s.replace(/\@WITH_MODULES\@/, withModules? "1" : "0"));
 		} else if (s.search(/\@MODULE_EXTENSION\@/) != -1) {
@@ -465,6 +464,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withSchematron = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "regexps")
 			withRegExps = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "relaxng")
+			withRelaxNg = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "modules")
 			withModules = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "tree")
@@ -634,6 +635,7 @@ txtOut += "      zlib support: " + boolToStr(withZlib) + "\n";
 txtOut += "      lzma support: " + boolToStr(withLzma) + "\n";
 txtOut += "  Debugging module: " + boolToStr(withDebug) + "\n";
 txtOut += "    Regexp support: " + boolToStr(withRegExps) + "\n";
+txtOut += "  Relax NG support: " + boolToStr(withRelaxNg) + "\n";
 txtOut += "    Module support: " + boolToStr(withModules) + "\n";
 txtOut += "      Tree support: " + boolToStr(withTree) + "\n";
 txtOut += "    Reader support: " + boolToStr(withReader) + "\n";

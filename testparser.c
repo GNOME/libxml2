@@ -255,6 +255,39 @@ testCtxtParseContent(void) {
 
     return err;
 }
+
+static int
+testNoBlanks(void) {
+    const xmlChar xml[] =
+        "<refentry>\n"
+        "  <refsect1>\n"
+        "    <para>\n"
+        "      Run <command>tester --help</command> for more options.\n"
+        "    </para>\n"
+        "  </refsect1>\n"
+        "</refentry>\n";
+    const xmlChar expect[] =
+        "<?xml version=\"1.0\"?>\n"
+        "<refentry><refsect1><para>\n"
+        "      Run <command>tester --help</command> for more options.\n"
+        "    </para></refsect1></refentry>\n";
+    xmlDocPtr doc;
+    xmlChar *out;
+    int size;
+    int err = 0;
+
+    doc = xmlReadDoc(xml, NULL, NULL, XML_PARSE_NOBLANKS);
+    xmlDocDumpMemory(doc, &out, &size);
+    xmlFreeDoc(doc);
+
+    if (!xmlStrEqual(out, expect)) {
+        fprintf(stderr, "parsing with XML_PARSE_NOBLANKS failed\n");
+        err = 1;
+    }
+    xmlFree(out);
+
+    return err;
+}
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -1123,6 +1156,7 @@ main(void) {
 #endif
 #ifdef LIBXML_OUTPUT_ENABLED
     err |= testCtxtParseContent();
+    err |= testNoBlanks();
 #endif
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();

@@ -38,6 +38,14 @@ Overflow checks before reallocations were hardenend.
 
 Some unprefixed symbols were renamed to avoid namespace pollution.
 
+### Other potentially incompatible changes
+
+Strings passed to the "characters" callback of the HTML SAX parser
+aren't null-terminated anymore, matching the behavior of the XML
+parser. Custom SAX parsers must use the "len" argument.
+
+xmlIOParseDTD doesn't allow null bytes at the end of the input anymore.
+
 ### New features
 
 Input callbacks can now be set on a parser context and an improved API

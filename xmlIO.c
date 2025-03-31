@@ -127,155 +127,156 @@ xmlIOErr(int err)
 {
     xmlParserErrors code;
 
-    if (err == 0) code = XML_IO_UNKNOWN;
+    switch (err) {
 #ifdef EACCES
-    else if (err == EACCES) code = XML_IO_EACCES;
+        case EACCES: code = XML_IO_EACCES; break;
 #endif
 #ifdef EAGAIN
-    else if (err == EAGAIN) code = XML_IO_EAGAIN;
+        case EAGAIN: code = XML_IO_EAGAIN; break;
 #endif
 #ifdef EBADF
-    else if (err == EBADF) code = XML_IO_EBADF;
+        case EBADF: code = XML_IO_EBADF; break;
 #endif
 #ifdef EBADMSG
-    else if (err == EBADMSG) code = XML_IO_EBADMSG;
+        case EBADMSG: code = XML_IO_EBADMSG; break;
 #endif
 #ifdef EBUSY
-    else if (err == EBUSY) code = XML_IO_EBUSY;
+        case EBUSY: code = XML_IO_EBUSY; break;
 #endif
 #ifdef ECANCELED
-    else if (err == ECANCELED) code = XML_IO_ECANCELED;
+        case ECANCELED: code = XML_IO_ECANCELED; break;
 #endif
 #ifdef ECHILD
-    else if (err == ECHILD) code = XML_IO_ECHILD;
+        case ECHILD: code = XML_IO_ECHILD; break;
 #endif
 #ifdef EDEADLK
-    else if (err == EDEADLK) code = XML_IO_EDEADLK;
+        case EDEADLK: code = XML_IO_EDEADLK; break;
 #endif
 #ifdef EDOM
-    else if (err == EDOM) code = XML_IO_EDOM;
+        case EDOM: code = XML_IO_EDOM; break;
 #endif
 #ifdef EEXIST
-    else if (err == EEXIST) code = XML_IO_EEXIST;
+        case EEXIST: code = XML_IO_EEXIST; break;
 #endif
 #ifdef EFAULT
-    else if (err == EFAULT) code = XML_IO_EFAULT;
+        case EFAULT: code = XML_IO_EFAULT; break;
 #endif
 #ifdef EFBIG
-    else if (err == EFBIG) code = XML_IO_EFBIG;
+        case EFBIG: code = XML_IO_EFBIG; break;
 #endif
 #ifdef EINPROGRESS
-    else if (err == EINPROGRESS) code = XML_IO_EINPROGRESS;
+        case EINPROGRESS: code = XML_IO_EINPROGRESS; break;
 #endif
 #ifdef EINTR
-    else if (err == EINTR) code = XML_IO_EINTR;
+        case EINTR: code = XML_IO_EINTR; break;
 #endif
 #ifdef EINVAL
-    else if (err == EINVAL) code = XML_IO_EINVAL;
+        case EINVAL: code = XML_IO_EINVAL; break;
 #endif
 #ifdef EIO
-    else if (err == EIO) code = XML_IO_EIO;
+        case EIO: code = XML_IO_EIO; break;
 #endif
 #ifdef EISDIR
-    else if (err == EISDIR) code = XML_IO_EISDIR;
+        case EISDIR: code = XML_IO_EISDIR; break;
 #endif
 #ifdef EMFILE
-    else if (err == EMFILE) code = XML_IO_EMFILE;
+        case EMFILE: code = XML_IO_EMFILE; break;
 #endif
 #ifdef EMLINK
-    else if (err == EMLINK) code = XML_IO_EMLINK;
+        case EMLINK: code = XML_IO_EMLINK; break;
 #endif
 #ifdef EMSGSIZE
-    else if (err == EMSGSIZE) code = XML_IO_EMSGSIZE;
+        case EMSGSIZE: code = XML_IO_EMSGSIZE; break;
 #endif
 #ifdef ENAMETOOLONG
-    else if (err == ENAMETOOLONG) code = XML_IO_ENAMETOOLONG;
+        case ENAMETOOLONG: code = XML_IO_ENAMETOOLONG; break;
 #endif
 #ifdef ENFILE
-    else if (err == ENFILE) code = XML_IO_ENFILE;
+        case ENFILE: code = XML_IO_ENFILE; break;
 #endif
 #ifdef ENODEV
-    else if (err == ENODEV) code = XML_IO_ENODEV;
+        case ENODEV: code = XML_IO_ENODEV; break;
 #endif
 #ifdef ENOENT
-    else if (err == ENOENT) code = XML_IO_ENOENT;
+        case ENOENT: code = XML_IO_ENOENT; break;
 #endif
 #ifdef ENOEXEC
-    else if (err == ENOEXEC) code = XML_IO_ENOEXEC;
+        case ENOEXEC: code = XML_IO_ENOEXEC; break;
 #endif
 #ifdef ENOLCK
-    else if (err == ENOLCK) code = XML_IO_ENOLCK;
+        case ENOLCK: code = XML_IO_ENOLCK; break;
 #endif
 #ifdef ENOMEM
-    else if (err == ENOMEM) code = XML_IO_ENOMEM;
+        case ENOMEM: code = XML_IO_ENOMEM; break;
 #endif
 #ifdef ENOSPC
-    else if (err == ENOSPC) code = XML_IO_ENOSPC;
+        case ENOSPC: code = XML_IO_ENOSPC; break;
 #endif
 #ifdef ENOSYS
-    else if (err == ENOSYS) code = XML_IO_ENOSYS;
+        case ENOSYS: code = XML_IO_ENOSYS; break;
 #endif
 #ifdef ENOTDIR
-    else if (err == ENOTDIR) code = XML_IO_ENOTDIR;
+        case ENOTDIR: code = XML_IO_ENOTDIR; break;
 #endif
 #ifdef ENOTEMPTY
-    else if (err == ENOTEMPTY) code = XML_IO_ENOTEMPTY;
+        case ENOTEMPTY: code = XML_IO_ENOTEMPTY; break;
 #endif
 #ifdef ENOTSUP
-    else if (err == ENOTSUP) code = XML_IO_ENOTSUP;
+        case ENOTSUP: code = XML_IO_ENOTSUP; break;
 #endif
 #ifdef ENOTTY
-    else if (err == ENOTTY) code = XML_IO_ENOTTY;
+        case ENOTTY: code = XML_IO_ENOTTY; break;
 #endif
 #ifdef ENXIO
-    else if (err == ENXIO) code = XML_IO_ENXIO;
+        case ENXIO: code = XML_IO_ENXIO; break;
 #endif
 #ifdef EPERM
-    else if (err == EPERM) code = XML_IO_EPERM;
+        case EPERM: code = XML_IO_EPERM; break;
 #endif
 #ifdef EPIPE
-    else if (err == EPIPE) code = XML_IO_EPIPE;
+        case EPIPE: code = XML_IO_EPIPE; break;
 #endif
 #ifdef ERANGE
-    else if (err == ERANGE) code = XML_IO_ERANGE;
+        case ERANGE: code = XML_IO_ERANGE; break;
 #endif
 #ifdef EROFS
-    else if (err == EROFS) code = XML_IO_EROFS;
+        case EROFS: code = XML_IO_EROFS; break;
 #endif
 #ifdef ESPIPE
-    else if (err == ESPIPE) code = XML_IO_ESPIPE;
+        case ESPIPE: code = XML_IO_ESPIPE; break;
 #endif
 #ifdef ESRCH
-    else if (err == ESRCH) code = XML_IO_ESRCH;
+        case ESRCH: code = XML_IO_ESRCH; break;
 #endif
 #ifdef ETIMEDOUT
-    else if (err == ETIMEDOUT) code = XML_IO_ETIMEDOUT;
+        case ETIMEDOUT: code = XML_IO_ETIMEDOUT; break;
 #endif
 #ifdef EXDEV
-    else if (err == EXDEV) code = XML_IO_EXDEV;
+        case EXDEV: code = XML_IO_EXDEV; break;
 #endif
 #ifdef ENOTSOCK
-    else if (err == ENOTSOCK) code = XML_IO_ENOTSOCK;
+        case ENOTSOCK: code = XML_IO_ENOTSOCK; break;
 #endif
 #ifdef EISCONN
-    else if (err == EISCONN) code = XML_IO_EISCONN;
+        case EISCONN: code = XML_IO_EISCONN; break;
 #endif
 #ifdef ECONNREFUSED
-    else if (err == ECONNREFUSED) code = XML_IO_ECONNREFUSED;
+        case ECONNREFUSED: code = XML_IO_ECONNREFUSED; break;
 #endif
 #ifdef ENETUNREACH
-    else if (err == ENETUNREACH) code = XML_IO_ENETUNREACH;
+        case ENETUNREACH: code = XML_IO_ENETUNREACH; break;
 #endif
 #ifdef EADDRINUSE
-    else if (err == EADDRINUSE) code = XML_IO_EADDRINUSE;
+        case EADDRINUSE: code = XML_IO_EADDRINUSE; break;
 #endif
 #ifdef EALREADY
-    else if (err == EALREADY) code = XML_IO_EALREADY;
+        case EALREADY: code = XML_IO_EALREADY; break;
 #endif
 #ifdef EAFNOSUPPORT
-    else if (err == EAFNOSUPPORT) code = XML_IO_EAFNOSUPPORT;
+        case EAFNOSUPPORT: code = XML_IO_EAFNOSUPPORT; break;
 #endif
-    else code = XML_IO_UNKNOWN;
+        default: code = XML_IO_UNKNOWN; break;
+    }
 
     return(code);
 }

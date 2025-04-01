@@ -525,11 +525,6 @@ if(LIBXML2_WITH_PYTHON)
         ${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
         ${CMAKE_CURRENT_BINARY_DIR}
     )
-    file(READ python/libxml.py LIBXML_PY)
-    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML_PY}")
-    file(READ ${CMAKE_CURRENT_BINARY_DIR}/libxml2class.py LIBXML2CLASS_PY)
-    file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in "${LIBXML2CLASS_PY}")
-    configure_file(${CMAKE_CURRENT_BINARY_DIR}/libxml2.py.in libxml2.py COPYONLY)
     add_library(
         LibXml2Mod SHARED
         libxml2-py.c

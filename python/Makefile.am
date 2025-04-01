@@ -32,8 +32,8 @@ python_PYTHON = drv_libxml2.py
 nodist_python_PYTHON = libxml2.py
 
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
-GENERATED = libxml2class.py libxml2class.txt $(BUILT_SOURCES)
-CLEANFILES = libxml2.py $(GENERATED)
+GENERATED = libxml2.py libxml2class.txt $(BUILT_SOURCES)
+CLEANFILES = $(GENERATED)
 
 all-local: libxml2.py
 
@@ -42,9 +42,6 @@ $(GENERATED): $(srcdir)/generator.py $(API_DESC)
 
 # libxml.c #includes libxml2-export.c
 libxml.$(OBJEXT): libxml2-export.c
-
-libxml2.py: $(srcdir)/libxml.py libxml2class.py
-	cat $(srcdir)/libxml.py `test -f libxml2class.py || echo $(srcdir)/`libxml2class.py > $@
 
 clean-local:
 	rm -rf __pycache__ *.pyc

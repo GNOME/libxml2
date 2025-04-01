@@ -1091,9 +1091,20 @@ def buildWrappers():
         func = nameFixup(name, "None", file, file)
         info = (0, func, name, ret, args, file)
         function_classes['None'].append(info)
-   
-    classes = open(os.path.join(dstPref, "libxml2class.py"), "w")
+
+    libxml_content = ""
+    try:
+        with open(os.path.join(srcPref, "libxml.py"), "r") as libxml_file:
+            libxml_content = libxml_file.read()
+    except IOError as msg:
+        print("Error reading libxml.py:", msg)
+        sys.exit(1)
+
+    classes = open(os.path.join(dstPref, "libxml2.py"), "w")
     txt = open(os.path.join(dstPref, "libxml2class.txt"), "w")
+
+    classes.write(libxml_content)
+
     txt.write("          Generated Classes for libxml2-python\n\n")
 
     txt.write("#\n# Global functions of the module\n#\n\n")

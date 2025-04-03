@@ -1,2 +1,2 @@
 [libfuzzer]
-dict = xml.dict
+dict = lint.dict

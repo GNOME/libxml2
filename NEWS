@@ -1,5 +1,18 @@
 NEWS file for libxml2
 
+v2.14.1: Apr 3 2025
+
+### Regressions
+
+- parser: Fix XML_PARSE_NOBLANKS dropping non-whitespace text
+
+### Build systems
+
+- win32-legacy: Fix build (ThomasK)
+- meson: Fix build from tarball
+- cmake, meson: Change library filename to libxml2.so.16.0.0
+
+
 v2.14.0: Mar 27 2025
 
 ### Major changes

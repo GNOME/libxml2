@@ -1285,7 +1285,7 @@ loaded:
 	set = xptr->nodesetval;
 	if (set != NULL) {
 	    for (i = 0;i < set->nodeNr;i++) {
-		if (set->nodeTab[i] == NULL)
+		if (set->nodeTab[i] == NULL) /* shouldn't happen */
 		    continue;
 		switch (set->nodeTab[i]->type) {
 		    case XML_ELEMENT_NODE:
@@ -1304,15 +1304,13 @@ loaded:
 			               XML_XINCLUDE_XPTR_RESULT,
 				       "XPointer selects an attribute: #%s\n",
 				       fragment);
-			set->nodeTab[i] = NULL;
-			continue;
+			goto xptr_error;
 		    case XML_NAMESPACE_DECL:
 			xmlXIncludeErr(ctxt, ref->elem,
 			               XML_XINCLUDE_XPTR_RESULT,
 				       "XPointer selects a namespace: #%s\n",
 				       fragment);
-			set->nodeTab[i] = NULL;
-			continue;
+			goto xptr_error;
 		    case XML_DOCUMENT_TYPE_NODE:
 		    case XML_DOCUMENT_FRAG_NODE:
 		    case XML_NOTATION_NODE:
@@ -1322,17 +1320,17 @@ loaded:
 		    case XML_ENTITY_DECL:
 		    case XML_XINCLUDE_START:
 		    case XML_XINCLUDE_END:
+                        /* shouldn't happen */
 			xmlXIncludeErr(ctxt, ref->elem,
 			               XML_XINCLUDE_XPTR_RESULT,
 				   "XPointer selects unexpected nodes: #%s\n",
 				       fragment);
-			set->nodeTab[i] = NULL;
-			set->nodeTab[i] = NULL;
-			continue; /* for */
+			goto xptr_error;
 		}
 	    }
 	}
         ref->inc = xmlXIncludeCopyXPointer(ctxt, xptr, ref->base);
+xptr_error:
         xmlXPathFreeObject(xptr);
     }
 

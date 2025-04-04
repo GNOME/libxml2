@@ -598,11 +598,11 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
 
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
     /* XML_GLOBALS_ALLOC */
-    gs->gs_xmlFree = free;
-    gs->gs_xmlMalloc = malloc;
-    gs->gs_xmlMallocAtomic = malloc;
-    gs->gs_xmlRealloc = realloc;
-    gs->gs_xmlMemStrdup = xmlPosixStrdup;
+    gs->free = free;
+    gs->malloc = malloc;
+    gs->mallocAtomic = malloc;
+    gs->realloc = realloc;
+    gs->memStrdup = xmlPosixStrdup;
 #endif
 
     xmlMutexLock(&xmlThrDefMutex);
@@ -753,6 +753,33 @@ xmlOutputBufferCreateFilenameFunc *
 __xmlOutputBufferCreateFilenameValue(void) {
     return(&xmlGetThreadLocalStorage(0)->outputBufferCreateFilenameValue);
 }
+
+#ifdef LIBXML_THREAD_ALLOC_ENABLED
+xmlMallocFunc *
+__xmlMalloc(void) {
+    return(&xmlGetThreadLocalStorage(0)->malloc);
+}
+
+xmlMallocFunc *
+__xmlMallocAtomic(void) {
+    return(&xmlGetThreadLocalStorage(0)->mallocAtomic);
+}
+
+xmlReallocFunc *
+__xmlRealloc(void) {
+    return(&xmlGetThreadLocalStorage(0)->realloc);
+}
+
+xmlFreeFunc *
+__xmlFree(void) {
+    return(&xmlGetThreadLocalStorage(0)->free);
+}
+
+xmlStrdupFunc *
+__xmlMemStrdup(void) {
+    return(&xmlGetThreadLocalStorage(0)->memStrdup);
+}
+#endif /* LIBXML_THREAD_ALLOC_ENABLED */
 
 /**
  * xmlGetLocalRngState:

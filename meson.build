@@ -185,7 +185,7 @@ feature = get_option('schemas') \
     .require(want_pattern, error_message: 'schemas requires pattern') \
     .require(want_regexps, error_message: 'schemas requires regexps')
 want_schemas = not want_minimum \
-    or get_option('relaxng') ? \
+    or get_option('relaxng').enabled() ? \
     feature.allowed() : feature.enabled()
 
 feature = get_option('relaxng') \

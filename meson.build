@@ -480,6 +480,7 @@ endforeach
 v_min_compat = 14
 so_version = v_maj + v_min_compat
 age = v_min - v_min_compat
+darwin_compat = so_version + 1
 xml_lib = library(
     'xml2',
     files(xml_src),
@@ -489,6 +490,7 @@ xml_lib = library(
     install: true,
     version: f'@so_version@.@age@.@v_mic@',
     soversion: so_version,
+    darwin_versions: [ darwin_compat, f'@darwin_compat@.@v_mic@' ],
 )
 
 dep_inc = include_directories('include')

@@ -480,7 +480,7 @@ endforeach
 v_min_compat = 14
 so_version = v_maj + v_min_compat
 age = v_min - v_min_compat
-darwin_compat = so_version + 1
+darwin_compat = v_maj + v_min + 1
 xml_lib = library(
     'xml2',
     files(xml_src),

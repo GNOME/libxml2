@@ -45,7 +45,8 @@ PYTESTS=	\
     validRNG.py \
     compareNodes.py \
     xpathns.py \
-    xpathleak.py
+    xpathleak.py \
+    unicode.py
 
 XMLS=		\
     tst.xml	\

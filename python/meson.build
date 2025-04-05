@@ -95,6 +95,7 @@ if py.found() == true
         'tstURI.py',
         'tstmem.py',
         'tstxpath.py',
+        'unicode.py',
         'validDTD.py',
         'validRNG.py',
         'validSchemas.py',

@@ -335,7 +335,7 @@ if want_modules and host_machine.system() != 'windows'
 endif
 
 ### threads
-if want_threads
+if want_threads and host_os != 'windows'
     threads_dep = dependency('threads')
     xml_deps += threads_dep
 else

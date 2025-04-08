@@ -237,7 +237,9 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
 
     file = (PyObject *) context;
     if (file == NULL) return(-1);
-    ret = PyObject_CallMethod(file, (char *) "read", (char *) "(i)", len);
+    /* When read() returns a string, the length is in characters not bytes, so
+       request at most len / 4 characters to leave space for UTF-8 encoding. */
+    ret = PyObject_CallMethod(file, (char *) "read", (char *) "(i)", len / 4);
     if (ret == NULL) {
 	printf("xmlPythonFileReadRaw: result is NULL\n");
 	return(-1);
@@ -272,10 +274,12 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
 	Py_DECREF(ret);
 	return(-1);
     }
-    if (lenread > len)
-	memcpy(buffer, data, len);
-    else
-	memcpy(buffer, data, lenread);
+    if (lenread < 0 || lenread > len) {
+	printf("xmlPythonFileReadRaw: invalid lenread\n");
+	Py_DECREF(ret);
+	return(-1);
+    }
+    memcpy(buffer, data, lenread);
     Py_DECREF(ret);
     return(lenread);
 }
@@ -299,7 +303,9 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
 
     file = (PyObject *) context;
     if (file == NULL) return(-1);
-    ret = PyObject_CallMethod(file, (char *) "io_read", (char *) "(i)", len);
+    /* When io_read() returns a string, the length is in characters not bytes, so
+       request at most len / 4 characters to leave space for UTF-8 encoding. */
+    ret = PyObject_CallMethod(file, (char *) "io_read", (char *) "(i)", len / 4);
     if (ret == NULL) {
 	printf("xmlPythonFileRead: result is NULL\n");
 	return(-1);
@@ -334,10 +340,12 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
 	Py_DECREF(ret);
 	return(-1);
     }
-    if (lenread > len)
-	memcpy(buffer, data, len);
-    else
-	memcpy(buffer, data, lenread);
+    if (lenread < 0 || lenread > len) {
+	printf("xmlPythonFileRead: invalid lenread\n");
+	Py_DECREF(ret);
+	return(-1);
+    }
+    memcpy(buffer, data, lenread);
     Py_DECREF(ret);
     return(lenread);
 }

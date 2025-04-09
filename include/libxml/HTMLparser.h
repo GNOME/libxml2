@@ -89,10 +89,13 @@ XMLPUBVAR const xmlSAXHandlerV1 htmlDefaultSAXHandler;
 XML_DEPRECATED
 XMLPUBFUN void
 			htmlInitAutoClose	(void);
+XML_DEPRECATED
 XMLPUBFUN const htmlElemDesc *
 			htmlTagLookup	(const xmlChar *tag);
+XML_DEPRECATED
 XMLPUBFUN const htmlEntityDesc *
 			htmlEntityLookup(const xmlChar *name);
+XML_DEPRECATED
 XMLPUBFUN const htmlEntityDesc *
 			htmlEntityValueLookup(unsigned int value);
 
@@ -149,16 +152,19 @@ XMLPUBFUN htmlDocPtr
 XMLPUBFUN htmlDocPtr
 			htmlParseFile	(const char *filename,
 					 const char *encoding);
+XML_DEPRECATED
 XMLPUBFUN int
 			htmlUTF8ToHtml	(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen);
+XML_DEPRECATED
 XMLPUBFUN int
 			htmlEncodeEntities(unsigned char *out,
 					 int *outlen,
 					 const unsigned char *in,
 					 int *inlen, int quoteChar);
+XML_DEPRECATED
 XMLPUBFUN int
 			htmlIsScriptAttribute(const xmlChar *name);
 XML_DEPRECATED

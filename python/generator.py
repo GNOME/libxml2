@@ -301,6 +301,7 @@ deprecated_funcs = {
     'htmlInitAutoClose': True,
     'htmlIsAutoClosed': True,
     'htmlIsBooleanAttr': True,
+    'htmlIsScriptAttribute': True,
     'htmlParseCharRef': True,
     'htmlParseElement': True,
     'xmlByteConsumed': True,

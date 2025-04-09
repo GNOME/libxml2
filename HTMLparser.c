@@ -5791,7 +5791,10 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * Make the tokenizer emit a SAX callback for each token. This results
  * in unbalanced invocations of startElement and endElement.
  *
- * For now, this is only usable with custom SAX callbacks.
+ * For now, this is only usable to tokenize HTML5 with custom SAX
+ * callbacks. A tree builder isn't implemented yet.
+ *
+ * Available since 2.14.0.
  *
  * HTML_PARSE_NODEFDTD
  *
@@ -5835,8 +5838,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Relax some internal limits.
  *
- * Available since 2.14.0. Use XML_PARSE_HUGE works with older
- * versions.
+ * Available since 2.14.0. Use XML_PARSE_HUGE with older versions.
  *
  * Maximum size of text nodes, tags, comments, CDATA sections
  *
@@ -5857,7 +5859,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Ignore the encoding in the HTML declaration. This option is
  * mostly unneeded these days. The only effect is to enforce
- * UTF-8 decoding of ASCII-like data.
+ * ISO-8859-1 decoding of ASCII-like data.
  *
  * HTML_PARSE_BIG_LINES
  *

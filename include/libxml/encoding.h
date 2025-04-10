@@ -209,6 +209,7 @@ XMLPUBFUN void
 XML_DEPRECATED
 XMLPUBFUN void
 	xmlCleanupCharEncodingHandlers	(void);
+XML_DEPRECATED
 XMLPUBFUN void
 	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
 XMLPUBFUN xmlParserErrors
@@ -228,6 +229,7 @@ XMLPUBFUN xmlCharEncodingHandlerPtr
 	xmlGetCharEncodingHandler	(xmlCharEncoding enc);
 XMLPUBFUN xmlCharEncodingHandlerPtr
 	xmlFindCharEncodingHandler	(const char *name);
+XML_DEPRECATED
 XMLPUBFUN xmlCharEncodingHandlerPtr
 	xmlNewCharEncodingHandler	(const char *name,
 					 xmlCharEncodingInputFunc input,
@@ -244,13 +246,17 @@ XMLPUBFUN xmlParserErrors
 /*
  * Interfaces for encoding names and aliases.
  */
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlAddEncodingAlias		(const char *name,
 					 const char *alias);
+XML_DEPRECATED
 XMLPUBFUN int
 	xmlDelEncodingAlias		(const char *alias);
+XML_DEPRECATED
 XMLPUBFUN const char *
 	xmlGetEncodingAlias		(const char *alias);
+XML_DEPRECATED
 XMLPUBFUN void
 	xmlCleanupEncodingAliases	(void);
 XMLPUBFUN xmlCharEncoding

@@ -319,7 +319,7 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
  * xmlCleanupEncodingAliases:
  *
  * DEPRECATED: This function modifies global state and is not
- * thread-safe.
+ * thread-safe. See xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * Unregisters all aliases
  */
@@ -386,7 +386,7 @@ xmlGetEncodingAlias(const char *alias) {
  * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
  *
  * DEPRECATED: This function modifies global state and is not
- * thread-safe.
+ * thread-safe. See xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * Registers an alias @alias for an encoding named @name. Existing alias
  * will be overwritten.
@@ -461,7 +461,7 @@ xmlAddEncodingAlias(const char *name, const char *alias) {
  * @alias:  the alias name as parsed, in UTF-8 format (ASCII actually)
  *
  * DEPRECATED: This function modifies global state and is not
- * thread-safe.
+ * thread-safe. See xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * Unregisters an encoding alias @alias
  *
@@ -584,7 +584,7 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
  * @output:  the xmlCharEncodingOutputFunc to write that encoding
  *
  * DEPRECATED: This function modifies global state and is not
- * thread-safe.
+ * thread-safe. See xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * Create and registers an xmlCharEncodingHandler.
  *
@@ -763,7 +763,7 @@ xmlCleanupCharEncodingHandlers(void) {
  * @handler:  the xmlCharEncodingHandlerPtr handler block
  *
  * DEPRECATED: This function modifies global state and is not
- * thread-safe.
+ * thread-safe. See xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * Register the char encoding handler.
  */

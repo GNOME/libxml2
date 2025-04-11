@@ -32,7 +32,7 @@ python_PYTHON = drv_libxml2.py
 nodist_python_PYTHON = libxml2.py
 
 API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
-GENERATED = libxml2.py libxml2class.txt $(BUILT_SOURCES)
+GENERATED = libxml2.py $(BUILT_SOURCES)
 CLEANFILES = $(GENERATED)
 
 all-local: libxml2.py

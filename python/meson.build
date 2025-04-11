@@ -17,7 +17,6 @@ if py.found() == true
             'libxml2-export.c',
             'libxml2-py.c',
             'libxml2.py',
-            'libxml2class.txt',
         ],
         command: [py, '@INPUT@', meson.current_build_dir()],
     )

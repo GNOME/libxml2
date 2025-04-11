@@ -683,7 +683,7 @@ def buildStubs():
             parser.feed(data)
             parser.close()
         except IOError as msg:
-            print(file, ":", msg)
+            print("Failed to open libxml2-api.xml:", msg)
             sys.exit(1)
 
     n = len(list(functions.keys()))
@@ -697,7 +697,7 @@ def buildStubs():
         parser.feed(data)
         parser.close()
     except IOError as msg:
-        print(file, ":", msg)
+        print("Failed to open libxml2-python-api.xml:", msg)
 
 
     print("Found %d functions in libxml2-python-api.xml" % (

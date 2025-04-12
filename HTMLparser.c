@@ -499,13 +499,6 @@ htmlSkipBlankChars(xmlParserCtxtPtr ctxt) {
  * Name,Start Tag,End Tag,Save End,Empty,Deprecated,DTD,inline,Description
  */
 
-#define DATA_RCDATA         1
-#define DATA_RAWTEXT        2
-#define DATA_PLAINTEXT      3
-#define DATA_SCRIPT         4
-#define DATA_SCRIPT_ESC1    5
-#define DATA_SCRIPT_ESC2    6
-
 static const htmlElemDesc
 html40ElementTable[] = {
 { "a",		0, 0, 0, 0, 0, 0, 1, "anchor ",

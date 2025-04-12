@@ -24,6 +24,7 @@
 #include <libxml/uri.h>
 
 #include "private/buf.h"
+#include "private/html.h"
 #include "private/error.h"
 #include "private/html.h"
 #include "private/io.h"
@@ -714,6 +715,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
     xmlNodePtr root, parent, metaHead = NULL;
     xmlAttrPtr attr;
     const htmlElemDesc * info;
+    int isRaw = 0;
 
     xmlInitParser();
 
@@ -873,6 +875,10 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                         (cur->children->type != HTML_ENTITY_REF_NODE))
                         xmlOutputBufferWrite(buf, 1, "\n");
                 }
+
+                if ((info != NULL) && (info->dataMode >= DATA_RAWTEXT))
+                    isRaw = 1;
+
                 parent = cur;
                 cur = cur->children;
                 continue;
@@ -898,14 +904,11 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
         case HTML_TEXT_NODE:
             if (cur->content == NULL)
                 break;
-            if (((cur->name == (const xmlChar *)xmlStringText) ||
-                 (cur->name != (const xmlChar *)xmlStringTextNoenc)) &&
-                ((parent == NULL) ||
-                 ((xmlStrcasecmp(parent->name, BAD_CAST "script")) &&
-                  (xmlStrcasecmp(parent->name, BAD_CAST "style"))))) {
-                xmlSerializeText(buf, cur->content, XML_ESCAPE_HTML);
-            } else {
+            if ((cur->name == (const xmlChar *)xmlStringTextNoenc) ||
+                (isRaw)) {
                 xmlOutputBufferWriteString(buf, (const char *)cur->content);
+            } else {
+                xmlSerializeText(buf, cur->content, XML_ESCAPE_HTML);
             }
             break;
 
@@ -953,6 +956,8 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                 cur = cur->next;
                 break;
             }
+
+            isRaw = 0;
 
             cur = parent;
             /* cur->parent was validated when descending. */

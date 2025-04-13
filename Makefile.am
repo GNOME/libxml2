@@ -192,20 +192,11 @@ check-valgrind valgrind:
 	@echo '## Go get a cup of coffee it is gonna take a while ...'
 	$(MAKE) CHECKER='valgrind -q' check
 
-asan:
-	@echo '## rebuilding for ASAN'
-	./configure CFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" CXXFLAGS="-fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g" LDFLAGS="-fsanitize=address,undefined" CC="clang" CXX="clang++" --disable-shared ; OptimOff  ; $(MAKE) clean ; $(MAKE)
-
-cleanup:
-	-@(find . -name .\#\* -exec rm {} \;)
-	-@(find . -name \*.gcda -o -name \*.gcno -exec rm -f {} \;)
-	-@(find . -name \*.orig -o -name \*.rej -o -name \*.old -exec rm -f {} \;)
-
-dist-hook: cleanup
+dist-hook:
 	(cd $(srcdir) ; tar -cf - --exclude .git win32 test result) | (cd $(distdir); tar xf -)
 
-CLEANFILES = runsuite.log runxmlconf.log test.out *.gcda *.gcno *.res
-DISTCLEANFILES = COPYING missing.lst
+CLEANFILES = missing.lst runsuite.log runxmlconf.log test.out \
+	     *.gcda *.gcno *.res
 
 EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     libxml.h \
@@ -223,34 +214,3 @@ pkgconfig_DATA = libxml-2.0.pc
 
 cmakedir = $(libdir)/cmake/libxml2
 cmake_DATA = libxml2-config.cmake
-
-tst: tst.c
-	$(CC) $(CFLAGS) -Iinclude -o tst tst.c .libs/libxml2.a -lpthread -lm -lz -llzma
-
-sparse: clean
-	$(MAKE) CC=cgcc
-
-#
-# Coverage support, largely borrowed from libvirt
-# Both binaries comes from the lcov package in Fedora
-#
-LCOV = /usr/bin/lcov
-GENHTML = /usr/bin/genhtml
-
-cov: clean-cov
-	if [ "`echo $(AM_LDFLAGS) | grep coverage`" = "" ] ; then \
-	    echo not configured with coverage; exit 1 ; fi
-	if [ ! -x $(LCOV) -o ! -x $(GENHTML) ] ; then \
-	    echo Need $(LCOV) and $(GENHTML) excecutables; exit 1 ; fi
-	-@($(MAKE) check)
-	-@(./runsuite$(EXEEXT))
-	mkdir $(top_builddir)/coverage
-	$(LCOV) -c -o $(top_builddir)/coverage/libxml2.info.tmp -d $(top_srcdir)
-	$(LCOV) -r $(top_builddir)/coverage/libxml2.info.tmp -o $(top_builddir)/coverage/libxml2.info *usr*
-	rm $(top_builddir)/coverage/libxml2.info.tmp
-	$(GENHTML) -s -t "libxml2" -o $(top_builddir)/coverage --legend $(top_builddir)/coverage/libxml2.info
-	echo "Coverage report is in $(top_builddir)/coverage/index.html"
-
-clean-cov:
-	rm -rf $(top_builddir)/coverage
-

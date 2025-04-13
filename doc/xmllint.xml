@@ -163,13 +163,6 @@
     <variablelist>
 
         <varlistentry>
-            <term><option>--auto</option></term>
-            <listitem>
-                <para>Generate a small document for testing purposes.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--catalogs</option></term>
             <listitem>
                 <para>
@@ -190,13 +183,6 @@
                 <manvolnum>1</manvolnum>
             </citerefentry> compression of output.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--copy</option></term>
-            <listitem>
-                <para>Test the internal copy implementation.</para>
             </listitem>
         </varlistentry>
 
@@ -231,23 +217,6 @@
                     Identifier <replaceable>FPI</replaceable> for validation, note that this
                     will require a catalog exporting that Formal Public Identifier to work.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--debug</option></term>
-            <listitem>
-                <para>
-                    Parse a file and output an annotated tree of the
-                    in-memory version of the document.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--debugent</option></term>
-            <listitem>
-                <para>Debug the entities defined in the document.</para>
             </listitem>
         </varlistentry>
 
@@ -317,26 +286,9 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--insert</option></term>
-            <listitem>
-                <para>Test for valid insertions.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--loaddtd</option></term>
             <listitem>
                 <para>Fetch an external <acronym>DTD</acronym>.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--load-trace</option></term>
-            <listitem>
-                <para>
-                    Display all the documents loaded during the processing
-                    to <filename class="devicefile">stderr</filename>.
-                </para>
             </listitem>
         </varlistentry>
 
@@ -349,26 +301,6 @@
                     is 5. Documents making heavy use of entity expansion may require a
                     higher value.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--maxmem <replaceable class="option">NNBYTES</replaceable></option></term>
-            <listitem>
-                <para>
-                    Test the parser memory support. <replaceable>NNBYTES</replaceable>
-                    is the maximum number of bytes the library is allowed to allocate.
-                    This can also be used to make sure batch processing
-                    of <acronym>XML</acronym> files will not exhaust the virtual memory
-                    of the server running them.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--memory</option></term>
-            <listitem>
-                <para>Parse from memory.</para>
             </listitem>
         </varlistentry>
 
@@ -394,31 +326,11 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--nocompact</option></term>
-            <listitem>
-                <para>
-                    Do not generate compact text nodes (parser option
-                    XML_PARSE_COMPACT). Only for debugging.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--nodefdtd</option></term>
             <listitem>
                 <para>
                     Do not set default HTML doctype (parser option
                     HTML_PARSE_NODEFDTD).
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--nodict</option></term>
-            <listitem>
-                <para>
-                    Don't use dictionaries (parser option XML_PARSE_NODICT).
-                    Only for debugging.
                 </para>
             </listitem>
         </varlistentry>
@@ -486,15 +398,6 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--noxincludenode</option></term>
-            <listitem>
-                <para>
-                    Do XInclude processing but do not generate XInclude start and end nodes.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--nsclean</option></term>
             <listitem>
                 <para>Remove redundant namespace declarations.</para>
@@ -535,28 +438,9 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--pattern <replaceable class="option">PATTERNVALUE</replaceable></option></term>
-            <listitem>
-                <para>
-                    Used to exercise the pattern recognition engine, which can be used
-                    with the reader interface to the parser. It allows to select some
-                    nodes in the document based on an XPath (subset) expression. Used
-                    for debugging.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--pedantic</option></term>
             <listitem>
                 <para>Enable additional warnings.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--postvalid</option></term>
-            <listitem>
-                <para>Validate after parsing has completed.</para>
             </listitem>
         </varlistentry>
 
@@ -567,13 +451,6 @@
                     Value 0 means no formatting, 1 means XML_SAVE_FORMAT
                     (same as --format), 2 means XML_SAVE_WSNONSIG.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--push</option></term>
-            <listitem>
-                <para>Use the push mode of the parser.</para>
             </listitem>
         </varlistentry>
 
@@ -598,27 +475,6 @@
                     Use RelaxNG file named <replaceable class="option">SCHEMA</replaceable>
                     for validation.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--repeat</option></term>
-            <listitem>
-                <para>Repeat 100 times, for timing or profiling.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--sax</option></term>
-            <listitem>
-                <para>Print SAX callbacks (only for debugging).</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--sax1</option></term>
-            <listitem>
-                <para>Use deprecated SAX1 interface (only for debugging).</para>
             </listitem>
         </varlistentry>
 
@@ -653,44 +509,12 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--xpath "<replaceable class="option">XPath_expression</replaceable>"</option></term>
-            <listitem>
-                <para>
-                    Run an XPath expression given as argument and print the
-                    result. In case of a nodeset result, each node in the
-                    node set is serialized in full in the output. In case
-                    of an empty node set the "XPath set is empty" result
-                    will be shown and exit code 11 will be returned..
-                    This feature is EXPERIMENTAL. Implementation details can
-                    change without futher notice.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--stream</option></term>
             <listitem>
                 <para>
                     Use streaming <acronym>API</acronym> - useful when used in combination
                     with <option>--relaxng</option> or <option>--valid</option> options
                     for validation of files that are too large to be held in memory.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--testIO</option></term>
-            <listitem>
-                <para>Test user input/output support.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--timing</option></term>
-            <listitem>
-                <para>
-                    Output information about the time it takes &xmllint; to perform the
-                    various steps.
                 </para>
             </listitem>
         </varlistentry>
@@ -722,18 +546,6 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--walker</option></term>
-            <listitem>
-                <para>
-                    Test the walker module, which is a reader interface but for a
-                    document tree, instead of using the reader <acronym>API</acronym> on
-                    an unparsed document it works on an existing in-memory tree. Used for
-                    debugging.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--xinclude</option></term>
             <listitem>
                 <para>Do XInclude processing.</para>
@@ -750,6 +562,204 @@
                     resulting document is saved with the <acronym>XML</acronym>
                     serializer. This is primarily used to
                     generate <acronym>XHTML</acronym> from <acronym>HTML</acronym> input.
+                </para>
+            </listitem>
+        </varlistentry>
+
+    </variablelist>
+</refsect1>
+
+<refsect1 id="debug-options">
+    <title>DEBUG OPTIONS</title>
+    <para>
+        The following options can be used to debug the libxml2 library.
+        Behavior of these options may change without notice.
+    </para>
+
+    <variablelist>
+
+        <varlistentry>
+            <term><option>--auto</option></term>
+            <listitem>
+                <para>Generate a small document for testing purposes.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--copy</option></term>
+            <listitem>
+                <para>Test the internal copy implementation.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--debug</option></term>
+            <listitem>
+                <para>
+                    Parse a file and output an annotated tree of the
+                    in-memory version of the document.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--debugent</option></term>
+            <listitem>
+                <para>Debug the entities defined in the document.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--insert</option></term>
+            <listitem>
+                <para>Test for valid insertions.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--load-trace</option></term>
+            <listitem>
+                <para>
+                    Display all the documents loaded during the processing
+                    to <filename class="devicefile">stderr</filename>.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--maxmem <replaceable class="option">NNBYTES</replaceable></option></term>
+            <listitem>
+                <para>
+                    Test the parser memory support. <replaceable>NNBYTES</replaceable>
+                    is the maximum number of bytes the library is allowed to allocate.
+                    This can also be used to make sure batch processing
+                    of <acronym>XML</acronym> files will not exhaust the virtual memory
+                    of the server running them.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--memory</option></term>
+            <listitem>
+                <para>Parse from memory.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--nocompact</option></term>
+            <listitem>
+                <para>
+                    Do not generate compact text nodes (parser option
+                    XML_PARSE_COMPACT). Only for debugging.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--nodict</option></term>
+            <listitem>
+                <para>
+                    Don't use dictionaries (parser option XML_PARSE_NODICT).
+                    Only for debugging.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--noxincludenode</option></term>
+            <listitem>
+                <para>
+                    Do XInclude processing but do not generate XInclude start and end nodes.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--pattern <replaceable class="option">PATTERNVALUE</replaceable></option></term>
+            <listitem>
+                <para>
+                    Used to exercise the pattern recognition engine, which can be used
+                    with the reader interface to the parser. It allows to select some
+                    nodes in the document based on an XPath (subset) expression. Used
+                    for debugging.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--postvalid</option></term>
+            <listitem>
+                <para>Validate after parsing has completed.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--push</option></term>
+            <listitem>
+                <para>Use the push mode of the parser.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--repeat</option></term>
+            <listitem>
+                <para>Repeat 100 times, for timing or profiling.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--sax</option></term>
+            <listitem>
+                <para>Print SAX callbacks (only for debugging).</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--sax1</option></term>
+            <listitem>
+                <para>Use deprecated SAX1 interface (only for debugging).</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--testIO</option></term>
+            <listitem>
+                <para>Test user input/output support.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--timing</option></term>
+            <listitem>
+                <para>
+                    Output information about the time it takes &xmllint; to perform the
+                    various steps.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--walker</option></term>
+            <listitem>
+                <para>
+                    Test the walker module, which is a reader interface but for a
+                    document tree, instead of using the reader <acronym>API</acronym> on
+                    an unparsed document it works on an existing in-memory tree. Used for
+                    debugging.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--xpath "<replaceable class="option">XPath_expression</replaceable>"</option></term>
+            <listitem>
+                <para>
+                    Run an XPath expression given as argument and print the
+                    result. In case of a nodeset result, each node in the
+                    node set is serialized in full in the output. In case
+                    of an empty node set the "XPath set is empty" result
+                    will be shown and exit code 11 will be returned..
                 </para>
             </listitem>
         </varlistentry>

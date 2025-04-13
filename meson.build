@@ -326,12 +326,16 @@ if want_modules and host_machine.system() != 'windows'
     if meson.version().version_compare('>=0.62')
         dl_dep = dependency('dl', required: false)
     else
+        dl_dep = dependency('', required: false)
+    endif
+    if not dl_dep.found()
+        cc.has_header_symbol('dlfcn.h', 'dlopen', required: true)
         dl_dep = cc.find_library('dl', required: false)
     endif
     if dl_dep.found()
-        config_h.set10('HAVE_DLOPEN', true)
         xml_deps += dl_dep
     endif
+    config_h.set10('HAVE_DLOPEN', true)
 endif
 
 ### threads

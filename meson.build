@@ -36,10 +36,8 @@ dir_locale = dir_prefix / get_option('localedir')
 
 host_os = host_machine.system()
 
-cygwin = 'cygwin'
-windows = 'windows'
-sys_cygwin = cygwin.contains(host_os)
-sys_windows = windows.contains(host_os)
+sys_cygwin = host_os == 'cygwin'
+sys_windows = host_os == 'windows'
 
 libxml2_cflags = []
 xml_cflags = ''
@@ -314,15 +312,13 @@ if cc.has_function_attribute('destructor')
 endif
 
 ### DSO support
-if sys_cygwin == true
-    module_extension = '.dll'
-elif sys_windows == true
+if sys_cygwin or sys_windows
     module_extension = '.dll'
 else
     module_extension = '.so'
 endif
 
-if want_modules and host_machine.system() != 'windows'
+if want_modules and not sys_windows
     if meson.version().version_compare('>=0.62')
         dl_dep = dependency('dl', required: false)
     else
@@ -339,7 +335,7 @@ if want_modules and host_machine.system() != 'windows'
 endif
 
 ### threads
-if want_threads and host_os != 'windows'
+if want_threads and not sys_windows
     threads_dep = dependency('threads')
     xml_deps += threads_dep
 else

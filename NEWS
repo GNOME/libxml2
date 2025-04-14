@@ -2,6 +2,14 @@ NEWS file for libxml2
 
 v2.15.0: not released yet
 
+### Major changes
+
+The Python bindings are disabled by default now.
+
+### Planned removals
+
+The Python bindings are planned to be removed in the 2.16 release.
+
 
 v2.14.0: Mar 27 2025
 

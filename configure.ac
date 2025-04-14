@@ -595,11 +595,11 @@ dnl
 dnl Check for Python
 dnl
 
-AS_IF([test "x$with_python" != "xno"], [
+AS_IF([test "x$with_python" = "xyes"], [
     AM_PATH_PYTHON
     PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
 ])
-AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" != "xno"])
+AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" = "xyes"])
 
 dnl
 dnl Extra Python flags for Windows

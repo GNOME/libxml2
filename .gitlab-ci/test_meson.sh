@@ -12,6 +12,7 @@ meson  setup \
        --buildtype=debugoptimized \
        --default-library shared \
        -Dlegacy=enabled \
+       -Dpython=enabled \
        builddir
 
 ninja -C builddir

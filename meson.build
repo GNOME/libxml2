@@ -84,6 +84,7 @@ want_http = get_option('http').enabled()
 want_icu = get_option('icu').enabled()
 want_legacy = get_option('legacy').enabled()
 want_lzma = get_option('lzma').enabled()
+want_python = get_option('python').enabled()
 want_thread_alloc = get_option('thread-alloc').enabled()
 want_tls = get_option('tls').enabled()
 
@@ -105,9 +106,6 @@ want_iconv = want_minimum ? feature.enabled() : feature.allowed()
 
 feature = get_option('iso8859x')
 want_iso8859x = want_minimum ? feature.enabled() : feature.allowed()
-
-feature = get_option('python')
-want_python = want_minimum ? feature.enabled() : feature.allowed()
 
 feature = get_option('modules')
 want_modules = want_minimum ? feature.enabled() : feature.allowed()

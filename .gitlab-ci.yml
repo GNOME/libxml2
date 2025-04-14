@@ -7,7 +7,7 @@ include:
 .test:
   image: registry.gitlab.gnome.org/gnome/libxml2
   variables:
-    BASE_CONFIG: "--with-http --with-lzma --with-zlib"
+    BASE_CONFIG: "--with-http --with-lzma --with-zlib --with-python"
   before_script:
     - rm -rf libxml2-build
     - mkdir libxml2-build
@@ -44,7 +44,7 @@ gcc:legacy:
   only:
     - schedules
   variables:
-    BASE_CONFIG: "--with-legacy"
+    BASE_CONFIG: "--with-legacy --with-python"
     CFLAGS: "-O2"
 
 gcc:static:
@@ -78,7 +78,7 @@ clang:msan:
   tags:
     - win32-ps
   variables:
-    BASE_CONFIG: "--with-http --with-lzma --with-zlib"
+    BASE_CONFIG: "--with-http --with-lzma --with-zlib --with-python"
     # Disabled for now, see #658
     CONFIG: "--without-python"
     CHERE_INVOKING: "yes"

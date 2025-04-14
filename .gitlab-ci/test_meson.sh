@@ -11,7 +11,9 @@ meson  setup \
        --werror \
        --buildtype=debugoptimized \
        --default-library shared \
-       -Dlegacy=enabled \
+       -Dhttp=enabled \
+       -Dlzma=enabled \
+       -Dzlib=enabled \
        -Dpython=enabled \
        builddir
 

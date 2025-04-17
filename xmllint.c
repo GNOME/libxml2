@@ -2394,37 +2394,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		}
 	    } else
 #endif
-#if HAVE_DECL_MMAP
-	    if (lint->memory) {
-		xmlChar *result;
-		int len;
-
-		if (lint->encoding != NULL) {
-		    if (lint->format == 1) {
-		        xmlDocDumpFormatMemoryEnc(doc, &result, &len,
-                                                  lint->encoding, 1);
-		    } else {
-			xmlDocDumpMemoryEnc(doc, &result, &len,
-                                            lint->encoding);
-		    }
-		} else {
-		    if (lint->format == 1)
-			xmlDocDumpFormatMemory(doc, &result, &len, 1);
-		    else
-			xmlDocDumpMemory(doc, &result, &len);
-		}
-		if (result == NULL) {
-		    fprintf(errStream, "Failed to save\n");
-		    lint->progresult = XMLLINT_ERR_OUT;
-		} else {
-		    if (write(1, result, len) == -1) {
-		        fprintf(errStream, "Can't write data\n");
-		    }
-		    xmlFree(result);
-		}
-
-	    } else
-#endif /* HAVE_DECL_MMAP */
 	    if (lint->compress) {
 		xmlSaveFile(lint->output ? lint->output : "-", doc);
 	    } else {

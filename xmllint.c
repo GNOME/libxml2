@@ -136,8 +136,9 @@ typedef struct {
     int noout;
 #ifdef LIBXML_OUTPUT_ENABLED
     const char *output;
-    int format;
     const char *encoding;
+    const char *indentString;
+    int format;
     int compress;
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_VALID_ENABLED
@@ -2375,6 +2376,9 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
                                              saveOpts);
 
 		if (ctxt != NULL) {
+                    if (lint->indentString != NULL)
+                        xmlSaveSetIndentString(ctxt, lint->indentString);
+
 		    if (xmlSaveDoc(ctxt, doc) < 0) {
 			fprintf(errStream, "failed save to %s\n",
 				lint->output ? lint->output : "-");
@@ -3229,7 +3233,7 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
     {
         const char *indent = getenv("XMLLINT_INDENT");
         if (indent != NULL) {
-            xmlTreeIndentString = indent;
+            lint->indentString = indent;
         }
     }
 #endif

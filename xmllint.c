@@ -3348,13 +3348,13 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
             goto error;
         }
 	lint->wxschematron = xmlSchematronParse(ctxt);
+	xmlSchematronFreeParserCtxt(ctxt);
 	if (lint->wxschematron == NULL) {
 	    fprintf(errStream, "Schematron schema %s failed to compile\n",
                     lint->schematron);
             lint->progresult = XMLLINT_ERR_SCHEMACOMP;
             goto error;
 	}
-	xmlSchematronFreeParserCtxt(ctxt);
 	if (lint->timing) {
 	    endTimer(lint, "Compiling the schemas");
 	}
@@ -3381,13 +3381,13 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
         }
         xmlRelaxNGSetResourceLoader(ctxt, xmllintResourceLoader, lint);
 	lint->relaxngschemas = xmlRelaxNGParse(ctxt);
+	xmlRelaxNGFreeParserCtxt(ctxt);
 	if (lint->relaxngschemas == NULL) {
 	    fprintf(errStream, "Relax-NG schema %s failed to compile\n",
                     lint->relaxng);
             lint->progresult = XMLLINT_ERR_SCHEMACOMP;
             goto error;
 	}
-	xmlRelaxNGFreeParserCtxt(ctxt);
 	if (lint->timing) {
 	    endTimer(lint, "Compiling the schemas");
 	}
@@ -3412,13 +3412,13 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
         }
         xmlSchemaSetResourceLoader(ctxt, xmllintResourceLoader, lint);
 	lint->wxschemas = xmlSchemaParse(ctxt);
+	xmlSchemaFreeParserCtxt(ctxt);
 	if (lint->wxschemas == NULL) {
 	    fprintf(errStream, "WXS schema %s failed to compile\n",
                     lint->schema);
             lint->progresult = XMLLINT_ERR_SCHEMACOMP;
             goto error;
 	}
-	xmlSchemaFreeParserCtxt(ctxt);
 	if (lint->timing) {
 	    endTimer(lint, "Compiling the schemas");
 	}

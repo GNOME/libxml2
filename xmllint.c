@@ -2893,7 +2893,6 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                 fprintf(errStream, "maxmem: missing integer value\n");
                 return(XMLLINT_ERR_UNCLASS);
             }
-            errno = 0;
             lint->maxmem = parseInteger(errStream, "maxmem", argv[i],
                                         0, INT_MAX);
         } else if ((!strcmp(argv[i], "-debug")) ||
@@ -3084,8 +3083,12 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-pretty")) ||
                    (!strcmp(argv[i], "--pretty"))) {
             i++;
-            if (argv[i] != NULL)
-                lint->format = atoi(argv[i]);
+            if (i >= argc) {
+                fprintf(errStream, "pretty: missing integer value\n");
+                return(XMLLINT_ERR_UNCLASS);
+            }
+            lint->format = parseInteger(errStream, "pretty", argv[i],
+                                        0, 2);
 #ifdef LIBXML_ZLIB_ENABLED
         } else if ((!strcmp(argv[i], "-compress")) ||
                    (!strcmp(argv[i], "--compress"))) {

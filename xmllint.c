@@ -2306,49 +2306,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 	    if ((lint->timing) && (lint->repeat == 1)) {
 		startTimer(lint);
 	    }
-#ifdef LIBXML_HTML_ENABLED
-            if ((lint->html) && (!lint->xmlout)) {
-		if (lint->compress) {
-		    htmlSaveFile(lint->output ? lint->output : "-", doc);
-		}
-		else if (lint->encoding != NULL) {
-		    if (lint->format == 1) {
-			htmlSaveFileFormat(lint->output ? lint->output : "-",
-                                           doc, lint->encoding, 1);
-		    }
-		    else {
-			htmlSaveFileFormat(lint->output ? lint->output : "-",
-                                           doc, lint->encoding, 0);
-		    }
-		}
-		else if (lint->format == 1) {
-		    htmlSaveFileFormat(lint->output ? lint->output : "-",
-                                       doc, NULL, 1);
-		}
-		else {
-		    FILE *out;
-		    if (lint->output == NULL)
-			out = stdout;
-		    else {
-			out = fopen(lint->output,"wb");
-		    }
-		    if (out != NULL) {
-			if (htmlDocDump(out, doc) < 0)
-			    lint->progresult = XMLLINT_ERR_OUT;
-
-			if (lint->output != NULL)
-			    fclose(out);
-		    } else {
-			fprintf(errStream, "failed to open %s\n",
-                                lint->output);
-			lint->progresult = XMLLINT_ERR_OUT;
-		    }
-		}
-		if ((lint->timing) && (lint->repeat == 1)) {
-		    endTimer(lint, "Saving");
-		}
-	    } else
-#endif
 #ifdef LIBXML_C14N_ENABLED
             if (lint->canonical) {
 	        xmlChar *result = NULL;

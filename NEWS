@@ -1,5 +1,14 @@
 NEWS file for libxml2
 
+v2.13.8: Apr 17 2025
+
+### Security
+
+- [CVE-2025-32415] schemas: Fix heap buffer overflow in
+  xmlSchemaIDCFillNodeTables
+- [CVE-2025-32414] python: Read at most len/4 characters. (Maks Verver)
+
+
 v2.13.7: Mar 27 2025
 
 ### Regressions

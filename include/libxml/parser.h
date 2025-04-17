@@ -1038,8 +1038,11 @@ XML_DEPRECATED
 XMLPUBFUN int *__xmlSubstituteEntitiesDefaultValue(void);
 
 #ifdef LIBXML_OUTPUT_ENABLED
+XML_DEPRECATED
 XMLPUBFUN int *__xmlIndentTreeOutput(void);
+XML_DEPRECATED
 XMLPUBFUN const char **__xmlTreeIndentString(void);
+XML_DEPRECATED
 XMLPUBFUN int *__xmlSaveNoEmptyTags(void);
 #endif
 

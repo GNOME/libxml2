@@ -2915,6 +2915,7 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-nocatalogs")) ||
                    (!strcmp(argv[i], "--nocatalogs"))) {
             lint->nocatalogs = 1;
+            lint->options |= XML_PARSE_NO_SYS_CATALOG;
 #endif
         } else if ((!strcmp(argv[i], "-noblanks")) ||
                    (!strcmp(argv[i], "--noblanks"))) {

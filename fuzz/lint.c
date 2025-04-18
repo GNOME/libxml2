@@ -192,7 +192,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
 
     ival = xmlFuzzReadInt(1);
     if (ival != 0) {
-        snprintf(prettyBuf, 20, "%d", ival - 128);
+        snprintf(prettyBuf, 20, "%d", ival % 4);
         pushArg("--pretty");
         pushArg(prettyBuf);
     }

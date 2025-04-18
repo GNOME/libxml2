@@ -128,9 +128,6 @@ typedef struct {
     int sax;
     int callbacks;
     int shell;
-#ifdef LIBXML_DEBUG_ENABLED
-    int debugent;
-#endif
     int debug;
     int copy;
     int noout;
@@ -2606,15 +2603,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
     }
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
-#ifdef LIBXML_DEBUG_ENABLED
-    if ((lint->debugent)
-#if defined(LIBXML_HTML_ENABLED)
-        && (!lint->html)
-#endif
-    )
-	xmlDebugDumpEntities(errStream, doc);
-#endif
-
     /* Avoid unused label warning */
     goto done;
 
@@ -2685,7 +2673,6 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--shell : run a navigating shell\n");
 #ifdef LIBXML_DEBUG_ENABLED
     fprintf(f, "\t--debug : dump a debug tree of the in-memory document\n");
-    fprintf(f, "\t--debugent : debug the entities defined in the document\n");
 #else
 #ifdef LIBXML_READER_ENABLED
     fprintf(f, "\t--debug : dump the nodes content when using --stream\n");
@@ -3054,11 +3041,6 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--pedantic"))) {
             lint->options |= XML_PARSE_PEDANTIC;
             lint->options &= ~XML_PARSE_NOWARNING;
-#ifdef LIBXML_DEBUG_ENABLED
-        } else if ((!strcmp(argv[i], "-debugent")) ||
-                   (!strcmp(argv[i], "--debugent"))) {
-            lint->debugent = 1;
-#endif
 #ifdef LIBXML_C14N_ENABLED
         } else if ((!strcmp(argv[i], "-c14n")) ||
                    (!strcmp(argv[i], "--c14n"))) {

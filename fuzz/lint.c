@@ -47,7 +47,7 @@ static const char *const switches[] = {
     "--compress",
     "--copy",
     "--debug",
-    "--debugent",
+    NULL,
     "--dropdtd",
     "--dtdattr",
     "--exc-c14n",

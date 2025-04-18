@@ -69,7 +69,6 @@
             <arg choice="plain"><option>--quiet</option></arg>
             <arg choice="plain"><option>--shell</option></arg>
             <arg choice="plain"><option>--xpath "<replaceable class="option">XPath_expression</replaceable>"</option></arg>
-            <arg choice="plain"><option>--debugent</option></arg>
             <arg choice="plain"><option>--copy</option></arg>
             <arg choice="plain"><option>--recover</option></arg>
             <arg choice="plain"><option>--huge</option></arg>
@@ -599,13 +598,6 @@
                     Parse a file and output an annotated tree of the
                     in-memory version of the document.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--debugent</option></term>
-            <listitem>
-                <para>Debug the entities defined in the document.</para>
             </listitem>
         </varlistentry>
 

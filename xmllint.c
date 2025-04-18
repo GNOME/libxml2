@@ -162,6 +162,7 @@ typedef struct {
     int repeat;
 #if defined(LIBXML_HTML_ENABLED)
     int html;
+    int htmlOptions;
     int xmlout;
 #endif
     int htmlout;
@@ -473,9 +474,9 @@ parseHtml(xmllintState *lint, const char *filename) {
 
     if (strcmp(filename, "-") == 0)
         doc = htmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
-                             lint->options);
+                             lint->htmlOptions);
     else
-        doc = htmlCtxtReadFile(ctxt, filename, NULL, lint->options);
+        doc = htmlCtxtReadFile(ctxt, filename, NULL, lint->htmlOptions);
 
     return(doc);
 }
@@ -2871,6 +2872,9 @@ xmllintInit(xmllintState *lint) {
     lint->repeat = 1;
     lint->progresult = XMLLINT_RETURN_OK;
     lint->options = XML_PARSE_COMPACT | XML_PARSE_BIG_LINES;
+#ifdef LIBXML_HTML_ENABLED
+    lint->htmlOptions = HTML_PARSE_COMPACT | HTML_PARSE_BIG_LINES;
+#endif
 }
 
 static int
@@ -2915,12 +2919,18 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-huge")) ||
                    (!strcmp(argv[i], "--huge"))) {
             lint->options |= XML_PARSE_HUGE;
+#ifdef LIBXML_HTML_ENABLED
+            lint->htmlOptions |= HTML_PARSE_HUGE;
+#endif
         } else if ((!strcmp(argv[i], "-noent")) ||
                    (!strcmp(argv[i], "--noent"))) {
             lint->options |= XML_PARSE_NOENT;
         } else if ((!strcmp(argv[i], "-noenc")) ||
                    (!strcmp(argv[i], "--noenc"))) {
             lint->options |= XML_PARSE_IGNORE_ENC;
+#ifdef LIBXML_HTML_ENABLED
+            lint->htmlOptions |= HTML_PARSE_IGNORE_ENC;
+#endif
         } else if ((!strcmp(argv[i], "-nsclean")) ||
                    (!strcmp(argv[i], "--nsclean"))) {
             lint->options |= XML_PARSE_NSCLEAN;
@@ -2952,7 +2962,7 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
             lint->xmlout = 1;
         } else if ((!strcmp(argv[i], "-nodefdtd")) ||
                    (!strcmp(argv[i], "--nodefdtd"))) {
-            lint->options |= HTML_PARSE_NODEFDTD;
+            lint->htmlOptions |= HTML_PARSE_NODEFDTD;
 #endif /* LIBXML_HTML_ENABLED */
         } else if ((!strcmp(argv[i], "-loaddtd")) ||
                    (!strcmp(argv[i], "--loaddtd"))) {
@@ -3037,6 +3047,9 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--nowarning"))) {
             lint->options |= XML_PARSE_NOWARNING;
             lint->options &= ~XML_PARSE_PEDANTIC;
+#ifdef LIBXML_HTML_ENABLED
+            lint->htmlOptions |= HTML_PARSE_NOWARNING;
+#endif
         } else if ((!strcmp(argv[i], "-pedantic")) ||
                    (!strcmp(argv[i], "--pedantic"))) {
             lint->options |= XML_PARSE_PEDANTIC;
@@ -3071,6 +3084,9 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-noblanks")) ||
                    (!strcmp(argv[i], "--noblanks"))) {
             lint->options |= XML_PARSE_NOBLANKS;
+#ifdef LIBXML_HTML_ENABLED
+            lint->htmlOptions |= HTML_PARSE_NOBLANKS;
+#endif
 #ifdef LIBXML_OUTPUT_ENABLED
         } else if ((!strcmp(argv[i], "-o")) ||
                    (!strcmp(argv[i], "-output")) ||
@@ -3081,6 +3097,9 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--format"))) {
             lint->format = 1;
             lint->options |= XML_PARSE_NOBLANKS;
+#ifdef LIBXML_HTML_ENABLED
+            lint->htmlOptions |= HTML_PARSE_NOBLANKS;
+#endif
         } else if ((!strcmp(argv[i], "-encode")) ||
                    (!strcmp(argv[i], "--encode"))) {
             i++;
@@ -3152,6 +3171,9 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-nocompact")) ||
                    (!strcmp(argv[i], "--nocompact"))) {
             lint->options &= ~XML_PARSE_COMPACT;
+#ifdef LIBXML_HTML_ENABLED
+            lint->htmlOptions &= ~HTML_PARSE_COMPACT;
+#endif
         } else if ((!strcmp(argv[i], "-load-trace")) ||
                    (!strcmp(argv[i], "--load-trace"))) {
             lint->load_trace = 1;
@@ -3446,7 +3468,7 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
                 {
                     ctxt = htmlNewParserCtxt();
                 }
-                htmlCtxtUseOptions(ctxt, lint->options);
+                htmlCtxtUseOptions(ctxt, lint->htmlOptions);
             } else
 #endif /* LIBXML_HTML_ENABLED */
             {

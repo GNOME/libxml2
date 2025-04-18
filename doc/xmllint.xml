@@ -82,8 +82,6 @@
             <arg choice="plain"><option>--nonet</option></arg>
             <arg choice="plain"><option>--path "<replaceable class="option">PATH(S)</replaceable>"</option></arg>
             <arg choice="plain"><option>--load-trace</option></arg>
-            <arg choice="plain"><option>--htmlout</option></arg>
-            <arg choice="plain"><option>--nowrap</option></arg>
             <arg choice="plain"><option>--valid</option></arg>
             <arg choice="plain"><option>--postvalid</option></arg>
             <arg choice="plain"><option>--dtdvalid <replaceable class="option">URL</replaceable></option></arg>
@@ -265,18 +263,6 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--htmlout</option></term>
-            <listitem>
-                <para>
-                    Output results as an <acronym>HTML</acronym> file. This
-                    causes &xmllint; to output the necessary <acronym>HTML</acronym>
-                    tags surrounding the result tree output so the results can be
-                    displayed/viewed in a browser.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--huge</option></term>
             <listitem>
                 <para>Ignore some hardcoded parser limits.</para>
@@ -385,13 +371,6 @@
             <term><option>--nowarning</option></term>
             <listitem>
                 <para>Do not emit warnings from the parser and/or validator.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--nowrap</option></term>
-            <listitem>
-                <para>Do not output <acronym>HTML</acronym> doc wrapper.</para>
             </listitem>
         </varlistentry>
 

@@ -124,7 +124,6 @@ typedef struct {
 
     int version;
     int maxmem;
-    int nowrap;
     int sax;
     int callbacks;
     int shell;
@@ -162,7 +161,6 @@ typedef struct {
     int htmlOptions;
     int xmlout;
 #endif
-    int htmlout;
 #ifdef LIBXML_PUSH_ENABLED
     int push;
 #endif /* LIBXML_PUSH_ENABLED */
@@ -206,9 +204,6 @@ typedef struct {
     xmlChar *paths[MAX_PATHS + 1];
     int nbpaths;
     int load_trace;
-
-    char *htmlBuf;
-    int htmlBufLen;
 
     xmlTime begin;
     xmlTime end;
@@ -584,104 +579,6 @@ endTimer(xmllintState *lint, const char *fmt, ...)
     va_end(ap);
 
     fprintf(lint->errStream, " took %ld ms\n", (long) msec);
-}
-
-/************************************************************************
- *									*
- *			HTML output					*
- *									*
- ************************************************************************/
-
-static void
-xmlHTMLEncodeSend(xmllintState *lint) {
-    char *result;
-
-    /*
-     * xmlEncodeEntitiesReentrant assumes valid UTF-8, but the buffer might
-     * end with a truncated UTF-8 sequence. This is a hack to at least avoid
-     * an out-of-bounds read.
-     */
-    memset(&lint->htmlBuf[HTML_BUF_SIZE - 4], 0, 4);
-    result = (char *) xmlEncodeEntitiesReentrant(NULL, BAD_CAST lint->htmlBuf);
-    if (result) {
-	fprintf(lint->errStream, "%s", result);
-	xmlFree(result);
-    }
-
-    lint->htmlBufLen = 0;
-}
-
-static void
-xmlHTMLBufCat(void *data, const char *fmt, ...) {
-    xmllintState *lint = data;
-    va_list ap;
-    int res;
-
-    va_start(ap, fmt);
-    res = vsnprintf(&lint->htmlBuf[lint->htmlBufLen],
-                    HTML_BUF_SIZE - lint->htmlBufLen, fmt, ap);
-    va_end(ap);
-
-    if (res > 0) {
-        if (res > HTML_BUF_SIZE - lint->htmlBufLen - 1)
-            lint->htmlBufLen = HTML_BUF_SIZE - 1;
-        else
-            lint->htmlBufLen += res;
-    }
-}
-
-/**
- * xmlHTMLError:
- * @ctx:  an XML parser context
- * @msg:  the message to display/transmit
- * @...:  extra parameters for the message display
- *
- * Display and format an error messages, gives file, line, position and
- * extra parameters.
- */
-static void
-xmlHTMLError(void *vctxt, const xmlError *error)
-{
-    xmlParserCtxtPtr ctxt = vctxt;
-    xmllintState *lint = ctxt->_private;
-    xmlParserInputPtr input;
-    xmlGenericErrorFunc oldError;
-    void *oldErrorCtxt;
-
-    input = ctxt->input;
-    if ((input != NULL) && (input->filename == NULL) && (ctxt->inputNr > 1)) {
-        input = ctxt->inputTab[ctxt->inputNr - 2];
-    }
-
-    oldError = xmlGenericError;
-    oldErrorCtxt = xmlGenericErrorContext;
-    xmlSetGenericErrorFunc(lint, xmlHTMLBufCat);
-
-    fprintf(lint->errStream, "<p>");
-
-    xmlParserPrintFileInfo(input);
-    xmlHTMLEncodeSend(lint);
-
-    fprintf(lint->errStream, "<b>%s%s</b>: ",
-            (error->domain == XML_FROM_VALID) ||
-            (error->domain == XML_FROM_DTD) ? "validity " : "",
-            error->level == XML_ERR_WARNING ? "warning" : "error");
-
-    snprintf(lint->htmlBuf, HTML_BUF_SIZE, "%s", error->message);
-    xmlHTMLEncodeSend(lint);
-
-    fprintf(lint->errStream, "</p>\n");
-
-    if (input != NULL) {
-        fprintf(lint->errStream, "<pre>\n");
-
-        xmlParserPrintFileContext(input);
-        xmlHTMLEncodeSend(lint);
-
-        fprintf(lint->errStream, "</pre>");
-    }
-
-    xmlSetGenericErrorFunc(oldErrorCtxt, oldError);
 }
 
 /************************************************************************
@@ -2656,8 +2553,6 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--load-trace : print trace of all external entities loaded\n");
     fprintf(f, "\t--nonet : refuse to fetch DTDs or entities over network\n");
     fprintf(f, "\t--nocompact : do not generate compact text nodes\n");
-    fprintf(f, "\t--htmlout : output results as HTML\n");
-    fprintf(f, "\t--nowrap : do not put HTML doc wrapper\n");
 #ifdef LIBXML_VALID_ENABLED
     fprintf(f, "\t--valid : validate the document in addition to std well-formed check\n");
     fprintf(f, "\t--postvalid : do a posteriori validation, i.e after parsing\n");
@@ -2901,12 +2796,6 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-noout")) ||
                    (!strcmp(argv[i], "--noout"))) {
             lint->noout = 1;
-        } else if ((!strcmp(argv[i], "-htmlout")) ||
-                   (!strcmp(argv[i], "--htmlout"))) {
-            lint->htmlout = 1;
-        } else if ((!strcmp(argv[i], "-nowrap")) ||
-                   (!strcmp(argv[i], "--nowrap"))) {
-            lint->nowrap = 1;
 #ifdef LIBXML_HTML_ENABLED
         } else if ((!strcmp(argv[i], "-html")) ||
                    (!strcmp(argv[i], "--html"))) {
@@ -3218,27 +3107,6 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
     }
 #endif
 
-    if (lint->htmlout) {
-        lint->htmlBuf = xmlMalloc(HTML_BUF_SIZE);
-        if (lint->htmlBuf == NULL) {
-            lint->progresult = XMLLINT_ERR_MEM;
-            goto error;
-        }
-
-        if (!lint->nowrap) {
-            fprintf(errStream,
-             "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"\n");
-            fprintf(errStream,
-                    "\t\"http://www.w3.org/TR/REC-html40/loose.dtd\">\n");
-            fprintf(errStream,
-             "<html><head><title>%s output</title></head>\n",
-                    argv[0]);
-            fprintf(errStream,
-             "<body bgcolor=\"#ffffff\"><h1 align=\"center\">%s output</h1>\n",
-                    argv[0]);
-        }
-    }
-
 #ifdef LIBXML_SCHEMATRON_ENABLED
     if ((lint->schematron != NULL) && (lint->sax == 0)
 #ifdef LIBXML_READER_ENABLED
@@ -3455,11 +3323,6 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
             if (lint->maxAmpl > 0)
                 xmlCtxtSetMaxAmplification(ctxt, lint->maxAmpl);
 
-            if (lint->htmlout) {
-                ctxt->_private = lint;
-                xmlCtxtSetErrorHandler(ctxt, xmlHTMLError, ctxt);
-            }
-
             lint->ctxt = ctxt;
 
             for (j = 0; j < lint->repeat; j++) {
@@ -3494,19 +3357,12 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
     if (lint->generate)
 	parseAndPrintFile(lint, NULL);
 
-    if ((lint->htmlout) && (!lint->nowrap)) {
-	fprintf(errStream, "</body></html>\n");
-    }
-
     if ((files == 0) && (!lint->generate) && (lint->version == 0)) {
 	usage(errStream, argv[0]);
         lint->progresult = XMLLINT_ERR_UNCLASS;
     }
 
 error:
-
-    if (lint->htmlout)
-        xmlFree(lint->htmlBuf);
 
 #ifdef LIBXML_SCHEMATRON_ENABLED
     if (lint->wxschematron != NULL)

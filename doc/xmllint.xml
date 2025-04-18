@@ -107,7 +107,6 @@
             <arg choice="plain"><option>--encode <replaceable class="option">ENCODING</replaceable></option></arg>
             <arg choice="plain"><option>--dropdtd</option></arg>
             <arg choice="plain"><option>--nsclean</option></arg>
-            <arg choice="plain"><option>--testIO</option></arg>
             <arg choice="plain"><option>--catalogs</option></arg>
             <arg choice="plain"><option>--nocatalogs</option></arg>
             <arg choice="plain"><option>--auto</option></arg>
@@ -711,13 +710,6 @@
             <term><option>--sax1</option></term>
             <listitem>
                 <para>Use deprecated SAX1 interface (only for debugging).</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--testIO</option></term>
-            <listitem>
-                <para>Test user input/output support.</para>
             </listitem>
         </varlistentry>
 

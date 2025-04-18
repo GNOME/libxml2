@@ -171,7 +171,6 @@ typedef struct {
     char *memoryData;
     size_t memorySize;
 #endif
-    int testIO;
 #ifdef LIBXML_XINCLUDE_ENABLED
     int xinclude;
 #endif
@@ -315,19 +314,6 @@ xmllintResourceLoader(void *ctxt, const char *URL,
  *									*
  ************************************************************************/
 
-static int
-myRead(void *f, char *buf, int len) {
-    return(fread(buf, 1, len, (FILE *) f));
-}
-
-static int
-myClose(void *context) {
-    FILE *f = (FILE *) context;
-    if (f == stdin)
-        return(0);
-    return(fclose(f));
-}
-
 static xmlDocPtr
 parseXml(xmllintState *lint, const char *filename) {
     xmlParserCtxtPtr ctxt = lint->ctxt;
@@ -389,30 +375,12 @@ parseXml(xmllintState *lint, const char *filename) {
     }
 #endif
 
-    if (lint->testIO) {
-        FILE *f;
-
-        if ((filename[0] == '-') && (filename[1] == 0)) {
-            f = stdin;
-        } else {
-            f = fopen(filename, "rb");
-            if (f == NULL) {
-                fprintf(lint->errStream, "Can't open %s\n", filename);
-                lint->progresult = XMLLINT_ERR_RDFILE;
-                return(NULL);
-            }
-        }
-
-        doc = xmlCtxtReadIO(ctxt, myRead, myClose, f, filename, NULL,
-                            lint->options);
-    } else {
-        if (strcmp(filename, "-") == 0)
-            doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
-                                lint->options | XML_PARSE_UNZIP);
-        else
-            doc = xmlCtxtReadFile(ctxt, filename, NULL,
-                                  lint->options | XML_PARSE_UNZIP);
-    }
+    if (strcmp(filename, "-") == 0)
+        doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
+                            lint->options | XML_PARSE_UNZIP);
+    else
+        doc = xmlCtxtReadFile(ctxt, filename, NULL,
+                              lint->options | XML_PARSE_UNZIP);
 
     return(doc);
 }
@@ -2736,7 +2704,6 @@ static void usage(FILE *f, const char *name) {
 #ifdef LIBXML_C14N_ENABLED
 #endif /* LIBXML_C14N_ENABLED */
     fprintf(f, "\t--nsclean : remove redundant namespace declarations\n");
-    fprintf(f, "\t--testIO : test user I/O support\n");
 #ifdef LIBXML_CATALOG_ENABLED
     fprintf(f, "\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
     fprintf(f, "\t             otherwise XML Catalogs starting from \n");
@@ -3011,9 +2978,6 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--memory"))) {
             lint->memory = 1;
 #endif
-        } else if ((!strcmp(argv[i], "-testIO")) ||
-                   (!strcmp(argv[i], "--testIO"))) {
-            lint->testIO = 1;
 #ifdef LIBXML_XINCLUDE_ENABLED
         } else if ((!strcmp(argv[i], "-xinclude")) ||
                    (!strcmp(argv[i], "--xinclude"))) {

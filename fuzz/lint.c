@@ -81,7 +81,7 @@ static const char *const switches[] = {
     "--recover",
     "--repeat",
     "--sax1",
-    "--testIO",
+    NULL,
     "--timing",
     "--valid",
     "--version",

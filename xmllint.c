@@ -2793,9 +2793,9 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\nLibxml project home page: https://gitlab.gnome.org/GNOME/libxml2\n");
 }
 
-static unsigned long
-parseInteger(FILE *errStream, const char *ctxt, const char *str,
-             unsigned long min, unsigned long max) {
+static int
+parseInteger(unsigned long *result, FILE *errStream, const char *ctxt,
+             const char *str, unsigned long min, unsigned long max) {
     char *strEnd;
     unsigned long val;
 
@@ -2803,14 +2803,15 @@ parseInteger(FILE *errStream, const char *ctxt, const char *str,
     val = strtoul(str, &strEnd, 10);
     if (errno == EINVAL || *strEnd != 0) {
         fprintf(errStream, "%s: invalid integer: %s\n", ctxt, str);
-        exit(XMLLINT_ERR_UNCLASS);
+        return(-1);
     }
     if (errno != 0 || val < min || val > max) {
         fprintf(errStream, "%s: integer out of range: %s\n", ctxt, str);
-        exit(XMLLINT_ERR_UNCLASS);
+        return(-1);
     }
 
-    return(val);
+    *result = val;
+    return(0);
 }
 
 static int
@@ -2883,6 +2884,8 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
     }
 
     for (i = 1; i < argc ; i++) {
+        unsigned long val;
+
         if (argv[i][0] != '-' || argv[i][1] == 0)
             continue;
 
@@ -2893,8 +2896,10 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                 fprintf(errStream, "maxmem: missing integer value\n");
                 return(XMLLINT_ERR_UNCLASS);
             }
-            lint->maxmem = parseInteger(errStream, "maxmem", argv[i],
-                                        0, INT_MAX);
+            if (parseInteger(&val, errStream, "maxmem", argv[i],
+                             0, INT_MAX) < 0)
+                return(XMLLINT_ERR_UNCLASS);
+            lint->maxmem = val;
         } else if ((!strcmp(argv[i], "-debug")) ||
                    (!strcmp(argv[i], "--debug"))) {
             lint->debug = 1;
@@ -3087,8 +3092,10 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                 fprintf(errStream, "pretty: missing integer value\n");
                 return(XMLLINT_ERR_UNCLASS);
             }
-            lint->format = parseInteger(errStream, "pretty", argv[i],
-                                        0, 2);
+            if (parseInteger(&val, errStream, "pretty", argv[i],
+                             0, 2) < 0)
+                return(XMLLINT_ERR_UNCLASS);
+            lint->format = val;
 #ifdef LIBXML_ZLIB_ENABLED
         } else if ((!strcmp(argv[i], "-compress")) ||
                    (!strcmp(argv[i], "--compress"))) {
@@ -3169,8 +3176,10 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                 fprintf(errStream, "max-ampl: missing integer value\n");
                 return(XMLLINT_ERR_UNCLASS);
             }
-            lint->maxAmpl = parseInteger(errStream, "max-ampl", argv[i],
-                                         1, UINT_MAX);
+            if (parseInteger(&val, errStream, "max-ampl", argv[i],
+                             1, UINT_MAX) < 0)
+                return(XMLLINT_ERR_UNCLASS);
+            lint->maxAmpl = val;
         } else {
             fprintf(errStream, "Unknown option %s\n", argv[i]);
             usage(errStream, argv[0]);

@@ -5768,7 +5768,10 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
 
     ctxt->linenumbers = 1;
 
-    return(options & ~allMask);
+    /*
+     * Allow XML_PARSE_NOENT which many users set on the HTML parser.
+     */
+    return(options & ~allMask & ~XML_PARSE_NOENT);
 }
 
 /**

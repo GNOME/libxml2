@@ -2308,6 +2308,12 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
     int allowGlobal = 0;
 
     /*
+     * Loading of HTML documents shouldn't use XML catalogs.
+     */
+    if ((ctxt != NULL) && (ctxt->html))
+        return(NULL);
+
+    /*
      * If the resource doesn't exists as a file,
      * try to load it from the resource pointed in the catalogs
      */

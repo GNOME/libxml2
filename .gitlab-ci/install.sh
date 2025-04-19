@@ -12,6 +12,9 @@ sh autogen.sh "--prefix=$installdir" --with-http --with-zlib --without-python
 make -j$(nproc)
 make install
 
+# Make system XML catalog available
+ln -s /etc install/etc
+
 git clone --depth 1 https://gitlab.gnome.org/GNOME/libxslt.git
 cd libxslt
 sh autogen.sh \

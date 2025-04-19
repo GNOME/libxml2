@@ -46,3 +46,7 @@ RUN apt-get install -y --no-install-recommends \
 # lxml
 RUN apt-get install -y --no-install-recommends \
         cython3
+
+# xmlstarlet
+RUN apt-get install -y --no-install-recommends \
+        docbook-xsl-ns

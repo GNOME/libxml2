@@ -353,3 +353,9 @@ downstream-php:
   needs: [install]
   script:
     - sh .gitlab-ci/downstream-php.sh
+
+downstream-xmlstarlet:
+  image: registry.gitlab.gnome.org/gnome/libxml2
+  needs: [install]
+  script:
+    - sh .gitlab-ci/downstream-xmlstarlet.sh

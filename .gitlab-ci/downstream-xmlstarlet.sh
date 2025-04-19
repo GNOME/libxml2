@@ -7,7 +7,9 @@ installdir="$srcdir/install"
 # xmlstarlet uses xml2-config
 export PATH="$installdir/bin:$PATH"
 
-git clone --depth 1 https://github.com/nwellnhof/xmlstar.git
+# We can't use --depth 1 because configure calls git-describe
+# which needs the branch history.
+git clone --single-branch https://github.com/nwellnhof/xmlstar.git
 cd xmlstar
 autoreconf -sif
 ./configure

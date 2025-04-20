@@ -30,6 +30,11 @@ install:
   script:
     - sh .gitlab-ci/test.sh
 
+gcc:
+  extends: .test
+  variables:
+    CFLAGS: "-O2"
+
 gcc:c89:
   extends: .test
   variables:

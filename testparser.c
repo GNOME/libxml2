@@ -288,6 +288,50 @@ testNoBlanks(void) {
 
     return err;
 }
+
+static int
+testSaveNullEncDoc(const char *xml, const char *expect) {
+    xmlDocPtr doc;
+    xmlBufferPtr buffer;
+    xmlSaveCtxtPtr save;
+    const xmlChar *result;
+    int err = 0;
+
+    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL, 0);
+
+    buffer = xmlBufferCreate();
+    save = xmlSaveToBuffer(buffer, NULL, 0);
+    xmlSaveDoc(save, doc);
+    xmlSaveClose(save);
+
+    result = xmlBufferContent(buffer);
+    if (strcmp((char *) result, expect) != 0) {
+        fprintf(stderr, "xmlSave with NULL encodíng failed\n");
+        err = 1;
+    }
+
+    xmlBufferFree(buffer);
+    xmlFreeDoc(doc);
+
+    return err;
+}
+
+static int
+testSaveNullEnc(void) {
+    int err = 0;
+
+    err |= testSaveNullEncDoc(
+        "<?xml version=\"1.0\"?><doc>\xC3\x98</doc>",
+        "<?xml version=\"1.0\"?>\n<doc>&#xD8;</doc>\n");
+    err |= testSaveNullEncDoc(
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?><doc>\xC3\x98</doc>",
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<doc>\xC3\x98</doc>\n");
+    err |= testSaveNullEncDoc(
+        "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?><doc>\xD8</doc>",
+        "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<doc>\xD8</doc>\n");
+
+    return err;
+}
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -1157,6 +1201,7 @@ main(void) {
 #ifdef LIBXML_OUTPUT_ENABLED
     err |= testCtxtParseContent();
     err |= testNoBlanks();
+    err |= testSaveNullEnc();
 #endif
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();

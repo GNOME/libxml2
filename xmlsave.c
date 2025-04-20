@@ -778,13 +778,19 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
             xmlSaveErr(buf, res, NULL, encoding);
             return(-1);
         }
-	buf->conv = xmlBufCreate(4000 /* MINLEN */);
-	if (buf->conv == NULL) {
-	    xmlCharEncCloseFunc(handler);
-            xmlSaveErrMemory(buf);
-	    return(-1);
-	}
-        buf->encoder = handler;
+
+        if (handler != NULL) {
+            buf->conv = xmlBufCreate(4000 /* MINLEN */);
+            if (buf->conv == NULL) {
+                xmlCharEncCloseFunc(handler);
+                xmlSaveErrMemory(buf);
+                return(-1);
+            }
+            buf->encoder = handler;
+        }
+
+        ctxt->encoding = (const xmlChar *) encoding;
+
 	/*
 	 * initialize the state, e.g. if outputting a BOM
 	 */
@@ -795,11 +801,15 @@ static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
 
 static int xmlSaveClearEncoding(xmlSaveCtxtPtr ctxt) {
     xmlOutputBufferPtr buf = ctxt->buf;
+
     xmlOutputBufferFlush(buf);
     xmlCharEncCloseFunc(buf->encoder);
     xmlBufFree(buf->conv);
     buf->encoder = NULL;
     buf->conv = NULL;
+
+    ctxt->encoding = NULL;
+
     return(0);
 }
 
@@ -1342,7 +1352,6 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
     const xmlChar *oldctxtenc = ctxt->encoding;
     const xmlChar *encoding = ctxt->encoding;
     xmlOutputBufferPtr buf = ctxt->buf;
-    xmlCharEncoding enc;
     int switched_encoding = 0;
 
     xmlInitParser();
@@ -1370,6 +1379,7 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 	    if (xmlSaveSwitchEncoding(ctxt, (const char*) encoding) < 0) {
 		return(-1);
 	    }
+            switched_encoding = 1;
 	}
         if (ctxt->options & XML_SAVE_FORMAT)
 	    htmlDocContentDumpFormatOutput(buf, cur,
@@ -1377,29 +1387,23 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 	else
 	    htmlDocContentDumpFormatOutput(buf, cur,
 	                                   (const char *)encoding, 0);
-	return(0);
 #else
         return(-1);
 #endif
     } else if ((cur->type == XML_DOCUMENT_NODE) ||
                (ctxt->options & XML_SAVE_AS_XML) ||
                (ctxt->options & XML_SAVE_XHTML)) {
-	enc = xmlParseCharEncoding((const char*) encoding);
 	if ((encoding != NULL) && (oldctxtenc == NULL) &&
 	    (buf->encoder == NULL) && (buf->conv == NULL) &&
 	    ((ctxt->options & XML_SAVE_NO_DECL) == 0)) {
-	    if ((enc != XML_CHAR_ENCODING_UTF8) &&
-		(enc != XML_CHAR_ENCODING_NONE) &&
-		(enc != XML_CHAR_ENCODING_ASCII)) {
-		/*
-		 * we need to switch to this encoding but just for this
-		 * document since we output the XMLDecl the conversion
-		 * must be done to not generate not well formed documents.
-		 */
-		if (xmlSaveSwitchEncoding(ctxt, (const char*) encoding) < 0)
-		    return(-1);
-		switched_encoding = 1;
-	    }
+            /*
+             * we need to switch to this encoding but just for this
+             * document since we output the XMLDecl the conversion
+             * must be done to not generate not well formed documents.
+             */
+            if (xmlSaveSwitchEncoding(ctxt, (const char *) encoding) < 0)
+                return(-1);
+            switched_encoding = 1;
 	}
 
 

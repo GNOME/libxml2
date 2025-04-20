@@ -766,47 +766,60 @@ xmlBufDumpEntityDecl(xmlOutputBufferPtr buf, xmlEntityPtr ent) {
  *									*
  ************************************************************************/
 
-static int xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
+static int
+xmlSaveSwitchEncoding(xmlSaveCtxtPtr ctxt, const char *encoding) {
     xmlOutputBufferPtr buf = ctxt->buf;
+    xmlCharEncodingHandler *handler;
+    xmlParserErrors res;
 
-    if ((encoding != NULL) && (buf->encoder == NULL) && (buf->conv == NULL)) {
-        xmlCharEncodingHandler *handler;
-        xmlParserErrors res;
+    /* shouldn't happen */
+    if ((buf->encoder != NULL) || (buf->conv != NULL))
+        return(-1);
 
-	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-        if (res != XML_ERR_OK) {
-            xmlSaveErr(buf, res, NULL, encoding);
+    res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
+    if (res != XML_ERR_OK) {
+        xmlSaveErr(buf, res, NULL, encoding);
+        return(-1);
+    }
+
+    if (handler != NULL) {
+        xmlBufPtr newbuf;
+
+        newbuf = xmlBufCreate(4000 /* MINLEN */);
+        if (newbuf == NULL) {
+            xmlCharEncCloseFunc(handler);
+            xmlSaveErrMemory(buf);
             return(-1);
         }
 
-        if (handler != NULL) {
-            buf->conv = xmlBufCreate(4000 /* MINLEN */);
-            if (buf->conv == NULL) {
-                xmlCharEncCloseFunc(handler);
-                xmlSaveErrMemory(buf);
-                return(-1);
-            }
-            buf->encoder = handler;
-        }
-
-        ctxt->encoding = (const xmlChar *) encoding;
-
-	/*
-	 * initialize the state, e.g. if outputting a BOM
-	 */
-        xmlCharEncOutput(buf, 1);
+        buf->conv = buf->buffer;
+        buf->buffer = newbuf;
+        buf->encoder = handler;
     }
+
+    ctxt->encoding = (const xmlChar *) encoding;
+
+    /*
+     * initialize the state, e.g. if outputting a BOM
+     */
+    xmlCharEncOutput(buf, 1);
+
     return(0);
 }
 
-static int xmlSaveClearEncoding(xmlSaveCtxtPtr ctxt) {
+static int
+xmlSaveClearEncoding(xmlSaveCtxtPtr ctxt) {
     xmlOutputBufferPtr buf = ctxt->buf;
 
     xmlOutputBufferFlush(buf);
-    xmlCharEncCloseFunc(buf->encoder);
-    xmlBufFree(buf->conv);
-    buf->encoder = NULL;
-    buf->conv = NULL;
+
+    if (buf->encoder != NULL) {
+        xmlCharEncCloseFunc(buf->encoder);
+        buf->encoder = NULL;
+        xmlBufFree(buf->buffer);
+        buf->buffer = buf->conv;
+        buf->conv = NULL;
+    }
 
     ctxt->encoding = NULL;
 
@@ -818,7 +831,7 @@ static void
 xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur);
 #endif
 static void xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur);
-static int xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur);
+static int xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur);
 
 static void
 xmlSaveWriteIndent(xmlSaveCtxtPtr ctxt, int extra)
@@ -1034,42 +1047,45 @@ xmlAttrDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
  */
 static int
 htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
-    const xmlChar *oldctxtenc = ctxt->encoding;
-    const xmlChar *encoding = ctxt->encoding;
-    xmlOutputBufferPtr buf = ctxt->buf;
+    const xmlChar *encoding;
     int switched_encoding = 0;
+    int format = 0;
     xmlDocPtr doc;
 
     xmlInitParser();
 
+    encoding = ctxt->encoding;
     doc = cur->doc;
-    if ((encoding == NULL) && (doc != NULL))
-	encoding = doc->encoding;
+    if (doc != NULL) {
+        if (encoding == NULL)
+            encoding = doc->encoding;
 
-    if ((encoding != NULL) && (doc != NULL))
-	htmlSetMetaEncoding(doc, (const xmlChar *) encoding);
-    if ((encoding == NULL) && (doc != NULL))
-	encoding = htmlGetMetaEncoding(doc);
-    if (encoding == NULL)
-	encoding = BAD_CAST "HTML";
-    if ((encoding != NULL) && (oldctxtenc == NULL) &&
-	(buf->encoder == NULL) && (buf->conv == NULL)) {
+        /* We probably shouldn't do this unless we're dumping a document. */
+        if (encoding != NULL)
+            htmlSetMetaEncoding(doc, encoding);
+    }
+
+    if (ctxt->encoding == NULL) {
+        if ((encoding == NULL) && (doc != NULL))
+            encoding = htmlGetMetaEncoding(doc);
+
+        if (encoding == NULL)
+            encoding = BAD_CAST "HTML";
+
 	if (xmlSaveSwitchEncoding(ctxt, (const char*) encoding) < 0)
 	    return(-1);
 	switched_encoding = 1;
     }
+
     if (ctxt->options & XML_SAVE_FORMAT)
-	htmlNodeDumpFormatOutput(buf, doc, cur,
-				       (const char *)encoding, 1);
-    else
-	htmlNodeDumpFormatOutput(buf, doc, cur,
-				       (const char *)encoding, 0);
-    /*
-     * Restore the state of the saving context at the end of the document
-     */
-    if ((switched_encoding) && (oldctxtenc == NULL)) {
+        format = 1;
+
+    htmlNodeDumpFormatOutput(ctxt->buf, doc, cur, NULL, format);
+
+    if (switched_encoding) {
 	xmlSaveClearEncoding(ctxt);
     }
+
     return(0);
 }
 #endif
@@ -1097,7 +1113,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         switch (cur->type) {
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
-	    xmlDocContentDumpOutput(ctxt, (xmlDocPtr) cur);
+	    xmlSaveDocInternal(ctxt, (xmlDocPtr) cur);
 	    break;
 
         case XML_DTD_NODE:
@@ -1338,19 +1354,18 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 }
 
 /**
- * xmlDocContentDumpOutput:
+ * xmlSaveDocInternal:
  * @cur:  the document
  *
  * Dump an XML document.
  */
 static int
-xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
+xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
 #ifdef LIBXML_HTML_ENABLED
     xmlDtdPtr dtd;
     int is_xhtml = 0;
 #endif
-    const xmlChar *oldctxtenc = ctxt->encoding;
-    const xmlChar *encoding = ctxt->encoding;
+    const xmlChar *encoding;
     xmlOutputBufferPtr buf = ctxt->buf;
     int switched_encoding = 0;
 
@@ -1360,7 +1375,8 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
         (cur->type != XML_DOCUMENT_NODE))
 	 return(-1);
 
-    if (ctxt->encoding == NULL)
+    encoding = ctxt->encoding;
+    if (encoding == NULL)
 	encoding = cur->encoding;
 
     if (((cur->type == XML_HTML_DOCUMENT_NODE) &&
@@ -1368,44 +1384,39 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
          ((ctxt->options & XML_SAVE_XHTML) == 0)) ||
         (ctxt->options & XML_SAVE_AS_HTML)) {
 #ifdef LIBXML_HTML_ENABLED
+        int format = 0;
+
         if (encoding != NULL)
-	    htmlSetMetaEncoding(cur, (const xmlChar *) encoding);
-        if (encoding == NULL)
-	    encoding = htmlGetMetaEncoding(cur);
-        if (encoding == NULL)
-	    encoding = BAD_CAST "HTML";
-	if ((encoding != NULL) && (oldctxtenc == NULL) &&
-	    (buf->encoder == NULL) && (buf->conv == NULL)) {
+	    htmlSetMetaEncoding(cur, encoding);
+
+	if (ctxt->encoding == NULL) {
+            if (encoding == NULL) {
+                encoding = htmlGetMetaEncoding(cur);
+
+                if (encoding == NULL)
+                    encoding = BAD_CAST "HTML";
+            }
+
 	    if (xmlSaveSwitchEncoding(ctxt, (const char*) encoding) < 0) {
 		return(-1);
 	    }
             switched_encoding = 1;
 	}
+
         if (ctxt->options & XML_SAVE_FORMAT)
-	    htmlDocContentDumpFormatOutput(buf, cur,
-	                                   (const char *)encoding, 1);
-	else
-	    htmlDocContentDumpFormatOutput(buf, cur,
-	                                   (const char *)encoding, 0);
+            format = 1;
+        htmlDocContentDumpFormatOutput(buf, cur, NULL, format);
 #else
         return(-1);
 #endif
     } else if ((cur->type == XML_DOCUMENT_NODE) ||
                (ctxt->options & XML_SAVE_AS_XML) ||
                (ctxt->options & XML_SAVE_XHTML)) {
-	if ((encoding != NULL) && (oldctxtenc == NULL) &&
-	    (buf->encoder == NULL) && (buf->conv == NULL) &&
-	    ((ctxt->options & XML_SAVE_NO_DECL) == 0)) {
-            /*
-             * we need to switch to this encoding but just for this
-             * document since we output the XMLDecl the conversion
-             * must be done to not generate not well formed documents.
-             */
+	if ((encoding != NULL) && (ctxt->encoding == NULL)) {
             if (xmlSaveSwitchEncoding(ctxt, (const char *) encoding) < 0)
                 return(-1);
             switched_encoding = 1;
 	}
-
 
 	/*
 	 * Save the XML declaration
@@ -1464,9 +1475,10 @@ xmlDocContentDumpOutput(xmlSaveCtxtPtr ctxt, xmlDocPtr cur) {
     /*
      * Restore the state of the saving context at the end of the document
      */
-    if ((switched_encoding) && (oldctxtenc == NULL)) {
+    if (switched_encoding) {
 	xmlSaveClearEncoding(ctxt);
     }
+
     return(0);
 }
 
@@ -1641,7 +1653,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
         switch (cur->type) {
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
-            xmlDocContentDumpOutput(ctxt, (xmlDocPtr) cur);
+            xmlSaveDocInternal(ctxt, (xmlDocPtr) cur);
 	    break;
 
         case XML_NAMESPACE_DECL:
@@ -2079,7 +2091,7 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
     long ret = 0;
 
     if ((ctxt == NULL) || (doc == NULL)) return(-1);
-    if (xmlDocContentDumpOutput(ctxt, doc) < 0)
+    if (xmlSaveDocInternal(ctxt, doc) < 0)
         return(-1);
     return(ret);
 }
@@ -2503,6 +2515,24 @@ xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
         xmlNodeDumpOutputInternal(&ctxt, cur);
 }
 
+static void
+xmlDocDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding,
+                   int format) {
+    xmlSaveCtxt ctxt;
+    int options;
+
+    memset(&ctxt, 0, sizeof(ctxt));
+    ctxt.buf = buf;
+    ctxt.encoding = (const xmlChar *) encoding;
+
+    options = XML_SAVE_AS_XML;
+    if (format)
+        options |= XML_SAVE_FORMAT;
+    xmlSaveCtxtInit(&ctxt, options);
+
+    xmlSaveDocInternal(&ctxt, doc);
+}
+
 /**
  * xmlDocDumpFormatMemoryEnc:
  * @out_doc:  Document to generate XML text from
@@ -2522,77 +2552,35 @@ void
 xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
 		int * doc_txt_len, const char * txt_encoding,
 		int format) {
-    xmlSaveCtxt ctxt;
-    int options;
-    int                         dummy = 0;
-    xmlOutputBufferPtr          out_buff = NULL;
-    xmlCharEncodingHandlerPtr   conv_hdlr = NULL;
+    xmlOutputBufferPtr buf = NULL;
 
-    if (doc_txt_len == NULL) {
-        doc_txt_len = &dummy;   /*  Continue, caller just won't get length */
-    }
-
-    if (doc_txt_ptr == NULL) {
+    if (doc_txt_len != NULL)
         *doc_txt_len = 0;
-        return;
-    }
 
+    if (doc_txt_ptr == NULL)
+        return;
     *doc_txt_ptr = NULL;
-    *doc_txt_len = 0;
 
-    if (out_doc == NULL) {
-        /*  No document, no output  */
+    if (out_doc == NULL)
         return;
-    }
 
-    /*
-     *  Validate the encoding value, if provided.
-     *  This logic is copied from xmlSaveFileEnc.
-     */
-
-    if (txt_encoding == NULL)
-	txt_encoding = (const char *) out_doc->encoding;
-    if (txt_encoding != NULL) {
-        xmlParserErrors res;
-
-	res = xmlOpenCharEncodingHandler(txt_encoding, /* output */ 1,
-                                         &conv_hdlr);
-	if (res != XML_ERR_OK) {
-            xmlSaveErr(NULL, res, NULL, txt_encoding);
-	    return;
-	}
-    }
-
-    out_buff = xmlAllocOutputBuffer(conv_hdlr);
-    if (out_buff == NULL ) {
+    buf = xmlAllocOutputBuffer(NULL);
+    if (buf == NULL) {
         xmlSaveErrMemory(NULL);
         return;
     }
 
-    memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.buf = out_buff;
-    ctxt.level = 0;
-    ctxt.encoding = (const xmlChar *) txt_encoding;
+    xmlDocDumpInternal(buf, out_doc, txt_encoding, format);
 
-    options = XML_SAVE_AS_XML;
-    if (format)
-        options |= XML_SAVE_FORMAT;
-    xmlSaveCtxtInit(&ctxt, options);
+    xmlOutputBufferFlush(buf);
 
-    xmlDocContentDumpOutput(&ctxt, out_doc);
-    xmlOutputBufferFlush(out_buff);
-
-    if (!out_buff->error) {
-        if (out_buff->conv != NULL) {
-            *doc_txt_len = xmlBufUse(out_buff->conv);
-            *doc_txt_ptr = xmlBufDetach(out_buff->conv);
-        } else {
-            *doc_txt_len = xmlBufUse(out_buff->buffer);
-            *doc_txt_ptr = xmlBufDetach(out_buff->buffer);
-        }
+    if (!buf->error) {
+        if (doc_txt_len != NULL)
+            *doc_txt_len = xmlBufUse(buf->buffer);
+        *doc_txt_ptr = xmlBufDetach(buf->buffer);
     }
 
-    xmlOutputBufferClose(out_buff);
+    xmlOutputBufferClose(buf);
 }
 
 /**
@@ -2662,43 +2650,18 @@ xmlDocDumpMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  */
 int
 xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
-    xmlSaveCtxt ctxt;
     xmlOutputBufferPtr buf;
-    const char * encoding;
-    xmlCharEncodingHandlerPtr handler = NULL;
-    int ret;
-    int options;
 
     if (cur == NULL) {
 	return(-1);
     }
-    encoding = (const char *) cur->encoding;
 
-    if (encoding != NULL) {
-        xmlParserErrors res;
-
-	res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-	if (res != XML_ERR_OK) {
-	    xmlFree((char *) cur->encoding);
-	    encoding = NULL;
-	}
-    }
-    buf = xmlOutputBufferCreateFile(f, handler);
+    buf = xmlOutputBufferCreateFile(f, NULL);
     if (buf == NULL) return(-1);
-    memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.buf = buf;
-    ctxt.level = 0;
-    ctxt.encoding = (const xmlChar *) encoding;
 
-    options = XML_SAVE_AS_XML;
-    if (format)
-        options |= XML_SAVE_FORMAT;
-    xmlSaveCtxtInit(&ctxt, options);
+    xmlDocDumpInternal(buf, cur, NULL, format);
 
-    xmlDocContentDumpOutput(&ctxt, cur);
-
-    ret = xmlOutputBufferClose(buf);
-    return(ret);
+    return(xmlOutputBufferClose(buf));
 }
 
 /**
@@ -2729,24 +2692,7 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  */
 int
 xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
-    xmlSaveCtxt ctxt;
-    int ret;
-
-    if (buf == NULL) return(-1);
-    if (cur == NULL) {
-        xmlOutputBufferClose(buf);
-	return(-1);
-    }
-    memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.buf = buf;
-    ctxt.level = 0;
-    ctxt.encoding = (const xmlChar *) encoding;
-
-    xmlSaveCtxtInit(&ctxt, XML_SAVE_AS_XML);
-
-    xmlDocContentDumpOutput(&ctxt, cur);
-    ret = xmlOutputBufferClose(buf);
-    return(ret);
+    return(xmlSaveFormatFileTo(buf, cur, encoding, 0));
 }
 
 /**
@@ -2766,10 +2712,6 @@ int
 xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
                     const char *encoding, int format)
 {
-    xmlSaveCtxt ctxt;
-    int ret;
-    int options;
-
     if (buf == NULL) return(-1);
     if ((cur == NULL) ||
         ((cur->type != XML_DOCUMENT_NODE) &&
@@ -2777,19 +2719,10 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
         xmlOutputBufferClose(buf);
 	return(-1);
     }
-    memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.buf = buf;
-    ctxt.level = 0;
-    ctxt.encoding = (const xmlChar *) encoding;
 
-    options = XML_SAVE_AS_XML;
-    if (format)
-        options |= XML_SAVE_FORMAT;
-    xmlSaveCtxtInit(&ctxt, options);
+    xmlDocDumpInternal(buf, cur, encoding, format);
 
-    xmlDocContentDumpOutput(&ctxt, cur);
-    ret = xmlOutputBufferClose(buf);
-    return (ret);
+    return(xmlOutputBufferClose(buf));
 }
 
 /**
@@ -2808,25 +2741,10 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
 int
 xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
 			const char * encoding, int format ) {
-    xmlSaveCtxt ctxt;
     xmlOutputBufferPtr buf;
-    xmlCharEncodingHandlerPtr handler = NULL;
-    int ret;
-    int options;
 
     if (cur == NULL)
 	return(-1);
-
-    if (encoding == NULL)
-	encoding = (const char *) cur->encoding;
-
-    if (encoding != NULL) {
-        xmlParserErrors res;
-
-        res = xmlOpenCharEncodingHandler(encoding, /* output */ 1, &handler);
-        if (res != XML_ERR_OK)
-            return(-1);
-    }
 
 #ifdef LIBXML_ZLIB_ENABLED
     if (cur->compression < 0) cur->compression = xmlGetCompressMode();
@@ -2834,22 +2752,12 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
     /*
      * save the content to a temp buffer.
      */
-    buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
+    buf = xmlOutputBufferCreateFilename(filename, NULL, cur->compression);
     if (buf == NULL) return(-1);
-    memset(&ctxt, 0, sizeof(ctxt));
-    ctxt.buf = buf;
-    ctxt.level = 0;
-    ctxt.encoding = (const xmlChar *) encoding;
 
-    options = XML_SAVE_AS_XML;
-    if (format)
-        options |= XML_SAVE_FORMAT;
-    xmlSaveCtxtInit(&ctxt, options);
+    xmlDocDumpInternal(buf, cur, encoding, format);
 
-    xmlDocContentDumpOutput(&ctxt, cur);
-
-    ret = xmlOutputBufferClose(buf);
-    return(ret);
+    return(xmlOutputBufferClose(buf));
 }
 
 

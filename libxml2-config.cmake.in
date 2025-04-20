@@ -50,7 +50,6 @@ set(LIBXML2_WITH_THREADS @WITH_THREADS@)
 set(LIBXML2_WITH_ICU @WITH_ICU@)
 set(LIBXML2_WITH_LZMA @WITH_LZMA@)
 set(LIBXML2_WITH_ZLIB @WITH_ZLIB@)
-set(LIBXML2_WITH_HTTP @WITH_HTTP@)
 
 if(LIBXML2_WITH_ICONV)
     find_dependency(Iconv)
@@ -116,10 +115,6 @@ endif()
 if(WIN32)
     list(APPEND LIBXML2_LIBRARIES Bcrypt)
     list(APPEND LIBXML2_INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:Bcrypt>")
-    if(LIBXML2_WITH_HTTP)
-        list(APPEND LIBXML2_LIBRARIES ws2_32)
-        list(APPEND LIBXML2_INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:ws2_32>")
-    endif()
 endif()
 
 # whether libxml2 has dso support

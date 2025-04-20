@@ -669,7 +669,7 @@ static void des_xmlOutputBufferPtr(int no ATTRIBUTE_UNUSED, xmlOutputBufferPtr v
 }
 #endif
 
-#ifdef LIBXML_HTTP_ENABLED
+#ifdef LIBXML_HTTP_STUBS_ENABLED
 #define gen_nb_xmlNanoHTTPCtxtPtr 1
 static void *gen_xmlNanoHTTPCtxtPtr(int no, int nr ATTRIBUTE_UNUSED) {
     if (no == 0) return(xmlNanoHTTPOpen(REMOTE1GOOD, NULL));
@@ -862,7 +862,7 @@ static void desret_xmlRelaxNGParserCtxtPtr(xmlRelaxNGParserCtxtPtr val) {
 static void desret_const_htmlEntityDesc_ptr(const htmlEntityDesc * val ATTRIBUTE_UNUSED) {
 }
 #endif
-#ifdef LIBXML_HTTP_ENABLED
+#ifdef LIBXML_HTTP_STUBS_ENABLED
 static void desret_xmlNanoHTTPCtxtPtr(void *val) {
     xmlNanoHTTPClose(val);
 }
@@ -11184,7 +11184,7 @@ static int
 test_xmlNanoHTTPAuthHeader(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     const char * ret_val;
     void * ctx; /* the HTTP context */
@@ -11218,7 +11218,7 @@ static int
 test_xmlNanoHTTPCleanup(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -11243,7 +11243,7 @@ static int
 test_xmlNanoHTTPContentLength(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the HTTP context */
@@ -11277,7 +11277,7 @@ static int
 test_xmlNanoHTTPEncoding(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     const char * ret_val;
     void * ctx; /* the HTTP context */
@@ -11315,7 +11315,7 @@ static int
 test_xmlNanoHTTPFetch(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     const char * URL; /* The URL to load */
@@ -11363,7 +11363,7 @@ static int
 test_xmlNanoHTTPInit(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();
@@ -11388,7 +11388,7 @@ static int
 test_xmlNanoHTTPMimeType(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     const char * ret_val;
     void * ctx; /* the HTTP context */
@@ -11422,7 +11422,7 @@ static int
 test_xmlNanoHTTPOpen(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* The URL to load */
@@ -11463,7 +11463,7 @@ static int
 test_xmlNanoHTTPOpenRedir(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     void * ret_val;
     const char * URL; /* The URL to load */
@@ -11511,7 +11511,7 @@ static int
 test_xmlNanoHTTPRead(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the HTTP context */
@@ -11569,7 +11569,7 @@ static int
 test_xmlNanoHTTPReturnCode(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     void * ctx; /* the HTTP context */
@@ -11603,7 +11603,7 @@ static int
 test_xmlNanoHTTPSave(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
     int mem_base;
     int ret_val;
     void * ctxt; /* the HTTP context */
@@ -11644,7 +11644,7 @@ static int
 test_xmlNanoHTTPScanProxy(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     const char * URL; /* The proxy URL used to initialize the proxy context */
     int n_URL;
 
@@ -28511,7 +28511,7 @@ static int
 test_xmlIOHTTPClose(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     void * context; /* the I/O context */
@@ -28545,7 +28545,7 @@ static int
 test_xmlIOHTTPMatch(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     const char * filename; /* the URI for matching */
@@ -28579,7 +28579,7 @@ static int
 test_xmlIOHTTPOpen(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     void * ret_val;
     const char * filename; /* the URI for matching */
@@ -28613,7 +28613,7 @@ static int
 test_xmlIOHTTPRead(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
     int ret_val;
     void * context; /* the I/O context */
@@ -29563,7 +29563,7 @@ static int
 test_xmlRegisterHTTPPostCallbacks(void) {
     int test_ret = 0;
 
-#if defined(LIBXML_OUTPUT_ENABLED) && defined(LIBXML_HTTP_ENABLED)
+#if defined(LIBXML_OUTPUT_ENABLED) && defined(LIBXML_HTTP_STUBS_ENABLED)
     int mem_base;
 
         mem_base = xmlMemBlocks();

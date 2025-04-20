@@ -75,9 +75,6 @@ LIBS = $(LIBS) cw32i.lib
 !else
 LIBS = $(LIBS) cw32.lib
 !endif
-!if "$(WITH_HTTP)" == "1"
-LIBS = $(LIBS) wsock32.lib ws2_32.lib
-!endif 
 !if "$(WITH_ICONV)" == "1"
 LIBS = $(LIBS) iconvomf.lib
 !endif 

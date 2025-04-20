@@ -80,7 +80,7 @@ AC_ARG_WITH(readline,
 AC_ARG_WITH(html,
 [  --with-html             HTML parser (on)])
 AC_ARG_WITH(http,
-[  --with-http             HTTP support (off)])
+[  --with-http             ABI compatibility for removed HTTP support (off)])
 AC_ARG_WITH(iconv,
 [  --with-iconv[[=DIR]]      iconv support (on)])
 AC_ARG_WITH(icu,
@@ -312,36 +312,6 @@ AC_CHECK_DECLS([mmap], [], [], [#include <sys/mman.h>])
 
 AM_CONDITIONAL(WITH_GLOB, test "$ac_cv_have_decl_glob" = "yes")
 
-dnl
-dnl Checks for inet libraries
-dnl
-if test "$with_http" = "yes"; then
-    AC_CHECK_HEADERS([poll.h])
-
-    case "$host" in
-        *-*-mingw*)
-            dnl AC_SEARCH_LIBS doesn't work because of non-standard calling
-            dnl conventions on 32-bit Windows.
-            NET_LIBS="$NET_LIBS -lws2_32"
-            ;;
-        *)
-            _libs=$LIBS
-            AC_SEARCH_LIBS(gethostbyname, [nsl], [
-                if test "$ac_cv_search_gethostbyname" != "none required"; then
-                    NET_LIBS="$NET_LIBS $ac_cv_search_gethostbyname"
-                fi], [:], [$NET_LIBS])
-            AC_SEARCH_LIBS(connect, [bsd socket inet], [
-                if test "$ac_cv_search_connect" != "none required"; then
-                    NET_LIBS="$NET_LIBS $ac_cv_search_connect"
-                fi], [:], [$NET_LIBS])
-            LIBS=$_libs
-            ;;
-    esac
-
-    XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${NET_LIBS}"
-    XML_PC_LIBS="${XML_PC_LIBS} ${NET_LIBS}"
-fi
-
 dnl Thread-local storage
 if test "$with_tls" = "yes"; then
     AC_COMPILE_IFELSE([
@@ -416,7 +386,7 @@ dnl
 if test "$with_http" != "yes" ; then
     WITH_HTTP=0
 else
-    echo Enabling HTTP support
+    echo Enabling ABI compatibility stubs for removed HTTP support
     WITH_HTTP=1
 fi
 AC_SUBST(WITH_HTTP)

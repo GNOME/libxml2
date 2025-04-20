@@ -324,12 +324,11 @@ xmlOutputBufferPtr
                               xmlCharEncodingHandlerPtr encoder,
                               int compression);
 
-#ifdef LIBXML_HTTP_ENABLED
-/*  This function only exists if HTTP support built into the library  */
+#ifdef LIBXML_HTTP_STUBS_ENABLED
 XML_DEPRECATED
 XMLPUBFUN void
 	xmlRegisterHTTPPostCallbacks	(void );
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* LIBXML_HTTP_STUBS_ENABLED */
 
 #endif /* LIBXML_OUTPUT_ENABLED */
 
@@ -338,9 +337,7 @@ XMLPUBFUN xmlParserInputPtr
 	xmlCheckHTTPInput		(xmlParserCtxtPtr ctxt,
 					 xmlParserInputPtr ret);
 
-/*
- * A predefined entity loader disabling network accesses
- */
+XML_DEPRECATED
 XMLPUBFUN xmlParserInputPtr
 	xmlNoNetExternalEntityLoader	(const char *URL,
 					 const char *ID,
@@ -374,7 +371,7 @@ XMLPUBFUN int
 /**
  * Default 'http://' protocol callbacks
  */
-#ifdef LIBXML_HTTP_ENABLED
+#ifdef LIBXML_HTTP_STUBS_ENABLED
 XML_DEPRECATED
 XMLPUBFUN int
 	xmlIOHTTPMatch			(const char *filename);
@@ -395,7 +392,7 @@ XMLPUBFUN int
 XML_DEPRECATED
 XMLPUBFUN int
 	xmlIOHTTPClose			(void * context);
-#endif /* LIBXML_HTTP_ENABLED */
+#endif /* LIBXML_HTTP_STUBS_ENABLED */
 
 XMLPUBFUN xmlParserInputBufferCreateFilenameFunc
 	xmlParserInputBufferCreateFilenameDefault(

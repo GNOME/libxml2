@@ -256,7 +256,6 @@ config_h.set_quoted('XML_SYSCONFDIR',
 # header files
 xml_check_headers = [
     [ 'stdint.h', true ],
-    [ 'poll.h', want_http ],
 ]
 
 foreach header : xml_check_headers
@@ -359,30 +358,6 @@ endif
 if sys_windows == true
     bcrypt_dep = cc.find_library('bcrypt', required: true)
     xml_deps += bcrypt_dep
-endif
-
-### inet
-if want_http == true
-    if sys_windows == true
-        net_dep = cc.find_library('ws2_32', required: true)
-        xml_deps += net_dep
-    else
-        net_dep = dependency('', required: false)
-        has_in_libc = cc.has_function('gethostbyname')
-        if has_in_libc == false
-            net_dep = cc.find_library('nsl', required: true)
-            if net_dep.found()
-                has_in_nsl = cc.has_function(
-                    'gethostbyname',
-                    dependencies: net_dep,
-                    required: false,
-                )
-                if has_in_nsl == true
-                    xml_deps += net_dep
-                endif
-            endif
-        endif
-    endif
 endif
 
 ### zlib
@@ -598,7 +573,6 @@ config_cmake.set('LIBXML_MAJOR_VERSION', v_maj)
 config_cmake.set('LIBXML_MINOR_VERSION', v_min)
 config_cmake.set('LIBXML_MICRO_VERSION', v_mic)
 config_cmake.set('VERSION', meson.project_version())
-config_cmake.set('WITH_HTTP', want_http.to_int().to_string())
 config_cmake.set('WITH_ICONV', want_iconv.to_int().to_string())
 config_cmake.set('WITH_ICU', want_icu.to_int().to_string())
 config_cmake.set('WITH_LZMA', want_lzma.to_int().to_string())

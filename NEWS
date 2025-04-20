@@ -6,6 +6,10 @@ v2.15.0: not released yet
 
 The Python bindings are disabled by default now.
 
+### Removals
+
+The built-in HTTP client was removed.
+
 ### Planned removals
 
 The Python bindings are planned to be removed in the 2.16 release.

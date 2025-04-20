@@ -557,11 +557,7 @@ xmlHasFeature(xmlFeature feature)
             return(0);
 #endif
         case XML_WITH_HTTP:
-#ifdef LIBXML_HTTP_ENABLED
-            return(1);
-#else
             return(0);
-#endif
         case XML_WITH_VALID:
 #ifdef LIBXML_VALID_ENABLED
             return(1);
@@ -13583,7 +13579,11 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * XML_PARSE_NONET
  *
- * Disable network access with the builtin HTTP client.
+ * Disable network access with the built-in HTTP or FTP clients.
+ *
+ * After the last built-in network client was removed in 2.15,
+ * this option has no effect expect for being passed on to custom
+ * resource loaders.
  *
  * XML_PARSE_NODICT
  *

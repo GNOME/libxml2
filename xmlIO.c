@@ -35,7 +35,6 @@
 #include <libxml/xmlIO.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/uri.h>
-#include <libxml/nanohttp.h>
 #include <libxml/parserInternals.h>
 #include <libxml/xmlerror.h>
 #ifdef LIBXML_CATALOG_ENABLED
@@ -931,98 +930,6 @@ xmlXzfileClose (void * context) {
 
 /************************************************************************
  *									*
- *			I/O for HTTP file accesses			*
- *									*
- ************************************************************************/
-
-#ifdef LIBXML_HTTP_ENABLED
-/**
- * xmlIOHTTPMatch:
- * @filename:  the URI for matching
- *
- * DEPRECATED: Internal function, don't use.
- *
- * check if the URI matches an HTTP one
- *
- * Returns 1 if matches, 0 otherwise
- */
-int
-xmlIOHTTPMatch (const char *filename) {
-    if (!xmlStrncasecmp(BAD_CAST filename, BAD_CAST "http://", 7))
-	return(1);
-    return(0);
-}
-
-/**
- * xmlIOHTTPOpen:
- * @filename:  the URI for matching
- *
- * DEPRECATED: Internal function, don't use.
- *
- * open an HTTP I/O channel
- *
- * Returns an I/O context or NULL in case of error
- */
-void *
-xmlIOHTTPOpen (const char *filename) {
-    return(xmlNanoHTTPOpen(filename, NULL));
-}
-
-#ifdef LIBXML_OUTPUT_ENABLED
-/**
- * xmlIOHTTPOpenW:
- * @post_uri:  The destination URI for the document
- * @compression:  The compression desired for the document.
- *
- * DEPRECATED: Support for HTTP POST has been removed.
- *
- * Returns NULL.
- */
-void *
-xmlIOHTTPOpenW(const char *post_uri ATTRIBUTE_UNUSED,
-               int compression ATTRIBUTE_UNUSED)
-{
-    return(NULL);
-}
-#endif /* LIBXML_OUTPUT_ENABLED */
-
-/**
- * xmlIOHTTPRead:
- * @context:  the I/O context
- * @buffer:  where to drop data
- * @len:  number of bytes to write
- *
- * DEPRECATED: Internal function, don't use.
- *
- * Read @len bytes to @buffer from the I/O channel.
- *
- * Returns the number of bytes written
- */
-int
-xmlIOHTTPRead(void * context, char * buffer, int len) {
-    if ((buffer == NULL) || (len < 0)) return(-1);
-    return(xmlNanoHTTPRead(context, &buffer[0], len));
-}
-
-/**
- * xmlIOHTTPClose:
- * @context:  the I/O context
- *
- * DEPRECATED: Internal function, don't use.
- *
- * Close an HTTP I/O channel
- *
- * Returns 0
- */
-int
-xmlIOHTTPClose (void * context) {
-    xmlNanoHTTPClose(context);
-    return 0;
-}
-#endif /* LIBXML_HTTP_ENABLED */
-
-/************************************************************************
- *									*
  *			Input/output buffers				*
  *									*
  ************************************************************************/
@@ -1160,21 +1067,6 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
                     xmlParserInputFlags flags) {
     xmlParserErrors ret;
     int fd;
-
-#ifdef LIBXML_HTTP_ENABLED
-    if (xmlIOHTTPMatch(filename)) {
-        if ((flags & XML_INPUT_NETWORK) == 0)
-            return(XML_IO_NETWORK_ATTEMPT);
-
-        buf->context = xmlIOHTTPOpen(filename);
-
-        if (buf->context != NULL) {
-            buf->readcallback = xmlIOHTTPRead;
-            buf->closecallback = xmlIOHTTPClose;
-            return(XML_ERR_OK);
-        }
-    }
-#endif /* LIBXML_HTTP_ENABLED */
 
     if (!xmlFileMatch(filename))
         return(XML_IO_ENOENT);
@@ -2886,17 +2778,5 @@ xmlCleanupOutputCallbacks(void)
 
     xmlOutputCallbackNr = 0;
 }
-
-#ifdef LIBXML_HTTP_ENABLED
-/**
- * xmlRegisterHTTPPostCallbacks:
- *
- * DEPRECATED: Support for HTTP POST has been removed.
- */
-void
-xmlRegisterHTTPPostCallbacks(void) {
-    xmlRegisterDefaultOutputCallbacks();
-}
-#endif
 #endif /* LIBXML_OUTPUT_ENABLED */
 

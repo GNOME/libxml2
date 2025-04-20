@@ -49,9 +49,6 @@ LDFLAGS += -Wl,--major-image-version,$(LIBXML_MAJOR_VERSION)
 LDFLAGS += -Wl,--minor-image-version,$(LIBXML_MINOR_VERSION)
 LDFLAGS += -Wl,-L,$(BINDIR) -Wl,-L,$(LIBPREFIX)
 LIBS =
-ifeq ($(WITH_HTTP),1)
-LIBS += -lwsock32 -lws2_32
-endif 
 ifeq ($(WITH_ICONV),1)
 LIBS += -liconv
 endif 

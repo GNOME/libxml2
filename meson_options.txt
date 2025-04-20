@@ -61,7 +61,7 @@ option('html',
 
 option('http',
   type: 'feature',
-  description: 'HTTP support'
+  description: 'ABI compatibility for removed HTTP support'
 )
 
 # TODO meson custom dependency

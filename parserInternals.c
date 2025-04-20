@@ -35,7 +35,6 @@
 #include <libxml/catalog.h>
 #endif
 #include <libxml/chvalid.h>
-#include <libxml/nanohttp.h>
 
 #define CUR(ctxt) ctxt->input->cur
 #define END(ctxt) ctxt->input->end
@@ -2374,53 +2373,6 @@ xmlResolveResourceFromCatalog(const char *URL, const char *ID,
 
 #endif
 
-#ifdef LIBXML_HTTP_ENABLED
-static xmlParserErrors
-xmlCheckHTTPInputInternal(xmlParserInputPtr input) {
-    const char *encoding;
-    const char *redir;
-    const char *mime;
-    int code;
-
-    if ((input == NULL) || (input->buf == NULL) ||
-        (input->buf->readcallback != xmlIOHTTPRead) ||
-        (input->buf->context == NULL))
-        return(XML_ERR_OK);
-
-    code = xmlNanoHTTPReturnCode(input->buf->context);
-    if (code >= 400) {
-        /* fatal error */
-        return(XML_IO_LOAD_ERROR);
-    }
-
-    mime = xmlNanoHTTPMimeType(input->buf->context);
-    if ((xmlStrstr(BAD_CAST mime, BAD_CAST "/xml")) ||
-        (xmlStrstr(BAD_CAST mime, BAD_CAST "+xml"))) {
-        encoding = xmlNanoHTTPEncoding(input->buf->context);
-        if (encoding != NULL) {
-            xmlCharEncodingHandlerPtr handler;
-            xmlParserErrors res;
-
-            res = xmlOpenCharEncodingHandler(encoding, /* output */ 0,
-                                             &handler);
-            if (res == 0)
-                xmlInputSetEncodingHandler(input, handler);
-        }
-    }
-
-    redir = xmlNanoHTTPRedir(input->buf->context);
-    if (redir != NULL) {
-        if (input->filename != NULL)
-            xmlFree((xmlChar *) input->filename);
-        input->filename = xmlMemStrdup(redir);
-        if (input->filename == NULL)
-            return(XML_ERR_NO_MEMORY);
-    }
-
-    return(XML_ERR_OK);
-}
-#endif /* LIBXML_HTTP_ENABLED */
-
 /**
  * xmlCheckHTTPInput:
  * @ctxt: an XML parser context
@@ -2428,34 +2380,12 @@ xmlCheckHTTPInputInternal(xmlParserInputPtr input) {
  *
  * DEPRECATED: Internal function, don't use.
  *
- * Check an input in case it was created from an HTTP stream, in that
- * case it will handle encoding and update of the base URL in case of
- * redirection. It also checks for HTTP errors in which case the input
- * is cleanly freed up and an appropriate error is raised in context
- *
- * Returns the input or NULL in case of HTTP error.
+ * Returns NULL.
  */
 xmlParserInputPtr
-xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
-    /* Avoid unused variable warning if features are disabled. */
-    (void) ctxt;
-
-#ifdef LIBXML_HTTP_ENABLED
-    {
-        int code = xmlCheckHTTPInputInternal(ret);
-
-        if (code != XML_ERR_OK) {
-            if (ret->filename != NULL)
-                xmlCtxtErrIO(ctxt, XML_IO_LOAD_ERROR, ret->filename);
-            else
-                xmlCtxtErrIO(ctxt, XML_IO_LOAD_ERROR, "<null>");
-            xmlFreeInputStream(ret);
-            return(NULL);
-        }
-    }
-#endif
-
-    return(ret);
+xmlCheckHTTPInput(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
+                  xmlParserInputPtr ret ATTRIBUTE_UNUSED) {
+    return(NULL);
 }
 
 /**
@@ -2478,7 +2408,6 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr ret) {
  * - the default loader which will return
  *   - the result from a matching global input callback set with
  *     xmlRegisterInputCallbacks (deprecated)
- *   - a HTTP resource if support is compiled in.
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *
@@ -2514,14 +2443,6 @@ xmlNewInputFromUrl(const char *filename, xmlParserInputFlags flags,
     input = xmlNewInputInternal(buf, filename);
     if (input == NULL)
 	return(XML_ERR_NO_MEMORY);
-
-#ifdef LIBXML_HTTP_ENABLED
-    code = xmlCheckHTTPInputInternal(input);
-    if (code != XML_ERR_OK) {
-        xmlFreeInputStream(input);
-        return(code);
-    }
-#endif
 
     *out = input;
     return(XML_ERR_OK);
@@ -2589,6 +2510,10 @@ xmlDefaultExternalEntityLoader(const char *url, const char *ID,
 	url = resource;
 #endif
 
+    /*
+     * Several downstream test suites expect this error whenever
+     * an http URI is passed and NONET is set.
+     */
     if ((ctxt != NULL) &&
         (ctxt->options & XML_PARSE_NONET) &&
         (xmlStrncasecmp(BAD_CAST url, BAD_CAST "http://", 7) == 0)) {
@@ -2773,7 +2698,6 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
  * - the default loader which will return
  *   - the result from a matching global input callback set with
  *     xmlRegisterInputCallbacks (deprecated)
- *   - a HTTP resource if support is compiled in.
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *

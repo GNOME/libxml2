@@ -126,12 +126,12 @@
 #endif
 
 /**
- * LIBXML_HTTP_ENABLED:
+ * LIBXML_HTTP_STUBS_ENABLED:
  *
- * Whether the HTTP support is configured in
+ * HTTP support was removed in 2.15
  */
 #if @WITH_HTTP@
-#define LIBXML_HTTP_ENABLED
+#define LIBXML_HTTP_STUBS_ENABLED
 #endif
 
 /**

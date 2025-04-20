@@ -33,10 +33,6 @@
 #define XHTML_NS_NAME BAD_CAST "http://www.w3.org/1999/xhtml"
 
 struct _xmlSaveCtxt {
-    void *_private;
-    int type;
-    int fd;
-    const xmlChar *filename;
     const xmlChar *encoding;
     xmlCharEncodingHandlerPtr handler;
     xmlOutputBufferPtr buf;

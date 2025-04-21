@@ -332,6 +332,30 @@ testSaveNullEnc(void) {
 
     return err;
 }
+
+static int
+testDocDumpFormatMemoryEnc(void) {
+    const char *xml = "<doc>\xC3\x98</doc>";
+    const char *expect =
+        "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"
+        "<doc>\xD8</doc>\n";
+    xmlDocPtr doc;
+    xmlChar *text;
+    int len;
+    int err = 0;
+
+    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL, 0);
+    xmlDocDumpFormatMemoryEnc(doc, &text, &len, "iso-8859-1", 0);
+
+    if (strcmp((char *) text, expect) != 0) {
+        fprintf(stderr, "xmlDocDumpFormatMemoryEnc failed\n");
+        err = 1;
+    }
+
+    xmlFree(text);
+    xmlFreeDoc(doc);
+    return err;
+}
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_SAX1_ENABLED
@@ -1202,6 +1226,7 @@ main(void) {
     err |= testCtxtParseContent();
     err |= testNoBlanks();
     err |= testSaveNullEnc();
+    err |= testDocDumpFormatMemoryEnc();
 #endif
 #ifdef LIBXML_SAX1_ENABLED
     err |= testBalancedChunk();

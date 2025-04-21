@@ -572,18 +572,17 @@ AS_IF([test "x$with_python" = "xyes"], [
 AM_CONDITIONAL([WITH_PYTHON], [test "x$with_python" = "xyes"])
 
 dnl
-dnl Extra Python flags for Windows
+dnl Extra Python flags
 dnl
 PYTHON_LDFLAGS=
 if test "${PYTHON}" != ""; then
     case "$host" in
-        *-*-mingw* )
-            PYTHON_LDFLAGS="-no-undefined -shrext .pyd"
-            ;;
-        *-*-cygwin* |*-*-msys* )
+        *-*-cygwin* | *-*-mingw* | *-*-msys* )
             PYTHON_LDFLAGS="-no-undefined"
             ;;
     esac
+    ext_suffix=`$PYTHON -c 'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX") or sysconfig.get_config_var("SO"))'`
+    PYTHON_LDFLAGS="$PYTHON_LDFLAGS -shrext $ext_suffix"
 fi
 AC_SUBST(PYTHON_LDFLAGS)
 

@@ -83,8 +83,8 @@ cmake_dependent_option(
     "LIBXML2_WITH_REGEXPS;LIBXML2_WITH_SCHEMAS" OFF)
 
 if(LIBXML2_WITH_PYTHON)
-    find_package(Python COMPONENTS Interpreter Development REQUIRED)
-    #set(LIBXML2_PYTHON_INSTALL_DIR ${Python_SITEARCH} CACHE PATH "Python bindings install directory")
+    find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+    #set(LIBXML2_PYTHON_INSTALL_DIR ${Python3_SITEARCH} CACHE PATH "Python bindings install directory")
     set(LIBXML2_PYTHON_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/python"
         CACHE PATH "Python bindings install directory")
 endif()
@@ -513,12 +513,12 @@ endif()
 if(LIBXML2_WITH_PYTHON)
     execute_process(
         COMMAND
-        ${Python_EXECUTABLE}
+        ${Python3_EXECUTABLE}
         ${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
         ${CMAKE_CURRENT_BINARY_DIR}
     )
-    add_library(
-        LibXml2Mod SHARED
+    Python3_add_library(
+        LibXml2Mod MODULE WITH_SOABI
         libxml2-py.c
         libxml2-py.h
         python/libxml.c
@@ -527,10 +527,10 @@ if(LIBXML2_WITH_PYTHON)
     )
     target_include_directories(
         LibXml2Mod
-        PUBLIC
+        PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/python>
     )
-    target_link_libraries(LibXml2Mod LibXml2 Python::Python)
+    target_link_libraries(LibXml2Mod PRIVATE LibXml2)
     set_target_properties(
         LibXml2Mod
         PROPERTIES
@@ -538,9 +538,6 @@ if(LIBXML2_WITH_PYTHON)
         OUTPUT_NAME xml2mod
         PREFIX lib
     )
-    if (WIN32)
-        set_target_properties(LibXml2Mod PROPERTIES SUFFIX ".pyd")
-    endif()
     install(
         TARGETS    LibXml2Mod
         ARCHIVE DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT development

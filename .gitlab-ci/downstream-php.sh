@@ -13,6 +13,7 @@ cd php-src
 make -j$(nproc)
 make TESTS=" \
     -g FAIL \
+    --show-diff \
     --no-progress \
     ext/dom \
     ext/libxml \

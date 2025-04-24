@@ -5093,6 +5093,9 @@ void
 xmlXPathFreeParserContext(xmlXPathParserContextPtr ctxt) {
     int i;
 
+    if (ctxt == NULL)
+        return;
+
     if (ctxt->valueTab != NULL) {
         for (i = 0; i < ctxt->valueNr; i++) {
             if (ctxt->context)
@@ -12384,6 +12387,9 @@ xmlXPathCtxtCompile(xmlXPathContextPtr ctxt, const xmlChar *str) {
     xmlXPathContextPtr tmpctxt = NULL;
     xmlXPathCompExprPtr comp;
     int oldDepth = 0;
+
+    if (str == NULL)
+        return(NULL);
 
 #ifdef XPATH_STREAMING
     comp = xmlXPathTryStreamCompile(ctxt, str);

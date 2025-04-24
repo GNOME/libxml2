@@ -1739,6 +1739,9 @@ xmlSchematronNewValidCtxt(xmlSchematronPtr schema, int options)
     int i;
     xmlSchematronValidCtxtPtr ret;
 
+    if (schema == NULL)
+        return(NULL);
+
     ret = (xmlSchematronValidCtxtPtr) xmlMalloc(sizeof(xmlSchematronValidCtxt));
     if (ret == NULL) {
         xmlSchematronVErrMemory(NULL);

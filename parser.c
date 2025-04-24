@@ -13763,6 +13763,8 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
 void
 xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt, unsigned maxAmpl)
 {
+    if (ctxt == NULL)
+        return;
     ctxt->maxAmpl = maxAmpl;
 }
 

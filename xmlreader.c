@@ -4658,6 +4658,9 @@ void
 xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
                              xmlTextReaderErrorFunc f, void *arg)
 {
+    if (reader == NULL)
+        return;
+
     if (f != NULL) {
         reader->errorFunc = f;
         reader->sErrorFunc = NULL;
@@ -4711,6 +4714,9 @@ void
 xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
                                        xmlStructuredErrorFunc f, void *arg)
 {
+    if (reader == NULL)
+        return;
+
     if (f != NULL) {
         reader->sErrorFunc = f;
         reader->errorFunc = NULL;

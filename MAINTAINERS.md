@@ -18,11 +18,10 @@ The documentation and other generated files can be rebuilt by running
 
     make -C doc rebuild
 
-This requires `xsltproc`, the DocBook stylesheets in your XML Catalog
-and the libxml2 Python bindings to be installed, so it's best done on a
-Linux system. On Debian/Ubuntu, try
+Besides Python, this requires `xsltproc` and the DocBook stylesheets in
+your XML Catalog. On Debian/Ubuntu, try
 
-    apt install xsltproc python3-libxml2 docbook-xsl docbook-xml
+    apt install xsltproc docbook-xsl docbook-xml
 
 doc/apibuild.py generates doc/libxml2-api.xml which is used to generate
 

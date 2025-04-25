@@ -12369,13 +12369,6 @@ xmlCtxtParseContent(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
         xmlCtxtInitializeLate(ctxt);
 
         /*
-         * This hack lowers the error level of undeclared entities
-         * from XML_ERR_FATAL (well-formedness error) to XML_ERR_ERROR
-         * or XML_ERR_WARNING.
-         */
-        ctxt->hasExternalSubset = 1;
-
-        /*
          * initialize the SAX2 namespaces stack
          */
         cur = node;

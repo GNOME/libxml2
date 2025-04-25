@@ -17,6 +17,13 @@
 
 #include <string.h>
 
+#ifdef LIBXML_SAX1_ENABLED
+static void
+ignoreError(void *ctxt ATTRIBUTE_UNUSED,
+            const xmlError *error ATTRIBUTE_UNUSED) {
+}
+#endif
+
 static int
 testNewDocNode(void) {
     xmlNodePtr node;
@@ -124,6 +131,53 @@ testCFileIO(void) {
 
     if (err)
         fprintf(stderr, "xmlReadFile failed with FILE input callbacks\n");
+
+    return err;
+}
+
+/*
+ * The exact rules when undeclared entities are a fatal error
+ * depend on some conditions that aren't recovered from the
+ * context document when parsing XML content. This test case
+ * demonstrates such an asymmetry.
+ */
+static int
+testUndeclEntInContent(void) {
+    const char xml[] = "<!DOCTYPE doc SYSTEM 'my.dtd'><doc>&undecl;</doc>";
+    const char content[] = "<doc>&undecl;</doc>";
+    xmlDocPtr doc;
+    xmlNodePtr root, list;
+    int options = XML_PARSE_NOENT | XML_PARSE_NOERROR;
+    int err = 0;
+    int res;
+
+    /* Parsing the document succeeds because of the external DTD. */
+    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL, options);
+    root = xmlDocGetRootElement(doc);
+
+    /* Parsing content fails. */
+
+    res = xmlParseInNodeContext(root, content, sizeof(content) - 1, options,
+                                &list);
+    if (res != XML_ERR_UNDECLARED_ENTITY || list != NULL) {
+        fprintf(stderr, "Wrong result from xmlParseInNodeContext\n");
+        err = 1;
+    }
+    xmlFreeNodeList(list);
+
+#ifdef LIBXML_SAX1_ENABLED
+    xmlSetStructuredErrorFunc(NULL, ignoreError);
+    res = xmlParseBalancedChunkMemory(doc, NULL, NULL, 0, BAD_CAST content,
+                                      &list);
+    if (res != XML_ERR_UNDECLARED_ENTITY || list != NULL) {
+        fprintf(stderr, "Wrong result from xmlParseBalancedChunkMemory\n");
+        err = 1;
+    }
+    xmlFreeNodeList(list);
+    xmlSetStructuredErrorFunc(NULL, NULL);
+#endif /* LIBXML_SAX1_ENABLED */
+
+    xmlFreeDoc(doc);
 
     return err;
 }
@@ -1219,6 +1273,7 @@ main(void) {
     err |= testUnsupportedEncoding();
     err |= testNodeGetContent();
     err |= testCFileIO();
+    err |= testUndeclEntInContent();
 #ifdef LIBXML_VALID_ENABLED
     err |= testSwitchDtd();
 #endif

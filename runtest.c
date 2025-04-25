@@ -2355,6 +2355,14 @@ testParseContent(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const char *filename) {
     char *content, *roundTrip;
     int ret = 0;
 
+    /*
+     * Undeclared entities aren't a fatal error if there's an
+     * external DTD. When parsing content, we assume there's no
+     * DTD, so the undeclared entity test would fail.
+     */
+    if (strcmp(filename, "./test/undeclared-entity.xml") == 0)
+        return 0;
+
     if (ctxt->html) {
         xmlNodePtr cur;
 

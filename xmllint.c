@@ -1712,50 +1712,34 @@ static void streamFile(xmllintState *lint, const char *filename) {
     if (lint->memory) {
 	reader = xmlReaderForMemory(lint->memoryData, lint->memorySize,
                                     filename, NULL, lint->options);
+        if (reader == NULL) {
+            lint->progresult = XMLLINT_ERR_MEM;
+            return;
+        }
     } else
 #endif
     {
+        xmlResetLastError();
+
         if (strcmp(filename, "-") == 0) {
-            reader = xmlReaderForFd(STDIN_FILENO, "-", NULL, lint->options);
+            reader = xmlReaderForFd(STDIN_FILENO, "-", NULL,
+                                    lint->options | XML_PARSE_UNZIP);
         }
         else {
-            /*
-             * There's still no easy way to get a reader for a file with
-             * adequate error repoting.
-             */
-
-            xmlResetLastError();
-            input = xmlParserInputBufferCreateFilename(filename,
-                                                       XML_CHAR_ENCODING_NONE);
-            if (input == NULL) {
-                const xmlError *error = xmlGetLastError();
-
-                if ((error != NULL) && (error->code == XML_ERR_NO_MEMORY)) {
-                    lint->progresult = XMLLINT_ERR_MEM;
-                } else {
-                    fprintf(errStream, "Unable to open %s\n", filename);
-                    lint->progresult = XMLLINT_ERR_RDFILE;
-                }
-                return;
-            }
-
-            reader = xmlNewTextReader(input, filename);
-            if (reader == NULL) {
-                lint->progresult = XMLLINT_ERR_MEM;
-                xmlFreeParserInputBuffer(input);
-                return;
-            }
-            if (xmlTextReaderSetup(reader, NULL, NULL, NULL,
-                                   lint->options) < 0) {
-                lint->progresult = XMLLINT_ERR_MEM;
-                xmlFreeParserInputBuffer(input);
-                return;
-            }
+            reader = xmlReaderForFile(filename, NULL,
+                                      lint->options | XML_PARSE_UNZIP);
         }
-    }
-    if (reader == NULL) {
-        lint->progresult = XMLLINT_ERR_MEM;
-        return;
+        if (reader == NULL) {
+            const xmlError *error = xmlGetLastError();
+
+            if ((error != NULL) && (error->code == XML_ERR_NO_MEMORY)) {
+                lint->progresult = XMLLINT_ERR_MEM;
+            } else {
+                fprintf(errStream, "Unable to open %s\n", filename);
+                lint->progresult = XMLLINT_ERR_RDFILE;
+            }
+            return;
+        }
     }
 
 #ifdef LIBXML_PATTERN_ENABLED

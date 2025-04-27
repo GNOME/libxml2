@@ -1458,8 +1458,10 @@ XMLPUBFUN int
 		xmlCtxtIsHtml		(xmlParserCtxtPtr ctxt);
 XMLPUBFUN int
 		xmlCtxtIsStopped	(xmlParserCtxtPtr ctxt);
+#ifdef LIBXML_VALID_ENABLED
 XMLPUBFUN xmlValidCtxtPtr
 		xmlCtxtGetValidCtxt	(xmlParserCtxtPtr ctxt);
+#endif
 XMLPUBFUN const xmlChar *
 		xmlCtxtGetVersion	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN const xmlChar *

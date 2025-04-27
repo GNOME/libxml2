@@ -3253,6 +3253,7 @@ xmlCtxtIsStopped(xmlParserCtxtPtr ctxt) {
     return(PARSER_STOPPED(ctxt));
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * xmlCtxtGetValidCtxt:
  * @ctxt:  parser context
@@ -3268,6 +3269,7 @@ xmlCtxtGetValidCtxt(xmlParserCtxtPtr ctxt) {
 
     return(&ctxt->vctxt);
 }
+#endif
 
 /************************************************************************
  *									*

@@ -414,7 +414,6 @@ xmlNewEntity(xmlDocPtr doc, const xmlChar *name, int type,
  * xmlGetEntityFromTable:
  * @table:  an entity table
  * @name:  the entity name
- * @parameter:  look for parameter entities
  *
  * Do an entity lookup in the table.
  * returns the corresponding parameter entity, if found.
@@ -820,7 +819,7 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
  * Contrary to xmlEncodeEntities, this routine is reentrant, and result
  * must be deallocated.
  *
- * This escapes '<', '>', '&' and '\r'. If the document has no encoding,
+ * This escapes `<`, `>`, `&` and `\r`. If the document has no encoding,
  * non-ASCII codepoints are escaped. There is some special handling for
  * HTML documents.
  *
@@ -839,7 +838,7 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
  * Do a global encoding of a string, replacing the predefined entities
  * this routine is reentrant, and result must be deallocated.
  *
- * This escapes '<', '>', '&', '"' and '\r' chars.
+ * This escapes `<`, `>`, `&`, `"` and `\r` chars.
  *
  * Returns A newly allocated string with the substitution done.
  */
@@ -891,7 +890,8 @@ xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
 
 /**
  * xmlCopyEntity:
- * @ent:  An entity
+ * @payload:  An entity
+ * @name:  unused
  *
  * Build a copy of an entity
  *
@@ -983,8 +983,9 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 
 /**
  * xmlDumpEntityDeclScan:
- * @ent:  An entity table
- * @buf:  An XML buffer.
+ * @ent:  an entity table
+ * @save:  a save context
+ * @name:  unused
  *
  * When using the hash table scan function, arguments need to be reversed
  */

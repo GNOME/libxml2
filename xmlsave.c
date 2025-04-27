@@ -52,7 +52,7 @@ struct _xmlSaveCtxt {
  ************************************************************************/
 /**
  * xmlSaveErrMemory:
- * @extra:  extra information
+ * @out:  an output buffer
  *
  * Handle an out of memory condition
  */
@@ -66,6 +66,7 @@ xmlSaveErrMemory(xmlOutputBufferPtr out)
 
 /**
  * xmlSaveErr:
+ * @out:  an output buffer
  * @code:  the error number
  * @node:  the location of the error.
  * @extra:  extra information
@@ -257,6 +258,7 @@ xmlSaveSetIndentString(xmlSaveCtxtPtr ctxt, const char *indent) {
 /**
  * xmlSaveCtxtInit:
  * @ctxt: the saving context
+ * @options:  save options
  *
  * Initialize a saving context
  */
@@ -409,6 +411,7 @@ xmlBufDumpNotationDecl(xmlOutputBufferPtr buf, xmlNotationPtr nota) {
  * xmlBufDumpNotationDeclScan:
  * @nota:  A notation declaration
  * @buf:  the XML buffer output
+ * @name:  unused
  *
  * This is called with the hash scan function, and just reverses args
  */
@@ -567,7 +570,7 @@ xmlBufDumpElementDecl(xmlOutputBufferPtr buf, xmlElementPtr elem) {
 /**
  * xmlBufDumpEnumeration:
  * @buf:  output buffer
- * @enum:  An enumeration
+ * @cur:  an enumeration
  *
  * This will dump the content of the enumeration
  */
@@ -944,7 +947,7 @@ xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
 
 /**
  * xmlDtdDumpOutput:
- * @buf:  the XML buffer output
+ * @ctxt:  the save context
  * @dtd:  the pointer to the DTD
  *
  * Dump the XML document DTD, if any.
@@ -999,7 +1002,7 @@ xmlDtdDumpOutput(xmlSaveCtxtPtr ctxt, xmlDtdPtr dtd) {
 
 /**
  * xmlAttrDumpOutput:
- * @buf:  the XML buffer output
+ * @ctxt:  the save context
  * @cur:  the attribute pointer
  *
  * Dump an XML attribute
@@ -1040,6 +1043,7 @@ xmlAttrDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
 #ifdef LIBXML_HTML_ENABLED
 /**
  * htmlNodeDumpOutputInternal:
+ * @ctxt:  the save context
  * @cur:  the current node
  *
  * Dump an HTML node, recursive behaviour, children are printed too.
@@ -1091,6 +1095,7 @@ htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
 /**
  * xmlNodeDumpOutputInternal:
+ * @ctxt:  the save context
  * @cur:  the current node
  *
  * Dump an XML node, recursive behaviour, children are printed too.
@@ -1354,7 +1359,9 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 
 /**
  * xmlSaveDocInternal:
+ * @ctxt:  the save context
  * @cur:  the document
+ * @encoding:  character encoding (optional)
  *
  * Dump an XML document.
  */
@@ -1556,6 +1563,7 @@ xhtmlIsEmpty(xmlNodePtr node) {
 
 /**
  * xhtmlAttrListDumpOutput:
+ * @ctxt:  the save context
  * @cur:  the first attribute pointer
  *
  * Dump a list of XML attributes
@@ -1624,12 +1632,8 @@ xhtmlAttrListDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
 
 /**
  * xhtmlNodeDumpOutput:
- * @buf:  the XML buffer output
- * @doc:  the XHTML document
+ * @ctxt:  the save context
  * @cur:  the current node
- * @level: the imbrication level for indenting
- * @format: is formatting allowed
- * @encoding:  an optional encoding string
  *
  * Dump an XHTML node, recursive behaviour, children are printed too.
  */

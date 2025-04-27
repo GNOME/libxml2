@@ -37,7 +37,7 @@ typedef void (*xmlFreeFunc)(void *mem);
  *
  * Returns a pointer to the newly allocated block or NULL in case of error.
  */
-typedef void *(LIBXML_ATTR_ALLOC_SIZE(1) *xmlMallocFunc)(size_t size);
+typedef void *(*xmlMallocFunc)(size_t size) LIBXML_ATTR_ALLOC_SIZE(1);
 
 /**
  * xmlReallocFunc:

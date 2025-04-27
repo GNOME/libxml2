@@ -115,9 +115,8 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt);
 /**
  * htmlErrMemory:
  * @ctxt:  an HTML parser context
- * @extra:  extra information
  *
- * Handle a redefinition of attribute error
+ * Handle an out-of-memory error
  */
 static void
 htmlErrMemory(xmlParserCtxtPtr ctxt)
@@ -1341,7 +1340,6 @@ htmlCheckAutoClose(const xmlChar * newtag, const xmlChar * oldtag)
  * htmlAutoCloseOnClose:
  * @ctxt:  an HTML parser context
  * @newtag:  The new tag name
- * @force:  force the tag closure
  *
  * The HTML DTD allows an ending tag to implicitly close other tags.
  */
@@ -2343,6 +2341,7 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
 /**
  * htmlParseHTMLName:
  * @ctxt:  an HTML parser context
+ * @attr:  whether this is an attribute name
  *
  * parse an HTML tag or attribute name, note that we convert it to lowercase
  * since HTML names are not case-sensitive.
@@ -4774,6 +4773,7 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 /**
  * htmlCreateDocParserCtxt:
  * @str:  a pointer to an array of xmlChar
+ * @url:  URL of the document (optional)
  * @encoding:  encoding (optional)
  *
  * Create a parser context for a null-terminated string.
@@ -4931,6 +4931,7 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
  * @startDelta: delta to apply at the start
  * @str:  string
  * @strLen:  length of string
+ * @extraLen:  extra length
  *
  * Check whether the input buffer contains a string.
  */

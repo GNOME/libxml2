@@ -1027,7 +1027,7 @@ xmlXPathFreeCompExpr(xmlXPathCompExprPtr comp)
 
 /**
  * xmlXPathCompExprAdd:
- * @comp:  the compiled expression
+ * @ctxt:  XPath parser context
  * @ch1: first child index
  * @ch2: second child index
  * @op:  an op
@@ -1586,14 +1586,13 @@ xmlXPathFreeCache(xmlXPathContextCachePtr cache)
  * Creates/frees an object cache on the XPath context.
  * If activates XPath objects (xmlXPathObject) will be cached internally
  * to be reused.
- * @options:
- *   0: This will set the XPath object caching:
- *      @value:
- *        This will set the maximum number of XPath objects
- *        to be cached per slot
- *        There are two slots for node-set and misc objects.
- *        Use <0 for the default number (100).
- *   Other values for @options have currently no effect.
+ *
+ * @options must be set to 0 to enable XPath object caching.
+ * Other values for @options have currently no effect.
+ *
+ * @value sets the maximum number of XPath objects to be cached per slot.
+ * There are two slots for node-set and misc objects.
+ * Use <0 for the default number (100).
  *
  * Returns 0 if the setting succeeded, and -1 on API or internal errors.
  */
@@ -1670,7 +1669,7 @@ xmlXPathCacheWrapNodeSet(xmlXPathParserContextPtr pctxt, xmlNodeSetPtr val)
 
 /**
  * xmlXPathCacheWrapString:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the xmlChar * value
  *
  * This is the cached version of xmlXPathWrapString().
@@ -1705,7 +1704,7 @@ xmlXPathCacheWrapString(xmlXPathParserContextPtr pctxt, xmlChar *val)
 
 /**
  * xmlXPathCacheNewNodeSet:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the NodePtr value
  *
  * This is the cached version of xmlXPathNewNodeSet().
@@ -1775,7 +1774,7 @@ xmlXPathCacheNewNodeSet(xmlXPathParserContextPtr pctxt, xmlNodePtr val)
 
 /**
  * xmlXPathCacheNewString:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the xmlChar * value
  *
  * This is the cached version of xmlXPathNewString().
@@ -1820,7 +1819,7 @@ xmlXPathCacheNewString(xmlXPathParserContextPtr pctxt, const xmlChar *val)
 
 /**
  * xmlXPathCacheNewCString:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the char * value
  *
  * This is the cached version of xmlXPathNewCString().
@@ -1836,7 +1835,7 @@ xmlXPathCacheNewCString(xmlXPathParserContextPtr pctxt, const char *val)
 
 /**
  * xmlXPathCacheNewBoolean:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the boolean value
  *
  * This is the cached version of xmlXPathNewBoolean().
@@ -1872,7 +1871,7 @@ xmlXPathCacheNewBoolean(xmlXPathParserContextPtr pctxt, int val)
 
 /**
  * xmlXPathCacheNewFloat:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the double value
  *
  * This is the cached version of xmlXPathNewFloat().
@@ -1908,7 +1907,7 @@ xmlXPathCacheNewFloat(xmlXPathParserContextPtr pctxt, double val)
 
 /**
  * xmlXPathCacheObjectCopy:
- * @pctxt the XPath context
+ * @pctxt: the XPath context
  * @val:  the original object
  *
  * This is the cached version of xmlXPathObjectCopy().
@@ -3208,6 +3207,7 @@ xmlXPathFreeNodeSet(xmlNodeSetPtr obj) {
  * xmlXPathNodeSetClearFromPos:
  * @set: the node set to be cleared
  * @pos: the start position to clear from
+ * @hasNsNodes: the node set might contain namespace nodes
  *
  * Clears the list from temporary XPath objects (e.g. namespace nodes
  * are feed) starting with the entry at @pos, but does *not* free the list
@@ -3235,6 +3235,7 @@ xmlXPathNodeSetClearFromPos(xmlNodeSetPtr set, int pos, int hasNsNodes)
 /**
  * xmlXPathNodeSetClear:
  * @set:  the node set to clear
+ * @hasNsNodes: the node set might contain namespace nodes
  *
  * Clears the list from all temporary XPath objects (e.g. namespace nodes
  * are feed), but does *not* free the list itself. Sets the length of the
@@ -4416,6 +4417,7 @@ xmlXPathFreeObjectEntry(void *obj, const xmlChar *name ATTRIBUTE_UNUSED) {
 
 /**
  * xmlXPathReleaseObject:
+ * @ctxt:  XPath context
  * @obj:  the xmlXPathObjectPtr to free or to cache
  *
  * Depending on the state of the cache this frees the given
@@ -4708,6 +4710,7 @@ xmlXPathCastStringToNumber(const xmlChar * val) {
 
 /**
  * xmlXPathNodeToNumberInternal:
+ * @ctxt:  XPath parser context
  * @node:  a node
  *
  * Converts a node to its number value
@@ -5369,6 +5372,7 @@ xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
 
 /**
  * xmlXPathCompareNodeSets:
+ * @ctxt:  XPath parser context
  * @inf:  less than (1) or greater than (0)
  * @strict:  is the comparison strict
  * @arg1:  the first node set object
@@ -5521,6 +5525,7 @@ xmlXPathCompareNodeSetValue(xmlXPathParserContextPtr ctxt, int inf, int strict,
 
 /**
  * xmlXPathEqualNodeSetString:
+ * @ctxt:  XPath parser context
  * @arg:  the nodeset object argument
  * @str:  the string to compare to.
  * @neq:  flag to show whether for '=' (0) or '!=' (1)
@@ -5578,6 +5583,7 @@ xmlXPathEqualNodeSetString(xmlXPathParserContextPtr ctxt,
 
 /**
  * xmlXPathEqualNodeSetFloat:
+ * @ctxt:  XPath parser context
  * @arg:  the nodeset object argument
  * @f:  the float to compare to
  * @neq:  flag to show whether to compare '=' (0) or '!=' (1)
@@ -5640,6 +5646,7 @@ xmlXPathEqualNodeSetFloat(xmlXPathParserContextPtr ctxt,
 
 /**
  * xmlXPathEqualNodeSets:
+ * @ctxt:  XPath parser context
  * @arg1:  first nodeset object argument
  * @arg2:  second nodeset object argument
  * @neq:   flag to show whether to test '=' (0) or '!=' (1)
@@ -6287,7 +6294,7 @@ xmlXPathMultValues(xmlXPathParserContextPtr ctxt) {
  * xmlXPathDivValues:
  * @ctxt:  the XPath Parser context
  *
- * Implement the div operation on XPath objects @arg1 / @arg2:
+ * Implement the div operation on XPath objects @arg1 / @arg2.
  * The numeric operators convert their operands to numbers as if
  * by calling the number function.
  */
@@ -8011,8 +8018,9 @@ xmlXPathNormalizeFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * character at a corresponding position in the third argument string
  * (because the second argument string is longer than the third argument
  * string), then occurrences of that character in the first argument
- * string are removed. For example, translate("--aaa--","abc-","ABC")
- * returns "AAA". If a character occurs more than once in second
+ * string are removed. For example,
+ * translate("--aaa--","abc-","ABC") returns "AAA".
+ * If a character occurs more than once in second
  * argument string, then the first occurrence determines the replacement
  * character. If the third argument string is longer than the second
  * argument string, then excess characters are ignored.
@@ -8195,8 +8203,8 @@ xmlXPathFalseFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * by the value of the xml:lang attribute on the context node, or, if
  * the context node has no xml:lang attribute, by the value of the
  * xml:lang attribute on the nearest ancestor of the context node that
- * has an xml:lang attribute. If there is no such attribute, then lang
- * returns false. If there is such an attribute, then lang returns
+ * has an xml:lang attribute. If there is no such attribute, then
+ * lang returns false. If there is such an attribute, then lang returns
  * true if the attribute value is equal to the argument ignoring case,
  * or if there is some suffix starting with - such that the attribute
  * value is equal to the argument ignoring that suffix of the attribute
@@ -8410,7 +8418,6 @@ static xmlChar * xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt,
 /**
  * xmlXPathCurrentChar:
  * @ctxt:  the XPath parser context
- * @cur:  pointer to the beginning of the char
  * @len:  pointer to the length of the char read
  *
  * The current char value, if using UTF-8 this may actually span multiple
@@ -9261,12 +9268,6 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
  *               | FilterExpr '//' RelativeLocationPath
  *
  * Compile a path expression.
- * The / operator and // operators combine an arbitrary expression
- * and a relative location path. It is an error if the expression
- * does not evaluate to a node-set.
- * The / operator does composition in the same way as when / is
- * used in a location path. As in location paths, // is short for
- * /descendant-or-self::node()/.
  */
 
 static void
@@ -9625,6 +9626,7 @@ xmlXPathCompAndExpr(xmlXPathParserContextPtr ctxt) {
 /**
  * xmlXPathCompileExpr:
  * @ctxt:  the XPath Parser context
+ * @sort:  whether to sort the resulting node set
  *
  *  [14]   Expr ::=   OrExpr
  *  [21]   OrExpr ::=   AndExpr
@@ -9728,7 +9730,9 @@ xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter) {
  * @test:  pointer to a xmlXPathTestVal
  * @type:  pointer to a xmlXPathTypeVal
  * @prefix:  placeholder for a possible name prefix
+ * @name:  current name token (optional)
  *
+ * ```
  * [7] NodeTest ::=   NameTest
  *		    | NodeType '(' ')'
  *		    | 'processing-instruction' '(' Literal ')'
@@ -9740,6 +9744,7 @@ xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter) {
  *		   | 'text'
  *		   | 'processing-instruction'
  *		   | 'node'
+ * ```
  *
  * Returns the name found and updates @test, @type and @prefix appropriately
  */
@@ -9936,16 +9941,6 @@ xmlXPathIsAxisName(const xmlChar *name) {
  *                     | 'range-to' '(' Expr ')' Predicate*
  *
  * Compile one step in a Location Path
- * A location step of . is short for self::node(). This is
- * particularly useful in conjunction with //. For example, the
- * location path .//para is short for
- * self::node()/descendant-or-self::node()/child::para
- * and so will select all para descendant elements of the context
- * node.
- * Similarly, a location step of .. is short for parent::node().
- * For example, ../title is short for parent::node()/child::title
- * and so will select the title children of the parent of the context
- * node.
  */
 static void
 xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
@@ -10081,14 +10076,6 @@ xmlXPathCompRelativeLocationPath
  *                           '//' RelativeLocationPath
  *
  * Compile a location path
- *
- * // is short for /descendant-or-self::node()/. For example,
- * //para is short for /descendant-or-self::node()/child::para and
- * so will select any para element in the document (even a para element
- * that is a document element will be selected by //para since the
- * document element node is a child of the root node); div//para is
- * short for div/descendant-or-self::node()/child::para and so will
- * select all para descendants of div children.
  */
 static void
 xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt) {
@@ -11718,6 +11705,8 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
 /**
  * xmlXPathCompOpEvalToBoolean:
  * @ctxt:  the XPath parser context
+ * @op:  the step operation
+ * @isPredicate:  whether a predicate is evaluated
  *
  * Evaluates if the expression evaluates to true.
  *
@@ -12476,7 +12465,7 @@ xmlXPathCompile(const xmlChar *str) {
  * xmlXPathCompiledEvalInternal:
  * @comp:  the compiled XPath expression
  * @ctxt:  the XPath context
- * @resObj: the resulting XPath object or NULL
+ * @resObjPtr: the resulting XPath object or NULL
  * @toBool: 1 if only a boolean result is requested
  *
  * Evaluate the Precompiled XPath expression in the given context.

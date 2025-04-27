@@ -278,6 +278,7 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @error:  the error number
  * @msg:  the error message
  * @str1:  extra data
+ * @str2:  extra data
  *
  * Handle a validity error.
  */
@@ -369,6 +370,7 @@ xmlErrMsgStr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @msg:  the message
  * @info1:  extra information string
  * @info2:  extra information string
+ * @info3:  extra information string
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
@@ -391,6 +393,7 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @msg:  the message
  * @info1:  extra information string
  * @info2:  extra information string
+ * @info3:  extra information string
  *
  * Handle a namespace warning error
  */
@@ -499,15 +502,15 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
  ************************************************************************/
 
 /**
-  * xmlHasFeature:
-  * @feature: the feature to be examined
-  *
-  * Examines if the library has been compiled with a given feature.
-  *
-  * Returns a non-zero value if the feature exist, otherwise zero.
-  * Returns zero (0) if the feature does not exist or an unknown
-  * unknown feature is requested, non-zero otherwise.
-  */
+ * xmlHasFeature:
+ * @feature: the feature to be examined
+ *
+ * Examines if the library has been compiled with a given feature.
+ *
+ * Returns a non-zero value if the feature exist, otherwise zero.
+ * Returns zero (0) if the feature does not exist or an unknown
+ * unknown feature is requested, non-zero otherwise.
+ */
 int
 xmlHasFeature(xmlFeature feature)
 {
@@ -3467,7 +3470,6 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
 /**
  * xmlParseNCName:
  * @ctxt:  an XML parser context
- * @len:  length of the string parsed
  *
  * parse an XML name.
  *
@@ -3529,6 +3531,7 @@ complex:
 /**
  * xmlParseNameAndCompare:
  * @ctxt:  an XML parser context
+ * @other:  the name to compare with
  *
  * parse an XML name and compares for match
  * (specialized for endtag parsing)
@@ -4282,9 +4285,10 @@ xmlExpandEntitiesInAttValue(xmlParserCtxtPtr ctxt, const xmlChar *str,
 /**
  * xmlParseAttValueInternal:
  * @ctxt:  an XML parser context
- * @len:  attribute len result
+ * @attlen:  attribute len result
  * @alloc:  whether the attribute was reallocated as a new string
  * @normalize:  if 1 then further non-CDATA normalization must be done
+ * @isNamespace:  whether this is a namespace declaration
  *
  * parse a value for an attribute.
  * NOTE: if no normalization is needed, the routine will return pointers
@@ -4926,7 +4930,7 @@ get_more:
 /**
  * xmlParseCharDataComplex:
  * @ctxt:  an XML parser context
- * @cdata:  int indicating whether we are within a CDATA section
+ * @partial:  whether the input can end with truncated UTF-8
  *
  * Always makes progress if the first char isn't '<' or '&'.
  *
@@ -7673,7 +7677,6 @@ xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
 /**
  * xmlParseEntityRefInternal:
  * @ctxt:  an XML parser context
- * @inAttr:  whether we are in an attribute value
  *
  * Parse an entity reference. Always consumes '&'.
  *
@@ -8516,7 +8519,6 @@ failed:
  * xmlParseEndTag1:
  * @ctxt:  an XML parser context
  * @line:  line of the start tag
- * @nsNr:  number of namespaces on the start tag
  *
  * Parse an end tag. Always consumes '</'.
  *
@@ -8746,10 +8748,10 @@ xmlParseQNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *name,
  * @ctxt:  an XML parser context
  * @pref:  the element prefix
  * @elem:  the element name
- * @prefix:  a xmlChar ** used to store the value of the attribute prefix
- * @value:  a xmlChar ** used to store the value of the attribute
- * @len:  an int * to save the length of the attribute
- * @alloc:  an int * to indicate if the attribute was allocated
+ * @hprefix:  resulting attribute prefix
+ * @value:  resulting value of the attribute
+ * @len:  resulting length of the attribute
+ * @alloc:  resulting indicator if the attribute was allocated
  *
  * parse an attribute in the new SAX2 framework.
  *
@@ -8942,6 +8944,9 @@ xmlAttrHashInsertQName(xmlParserCtxtPtr ctxt, unsigned size,
 /**
  * xmlParseStartTag2:
  * @ctxt:  an XML parser context
+ * @pref:  resulting namespace prefix
+ * @URI:  resulting namespace URI
+ * @nbNsPtr:  resulting number of namespace declarations
  *
  * Parse a start tag. Always consumes '<'.
  *
@@ -9577,8 +9582,7 @@ done:
 /**
  * xmlParseEndTag2:
  * @ctxt:  an XML parser context
- * @line:  line of the start tag
- * @nsNr:  number of namespaces on the start tag
+ * @tag:  the corresponding start tag
  *
  * Parse an end tag. Always consumes '</'.
  *

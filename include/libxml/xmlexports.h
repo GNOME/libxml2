@@ -8,8 +8,6 @@
 #ifndef __XML_EXPORTS_H__
 #define __XML_EXPORTS_H__
 
-/** DOC_DISABLE */
-
 /*
  * Symbol visibility
  */

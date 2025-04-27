@@ -331,6 +331,8 @@ xmlParserPrintFileInfo(xmlParserInputPtr input) {
 /**
  * xmlParserPrintFileContextInternal:
  * @input:  an xmlParserInputPtr input
+ * @channel:  output callback
+ * @data:  user data for output callback
  *
  * Displays current context within the input content for error tracking
  */

@@ -115,7 +115,7 @@ static int xmlOutputCallbackNr;
 
 /**
  * xmlIOErr:
- * @code:  the error number
+ * @err:  the error number
  *
  * Convert errno to xmlParserErrors.
  *
@@ -439,6 +439,7 @@ typedef struct {
 /**
  * xmlFdOpen:
  * @filename:  the URI for matching
+ * @write:  whether the fd is opened for writing
  * @out:  pointer to resulting context
  *
  * Returns an xmlParserErrors code
@@ -618,6 +619,7 @@ xmlFileMatch (const char *filename ATTRIBUTE_UNUSED) {
 /**
  * xmlFileOpenSafe:
  * @filename:  the URI for matching
+ * @write:  whether the file is opened for writing
  * @out:  pointer to resulting context
  *
  * input from FILE *
@@ -1088,7 +1090,6 @@ xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
  * @buf:  input buffer to be filled
  * @filename:  filename or URI
  * @compression:  compression level or 0
- * @is_file_uri:  whether filename is a file URI
  *
  * Returns an xmlParserErrors code.
  */

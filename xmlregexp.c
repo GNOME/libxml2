@@ -356,7 +356,7 @@ static int xmlRegCheckCharacterRange(xmlRegAtomType type, int codepoint,
  ************************************************************************/
 /**
  * xmlRegexpErrMemory:
- * @extra:  extra information
+ * @ctxt:  regexp parser context
  *
  * Handle an out of memory condition
  */
@@ -371,6 +371,7 @@ xmlRegexpErrMemory(xmlRegParserCtxtPtr ctxt)
 
 /**
  * xmlRegexpErrCompile:
+ * @ctxt:  regexp parser context
  * @extra:  extra information
  *
  * Handle a compilation failure
@@ -738,6 +739,7 @@ xmlRegFreeRange(xmlRegRangePtr range) {
 
 /**
  * xmlRegCopyRange:
+ * @ctxt:  regexp parser context
  * @range:  the regexp range
  *
  * Copy a regexp range
@@ -1609,8 +1611,7 @@ xmlFAGenerateEpsilonTransition(xmlRegParserCtxtPtr ctxt,
  * @ctxt:  a regexp parser context
  * @from:  the from state
  * @to:  the target state or NULL for building a new one
- * counter:  the counter for that transition
- *
+ * @counter:  the counter for that transition
  */
 static int
 xmlFAGenerateCountedEpsilonTransition(xmlRegParserCtxtPtr ctxt,
@@ -1630,8 +1631,7 @@ xmlFAGenerateCountedEpsilonTransition(xmlRegParserCtxtPtr ctxt,
  * @ctxt:  a regexp parser context
  * @from:  the from state
  * @to:  the target state or NULL for building a new one
- * counter:  the counter for that transition
- *
+ * @counter:  the counter for that transition
  */
 static int
 xmlFAGenerateCountedTransition(xmlRegParserCtxtPtr ctxt,
@@ -1944,10 +1944,7 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 /**
  * xmlFAFinishReduceEpsilonTransitions:
  * @ctxt:  a regexp parser context
- * @fromnr:  the from state
  * @tonr:  the to state
- * @counter:  should that transition be associated to a counted
- *
  */
 static void
 xmlFAFinishReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int tonr) {
@@ -2688,6 +2685,10 @@ not_determinist:
 /**
  * xmlFARecurseDeterminism:
  * @ctxt:  a regexp parser context
+ * @state:  regexp state
+ * @fromnr:  the from state
+ * @tonr:  the to state
+ * @atom:  the atom
  *
  * Check whether the associated regexp is determinist,
  * should be called after xmlFAEliminateEpsilonTransitions()
@@ -2747,6 +2748,7 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 /**
  * xmlFAFinishRecurseDeterminism:
  * @ctxt:  a regexp parser context
+ * @state:  regexp state
  *
  * Reset flags after checking determinism.
  */
@@ -4757,11 +4759,13 @@ static int parse_escaped_codepoint(xmlRegParserCtxtPtr ctxt)
  * xmlFAParseCharClassEsc:
  * @ctxt:  a regexp parser context
  *
+ * ```
  * [23] charClassEsc ::= ( SingleCharEsc | MultiCharEsc | catEsc | complEsc )
  * [24] SingleCharEsc ::= '\' [nrt\|.?*+(){}#x2D#x5B#x5D#x5E]
  * [25] catEsc   ::=   '\p{' charProp '}'
  * [26] complEsc ::=   '\P{' charProp '}'
  * [37] MultiCharEsc ::= '.' | ('\' [sSiIcCdDwW])
+ * ```
  */
 static void
 xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
@@ -4927,11 +4931,13 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
  * xmlFAParseCharRange:
  * @ctxt:  a regexp parser context
  *
+ * ```
  * [17]   charRange   ::=     seRange | XmlCharRef | XmlCharIncDash
  * [18]   seRange   ::=   charOrEsc '-' charOrEsc
  * [20]   charOrEsc   ::=   XmlChar | SingleCharEsc
  * [21]   XmlChar   ::=   [^\#x2D#x5B#x5D]
  * [22]   XmlCharIncDash   ::=   [^\#x5B#x5D]
+ * ```
  */
 static void
 xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
@@ -5765,7 +5771,7 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
  * and then adds a transition from the @from state to the target state
  * activated by any value except (@token,@token2)
  * Note that if @token2 is not NULL, then (X, NULL) won't match to follow
- # the semantic of XSD ##other
+ * the semantic of XSD ##other
  *
  * Returns the target state or NULL in case of error
  */

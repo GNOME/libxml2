@@ -284,7 +284,7 @@ output.write(
 """/**
  * xmlUnicodeLookup:
  * @tptr: pointer to the name table
- * @name: name to be found
+ * @tname: name to be found
  *
  * binary table lookup for user-supplied name
  *

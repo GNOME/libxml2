@@ -142,6 +142,7 @@ xmlCtxtDumpSpaces(xmlDebugCtxtPtr ctxt)
  * xmlDebugErr:
  * @ctxt:  a debug context
  * @error:  the error code
+ * @msg:  the error message
  *
  * Handle a debug error.
  */
@@ -784,9 +785,8 @@ xmlCtxtDumpEntity(xmlDebugCtxtPtr ctxt, xmlEntityPtr ent)
 
 /**
  * xmlCtxtDumpAttr:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @attr:  the attribute
- * @depth:  the indentation level.
  *
  * Dumps debug information for the attribute
  */
@@ -822,9 +822,8 @@ xmlCtxtDumpAttr(xmlDebugCtxtPtr ctxt, xmlAttrPtr attr)
 
 /**
  * xmlCtxtDumpAttrList:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @attr:  the attribute list
- * @depth:  the indentation level.
  *
  * Dumps debug information for the attribute list
  */
@@ -839,11 +838,10 @@ xmlCtxtDumpAttrList(xmlDebugCtxtPtr ctxt, xmlAttrPtr attr)
 
 /**
  * xmlCtxtDumpOneNode:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @node:  the node
- * @depth:  the indentation level.
  *
- * Dumps debug information for the element node, it is not recursive
+ * Dumps debug information for the element node, it is not recursive/
  */
 static void
 xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
@@ -1022,9 +1020,8 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
 
 /**
  * xmlCtxtDumpNode:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @node:  the node
- * @depth:  the indentation level.
  *
  * Dumps debug information for the element node, it is recursive
  */
@@ -1049,9 +1046,8 @@ xmlCtxtDumpNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
 
 /**
  * xmlCtxtDumpNodeList:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @node:  the node list
- * @depth:  the indentation level.
  *
  * Dumps debug information for the list of element node, it is recursive
  */
@@ -1135,7 +1131,7 @@ xmlCtxtDumpDocHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 
 /**
  * xmlCtxtDumpDocumentHead:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @doc:  the document
  *
  * Dumps debug information concerning the document, not recursive
@@ -1175,7 +1171,7 @@ xmlCtxtDumpDocumentHead(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 
 /**
  * xmlCtxtDumpDocument:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @doc:  the document
  *
  * Dumps debug information for the document, it's recursive
@@ -1246,7 +1242,7 @@ xmlCtxtDumpEntityCallback(void *payload, void *data,
 
 /**
  * xmlCtxtDumpEntities:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @doc:  the document
  *
  * Dumps debug information for all the entities in use by the document
@@ -1278,7 +1274,7 @@ xmlCtxtDumpEntities(xmlDebugCtxtPtr ctxt, xmlDocPtr doc)
 
 /**
  * xmlCtxtDumpDTD:
- * @output:  the FILE * for the output
+ * @ctxt:  the debug context
  * @dtd:  the DTD
  *
  * Dumps debug information for the DTD

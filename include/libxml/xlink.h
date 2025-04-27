@@ -98,7 +98,7 @@ typedef void
  * @show:  array of values for the show attributes found on the arcs
  * @actuate:  array of values for the actuate attributes found on the arcs
  * @nbTitles: the number of titles detected on the link
- * @title:  array of titles detected on the link
+ * @titles:  array of titles detected on the link
  * @langs:  array of xml:lang values for the titles
  *
  * This is the prototype for a extended link detection callback.
@@ -126,7 +126,7 @@ typedef void
  * @hrefs:  pointer to the array of locator hrefs
  * @roles:  pointer to the array of locator roles
  * @nbTitles: the number of titles detected on the link
- * @title:  array of titles detected on the link
+ * @titles:  array of titles detected on the link
  * @langs:  array of xml:lang values for the titles
  *
  * This is the prototype for a extended link set detection callback.

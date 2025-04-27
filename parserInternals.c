@@ -2484,7 +2484,7 @@ xmlNewInputFromFile(xmlParserCtxtPtr ctxt, const char *filename) {
 
 /**
  * xmlDefaultExternalEntityLoader:
- * @URL:  the URL for the entity to load
+ * @url:  the URL for the entity to load
  * @ID:  the System ID for the entity to load
  * @ctxt:  the context in which the entity is called or NULL
  *

@@ -47,7 +47,6 @@ xmlValidateAttributeValueInternal(xmlDocPtr doc, xmlAttributeType type,
 /**
  * xmlVErrMemory:
  * @ctxt:  an XML validation parser context
- * @extra:  extra information
  *
  * Handle an out of memory error
  */
@@ -108,6 +107,7 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
  * xmlErrValid:
  * @ctxt:  an XML validation parser context
  * @error:  the error number
+ * @msg:  the error message
  * @extra:  extra information
  *
  * Handle a validation error
@@ -126,6 +126,7 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
  * @ctxt:  an XML validation parser context
  * @node:  the node raising the error
  * @error:  the error number
+ * @msg:  the error message
  * @str1:  extra information
  * @str2:  extra information
  * @str3:  extra information
@@ -147,6 +148,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
  * @ctxt:  an XML validation parser context
  * @node:  the node raising the error
  * @error:  the error number
+ * @msg:  the error message
  * @str1:  extra information
  * @int2:  extra information
  * @str3:  extra information
@@ -168,6 +170,7 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
  * @ctxt:  an XML validation parser context
  * @node:  the node raising the error
  * @error:  the error number
+ * @msg:  the error message
  * @str1:  extra information
  * @str2:  extra information
  * @str3:  extra information
@@ -1361,7 +1364,8 @@ xmlFreeElementTable(xmlElementTablePtr table) {
 
 /**
  * xmlCopyElement:
- * @elem:  An element
+ * @payload:  an element
+ * @name:  unused
  *
  * Build a copy of an element.
  *
@@ -1443,8 +1447,9 @@ xmlDumpElementDecl(xmlBufferPtr buf, xmlElementPtr elem) {
 
 /**
  * xmlDumpElementDeclScan:
- * @elem:  An element table
- * @buf:  the XML buffer output
+ * @elem:  an element declaration
+ * @save:  a save context
+ * @name:  unused
  *
  * This routine is used by the hash scan function.  It just reverses
  * the arguments.
@@ -1599,7 +1604,7 @@ xmlScanIDAttributeDecl(xmlValidCtxtPtr ctxt, xmlElementPtr elem, int err) {
 
 /**
  * xmlFreeAttribute:
- * @elem:  An attribute
+ * @attr:  an attribute
  *
  * Deallocate the memory used by an attribute definition
  */
@@ -1906,9 +1911,10 @@ xmlFreeAttributeTable(xmlAttributeTablePtr table) {
 
 /**
  * xmlCopyAttribute:
- * @attr:  An attribute
+ * @payload:  an attribute declaration
+ * @name:  unused
  *
- * Build a copy of an attribute.
+ * Build a copy of an attribute declaration.
  *
  * Returns the new xmlAttributePtr or NULL in case of error.
  */
@@ -1998,8 +2004,9 @@ xmlDumpAttributeDecl(xmlBufferPtr buf, xmlAttributePtr attr) {
 
 /**
  * xmlDumpAttributeDeclScan:
- * @attr:  An attribute declaration
- * @buf:  the XML buffer output
+ * @attr:  an attribute declaration
+ * @save:  a save context
+ * @name:  unused
  *
  * This is used with the hash scan function - just reverses arguments
  */
@@ -2039,7 +2046,7 @@ xmlDumpAttributeTable(xmlBufferPtr buf, xmlAttributeTablePtr table) {
  ************************************************************************/
 /**
  * xmlFreeNotation:
- * @not:  A notation
+ * @nota:  A notation
  *
  * Deallocate the memory used by an notation definition
  */
@@ -2168,7 +2175,8 @@ xmlFreeNotationTable(xmlNotationTablePtr table) {
 
 /**
  * xmlCopyNotation:
- * @nota:  A notation
+ * @payload:  a notation
+ * @name:  unused
  *
  * Build a copy of a notation.
  *
@@ -2297,7 +2305,7 @@ xmlIsStreaming(xmlValidCtxtPtr ctxt) {
 
 /**
  * xmlFreeID:
- * @not:  A id
+ * @id:  an id
  *
  * Deallocate the memory used by an id definition
  */
@@ -2653,7 +2661,8 @@ xmlFreeRef(xmlLinkPtr lk) {
 
 /**
  * xmlFreeRefTableEntry:
- * @list_ref:  A list of references.
+ * @payload:  A list of references.
+ * @name:  unused
  *
  * Deallocate the memory used by a list of references
  */
@@ -2993,9 +3002,9 @@ xmlGetDtdElementDesc(xmlDtdPtr dtd, const xmlChar *name) {
 
 /**
  * xmlGetDtdElementDesc2:
+ * @ctxt:  a validation context
  * @dtd:  a pointer to the DtD to search
  * @name:  the element name
- * @create:  create an empty description if not found
  *
  * Search the DTD for the description of this element
  *
@@ -3806,7 +3815,6 @@ xmlValidateAttributeValue2(xmlValidCtxtPtr ctxt, xmlDocPtr doc,
  * @elem:  the parent
  * @name:  the attribute name
  * @value:  the attribute value
- * @ctxt:  the validation context or NULL
  *
  * DEPRECATED: Internal function, don't use.
  *
@@ -4975,7 +4983,7 @@ analyze:
  * xmlSnprintfElements:
  * @buf:  an output buffer
  * @size:  the size of the buffer
- * @content:  An element
+ * @node:  an element
  * @glob: 1 if one must print the englobing parenthesis, 0 otherwise
  *
  * This will dump the list of elements to the buffer
@@ -6374,10 +6382,9 @@ xmlWalkValidateList(const void *data, void *user)
 
 /**
  * xmlValidateCheckRefCallback:
- * @ref_list:  List of references
- * @ctxt:  Validation context
- * @name:  Name of ID we are searching for
- *
+ * @payload:  list of references
+ * @data:  validation context
+ * @name:  name of ID we are searching for
  */
 static void
 xmlValidateCheckRefCallback(void *payload, void *data, const xmlChar *name) {

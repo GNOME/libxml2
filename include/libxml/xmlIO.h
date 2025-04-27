@@ -10,14 +10,12 @@
 #ifndef __XML_IO_H__
 #define __XML_IO_H__
 
-/** DOC_DISABLE */
 #include <stdio.h>
 #include <libxml/xmlversion.h>
 #include <libxml/encoding.h>
 #define XML_TREE_INTERNALS
 #include <libxml/tree.h>
 #undef XML_TREE_INTERNALS
-/** DOC_ENABLE */
 
 #ifdef __cplusplus
 extern "C" {
@@ -133,7 +131,8 @@ typedef xmlParserInputBufferPtr
 /**
  * xmlOutputBufferCreateFilenameFunc:
  * @URI: the URI to write to
- * @enc: the requested target encoding
+ * @encoder: the requested target encoding
+ * @compression: compression level
  *
  * Signature for the function doing the lookup for a suitable output method
  * corresponding to an URI.
@@ -323,13 +322,6 @@ XMLPUBFUN xmlOutputBufferPtr
 	__xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
                               int compression);
-
-#ifdef LIBXML_HTTP_STUBS_ENABLED
-XML_DEPRECATED
-XMLPUBFUN void
-	xmlRegisterHTTPPostCallbacks	(void );
-#endif /* LIBXML_HTTP_STUBS_ENABLED */
-
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 XML_DEPRECATED
@@ -372,6 +364,7 @@ XMLPUBFUN int
  * Default 'http://' protocol callbacks
  */
 #ifdef LIBXML_HTTP_STUBS_ENABLED
+/** DOC_DISABLE */
 XML_DEPRECATED
 XMLPUBFUN int
 	xmlIOHTTPMatch			(const char *filename);
@@ -379,6 +372,9 @@ XML_DEPRECATED
 XMLPUBFUN void *
 	xmlIOHTTPOpen			(const char *filename);
 #ifdef LIBXML_OUTPUT_ENABLED
+XML_DEPRECATED
+XMLPUBFUN void
+	xmlRegisterHTTPPostCallbacks	(void );
 XML_DEPRECATED
 XMLPUBFUN void *
 	xmlIOHTTPOpenW			(const char * post_uri,
@@ -392,6 +388,7 @@ XMLPUBFUN int
 XML_DEPRECATED
 XMLPUBFUN int
 	xmlIOHTTPClose			(void * context);
+/** DOC_ENABLE */
 #endif /* LIBXML_HTTP_STUBS_ENABLED */
 
 XMLPUBFUN xmlParserInputBufferCreateFilenameFunc

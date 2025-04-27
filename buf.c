@@ -88,7 +88,7 @@ struct _xmlBuf {
 
 /**
  * xmlBufMemoryError:
- * @extra:  extra information
+ * @buf:  the buffer
  *
  * Handle an out of memory condition
  * To be improved...
@@ -102,7 +102,7 @@ xmlBufMemoryError(xmlBufPtr buf)
 
 /**
  * xmlBufOverflowError:
- * @extra:  extra information
+ * @buf:  the buffer
  *
  * Handle a buffer overflow error
  * To be improved...

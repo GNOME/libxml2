@@ -158,7 +158,7 @@ xmlGetParameterEntityFromDtd(const xmlDtd *dtd, const xmlChar *name) {
  * @memory:  preallocated memory
  * @len:  preallocated memory length
  *
- * Builds the QName @prefix:@ncname in @memory if there is enough space
+ * Builds the QName `prefix:ncname` in @memory if there is enough space
  * and prefix is not NULL nor empty, otherwise allocate a new string.
  * If prefix is NULL or empty it returns ncname.
  *
@@ -2381,7 +2381,7 @@ xmlNewEntityRef(xmlDocPtr doc, xmlChar *name) {
  * Create an empty entity reference node. This function doesn't attempt
  * to look up the entity in @doc.
  *
- * Entity names like '&entity;' are handled as well.
+ * Entity names like `&entity;` are handled as well.
  *
  * Returns a pointer to the new node object or NULL if arguments are
  * invalid or a memory allocation failed.
@@ -2417,7 +2417,7 @@ xmlNewCharRef(xmlDocPtr doc, const xmlChar *name) {
  * Create a new entity reference node, linking the result with the
  * entity in @doc if found.
  *
- * Entity names like '&entity;' are handled as well.
+ * Entity names like `&entity;` are handled as well.
  *
  * Returns a pointer to the new node object or NULL if arguments are
  * invalid or a memory allocation failed.
@@ -6231,7 +6231,6 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
 
 /**
  * xmlNewReconciledNs:
- * @doc:  the document
  * @tree:  a node expected to hold the new namespace
  * @ns:  the original namespace
  *

@@ -505,7 +505,7 @@ struct _xmlSchemaFacetLink {
  * XML_SCHEMAS_TYPE_BLOCK_DEFAULT:
  *
  * the complexType did not specify 'block' so use the default of the
- * <schema> item.
+ * `<schema>` item.
  */
 #define XML_SCHEMAS_TYPE_BLOCK_DEFAULT    1 << 17
 /**

@@ -130,7 +130,7 @@ static xmlChar *xmlC11NNormalizeString(const xmlChar * input,
 
 /**
  * xmlC14NErrMemory:
- * @extra:  extra information
+ * @ctxt:  a C14N evaluation context
  *
  * Handle a redefinition of memory error
  */
@@ -165,7 +165,7 @@ xmlC14NErrFull(xmlC14NCtxPtr ctxt, xmlNodePtr node, int code, const char *str1,
 
 /**
  * xmlC14NErrParam:
- * @extra:  extra information
+ * @ctxt:  a C14N evaluation context
  *
  * Handle a param error
  */
@@ -178,6 +178,8 @@ xmlC14NErrParam(xmlC14NCtxPtr ctxt)
 
 /**
  * xmlC14NErrInvalidNode:
+ * @ctxt:  a C14N evaluation context
+ * @node_type:  node type
  * @extra:  extra information
  *
  * Handle an invalid node error
@@ -192,6 +194,8 @@ xmlC14NErrInvalidNode(xmlC14NCtxPtr ctxt, const char *node_type,
 
 /**
  * xmlC14NErrUnknownNode:
+ * @ctxt:  a C14N evaluation context
+ * @node_type:  node type
  * @extra:  extra information
  *
  * Handle an unknown node error
@@ -205,7 +209,8 @@ xmlC14NErrUnknownNode(xmlC14NCtxPtr ctxt, int node_type, const char *extra)
 
 /**
  * xmlC14NErrRelativeNamespace:
- * @extra:  extra information
+ * @ctxt:  a C14N evaluation context
+ * @ns_uri:  namespace URI
  *
  * Handle a relative namespace error
  */
@@ -224,7 +229,6 @@ xmlC14NErrRelativeNamespace(xmlC14NCtxPtr ctxt, const char *ns_uri)
  * @node:  the context node
  * @error:  the error code
  * @msg:  the message
- * @extra:  extra information
  *
  * Handle an error
  */
@@ -382,7 +386,7 @@ xmlC14NStrEqual(const xmlChar *str1, const xmlChar *str2) {
 
 /**
  * xmlC14NVisibleNsStackFind:
- * @ctx:		the C14N context
+ * @cur:		the visible stack
  * @ns:			the namespace to check
  *
  * Checks whether the given namespace was already rendered or not
@@ -485,8 +489,8 @@ xmlC14NIsXmlNs(xmlNsPtr ns)
 
 /**
  * xmlC14NNsCompare:
- * @ns1:		the pointer to first namespace
- * @ns2:		the pointer to second namespace
+ * @data1:		the pointer to first namespace
+ * @data2:		the pointer to second namespace
  *
  * Compares the namespaces by names (prefixes).
  *
@@ -549,7 +553,8 @@ xmlC14NPrintNamespacesWalker(const void *ns, void *ctx) {
 /**
  * xmlC14NProcessNamespacesAxis:
  * @ctx:		the C14N context
- * @node:		the current node
+ * @cur:		the current node
+ * @visible:		the visibility of node
  *
  * Prints out canonical namespace axis of the current node to the
  * buffer from C14N context as follows
@@ -667,7 +672,8 @@ error:
 /**
  * xmlExcC14NProcessNamespacesAxis:
  * @ctx:		the C14N context
- * @node:		the current node
+ * @cur:		the current node
+ * @visible:		the visibility of node
  *
  * Prints out exclusive canonical namespace axis of the current node to the
  * buffer from C14N context as follows
@@ -872,8 +878,8 @@ xmlC14NIsXmlAttr(xmlAttrPtr attr)
 
 /**
  * xmlC14NAttrsCompare:
- * @attr1:		the pointer tls o first attr
- * @attr2:		the pointer to second attr
+ * @data1:		the pointer tls o first attr
+ * @data2:		the pointer to second attr
  *
  * Prints the given attribute to the output buffer from C14N context.
  *
@@ -923,8 +929,8 @@ xmlC14NAttrsCompare(const void *data1, const void *data2)
 
 /**
  * xmlC14NPrintAttrs:
- * @attr:		the pointer to attr
- * @ctx:		the C14N context
+ * @data:		the pointer to attr
+ * @user:		the C14N context
  *
  * Prints out canonical attribute urrent node to the
  * buffer from C14N context as follows
@@ -1105,8 +1111,7 @@ xmlC14NFixupBaseAttr(xmlC14NCtxPtr ctx, xmlAttrPtr xml_base_attr)
  * xmlC14NProcessAttrsAxis:
  * @ctx:		the C14N context
  * @cur:		the current node
- * @parent_visible:	the visibility of parent node
- * @all_parents_visible: the visibility of all parent nodes
+ * @parent_visible:	the visibility of the parent node
  *
  * Prints out canonical attribute axis of the current node to the
  * buffer from C14N context as follows
@@ -1403,8 +1408,7 @@ xmlC14NCheckForRelativeNamespaces(xmlC14NCtxPtr ctx, xmlNodePtr cur)
  * xmlC14NProcessElementNode:
  * @ctx:		the pointer to C14N context object
  * @cur:		the node to process
- * @visible:    this node is visible
- * @all_parents_visible: whether all the parents of this node are visible
+ * @visible:		this node is visible
  *
  * Canonical XML v 1.0 (http://www.w3.org/TR/xml-c14n)
  *
@@ -1755,7 +1759,7 @@ xmlC14NFreeCtx(xmlC14NCtxPtr ctx)
  * @user_data:		the first parameter for @is_visible_callback function
  *			(in most cases, it is nodes set)
  * @mode:   the c14n mode (see @xmlC14NMode)
- * @inclusive_ns_prefixe the list of inclusive namespace prefixes
+ * @inclusive_ns_prefixes: the list of inclusive namespace prefixes
  *			ended with a NULL or NULL if there is no
  *			inclusive namespaces (only for `
  *			canonicalization)
@@ -2108,8 +2112,8 @@ xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
  * @mode:		the normalization mode (attribute, comment, PI or text)
  *
  * Converts a string to a canonical (normalized) format. The code is stolen
- * from xmlEncodeEntitiesReentrant(). Added normalization of \x09, \x0a, \x0A
- * and the @mode parameter
+ * from xmlEncodeEntitiesReentrant(). Added normalization of `\x09`, `\x0a`,
+ * `\x0A` and the @mode parameter.
  *
  * Returns a normalized string (caller is responsible for calling xmlFree())
  * or NULL if an error occurs

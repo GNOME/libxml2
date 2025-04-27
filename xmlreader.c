@@ -693,7 +693,7 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
  * @nb_namespaces:  number of namespace definitions on that node
  * @namespaces:  pointer to the array of prefix/URI pairs namespace definitions
  * @nb_attributes:  the number of attributes on that node
- * nb_defaulted:  the number of defaulted attributes.
+ * @nb_defaulted:  the number of defaulted attributes.
  * @attributes:  pointer to the array of (localname/prefix/URI/value/end)
  *               attribute values.
  *
@@ -772,7 +772,7 @@ xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 /**
  * xmlTextReaderCDataBlock:
  * @ctx: the user data (XML parser context)
- * @value:  The pcdata content
+ * @ch:  The pcdata content
  * @len:  the block length
  *
  * called when a pcdata block has been parsed
@@ -4053,7 +4053,7 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
  * Use RelaxNG to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * if @schema is NULL, then RelaxNG validation is deactivated.
- @ The @schema should not be freed until the reader is deallocated
+ * The @schema should not be freed until the reader is deallocated
  * or its use has been deactivated.
  *
  * Returns 0 in case the RelaxNG validation could be (de)activated and

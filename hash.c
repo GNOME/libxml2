@@ -865,7 +865,7 @@ xmlHashLookup2(xmlHashTablePtr hash, const xmlChar *key,
  * @prefix: prefix of the string key
  * @name: local name of the string key
  *
- * Find the payload specified by the QName @prefix:@name or @name.
+ * Find the payload specified by the QName `prefix:name` or @name.
  *
  * Returns a pointer to the payload or NULL if no entry was found.
  */

@@ -190,7 +190,6 @@ static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
  ************************************************************************/
 /**
  * xmlSchemaTypeErrMemory:
- * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -1794,6 +1793,7 @@ _xmlSchemaBase64Decode (const xmlChar ch) {
  * @type: the expected type or XML_SCHEMAS_UNKNOWN
  * @dateTime:  string to analyze
  * @val:  the return computed value
+ * @collapse:  whether to collapse
  *
  * Check that @dateTime conforms to the lexical space of one of the date types.
  * if true a value is computed and returned in @val.
@@ -2017,6 +2017,7 @@ error:
  * @type: the predefined type
  * @duration:  string to analyze
  * @val:  the return computed value
+ * @collapse:  whether to collapse
  *
  * Check that @duration conforms to the lexical space of the duration type.
  * if true a value is computed and returned in @val.
@@ -2459,7 +2460,11 @@ xmlSchemaCheckLanguageType(const xmlChar* value) {
  * @value: the value to check
  * @val:  the return computed value
  * @node:  the node containing the value
- * flags:  flags to control the validation
+ * @flags:  flags to control the validation
+ * @ws:  whitespace value type
+ * @normOnTheFly:  whether to normalize on the fly
+ * @applyNorm:  whether to apply normalization
+ * @createStringValue:  whether to create a string value
  *
  * Check that a value conforms to the lexical space of the atomic type.
  * if true a value is computed and returned in @val.
@@ -4544,6 +4549,7 @@ xmlSchemaComparePreserveReplaceStrings(const xmlChar *x,
  * xmlSchemaComparePreserveCollapseStrings:
  * @x:  a first string value
  * @y:  a second string value
+ * @invert:  whether to invert
  *
  * Compare 2 string for their normalized values.
  * @x is a string with whitespace of "preserve", @y is
@@ -4633,6 +4639,7 @@ xmlSchemaComparePreserveCollapseStrings(const xmlChar *x,
  * xmlSchemaComparePreserveCollapseStrings:
  * @x:  a first string value
  * @y:  a second string value
+ * @invert:  whether to invert
  *
  * Compare 2 string for their normalized values.
  * @x is a string with whitespace of "preserve", @y is
@@ -4881,12 +4888,14 @@ xmlSchemaCompareFloats(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 
 /**
  * xmlSchemaCompareValues:
+ * @xtype:  first type
  * @x:  a first value
  * @xvalue: the first value as a string (optional)
- * @xwtsp: the whitespace type
+ * @xws: the whitespace type
+ * @ytype:  second type
  * @y:  a second value
- * @xvalue: the second value as a string (optional)
- * @ywtsp: the whitespace type
+ * @yvalue: the second value as a string (optional)
+ * @yws: the whitespace type
  *
  * Compare 2 values
  *
@@ -5189,10 +5198,14 @@ xmlSchemaCompareValuesWhtsp(xmlSchemaValPtr x,
 
 /**
  * xmlSchemaCompareValuesWhtspExt:
+ * @xtype:  first type
  * @x:  a first value
- * @xws: the whitespace value of x
+ * @xvalue: the first value as a string (optional)
+ * @xws: the whitespace type
+ * @ytype:  second type
  * @y:  a second value
- * @yws: the whitespace value of y
+ * @yvalue: the second value as a string (optional)
+ * @yws: the whitespace type
  *
  * Compare 2 values
  *
@@ -5333,12 +5346,12 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
 
 /**
  * xmlSchemaValidateLengthFacet:
- * @type:  the built-in type
  * @facet:  the facet to check
+ * @valType:  the built-in type
  * @value:  the lexical repr. of the value to be validated
  * @val:  the precomputed value
- * @ws: the whitespace type of the value
  * @length: the actual length of the value
+ * @ws: the whitespace type of the value
  *
  * Checka a value against a "length", "minLength" and "maxLength"
  * facet; sets @length to the computed length of @value.

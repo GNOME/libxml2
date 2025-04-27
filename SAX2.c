@@ -84,7 +84,6 @@ xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @error:  the error number
  * @msg:  the error message
  * @str1:  an error string
- * @str2:  an error string
  *
  * Handle a parser warning
  */
@@ -102,6 +101,7 @@ xmlWarnMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @error:  the error number
  * @msg:  the error message
  * @str1:  an error string
+ * @str2:  an error string
  *
  * Handle a namespace warning
  */
@@ -940,9 +940,10 @@ xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 
 /**
  * xmlSAX1Attribute:
- * @ctx: the user data (XML parser context)
- * @fullname:  The attribute name, including namespace prefix
- * @value:  The attribute value
+ * @ctxt: the parser context
+ * @fullname:  the attribute name, including namespace prefix
+ * @value:  the attribute value
+ * @prefix:  the namespace prefix
  *
  * Handle an attribute that has been read by the parser.
  *
@@ -1867,11 +1868,10 @@ decode:
 
 /**
  * xmlSAX2AttributeNs:
- * @ctx: the user data (XML parser context)
+ * @ctxt: the parser context
  * @localname:  the local name of the attribute
  * @prefix:  the attribute namespace prefix if available
- * @URI:  the attribute namespace name if available
- * @value:  Start of the attribute value
+ * @value:  start of the attribute value
  * @valueend: end of the attribute value
  *
  * Handle an attribute that has been read by the parser.
@@ -2434,7 +2434,7 @@ xmlSAX2Reference(void *ctx, const xmlChar *name)
 
 /**
  * xmlSAX2Text:
- * @ctx: the user data (XML parser context)
+ * @ctxt: the parser context
  * @ch:  a xmlChar string
  * @len: the number of xmlChar
  * @type: text or cdata

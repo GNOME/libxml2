@@ -348,6 +348,7 @@ xmlPatternGrow(xmlPatternPtr comp) {
 
 /**
  * xmlPatternAdd:
+ * @ctxt:  the pattern parser context
  * @comp:  the compiled match expression
  * @op:  an op
  * @value:  the first value
@@ -1340,6 +1341,7 @@ xmlFreeStreamComp(xmlStreamCompPtr comp) {
  * @comp: the compiled pattern for streaming
  * @name: the first string, the name, or NULL for *
  * @ns: the second step, the namespace name
+ * @nodeType: the node type
  * @flags: the flags for that step
  *
  * Add a new step to the compiled pattern
@@ -1560,7 +1562,7 @@ error:
 
 /**
  * xmlNewStreamCtxt:
- * @size: the number of expected states
+ * @stream: the copmiled stream
  *
  * build a new stream context
  *
@@ -1609,6 +1611,7 @@ xmlFreeStreamCtxt(xmlStreamCtxtPtr stream) {
  * xmlStreamCtxtAddState:
  * @comp: the stream context
  * @idx: the step index for that streaming state
+ * @level: the level
  *
  * Add a new state to the stream context
  *

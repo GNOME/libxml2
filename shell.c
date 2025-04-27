@@ -413,7 +413,7 @@ xmllintShellRegisterNamespace(xmllintShellCtxtPtr ctxt, char *arg,
  * xmllintShellRegisterRootNamespaces:
  * @ctxt:  the shell context
  * @arg:  unused
- * @node:  the root element
+ * @root:  the root element
  * @node2:  unused
  *
  * Implements the XML shell function "setrootns"
@@ -614,7 +614,7 @@ xmllintShellPrintf(void *ctx, const char *msg, ...) {
 #ifdef LIBXML_RELAXNG_ENABLED
 /**
  * xmllintShellRNGValidate:
- * @ctxt:  the shell context
+ * @sctxt:  the shell context
  * @schemas:  the path to the Relax-NG schemas
  * @node:  a node
  * @node2:  unused

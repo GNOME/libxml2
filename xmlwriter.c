@@ -1651,7 +1651,6 @@ xmlTextWriterWriteBase64(xmlTextWriterPtr writer, const char *data,
  * @len:  the number of bytes to encode
  *
  * Write hqx encoded data to an xmlOutputBuffer.
- * ::todo
  *
  * Returns the bytes written (may be 0 because of buffering)
  * or -1 in case of error

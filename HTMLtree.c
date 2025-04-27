@@ -293,12 +293,9 @@ create:
 }
 
 /**
- * booleanHTMLAttrs:
- *
  * These are the HTML attributes which will be output
- * in minimized form, i.e. <option selected="selected"> will be
- * output as <option selected>, as per XSLT 1.0 16.2 "HTML Output Method"
- *
+ * in minimized form, i.e. `<option selected="selected">` will be
+ * output as `<option selected>`, as per XSLT 1.0 16.2 "HTML Output Method"
  */
 static const char* const htmlBooleanAttrs[] = {
   "checked", "compact", "declare", "defer", "disabled", "ismap",

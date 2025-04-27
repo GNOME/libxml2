@@ -186,7 +186,6 @@ static int xmlCatalogInitialized = 0;
 
 /**
  * xmlCatalogErrMemory:
- * @extra:  extra information
  *
  * Handle an out of memory condition
  */
@@ -200,8 +199,11 @@ xmlCatalogErrMemory(void)
  * xmlCatalogErr:
  * @catal: the Catalog entry
  * @node: the context node
+ * @error: the error code
  * @msg:  the error message
- * @extra:  extra information
+ * @str1:  error string 1
+ * @str2:  error string 2
+ * @str3:  error string 3
  *
  * Handle a catalog error
  */
@@ -241,6 +243,7 @@ xmlCatalogPrintDebug(const char *fmt, ...) {
  * @type:  type of entry
  * @name:  name of the entry
  * @value:  value of the entry
+ * @URL:  URL of the entry
  * @prefer:  the PUBLIC vs. SYSTEM current preference value
  * @group:  for members of a group, the group entry
  *
@@ -299,6 +302,7 @@ xmlFreeCatalogEntryList(xmlCatalogEntryPtr ret);
 /**
  * xmlFreeCatalogEntry:
  * @payload:  a Catalog entry
+ * @name:  unused
  *
  * Free the memory allocated to a Catalog entry
  */
@@ -355,6 +359,7 @@ xmlFreeCatalogEntryList(xmlCatalogEntryPtr ret) {
 /**
  * xmlFreeCatalogHashEntryList:
  * @payload:  a Catalog entry list
+ * @name:  unused
  *
  * Free the memory allocated to list of Catalog entries from the
  * catalog file hash.
@@ -435,8 +440,9 @@ xmlFreeCatalog(xmlCatalogPtr catal) {
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
  * xmlCatalogDumpEntry:
- * @entry:  the catalog entry
- * @out:  the file.
+ * @payload:  the catalog entry
+ * @data:  the file.
+ * @name:  unused
  *
  * Serialize an SGML Catalog entry
  */
@@ -701,8 +707,9 @@ BAD_CAST "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd");
 
 /**
  * xmlCatalogConvertEntry:
- * @entry:  the entry
- * @catal:  pointer to the catalog being converted
+ * @payload:  the entry
+ * @data:  pointer to the catalog being converted
+ * @name:  unused
  *
  * Convert one entry from the catalog
  */
@@ -1800,7 +1807,6 @@ xmlCatalogXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
  * xmlCatalogXMLResolveURI:
  * @catal:  a catalog list
  * @URI:  the URI
- * @sysID:  the system ID string
  *
  * Do a complete resolution lookup of an External Identifier for a
  * list of catalog entries.

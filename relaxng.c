@@ -407,7 +407,6 @@ struct _xmlRelaxNGDocument {
 /**
  * xmlRngPErrMemory:
  * @ctxt:  an Relax-NG parser context
- * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -433,7 +432,6 @@ xmlRngPErrMemory(xmlRelaxNGParserCtxtPtr ctxt)
 /**
  * xmlRngVErrMemory:
  * @ctxt:  a Relax-NG validation context
- * @extra:  extra information
  *
  * Handle a redefinition of attribute error
  */
@@ -550,7 +548,6 @@ xmlRngVErr(xmlRelaxNGValidCtxtPtr ctxt, xmlNodePtr node, int error,
  * xmlRelaxNGTypeHave:
  * @data:  data needed for the library
  * @type:  the type name
- * @value:  the value to check
  *
  * Function provided by a type library to check if a type is exported
  *
@@ -1350,6 +1347,7 @@ xmlRelaxNGEqualValidState(xmlRelaxNGValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 
 /**
  * xmlRelaxNGFreeValidState:
+ * @ctxt:  validation context
  * @state:  a validation state structure
  *
  * Deallocate a RelaxNG validation state structure.
@@ -2413,6 +2411,7 @@ xmlRelaxNGSchemaTypeHave(void *data ATTRIBUTE_UNUSED, const xmlChar * type)
  * @data:  data needed for the library
  * @type:  the type name
  * @value:  the value to check
+ * @result:  pointer to result
  * @node:  the node
  *
  * Check if the given type and value are validated by
@@ -2451,7 +2450,7 @@ xmlRelaxNGSchemaTypeCheck(void *data ATTRIBUTE_UNUSED,
  * xmlRelaxNGSchemaFacetCheck:
  * @data:  data needed for the library
  * @type:  the type name
- * @facet:  the facet name
+ * @facetname:  the facet name
  * @val:  the facet value
  * @strval:  the string value
  * @value:  the value to check
@@ -2543,7 +2542,10 @@ xmlRelaxNGSchemaFreeValue(void *data ATTRIBUTE_UNUSED, void *value)
  * @data:  data needed for the library
  * @type:  the type name
  * @value1:  the first value
+ * @ctxt1:  the first context node
+ * @comp1:  value to compare with
  * @value2:  the second value
+ * @ctxt2:  the second context node
  *
  * Compare two values for equality accordingly a type from the W3C XMLSchema
  * Datatype library.
@@ -2623,6 +2625,7 @@ xmlRelaxNGDefaultTypeHave(void *data ATTRIBUTE_UNUSED,
  * @data:  data needed for the library
  * @type:  the type name
  * @value:  the value to check
+ * @result:  pointer to result
  * @node:  the node
  *
  * Check if the given type and value are validated by
@@ -2653,7 +2656,10 @@ xmlRelaxNGDefaultTypeCheck(void *data ATTRIBUTE_UNUSED,
  * @data:  data needed for the library
  * @type:  the type name
  * @value1:  the first value
+ * @ctxt1:  the first context node
+ * @comp1:  value to compare with
  * @value2:  the second value
+ * @ctxt2:  the second context node
  *
  * Compare two values accordingly a type from the default
  * datatype library.
@@ -2705,7 +2711,7 @@ static xmlHashTablePtr xmlRelaxNGRegisteredTypes = NULL;
 
 /**
  * xmlRelaxNGFreeTypeLibrary:
- * @lib:  the type library structure
+ * @payload:  the type library structure
  * @namespace:  the URI bound to the library
  *
  * Free the structure associated to the type library
@@ -2729,6 +2735,8 @@ xmlRelaxNGFreeTypeLibrary(void *payload,
  * @have:  the provide function
  * @check:  the checking function
  * @comp:  the comparison function
+ * @facet: facet check function
+ * @freef:  free function
  *
  * Register a new type library
  *
@@ -2838,7 +2846,7 @@ static int xmlRelaxNGTryCompile(xmlRelaxNGParserCtxtPtr ctxt,
 
 /**
  * xmlRelaxNGIsCompilable:
- * @define:  the definition to check
+ * @def:  the definition to check
  *
  * Check if a definition is nullable.
  *
@@ -2957,8 +2965,8 @@ xmlRelaxNGIsCompilable(xmlRelaxNGDefinePtr def)
 
 /**
  * xmlRelaxNGCompile:
- * ctxt:  the RelaxNG parser context
- * @define:  the definition tree to compile
+ * @ctxt:  the RelaxNG parser context
+ * @def:  the definition tree to compile
  *
  * Compile the set of definitions, it works recursively, till the
  * element boundaries, where it tries to compile the content if possible
@@ -3178,8 +3186,8 @@ xmlRelaxNGCompile(xmlRelaxNGParserCtxtPtr ctxt, xmlRelaxNGDefinePtr def)
 
 /**
  * xmlRelaxNGTryCompile:
- * ctxt:  the RelaxNG parser context
- * @define:  the definition tree to compile
+ * @ctxt:  the RelaxNG parser context
+ * @def:  the definition tree to compile
  *
  * Try to compile the set of definitions, it works recursively,
  * possibly ignoring parts which cannot be compiled.
@@ -3686,10 +3694,8 @@ static const xmlChar *invalidName = BAD_CAST "\1";
 
 /**
  * xmlRelaxNGCompareNameClasses:
- * @defs1:  the first element/attribute defs
- * @defs2:  the second element/attribute defs
- * @name:  the restriction on the name
- * @ns:  the restriction on the namespace
+ * @def1:  the first element/attribute defs
+ * @def2:  the second element/attribute defs
  *
  * Compare the 2 lists of element definitions. The comparison is
  * that if both lists do not accept the same QNames, it returns 1
@@ -3791,8 +3797,8 @@ xmlRelaxNGCompareNameClasses(xmlRelaxNGDefinePtr def1,
 /**
  * xmlRelaxNGCompareElemDefLists:
  * @ctxt:  a Relax-NG parser context
- * @defs1:  the first list of element/attribute defs
- * @defs2:  the second list of element/attribute defs
+ * @def1:  the first list of element/attribute defs
+ * @def2:  the second list of element/attribute defs
  *
  * Compare the 2 lists of element or attribute definitions. The comparison
  * is that if both lists do not accept the same QNames, it returns 1
@@ -4225,8 +4231,8 @@ xmlRelaxNGCheckGroupAttrs(xmlRelaxNGParserCtxtPtr ctxt,
 
 /**
  * xmlRelaxNGComputeInterleaves:
- * @def:  the interleave definition
- * @ctxt:  a Relax-NG parser context
+ * @payload:  the interleave definition
+ * @data:  a Relax-NG parser context
  * @name:  the definition name
  *
  * A lot of work for preprocessing interleave definitions
@@ -4234,7 +4240,7 @@ xmlRelaxNGCheckGroupAttrs(xmlRelaxNGParserCtxtPtr ctxt,
  *   - trying to get a total order on the element nodes generated
  *     by the interleaves, order the list of interleave definitions
  *     following that order.
- *   - if <text/> is used to handle mixed content, it is better to
+ *   - if `<text/>` is used to handle mixed content, it is better to
  *     flag this in the define and simplify the runtime checking
  *     algorithm
  */
@@ -5426,7 +5432,7 @@ xmlRelaxNGParseElement(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
  * xmlRelaxNGParsePatterns:
  * @ctxt:  a Relax-NG parser context
  * @nodes:  list of nodes
- * @group:  use an implicit <group> for elements
+ * @group:  use an implicit `<group>` for elements
  *
  * parse the content of a RelaxNG start node.
  *
@@ -5584,8 +5590,8 @@ xmlRelaxNGParseGrammarContent(xmlRelaxNGParserCtxtPtr ctxt,
 
 /**
  * xmlRelaxNGCheckReference:
- * @ref:  the ref
- * @ctxt:  a Relax-NG parser context
+ * @payload:  the ref
+ * @data:  a Relax-NG parser context
  * @name:  the name associated to the defines
  *
  * Applies the 4.17. combine attribute rule for all the define
@@ -5640,8 +5646,8 @@ xmlRelaxNGCheckReference(void *payload, void *data, const xmlChar * name)
 
 /**
  * xmlRelaxNGCheckCombine:
- * @define:  the define(s) list
- * @ctxt:  a Relax-NG parser context
+ * @payload:  the define(s) list
+ * @data:  a Relax-NG parser context
  * @name:  the name associated to the defines
  *
  * Applies the 4.17. combine attribute rule for all the define
@@ -5857,7 +5863,7 @@ xmlRelaxNGCombineStart(xmlRelaxNGParserCtxtPtr ctxt,
 /**
  * xmlRelaxNGCheckCycles:
  * @ctxt:  a Relax-NG parser context
- * @nodes:  grammar children nodes
+ * @cur:  grammar children nodes
  * @depth:  the counter
  *
  * Check for cycles.
@@ -5930,7 +5936,8 @@ xmlRelaxNGTryUnlink(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 /**
  * xmlRelaxNGSimplify:
  * @ctxt:  a Relax-NG parser context
- * @nodes:  grammar children nodes
+ * @cur:  grammar children nodes
+ * @parent:  parent
  *
  * Check for simplification of empty and notAllowed
  */
@@ -6477,7 +6484,7 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
  * @ctxt:  a Relax-NG parser context
  * @nodes:  grammar children nodes
  *
- * parse a Relax-NG <grammar> node
+ * parse a Relax-NG `<grammar>` node
  *
  * Returns the internal xmlRelaxNGGrammarPtr built or
  *         NULL in case of error
@@ -7844,7 +7851,7 @@ static int xmlRelaxNGValidateDefinition(xmlRelaxNGValidCtxtPtr ctxt,
  * @exec:  the regular expression instance
  * @token:  the token which matched
  * @transdata:  callback data, the define for the subelement if available
- @ @inputdata:  callback data, the Relax NG validation context
+ * @inputdata:  callback data, the Relax NG validation context
  *
  * Handle the callback and if needed validate the element children.
  */
@@ -8049,7 +8056,7 @@ xmlRelaxNGElemPop(xmlRelaxNGValidCtxtPtr ctxt)
  * @exec:  the regular expression instance
  * @token:  the token which matched
  * @transdata:  callback data, the define for the subelement if available
- @ @inputdata:  callback data, the Relax NG validation context
+ * @inputdata:  callback data, the Relax NG validation context
  *
  * Handle the callback and if needed validate the element children.
  * some of the in/out information are passed via the context in @inputdata.
@@ -8451,7 +8458,7 @@ xmlRelaxNGNormalize(xmlRelaxNGValidCtxtPtr ctxt, const xmlChar * str)
  * xmlRelaxNGValidateDatatype:
  * @ctxt:  a Relax-NG validation context
  * @value:  the string value
- * @type:  the datatype definition
+ * @define:  the datatype definition
  * @node:  the node
  *
  * Validate the given value against the datatype
@@ -9030,7 +9037,7 @@ xmlRelaxNGValidateAttribute(xmlRelaxNGValidCtxtPtr ctxt,
 /**
  * xmlRelaxNGValidateAttributeList:
  * @ctxt:  a Relax-NG validation context
- * @define:  the list of definition to verify
+ * @defines:  the list of definition to verify
  *
  * Validate the given node against the list of attribute definitions
  *
@@ -9421,7 +9428,7 @@ xmlRelaxNGValidateInterleave(xmlRelaxNGValidCtxtPtr ctxt,
 /**
  * xmlRelaxNGValidateDefinitionList:
  * @ctxt:  a Relax-NG validation context
- * @define:  the list of definition to verify
+ * @defines:  the list of definition to verify
  *
  * Validate the given node content against the (list) of definitions
  *

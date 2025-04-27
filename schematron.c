@@ -226,8 +226,7 @@ struct _xmlSchematronParserCtxt {
 
 /**
  * xmlSchematronPErrMemory:
- * @node: a context node
- * @extra:  extra information
+ * @ctxt: parser context
  *
  * Handle an out of memory condition
  */
@@ -281,8 +280,7 @@ xmlSchematronPErr(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr node, int error,
 
 /**
  * xmlSchematronVTypeErrMemory:
- * @node: a context node
- * @extra:  extra information
+ * @ctxt: validation context
  *
  * Handle an out of memory condition
  */
@@ -298,12 +296,10 @@ xmlSchematronVErrMemory(xmlSchematronValidCtxtPtr ctxt)
 
 /**
  * xmlSchematronVErr:
- * @ctxt: the parsing context
- * @node: the context node
+ * @ctxt: validation context
  * @error: the error code
  * @msg: the error message
  * @str1: extra data
- * @str2: extra data
  *
  * Handle a validation error
  */
@@ -452,6 +448,7 @@ xmlSchematronFreeLets(xmlSchematronLetPtr lets) {
  * xmlSchematronAddRule:
  * @ctxt: the schema parsing context
  * @schema:  a schema structure
+ * @pat:  a pattern
  * @node:  the node hosting the rule
  * @context: the associated context string
  * @report: the associated report string
@@ -550,7 +547,7 @@ xmlSchematronFreeRules(xmlSchematronRulePtr rules) {
  * @ctxt: the schema parsing context
  * @schema:  a schema structure
  * @node:  the node hosting the pattern
- * @id: the id or name of the pattern
+ * @name: the name of the pattern
  *
  * Add a pattern to a schematron
  *
@@ -957,6 +954,7 @@ xmlSchematronParseTestReportMsg(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr con)
 /**
  * xmlSchematronParseRule:
  * @ctxt:  a schema validation context
+ * @pattern:  a pattern
  * @rule:  the rule node
  *
  * parse a rule element
@@ -1586,6 +1584,7 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
  * @ctxt:  the validation context
  * @test: the compiled test
  * @cur: the current node tested
+ * @pattern:  a pattern
  * @success: boolean value for the result
  *
  * called from the validation engine when an assert or report test have
@@ -1826,6 +1825,7 @@ xmlSchematronNextNode(xmlNodePtr cur) {
  * @test:  the current test
  * @instance:  the document instance tree
  * @cur:  the current node in the instance
+ * @pattern:  a pattern
  *
  * Validate a rule against a tree instance at a given position
  *
@@ -1884,7 +1884,8 @@ xmlSchematronRunTest(xmlSchematronValidCtxtPtr ctxt,
 
 /**
  * xmlSchematronRegisterVariables:
- * @ctxt:  the schema validation context
+ * @vctxt:  the schema validation context
+ * @ctxt:  an XPath context
  * @let:  the list of let variables
  * @instance:  the document instance tree
  * @cur:  the current node
@@ -1923,7 +1924,8 @@ xmlSchematronRegisterVariables(xmlSchematronValidCtxtPtr vctxt,
 
 /**
  * xmlSchematronUnregisterVariables:
- * @ctxt:  the schema validation context
+ * @vctxt:  the schema validation context
+ * @ctxt:  an XPath context
  * @let:  the list of let variables
  *
  * Unregisters a list of let variables from the context

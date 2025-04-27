@@ -909,7 +909,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
  * @prefix: the prefix
  * @name: the name
  *
- * Lookup the QName @prefix:@name and add it to the dictionary if
+ * Lookup the QName `prefix:name` and add it to the dictionary if
  * it wasn't found.
  *
  * Returns the interned copy of the string or NULL if a memory allocation

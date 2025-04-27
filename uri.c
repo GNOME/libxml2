@@ -572,6 +572,7 @@ xmlParse3986Authority(xmlURIPtr uri, const char **str)
 
 /**
  * xmlParse3986Segment:
+ * @uri:  the URI
  * @str:  the string to analyze
  * @forbid: an optional forbidden character
  * @empty: allow an empty segment
@@ -1913,7 +1914,7 @@ xmlIsAbsolutePath(const xmlChar *path) {
 
 /**
  * xmlResolvePath:
- * @ref:  the filesystem path
+ * @escRef:  the filesystem path
  * @base:  the base value
  * @out:  pointer to result URI
  *

@@ -766,7 +766,7 @@ static const xmlChRangeGroup xmlZG = {9,0,xmlZS,NULL};
 /**
  * xmlUnicodeLookup:
  * @tptr: pointer to the name table
- * @name: name to be found
+ * @tname: name to be found
  *
  * binary table lookup for user-supplied name
  *

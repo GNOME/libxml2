@@ -56,6 +56,8 @@
 /**
  * xmlXPtrErr:
  * @ctxt:  an XPTR evaluation context
+ * @code:  error code
+ * @msg:  error message
  * @extra:  extra information
  *
  * Handle an XPointer error

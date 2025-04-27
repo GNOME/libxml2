@@ -132,7 +132,7 @@ xmlXIncludeDoProcess(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree);
 
 /**
  * xmlXIncludeErrMemory:
- * @extra:  extra information
+ * @ctxt:  an XInclude context
  *
  * Handle an out of memory condition
  */
@@ -151,6 +151,7 @@ xmlXIncludeErrMemory(xmlXIncludeCtxtPtr ctxt)
  * xmlXIncludeErr:
  * @ctxt: the XInclude context
  * @node: the context node
+ * @error:  the error code
  * @msg:  the error message
  * @extra:  extra information
  *
@@ -602,7 +603,6 @@ error:
  * xmlXIncludeRecurseDoc:
  * @ctxt:  the XInclude context
  * @doc:  the new document
- * @url:  the associated URL
  *
  * The XInclude recursive nature is handled at this point.
  */
@@ -707,6 +707,7 @@ done:
  * @ctxt:  the XInclude context
  * @elem:  the element
  * @copyChildren:  copy children instead of node if true
+ * @targetBase:  the xml:base of the target node
  *
  * Make a copy of the node while expanding nested XIncludes.
  *
@@ -828,6 +829,7 @@ error:
  * xmlXIncludeCopyXPointer:
  * @ctxt:  the XInclude context
  * @obj:  the XPointer result from the evaluation.
+ * @targetBase:  the xml:base of the target node
  *
  * Build a node list tree copy of the XPointer result.
  * This will drop Attributes and Namespace declarations.
@@ -924,9 +926,9 @@ struct _xmlXIncludeMergeData {
 
 /**
  * xmlXIncludeMergeOneEntity:
- * @ent: the entity
- * @doc:  the including doc
- * @name: the entity name
+ * @payload: the entity
+ * @vdata:  the merge data
+ * @name: unused
  *
  * Implements the merge of one entity
  */
@@ -1069,7 +1071,6 @@ xmlXIncludeMergeEntities(xmlXIncludeCtxtPtr ctxt, xmlDocPtr doc,
 /**
  * xmlXIncludeLoadDoc:
  * @ctxt:  the XInclude context
- * @url:  the associated URL
  * @ref:  an XMLXincludeRefPtr
  *
  * Load the document, and store the result in the XInclude context

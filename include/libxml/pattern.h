@@ -31,11 +31,9 @@ extern "C" {
 typedef struct _xmlPattern xmlPattern;
 typedef xmlPattern *xmlPatternPtr;
 
-/**
- *
- * This is the set of options affecting the behaviour of pattern
- * matching with this module
- *
+/*
+ * Internal type. This is the set of options affecting the behaviour
+ * of pattern matching with this module.
  */
 typedef enum {
     XML_PATTERN_DEFAULT		= 0,	/* simple pattern match */

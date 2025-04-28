@@ -25,52 +25,86 @@ extern "C" {
 #define initGenericErrorDefaultFunc(h) xmlSetGenericErrorFunc(NULL, *(h))
 
 /**
- *
  * Indicates the level of an error
  */
 typedef enum {
+    /** Success */
     XML_ERR_NONE = 0,
-    XML_ERR_WARNING = 1,	/* A simple warning */
-    XML_ERR_ERROR = 2,		/* A recoverable error */
-    XML_ERR_FATAL = 3		/* A fatal error */
+    /** A simple warning */
+    XML_ERR_WARNING = 1,
+    /** A recoverable error (namespace and validity errors,
+        certain undeclared entities) */
+    XML_ERR_ERROR = 2,
+    /** A fatal error (not well-formed, OOM and I/O errors) */
+    XML_ERR_FATAL = 3
 } xmlErrorLevel;
 
 /**
- *
  * Indicates where an error may have come from
  */
 typedef enum {
+    /** Unknown */
     XML_FROM_NONE = 0,
-    XML_FROM_PARSER,	/* The XML parser */
-    XML_FROM_TREE,	/* The tree module */
-    XML_FROM_NAMESPACE,	/* The XML Namespace module */
-    XML_FROM_DTD,	/* The XML DTD validation with parser context*/
-    XML_FROM_HTML,	/* The HTML parser */
-    XML_FROM_MEMORY,	/* The memory allocator */
-    XML_FROM_OUTPUT,	/* The serialization code */
-    XML_FROM_IO,	/* The Input/Output stack */
-    XML_FROM_FTP,	/* The FTP module */
-    XML_FROM_HTTP,	/* The HTTP module */
-    XML_FROM_XINCLUDE,	/* The XInclude processing */
-    XML_FROM_XPATH,	/* The XPath module */
-    XML_FROM_XPOINTER,	/* The XPointer module */
-    XML_FROM_REGEXP,	/* The regular expressions module */
-    XML_FROM_DATATYPE,	/* The W3C XML Schemas Datatype module */
-    XML_FROM_SCHEMASP,	/* The W3C XML Schemas parser module */
-    XML_FROM_SCHEMASV,	/* The W3C XML Schemas validation module */
-    XML_FROM_RELAXNGP,	/* The Relax-NG parser module */
-    XML_FROM_RELAXNGV,	/* The Relax-NG validator module */
-    XML_FROM_CATALOG,	/* The Catalog module */
-    XML_FROM_C14N,	/* The Canonicalization module */
-    XML_FROM_XSLT,	/* The XSLT engine from libxslt */
-    XML_FROM_VALID,	/* The XML DTD validation with valid context */
-    XML_FROM_CHECK,	/* The error checking module */
-    XML_FROM_WRITER,	/* The xmlwriter module */
-    XML_FROM_MODULE,	/* The dynamically loaded module module*/
-    XML_FROM_I18N,	/* The module handling character conversion */
-    XML_FROM_SCHEMATRONV,/* The Schematron validator module */
-    XML_FROM_BUFFER,    /* The buffers module */
-    XML_FROM_URI        /* The URI module */
+    /** The XML parser */
+    XML_FROM_PARSER,
+    /** The tree module */
+    XML_FROM_TREE,
+    /** The XML Namespace module */
+    XML_FROM_NAMESPACE,
+    /** The XML DTD validation with parser context*/
+    XML_FROM_DTD,
+    /** The HTML parser */
+    XML_FROM_HTML,
+    /** The memory allocator */
+    XML_FROM_MEMORY,
+    /** The serialization code */
+    XML_FROM_OUTPUT,
+    /** The Input/Output stack */
+    XML_FROM_IO,
+    /** The FTP module */
+    XML_FROM_FTP,
+    /** The HTTP module */
+    XML_FROM_HTTP,
+    /** The XInclude processing */
+    XML_FROM_XINCLUDE,
+    /** The XPath module */
+    XML_FROM_XPATH,
+    /** The XPointer module */
+    XML_FROM_XPOINTER,
+    /** The regular expressions module */
+    XML_FROM_REGEXP,
+    /** The W3C XML Schemas Datatype module */
+    XML_FROM_DATATYPE,
+    /** The W3C XML Schemas parser module */
+    XML_FROM_SCHEMASP,
+    /** The W3C XML Schemas validation module */
+    XML_FROM_SCHEMASV,
+    /** The Relax-NG parser module */
+    XML_FROM_RELAXNGP,
+    /** The Relax-NG validator module */
+    XML_FROM_RELAXNGV,
+    /** The Catalog module */
+    XML_FROM_CATALOG,
+    /** The Canonicalization module */
+    XML_FROM_C14N,
+    /** The XSLT engine from libxslt */
+    XML_FROM_XSLT,
+    /** The XML DTD validation with valid context */
+    XML_FROM_VALID,
+    /** The error checking module */
+    XML_FROM_CHECK,
+    /** The xmlwriter module */
+    XML_FROM_WRITER,
+    /** The dynamically loaded module module*/
+    XML_FROM_MODULE,
+    /** The module handling character conversion */
+    XML_FROM_I18N,
+    /** The Schematron validator module */
+    XML_FROM_SCHEMATRONV,
+    /** The buffers module */
+    XML_FROM_BUFFER,
+    /** The URI module */
+    XML_FROM_URI
 } xmlErrorDomain;
 
 /**
@@ -97,8 +131,7 @@ struct _xmlError {
 };
 
 /**
- *
- * This is an error that the XML (or HTML) parser can generate
+ * Error codes
  */
 typedef enum {
     XML_ERR_OK = 0,

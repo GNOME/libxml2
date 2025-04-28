@@ -45,15 +45,16 @@ extern "C" {
  * following options: XML_PARSE_DTDATTR | XML_PARSE_NOENT
  */
 
-/*
- *
+/**
  * Predefined values for C14N modes
- *
  */
 typedef enum {
-    XML_C14N_1_0            = 0,    /* Original C14N 1.0 spec */
-    XML_C14N_EXCLUSIVE_1_0  = 1,    /* Exclusive C14N 1.0 spec */
-    XML_C14N_1_1            = 2     /* C14N 1.1 spec */
+    /** Original C14N 1.0 spec */
+    XML_C14N_1_0            = 0,
+    /** Exclusive C14N 1.0 spec */
+    XML_C14N_EXCLUSIVE_1_0  = 1,
+    /** C14N 1.1 spec */
+    XML_C14N_1_1            = 2
 } xmlC14NMode;
 
 XMLPUBFUN int

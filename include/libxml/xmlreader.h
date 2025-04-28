@@ -30,7 +30,6 @@ extern "C" {
 #endif
 
 /**
- *
  * How severe an error callback is when the per-reader error callback API
  * is used.
  */
@@ -43,8 +42,7 @@ typedef enum {
 
 #ifdef LIBXML_READER_ENABLED
 
-/**
- *
+/*
  * Internal state values for the reader.
  */
 typedef enum {
@@ -57,40 +55,60 @@ typedef enum {
 } xmlTextReaderMode;
 
 /**
- *
  * Some common options to use with xmlTextReaderSetParserProp, but it
  * is better to use xmlParserOption and the xmlReaderNewxxx and
  * xmlReaderForxxx APIs now.
  */
 typedef enum {
+    /* load external DTD */
     XML_PARSER_LOADDTD = 1,
+    /* use default attributes */
     XML_PARSER_DEFAULTATTRS = 2,
+    /* DTD validation */
     XML_PARSER_VALIDATE = 3,
+    /* substitute entities */
     XML_PARSER_SUBST_ENTITIES = 4
 } xmlParserProperties;
 
 /**
- *
  * Predefined constants for the different types of nodes.
  */
 typedef enum {
+    /** unknown or error */
     XML_READER_TYPE_NONE = 0,
+    /** element */
     XML_READER_TYPE_ELEMENT = 1,
+    /** attribute */
     XML_READER_TYPE_ATTRIBUTE = 2,
+    /** text */
     XML_READER_TYPE_TEXT = 3,
+    /** CDATA section */
     XML_READER_TYPE_CDATA = 4,
+    /** entity reference */
     XML_READER_TYPE_ENTITY_REFERENCE = 5,
+    /** unused */
     XML_READER_TYPE_ENTITY = 6,
+    /** processing instruction */
     XML_READER_TYPE_PROCESSING_INSTRUCTION = 7,
+    /** comment */
     XML_READER_TYPE_COMMENT = 8,
+    /** document */
     XML_READER_TYPE_DOCUMENT = 9,
+    /** unused */
     XML_READER_TYPE_DOCUMENT_TYPE = 10,
+    /** document fragment */
     XML_READER_TYPE_DOCUMENT_FRAGMENT = 11,
+    /** notation, unused */
     XML_READER_TYPE_NOTATION = 12,
+    /** whitespace */
     XML_READER_TYPE_WHITESPACE = 13,
+    /** significant whitespace */
     XML_READER_TYPE_SIGNIFICANT_WHITESPACE = 14,
+    /** end of element */
     XML_READER_TYPE_END_ELEMENT = 15,
+    /** unused */
     XML_READER_TYPE_END_ENTITY = 16,
+    /** unused */
     XML_READER_TYPE_XML_DECLARATION = 17
 } xmlReaderTypes;
 

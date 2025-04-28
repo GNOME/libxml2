@@ -41,27 +41,52 @@ extern "C" {
  */
 #define XML_DEFAULT_VERSION	"1.0"
 
+/**
+ * Status after parsing a document
+ */
 typedef enum {
+    /** not well-formed */
     XML_STATUS_NOT_WELL_FORMED          = (1 << 0),
+    /** not namespace-well-formed */
     XML_STATUS_NOT_NS_WELL_FORMED       = (1 << 1),
+    /** DTD validation failed */
     XML_STATUS_DTD_VALIDATION_FAILED    = (1 << 2),
+    /** catastrophic failure like OOM or I/O error */
     XML_STATUS_CATASTROPHIC_ERROR       = (1 << 3)
 } xmlParserStatus;
 
+/**
+ * Resource type for resource loaders
+ */
 typedef enum {
+    /** unknown */
     XML_RESOURCE_UNKNOWN = 0,
+    /** main document */
     XML_RESOURCE_MAIN_DOCUMENT,
+    /** external DTD */
     XML_RESOURCE_DTD,
+    /** external general entity */
     XML_RESOURCE_GENERAL_ENTITY,
+    /** external parameter entity */
     XML_RESOURCE_PARAMETER_ENTITY,
+    /** XIncluded document */
     XML_RESOURCE_XINCLUDE,
+    /** XIncluded text */
     XML_RESOURCE_XINCLUDE_TEXT
 } xmlResourceType;
 
+/**
+ * Flags for parser input
+ */
 typedef enum {
+    /** The input buffer won't be changed during parsing. */
     XML_INPUT_BUF_STATIC            = (1 << 1),
+    /** The input buffer is zero-terminated. (Note that the zero
+        byte shouldn't be included in buffer size.) */
     XML_INPUT_BUF_ZERO_TERMINATED   = (1 << 2),
+    /** Uncompress gzipped file input */
     XML_INPUT_UNZIP                 = (1 << 3),
+    /** Allow network access. Unused internally. */
     XML_INPUT_NETWORK               = (1 << 4)
 } xmlParserInputFlags;
 
@@ -145,10 +170,8 @@ struct _xmlParserNodeInfoSeq {
   xmlParserNodeInfo* buffer;
 };
 
-/**
- *
- * The parser is now working also as a state based parser.
- * The recursive one use the state info for entities processing.
+/*
+ * Internal type
  */
 typedef enum {
     XML_PARSER_EOF = -1,	/* nothing is to be parsed */
@@ -181,9 +204,8 @@ typedef enum {
 #define XML_SKIP_IDS		8
 /** @endcond */
 
-/**
- *
- * A parser can operate in various modes
+/*
+ * Internal type. Only XML_PARSE_READER is used.
  */
 typedef enum {
     XML_PARSE_UNKNOWN = 0,
@@ -1370,43 +1392,69 @@ XMLPUBFUN long
 /*
  * New set of simpler/more flexible APIs
  */
+
 /**
- *
  * This is the set of XML parser options that can be passed down
- * to the xmlReadDoc() and similar calls.
+ * to the xmlReadDoc() and similar calls. See xmlCtxtSetOptions()
+ * for a more detailed description.
  */
 typedef enum {
-    XML_PARSE_RECOVER	= 1<<0,	/* recover on errors */
-    XML_PARSE_NOENT	= 1<<1,	/* substitute entities */
-    XML_PARSE_DTDLOAD	= 1<<2,	/* load the external subset */
-    XML_PARSE_DTDATTR	= 1<<3,	/* default DTD attributes */
-    XML_PARSE_DTDVALID	= 1<<4,	/* validate with the DTD */
-    XML_PARSE_NOERROR	= 1<<5,	/* suppress error reports */
-    XML_PARSE_NOWARNING	= 1<<6,	/* suppress warning reports */
-    XML_PARSE_PEDANTIC	= 1<<7,	/* pedantic error reporting */
-    XML_PARSE_NOBLANKS	= 1<<8,	/* remove blank nodes */
-    XML_PARSE_SAX1	= 1<<9,	/* use the SAX1 interface internally */
-    XML_PARSE_XINCLUDE	= 1<<10,/* Implement XInclude substitution  */
-    XML_PARSE_NONET	= 1<<11,/* Forbid network access */
-    XML_PARSE_NODICT	= 1<<12,/* Do not reuse the context dictionary */
-    XML_PARSE_NSCLEAN	= 1<<13,/* remove redundant namespaces declarations */
-    XML_PARSE_NOCDATA	= 1<<14,/* merge CDATA as text nodes */
-    XML_PARSE_NOXINCNODE= 1<<15,/* do not generate XINCLUDE START/END nodes */
-    XML_PARSE_COMPACT   = 1<<16,/* compact small text nodes; no modification of
-                                   the tree allowed afterwards (will possibly
-				   crash if you try to modify the tree) */
-    XML_PARSE_OLD10	= 1<<17,/* parse using XML-1.0 before update 5 */
-    XML_PARSE_NOBASEFIX = 1<<18,/* do not fixup XINCLUDE xml:base uris */
-    XML_PARSE_HUGE      = 1<<19,/* relax any hardcoded limit from the parser */
-    XML_PARSE_OLDSAX    = 1<<20,/* parse using SAX2 interface before 2.7.0 */
-    XML_PARSE_IGNORE_ENC= 1<<21,/* ignore internal document encoding hint */
-    XML_PARSE_BIG_LINES = 1<<22,/* Store big lines numbers in text PSVI field */
-    /* since 2.13.0 */
-    XML_PARSE_NO_XXE    = 1<<23,/* disable loading of external content */
-    /* since 2.14.0 */
-    XML_PARSE_UNZIP          = 1<<24,/* allow compressed content */
-    XML_PARSE_NO_SYS_CATALOG = 1<<25,/* disable global system catalog */
-    XML_PARSE_CATALOG_PI     = 1<<26 /* allow catalog PIs */
+    /** recover on errors */
+    XML_PARSE_RECOVER	= 1<<0,
+    /** substitute entities */
+    XML_PARSE_NOENT	= 1<<1,
+    /** load the external subset */
+    XML_PARSE_DTDLOAD	= 1<<2,
+    /** default DTD attributes */
+    XML_PARSE_DTDATTR	= 1<<3,
+    /** validate with the DTD */
+    XML_PARSE_DTDVALID	= 1<<4,
+    /** suppress error reports */
+    XML_PARSE_NOERROR	= 1<<5,
+    /** suppress warning reports */
+    XML_PARSE_NOWARNING	= 1<<6,
+    /** pedantic error reporting */
+    XML_PARSE_PEDANTIC	= 1<<7,
+    /** remove blank nodes */
+    XML_PARSE_NOBLANKS	= 1<<8,
+    /** use the SAX1 interface internally */
+    XML_PARSE_SAX1	= 1<<9,
+    /** Implement XInclude substitution */
+    XML_PARSE_XINCLUDE	= 1<<10,
+    /** Forbid network access */
+    XML_PARSE_NONET	= 1<<11,
+    /** Do not reuse the context dictionary */
+    XML_PARSE_NODICT	= 1<<12,
+    /** remove redundant namespaces declarations */
+    XML_PARSE_NSCLEAN	= 1<<13,
+    /** merge CDATA as text nodes */
+    XML_PARSE_NOCDATA	= 1<<14,
+    /** do not generate XINCLUDE START/END nodes */
+    XML_PARSE_NOXINCNODE= 1<<15,
+    /** compact small text nodes; no modification of
+        the tree allowed afterwards (will possibly
+        crash if you try to modify the tree) */
+    XML_PARSE_COMPACT   = 1<<16,
+    /** parse using XML-1.0 before update 5 */
+    XML_PARSE_OLD10	= 1<<17,
+    /** do not fixup XINCLUDE xml:base uris */
+    XML_PARSE_NOBASEFIX = 1<<18,
+    /** relax any hardcoded limit from the parser */
+    XML_PARSE_HUGE      = 1<<19,
+    /** parse using SAX2 interface before 2.7.0 */
+    XML_PARSE_OLDSAX    = 1<<20,
+    /** ignore internal document encoding hint */
+    XML_PARSE_IGNORE_ENC= 1<<21,
+    /** Store big lines numbers in text PSVI field */
+    XML_PARSE_BIG_LINES = 1<<22,
+    /** disable loading of external content, since 2.13 */
+    XML_PARSE_NO_XXE    = 1<<23,
+    /** allow compressed content, since 2.14 */
+    XML_PARSE_UNZIP          = 1<<24,
+    /** disable global system catalog, since 2.14 */
+    XML_PARSE_NO_SYS_CATALOG = 1<<25,
+    /** allow catalog PIs, sincew 2.14 */
+    XML_PARSE_CATALOG_PI     = 1<<26
 } xmlParserOption;
 
 XMLPUBFUN void
@@ -1572,47 +1620,81 @@ xmlInputSetEncodingHandler(xmlParserInputPtr input,
 /*
  * Library wide options
  */
+
 /**
- *
  * Used to examine the existence of features that can be enabled
  * or disabled at compile-time.
  * They used to be called XML_FEATURE_xxx but this clashed with Expat
  */
 typedef enum {
+    /** Multithreading support */
     XML_WITH_THREAD = 1,
+    /** @deprecated Always available */
     XML_WITH_TREE = 2,
+    /** Serialization support */
     XML_WITH_OUTPUT = 3,
+    /** Push parser */
     XML_WITH_PUSH = 4,
+    /** XML Reader */
     XML_WITH_READER = 5,
+    /** Streaming patterns */
     XML_WITH_PATTERN = 6,
+    /** XML Writer */
     XML_WITH_WRITER = 7,
+    /** Legacy SAX1 API */
     XML_WITH_SAX1 = 8,
+    /** @deprecated FTP support was removed */
     XML_WITH_FTP = 9,
+    /** @deprecated HTTP support was removed */
     XML_WITH_HTTP = 10,
+    /** DTD validation */
     XML_WITH_VALID = 11,
+    /** HTML parser */
     XML_WITH_HTML = 12,
+    /** Legacy symbols */
     XML_WITH_LEGACY = 13,
+    /** Canonical XML */
     XML_WITH_C14N = 14,
+    /** XML Catalogs */
     XML_WITH_CATALOG = 15,
+    /** XPath */
     XML_WITH_XPATH = 16,
+    /** XPointer */
     XML_WITH_XPTR = 17,
+    /** XInclude */
     XML_WITH_XINCLUDE = 18,
+    /** iconv */
     XML_WITH_ICONV = 19,
+    /** Built-in ISO-8859-X */
     XML_WITH_ISO8859X = 20,
+    /** @deprecated Removed */
     XML_WITH_UNICODE = 21,
+    /** Regular expressions */
     XML_WITH_REGEXP = 22,
+    /** @deprecated Same as XML_WITH_REGEXP */
     XML_WITH_AUTOMATA = 23,
+    /** @deprecated Removed */
     XML_WITH_EXPR = 24,
+    /** XML Schemas */
     XML_WITH_SCHEMAS = 25,
+    /** Schematron */
     XML_WITH_SCHEMATRON = 26,
+    /** Loadable modules */
     XML_WITH_MODULES = 27,
+    /** Debugging API */
     XML_WITH_DEBUG = 28,
+    /** @deprecated Removed */
     XML_WITH_DEBUG_MEM = 29,
-    XML_WITH_DEBUG_RUN = 30, /* unused */
+    /** @deprecated Removed */
+    XML_WITH_DEBUG_RUN = 30,
+    /** GZIP compression */
     XML_WITH_ZLIB = 31,
+    /** ICU */
     XML_WITH_ICU = 32,
+    /** LZMA compression */
     XML_WITH_LZMA = 33,
-    XML_WITH_RELAXNG = 34, /* since 2.14.0 */
+    /** RELAXNG, since 2.14 */
+    XML_WITH_RELAXNG = 34,
     XML_WITH_NONE = 99999 /* just to be sure of allocation size */
 } xmlFeature;
 

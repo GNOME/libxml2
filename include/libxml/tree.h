@@ -77,12 +77,9 @@ typedef xmlEntity *xmlEntityPtr;
  */
 /* #define LIBXML_NAMESPACE_DICT */
 
-/**
- *
- * A buffer allocation scheme can be defined to either match exactly the
- * need or double it's allocated size each time it is found too small.
+/*
+ * Removed, buffers always use XML_BUFFER_ALLOC_IO now.
  */
-
 typedef enum {
     XML_BUFFER_ALLOC_DOUBLEIT,	/* double each time one need to grow */
     XML_BUFFER_ALLOC_EXACT,	/* grow only to the minimal size */
@@ -161,7 +158,7 @@ XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
  */
 #define XML_XML_ID (const xmlChar *) "xml:id"
 
-/*
+/**
  * The different element types carried by an XML tree.
  *
  * NOTE: This is synchronized with DOM Level1 values
@@ -171,25 +168,45 @@ XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
  * be deprecated to use an XML_DTD_NODE.
  */
 typedef enum {
+    /** element */
     XML_ELEMENT_NODE=		1,
+    /** attribute */
     XML_ATTRIBUTE_NODE=		2,
+    /** text */
     XML_TEXT_NODE=		3,
+    /** CDATA section */
     XML_CDATA_SECTION_NODE=	4,
+    /** entity reference */
     XML_ENTITY_REF_NODE=	5,
-    XML_ENTITY_NODE=		6,  /* unused */
+    /** unused */
+    XML_ENTITY_NODE=		6,
+    /** processing instruction */
     XML_PI_NODE=		7,
+    /** comment */
     XML_COMMENT_NODE=		8,
+    /** document */
     XML_DOCUMENT_NODE=		9,
-    XML_DOCUMENT_TYPE_NODE=	10, /* unused */
+    /** unused */
+    XML_DOCUMENT_TYPE_NODE=	10,
+    /** document fragment */
     XML_DOCUMENT_FRAG_NODE=	11,
-    XML_NOTATION_NODE=		12, /* unused */
+    /** notation, unused */
+    XML_NOTATION_NODE=		12,
+    /** HTML document */
     XML_HTML_DOCUMENT_NODE=	13,
+    /** DTD */
     XML_DTD_NODE=		14,
+    /** element declaration */
     XML_ELEMENT_DECL=		15,
+    /** attribute declaration */
     XML_ATTRIBUTE_DECL=		16,
+    /** entity declaration */
     XML_ENTITY_DECL=		17,
+    /** XPath namespace node */
     XML_NAMESPACE_DECL=		18,
+    /** XInclude start marker */
     XML_XINCLUDE_START=		19,
+    /** XInclude end marker */
     XML_XINCLUDE_END=		20
     /* XML_DOCB_DOCUMENT_NODE=	21 */ /* removed */
 } xmlElementType;
@@ -212,11 +229,9 @@ struct _xmlNotation {
     const xmlChar               *SystemID;	/* System identifier, if any */
 };
 
-/**
- *
+/*
  * A DTD Attribute type definition.
  */
-
 typedef enum {
     XML_ATTRIBUTE_CDATA = 1,
     XML_ATTRIBUTE_ID,
@@ -230,11 +245,9 @@ typedef enum {
     XML_ATTRIBUTE_NOTATION
 } xmlAttributeType;
 
-/**
- *
+/*
  * A DTD Attribute default definition.
  */
-
 typedef enum {
     XML_ATTRIBUTE_NONE = 1,
     XML_ATTRIBUTE_REQUIRED,
@@ -281,8 +294,7 @@ struct _xmlAttribute {
     const xmlChar          *elem;	/* Element holding the attribute */
 };
 
-/**
- *
+/*
  * Possible definitions of element content types.
  */
 typedef enum {
@@ -292,8 +304,7 @@ typedef enum {
     XML_ELEMENT_CONTENT_OR
 } xmlElementContentType;
 
-/**
- *
+/*
  * Possible definitions of element content occurrences.
  */
 typedef enum {
@@ -321,11 +332,9 @@ struct _xmlElementContent {
     const xmlChar             *prefix;	/* Namespace prefix */
 };
 
-/**
- *
+/*
  * The different possibilities for an element content type.
  */
-
 typedef enum {
     XML_ELEMENT_TYPE_UNDEFINED = 0,
     XML_ELEMENT_TYPE_EMPTY = 1,
@@ -517,21 +526,26 @@ struct _xmlNode {
     (xmlGetLineNo(n))
 
 /**
- * xmlDocProperty
- *
  * Set of properties of the document as found by the parser
  * Some of them are linked to similarly named xmlParserOption
  */
 typedef enum {
-    XML_DOC_WELLFORMED		= 1<<0, /* document is XML well formed */
-    XML_DOC_NSVALID		= 1<<1, /* document is Namespace valid */
-    XML_DOC_OLD10		= 1<<2, /* parsed with old XML-1.0 parser */
-    XML_DOC_DTDVALID		= 1<<3, /* DTD validation was successful */
-    XML_DOC_XINCLUDE		= 1<<4, /* XInclude substitution was done */
-    XML_DOC_USERBUILT		= 1<<5, /* Document was built using the API
-                                           and not by parsing an instance */
-    XML_DOC_INTERNAL		= 1<<6, /* built for internal processing */
-    XML_DOC_HTML		= 1<<7  /* parsed or built HTML document */
+    /** document is XML well formed */
+    XML_DOC_WELLFORMED		= 1<<0,
+    /** document is Namespace valid */
+    XML_DOC_NSVALID		= 1<<1,
+    /** parsed with old XML-1.0 parser */
+    XML_DOC_OLD10		= 1<<2,
+    /** DTD validation was successful */
+    XML_DOC_DTDVALID		= 1<<3,
+    /** XInclude substitution was done */
+    XML_DOC_XINCLUDE		= 1<<4,
+    /** Document was built using the API and not by parsing an instance */
+    XML_DOC_USERBUILT		= 1<<5,
+    /** built for internal processing */
+    XML_DOC_INTERNAL		= 1<<6,
+    /** parsed or built HTML document */
+    XML_DOC_HTML		= 1<<7
 } xmlDocProperties;
 
 /**

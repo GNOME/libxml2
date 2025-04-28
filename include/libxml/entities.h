@@ -23,15 +23,21 @@
 extern "C" {
 #endif
 
-/*
+/**
  * The different valid entity types.
  */
 typedef enum {
+    /** internal general entity */
     XML_INTERNAL_GENERAL_ENTITY = 1,
+    /** external general parsed entity */
     XML_EXTERNAL_GENERAL_PARSED_ENTITY = 2,
+    /** external general unparsed entity */
     XML_EXTERNAL_GENERAL_UNPARSED_ENTITY = 3,
+    /** internal parameter entity */
     XML_INTERNAL_PARAMETER_ENTITY = 4,
+    /** external parameter entity */
     XML_EXTERNAL_PARAMETER_ENTITY = 5,
+    /** internal predefined entity */
     XML_INTERNAL_PREDEFINED_ENTITY = 6
 } xmlEntityType;
 

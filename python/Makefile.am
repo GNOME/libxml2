@@ -9,7 +9,6 @@ SUBDIRS = . tests
 EXTRA_DIST = 			\
 	generator.py		\
 	libxml.py		\
-	libxml2-python-api.xml  \
 	pyproject.toml		\
 	meson.build
 
@@ -31,7 +30,7 @@ BUILT_SOURCES = libxml2-export.c libxml2-py.h libxml2-py.c
 python_PYTHON = drv_libxml2.py
 nodist_python_PYTHON = libxml2.py
 
-API_DESC = $(top_srcdir)/doc/libxml2-api.xml $(srcdir)/libxml2-python-api.xml
+API_DESC = $(top_srcdir)/doc/libxml2-api.xml
 GENERATED = libxml2.py $(BUILT_SOURCES)
 CLEANFILES = $(GENERATED)
 

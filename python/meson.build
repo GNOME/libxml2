@@ -10,7 +10,6 @@ if py.found() == true
         input: files('generator.py'),
         depend_files: files(
             '..' / 'doc' / 'libxml2-api.xml',
-            'libxml2-python-api.xml',
         ),
         output: [
             'libxml2-py.h',

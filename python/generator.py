@@ -3,7 +3,299 @@
 # generate python wrappers from the XML API description
 #
 
-functions = {}
+functions = {
+    'xmlRegisterXPathFunction': (
+        'Register a Python written function to the XPath interpreter',
+        ['int', '1 in case of success, 0 or -1 in case of error', None],
+        [['ctx', 'xmlXPathContextPtr', 'the xpathContext'], ['name', 'xmlChar *', 'the function name'], ['ns_uri', 'xmlChar *', 'the namespace or NULL'], ['f', 'pythonObject', 'the python function']],
+        'python', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathRegisterVariable': (
+        'Register a variable with the XPath context',
+        ['int', '1 in case of success, 0 or -1 in case of error', None],
+        [['ctx', 'xmlXPathContextPtr', 'the xpathContext'], ['name', 'xmlChar *', 'the variable name'], ['ns_uri', 'xmlChar *', 'the namespace or NULL'], ['value', 'pythonObject', 'the value']],
+        'python', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlNewNode': (
+        'Create a new Node',
+        ['xmlNodePtr', 'A new element node', None],
+        [['name', 'xmlChar *', 'the node name']],
+        'python', None),
+    'xmlCreatePushParser': (
+        'Create a progressive XML parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.',
+        ['xmlParserCtxtPtr', 'the parser context or None in case of error', None],
+        [['SAX', 'pythonObject', 'the SAX callback object or None'], ['chunk', 'xmlChar *', 'the initial data'], ['size', 'int', 'the size of the initial data'], ['URI', 'xmlChar *', 'The URI used for base computations']],
+        'python', None),
+    'htmlCreatePushParser': (
+        'Create a progressive HTML parser context to build either an event flow if the SAX object is not None, or a DOM tree otherwise.',
+        ['xmlParserCtxtPtr', 'the parser context or None in case of error', None],
+        [['SAX', 'pythonObject', 'the SAX callback object or None'], ['chunk', 'xmlChar *', 'the initial data'], ['size', 'int', 'the size of the initial data'], ['URI', 'xmlChar *', 'The URI used for base computations']],
+        'python', 'defined(LIBXML_HTML_ENABLED)'),
+    'xmlSAXParseFile': (
+        'Interface to parse an XML file or resource pointed by an URI to build an event flow to the SAX object',
+        ['void', None, None],
+        [['SAX', 'pythonObject', 'the SAX callback object or None'], ['URI', 'xmlChar *', 'The URI of the resource'], ['recover', 'int', 'allow recovery in case of error']],
+        'python', None),
+    'htmlSAXParseFile': (
+        'Interface to parse an HTML file or resource pointed by an URI to build an event flow to the SAX object',
+        ['void', None, None],
+        [['SAX', 'pythonObject', 'the SAX callback object or None'], ['URI', 'xmlChar *', 'The URI of the resource'], ['encoding', 'const char *', 'encoding or None']],
+        'python', 'defined(LIBXML_HTML_ENABLED)'),
+    'xmlCreateOutputBuffer': (
+        'Create a libxml2 output buffer from a Python file',
+        ['xmlOutputBufferPtr', 'the output buffer', None],
+        [['file', 'pythonObject', 'the Python file'], ['encoding', 'xmlChar *', 'an optional encoding']],
+        'python', None),
+    'xmlCreateInputBuffer': (
+        'Create a libxml2 input buffer from a Python file',
+        ['xmlParserInputBufferPtr', 'the input buffer', None],
+        [['file', 'pythonObject', 'the Python file'], ['encoding', 'xmlChar *', 'an optional encoding']],
+        'python', None),
+    'xmlSetEntityLoader': (
+        'Set the entity resolver as a python function',
+        ['int', '0 in case of success, -1 for error', None],
+        [['resolver', 'pythonObject', 'the Python function']],
+        'python', None),
+    'xmlParserGetDoc': (
+        'Get the document tree from a parser context.',
+        ['xmlDocPtr', 'the document tree', 'myDoc'],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context']],
+        'python_accessor', None),
+    'xmlParserGetWellFormed': (
+        'Get the well formed information from a parser context.',
+        ['int', 'the wellFormed field', 'wellFormed'],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context']],
+        'python_accessor', None),
+    'xmlParserGetIsValid': (
+        'Get the validity information from a parser context.',
+        ['int', 'the valid field', 'valid'],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context']],
+        'python_accessor', None),
+    'xmlParserSetValidate': (
+        'Switch the parser to validation mode.',
+        ['void', None, None],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context'], ['validate', 'int', '1 to activate validation']],
+        'python_accessor', None),
+    'xmlParserSetReplaceEntities': (
+        'Switch the parser to replace entities.',
+        ['void', None, None],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context'], ['replaceEntities', 'int', '1 to replace entities']],
+        'python_accessor', None),
+    'xmlParserSetPedantic': (
+        'Switch the parser to be pedantic.',
+        ['void', None, None],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context'], ['pedantic', 'int', '1 to run in pedantic mode']],
+        'python_accessor', None),
+    'xmlParserSetLoadSubset': (
+        'Switch the parser to load the DTD without validating.',
+        ['void', None, None],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context'], ['loadsubset', 'int', '1 to load the DTD']],
+        'python_accessor', None),
+    'xmlParserSetLineNumbers': (
+        'Switch on the generation of line number for elements nodes.',
+        ['void', None, None],
+        [['ctxt', 'xmlParserCtxtPtr', 'the parser context'], ['linenumbers', 'int', '1 to save line numbers']],
+        'python_accessor', None),
+    'xmlDebugMemory': (
+        'Switch on the generation of line number for elements nodes. Also returns the number of bytes allocated and not freed by libxml2 since memory debugging was switched on.',
+        ['int', 'returns the number of bytes allocated and not freed', None],
+        [['activate', 'int', '1 switch on memory debugging 0 switch it off']],
+        'python', None),
+    'xmlNodeGetNs': (
+        'Get the namespace of a node',
+        ['xmlNsPtr', 'The namespace or None', None],
+        [['node', 'xmlNodePtr', 'the node']],
+        'python_accessor', None),
+    'xmlNodeGetNsDefs': (
+        'Get the namespace of a node',
+        ['xmlNsPtr', 'The namespace or None', None],
+        [['node', 'xmlNodePtr', 'the node']],
+        'python_accessor', None),
+    'xmlXPathParserGetContext': (
+        'Get the xpathContext from an xpathParserContext',
+        ['xmlXPathContextPtr', 'The XPath context', 'context'],
+        [['ctxt', 'xmlXPathParserContextPtr', 'the XPath parser context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathGetContextDoc': (
+        'Get the doc from an xpathContext',
+        ['xmlDocPtr', 'The doc context', 'doc'],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathGetContextNode': (
+        'Get the current node from an xpathContext',
+        ['xmlNodePtr', 'The node context', 'node'],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathSetContextDoc': (
+        'Set the doc of an xpathContext',
+        ['void', None, None],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context'], ['doc', 'xmlDocPtr', 'The doc context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathSetContextNode': (
+        'Set the current node of an xpathContext',
+        ['void', None, None],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context'], ['node', 'xmlNodePtr', 'The node context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathGetContextPosition': (
+        'Get the current node from an xpathContext',
+        ['int', 'The node context', 'proximityPosition'],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathGetContextSize': (
+        'Get the current node from an xpathContext',
+        ['int', 'The node context', 'contextSize'],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathGetFunction': (
+        'Get the current function name xpathContext',
+        ['const xmlChar *', 'The function name', 'function'],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlXPathGetFunctionURI': (
+        'Get the current function name URI xpathContext',
+        ['const xmlChar *', 'The function name URI', 'functionURI'],
+        [['ctxt', 'xmlXPathContextPtr', 'the XPath context']],
+        'python_accessor', 'defined(LIBXML_XPATH_ENABLED)'),
+    'xmlURIGetScheme': (
+        'Get the scheme part from an URI',
+        ['const char *', 'The URI scheme', 'scheme'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetScheme': (
+        'Set the scheme part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['scheme', 'char *', 'The URI scheme part']],
+        'python_accessor', None),
+    'xmlURIGetOpaque': (
+        'Get the opaque part from an URI',
+        ['const char *', 'The URI opaque', 'opaque'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetOpaque': (
+        'Set the opaque part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['opaque', 'char *', 'The URI opaque part']],
+        'python_accessor', None),
+    'xmlURIGetAuthority': (
+        'Get the authority part from an URI',
+        ['const char *', 'The URI authority', 'authority'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetAuthority': (
+        'Set the authority part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['authority', 'char *', 'The URI authority part']],
+        'python_accessor', None),
+    'xmlURIGetServer': (
+        'Get the server part from an URI',
+        ['const char *', 'The URI server', 'server'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetServer': (
+        'Set the server part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['server', 'char *', 'The URI server part']],
+        'python_accessor', None),
+    'xmlURIGetUser': (
+        'Get the user part from an URI',
+        ['const char *', 'The URI user', 'user'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetUser': (
+        'Set the user part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['user', 'char *', 'The URI user part']],
+        'python_accessor', None),
+    'xmlURIGetPath': (
+        'Get the path part from an URI',
+        ['const char *', 'The URI path', 'path'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetPath': (
+        'Set the path part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['path', 'char *', 'The URI path part']],
+        'python_accessor', None),
+    'xmlURIGetQuery': (
+        'Get the query part from an URI',
+        ['const char *', 'The URI query', 'query'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetQuery': (
+        'Set the query part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['query', 'char *', 'The URI query part']],
+        'python_accessor', None),
+    'xmlURIGetQueryRaw': (
+        'Get the raw query part from an URI (i.e. the unescaped form).',
+        ['const char *', 'The URI query', 'query_raw'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetQueryRaw': (
+        'Set the raw query part of an URI (i.e. the unescaped form).',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['query_raw', 'char *', 'The raw URI query part']],
+        'python_accessor', None),
+    'xmlURIGetFragment': (
+        'Get the fragment part from an URI',
+        ['const char *', 'The URI fragment', 'fragment'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetFragment': (
+        'Set the fragment part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['fragment', 'char *', 'The URI fragment part']],
+        'python_accessor', None),
+    'xmlURIGetPort': (
+        'Get the port part from an URI',
+        ['int', 'The URI port', 'port'],
+        [['URI', 'xmlURIPtr', 'the URI']],
+        'python_accessor', None),
+    'xmlURISetPort': (
+        'Set the port part of an URI.',
+        ['void', None, None],
+        [['URI', 'xmlURIPtr', 'the URI'], ['port', 'int', 'The URI port part']],
+        'python_accessor', None),
+    'xmlErrorGetDomain': (
+        'What part of the library raised this error',
+        ['int', 'The error domain', 'domain'],
+        [['Error', 'xmlErrorPtr', 'the Error']],
+        'python_accessor', None),
+    'xmlErrorGetCode': (
+        'The error code, e.g. an xmlParserError',
+        ['int', 'The error code', 'code'],
+        [['Error', 'xmlErrorPtr', 'the Error']],
+        'python_accessor', None),
+    'xmlErrorGetMessage': (
+        'human-readable informative error message',
+        ['const char *', 'The error message', 'message'],
+        [['Error', 'xmlErrorPtr', 'the Error']],
+        'python_accessor', None),
+    'xmlErrorGetLevel': (
+        'how consequent is the error',
+        ['int', 'The error level', 'level'],
+        [['Error', 'xmlErrorPtr', 'the Error']],
+        'python_accessor', None),
+    'xmlErrorGetFile': (
+        'the filename',
+        ['const char *', 'The error file', 'file'],
+        [['Error', 'xmlErrorPtr', 'the Error']],
+        'python_accessor', None),
+    'xmlErrorGetLine': (
+        'the line number if available',
+        ['int', 'The error line', 'line'],
+        [['Error', 'xmlErrorPtr', 'the Error']],
+        'python_accessor', None),
+    'xmlPythonCleanupParser': (
+        "Cleanup function for the XML library. It tries to reclaim all parsing related global memory allocated for the library processing. It doesn't deallocate any document related memory. Calling this function should not prevent reusing the library but one should call xmlCleanupParser() only when the process has finished using the library or XML document built with it.",
+        ['void', None, None],
+        [],
+        'python', None),
+    'xmlMemoryUsed': (
+        'Returns the total amount of memory allocated by libxml2',
+        ['int', 'number of bytes allocated', None],
+        [],
+        'python', None)
+}
+
 enums = {} # { enumType: { enumConstant: enumValue } }
 
 import os
@@ -669,6 +961,8 @@ def buildStubs():
     global py_return_types
     global unknown_types
 
+    n0 = len(list(functions.keys()))
+
     try:
         f = open(os.path.join(srcPref,"libxml2-api.xml"))
         data = f.read()
@@ -686,22 +980,10 @@ def buildStubs():
             print("Failed to open libxml2-api.xml:", msg)
             sys.exit(1)
 
-    n = len(list(functions.keys()))
-    print("Found %d functions in libxml2-api.xml" % (n))
+    n1 = len(list(functions.keys()))
+    print("Found %d functions in libxml2-api.xml" % (n1 - n0))
 
     py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
-    try:
-        f = open(os.path.join(srcPref,"libxml2-python-api.xml"))
-        data = f.read()
-        (parser, target)  = getparser()
-        parser.feed(data)
-        parser.close()
-    except IOError as msg:
-        print("Failed to open libxml2-python-api.xml:", msg)
-
-
-    print("Found %d functions in libxml2-python-api.xml" % (
-          len(list(functions.keys())) - n))
     nb_wrap = 0
     failed = 0
     skipped = 0

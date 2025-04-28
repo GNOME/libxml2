@@ -90,8 +90,10 @@ typedef enum {
     XML_INPUT_NETWORK               = (1 << 4)
 } xmlParserInputFlags;
 
+/* Deprecated */
+typedef void (* xmlParserInputDeallocate)(xmlChar *str);
+
 /**
- *
  * An xmlParserInput is an input flow for the XML processor.
  * Each entity parsed is associated an xmlParserInput (except the
  * few predefined ones). This is the case both for internal entities
@@ -99,14 +101,6 @@ typedef enum {
  * external entities - in which case we use the buf structure for
  * progressive reading and I18N conversions to the internal UTF-8 format.
  */
-
-/**
- * @param str  the string to deallocate
- *
- * Callback for freeing some parser input allocations.
- */
-typedef void (* xmlParserInputDeallocate)(xmlChar *str);
-
 struct _xmlParserInput {
     /* Input buffer */
     xmlParserInputBufferPtr buf;
@@ -144,11 +138,11 @@ struct _xmlParserInput {
     xmlEntityPtr entity XML_DEPRECATED_MEMBER;
 };
 
-/**
- *
+/*
  * The parser can be asked to collect Node information, i.e. at what
  * place in the file they were detected.
- * NOTE: This is off by default and not very well tested.
+ *
+ * NOTE: This feature is off by default and deprecated.
  */
 typedef struct _xmlParserNodeInfo xmlParserNodeInfo;
 typedef xmlParserNodeInfo *xmlParserNodeInfoPtr;
@@ -242,16 +236,8 @@ typedef xmlParserErrors
                      xmlResourceType type, xmlParserInputFlags flags,
                      xmlParserInputPtr *out);
 
-/**
- *
+/*
  * The parser context.
- * NOTE This doesn't completely define the parser state, the (current ?)
- *      design of the parser uses recursive function calls since this allow
- *      and easy mapping from the production rules of the specification
- *      to the actual code. The drawback is that the actual function call
- *      also reflect the parser state. However most of the parsing routines
- *      takes as the only argument the parser context pointer, so migrating
- *      to a state based parser for progressive parsing shouldn't be too hard.
  */
 struct _xmlParserCtxt {
     /* The SAX handler */
@@ -501,8 +487,7 @@ struct _xmlParserCtxt {
     void *convCtxt XML_DEPRECATED_MEMBER;
 };
 
-/**
- *
+/*
  * A SAX Locator.
  */
 struct _xmlSAXLocator {
@@ -511,12 +496,6 @@ struct _xmlSAXLocator {
     int (*getLineNumber)(void *ctx);
     int (*getColumnNumber)(void *ctx);
 };
-
-/**
- *
- * A SAX handler is bunch of callbacks called by the parser when processing
- * of the input generate data or structure information.
- */
 
 /**
  * resolveEntitySAXFunc:

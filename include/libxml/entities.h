@@ -41,34 +41,52 @@ typedef enum {
     XML_INTERNAL_PREDEFINED_ENTITY = 6
 } xmlEntityType;
 
-/*
- * An unit of storage for an entity, contains the string, the value
- * and the linkind data needed for the linking in the hash table.
+/**
+ * An entity declaration
  */
-
 struct _xmlEntity {
-    void           *_private;	        /* application data */
-    xmlElementType          type;       /* XML_ENTITY_DECL, must be second ! */
-    const xmlChar          *name;	/* Entity name */
-    struct _xmlNode    *children;	/* First child link */
-    struct _xmlNode        *last;	/* Last child link */
-    struct _xmlDtd       *parent;	/* -> DTD */
-    struct _xmlNode        *next;	/* next sibling link  */
-    struct _xmlNode        *prev;	/* previous sibling link  */
-    struct _xmlDoc          *doc;       /* the containing document */
+    /** application data */
+    void           *_private;
+    /** XML_ENTITY_DECL, must be second ! */
+    xmlElementType          type;
+    /** Entity name */
+    const xmlChar          *name;
+    /** First child link */
+    struct _xmlNode    *children;
+    /** Last child link */
+    struct _xmlNode        *last;
+    /** -> DTD */
+    struct _xmlDtd       *parent;
+    /** next sibling link  */
+    struct _xmlNode        *next;
+    /** previous sibling link  */
+    struct _xmlNode        *prev;
+    /** the containing document */
+    struct _xmlDoc          *doc;
 
-    xmlChar                *orig;	/* content without ref substitution */
-    xmlChar             *content;	/* content or ndata if unparsed */
-    int                   length;	/* the content length */
-    xmlEntityType          etype;	/* The entity type */
-    const xmlChar    *ExternalID;	/* External identifier for PUBLIC */
-    const xmlChar      *SystemID;	/* URI for a SYSTEM or PUBLIC Entity */
+    /** content without ref substitution */
+    xmlChar                *orig;
+    /** content or ndata if unparsed */
+    xmlChar             *content;
+    /** the content length */
+    int                   length;
+    /** The entity type */
+    xmlEntityType          etype;
+    /** External identifier for PUBLIC */
+    const xmlChar    *ExternalID;
+    /** URI for a SYSTEM or PUBLIC Entity */
+    const xmlChar      *SystemID;
 
-    struct _xmlEntity     *nexte;	/* unused */
-    const xmlChar           *URI;	/* the full URI as computed */
-    int                    owner;	/* unused */
-    int                    flags;       /* various flags */
-    unsigned long   expandedSize;       /* expanded size */
+    /** unused */
+    struct _xmlEntity     *nexte;
+    /** the full URI as computed */
+    const xmlChar           *URI;
+    /** unused */
+    int                    owner;
+    /** various flags */
+    int                    flags;
+    /** expanded size */
+    unsigned long   expandedSize;
 };
 
 /*

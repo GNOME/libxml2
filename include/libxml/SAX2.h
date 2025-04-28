@@ -1,11 +1,14 @@
-/*
- * Summary: SAX2 parser interface used to build the DOM tree
- * Description: those are the default SAX2 interfaces used by
+/**
+ * @file
+ * 
+ * @brief SAX2 parser interface used to build the DOM tree
+ * 
+ * those are the default SAX2 interfaces used by
  *              the library when building DOM tree.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 

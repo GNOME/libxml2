@@ -43,7 +43,7 @@ static xmlMutex xmlThrDefMutex;
  * thread-local storage:
  *
  *     xmlError *__xmlLastError(void);
- *     #define xmlError (*__xmlLastError());
+ *     \#define xmlError (*__xmlLastError());
  *
  * The code can operate in a multitude of ways depending on the environment.
  * First we support POSIX and Windows threads. Then we support both
@@ -190,61 +190,56 @@ static xmlGlobalState globalState;
  */
 
 /**
- * xmlFree:
- * @mem: an already allocated block of memory
+ * @param mem  an already allocated block of memory
  *
  * The variable holding the libxml free() implementation
  */
 xmlFreeFunc xmlFree = free;
 /**
- * xmlMalloc:
- * @size:  the size requested in bytes
+ * @param size  the size requested in bytes
  *
  * The variable holding the libxml malloc() implementation
  *
- * Returns a pointer to the newly allocated block or NULL in case of error
+ * @returns a pointer to the newly allocated block or NULL in case of error
  */
 xmlMallocFunc xmlMalloc = malloc;
 /**
- * xmlMallocAtomic:
- * @size:  the size requested in bytes
+ * @param size  the size requested in bytes
  *
  * The variable holding the libxml malloc() implementation for atomic
  * data (i.e. blocks not containing pointers), useful when using a
  * garbage collecting allocator.
  *
- * Returns a pointer to the newly allocated block or NULL in case of error
+ * @returns a pointer to the newly allocated block or NULL in case of error
  */
 xmlMallocFunc xmlMallocAtomic = malloc;
 /**
- * xmlRealloc:
- * @mem: an already allocated block of memory
- * @size:  the new size requested in bytes
+ * @param mem  an already allocated block of memory
+ * @param size  the new size requested in bytes
  *
  * The variable holding the libxml realloc() implementation
  *
- * Returns a pointer to the newly reallocated block or NULL in case of error
+ * @returns a pointer to the newly reallocated block or NULL in case of error
  */
 xmlReallocFunc xmlRealloc = realloc;
 /**
  * xmlPosixStrdup
- * @cur:  the input char *
+ * @param cur  the input char *
  *
  * a strdup implementation with a type signature matching POSIX
  *
- * Returns a new xmlChar * or NULL
+ * @returns a new xmlChar * or NULL
  */
 static char *
 xmlPosixStrdup(const char *cur) {
     return((char*) xmlCharStrdup(cur));
 }
 /**
- * xmlMemStrdup:
- * @str: a zero terminated string
+ * @param str  a zero terminated string
  *
  * The variable holding the libxml strdup() implementation
  *
- * Returns the copy of the string or NULL in case of error
+ * @returns the copy of the string or NULL in case of error
  */
 xmlStrdupFunc xmlMemStrdup = xmlPosixStrdup;
 
@@ -281,9 +276,8 @@ static int xmlSaveNoEmptyTagsThrDef = 0;
 
 #ifdef LIBXML_SAX1_ENABLED
 /**
- * xmlDefaultSAXHandler:
  *
- * DEPRECATED: This handler is unused and will be removed from future
+ * @deprecated This handler is unused and will be removed from future
  * versions.
  *
  * Default SAX version1 handler for XML, builds the DOM tree
@@ -321,9 +315,8 @@ const xmlSAXHandlerV1 xmlDefaultSAXHandler = {
 #endif /* LIBXML_SAX1_ENABLED */
 
 /**
- * xmlDefaultSAXLocator:
  *
- * DEPRECATED: Don't use
+ * @deprecated Don't use
  *
  * The default SAX Locator
  * { getPublicId, getSystemId, getLineNumber, getColumnNumber}
@@ -337,9 +330,8 @@ const xmlSAXLocator xmlDefaultSAXLocator = {
 
 #if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 /**
- * htmlDefaultSAXHandler:
  *
- * DEPRECATED: This handler is unused and will be removed from future
+ * @deprecated This handler is unused and will be removed from future
  * versions.
  *
  * Default old SAX v1 handler for HTML, builds the DOM tree
@@ -386,16 +378,14 @@ xmlInitGlobalState(xmlGlobalStatePtr gs);
  ************************************************************************/
 
 /**
- * xmlInitGlobals:
  *
- * DEPRECATED: Alias for xmlInitParser.
+ * @deprecated Alias for xmlInitParser.
  */
 void xmlInitGlobals(void) {
     xmlInitParser();
 }
 
 /**
- * xmlInitGlobalsInternal:
  *
  * Additional initialisation for multi-threading
  */
@@ -415,9 +405,8 @@ void xmlInitGlobalsInternal(void) {
 }
 
 /**
- * xmlCleanupGlobals:
  *
- * DEPRECATED: This function is a no-op. Call xmlCleanupParser
+ * @deprecated This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
@@ -426,7 +415,6 @@ void xmlCleanupGlobals(void) {
 }
 
 /**
- * xmlCleanupGlobalsInternal:
  *
  * Additional cleanup for multi-threading
  */
@@ -513,13 +501,12 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
 
 #ifndef USE_TLS
 /**
- * xmlNewGlobalState:
  *
  * xmlNewGlobalState() allocates a global state. This structure is used to
  * hold all data for use by a thread when supporting backwards compatibility
  * of libxml2 to pre-thread-safe behaviour.
  *
- * Returns the newly allocated xmlGlobalStatePtr or NULL in case of error
+ * @returns the newly allocated xmlGlobalStatePtr or NULL in case of error
  */
 static xmlGlobalStatePtr
 xmlNewGlobalState(int allowFailure)
@@ -779,9 +766,8 @@ __xmlMemStrdup(void) {
 #endif /* LIBXML_THREAD_ALLOC_ENABLED */
 
 /**
- * xmlGetLocalRngState:
  *
- * Returns the local RNG state.
+ * @returns the local RNG state.
  */
 unsigned *
 xmlGetLocalRngState(void) {
@@ -789,7 +775,6 @@ xmlGetLocalRngState(void) {
 }
 
 /**
- * xmlCheckThreadLocalStorage:
  *
  * Check whether thread-local storage could be allocated.
  *
@@ -798,7 +783,7 @@ xmlGetLocalRngState(void) {
  * library functions to make sure that thread-local storage was
  * allocated properly.
  *
- * Returns 0 on success or -1 if a memory allocation failed. A failed
+ * @returns 0 on success or -1 if a memory allocation failed. A failed
  * allocation signals a typically fatal and irrecoverable out-of-memory
  * situation. Don't call any library functions in this case.
  *
@@ -814,27 +799,26 @@ xmlCheckThreadLocalStorage(void) {
 }
 
 /**
- * xmlGetLastErrorInternal:
  *
- * Returns a pointer to the global error struct.
+ * @returns a pointer to the global error struct.
  */
 xmlError *
 xmlGetLastErrorInternal(void) {
     return(&xmlGetThreadLocalStorage(0)->lastError);
 }
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 
 /**
  * DllMain:
- * @hinstDLL: handle to DLL instance
- * @fdwReason: Reason code for entry
- * @lpvReserved: generic pointer (depends upon reason code)
+ * @param hinstDLL  handle to DLL instance
+ * @param fdwReason  Reason code for entry
+ * @param lpvReserved  generic pointer (depends upon reason code)
  *
  * Entry point for Windows library. It is being used to free thread-specific
  * storage.
  *
- * Returns TRUE always
+ * @returns TRUE always
  */
 #ifdef USE_DLL_MAIN
 #if defined(LIBXML_STATIC_FOR_DLL)
@@ -1065,5 +1049,5 @@ xmlThrDefOutputBufferCreateFilenameDefault(xmlOutputBufferCreateFilenameFunc fun
     return(old);
 }
 
-/** DOC_ENABLE */
+/** @endcond */
 

@@ -1,12 +1,15 @@
-/*
- * Summary: interfaces for tree manipulation
- * Description: this module describes the structures found in an tree resulting
+/**
+ * @file
+ * 
+ * @brief interfaces for tree manipulation
+ * 
+ * this module describes the structures found in an tree resulting
  *              from an XML or HTML parsing, as well as the API provided for
  *              various processing on that tree
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef XML_TREE_INTERNALS
@@ -69,13 +72,12 @@ typedef xmlEntity *xmlEntityPtr;
  * LIBXML_NAMESPACE_DICT:
  *
  * Defines experimental behaviour:
- * 1) xmlNs gets an additional field @context (a xmlDoc)
+ * 1) xmlNs gets an additional field `context` (a xmlDoc)
  * 2) when creating a tree, xmlNs->href is stored in the dict of xmlDoc.
  */
 /* #define LIBXML_NAMESPACE_DICT */
 
 /**
- * xmlBufferAllocationScheme:
  *
  * A buffer allocation scheme can be defined to either match exactly the
  * need or double it's allocated size each time it is found too small.
@@ -91,7 +93,6 @@ typedef enum {
 } xmlBufferAllocationScheme;
 
 /**
- * xmlBuffer:
  *
  * A buffer structure, this old construct is limited to 2GB and
  * is being deprecated, use API with xmlBuf instead
@@ -112,7 +113,6 @@ struct _xmlBuffer {
 };
 
 /**
- * xmlBuf:
  *
  * A buffer structure, new one, the actual structure internals are not public
  */
@@ -120,7 +120,6 @@ struct _xmlBuffer {
 typedef struct _xmlBuf xmlBuf;
 
 /**
- * xmlBufPtr:
  *
  * A pointer to a buffer structure, the actual structure internals are not
  * public
@@ -195,13 +194,12 @@ typedef enum {
     /* XML_DOCB_DOCUMENT_NODE=	21 */ /* removed */
 } xmlElementType;
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 /* For backward compatibility */
 #define XML_DOCB_DOCUMENT_NODE 21
-/** DOC_ENABLE */
+/** @endcond */
 
 /**
- * xmlNotation:
  *
  * A DTD Notation definition.
  */
@@ -215,7 +213,6 @@ struct _xmlNotation {
 };
 
 /**
- * xmlAttributeType:
  *
  * A DTD Attribute type definition.
  */
@@ -234,7 +231,6 @@ typedef enum {
 } xmlAttributeType;
 
 /**
- * xmlAttributeDefault:
  *
  * A DTD Attribute default definition.
  */
@@ -247,7 +243,6 @@ typedef enum {
 } xmlAttributeDefault;
 
 /**
- * xmlEnumeration:
  *
  * List structure used when there is an enumeration in DTDs.
  */
@@ -260,7 +255,6 @@ struct _xmlEnumeration {
 };
 
 /**
- * xmlAttribute:
  *
  * An Attribute declaration in a DTD.
  */
@@ -288,7 +282,6 @@ struct _xmlAttribute {
 };
 
 /**
- * xmlElementContentType:
  *
  * Possible definitions of element content types.
  */
@@ -300,7 +293,6 @@ typedef enum {
 } xmlElementContentType;
 
 /**
- * xmlElementContentOccur:
  *
  * Possible definitions of element content occurrences.
  */
@@ -312,7 +304,6 @@ typedef enum {
 } xmlElementContentOccur;
 
 /**
- * xmlElementContent:
  *
  * An XML Element content as stored after parsing an element definition
  * in a DTD.
@@ -331,7 +322,6 @@ struct _xmlElementContent {
 };
 
 /**
- * xmlElementTypeVal:
  *
  * The different possibilities for an element content type.
  */
@@ -345,7 +335,6 @@ typedef enum {
 } xmlElementTypeVal;
 
 /**
- * xmlElement:
  *
  * An XML Element declaration from a DTD.
  */
@@ -384,7 +373,6 @@ struct _xmlElement {
 typedef xmlElementType xmlNsType;
 
 /**
- * xmlNs:
  *
  * An XML namespace.
  * Note that prefix == NULL is valid, it defines the default namespace
@@ -405,7 +393,6 @@ struct _xmlNs {
 };
 
 /**
- * xmlDtd:
  *
  * An XML DTD, as defined by <!DOCTYPE ... There is actually one for
  * the internal subset and for the external subset.
@@ -434,7 +421,6 @@ struct _xmlDtd {
 };
 
 /**
- * xmlAttr:
  *
  * An attribute on an XML node.
  */
@@ -457,7 +443,6 @@ struct _xmlAttr {
 };
 
 /**
- * xmlID:
  *
  * An XML ID instance.
  */
@@ -474,7 +459,6 @@ struct _xmlID {
 };
 
 /**
- * xmlRef:
  *
  * An XML IDREF instance.
  */
@@ -490,7 +474,6 @@ struct _xmlRef {
 };
 
 /**
- * xmlNode:
  *
  * A node in an XML tree.
  */
@@ -552,7 +535,6 @@ typedef enum {
 } xmlDocProperties;
 
 /**
- * xmlDoc:
  *
  * An XML document.
  */
@@ -599,15 +581,14 @@ typedef struct _xmlDOMWrapCtxt xmlDOMWrapCtxt;
 typedef xmlDOMWrapCtxt *xmlDOMWrapCtxtPtr;
 
 /**
- * xmlDOMWrapAcquireNsFunction:
- * @ctxt:  a DOM wrapper context
- * @node:  the context node (element or attribute)
- * @nsName:  the requested namespace name
- * @nsPrefix:  the requested namespace prefix
+ * @param ctxt  a DOM wrapper context
+ * @param node  the context node (element or attribute)
+ * @param nsName  the requested namespace name
+ * @param nsPrefix  the requested namespace prefix
  *
  * A function called to acquire namespaces (xmlNs) from the wrapper.
  *
- * Returns an xmlNsPtr or NULL in case of an error.
+ * @returns an xmlNsPtr or NULL in case of an error.
  */
 typedef xmlNsPtr (*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxtPtr ctxt,
 						 xmlNodePtr node,
@@ -615,7 +596,6 @@ typedef xmlNsPtr (*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxtPtr ctxt,
 						 const xmlChar *nsPrefix);
 
 /**
- * xmlDOMWrapCtxt:
  *
  * Context for DOM wrapper-operations.
  */
@@ -638,23 +618,20 @@ struct _xmlDOMWrapCtxt {
 };
 
 /**
- * xmlRegisterNodeFunc:
- * @node: the current node
+ * @param node  the current node
  *
  * Signature for the registration callback of a created node
  */
 typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 
 /**
- * xmlDeregisterNodeFunc:
- * @node: the current node
+ * @param node  the current node
  *
  * Signature for the deregistration callback of a discarded node
  */
 typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 
 /**
- * xmlChildrenNode:
  *
  * Macro for compatibility naming layer with libxml1. Maps
  * to "children."
@@ -664,7 +641,6 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 #endif
 
 /**
- * xmlRootNode:
  *
  * Macro for compatibility naming layer with libxml1. Maps
  * to "children".
@@ -677,7 +653,7 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  * Variables.
  */
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
 XML_DEPRECATED
@@ -689,7 +665,7 @@ XMLPUBFUN xmlDeregisterNodeFunc *__xmlDeregisterNodeDefaultValue(void);
   #define xmlDeregisterNodeDefaultValue \
     (*__xmlDeregisterNodeDefaultValue())
 #endif
-/** DOC_ENABLE */
+/** @endcond */
 
 /*
  * Some helper functions
@@ -721,7 +697,7 @@ XMLPUBFUN const xmlChar *
 					 int *len);
 
 /*
- * Handling Buffers, the old ones see @xmlBuf for the new ones.
+ * Handling Buffers, the old ones see `xmlBuf` for the new ones.
  */
 
 XML_DEPRECATED

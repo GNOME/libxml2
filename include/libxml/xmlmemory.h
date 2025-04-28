@@ -1,11 +1,14 @@
-/*
- * Summary: interface for the memory allocator
- * Description: provides interfaces for the memory allocator,
+/**
+ * @file
+ * 
+ * @brief interface for the memory allocator
+ * 
+ * provides interfaces for the memory allocator,
  *              including debugging capabilities.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 
@@ -23,40 +26,36 @@ extern "C" {
  * The XML memory wrapper support 4 basic overloadable functions.
  */
 /**
- * xmlFreeFunc:
- * @mem: an already allocated block of memory
+ * @param mem  an already allocated block of memory
  *
  * Signature for a free() implementation.
  */
 typedef void (*xmlFreeFunc)(void *mem);
 /**
- * xmlMallocFunc:
- * @size:  the size requested in bytes
+ * @param size  the size requested in bytes
  *
  * Signature for a malloc() implementation.
  *
- * Returns a pointer to the newly allocated block or NULL in case of error.
+ * @returns a pointer to the newly allocated block or NULL in case of error.
  */
 typedef void *(*xmlMallocFunc)(size_t size) LIBXML_ATTR_ALLOC_SIZE(1);
 
 /**
- * xmlReallocFunc:
- * @mem: an already allocated block of memory
- * @size:  the new size requested in bytes
+ * @param mem  an already allocated block of memory
+ * @param size  the new size requested in bytes
  *
  * Signature for a realloc() implementation.
  *
- * Returns a pointer to the newly reallocated block or NULL in case of error.
+ * @returns a pointer to the newly reallocated block or NULL in case of error.
  */
 typedef void *(*xmlReallocFunc)(void *mem, size_t size);
 
 /**
- * xmlStrdupFunc:
- * @str: a zero terminated string
+ * @param str  a zero terminated string
  *
  * Signature for an strdup() implementation.
  *
- * Returns the copy of the string or NULL in case of error.
+ * @returns the copy of the string or NULL in case of error.
  */
 typedef char *(*xmlStrdupFunc)(const char *str);
 
@@ -71,7 +70,7 @@ typedef char *(*xmlStrdupFunc)(const char *str);
  */
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 XMLPUBFUN xmlMallocFunc *__xmlMalloc(void);
 XMLPUBFUN xmlMallocFunc *__xmlMallocAtomic(void);
 XMLPUBFUN xmlReallocFunc *__xmlRealloc(void);
@@ -85,7 +84,7 @@ XMLPUBFUN xmlStrdupFunc *__xmlMemStrdup(void);
   #define xmlFree (*__xmlFree())
   #define xmlMemStrdup (*__xmlMemStrdup())
 #endif
-/** DOC_ENABLE */
+/** @endcond */
 
 #else
   XMLPUBVAR xmlMallocFunc xmlMalloc;

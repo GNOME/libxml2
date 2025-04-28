@@ -148,13 +148,12 @@ xmlHashQNameValue(unsigned seed,
 }
 
 /**
- * xmlHashCreate:
- * @size: initial size of the hash table
+ * @param size  initial size of the hash table
  *
  * Create a new hash table. Set size to zero if the number of entries
  * can't be estimated.
  *
- * Returns the newly created object, or NULL if a memory allocation failed.
+ * @returns the newly created object, or NULL if a memory allocation failed.
  */
 xmlHashTablePtr
 xmlHashCreate(int size) {
@@ -195,15 +194,14 @@ xmlHashCreate(int size) {
 }
 
 /**
- * xmlHashCreateDict:
- * @size: the size of the hash table
- * @dict: a dictionary to use for the hash
+ * @param size  the size of the hash table
+ * @param dict  a dictionary to use for the hash
  *
  * Create a new hash table backed by a dictionary. This can reduce
  * resource usage considerably if most keys passed to API functions
  * originate from this dictionary.
  *
- * Returns the newly created object, or NULL if a memory allocation failed.
+ * @returns the newly created object, or NULL if a memory allocation failed.
  */
 xmlHashTablePtr
 xmlHashCreateDict(int size, xmlDictPtr dict) {
@@ -218,12 +216,11 @@ xmlHashCreateDict(int size, xmlDictPtr dict) {
 }
 
 /**
- * xmlHashFree:
- * @hash: hash table
- * @dealloc: deallocator function or NULL
+ * @param hash  hash table
+ * @param dealloc  deallocator function or NULL
  *
  * Free the hash and its contents. The payload is deallocated with
- * @dealloc if provided.
+ * `dealloc` if provided.
  */
 void
 xmlHashFree(xmlHashTablePtr hash, xmlHashDeallocator dealloc) {
@@ -259,9 +256,8 @@ xmlHashFree(xmlHashTablePtr hash, xmlHashDeallocator dealloc) {
 }
 
 /**
- * xmlFastStrEqual:
- * @s1: string
- * @s2: string
+ * @param s1  string
+ * @param s2  string
  *
  * Compare two strings for equality, allowing NULL values.
  */
@@ -275,16 +271,15 @@ xmlFastStrEqual(const xmlChar *s1, const xmlChar *s2) {
 }
 
 /**
- * xmlHashFindEntry:
- * @hash: hash table, non-NULL, size > 0
- * @key: first string key, non-NULL
- * @key2: second string key
- * @key3: third string key
- * @hashValue: valid hash value of keys
- * @pfound: result of search
+ * @param hash  hash table, non-NULL, size > 0
+ * @param key  first string key, non-NULL
+ * @param key2  second string key
+ * @param key3  third string key
+ * @param hashValue  valid hash value of keys
+ * @param pfound  result of search
  *
  * Try to find a matching hash table entry. If an entry was found, set
- * @found to 1 and return the entry. Otherwise, set @found to 0 and return
+ * `found` to 1 and return the entry. Otherwise, set `found` to 0 and return
  * the location where a new entry should be inserted.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
@@ -342,13 +337,12 @@ xmlHashFindEntry(const xmlHashTable *hash, const xmlChar *key,
 }
 
 /**
- * xmlHashGrow:
- * @hash: hash table
- * @size: new size of the hash table
+ * @param hash  hash table
+ * @param size  new size of the hash table
  *
  * Resize the hash table.
  *
- * Returns 0 in case of success, -1 if a memory allocation failed.
+ * @returns 0 in case of success, -1 if a memory allocation failed.
  */
 static int
 xmlHashGrow(xmlHashTablePtr hash, unsigned size) {
@@ -409,14 +403,13 @@ done:
 }
 
 /**
- * xmlHashUpdateInternal:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @key3: third string key
- * @payload: pointer to the payload
- * @dealloc: deallocator function for replaced item or NULL
- * @update: whether existing entries should be updated
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param key3  third string key
+ * @param payload  pointer to the payload
+ * @param dealloc  deallocator function for replaced item or NULL
+ * @param update  whether existing entries should be updated
  *
  * Internal function to add or update hash entries.
  */
@@ -593,9 +586,8 @@ xmlHashUpdateInternal(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashDefaultDeallocator:
- * @entry: hash table entry
- * @key: the entry's string key
+ * @param entry  hash table entry
+ * @param key  the entry's string key
  *
  * Free a hash table entry with xmlFree.
  */
@@ -605,10 +597,9 @@ xmlHashDefaultDeallocator(void *entry, const xmlChar *key ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlHashAdd:
- * @hash: hash table
- * @key: string key
- * @payload: pointer to the payload
+ * @param hash  hash table
+ * @param key  string key
+ * @param payload  pointer to the payload
  *
  * Add a hash table entry. If an entry with this key already exists,
  * payload will not be updated and 0 is returned. This return value
@@ -617,7 +608,7 @@ xmlHashDefaultDeallocator(void *entry, const xmlChar *key ATTRIBUTE_UNUSED) {
  *
  * Available since 2.13.0.
  *
- * Returns 1 on success, 0 if an entry exists and -1 in case of error.
+ * @returns 1 on success, 0 if an entry exists and -1 in case of error.
  */
 int
 xmlHashAdd(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
@@ -625,11 +616,10 @@ xmlHashAdd(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
 }
 
 /**
- * xmlHashAdd2:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @payload: pointer to the payload
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param payload  pointer to the payload
  *
  * Add a hash table entry with two strings as key.
  *
@@ -637,7 +627,7 @@ xmlHashAdd(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
  *
  * Available since 2.13.0.
  *
- * Returns 1 on success, 0 if an entry exists and -1 in case of error.
+ * @returns 1 on success, 0 if an entry exists and -1 in case of error.
  */
 int
 xmlHashAdd2(xmlHashTablePtr hash, const xmlChar *key,
@@ -646,12 +636,11 @@ xmlHashAdd2(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashAdd3:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @key3: third string key
- * @payload: pointer to the payload
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param key3  third string key
+ * @param payload  pointer to the payload
  *
  * Add a hash table entry with three strings as key.
  *
@@ -659,7 +648,7 @@ xmlHashAdd2(xmlHashTablePtr hash, const xmlChar *key,
  *
  * Available since 2.13.0.
  *
- * Returns 1 on success, 0 if an entry exists and -1 in case of error.
+ * @returns 1 on success, 0 if an entry exists and -1 in case of error.
  */
 int
 xmlHashAdd3(xmlHashTablePtr hash, const xmlChar *key,
@@ -669,10 +658,9 @@ xmlHashAdd3(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashAddEntry:
- * @hash: hash table
- * @key: string key
- * @payload: pointer to the payload
+ * @param hash  hash table
+ * @param key  string key
+ * @param payload  pointer to the payload
  *
  * Add a hash table entry. If an entry with this key already exists,
  * payload will not be updated and -1 is returned. This return value
@@ -682,7 +670,7 @@ xmlHashAdd3(xmlHashTablePtr hash, const xmlChar *key,
  * NOTE: This function doesn't allow to distinguish malloc failures from
  *       existing entries. Use xmlHashAdd instead.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 int
 xmlHashAddEntry(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
@@ -697,17 +685,16 @@ xmlHashAddEntry(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
 }
 
 /**
- * xmlHashAddEntry2:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @payload: pointer to the payload
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param payload  pointer to the payload
  *
  * Add a hash table entry with two strings as key.
  *
  * See xmlHashAddEntry.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 int
 xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar *key,
@@ -723,18 +710,17 @@ xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashAddEntry3:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @key3: third string key
- * @payload: pointer to the payload
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param key3  third string key
+ * @param payload  pointer to the payload
  *
  * Add a hash table entry with three strings as key.
  *
  * See xmlHashAddEntry.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 int
 xmlHashAddEntry3(xmlHashTablePtr hash, const xmlChar *key,
@@ -751,16 +737,15 @@ xmlHashAddEntry3(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashUpdateEntry:
- * @hash: hash table
- * @key: string key
- * @payload: pointer to the payload
- * @dealloc: deallocator function for replaced item or NULL
+ * @param hash  hash table
+ * @param key  string key
+ * @param payload  pointer to the payload
+ * @param dealloc  deallocator function for replaced item or NULL
  *
  * Add a hash table entry. If an entry with this key already exists,
  * the old payload will be freed and updated with the new value.
  *
- * Returns 0 in case of success, -1 if a memory allocation failed.
+ * @returns 0 in case of success, -1 if a memory allocation failed.
  */
 int
 xmlHashUpdateEntry(xmlHashTablePtr hash, const xmlChar *key,
@@ -775,18 +760,17 @@ xmlHashUpdateEntry(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashUpdateEntry2:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @payload: pointer to the payload
- * @dealloc: deallocator function for replaced item or NULL
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param payload  pointer to the payload
+ * @param dealloc  deallocator function for replaced item or NULL
  *
  * Add a hash table entry with two strings as key.
  *
  * See xmlHashUpdateEntry.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 int
 xmlHashUpdateEntry2(xmlHashTablePtr hash, const xmlChar *key,
@@ -802,19 +786,18 @@ xmlHashUpdateEntry2(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashUpdateEntry3:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @key3: third string key
- * @payload: pointer to the payload
- * @dealloc: deallocator function for replaced item or NULL
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param key3  third string key
+ * @param payload  pointer to the payload
+ * @param dealloc  deallocator function for replaced item or NULL
  *
  * Add a hash table entry with three strings as key.
  *
  * See xmlHashUpdateEntry.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 int
 xmlHashUpdateEntry3(xmlHashTablePtr hash, const xmlChar *key,
@@ -830,13 +813,12 @@ xmlHashUpdateEntry3(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashLookup:
- * @hash: hash table
- * @key: string key
+ * @param hash  hash table
+ * @param key  string key
  *
- * Find the entry specified by @key.
+ * Find the entry specified by `key`.
  *
- * Returns a pointer to the payload or NULL if no entry was found.
+ * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
 xmlHashLookup(xmlHashTablePtr hash, const xmlChar *key) {
@@ -844,14 +826,13 @@ xmlHashLookup(xmlHashTablePtr hash, const xmlChar *key) {
 }
 
 /**
- * xmlHashLookup2:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
  *
- * Find the payload specified by the (@key, @key2) tuple.
+ * Find the payload specified by the (`key`, `key2`) tuple.
  *
- * Returns a pointer to the payload or NULL if no entry was found.
+ * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
 xmlHashLookup2(xmlHashTablePtr hash, const xmlChar *key,
@@ -860,14 +841,13 @@ xmlHashLookup2(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashQLookup:
- * @hash: hash table
- * @prefix: prefix of the string key
- * @name: local name of the string key
+ * @param hash  hash table
+ * @param prefix  prefix of the string key
+ * @param name  local name of the string key
  *
- * Find the payload specified by the QName `prefix:name` or @name.
+ * Find the payload specified by the QName `prefix:name` or `name`.
  *
- * Returns a pointer to the payload or NULL if no entry was found.
+ * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
 xmlHashQLookup(xmlHashTablePtr hash, const xmlChar *prefix,
@@ -876,16 +856,15 @@ xmlHashQLookup(xmlHashTablePtr hash, const xmlChar *prefix,
 }
 
 /**
- * xmlHashQLookup2:
- * @hash: hash table
- * @prefix: first prefix
- * @name: first local name
- * @prefix2: second prefix
- * @name2: second local name
+ * @param hash  hash table
+ * @param prefix  first prefix
+ * @param name  first local name
+ * @param prefix2  second prefix
+ * @param name2  second local name
  *
  * Find the payload specified by the QNames tuple.
  *
- * Returns a pointer to the payload or NULL if no entry was found.
+ * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
 xmlHashQLookup2(xmlHashTablePtr hash, const xmlChar *prefix,
@@ -895,15 +874,14 @@ xmlHashQLookup2(xmlHashTablePtr hash, const xmlChar *prefix,
 }
 
 /**
- * xmlHashLookup3:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @key3: third string key
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param key3  third string key
  *
- * Find the payload specified by the (@key, @key2, @key3) tuple.
+ * Find the payload specified by the (`key`, `key2`, `key3`) tuple.
  *
- * Returns a pointer to the payload or NULL if no entry was found.
+ * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
 xmlHashLookup3(xmlHashTablePtr hash, const xmlChar *key,
@@ -922,18 +900,17 @@ xmlHashLookup3(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashQLookup3:
- * @hash: hash table
- * @prefix: first prefix
- * @name: first local name
- * @prefix2: second prefix
- * @name2: second local name
- * @prefix3: third prefix
- * @name3: third local name
+ * @param hash  hash table
+ * @param prefix  first prefix
+ * @param name  first local name
+ * @param prefix2  second prefix
+ * @param name2  second local name
+ * @param prefix3  third prefix
+ * @param name3  third local name
  *
  * Find the payload specified by the QNames tuple.
  *
- * Returns a pointer to the payload or NULL if no entry was found.
+ * @returns a pointer to the payload or NULL if no entry was found.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 void *
@@ -990,12 +967,11 @@ stubHashScannerFull(void *payload, void *data, const xmlChar *key,
 }
 
 /**
- * xmlHashScan:
- * @hash: hash table
- * @scan: scanner function for items in the hash
- * @data: extra data passed to @scan
+ * @param hash  hash table
+ * @param scan  scanner function for items in the hash
+ * @param data  extra data passed to `scan`
  *
- * Scan the hash @table and apply @scan to each value.
+ * Scan the hash `table` and apply `scan` to each value.
  */
 void
 xmlHashScan(xmlHashTablePtr hash, xmlHashScanner scan, void *data) {
@@ -1006,12 +982,11 @@ xmlHashScan(xmlHashTablePtr hash, xmlHashScanner scan, void *data) {
 }
 
 /**
- * xmlHashScanFull:
- * @hash: hash table
- * @scan: scanner function for items in the hash
- * @data: extra data passed to @scan
+ * @param hash  hash table
+ * @param scan  scanner function for items in the hash
+ * @param data  extra data passed to `scan`
  *
- * Scan the hash @table and apply @scan to each value.
+ * Scan the hash `table` and apply `scan` to each value.
  */
 void
 xmlHashScanFull(xmlHashTablePtr hash, xmlHashScannerFull scan, void *data) {
@@ -1056,16 +1031,15 @@ xmlHashScanFull(xmlHashTablePtr hash, xmlHashScannerFull scan, void *data) {
 }
 
 /**
- * xmlHashScan3:
- * @hash: hash table
- * @key: first string key or NULL
- * @key2: second string key or NULL
- * @key3: third string key or NULL
- * @scan: scanner function for items in the hash
- * @data: extra data passed to @scan
+ * @param hash  hash table
+ * @param key  first string key or NULL
+ * @param key2  second string key or NULL
+ * @param key3  third string key or NULL
+ * @param scan  scanner function for items in the hash
+ * @param data  extra data passed to `scan`
  *
- * Scan the hash @table and apply @scan to each value matching
- * (@key, @key2, @key3) tuple. If one of the keys is null,
+ * Scan the hash `table` and apply `scan` to each value matching
+ * (`key`, `key2`, `key3`) tuple. If one of the keys is null,
  * the comparison is considered to match.
  */
 void
@@ -1079,16 +1053,15 @@ xmlHashScan3(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashScanFull3:
- * @hash: hash table
- * @key: first string key or NULL
- * @key2: second string key or NULL
- * @key3: third string key or NULL
- * @scan: scanner function for items in the hash
- * @data: extra data passed to @scan
+ * @param hash  hash table
+ * @param key  first string key or NULL
+ * @param key2  second string key or NULL
+ * @param key3  third string key or NULL
+ * @param scan  scanner function for items in the hash
+ * @param data  extra data passed to `scan`
  *
- * Scan the hash @table and apply @scan to each value matching
- * (@key, @key2, @key3) tuple. If one of the keys is null,
+ * Scan the hash `table` and apply `scan` to each value matching
+ * (`key`, `key2`, `key3`) tuple. If one of the keys is null,
  * the comparison is considered to match.
  */
 void
@@ -1141,16 +1114,15 @@ xmlHashScanFull3(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /*
- * xmlHashCopySafe:
- * @hash: hash table
- * @copyFunc: copier function for items in the hash
- * @deallocFunc: deallocation function in case of errors
+ * @param hash  hash table
+ * @param copyFunc  copier function for items in the hash
+ * @param deallocFunc  deallocation function in case of errors
  *
- * Copy the hash table using @copyFunc to copy payloads.
+ * Copy the hash table using `copyFunc` to copy payloads.
  *
  * Available since 2.13.0.
  *
- * Returns the new table or NULL if a memory allocation failed.
+ * @returns the new table or NULL if a memory allocation failed.
  */
 xmlHashTablePtr
 xmlHashCopySafe(xmlHashTablePtr hash, xmlHashCopier copyFunc,
@@ -1194,15 +1166,14 @@ error:
 }
 
 /*
- * xmlHashCopy:
- * @hash: hash table
- * @copy: copier function for items in the hash
+ * @param hash  hash table
+ * @param copy  copier function for items in the hash
  *
- * DEPRECATED: Leaks memory in error case.
+ * @deprecated Leaks memory in error case.
  *
- * Copy the hash table using @copy to copy payloads.
+ * Copy the hash table using `copy` to copy payloads.
  *
- * Returns the new table or NULL if a memory allocation failed.
+ * @returns the new table or NULL if a memory allocation failed.
  */
 xmlHashTablePtr
 xmlHashCopy(xmlHashTablePtr hash, xmlHashCopier copy) {
@@ -1210,12 +1181,11 @@ xmlHashCopy(xmlHashTablePtr hash, xmlHashCopier copy) {
 }
 
 /**
- * xmlHashSize:
- * @hash: hash table
+ * @param hash  hash table
  *
  * Query the number of elements in the hash table.
  *
- * Returns the number of elements in the hash table or
+ * @returns the number of elements in the hash table or
  * -1 in case of error.
  */
 int
@@ -1226,15 +1196,14 @@ xmlHashSize(xmlHashTablePtr hash) {
 }
 
 /**
- * xmlHashRemoveEntry:
- * @hash: hash table
- * @key: string key
- * @dealloc: deallocator function for removed item or NULL
+ * @param hash  hash table
+ * @param key  string key
+ * @param dealloc  deallocator function for removed item or NULL
  *
- * Find the entry specified by the @key and remove it from the hash table.
- * Payload will be freed with @dealloc.
+ * Find the entry specified by the `key` and remove it from the hash table.
+ * Payload will be freed with `dealloc`.
  *
- * Returns 0 on success and -1 if no entry was found.
+ * @returns 0 on success and -1 if no entry was found.
  */
 int xmlHashRemoveEntry(xmlHashTablePtr hash, const xmlChar *key,
                        xmlHashDeallocator dealloc) {
@@ -1242,17 +1211,16 @@ int xmlHashRemoveEntry(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashRemoveEntry2:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @dealloc: deallocator function for removed item or NULL
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param dealloc  deallocator function for removed item or NULL
  *
  * Remove an entry with two strings as key.
  *
  * See xmlHashRemoveEntry.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 int
 xmlHashRemoveEntry2(xmlHashTablePtr hash, const xmlChar *key,
@@ -1261,18 +1229,17 @@ xmlHashRemoveEntry2(xmlHashTablePtr hash, const xmlChar *key,
 }
 
 /**
- * xmlHashRemoveEntry3:
- * @hash: hash table
- * @key: first string key
- * @key2: second string key
- * @key3: third string key
- * @dealloc: deallocator function for removed item or NULL
+ * @param hash  hash table
+ * @param key  first string key
+ * @param key2  second string key
+ * @param key3  third string key
+ * @param dealloc  deallocator function for removed item or NULL
  *
  * Remove an entry with three strings as key.
  *
  * See xmlHashRemoveEntry.
  *
- * Returns 0 on success and -1 in case of error.
+ * @returns 0 on success and -1 in case of error.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 int

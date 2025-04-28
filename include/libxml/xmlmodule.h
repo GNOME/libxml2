@@ -1,11 +1,14 @@
-/*
- * Summary: dynamic module loading
- * Description: basic API for dynamic module loading, used by
+/**
+ * @file
+ * 
+ * @brief dynamic module loading
+ * 
+ * basic API for dynamic module loading, used by
  *              libexslt added in 2.6.17
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Joel W. Reed
+ * @author Joel W. Reed
  */
 
 #ifndef __XML_MODULE_H__
@@ -20,7 +23,6 @@ extern "C" {
 #endif
 
 /**
- * xmlModulePtr:
  *
  * A handle to a dynamically loaded module
  */
@@ -28,7 +30,6 @@ typedef struct _xmlModule xmlModule;
 typedef xmlModule *xmlModulePtr;
 
 /**
- * xmlModuleOption:
  *
  * enumeration of options that can be passed down to xmlModuleOpen()
  */

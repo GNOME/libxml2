@@ -1,10 +1,13 @@
-/*
- * Summary: implementation of the Relax-NG validation
- * Description: implementation of the Relax-NG validation
+/**
+ * @file
+ * 
+ * @brief implementation of the Relax-NG validation
+ * 
+ * implementation of the Relax-NG validation
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_RELAX_NG__
@@ -27,9 +30,8 @@ typedef xmlRelaxNG *xmlRelaxNGPtr;
 
 
 /**
- * xmlRelaxNGValidityErrorFunc:
- * @ctx: the validation context
- * @msg: the message
+ * @param ctx  the validation context
+ * @param msg  the message
  * @...: extra arguments
  *
  * Signature of an error callback from a Relax-NG validation
@@ -39,9 +41,8 @@ typedef void (*xmlRelaxNGValidityErrorFunc) (void *ctx,
 						      ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
- * xmlRelaxNGValidityWarningFunc:
- * @ctx: the validation context
- * @msg: the message
+ * @param ctx  the validation context
+ * @param msg  the message
  * @...: extra arguments
  *
  * Signature of a warning callback from a Relax-NG validation
@@ -60,7 +61,6 @@ typedef struct _xmlRelaxNGValidCtxt xmlRelaxNGValidCtxt;
 typedef xmlRelaxNGValidCtxt *xmlRelaxNGValidCtxtPtr;
 
 /*
- * xmlRelaxNGValidErr:
  *
  * List of possible Relax NG validation errors
  */
@@ -108,7 +108,6 @@ typedef enum {
 } xmlRelaxNGValidErr;
 
 /*
- * xmlRelaxNGParserFlags:
  *
  * List of possible Relax NG Parser flags
  */

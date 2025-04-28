@@ -1,11 +1,14 @@
-/*
- * Summary: incomplete XML Schemas structure implementation
- * Description: interface to the XML Schemas handling and schema validity
+/**
+ * @file
+ * 
+ * @brief incomplete XML Schemas structure implementation
+ * 
+ * interface to the XML Schemas handling and schema validity
  *              checking, it is incomplete right now.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 
@@ -64,7 +67,6 @@ typedef enum {
 * options below.
 */
 /**
- * xmlSchemaValidOption:
  *
  * This is the set of XML Schema validation options.
  */
@@ -89,9 +91,8 @@ typedef struct _xmlSchema xmlSchema;
 typedef xmlSchema *xmlSchemaPtr;
 
 /**
- * xmlSchemaValidityErrorFunc:
- * @ctx: the validation context
- * @msg: the message
+ * @param ctx  the validation context
+ * @param msg  the message
  * @...: extra arguments
  *
  * Signature of an error callback from an XSD validation
@@ -100,9 +101,8 @@ typedef void (*xmlSchemaValidityErrorFunc)
                  (void *ctx, const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
- * xmlSchemaValidityWarningFunc:
- * @ctx: the validation context
- * @msg: the message
+ * @param ctx  the validation context
+ * @param msg  the message
  * @...: extra arguments
  *
  * Signature of a warning callback from an XSD validation
@@ -120,16 +120,15 @@ typedef struct _xmlSchemaValidCtxt xmlSchemaValidCtxt;
 typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 
 /**
- * xmlSchemaValidityLocatorFunc:
- * @ctx: user provided context
- * @file: returned file information
- * @line: returned line information
+ * @param ctx  user provided context
+ * @param file  returned file information
+ * @param line  returned line information
  *
  * A schemas validation locator, a callback called by the validator.
  * This is used when file or node information are not available
  * to find out what file and line number are affected
  *
- * Returns: 0 in case of success and -1 in case of error
+ * @returns 0 in case of success and -1 in case of error
  */
 
 typedef int (*xmlSchemaValidityLocatorFunc) (void *ctx,

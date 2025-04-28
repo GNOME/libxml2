@@ -1,11 +1,14 @@
-/*
- * Summary: specific APIs to process HTML tree, especially serialization
- * Description: this module implements a few function needed to process
+/**
+ * @file
+ * 
+ * @brief specific APIs to process HTML tree, especially serialization
+ * 
+ * this module implements a few function needed to process
  *              tree in an HTML specific way.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __HTML_TREE_H__

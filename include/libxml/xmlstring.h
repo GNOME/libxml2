@@ -1,11 +1,14 @@
-/*
- * Summary: set of routines to process strings
- * Description: type and interfaces needed for the internal string handling
+/**
+ * @file
+ * 
+ * @brief set of routines to process strings
+ * 
+ * type and interfaces needed for the internal string handling
  *              of the library, especially UTF8 processing.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_STRING_H__
@@ -19,7 +22,6 @@ extern "C" {
 #endif
 
 /**
- * xmlChar:
  *
  * This is a basic byte in an UTF-8 encoded string.
  * It's unsigned allowing to pinpoint case where char * are assigned

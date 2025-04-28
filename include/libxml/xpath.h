@@ -1,6 +1,9 @@
-/*
- * Summary: XML Path Language implementation
- * Description: API for the XML Path Language implementation
+/**
+ * @file
+ * 
+ * @brief XML Path Language implementation
+ * 
+ * API for the XML Path Language implementation
  *
  * XML Path Language implementation
  * XPath is a language for addressing parts of an XML document,
@@ -11,9 +14,9 @@
  * W3C Recommendation 16 November 1999
  *     http://www.w3.org/TR/1999/REC-xpath-19991116
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_XPATH_H__
@@ -103,11 +106,11 @@ typedef enum {
     XPATH_XSLT_TREE = 9  /* An XSLT value tree, non modifiable */
 } xmlXPathObjectType;
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 #define XPATH_POINT 5
 #define XPATH_RANGE 6
 #define XPATH_LOCATIONSET 7
-/** DOC_ENABLE */
+/** @endcond */
 
 typedef struct _xmlXPathObject xmlXPathObject;
 typedef xmlXPathObject *xmlXPathObjectPtr;
@@ -124,14 +127,13 @@ struct _xmlXPathObject {
 };
 
 /**
- * xmlXPathConvertFunc:
- * @obj:  an XPath object
- * @type:  the number of the target type
+ * @param obj  an XPath object
+ * @param type  the number of the target type
  *
  * A conversion function is associated to a type and used to cast
  * the new type to primitive values.
  *
- * Returns -1 in case of error, 0 otherwise
+ * @returns -1 in case of error, 0 otherwise
  */
 typedef int (*xmlXPathConvertFunc) (xmlXPathObjectPtr obj, int type);
 
@@ -158,9 +160,8 @@ struct _xmlXPathVariable {
 };
 
 /**
- * xmlXPathEvalFunc:
- * @ctxt: an XPath parser context
- * @nargs: the number of arguments passed to the function
+ * @param ctxt  an XPath parser context
+ * @param nargs  the number of arguments passed to the function
  *
  * An XPath evaluation function, the parameters are on the XPath context stack.
  */
@@ -180,15 +181,14 @@ struct _xmlXPathFunct {
 };
 
 /**
- * xmlXPathAxisFunc:
- * @ctxt:  the XPath interpreter context
- * @cur:  the previous node being explored on that axis
+ * @param ctxt  the XPath interpreter context
+ * @param cur  the previous node being explored on that axis
  *
  * An axis traversal function. To traverse an axis, the engine calls
  * the first time with cur == NULL and repeat until the function returns
  * NULL indicating the end of the axis traversal.
  *
- * Returns the next node in that axis or NULL if at the end of the axis.
+ * @returns the next node in that axis or NULL if at the end of the axis.
  */
 
 typedef xmlXPathObjectPtr (*xmlXPathAxisFunc) (xmlXPathParserContextPtr ctxt,
@@ -206,9 +206,8 @@ struct _xmlXPathAxis {
 };
 
 /**
- * xmlXPathFunction:
- * @ctxt:  the XPath interprestation context
- * @nargs:  the number of arguments
+ * @param ctxt  the XPath interprestation context
+ * @param nargs  the number of arguments
  *
  * An XPath function.
  * The arguments (if any) are popped out from the context stack
@@ -222,37 +221,34 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
  */
 
 /**
- * xmlXPathVariableLookupFunc:
- * @ctxt:  an XPath context
- * @name:  name of the variable
- * @ns_uri:  the namespace name hosting this variable
+ * @param ctxt  an XPath context
+ * @param name  name of the variable
+ * @param ns_uri  the namespace name hosting this variable
  *
  * Prototype for callbacks used to plug variable lookup in the XPath
  * engine.
  *
- * Returns the XPath object value or NULL if not found.
+ * @returns the XPath object value or NULL if not found.
  */
 typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
                                          const xmlChar *name,
                                          const xmlChar *ns_uri);
 
 /**
- * xmlXPathFuncLookupFunc:
- * @ctxt:  an XPath context
- * @name:  name of the function
- * @ns_uri:  the namespace name hosting this function
+ * @param ctxt  an XPath context
+ * @param name  name of the function
+ * @param ns_uri  the namespace name hosting this function
  *
  * Prototype for callbacks used to plug function lookup in the XPath
  * engine.
  *
- * Returns the XPath function or NULL if not found.
+ * @returns the XPath function or NULL if not found.
  */
 typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
 					 const xmlChar *name,
 					 const xmlChar *ns_uri);
 
 /**
- * xmlXPathFlags:
  * Flags for XPath engine compilation and runtime
  */
 /**
@@ -269,7 +265,6 @@ typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
 #define XML_XPATH_NOVAR	  (1<<1)
 
 /**
- * xmlXPathContext:
  *
  * Expression evaluation occurs with respect to a context.
  * he context consists of:
@@ -367,7 +362,6 @@ typedef struct _xmlXPathCompExpr xmlXPathCompExpr;
 typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
 
 /**
- * xmlXPathParserContext:
  *
  * An XPath parser context. It contains pure parsing information,
  * an xmlXPathContext, and the stack of objects.
@@ -410,23 +404,21 @@ XMLPUBVAR double xmlXPathNINF;
 
 /* These macros may later turn into functions */
 /**
- * xmlXPathNodeSetGetLength:
- * @ns:  a node-set
+ * @param ns  a node-set
  *
  * Implement a functionality similar to the DOM NodeList.length.
  *
- * Returns the number of nodes in the node-set.
+ * @returns the number of nodes in the node-set.
  */
 #define xmlXPathNodeSetGetLength(ns) ((ns) ? (ns)->nodeNr : 0)
 /**
- * xmlXPathNodeSetItem:
- * @ns:  a node-set
- * @index:  index of a node in the set
+ * @param ns  a node-set
+ * @param index  index of a node in the set
  *
  * Implements a functionality similar to the DOM NodeList.item().
  *
- * Returns the xmlNodePtr at the given @index in @ns or NULL if
- *         @index is out of range (0 to length-1)
+ * @returns the xmlNodePtr at the given `index` in `ns` or NULL if
+ *         `index` is out of range (0 to length-1)
  */
 #define xmlXPathNodeSetItem(ns, index)				\
 		((((ns) != NULL) &&				\
@@ -434,12 +426,11 @@ XMLPUBVAR double xmlXPathNINF;
 		 (ns)->nodeTab[(index)]				\
 		 : NULL)
 /**
- * xmlXPathNodeSetIsEmpty:
- * @ns: a node-set
+ * @param ns  a node-set
  *
- * Checks whether @ns is empty or not.
+ * Checks whether `ns` is empty or not.
  *
- * Returns %TRUE if @ns is an empty node-set.
+ * @returns %TRUE if `ns` is an empty node-set.
  */
 #define xmlXPathNodeSetIsEmpty(ns)                                      \
     (((ns) == NULL) || ((ns)->nodeNr == 0) || ((ns)->nodeTab == NULL))

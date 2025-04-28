@@ -189,7 +189,6 @@ static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
  *									*
  ************************************************************************/
 /**
- * xmlSchemaTypeErrMemory:
  *
  * Handle an out of memory condition
  */
@@ -206,12 +205,11 @@ xmlSchemaTypeErrMemory(void)
  ************************************************************************/
 
 /**
- * xmlSchemaNewValue:
- * @type:  the value type
+ * @param type  the value type
  *
  * Allocate a new simple type value
  *
- * Returns a pointer to the new value or NULL in case of error
+ * @returns a pointer to the new value or NULL in case of error
  */
 static xmlSchemaValPtr
 xmlSchemaNewValue(xmlSchemaValType type) {
@@ -258,9 +256,8 @@ xmlSchemaNewMinLengthFacet(int value)
 }
 
 /*
- * xmlSchemaInitBasicType:
- * @name:  the type name
- * @type:  the value type associated
+ * @param name  the type name
+ * @param type  the value type associated
  *
  * Initialize one primitive built-in type
  */
@@ -366,11 +363,11 @@ xmlSchemaValDecimalGetSignificantDigitCount(const xmlSchemaValDecimal *decimal)
 }
 
 /**
- * @brief Compares two decimals
+ * `brief` Compares two decimals
  * 
- * @param lhs 
- * @param rhs 
- * @return positive value if lhs > rhs, negative if lhs < rhs, or 0 if lhs == rhs
+ * `param` lhs 
+ * `param` rhs 
+ * `return` positive value if lhs > rhs, negative if lhs < rhs, or 0 if lhs == rhs
  */
 static int xmlSchemaValDecimalCompare(const xmlSchemaValDecimal *lhs, const xmlSchemaValDecimal *rhs)
 {
@@ -482,7 +479,6 @@ xmlSchemaFreeTypeEntry(void *type, const xmlChar *name ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlSchemaCleanupTypesInternal:
  *
  * Cleanup the default XML Schemas type library
  */
@@ -522,11 +518,10 @@ xmlSchemaCleanupTypesInternal(void) {
 }
 
 /*
- * xmlSchemaInitTypes:
  *
  * Initialize the default XML Schemas type library
  *
- * Returns 0 on success, -1 on error.
+ * @returns 0 on success, -1 on error.
  */
 int
 xmlSchemaInitTypes(void)
@@ -868,9 +863,8 @@ error:
 }
 
 /**
- * xmlSchemaCleanupTypes:
  *
- * DEPRECATED: This function will be made private. Call xmlCleanupParser
+ * @deprecated This function will be made private. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have to call cleanup functions at all.
@@ -886,14 +880,13 @@ xmlSchemaCleanupTypes(void) {
 }
 
 /**
- * xmlSchemaIsBuiltInTypeFacet:
- * @type: the built-in type
- * @facetType:  the facet type
+ * @param type  the built-in type
+ * @param facetType  the facet type
  *
  * Evaluates if a specific facet can be
  * used in conjunction with a type.
  *
- * Returns 1 if the facet can be used with the given built-in type,
+ * @returns 1 if the facet can be used with the given built-in type,
  * 0 otherwise and -1 in case the type is not a built-in type.
  */
 int
@@ -966,13 +959,12 @@ xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, int facetType)
 }
 
 /**
- * xmlSchemaGetBuiltInType:
- * @type:  the type of the built in type
+ * @param type  the type of the built in type
  *
  * Gives you the type struct for a built-in
  * type by its type id.
  *
- * Returns the type if found, NULL otherwise.
+ * @returns the type if found, NULL otherwise.
  */
 xmlSchemaTypePtr
 xmlSchemaGetBuiltInType(xmlSchemaValType type)
@@ -1080,13 +1072,12 @@ xmlSchemaGetBuiltInType(xmlSchemaValType type)
 }
 
 /**
- * xmlSchemaValueAppend:
- * @prev: the value
- * @cur: the value to be appended
+ * @param prev  the value
+ * @param cur  the value to be appended
  *
  * Appends a next sibling to a list of computed values.
  *
- * Returns 0 if succeeded and -1 on API errors.
+ * @returns 0 if succeeded and -1 on API errors.
  */
 int
 xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
@@ -1098,12 +1089,11 @@ xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
 }
 
 /**
- * xmlSchemaValueGetNext:
- * @cur: the value
+ * @param cur  the value
  *
  * Accessor for the next sibling of a list of computed values.
  *
- * Returns the next value or NULL if there was none, or on
+ * @returns the next value or NULL if there was none, or on
  *         API errors.
  */
 xmlSchemaValPtr
@@ -1115,12 +1105,11 @@ xmlSchemaValueGetNext(xmlSchemaValPtr cur) {
 }
 
 /**
- * xmlSchemaValueGetAsString:
- * @val: the value
+ * @param val  the value
  *
  * Accessor for the string value of a computed value.
  *
- * Returns the string value or NULL if there was none, or on
+ * @returns the string value or NULL if there was none, or on
  *         API errors.
  */
 const xmlChar *
@@ -1149,12 +1138,11 @@ xmlSchemaValueGetAsString(xmlSchemaValPtr val)
 }
 
 /**
- * xmlSchemaValueGetAsBoolean:
- * @val: the value
+ * @param val  the value
  *
  * Accessor for the boolean value of a computed value.
  *
- * Returns 1 if true and 0 if false, or in case of an error. Hmm.
+ * @returns 1 if true and 0 if false, or in case of an error. Hmm.
  */
 int
 xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
@@ -1165,9 +1153,8 @@ xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
 }
 
 /**
- * xmlSchemaNewStringValue:
- * @type:  the value type
- * @value:  the value
+ * @param type  the value type
+ * @param value  the value
  *
  * Allocate a new simple type value. The type can be
  * of XML_SCHEMAS_STRING.
@@ -1175,7 +1162,7 @@ xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
  * string based types. We need this for anySimpleType as well.
  * The given value is consumed and freed with the struct.
  *
- * Returns a pointer to the new value or NULL in case of error
+ * @returns a pointer to the new value or NULL in case of error
  */
 xmlSchemaValPtr
 xmlSchemaNewStringValue(xmlSchemaValType type,
@@ -1196,14 +1183,13 @@ xmlSchemaNewStringValue(xmlSchemaValType type,
 }
 
 /**
- * xmlSchemaNewNOTATIONValue:
- * @name:  the notation name
- * @ns: the notation namespace name or NULL
+ * @param name  the notation name
+ * @param ns  the notation namespace name or NULL
  *
  * Allocate a new NOTATION value.
  * The given values are consumed and freed with the struct.
  *
- * Returns a pointer to the new value or NULL in case of error
+ * @returns a pointer to the new value or NULL in case of error
  */
 xmlSchemaValPtr
 xmlSchemaNewNOTATIONValue(const xmlChar *name,
@@ -1222,14 +1208,13 @@ xmlSchemaNewNOTATIONValue(const xmlChar *name,
 }
 
 /**
- * xmlSchemaNewQNameValue:
- * @namespaceName: the namespace name
- * @localName: the local name
+ * @param namespaceName  the namespace name
+ * @param localName  the local name
  *
  * Allocate a new QName value.
  * The given values are consumed and freed with the struct.
  *
- * Returns a pointer to the new value or NULL in case of an error.
+ * @returns a pointer to the new value or NULL in case of an error.
  */
 xmlSchemaValPtr
 xmlSchemaNewQNameValue(const xmlChar *namespaceName,
@@ -1247,8 +1232,7 @@ xmlSchemaNewQNameValue(const xmlChar *namespaceName,
 }
 
 /**
- * xmlSchemaFreeValue:
- * @value:  the value to free
+ * @param value  the value to free
  *
  * Cleanup the default XML Schemas type library
  */
@@ -1318,13 +1302,12 @@ xmlSchemaFreeValue(xmlSchemaValPtr value) {
 }
 
 /**
- * xmlSchemaGetPredefinedType:
- * @name: the type name
- * @ns:  the URI of the namespace usually "http://www.w3.org/2001/XMLSchema"
+ * @param name  the type name
+ * @param ns  the URI of the namespace usually "http://www.w3.org/2001/XMLSchema"
  *
  * Lookup a type in the default XML Schemas type library
  *
- * Returns the type if found, NULL otherwise
+ * @returns the type if found, NULL otherwise
  */
 xmlSchemaTypePtr
 xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
@@ -1337,12 +1320,11 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSchemaGetBuiltInListSimpleTypeItemType:
- * @type: the built-in simple type.
+ * @param type  the built-in simple type.
  *
  * Lookup function
  *
- * Returns the item type of @type as defined by the built-in datatype
+ * @returns the item type of `type` as defined by the built-in datatype
  * hierarchy of XML Schema Part 2: Datatypes, or NULL in case of an error.
  */
 xmlSchemaTypePtr
@@ -1428,15 +1410,15 @@ static const long dayInLeapYearByMonth[12] =
 
 /**
  * _xmlSchemaParseGYear:
- * @dt:  pointer to a date structure
- * @str: pointer to the string to analyze
+ * @param dt  pointer to a date structure
+ * @param str  pointer to the string to analyze
  *
  * Parses a xs:gYear without time zone and fills in the appropriate
- * field of the @dt structure. @str is updated to point just after the
- * xs:gYear. It is supposed that @dt->year is big enough to contain
+ * field of the `dt` structure. `str` is updated to point just after the
+ * xs:gYear. It is supposed that `dt`->year is big enough to contain
  * the year.
  *
- * Returns 0 or the error code
+ * @returns 0 or the error code
  */
 static int
 _xmlSchemaParseGYear (xmlSchemaValDatePtr dt, const xmlChar **str) {
@@ -1484,14 +1466,14 @@ _xmlSchemaParseGYear (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * PARSE_2_DIGITS:
- * @num:  the integer to fill in
- * @cur:  an #xmlChar *
- * @invalid: an integer
+ * @param num  the integer to fill in
+ * @param cur  an \#xmlChar *
+ * @param invalid  an integer
  *
- * Parses a 2-digits integer and updates @num with the value. @cur is
+ * Parses a 2-digits integer and updates `num` with the value. `cur` is
  * updated to point just after the integer.
- * In case of error, @invalid is set to %TRUE, values of @num and
- * @cur are undefined.
+ * In case of error, `invalid` is set to %TRUE, values of `num` and
+ * `cur` are undefined.
  */
 #define PARSE_2_DIGITS(num, cur, invalid)			\
 	if ((cur[0] < '0') || (cur[0] > '9') ||			\
@@ -1503,15 +1485,15 @@ _xmlSchemaParseGYear (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * PARSE_FLOAT:
- * @num:  the double to fill in
- * @cur:  an #xmlChar *
- * @invalid: an integer
+ * @param num  the double to fill in
+ * @param cur  an \#xmlChar *
+ * @param invalid  an integer
  *
- * Parses a float and updates @num with the value. @cur is
+ * Parses a float and updates `num` with the value. `cur` is
  * updated to point just after the float. The float must have a
  * 2-digits integer part and may or may not have a decimal part.
- * In case of error, @invalid is set to %TRUE, values of @num and
- * @cur are undefined.
+ * In case of error, `invalid` is set to %TRUE, values of `num` and
+ * `cur` are undefined.
  */
 #define PARSE_FLOAT(num, cur, invalid)				\
 	PARSE_2_DIGITS(num, cur, invalid);			\
@@ -1529,14 +1511,14 @@ _xmlSchemaParseGYear (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * _xmlSchemaParseGMonth:
- * @dt:  pointer to a date structure
- * @str: pointer to the string to analyze
+ * @param dt  pointer to a date structure
+ * @param str  pointer to the string to analyze
  *
  * Parses a xs:gMonth without time zone and fills in the appropriate
- * field of the @dt structure. @str is updated to point just after the
+ * field of the `dt` structure. `str` is updated to point just after the
  * xs:gMonth.
  *
- * Returns 0 or the error code
+ * @returns 0 or the error code
  */
 static int
 _xmlSchemaParseGMonth (xmlSchemaValDatePtr dt, const xmlChar **str) {
@@ -1559,14 +1541,14 @@ _xmlSchemaParseGMonth (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * _xmlSchemaParseGDay:
- * @dt:  pointer to a date structure
- * @str: pointer to the string to analyze
+ * @param dt  pointer to a date structure
+ * @param str  pointer to the string to analyze
  *
  * Parses a xs:gDay without time zone and fills in the appropriate
- * field of the @dt structure. @str is updated to point just after the
+ * field of the `dt` structure. `str` is updated to point just after the
  * xs:gDay.
  *
- * Returns 0 or the error code
+ * @returns 0 or the error code
  */
 static int
 _xmlSchemaParseGDay (xmlSchemaValDatePtr dt, const xmlChar **str) {
@@ -1588,15 +1570,15 @@ _xmlSchemaParseGDay (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * _xmlSchemaParseTime:
- * @dt:  pointer to a date structure
- * @str: pointer to the string to analyze
+ * @param dt  pointer to a date structure
+ * @param str  pointer to the string to analyze
  *
  * Parses a xs:time without time zone and fills in the appropriate
- * fields of the @dt structure. @str is updated to point just after the
+ * fields of the `dt` structure. `str` is updated to point just after the
  * xs:time.
- * In case of error, values of @dt fields are undefined.
+ * In case of error, values of `dt` fields are undefined.
  *
- * Returns 0 or the error code
+ * @returns 0 or the error code
  */
 static int
 _xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
@@ -1640,14 +1622,14 @@ _xmlSchemaParseTime (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * _xmlSchemaParseTimeZone:
- * @dt:  pointer to a date structure
- * @str: pointer to the string to analyze
+ * @param dt  pointer to a date structure
+ * @param str  pointer to the string to analyze
  *
  * Parses a time zone without time zone and fills in the appropriate
- * field of the @dt structure. @str is updated to point just after the
+ * field of the `dt` structure. `str` is updated to point just after the
  * time zone.
  *
- * Returns 0 or the error code
+ * @returns 0 or the error code
  */
 static int
 _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
@@ -1715,11 +1697,11 @@ _xmlSchemaParseTimeZone (xmlSchemaValDatePtr dt, const xmlChar **str) {
 
 /**
  * _xmlSchemaBase64Decode:
- * @ch: a character
+ * @param ch  a character
  *
  * Converts a base64 encoded character to its base 64 value.
  *
- * Returns 0-63 (value), 64 (pad), or -1 (not recognized)
+ * @returns 0-63 (value), 64 (pad), or -1 (not recognized)
  */
 static int
 _xmlSchemaBase64Decode (const xmlChar ch) {
@@ -1740,14 +1722,14 @@ _xmlSchemaBase64Decode (const xmlChar ch) {
 
 /**
  * PARSE_DIGITS:
- * @num:  the integer to fill in
- * @cur:  an #xmlChar *
- * @num_type: an integer flag
+ * @param num  the integer to fill in
+ * @param cur  an \#xmlChar *
+ * @param num_type  an integer flag
  *
- * Parses a digits integer and updates @num with the value. @cur is
+ * Parses a digits integer and updates `num` with the value. `cur` is
  * updated to point just after the integer.
- * In case of error, @num_type is set to -1, values of @num and
- * @cur are undefined.
+ * In case of error, `num_type` is set to -1, values of `num` and
+ * `cur` are undefined.
  */
 #define PARSE_DIGITS(num, cur, num_type)	                \
 	if ((*cur < '0') || (*cur > '9'))			\
@@ -1760,16 +1742,16 @@ _xmlSchemaBase64Decode (const xmlChar ch) {
 
 /**
  * PARSE_NUM:
- * @num:  the double to fill in
- * @cur:  an #xmlChar *
- * @num_type: an integer flag
+ * @param num  the double to fill in
+ * @param cur  an \#xmlChar *
+ * @param num_type  an integer flag
  *
- * Parses a float or integer and updates @num with the value. @cur is
+ * Parses a float or integer and updates `num` with the value. `cur` is
  * updated to point just after the number. If the number is a float,
- * then it must have an integer part and a decimal part; @num_type will
- * be set to 1. If there is no decimal part, @num_type is set to zero.
- * In case of error, @num_type is set to -1, values of @num and
- * @cur are undefined.
+ * then it must have an integer part and a decimal part; `num_type` will
+ * be set to 1. If there is no decimal part, `num_type` is set to zero.
+ * In case of error, `num_type` is set to -1, values of `num` and
+ * `cur` are undefined.
  */
 #define PARSE_NUM(num, cur, num_type)				\
         num = 0;                                                \
@@ -1789,16 +1771,15 @@ _xmlSchemaBase64Decode (const xmlChar ch) {
 	}
 
 /**
- * xmlSchemaValidateDates:
- * @type: the expected type or XML_SCHEMAS_UNKNOWN
- * @dateTime:  string to analyze
- * @val:  the return computed value
- * @collapse:  whether to collapse
+ * @param type  the expected type or XML_SCHEMAS_UNKNOWN
+ * @param dateTime  string to analyze
+ * @param val  the return computed value
+ * @param collapse  whether to collapse
  *
- * Check that @dateTime conforms to the lexical space of one of the date types.
- * if true a value is computed and returned in @val.
+ * Check that `dateTime` conforms to the lexical space of one of the date types.
+ * if true a value is computed and returned in `val`.
  *
- * Returns 0 if this validates, a positive error code number otherwise
+ * @returns 0 if this validates, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 static int
@@ -2013,16 +1994,15 @@ error:
 }
 
 /**
- * xmlSchemaValidateDuration:
- * @type: the predefined type
- * @duration:  string to analyze
- * @val:  the return computed value
- * @collapse:  whether to collapse
+ * @param type  the predefined type
+ * @param duration  string to analyze
+ * @param val  the return computed value
+ * @param collapse  whether to collapse
  *
- * Check that @duration conforms to the lexical space of the duration type.
- * if true a value is computed and returned in @val.
+ * Check that `duration` conforms to the lexical space of the duration type.
+ * if true a value is computed and returned in `val`.
  *
- * Returns 0 if this validates, a positive error code number otherwise
+ * @returns 0 if this validates, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 static int
@@ -2188,12 +2168,11 @@ error:
 }
 
 /**
- * xmlSchemaStrip:
- * @value: a value
+ * @param value  a value
  *
  * Removes the leading and ending spaces of a string
  *
- * Returns the new string or NULL if no change was required.
+ * @returns the new string or NULL if no change was required.
  */
 static xmlChar *
 xmlSchemaStrip(const xmlChar *value) {
@@ -2212,12 +2191,11 @@ xmlSchemaStrip(const xmlChar *value) {
 }
 
 /**
- * xmlSchemaWhiteSpaceReplace:
- * @value: a value
+ * @param value  a value
  *
  * Replaces 0xd, 0x9 and 0xa with a space.
  *
- * Returns the new string or NULL if no change was required.
+ * @returns the new string or NULL if no change was required.
  */
 xmlChar *
 xmlSchemaWhiteSpaceReplace(const xmlChar *value) {
@@ -2247,12 +2225,11 @@ xmlSchemaWhiteSpaceReplace(const xmlChar *value) {
 }
 
 /**
- * xmlSchemaCollapseString:
- * @value: a value
+ * @param value  a value
  *
  * Removes and normalize white spaces in the string
  *
- * Returns the new string or NULL if no change was required.
+ * @returns the new string or NULL if no change was required.
  */
 xmlChar *
 xmlSchemaCollapseString(const xmlChar *value) {
@@ -2299,16 +2276,15 @@ xmlSchemaCollapseString(const xmlChar *value) {
 }
 
 /**
- * xmlSchemaValAtomicListNode:
- * @type: the predefined atomic type for a token in the list
- * @value: the list value to check
- * @ret:  the return computed value
- * @node:  the node containing the value
+ * @param type  the predefined atomic type for a token in the list
+ * @param value  the list value to check
+ * @param ret  the return computed value
+ * @param node  the node containing the value
  *
  * Check that a value conforms to the lexical space of the predefined
- * list type. if true a value is computed and returned in @ret.
+ * list type. if true a value is computed and returned in `ret`.
  *
- * Returns the number of items if this validates, a negative error code
+ * @returns the number of items if this validates, a negative error code
  *         number otherwise
  */
 static int
@@ -2369,13 +2345,12 @@ xmlSchemaValAtomicListNode(xmlSchemaTypePtr type, const xmlChar *value,
 }
 
 /**
- * xmlSchemaParseUInt:
- * @str: pointer to the string R/W
- * @val: pointer to the resulting decimal
+ * @param str  pointer to the string R/W
+ * @param val  pointer to the resulting decimal
  *
  * Parse an unsigned long into a decimal.
  *
- * Returns the number of significant digits in the number or
+ * @returns the number of significant digits in the number or
  * -1 if overflow of the capacity and -2 if it's not a number.
  */
 static int xmlSchemaParseUInt(const xmlChar **str, xmlSchemaValDecimalPtr val) {
@@ -2418,12 +2393,12 @@ static int xmlSchemaParseUInt(const xmlChar **str, xmlSchemaValDecimalPtr val) {
 
 /*
  * xmlSchemaCheckLanguageType
- * @value: the value to check
+ * @param value  the value to check
  *
  * Check that a value conforms to the lexical space of the language datatype.
  * Must conform to [a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*
  *
- * Returns 1 if this validates, 0 otherwise.
+ * @returns 1 if this validates, 0 otherwise.
  */
 static int
 xmlSchemaCheckLanguageType(const xmlChar* value) {
@@ -2455,22 +2430,21 @@ xmlSchemaCheckLanguageType(const xmlChar* value) {
 }
 
 /**
- * xmlSchemaValAtomicType:
- * @type: the predefined type
- * @value: the value to check
- * @val:  the return computed value
- * @node:  the node containing the value
- * @flags:  flags to control the validation
- * @ws:  whitespace value type
- * @normOnTheFly:  whether to normalize on the fly
- * @applyNorm:  whether to apply normalization
- * @createStringValue:  whether to create a string value
+ * @param type  the predefined type
+ * @param value  the value to check
+ * @param val  the return computed value
+ * @param node  the node containing the value
+ * @param flags  flags to control the validation
+ * @param ws  whitespace value type
+ * @param normOnTheFly  whether to normalize on the fly
+ * @param applyNorm  whether to apply normalization
+ * @param createStringValue  whether to create a string value
  *
  * Check that a value conforms to the lexical space of the atomic type.
- * if true a value is computed and returned in @val.
+ * if true a value is computed and returned in `val`.
  * This checks the value space for list types as well (IDREFS, NMTOKENS).
  *
- * Returns 0 if this validates, a positive error code number otherwise
+ * @returns 0 if this validates, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 static int
@@ -3642,16 +3616,15 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
 }
 
 /**
- * xmlSchemaValPredefTypeNode:
- * @type: the predefined type
- * @value: the value to check
- * @val:  the return computed value
- * @node:  the node containing the value
+ * @param type  the predefined type
+ * @param value  the value to check
+ * @param val  the return computed value
+ * @param node  the node containing the value
  *
  * Check that a value conforms to the lexical space of the predefined type.
- * if true a value is computed and returned in @val.
+ * if true a value is computed and returned in `val`.
  *
- * Returns 0 if this validates, a positive error code number otherwise
+ * @returns 0 if this validates, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 int
@@ -3662,17 +3635,16 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
 }
 
 /**
- * xmlSchemaValPredefTypeNodeNoNorm:
- * @type: the predefined type
- * @value: the value to check
- * @val:  the return computed value
- * @node:  the node containing the value
+ * @param type  the predefined type
+ * @param value  the value to check
+ * @param val  the return computed value
+ * @param node  the node containing the value
  *
  * Check that a value conforms to the lexical space of the predefined type.
- * if true a value is computed and returned in @val.
+ * if true a value is computed and returned in `val`.
  * This one does apply any normalization to the value.
  *
- * Returns 0 if this validates, a positive error code number otherwise
+ * @returns 0 if this validates, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 int
@@ -3683,15 +3655,14 @@ xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, const xmlChar *value,
 }
 
 /**
- * xmlSchemaValidatePredefinedType:
- * @type: the predefined type
- * @value: the value to check
- * @val:  the return computed value
+ * @param type  the predefined type
+ * @param value  the value to check
+ * @param val  the return computed value
  *
  * Check that a value conforms to the lexical space of the predefined type.
- * if true a value is computed and returned in @val.
+ * if true a value is computed and returned in `val`.
  *
- * Returns 0 if this validates, a positive error code number otherwise
+ * @returns 0 if this validates, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 int
@@ -3701,13 +3672,12 @@ xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
 }
 
 /**
- * xmlSchemaCompareDecimals:
- * @x:  a first decimal value
- * @y:  a second decimal value
+ * @param x  a first decimal value
+ * @param y  a second decimal value
  *
  * Compare 2 decimals
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y and -2 in case of error
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y and -2 in case of error
  */
 static int
 xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
@@ -3725,13 +3695,12 @@ xmlSchemaCompareDecimals(xmlSchemaValPtr x, xmlSchemaValPtr y)
 }
 
 /**
- * xmlSchemaCompareDurations:
- * @x:  a first duration value
- * @y:  a second duration value
+ * @param x  a first duration value
+ * @param y  a second duration value
  *
  * Compare 2 durations
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
 static int
@@ -3827,13 +3796,12 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
 #define MODULO_RANGE(a,low,high)        ((MODULO((a-low),(high-low)))+low)
 
 /**
- * xmlSchemaDupVal:
- * @v: the #xmlSchemaValPtr value to duplicate
+ * @param v  the \#xmlSchemaValPtr value to duplicate
  *
- * Makes a copy of @v. The calling program is responsible for freeing
+ * Makes a copy of `v`. The calling program is responsible for freeing
  * the returned value.
  *
- * returns a pointer to a duplicated #xmlSchemaValPtr or NULL if error.
+ * @returns a pointer to a duplicated \#xmlSchemaValPtr or NULL if error.
  */
 static xmlSchemaValPtr
 xmlSchemaDupVal (xmlSchemaValPtr v)
@@ -3848,12 +3816,11 @@ xmlSchemaDupVal (xmlSchemaValPtr v)
 }
 
 /**
- * xmlSchemaCopyValue:
- * @val:  the precomputed value to be copied
+ * @param val  the precomputed value to be copied
  *
  * Copies the precomputed value. This duplicates any string within.
  *
- * Returns the copy or NULL if a copy for a data-type is not implemented.
+ * @returns the copy or NULL if a copy for a data-type is not implemented.
  */
 xmlSchemaValPtr
 xmlSchemaCopyValue(xmlSchemaValPtr val)
@@ -3942,15 +3909,15 @@ xmlSchemaCopyValue(xmlSchemaValPtr val)
 
 /**
  * _xmlSchemaDateAdd:
- * @dt: an #xmlSchemaValPtr
- * @dur: an #xmlSchemaValPtr of type #XS_DURATION
+ * @param dt  an \#xmlSchemaValPtr
+ * @param dur  an \#xmlSchemaValPtr of type \#XS_DURATION
  *
- * Compute a new date/time from @dt and @dur. This function assumes @dt
- * is either #XML_SCHEMAS_DATETIME, #XML_SCHEMAS_DATE, #XML_SCHEMAS_GYEARMONTH,
- * or #XML_SCHEMAS_GYEAR. The returned #xmlSchemaVal is the same type as
- * @dt. The calling program is responsible for freeing the returned value.
+ * Compute a new date/time from `dt` and `dur`. This function assumes `dt`
+ * is either \#XML_SCHEMAS_DATETIME, \#XML_SCHEMAS_DATE, \#XML_SCHEMAS_GYEARMONTH,
+ * or \#XML_SCHEMAS_GYEAR. The returned \#xmlSchemaVal is the same type as
+ * `dt`. The calling program is responsible for freeing the returned value.
  *
- * Returns a pointer to a new #xmlSchemaVal or NULL if error.
+ * @returns a pointer to a new \#xmlSchemaVal or NULL if error.
  */
 static xmlSchemaValPtr
 _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
@@ -4096,14 +4063,13 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
 }
 
 /**
- * xmlSchemaDateNormalize:
- * @dt: an #xmlSchemaValPtr of a date/time type value.
- * @offset: number of seconds to adjust @dt by.
+ * @param dt  an \#xmlSchemaValPtr of a date/time type value.
+ * @param offset  number of seconds to adjust `dt` by.
  *
- * Normalize @dt to GMT time. The @offset parameter is subtracted from
- * the return value is a time-zone offset is present on @dt.
+ * Normalize `dt` to GMT time. The `offset` parameter is subtracted from
+ * the return value is a time-zone offset is present on `dt`.
  *
- * Returns a normalized copy of @dt or NULL if error.
+ * @returns a normalized copy of `dt` or NULL if error.
  */
 static xmlSchemaValPtr
 xmlSchemaDateNormalize (xmlSchemaValPtr dt, double offset)
@@ -4137,14 +4103,14 @@ xmlSchemaDateNormalize (xmlSchemaValPtr dt, double offset)
 
 /**
  * _xmlSchemaDateCastYMToDays:
- * @dt: an #xmlSchemaValPtr
+ * @param dt  an \#xmlSchemaValPtr
  *
- * Convert mon and year of @dt to total number of days. Take the
+ * Convert mon and year of `dt` to total number of days. Take the
  * number of years since (or before) 1 AD and add the number of leap
  * years. This is a function  because negative
  * years must be handled a little differently and there is no zero year.
  *
- * Returns number of days.
+ * @returns number of days.
  */
 static long
 _xmlSchemaDateCastYMToDays (const xmlSchemaValPtr dt)
@@ -4171,11 +4137,11 @@ _xmlSchemaDateCastYMToDays (const xmlSchemaValPtr dt)
 
 /**
  * TIME_TO_NUMBER:
- * @dt:  an #xmlSchemaValPtr
+ * @param dt  an \#xmlSchemaValPtr
  *
- * Calculates the number of seconds in the time portion of @dt.
+ * Calculates the number of seconds in the time portion of `dt`.
  *
- * Returns seconds.
+ * @returns seconds.
  */
 #define TIME_TO_NUMBER(dt)                              \
     ((double)((dt->value.date.hour * SECS_PER_HOUR) +   \
@@ -4184,13 +4150,12 @@ _xmlSchemaDateCastYMToDays (const xmlSchemaValPtr dt)
                dt->value.date.sec)
 
 /**
- * xmlSchemaCompareDates:
- * @x:  a first date/time value
- * @y:  a second date/time value
+ * @param x  a first date/time value
+ * @param y  a second date/time value
  *
  * Compare 2 date/times
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
 static int
@@ -4477,17 +4442,16 @@ xmlSchemaCompareDates (xmlSchemaValPtr x, xmlSchemaValPtr y)
 }
 
 /**
- * xmlSchemaComparePreserveReplaceStrings:
- * @x:  a first string value
- * @y:  a second string value
- * @invert: inverts the result if x < y or x > y.
+ * @param x  a first string value
+ * @param y  a second string value
+ * @param invert  inverts the result if x < y or x > y.
  *
  * Compare 2 string for their normalized values.
- * @x is a string with whitespace of "preserve", @y is
- * a string with a whitespace of "replace". I.e. @x could
- * be an "xsd:string" and @y an "xsd:normalizedString".
+ * `x` is a string with whitespace of "preserve", `y` is
+ * a string with a whitespace of "replace". I.e. `x` could
+ * be an "xsd:string" and `y` an "xsd:normalizedString".
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
  * case of error
  */
 static int
@@ -4546,17 +4510,16 @@ xmlSchemaComparePreserveReplaceStrings(const xmlChar *x,
 }
 
 /**
- * xmlSchemaComparePreserveCollapseStrings:
- * @x:  a first string value
- * @y:  a second string value
- * @invert:  whether to invert
+ * @param x  a first string value
+ * @param y  a second string value
+ * @param invert  whether to invert
  *
  * Compare 2 string for their normalized values.
- * @x is a string with whitespace of "preserve", @y is
- * a string with a whitespace of "collapse". I.e. @x could
- * be an "xsd:string" and @y an "xsd:normalizedString".
+ * `x` is a string with whitespace of "preserve", `y` is
+ * a string with a whitespace of "collapse". I.e. `x` could
+ * be an "xsd:string" and `y` an "xsd:normalizedString".
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
  * case of error
  */
 static int
@@ -4636,17 +4599,16 @@ xmlSchemaComparePreserveCollapseStrings(const xmlChar *x,
 }
 
 /**
- * xmlSchemaComparePreserveCollapseStrings:
- * @x:  a first string value
- * @y:  a second string value
- * @invert:  whether to invert
+ * @param x  a first string value
+ * @param y  a second string value
+ * @param invert  whether to invert
  *
  * Compare 2 string for their normalized values.
- * @x is a string with whitespace of "preserve", @y is
- * a string with a whitespace of "collapse". I.e. @x could
- * be an "xsd:string" and @y an "xsd:normalizedString".
+ * `x` is a string with whitespace of "preserve", `y` is
+ * a string with a whitespace of "collapse". I.e. `x` could
+ * be an "xsd:string" and `y` an "xsd:normalizedString".
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
  * case of error
  */
 static int
@@ -4735,13 +4697,12 @@ xmlSchemaCompareReplaceCollapseStrings(const xmlChar *x,
 
 
 /**
- * xmlSchemaCompareReplacedStrings:
- * @x:  a first string value
- * @y:  a second string value
+ * @param x  a first string value
+ * @param y  a second string value
  *
  * Compare 2 string for their normalized values.
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
  * case of error
  */
 static int
@@ -4782,13 +4743,12 @@ xmlSchemaCompareReplacedStrings(const xmlChar *x,
 }
 
 /**
- * xmlSchemaCompareNormStrings:
- * @x:  a first string value
- * @y:  a second string value
+ * @param x  a first string value
+ * @param y  a second string value
  *
  * Compare 2 string for their normalized values.
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, and -2 in
  * case of error
  */
 static int
@@ -4828,13 +4788,12 @@ xmlSchemaCompareNormStrings(const xmlChar *x,
 }
 
 /**
- * xmlSchemaCompareFloats:
- * @x:  a first float or double value
- * @y:  a second float or double value
+ * @param x  a first float or double value
+ * @param y  a second float or double value
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
 static int
@@ -4887,19 +4846,18 @@ xmlSchemaCompareFloats(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 }
 
 /**
- * xmlSchemaCompareValues:
- * @xtype:  first type
- * @x:  a first value
- * @xvalue: the first value as a string (optional)
- * @xws: the whitespace type
- * @ytype:  second type
- * @y:  a second value
- * @yvalue: the second value as a string (optional)
- * @yws: the whitespace type
+ * @param xtype  first type
+ * @param x  a first value
+ * @param xvalue  the first value as a string (optional)
+ * @param xws  the whitespace type
+ * @param ytype  second type
+ * @param y  a second value
+ * @param yvalue  the second value as a string (optional)
+ * @param yws  the whitespace type
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, 3 if not
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, 3 if not
  * comparable and -2 in case of error
  */
 static int
@@ -5139,13 +5097,12 @@ xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
 }
 
 /**
- * xmlSchemaCompareValues:
- * @x:  a first value
- * @y:  a second value
+ * @param x  a first value
+ * @param y  a second value
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
 int
@@ -5173,15 +5130,14 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
 }
 
 /**
- * xmlSchemaCompareValuesWhtsp:
- * @x:  a first value
- * @xws: the whitespace value of x
- * @y:  a second value
- * @yws: the whitespace value of y
+ * @param x  a first value
+ * @param xws  the whitespace value of x
+ * @param y  a second value
+ * @param yws  the whitespace value of y
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
 int
@@ -5197,19 +5153,18 @@ xmlSchemaCompareValuesWhtsp(xmlSchemaValPtr x,
 }
 
 /**
- * xmlSchemaCompareValuesWhtspExt:
- * @xtype:  first type
- * @x:  a first value
- * @xvalue: the first value as a string (optional)
- * @xws: the whitespace type
- * @ytype:  second type
- * @y:  a second value
- * @yvalue: the second value as a string (optional)
- * @yws: the whitespace type
+ * @param xtype  first type
+ * @param x  a first value
+ * @param xvalue  the first value as a string (optional)
+ * @param xws  the whitespace type
+ * @param ytype  second type
+ * @param y  a second value
+ * @param yvalue  the second value as a string (optional)
+ * @param yws  the whitespace type
  *
  * Compare 2 values
  *
- * Returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
+ * @returns -1 if x < y, 0 if x == y, 1 if x > y, 2 if x <> y, and -2 in
  * case of error
  */
 static int
@@ -5227,12 +5182,11 @@ xmlSchemaCompareValuesWhtspExt(xmlSchemaValType xtype,
 }
 
 /**
- * xmlSchemaNormLen:
- * @value:  a string
+ * @param value  a string
  *
  * Computes the UTF8 length of the normalized value of the string
  *
- * Returns the length or -1 in case of error.
+ * @returns the length or -1 in case of error.
  */
 static int
 xmlSchemaNormLen(const xmlChar *value) {
@@ -5273,12 +5227,11 @@ xmlSchemaNormLen(const xmlChar *value) {
 }
 
 /**
- * xmlSchemaGetFacetValueAsULong:
- * @facet: an schemas type facet
+ * @param facet  an schemas type facet
  *
  * Extract the value of a facet
  *
- * Returns the value as a long
+ * @returns the value as a long
  */
 unsigned long
 xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
@@ -5293,15 +5246,14 @@ xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
 }
 
 /**
- * xmlSchemaValidateListSimpleTypeFacet:
- * @facet:  the facet to check
- * @value:  the lexical repr of the value to validate
- * @actualLen:  the number of list items
- * @expectedLen: the resulting expected number of list items
+ * @param facet  the facet to check
+ * @param value  the lexical repr of the value to validate
+ * @param actualLen  the number of list items
+ * @param expectedLen  the resulting expected number of list items
  *
  * Checks the value of a list simple type against a facet.
  *
- * Returns 0 if the value is valid, a positive error code
+ * @returns 0 if the value is valid, a positive error code
  * number otherwise and -1 in case of an internal error.
  */
 int
@@ -5345,18 +5297,17 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
 }
 
 /**
- * xmlSchemaValidateLengthFacet:
- * @facet:  the facet to check
- * @valType:  the built-in type
- * @value:  the lexical repr. of the value to be validated
- * @val:  the precomputed value
- * @length: the actual length of the value
- * @ws: the whitespace type of the value
+ * @param facet  the facet to check
+ * @param valType  the built-in type
+ * @param value  the lexical repr. of the value to be validated
+ * @param val  the precomputed value
+ * @param length  the actual length of the value
+ * @param ws  the whitespace type of the value
  *
  * Checka a value against a "length", "minLength" and "maxLength"
- * facet; sets @length to the computed length of @value.
+ * facet; sets `length` to the computed length of `value`.
  *
- * Returns 0 if the value is valid, a positive error code
+ * @returns 0 if the value is valid, a positive error code
  * otherwise and -1 in case of an internal or API error.
  */
 static int
@@ -5462,17 +5413,16 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
 }
 
 /**
- * xmlSchemaValidateLengthFacet:
- * @type:  the built-in type
- * @facet:  the facet to check
- * @value:  the lexical repr. of the value to be validated
- * @val:  the precomputed value
- * @length: the actual length of the value
+ * @param type  the built-in type
+ * @param facet  the facet to check
+ * @param value  the lexical repr. of the value to be validated
+ * @param val  the precomputed value
+ * @param length  the actual length of the value
  *
  * Checka a value against a "length", "minLength" and "maxLength"
- * facet; sets @length to the computed length of @value.
+ * facet; sets `length` to the computed length of `value`.
  *
- * Returns 0 if the value is valid, a positive error code
+ * @returns 0 if the value is valid, a positive error code
  * otherwise and -1 in case of an internal or API error.
  */
 int
@@ -5490,18 +5440,17 @@ xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type,
 }
 
 /**
- * xmlSchemaValidateLengthFacetWhtsp:
- * @facet:  the facet to check
- * @valType:  the built-in type
- * @value:  the lexical repr. of the value to be validated
- * @val:  the precomputed value
- * @ws: the whitespace type of the value
- * @length: the actual length of the value
+ * @param facet  the facet to check
+ * @param valType  the built-in type
+ * @param value  the lexical repr. of the value to be validated
+ * @param val  the precomputed value
+ * @param ws  the whitespace type of the value
+ * @param length  the actual length of the value
  *
  * Checka a value against a "length", "minLength" and "maxLength"
- * facet; sets @length to the computed length of @value.
+ * facet; sets `length` to the computed length of `value`.
  *
- * Returns 0 if the value is valid, a positive error code
+ * @returns 0 if the value is valid, a positive error code
  * otherwise and -1 in case of an internal or API error.
  */
 int
@@ -5517,17 +5466,16 @@ xmlSchemaValidateLengthFacetWhtsp(xmlSchemaFacetPtr facet,
 }
 
 /**
- * xmlSchemaValidateFacetInternal:
- * @facet:  the facet to check
- * @fws: the whitespace type of the facet's value
- * @valType: the built-in type of the value
- * @value:  the lexical repr of the value to validate
- * @val:  the precomputed value
- * @ws: the whitespace type of the value
+ * @param facet  the facet to check
+ * @param fws  the whitespace type of the facet's value
+ * @param valType  the built-in type of the value
+ * @param value  the lexical repr of the value to validate
+ * @param val  the precomputed value
+ * @param ws  the whitespace type of the value
  *
  * Check a value against a facet condition
  *
- * Returns 0 if the element is schemas valid, a positive error code
+ * @returns 0 if the element is schemas valid, a positive error code
  *     number otherwise and -1 in case of internal or API error.
  */
 static int
@@ -5753,15 +5701,14 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
 }
 
 /**
- * xmlSchemaValidateFacet:
- * @base:  the base type
- * @facet:  the facet to check
- * @value:  the lexical repr of the value to validate
- * @val:  the precomputed value
+ * @param base  the base type
+ * @param facet  the facet to check
+ * @param value  the lexical repr of the value to validate
+ * @param val  the precomputed value
  *
  * Check a value against a facet condition
  *
- * Returns 0 if the element is schemas valid, a positive error code
+ * @returns 0 if the element is schemas valid, a positive error code
  *     number otherwise and -1 in case of internal or API error.
  */
 int
@@ -5787,20 +5734,19 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base,
 }
 
 /**
- * xmlSchemaValidateFacetWhtsp:
- * @facet:  the facet to check
- * @fws: the whitespace type of the facet's value
- * @valType: the built-in type of the value
- * @value:  the lexical (or normalized for pattern) repr of the value to validate
- * @val:  the precomputed value
- * @ws: the whitespace type of the value
+ * @param facet  the facet to check
+ * @param fws  the whitespace type of the facet's value
+ * @param valType  the built-in type of the value
+ * @param value  the lexical (or normalized for pattern) repr of the value to validate
+ * @param val  the precomputed value
+ * @param ws  the whitespace type of the value
  *
  * Check a value against a facet condition. This takes value normalization
  * according to the specified whitespace types into account.
- * Note that @value needs to be the *normalized* value if the facet
+ * Note that `value` needs to be the *normalized* value if the facet
  * is of type "pattern".
  *
- * Returns 0 if the element is schemas valid, a positive error code
+ * @returns 0 if the element is schemas valid, a positive error code
  *     number otherwise and -1 in case of internal or API error.
  */
 int
@@ -5816,22 +5762,21 @@ xmlSchemaValidateFacetWhtsp(xmlSchemaFacetPtr facet,
 }
 
 /**
- * xmlSchemaGetCanonValue:
- * @val: the precomputed value
- * @retValue: the returned value
+ * @param val  the precomputed value
+ * @param retValue  the returned value
  *
  * Get the canonical lexical representation of the value.
  * The caller has to FREE the returned retValue.
  *
  * WARNING: Some value types are not supported yet, resulting
- * in a @retValue of "???".
+ * in a `retValue` of "???".
  *
  * TODO: XML Schema 1.0 does not define canonical representations
  * for: duration, gYearMonth, gYear, gMonthDay, gMonth, gDay,
  * anyURI, QName, NOTATION. This will be fixed in XML Schema 1.1.
  *
  *
- * Returns 0 if the value could be built, 1 if the value type is
+ * @returns 0 if the value could be built, 1 if the value type is
  * not supported yet and -1 in case of API errors.
  */
 int
@@ -6155,15 +6100,14 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
 }
 
 /**
- * xmlSchemaGetCanonValueWhtsp:
- * @val: the precomputed value
- * @retValue: the returned value
- * @ws: the whitespace type of the value
+ * @param val  the precomputed value
+ * @param retValue  the returned value
+ * @param ws  the whitespace type of the value
  *
  * Get the canonical representation of the value.
- * The caller has to free the returned @retValue.
+ * The caller has to free the returned `retValue`.
  *
- * Returns 0 if the value could be built, 1 if the value type is
+ * @returns 0 if the value could be built, 1 if the value type is
  * not supported yet and -1 in case of API errors.
  */
 int
@@ -6208,12 +6152,11 @@ xmlSchemaGetCanonValueWhtsp(xmlSchemaValPtr val,
 }
 
 /**
- * xmlSchemaGetValType:
- * @val: a schemas value
+ * @param val  a schemas value
  *
  * Accessor for the type of a value
  *
- * Returns the xmlSchemaValType of the value
+ * @returns the xmlSchemaValType of the value
  */
 xmlSchemaValType
 xmlSchemaGetValType(xmlSchemaValPtr val)

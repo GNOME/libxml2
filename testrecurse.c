@@ -245,11 +245,11 @@ static int rlen;
 
 /**
  * hugeMatch:
- * @URI: an URI to test
+ * @param URI  an URI to test
  *
  * Check for a huge query
  *
- * Returns 1 if yes and 0 if another Input module should be used
+ * @returns 1 if yes and 0 if another Input module should be used
  */
 static int
 hugeMatch(const char * URI) {
@@ -268,12 +268,12 @@ hugeMatch(const char * URI) {
 
 /**
  * hugeOpen:
- * @URI: an URI to test
+ * @param URI  an URI to test
  *
- * Return a pointer to the huge query handler, in this example simply
+ * @returns a pointer to the huge query handler, in this example simply
  * the current pointer...
  *
- * Returns an Input context or NULL in case or error
+ * @returns an Input context or NULL in case or error
  */
 static void *
 hugeOpen(const char * URI) {
@@ -297,11 +297,11 @@ hugeOpen(const char * URI) {
 
 /**
  * hugeClose:
- * @context: the read context
+ * @param context  the read context
  *
  * Close the huge query handler
  *
- * Returns 0 or -1 in case of error
+ * @returns 0 or -1 in case of error
  */
 static int
 hugeClose(void * context) {
@@ -313,13 +313,13 @@ hugeClose(void * context) {
 
 /**
  * hugeRead:
- * @context: the read context
- * @buffer: where to store data
- * @len: number of bytes to read
+ * @param context  the read context
+ * @param buffer  where to store data
+ * @param len  number of bytes to read
  *
  * Implement an huge query read.
  *
- * Returns the number of bytes read or -1 in case of error
+ * @returns the number of bytes read or -1 in case of error
  */
 static int
 hugeRead(void *context, char *buffer, int len)
@@ -467,14 +467,14 @@ static int checkTestFile(const char *filename) {
  ************************************************************************/
 /**
  * recursiveDetectTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a file loading DTD and replacing entities check it fails for
  * lol cases
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 recursiveDetectTest(const char *filename,
@@ -515,14 +515,14 @@ recursiveDetectTest(const char *filename,
 
 /**
  * notRecursiveDetectTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a file loading DTD and replacing entities check it works for
  * good cases
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 notRecursiveDetectTest(const char *filename,
@@ -558,14 +558,14 @@ notRecursiveDetectTest(const char *filename,
 
 /**
  * notRecursiveHugeTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a memory generated file
  * good cases
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
@@ -660,14 +660,14 @@ notRecursiveHugeTest(const char *filename ATTRIBUTE_UNUSED,
 
 /**
  * notRecursiveHugeTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a memory generated file
  * good cases
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 hugeDtdTest(const char *filename ATTRIBUTE_UNUSED,

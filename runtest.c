@@ -608,11 +608,11 @@ static int quiet = 0;
 
 /**
  * isStandaloneDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * Is this document tagged standalone ?
  *
- * Returns 1 if true
+ * @returns 1 if true
  */
 static int
 isStandaloneDebug(void *ctx ATTRIBUTE_UNUSED)
@@ -626,11 +626,11 @@ isStandaloneDebug(void *ctx ATTRIBUTE_UNUSED)
 
 /**
  * hasInternalSubsetDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * Does this document has an internal subset
  *
- * Returns 1 if true
+ * @returns 1 if true
  */
 static int
 hasInternalSubsetDebug(void *ctx ATTRIBUTE_UNUSED)
@@ -644,11 +644,11 @@ hasInternalSubsetDebug(void *ctx ATTRIBUTE_UNUSED)
 
 /**
  * hasExternalSubsetDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * Does this document has an external subset
  *
- * Returns 1 if true
+ * @returns 1 if true
  */
 static int
 hasExternalSubsetDebug(void *ctx ATTRIBUTE_UNUSED)
@@ -662,7 +662,7 @@ hasExternalSubsetDebug(void *ctx ATTRIBUTE_UNUSED)
 
 /**
  * internalSubsetDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * Does this document has an internal subset
  */
@@ -688,7 +688,7 @@ internalSubsetDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 
 /**
  * externalSubsetDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * Does this document has an external subset
  */
@@ -712,9 +712,9 @@ externalSubsetDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 
 /**
  * resolveEntityDebug:
- * @ctxt:  An XML parser context
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
+ * @param ctxt  An XML parser context
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
  *
  * Special entity resolver, better left to the parser, it has
  * more context than the application layer.
@@ -722,7 +722,7 @@ externalSubsetDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
  * the ENTITY_REF nodes are built in the structure (and the parameter
  * values).
  *
- * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
+ * @returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 static xmlParserInputPtr
 resolveEntityDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *publicId, const xmlChar *systemId)
@@ -752,12 +752,12 @@ resolveEntityDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *publicId, const xm
 
 /**
  * getEntityDebug:
- * @ctxt:  An XML parser context
- * @name: The entity name
+ * @param ctxt  An XML parser context
+ * @param name  The entity name
  *
  * Get an entity by name
  *
- * Returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
+ * @returns the xmlParserInputPtr if inlined or NULL for DOM behaviour.
  */
 static xmlEntityPtr
 getEntityDebug(void *ctx, const xmlChar *name)
@@ -774,12 +774,12 @@ getEntityDebug(void *ctx, const xmlChar *name)
 
 /**
  * getParameterEntityDebug:
- * @ctxt:  An XML parser context
- * @name: The entity name
+ * @param ctxt  An XML parser context
+ * @param name  The entity name
  *
  * Get a parameter entity by name
  *
- * Returns the xmlParserInputPtr
+ * @returns the xmlParserInputPtr
  */
 static xmlEntityPtr
 getParameterEntityDebug(void *ctx, const xmlChar *name)
@@ -797,12 +797,12 @@ getParameterEntityDebug(void *ctx, const xmlChar *name)
 
 /**
  * entityDeclDebug:
- * @ctxt:  An XML parser context
- * @name:  the entity name
- * @type:  the entity type
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
- * @content: the entity value (without processing).
+ * @param ctxt  An XML parser context
+ * @param name  the entity name
+ * @param type  the entity type
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
+ * @param content  the entity value (without processing).
  *
  * An entity definition has been parsed
  */
@@ -840,9 +840,9 @@ entityDeclDebug(void *ctx, const xmlChar *name, int type,
 
 /**
  * attributeDeclDebug:
- * @ctxt:  An XML parser context
- * @name:  the attribute name
- * @type:  the attribute type
+ * @param ctxt  An XML parser context
+ * @param name  the attribute name
+ * @param type  the attribute type
  *
  * An attribute definition has been parsed
  */
@@ -865,10 +865,10 @@ attributeDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar * elem,
 
 /**
  * elementDeclDebug:
- * @ctxt:  An XML parser context
- * @name:  the element name
- * @type:  the element type
- * @content: the element value (without processing).
+ * @param ctxt  An XML parser context
+ * @param name  the element name
+ * @param type  the element type
+ * @param content  the element value (without processing).
  *
  * An element definition has been parsed
  */
@@ -885,10 +885,10 @@ elementDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, int type,
 
 /**
  * notationDeclDebug:
- * @ctxt:  An XML parser context
- * @name: The name of the notation
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
+ * @param ctxt  An XML parser context
+ * @param name  The name of the notation
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
  *
  * What to do when a notation declaration has been parsed.
  */
@@ -905,11 +905,11 @@ notationDeclDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name,
 
 /**
  * unparsedEntityDeclDebug:
- * @ctxt:  An XML parser context
- * @name: The name of the entity
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
- * @notationName: the name of the notation
+ * @param ctxt  An XML parser context
+ * @param name  The name of the entity
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
+ * @param notationName  the name of the notation
  *
  * What to do when an unparsed entity declaration is parsed
  */
@@ -936,8 +936,8 @@ const xmlChar *nullstr = BAD_CAST "(null)";
 
 /**
  * setDocumentLocatorDebug:
- * @ctxt:  An XML parser context
- * @loc: A SAX Locator
+ * @param ctxt  An XML parser context
+ * @param loc  A SAX Locator
  *
  * Receive the document locator at startup, actually xmlDefaultSAXLocator
  * Everything is available on the context, so this is useless in our case.
@@ -953,7 +953,7 @@ setDocumentLocatorDebug(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBU
 
 /**
  * startDocumentDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * called when the document start being processed.
  */
@@ -968,7 +968,7 @@ startDocumentDebug(void *ctx ATTRIBUTE_UNUSED)
 
 /**
  * endDocumentDebug:
- * @ctxt:  An XML parser context
+ * @param ctxt  An XML parser context
  *
  * called when the document end has been detected.
  */
@@ -983,8 +983,8 @@ endDocumentDebug(void *ctx ATTRIBUTE_UNUSED)
 
 /**
  * startElementDebug:
- * @ctxt:  An XML parser context
- * @name:  The element name
+ * @param ctxt  An XML parser context
+ * @param name  The element name
  *
  * called when an opening tag has been processed.
  */
@@ -1009,8 +1009,8 @@ startElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, const xmlChar
 
 /**
  * endElementDebug:
- * @ctxt:  An XML parser context
- * @name:  The element name
+ * @param ctxt  An XML parser context
+ * @param name  The element name
  *
  * called when the end of an element has been detected.
  */
@@ -1025,9 +1025,9 @@ endElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name)
 
 /**
  * charactersDebug:
- * @ctxt:  An XML parser context
- * @ch:  a xmlChar string
- * @len: the number of xmlChar
+ * @param ctxt  An XML parser context
+ * @param ch  a xmlChar string
+ * @param len  the number of xmlChar
  *
  * receiving some chars from the parser.
  * Question: how much at a time ???
@@ -1050,8 +1050,8 @@ charactersDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
 
 /**
  * referenceDebug:
- * @ctxt:  An XML parser context
- * @name:  The entity name
+ * @param ctxt  An XML parser context
+ * @param name  The entity name
  *
  * called when an entity reference is detected.
  */
@@ -1066,10 +1066,10 @@ referenceDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name)
 
 /**
  * ignorableWhitespaceDebug:
- * @ctxt:  An XML parser context
- * @ch:  a xmlChar string
- * @start: the first char in the string
- * @len: the number of xmlChar
+ * @param ctxt  An XML parser context
+ * @param ch  a xmlChar string
+ * @param start  the first char in the string
+ * @param len  the number of xmlChar
  *
  * receiving some ignorable whitespaces from the parser.
  * Question: how much at a time ???
@@ -1091,10 +1091,10 @@ ignorableWhitespaceDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
 
 /**
  * processingInstructionDebug:
- * @ctxt:  An XML parser context
- * @target:  the target name
- * @data: the PI data's
- * @len: the number of xmlChar
+ * @param ctxt  An XML parser context
+ * @param target  the target name
+ * @param data  the PI data's
+ * @param len  the number of xmlChar
  *
  * A processing instruction has been parsed.
  */
@@ -1115,9 +1115,9 @@ processingInstructionDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *target,
 
 /**
  * cdataBlockDebug:
- * @ctx: the user data (XML parser context)
- * @value:  The pcdata content
- * @len:  the block length
+ * @param ctx  the user data (XML parser context)
+ * @param value  The pcdata content
+ * @param len  the block length
  *
  * called when a pcdata block has been parsed
  */
@@ -1133,8 +1133,8 @@ cdataBlockDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *value, int len)
 
 /**
  * commentDebug:
- * @ctxt:  An XML parser context
- * @value:  the comment content
+ * @param ctxt  An XML parser context
+ * @param value  the comment content
  *
  * A comment has been parsed.
  */
@@ -1149,8 +1149,8 @@ commentDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *value)
 
 /**
  * warningDebug:
- * @ctxt:  An XML parser context
- * @msg:  the message to display/transmit
+ * @param ctxt  An XML parser context
+ * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
  *
  * Display and format a warning messages, gives file, line, position and
@@ -1172,8 +1172,8 @@ warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 
 /**
  * errorDebug:
- * @ctxt:  An XML parser context
- * @msg:  the message to display/transmit
+ * @param ctxt  An XML parser context
+ * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
  *
  * Display and format a error messages, gives file, line, position and
@@ -1195,8 +1195,8 @@ errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
 
 /**
  * fatalErrorDebug:
- * @ctxt:  An XML parser context
- * @msg:  the message to display/transmit
+ * @param ctxt  An XML parser context
+ * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
  *
  * Display and format a fatalError messages, gives file, line, position and
@@ -1258,8 +1258,8 @@ static xmlSAXHandlerPtr debugSAXHandler = &debugSAXHandlerStruct;
  */
 /**
  * startElementNsDebug:
- * @ctxt:  An XML parser context
- * @name:  The element name
+ * @param ctxt  An XML parser context
+ * @param name  The element name
  *
  * called when an opening tag has been processed.
  */
@@ -1315,8 +1315,8 @@ startElementNsDebug(void *ctx ATTRIBUTE_UNUSED,
 
 /**
  * endElementDebug:
- * @ctxt:  An XML parser context
- * @name:  The element name
+ * @param ctxt  An XML parser context
+ * @param name  The element name
  *
  * called when the end of an element has been detected.
  */
@@ -1379,9 +1379,8 @@ static xmlSAXHandlerPtr debugSAX2Handler = &debugSAX2HandlerStruct;
 
 #ifdef LIBXML_HTML_ENABLED
 /**
- * htmlstartElementDebug:
- * @ctxt:  An XML parser context
- * @name:  The element name
+ * @param ctxt  An XML parser context
+ * @param name  The element name
  *
  * called when an opening tag has been processed.
  */
@@ -1414,10 +1413,9 @@ htmlstartElementDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *name, const xml
 }
 
 /**
- * htmlcharactersDebug:
- * @ctxt:  An XML parser context
- * @ch:  a xmlChar string
- * @len: the number of xmlChar
+ * @param ctxt  An XML parser context
+ * @param ch  a xmlChar string
+ * @param len  the number of xmlChar
  *
  * receiving some chars from the parser.
  * Question: how much at a time ???
@@ -1435,10 +1433,9 @@ htmlcharactersDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch, int len)
 }
 
 /**
- * htmlcdataDebug:
- * @ctxt:  An XML parser context
- * @ch:  a xmlChar string
- * @len: the number of xmlChar
+ * @param ctxt  An XML parser context
+ * @param ch  a xmlChar string
+ * @param len  the number of xmlChar
  *
  * receiving some cdata chars from the parser.
  * Question: how much at a time ???
@@ -1502,13 +1499,13 @@ hashFreeEntity(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
 
 /**
  * saxParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the SAX API and check for errors.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 saxParseTest(const char *filename, const char *result,
@@ -1743,14 +1740,13 @@ static xmlSAXHandler tokenizeHtmlSAXHandler = {
 };
 
 /**
- * htmlTokenizerTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the SAX API and check for errors.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 htmlTokenizerTest(const char *filename, const char *result,
@@ -1839,15 +1835,15 @@ htmlTokenizerTest(const char *filename, const char *result,
  ************************************************************************/
 /**
  * oldParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a file using the old xmlParseFile API, then serialize back
  * reparse the result and serialize again, then check for deviation
  * in serialization.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 oldParseTest(const char *filename, const char *result,
@@ -1910,14 +1906,14 @@ oldParseTest(const char *filename, const char *result,
 #ifdef LIBXML_PUSH_ENABLED
 /**
  * pushParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a file using the Push API, then serialize back
  * to check for content.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 pushParseTest(const char *filename, const char *result,
@@ -2097,14 +2093,14 @@ endElementNsBnd(void *ctx, const xmlChar *localname, const xmlChar *prefix,
 
 /**
  * pushBoundaryTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Test whether the push parser detects boundaries between syntactical
  * elements correctly.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 pushBoundaryTest(const char *filename, const char *result,
@@ -2412,15 +2408,15 @@ testParseContent(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const char *filename) {
 
 /**
  * memParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a file using the old xmlReadMemory API, then serialize back
  * reparse the result and serialize again, then check for deviation
  * in serialization.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 memParseTest(const char *filename, const char *result,
@@ -2467,15 +2463,15 @@ memParseTest(const char *filename, const char *result,
 
 /**
  * noentParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages: unused
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages: unused
  *
  * Parse a file with entity resolution, then serialize back
  * reparse the result and serialize again, then check for deviation
  * in serialization.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 noentParseTest(const char *filename, const char *result,
@@ -2526,13 +2522,13 @@ noentParseTest(const char *filename, const char *result,
 
 /**
  * errParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the xmlReadFile API and check for errors.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 errParseTest(const char *filename, const char *result, const char *err,
@@ -2615,13 +2611,13 @@ errParseTest(const char *filename, const char *result, const char *err,
 #if defined(LIBXML_VALID_ENABLED) || defined(LIBXML_HTML_ENABLED)
 /**
  * fdParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the xmlReadFd API and check for errors.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 fdParseTest(const char *filename, const char *result, const char *err,
@@ -2802,13 +2798,13 @@ streamProcessTest(const char *filename, const char *result, const char *err,
 
 /**
  * streamParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the reader API and check for errors.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 streamParseTest(const char *filename, const char *result, const char *err,
@@ -2826,13 +2822,13 @@ streamParseTest(const char *filename, const char *result, const char *err,
 
 /**
  * walkerParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the walker, i.e. a reader built from a atree.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 walkerParseTest(const char *filename, const char *result, const char *err,
@@ -2855,13 +2851,13 @@ walkerParseTest(const char *filename, const char *result, const char *err,
 
 /**
  * streamMemParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file using the reader API from memory and check for errors.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 streamMemParseTest(const char *filename, const char *result, const char *err,
@@ -2938,13 +2934,13 @@ testXPath(const char *str, int xptr, int expr) {
 
 /**
  * xpathExprTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing XPath standalone expressions and evaluate them
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 xpathCommonTest(const char *filename, const char *result,
@@ -3006,13 +3002,13 @@ xpathCommonTest(const char *filename, const char *result,
 
 /**
  * xpathExprTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing XPath standalone expressions and evaluate them
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 xpathExprTest(const char *filename, const char *result,
@@ -3023,14 +3019,14 @@ xpathExprTest(const char *filename, const char *result,
 
 /**
  * xpathDocTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing XPath expressions and evaluate them against
  * a set of corresponding documents.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 xpathDocTest(const char *filename,
@@ -3075,14 +3071,14 @@ xpathDocTest(const char *filename,
 #ifdef LIBXML_XPTR_ENABLED
 /**
  * xptrDocTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing XPath expressions and evaluate them against
  * a set of corresponding documents.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 xptrDocTest(const char *filename,
@@ -3127,15 +3123,14 @@ xptrDocTest(const char *filename,
 
 #ifdef LIBXML_VALID_ENABLED
 /**
- * xmlidDocTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing xml:id and check for errors and verify
  * that XPath queries will work on them as expected.
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 xmlidDocTest(const char *filename,
@@ -3238,13 +3233,13 @@ handleURI(const char *str, const char *base, FILE *o) {
 
 /**
  * uriCommonTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing URI and check for errors
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 uriCommonTest(const char *filename,
@@ -3326,13 +3321,13 @@ uriCommonTest(const char *filename,
 
 /**
  * uriParseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing URI and check for errors
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 uriParseTest(const char *filename,
@@ -3344,14 +3339,14 @@ uriParseTest(const char *filename,
 
 /**
  * uriBaseTest:
- * @filename: the file to parse
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the file to parse
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing URI, compose them against a fixed base and
  * check for errors
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 uriBaseTest(const char *filename,
@@ -3400,11 +3395,11 @@ static int urip_rlen;
 
 /**
  * uripMatch:
- * @URI: an URI to test
+ * @param URI  an URI to test
  *
  * Check for an urip: query
  *
- * Returns 1 if yes and 0 if another Input module should be used
+ * @returns 1 if yes and 0 if another Input module should be used
  */
 static int
 uripMatch(const char * URI) {
@@ -3421,12 +3416,12 @@ uripMatch(const char * URI) {
 
 /**
  * uripOpen:
- * @URI: an URI to test
+ * @param URI  an URI to test
  *
- * Return a pointer to the urip: query handler, in this example simply
+ * @returns a pointer to the urip: query handler, in this example simply
  * the urip_current pointer...
  *
- * Returns an Input context or NULL in case or error
+ * @returns an Input context or NULL in case or error
  */
 static void *
 uripOpen(const char * URI) {
@@ -3445,11 +3440,11 @@ uripOpen(const char * URI) {
 
 /**
  * uripClose:
- * @context: the read context
+ * @param context  the read context
  *
  * Close the urip: query handler
  *
- * Returns 0 or -1 in case of error
+ * @returns 0 or -1 in case of error
  */
 static int
 uripClose(void * context) {
@@ -3461,13 +3456,13 @@ uripClose(void * context) {
 
 /**
  * uripRead:
- * @context: the read context
- * @buffer: where to store data
- * @len: number of bytes to read
+ * @param context  the read context
+ * @param buffer  where to store data
+ * @param len  number of bytes to read
  *
  * Implement an urip: query read.
  *
- * Returns the number of bytes read or -1 in case of error
+ * @returns the number of bytes read or -1 in case of error
  */
 static int
 uripRead(void * context, char * buffer, int len) {
@@ -3495,14 +3490,14 @@ urip_checkURL(const char *URL) {
 
 /**
  * uriPathTest:
- * @filename: ignored
- * @result: ignored
- * @err: ignored
+ * @param filename  ignored
+ * @param result  ignored
+ * @param err  ignored
  *
  * Run a set of tests to check how Path and URI are handled before
  * being passed to the I/O layer
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 uriPathTest(const char *filename ATTRIBUTE_UNUSED,
@@ -3610,14 +3605,14 @@ done:
 }
 /**
  * schemasTest:
- * @filename: the schemas file
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the schemas file
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a file containing URI, compose them against a fixed base and
  * check for errors
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 schemasTest(const char *filename,
@@ -3743,13 +3738,13 @@ rngOneTest(const char *sch,
 }
 /**
  * rngTest:
- * @filename: the schemas file
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the schemas file
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse an RNG schemas and then apply it to the related .xml
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 rngTest(const char *filename,
@@ -3835,13 +3830,13 @@ rngTest(const char *filename,
 #ifdef LIBXML_READER_ENABLED
 /**
  * rngStreamTest:
- * @filename: the schemas file
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the schemas file
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a set of files with streaming, applying an RNG schemas
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 rngStreamTest(const char *filename,
@@ -3974,11 +3969,11 @@ schematronOneTest(const char *sch, const char *filename, int options,
 
 /**
  * schematronTest:
- * @filename: the schemas file
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the schemas file
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 schematronTest(const char *filename,
@@ -4126,13 +4121,13 @@ static void patternNode(FILE *out, xmlTextReaderPtr reader,
 
 /**
  * patternTest:
- * @filename: the schemas file
- * @result: the file with expected result
- * @err: the file with error messages
+ * @param filename  the schemas file
+ * @param result  the file with expected result
+ * @param err  the file with error messages
  *
  * Parse a set of files with streaming, applying an RNG schemas
  *
- * Returns 0 in case of success, an error code otherwise
+ * @returns 0 in case of success, an error code otherwise
  */
 static int
 patternTest(const char *filename,

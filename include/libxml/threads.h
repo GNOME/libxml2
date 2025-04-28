@@ -1,11 +1,14 @@
 /**
- * Summary: interfaces for thread handling
- * Description: set of generic threading related routines
+ * @file
+ * *
+ * @brief interfaces for thread handling
+ * 
+ * set of generic threading related routines
  *              should work with pthreads, Windows native or TLS threads
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_THREADS_H__
@@ -64,14 +67,14 @@ XML_DEPRECATED
 XMLPUBFUN void
 			xmlCleanupThreads(void);
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 #if defined(LIBXML_THREAD_ENABLED) && defined(_WIN32) && \
     defined(LIBXML_STATIC_FOR_DLL)
 int
 xmlDllMain(void *hinstDLL, unsigned long fdwReason,
            void *lpvReserved);
 #endif
-/** DOC_ENABLE */
+/** @endcond */
 
 #ifdef __cplusplus
 }

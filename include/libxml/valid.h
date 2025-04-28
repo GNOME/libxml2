@@ -1,10 +1,13 @@
-/*
- * Summary: The DTD validation
- * Description: API for the DTD handling and the validity checking
+/**
+ * @file
+ * 
+ * @brief The DTD validation
+ * 
+ * API for the DTD handling and the validity checking
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 
@@ -31,11 +34,10 @@ typedef struct _xmlValidState xmlValidState;
 typedef xmlValidState *xmlValidStatePtr;
 
 /**
- * xmlValidityErrorFunc:
- * @ctx:  usually an xmlValidCtxtPtr to a validity error context,
+ * @param ctx  usually an xmlValidCtxtPtr to a validity error context,
  *        but comes from ctxt->userData (which normally contains such
  *        a pointer); ctxt->userData can be changed by the user.
- * @msg:  the string to format *printf like vararg
+ * @param msg  the string to format *printf like vararg
  * @...:  remaining arguments to the format
  *
  * Callback called when a validity error is found. This is a message
@@ -46,11 +48,10 @@ typedef void (*xmlValidityErrorFunc) (void *ctx,
 			     ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
- * xmlValidityWarningFunc:
- * @ctx:  usually an xmlValidCtxtPtr to a validity error context,
+ * @param ctx  usually an xmlValidCtxtPtr to a validity error context,
  *        but comes from ctxt->userData (which normally contains such
  *        a pointer); ctxt->userData can be changed by the user.
- * @msg:  the string to format *printf like vararg
+ * @param msg  the string to format *printf like vararg
  * @...:  remaining arguments to the format
  *
  * Callback called when a validity warning is found. This is a message
@@ -61,7 +62,6 @@ typedef void (*xmlValidityWarningFunc) (void *ctx,
 			       ...) LIBXML_ATTR_FORMAT(2,3);
 
 /*
- * xmlValidCtxt:
  * An xmlValidCtxt is used for error reporting when validating.
  */
 typedef struct _xmlValidCtxt xmlValidCtxt;

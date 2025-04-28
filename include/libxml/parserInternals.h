@@ -1,12 +1,15 @@
-/*
- * Summary: internals routines and limits exported by the parser.
- * Description: this module exports a number of internal parsing routines
+/**
+ * @file
+ * 
+ * @brief internals routines and limits exported by the parser.
+ * 
+ * this module exports a number of internal parsing routines
  *              they are not really all intended for applications but
  *              can prove useful doing low level processing.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_PARSER_INTERNALS_H__
@@ -93,30 +96,30 @@ extern "C" {
  ************************************************************************/
 /**
  * IS_BYTE_CHAR:
- * @c:  an byte value (int)
+ * @param c  an byte value (int)
  *
  * Macro to check the following production in the XML spec:
  *
- * [2] Char ::= #x9 | #xA | #xD | [#x20...]
+ * [2] Char ::= \#x9 | \#xA | \#xD | [\#x20...]
  * any byte character in the accepted range
  */
 #define IS_BYTE_CHAR(c)	 xmlIsChar_ch(c)
 
 /**
  * IS_CHAR:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
- * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
- *                  | [#x10000-#x10FFFF]
+ * [2] Char ::= \#x9 | \#xA | \#xD | [\#x20-\#xD7FF] | [\#xE000-\#xFFFD]
+ *                  | [\#x10000-\#x10FFFF]
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
 #define IS_CHAR(c)   xmlIsCharQ(c)
 
 /**
  * IS_CHAR_CH:
- * @c: an xmlChar (usually an unsigned char)
+ * @param c  an xmlChar (usually an unsigned char)
  *
  * Behaves like IS_CHAR on single-byte value
  */
@@ -124,17 +127,17 @@ extern "C" {
 
 /**
  * IS_BLANK:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
- * [3] S ::= (#x20 | #x9 | #xD | #xA)+
+ * [3] S ::= (\#x20 | \#x9 | \#xD | \#xA)+
  */
 #define IS_BLANK(c)  xmlIsBlankQ(c)
 
 /**
  * IS_BLANK_CH:
- * @c:  an xmlChar value (normally unsigned char)
+ * @param c  an xmlChar value (normally unsigned char)
  *
  * Behaviour same as IS_BLANK
  */
@@ -142,7 +145,7 @@ extern "C" {
 
 /**
  * IS_BASECHAR:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
@@ -152,7 +155,7 @@ extern "C" {
 
 /**
  * IS_DIGIT:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
@@ -162,7 +165,7 @@ extern "C" {
 
 /**
  * IS_DIGIT_CH:
- * @c:  an xmlChar value (usually an unsigned char)
+ * @param c  an xmlChar value (usually an unsigned char)
  *
  * Behaves like IS_DIGIT but with a single byte argument
  */
@@ -170,7 +173,7 @@ extern "C" {
 
 /**
  * IS_COMBINING:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
@@ -180,7 +183,7 @@ extern "C" {
 
 /**
  * IS_COMBINING_CH:
- * @c:  an xmlChar (usually an unsigned char)
+ * @param c  an xmlChar (usually an unsigned char)
  *
  * Always false (all combining chars > 0xff)
  */
@@ -188,20 +191,20 @@ extern "C" {
 
 /**
  * IS_EXTENDER:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
  *
- * [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 |
- *                   #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] |
- *                   [#x309D-#x309E] | [#x30FC-#x30FE]
+ * [89] Extender ::= \#x00B7 | \#x02D0 | \#x02D1 | \#x0387 | \#x0640 |
+ *                   \#x0E46 | \#x0EC6 | \#x3005 | [\#x3031-\#x3035] |
+ *                   [\#x309D-\#x309E] | [\#x30FC-\#x30FE]
  */
 #define IS_EXTENDER(c) xmlIsExtenderQ(c)
 
 /**
  * IS_EXTENDER_CH:
- * @c:  an xmlChar value (usually an unsigned char)
+ * @param c  an xmlChar value (usually an unsigned char)
  *
  * Behaves like IS_EXTENDER but with a single-byte argument
  */
@@ -209,18 +212,18 @@ extern "C" {
 
 /**
  * IS_IDEOGRAPHIC:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
  *
- * [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]
+ * [86] Ideographic ::= [\#x4E00-\#x9FA5] | \#x3007 | [\#x3021-\#x3029]
  */
 #define IS_IDEOGRAPHIC(c) xmlIsIdeographicQ(c)
 
 /**
  * IS_LETTER:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
@@ -231,7 +234,7 @@ extern "C" {
 
 /**
  * IS_LETTER_CH:
- * @c:  an xmlChar value (normally unsigned char)
+ * @param c  an xmlChar value (normally unsigned char)
  *
  * Macro behaves like IS_LETTER, but only check base chars
  *
@@ -240,7 +243,7 @@ extern "C" {
 
 /**
  * IS_ASCII_LETTER:
- * @c: an xmlChar value
+ * @param c  an xmlChar value
  *
  * Macro to check [a-zA-Z]
  *
@@ -250,7 +253,7 @@ extern "C" {
 
 /**
  * IS_ASCII_DIGIT:
- * @c: an xmlChar value
+ * @param c  an xmlChar value
  *
  * Macro to check [0-9]
  *
@@ -259,18 +262,18 @@ extern "C" {
 
 /**
  * IS_PUBIDCHAR:
- * @c:  an UNICODE value (int)
+ * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
  *
  *
- * [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
+ * [13] PubidChar ::= \#x20 | \#xD | \#xA | [a-zA-Z0-9] | [-'()+,./:=?;!*\#@$_%]
  */
 #define IS_PUBIDCHAR(c)	xmlIsPubidCharQ(c)
 
 /**
  * IS_PUBIDCHAR_CH:
- * @c:  an xmlChar value (normally unsigned char)
+ * @param c  an xmlChar value (normally unsigned char)
  *
  * Same as IS_PUBIDCHAR but for single-byte value
  */

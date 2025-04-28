@@ -1,10 +1,13 @@
-/*
- * Summary: XML Schematron implementation
- * Description: interface to the XML Schematron validity checking.
+/**
+ * @file
+ * 
+ * @brief XML Schematron implementation
+ * 
+ * interface to the XML Schematron validity checking.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 
@@ -39,9 +42,8 @@ typedef struct _xmlSchematron xmlSchematron;
 typedef xmlSchematron *xmlSchematronPtr;
 
 /**
- * xmlSchematronValidityErrorFunc:
- * @ctx: the validation context
- * @msg: the message
+ * @param ctx  the validation context
+ * @param msg  the message
  * @...: extra arguments
  *
  * Signature of an error callback from a Schematron validation
@@ -49,9 +51,8 @@ typedef xmlSchematron *xmlSchematronPtr;
 typedef void (*xmlSchematronValidityErrorFunc) (void *ctx, const char *msg, ...);
 
 /**
- * xmlSchematronValidityWarningFunc:
- * @ctx: the validation context
- * @msg: the message
+ * @param ctx  the validation context
+ * @param msg  the message
  * @...: extra arguments
  *
  * Signature of a warning callback from a Schematron validation

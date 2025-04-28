@@ -1,13 +1,16 @@
-/*
- * Summary: interface for an HTML 4.0 non-verifying parser
- * Description: this module implements an HTML 4.0 non-verifying parser
+/**
+ * @file
+ * 
+ * @brief interface for an HTML 4.0 non-verifying parser
+ * 
+ * this module implements an HTML 4.0 non-verifying parser
  *              with API compatible with the XML parser ones. It should
  *              be able to parse "real world" HTML, even if severely
  *              broken from a specification point of view.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __HTML_PARSER_H__
@@ -196,7 +199,6 @@ XMLPUBFUN void
  * New set of simpler/more flexible APIs
  */
 /**
- * xmlParserOption:
  *
  * This is the set of XML parser options that can be passed down
  * to the xmlReadDoc() and similar calls.
@@ -310,29 +312,26 @@ XMLPUBFUN htmlStatus htmlElementStatusHere(const htmlElemDesc*, const htmlElemDe
 XML_DEPRECATED
 XMLPUBFUN htmlStatus htmlNodeStatus(htmlNodePtr, int) ;
 /**
- * htmlDefaultSubelement:
- * @elt: HTML element
+ * @param elt  HTML element
  *
- * Returns the default subelement for this element
+ * @returns the default subelement for this element
  */
 #define htmlDefaultSubelement(elt) elt->defaultsubelt
 /**
- * htmlElementAllowedHereDesc:
- * @parent: HTML parent element
- * @elt: HTML element
+ * @param parent  HTML parent element
+ * @param elt  HTML element
  *
  * Checks whether an HTML element description may be a
  * direct child of the specified element.
  *
- * Returns 1 if allowed; 0 otherwise.
+ * @returns 1 if allowed; 0 otherwise.
  */
 #define htmlElementAllowedHereDesc(parent,elt) \
 	htmlElementAllowedHere((parent), (elt)->name)
 /**
- * htmlRequiredAttrs:
- * @elt: HTML element
+ * @param elt  HTML element
  *
- * Returns the attributes required for the specified element.
+ * @returns the attributes required for the specified element.
  */
 #define htmlRequiredAttrs(elt) (elt)->attrs_req
 

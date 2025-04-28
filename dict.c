@@ -81,11 +81,10 @@ struct _xmlDict {
 static xmlMutex xmlDictMutex;
 
 /**
- * xmlInitializeDict:
  *
- * DEPRECATED: Alias for xmlInitParser.
+ * @deprecated Alias for xmlInitParser.
  *
- * Returns 0.
+ * @returns 0.
  */
 int
 xmlInitializeDict(void) {
@@ -94,7 +93,6 @@ xmlInitializeDict(void) {
 }
 
 /**
- * xmlInitDictInternal:
  *
  * Initialize mutex.
  */
@@ -104,9 +102,8 @@ xmlInitDictInternal(void) {
 }
 
 /**
- * xmlDictCleanup:
  *
- * DEPRECATED: This function is a no-op. Call xmlCleanupParser
+ * @deprecated This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
@@ -116,7 +113,6 @@ xmlDictCleanup(void) {
 }
 
 /**
- * xmlCleanupDictInternal:
  *
  * Free the dictionary mutex.
  */
@@ -126,14 +122,13 @@ xmlCleanupDictInternal(void) {
 }
 
 /*
- * xmlDictAddString:
- * @dict: the dictionary
- * @name: the name of the userdata
- * @len: the length of the name
+ * @param dict  the dictionary
+ * @param name  the name of the userdata
+ * @param len  the length of the name
  *
  * Add the string to the array[s]
  *
- * Returns the pointer of the local string, or NULL in case of error.
+ * @returns the pointer of the local string, or NULL in case of error.
  */
 static const xmlChar *
 xmlDictAddString(xmlDictPtr dict, const xmlChar *name, unsigned int namelen) {
@@ -192,16 +187,15 @@ found_pool:
 }
 
 /*
- * xmlDictAddQString:
- * @dict: the dictionary
- * @prefix: the prefix of the userdata
- * @plen: the prefix length
- * @name: the name of the userdata
- * @len: the length of the name
+ * @param dict  the dictionary
+ * @param prefix  the prefix of the userdata
+ * @param plen  the prefix length
+ * @param name  the name of the userdata
+ * @param len  the length of the name
  *
  * Add the QName to the array[s]
  *
- * Returns the pointer of the local string, or NULL in case of error.
+ * @returns the pointer of the local string, or NULL in case of error.
  */
 static const xmlChar *
 xmlDictAddQString(xmlDictPtr dict, const xmlChar *prefix, unsigned int plen,
@@ -255,11 +249,10 @@ found_pool:
 }
 
 /**
- * xmlDictCreate:
  *
  * Create a new dictionary
  *
- * Returns the newly created dictionary, or NULL if an error occurred.
+ * @returns the newly created dictionary, or NULL if an error occurred.
  */
 xmlDictPtr
 xmlDictCreate(void) {
@@ -286,15 +279,14 @@ xmlDictCreate(void) {
 }
 
 /**
- * xmlDictCreateSub:
- * @sub: an existing dictionary
+ * @param sub  an existing dictionary
  *
  * Create a new dictionary, inheriting strings from the read-only
- * dictionary @sub. On lookup, strings are first searched in the
- * new dictionary, then in @sub, and if not found are created in the
+ * dictionary `sub`. On lookup, strings are first searched in the
+ * new dictionary, then in `sub`, and if not found are created in the
  * new dictionary.
  *
- * Returns the newly created dictionary, or NULL if an error occurred.
+ * @returns the newly created dictionary, or NULL if an error occurred.
  */
 xmlDictPtr
 xmlDictCreateSub(xmlDictPtr sub) {
@@ -309,12 +301,11 @@ xmlDictCreateSub(xmlDictPtr sub) {
 }
 
 /**
- * xmlDictReference:
- * @dict: the dictionary
+ * @param dict  the dictionary
  *
  * Increment the reference counter of a dictionary
  *
- * Returns 0 in case of success and -1 in case of error
+ * @returns 0 in case of success and -1 in case of error
  */
 int
 xmlDictReference(xmlDictPtr dict) {
@@ -326,11 +317,10 @@ xmlDictReference(xmlDictPtr dict) {
 }
 
 /**
- * xmlDictFree:
- * @dict: the dictionary
+ * @param dict  the dictionary
  *
- * Free the hash @dict and its contents. The userdata is
- * deallocated with @f if provided.
+ * Free the hash `dict` and its contents. The userdata is
+ * deallocated with `f` if provided.
  */
 void
 xmlDictFree(xmlDictPtr dict) {
@@ -366,13 +356,12 @@ xmlDictFree(xmlDictPtr dict) {
 }
 
 /**
- * xmlDictOwns:
- * @dict: the dictionary
- * @str: the string
+ * @param dict  the dictionary
+ * @param str  the string
  *
  * check if a string is owned by the dictionary
  *
- * Returns 1 if true, 0 if false and -1 in case of error
+ * @returns 1 if true, 0 if false and -1 in case of error
  * -1 in case of error
  */
 int
@@ -393,12 +382,11 @@ xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
 }
 
 /**
- * xmlDictSize:
- * @dict: the dictionary
+ * @param dict  the dictionary
  *
- * Query the number of elements installed in the hash @dict.
+ * Query the number of elements installed in the hash `dict`.
  *
- * Returns the number of elements in the dictionary or
+ * @returns the number of elements in the dictionary or
  * -1 in case of error
  */
 int
@@ -411,14 +399,13 @@ xmlDictSize(xmlDictPtr dict) {
 }
 
 /**
- * xmlDictSetLimit:
- * @dict: the dictionary
- * @limit: the limit in bytes
+ * @param dict  the dictionary
+ * @param limit  the limit in bytes
  *
  * Set a size limit for the dictionary
  * Added in 2.9.0
  *
- * Returns the previous limit of the dictionary or 0
+ * @returns the previous limit of the dictionary or 0
  */
 size_t
 xmlDictSetLimit(xmlDictPtr dict, size_t limit) {
@@ -432,13 +419,12 @@ xmlDictSetLimit(xmlDictPtr dict, size_t limit) {
 }
 
 /**
- * xmlDictGetUsage:
- * @dict: the dictionary
+ * @param dict  the dictionary
  *
  * Get how much memory is used by a dictionary for strings
  * Added in 2.9.0
  *
- * Returns the amount of strings allocated
+ * @returns the amount of strings allocated
  */
 size_t
 xmlDictGetUsage(xmlDictPtr dict) {
@@ -512,13 +498,12 @@ xmlDictHashQName(unsigned seed, const xmlChar *prefix, const xmlChar *name,
 }
 
 /**
- * xmlDictComputeHash:
- * @dict:  dictionary
- * @string:  C string
+ * @param dict  dictionary
+ * @param string  C string
  *
  * Compute the hash value of a C string.
  *
- * Returns the hash value.
+ * @returns the hash value.
  */
 unsigned
 xmlDictComputeHash(const xmlDict *dict, const xmlChar *string) {
@@ -529,13 +514,12 @@ xmlDictComputeHash(const xmlDict *dict, const xmlChar *string) {
 #define HASH_ROL31(x,n) ((x) << (n) | ((x) & 0x7FFFFFFF) >> (31 - (n)))
 
 /**
- * xmlDictCombineHash:
- * @v1:  first hash value
- * @v2: second hash value
+ * @param v1  first hash value
+ * @param v2  second hash value
  *
  * Combine two hash values.
  *
- * Returns the combined hash value.
+ * @returns the combined hash value.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 unsigned
@@ -551,16 +535,15 @@ xmlDictCombineHash(unsigned v1, unsigned v2) {
 }
 
 /**
- * xmlDictFindEntry:
- * @dict: dict
- * @prefix: optional QName prefix
- * @name: string
- * @len: length of string
- * @hashValue: valid hash value of string
- * @pfound: result of search
+ * @param dict  dict
+ * @param prefix  optional QName prefix
+ * @param name  string
+ * @param len  length of string
+ * @param hashValue  valid hash value of string
+ * @param pfound  result of search
  *
  * Try to find a matching hash table entry. If an entry was found, set
- * @found to 1 and return the entry. Otherwise, set @found to 0 and return
+ * `found` to 1 and return the entry. Otherwise, set `found` to 0 and return
  * the location where a new entry should be inserted.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
@@ -618,13 +601,12 @@ xmlDictFindEntry(const xmlDict *dict, const xmlChar *prefix,
 }
 
 /**
- * xmlDictGrow:
- * @dict: dictionary
- * @size: new size of the dictionary
+ * @param dict  dictionary
+ * @param size  new size of the dictionary
  *
  * Resize the dictionary hash table.
  *
- * Returns 0 in case of success, -1 if a memory allocation failed.
+ * @returns 0 in case of success, -1 if a memory allocation failed.
  */
 static int
 xmlDictGrow(xmlDictPtr dict, unsigned size) {
@@ -685,12 +667,11 @@ done:
 }
 
 /**
- * xmlDictLookupInternal:
- * @dict: dict
- * @prefix: optional QName prefix
- * @name: string
- * @maybeLen: length of string or -1 if unknown
- * @update: whether the string should be added
+ * @param dict  dict
+ * @param prefix  optional QName prefix
+ * @param name  string
+ * @param maybeLen  length of string or -1 if unknown
+ * @param update  whether the string should be added
  *
  * Internal lookup and update function.
  */
@@ -835,14 +816,13 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
 }
 
 /**
- * xmlDictLookup:
- * @dict: dictionary
- * @name: string key
- * @len: length of the key, if -1 it is recomputed
+ * @param dict  dictionary
+ * @param name  string key
+ * @param len  length of the key, if -1 it is recomputed
  *
  * Lookup a string and add it to the dictionary if it wasn't found.
  *
- * Returns the interned copy of the string or NULL if a memory allocation
+ * @returns the interned copy of the string or NULL if a memory allocation
  * failed.
  */
 const xmlChar *
@@ -856,15 +836,14 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 }
 
 /**
- * xmlDictLookupHashed:
- * @dict: dictionary
- * @name: string key
- * @len: length of the key, if -1 it is recomputed
+ * @param dict  dictionary
+ * @param name  string key
+ * @param len  length of the key, if -1 it is recomputed
  *
  * Lookup a dictionary entry and add the string to the dictionary if
  * it wasn't found.
  *
- * Returns the dictionary entry.
+ * @returns the dictionary entry.
  */
 xmlHashedString
 xmlDictLookupHashed(xmlDictPtr dict, const xmlChar *name, int len) {
@@ -884,14 +863,13 @@ xmlDictLookupHashed(xmlDictPtr dict, const xmlChar *name, int len) {
 }
 
 /**
- * xmlDictExists:
- * @dict: the dictionary
- * @name: the name of the userdata
- * @len: the length of the name, if -1 it is recomputed
+ * @param dict  the dictionary
+ * @param name  the name of the userdata
+ * @param len  the length of the name, if -1 it is recomputed
  *
  * Check if a string exists in the dictionary.
  *
- * Returns the internal copy of the name or NULL if not found.
+ * @returns the internal copy of the name or NULL if not found.
  */
 const xmlChar *
 xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
@@ -904,15 +882,14 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 }
 
 /**
- * xmlDictQLookup:
- * @dict: the dictionary
- * @prefix: the prefix
- * @name: the name
+ * @param dict  the dictionary
+ * @param prefix  the prefix
+ * @param name  the name
  *
  * Lookup the QName `prefix:name` and add it to the dictionary if
  * it wasn't found.
  *
- * Returns the interned copy of the string or NULL if a memory allocation
+ * @returns the interned copy of the string or NULL if a memory allocation
  * failed.
  */
 const xmlChar *
@@ -948,7 +925,6 @@ static xmlMutex xmlRngMutex;
 static unsigned globalRngState[2];
 
 /*
- * xmlInitRandom:
  *
  * Initialize the PRNG.
  */
@@ -1016,7 +992,6 @@ xmlInitRandom(void) {
 }
 
 /*
- * xmlCleanupRandom:
  *
  * Clean up PRNG globals.
  */
@@ -1040,11 +1015,10 @@ xoroshiro64ss(unsigned *s) {
 }
 
 /*
- * xmlGlobalRandom:
  *
  * Generate a pseudo-random value using the global PRNG.
  *
- * Returns a random value.
+ * @returns a random value.
  */
 unsigned
 xmlGlobalRandom(void) {
@@ -1058,11 +1032,10 @@ xmlGlobalRandom(void) {
 }
 
 /*
- * xmlRandom:
  *
  * Generate a pseudo-random value using the thread-local PRNG.
  *
- * Returns a random value.
+ * @returns a random value.
  */
 unsigned
 xmlRandom(void) {

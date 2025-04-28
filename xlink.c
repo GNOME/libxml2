@@ -34,13 +34,12 @@ static xlinkHandlerPtr xlinkDefaultHandler = NULL;
 static xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
 
 /**
- * xlinkGetDefaultHandler:
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Get the default xlink handler.
  *
- * Returns the current xlinkHandlerPtr value.
+ * @returns the current xlinkHandlerPtr value.
  */
 xlinkHandlerPtr
 xlinkGetDefaultHandler(void) {
@@ -49,10 +48,9 @@ xlinkGetDefaultHandler(void) {
 
 
 /**
- * xlinkSetDefaultHandler:
- * @handler:  the new value for the xlink handler block
+ * @param handler  the new value for the xlink handler block
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Set the default xlink handlers
  */
@@ -62,13 +60,12 @@ xlinkSetDefaultHandler(xlinkHandlerPtr handler) {
 }
 
 /**
- * xlinkGetDefaultDetect:
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Get the default xlink detection routine
  *
- * Returns the current function or NULL;
+ * @returns the current function or NULL;
  */
 xlinkNodeDetectFunc
 xlinkGetDefaultDetect	(void) {
@@ -76,10 +73,9 @@ xlinkGetDefaultDetect	(void) {
 }
 
 /**
- * xlinkSetDefaultDetect:
- * @func: pointer to the new detection routine.
+ * @param func  pointer to the new detection routine.
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Set the default xlink detection routine
  */
@@ -96,9 +92,8 @@ xlinkSetDefaultDetect	(xlinkNodeDetectFunc func) {
 
 
 /**
- * xlinkIsLink:
- * @doc:  the document containing the node
- * @node:  the node pointer itself
+ * @param doc  the document containing the node
+ * @param node  the node pointer itself
  *
  * Check whether the given node carries the attributes needed
  * to be a link element (or is one of the linking elements issued
@@ -106,7 +101,7 @@ xlinkSetDefaultDetect	(xlinkNodeDetectFunc func) {
  * This routine don't try to do full checking of the link validity
  * but tries to detect and return the appropriate link type.
  *
- * Returns the xlinkType of the node (XLINK_TYPE_NONE if there is no
+ * @returns the xlinkType of the node (XLINK_TYPE_NONE if there is no
  *         link detected.
  */
 xlinkType

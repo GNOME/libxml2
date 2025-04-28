@@ -1,10 +1,13 @@
-/*
- * Summary: error handling
- * Description: the API used to report errors
+/**
+ * @file
+ * 
+ * @brief error handling
+ * 
+ * the API used to report errors
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_ERROR_H__
@@ -22,7 +25,6 @@ extern "C" {
 #define initGenericErrorDefaultFunc(h) xmlSetGenericErrorFunc(NULL, *(h))
 
 /**
- * xmlErrorLevel:
  *
  * Indicates the level of an error
  */
@@ -34,7 +36,6 @@ typedef enum {
 } xmlErrorLevel;
 
 /**
- * xmlErrorDomain:
  *
  * Indicates where an error may have come from
  */
@@ -73,7 +74,6 @@ typedef enum {
 } xmlErrorDomain;
 
 /**
- * xmlError:
  *
  * An XML Error instance.
  */
@@ -97,7 +97,6 @@ struct _xmlError {
 };
 
 /**
- * xmlParserError:
  *
  * This is an error that the XML (or HTML) parser can generate
  */
@@ -848,9 +847,8 @@ typedef enum {
 } xmlParserErrors;
 
 /**
- * xmlGenericErrorFunc:
- * @ctx:  a parsing context
- * @msg:  the message
+ * @param ctx  a parsing context
+ * @param msg  the message
  * @...:  the extra arguments of the varargs to format the message
  *
  * Signature of the function to use when there is an error and
@@ -860,16 +858,15 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
 				 const char *msg,
 				 ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * xmlStructuredErrorFunc:
- * @userData:  user provided data for the error callback
- * @error:  the error being raised.
+ * @param userData  user provided data for the error callback
+ * @param error  the error being raised.
  *
  * Signature of the function to use when there is an error and
  * the module handles the new error reporting mechanism.
  */
 typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 XML_DEPRECATED
 XMLPUBFUN const xmlError *__xmlLastError(void);
 
@@ -885,7 +882,7 @@ XMLPUBFUN void **__xmlStructuredErrorContext(void);
   #define xmlStructuredError (*__xmlStructuredError())
   #define xmlStructuredErrorContext (*__xmlStructuredErrorContext())
 #endif
-/** DOC_ENABLE */
+/** @endcond */
 
 /*
  * Use the following function to reset the two global variables
@@ -926,9 +923,9 @@ XMLPUBFUN void
     xmlParserValidityWarning	(void *ctx,
 				 const char *msg,
 				 ...) LIBXML_ATTR_FORMAT(2,3);
-/** DOC_DISABLE */
+/** @cond IGNORE */
 struct _xmlParserInput;
-/** DOC_ENABLE */
+/** @endcond */
 XMLPUBFUN void
     xmlParserPrintFileInfo	(struct _xmlParserInput *input);
 XMLPUBFUN void

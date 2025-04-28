@@ -31,9 +31,8 @@
 #include "private/tree.h"
 
 /*
- * xmlSAX2ErrMemory:
- * @ctxt:  an XML validation parser context
- * @msg:   a string to accompany the error message
+ * @param ctxt  an XML validation parser context
+ * @param msg  a string to accompany the error message
  */
 static void
 xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt) {
@@ -41,12 +40,11 @@ xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlValidError:
- * @ctxt:  an XML validation parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  extra data
- * @str2:  extra data
+ * @param ctxt  an XML validation parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param str1  extra data
+ * @param str2  extra data
  *
  * Handle a validation error
  */
@@ -61,12 +59,11 @@ xmlErrValid(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlFatalErrMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  an error string
- * @str2:  an error string
+ * @param ctxt  an XML parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param str1  an error string
+ * @param str2  an error string
  *
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
@@ -79,11 +76,10 @@ xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlWarnMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  an error string
+ * @param ctxt  an XML parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param str1  an error string
  *
  * Handle a parser warning
  */
@@ -96,12 +92,11 @@ xmlWarnMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlNsWarnMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  an error string
- * @str2:  an error string
+ * @param ctxt  an XML parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param str1  an error string
+ * @param str2  an error string
  *
  * Handle a namespace warning
  */
@@ -114,12 +109,11 @@ xmlNsWarnMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlSAX2GetPublicId:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Provides the public ID e.g. "-//SGMLSOURCE//DTD DEMO//EN"
  *
- * Returns a xmlChar *
+ * @returns a xmlChar *
  */
 const xmlChar *
 xmlSAX2GetPublicId(void *ctx ATTRIBUTE_UNUSED)
@@ -129,13 +123,12 @@ xmlSAX2GetPublicId(void *ctx ATTRIBUTE_UNUSED)
 }
 
 /**
- * xmlSAX2GetSystemId:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Provides the system ID, basically URL or filename e.g.
  * http://www.sgmlsource.com/dtds/memo.dtd
  *
- * Returns a xmlChar *
+ * @returns a xmlChar *
  */
 const xmlChar *
 xmlSAX2GetSystemId(void *ctx)
@@ -146,12 +139,11 @@ xmlSAX2GetSystemId(void *ctx)
 }
 
 /**
- * xmlSAX2GetLineNumber:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Provide the line number of the current parsing point.
  *
- * Returns an int
+ * @returns an int
  */
 int
 xmlSAX2GetLineNumber(void *ctx)
@@ -162,12 +154,11 @@ xmlSAX2GetLineNumber(void *ctx)
 }
 
 /**
- * xmlSAX2GetColumnNumber:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Provide the column number of the current parsing point.
  *
- * Returns an int
+ * @returns an int
  */
 int
 xmlSAX2GetColumnNumber(void *ctx)
@@ -178,12 +169,11 @@ xmlSAX2GetColumnNumber(void *ctx)
 }
 
 /**
- * xmlSAX2IsStandalone:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Is this document tagged standalone ?
  *
- * Returns 1 if true
+ * @returns 1 if true
  */
 int
 xmlSAX2IsStandalone(void *ctx)
@@ -194,12 +184,11 @@ xmlSAX2IsStandalone(void *ctx)
 }
 
 /**
- * xmlSAX2HasInternalSubset:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Does this document has an internal subset
  *
- * Returns 1 if true
+ * @returns 1 if true
  */
 int
 xmlSAX2HasInternalSubset(void *ctx)
@@ -210,12 +199,11 @@ xmlSAX2HasInternalSubset(void *ctx)
 }
 
 /**
- * xmlSAX2HasExternalSubset:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * Does this document has an external subset
  *
- * Returns 1 if true
+ * @returns 1 if true
  */
 int
 xmlSAX2HasExternalSubset(void *ctx)
@@ -226,11 +214,10 @@ xmlSAX2HasExternalSubset(void *ctx)
 }
 
 /**
- * xmlSAX2InternalSubset:
- * @ctx:  the user data (XML parser context)
- * @name:  the root element name
- * @ExternalID:  the external ID
- * @SystemID:  the SYSTEM ID (e.g. filename or URL)
+ * @param ctx  the user data (XML parser context)
+ * @param name  the root element name
+ * @param ExternalID  the external ID
+ * @param SystemID  the SYSTEM ID (e.g. filename or URL)
  *
  * Callback on internal subset declaration.
  */
@@ -259,11 +246,10 @@ xmlSAX2InternalSubset(void *ctx, const xmlChar *name,
 }
 
 /**
- * xmlSAX2ExternalSubset:
- * @ctx: the user data (XML parser context)
- * @name:  the root element name
- * @ExternalID:  the external ID
- * @SystemID:  the SYSTEM ID (e.g. filename or URL)
+ * @param ctx  the user data (XML parser context)
+ * @param name  the root element name
+ * @param ExternalID  the external ID
+ * @param SystemID  the SYSTEM ID (e.g. filename or URL)
  *
  * Callback on external subset declaration.
  */
@@ -383,15 +369,14 @@ error:
 }
 
 /**
- * xmlSAX2ResolveEntity:
- * @ctx: the user data (XML parser context)
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
+ * @param ctx  the user data (XML parser context)
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
  *
  * This is only used to load DTDs. The preferred way to install
  * custom resolvers is xmlCtxtSetResourceLoader.
  *
- * Returns a parser input.
+ * @returns a parser input.
  */
 xmlParserInputPtr
 xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
@@ -446,13 +431,12 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
 }
 
 /**
- * xmlSAX2GetEntity:
- * @ctx: the user data (XML parser context)
- * @name: The entity name
+ * @param ctx  the user data (XML parser context)
+ * @param name  The entity name
  *
  * Get an entity by name
  *
- * Returns the xmlEntityPtr if found.
+ * @returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
 xmlSAX2GetEntity(void *ctx, const xmlChar *name)
@@ -492,13 +476,12 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 }
 
 /**
- * xmlSAX2GetParameterEntity:
- * @ctx: the user data (XML parser context)
- * @name: The entity name
+ * @param ctx  the user data (XML parser context)
+ * @param name  The entity name
  *
  * Get a parameter entity by name
  *
- * Returns the xmlEntityPtr if found.
+ * @returns the xmlEntityPtr if found.
  */
 xmlEntityPtr
 xmlSAX2GetParameterEntity(void *ctx, const xmlChar *name)
@@ -514,13 +497,12 @@ xmlSAX2GetParameterEntity(void *ctx, const xmlChar *name)
 
 
 /**
- * xmlSAX2EntityDecl:
- * @ctx: the user data (XML parser context)
- * @name:  the entity name
- * @type:  the entity type
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
- * @content: the entity value (without processing).
+ * @param ctx  the user data (XML parser context)
+ * @param name  the entity name
+ * @param type  the entity type
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
+ * @param content  the entity value (without processing).
  *
  * An entity definition has been parsed
  */
@@ -608,14 +590,13 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 }
 
 /**
- * xmlSAX2AttributeDecl:
- * @ctx: the user data (XML parser context)
- * @elem:  the name of the element
- * @fullname:  the attribute name
- * @type:  the attribute type
- * @def:  the type of default value
- * @defaultValue: the attribute default value
- * @tree:  the tree of enumerated value set
+ * @param ctx  the user data (XML parser context)
+ * @param elem  the name of the element
+ * @param fullname  the attribute name
+ * @param type  the attribute type
+ * @param def  the type of default value
+ * @param defaultValue  the attribute default value
+ * @param tree  the tree of enumerated value set
  *
  * An attribute definition has been parsed
  */
@@ -678,11 +659,10 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 }
 
 /**
- * xmlSAX2ElementDecl:
- * @ctx: the user data (XML parser context)
- * @name:  the element name
- * @type:  the element type
- * @content: the element value tree
+ * @param ctx  the user data (XML parser context)
+ * @param name  the element name
+ * @param type  the element type
+ * @param content  the element value tree
  *
  * An element definition has been parsed
  */
@@ -722,11 +702,10 @@ xmlSAX2ElementDecl(void *ctx, const xmlChar * name, int type,
 }
 
 /**
- * xmlSAX2NotationDecl:
- * @ctx: the user data (XML parser context)
- * @name: The name of the notation
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
+ * @param ctx  the user data (XML parser context)
+ * @param name  The name of the notation
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
  *
  * What to do when a notation declaration has been parsed.
  */
@@ -770,12 +749,11 @@ xmlSAX2NotationDecl(void *ctx, const xmlChar *name,
 }
 
 /**
- * xmlSAX2UnparsedEntityDecl:
- * @ctx: the user data (XML parser context)
- * @name: The name of the entity
- * @publicId: The public ID of the entity
- * @systemId: The system ID of the entity
- * @notationName: the name of the notation
+ * @param ctx  the user data (XML parser context)
+ * @param name  The name of the entity
+ * @param publicId  The public ID of the entity
+ * @param systemId  The system ID of the entity
+ * @param notationName  the name of the notation
  *
  * What to do when an unparsed entity declaration is parsed
  */
@@ -789,9 +767,8 @@ xmlSAX2UnparsedEntityDecl(void *ctx, const xmlChar *name,
 }
 
 /**
- * xmlSAX2SetDocumentLocator:
- * @ctx: the user data (XML parser context)
- * @loc: A SAX Locator
+ * @param ctx  the user data (XML parser context)
+ * @param loc  A SAX Locator
  *
  * Receive the document locator at startup, actually xmlDefaultSAXLocator
  * Everything is available on the context, so this is useless in our case.
@@ -802,8 +779,7 @@ xmlSAX2SetDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRI
 }
 
 /**
- * xmlSAX2StartDocument:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * called when the document start being processed.
  */
@@ -853,8 +829,7 @@ xmlSAX2StartDocument(void *ctx)
 }
 
 /**
- * xmlSAX2EndDocument:
- * @ctx: the user data (XML parser context)
+ * @param ctx  the user data (XML parser context)
  *
  * called when the document end has been detected.
  */
@@ -921,12 +896,11 @@ xmlSAX2AppendChild(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
 
 #if defined(LIBXML_SAX1_ENABLED)
 /**
- * xmlNsErrMsg:
- * @ctxt:  an XML parser context
- * @error:  the error number
- * @msg:  the error message
- * @str1:  an error string
- * @str2:  an error string
+ * @param ctxt  an XML parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param str1  an error string
+ * @param str2  an error string
  *
  * Handle a namespace error
  */
@@ -939,11 +913,10 @@ xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlSAX1Attribute:
- * @ctxt: the parser context
- * @fullname:  the attribute name, including namespace prefix
- * @value:  the attribute value
- * @prefix:  the namespace prefix
+ * @param ctxt  the parser context
+ * @param fullname  the attribute name, including namespace prefix
+ * @param value  the attribute value
+ * @param prefix  the namespace prefix
  *
  * Handle an attribute that has been read by the parser.
  *
@@ -1231,7 +1204,6 @@ error:
 }
 
 /*
- * xmlCheckDefaultedAttributes:
  *
  * Check defaulted attributes from the DTD
  *
@@ -1388,10 +1360,9 @@ process_external_subset:
 }
 
 /**
- * xmlSAX1StartElement:
- * @ctx: the user data (XML parser context)
- * @fullname:  The element name, including namespace prefix
- * @atts:  An array of name/value attributes pairs, NULL terminated
+ * @param ctx  the user data (XML parser context)
+ * @param fullname  The element name, including namespace prefix
+ * @param atts  An array of name/value attributes pairs, NULL terminated
  *
  * called when an opening tag has been processed.
  *
@@ -1622,10 +1593,9 @@ xmlSAX2HtmlAttribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 }
 
 /**
- * xmlSAX2StartHtmlElement:
- * @ctxt:  parser context
- * @fullname:  The element name, including namespace prefix
- * @atts:  An array of name/value attributes pairs, NULL terminated
+ * @param ctxt  parser context
+ * @param fullname  The element name, including namespace prefix
+ * @param atts  An array of name/value attributes pairs, NULL terminated
  *
  * Called when an opening tag has been processed.
  */
@@ -1678,12 +1648,11 @@ xmlSAX2StartHtmlElement(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 #endif /* LIBXML_HTML_ENABLED */
 
 /**
- * xmlSAX2StartElement:
- * @ctx: the user data (XML parser context)
- * @fullname:  The element name, including namespace prefix
- * @atts:  An array of name/value attributes pairs, NULL terminated
+ * @param ctx  the user data (XML parser context)
+ * @param fullname  The element name, including namespace prefix
+ * @param atts  An array of name/value attributes pairs, NULL terminated
  *
- * DEPRECATED: Don't call this function directly.
+ * @deprecated Don't call this function directly.
  *
  * Called when an opening tag has been processed.
  *
@@ -1714,11 +1683,10 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts) {
 }
 
 /**
- * xmlSAX2EndElement:
- * @ctx: the user data (XML parser context)
- * @name:  The element name
+ * @param ctx  the user data (XML parser context)
+ * @param name  The element name
  *
- * DEPRECATED: Don't call this function directly.
+ * @deprecated Don't call this function directly.
  *
  * called when the end of an element has been detected.
  *
@@ -1750,14 +1718,13 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 }
 
 /*
- * xmlSAX2TextNode:
- * @ctxt:  the parser context
- * @str:  the input string
- * @len: the string length
+ * @param ctxt  the parser context
+ * @param str  the input string
+ * @param len  the string length
  *
  * Callback for a text node
  *
- * Returns the newly allocated string or NULL if not needed or error
+ * @returns the newly allocated string or NULL if not needed or error
  */
 static xmlNodePtr
 xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
@@ -1837,14 +1804,13 @@ skip:
 
 #ifdef LIBXML_VALID_ENABLED
 /*
- * xmlSAX2DecodeAttrEntities:
- * @ctxt:  the parser context
- * @str:  the input string
- * @len: the string length
+ * @param ctxt  the parser context
+ * @param str  the input string
+ * @param len  the string length
  *
  * Remove the entities from an attribute value
  *
- * Returns the newly allocated string or NULL if not needed or error
+ * @returns the newly allocated string or NULL if not needed or error
  */
 static xmlChar *
 xmlSAX2DecodeAttrEntities(xmlParserCtxtPtr ctxt, const xmlChar *str,
@@ -1867,19 +1833,18 @@ decode:
 #endif /* LIBXML_VALID_ENABLED */
 
 /**
- * xmlSAX2AttributeNs:
- * @ctxt: the parser context
- * @localname:  the local name of the attribute
- * @prefix:  the attribute namespace prefix if available
- * @value:  start of the attribute value
- * @valueend: end of the attribute value
+ * @param ctxt  the parser context
+ * @param localname  the local name of the attribute
+ * @param prefix  the attribute namespace prefix if available
+ * @param value  start of the attribute value
+ * @param valueend  end of the attribute value
  *
  * Handle an attribute that has been read by the parser.
  * The default handling is to convert the attribute into an
  * DOM subtree and past it in a new xmlAttr element added to
  * the element.
  *
- * Returns the new attribute or NULL in case of error.
+ * @returns the new attribute or NULL in case of error.
  */
 static xmlAttrPtr
 xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
@@ -2100,16 +2065,15 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSAX2StartElementNs:
- * @ctx:  the user data (XML parser context)
- * @localname:  the local name of the element
- * @prefix:  the element namespace prefix if available
- * @URI:  the element namespace name if available
- * @nb_namespaces:  number of namespace definitions on that node
- * @namespaces:  pointer to the array of prefix/URI pairs namespace definitions
- * @nb_attributes:  the number of attributes on that node
- * @nb_defaulted:  the number of defaulted attributes.
- * @attributes:  pointer to the array of (localname/prefix/URI/value/end)
+ * @param ctx  the user data (XML parser context)
+ * @param localname  the local name of the element
+ * @param prefix  the element namespace prefix if available
+ * @param URI  the element namespace name if available
+ * @param nb_namespaces  number of namespace definitions on that node
+ * @param namespaces  pointer to the array of prefix/URI pairs namespace definitions
+ * @param nb_attributes  the number of attributes on that node
+ * @param nb_defaulted  the number of defaulted attributes.
+ * @param attributes  pointer to the array of (localname/prefix/URI/value/end)
  *               attribute values.
  *
  * SAX2 callback when an element start has been detected by the parser.
@@ -2376,11 +2340,10 @@ have_attr:
 }
 
 /**
- * xmlSAX2EndElementNs:
- * @ctx:  the user data (XML parser context)
- * @localname:  the local name of the element
- * @prefix:  the element namespace prefix if available
- * @URI:  the element namespace name if available
+ * @param ctx  the user data (XML parser context)
+ * @param localname  the local name of the element
+ * @param prefix  the element namespace prefix if available
+ * @param URI  the element namespace name if available
  *
  * SAX2 callback when an element end has been detected by the parser.
  * It provides the namespace information for the element.
@@ -2410,9 +2373,8 @@ xmlSAX2EndElementNs(void *ctx,
 }
 
 /**
- * xmlSAX2Reference:
- * @ctx: the user data (XML parser context)
- * @name:  The entity name
+ * @param ctx  the user data (XML parser context)
+ * @param name  The entity name
  *
  * called when an entity xmlSAX2Reference is detected.
  */
@@ -2433,11 +2395,10 @@ xmlSAX2Reference(void *ctx, const xmlChar *name)
 }
 
 /**
- * xmlSAX2Text:
- * @ctxt: the parser context
- * @ch:  a xmlChar string
- * @len: the number of xmlChar
- * @type: text or cdata
+ * @param ctxt  the parser context
+ * @param ch  a xmlChar string
+ * @param len  the number of xmlChar
+ * @param type  text or cdata
  *
  * Append characters.
  */
@@ -2575,10 +2536,9 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 }
 
 /**
- * xmlSAX2Characters:
- * @ctx: the user data (XML parser context)
- * @ch:  a xmlChar string
- * @len: the number of xmlChar
+ * @param ctx  the user data (XML parser context)
+ * @param ch  a xmlChar string
+ * @param len  the number of xmlChar
  *
  * receiving some chars from the parser.
  */
@@ -2589,10 +2549,9 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 }
 
 /**
- * xmlSAX2IgnorableWhitespace:
- * @ctx: the user data (XML parser context)
- * @ch:  a xmlChar string
- * @len: the number of xmlChar
+ * @param ctx  the user data (XML parser context)
+ * @param ch  a xmlChar string
+ * @param len  the number of xmlChar
  *
  * receiving some ignorable whitespaces from the parser.
  * UNUSED: by default the DOM building will use xmlSAX2Characters
@@ -2603,10 +2562,9 @@ xmlSAX2IgnorableWhitespace(void *ctx ATTRIBUTE_UNUSED, const xmlChar *ch ATTRIBU
 }
 
 /**
- * xmlSAX2ProcessingInstruction:
- * @ctx: the user data (XML parser context)
- * @target:  the target name
- * @data: the PI data's
+ * @param ctx  the user data (XML parser context)
+ * @param target  the target name
+ * @param data  the PI data's
  *
  * A processing instruction has been parsed.
  */
@@ -2629,9 +2587,8 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
 }
 
 /**
- * xmlSAX2Comment:
- * @ctx: the user data (XML parser context)
- * @value:  the xmlSAX2Comment content
+ * @param ctx  the user data (XML parser context)
+ * @param value  the xmlSAX2Comment content
  *
  * A xmlSAX2Comment has been parsed.
  */
@@ -2653,10 +2610,9 @@ xmlSAX2Comment(void *ctx, const xmlChar *value)
 }
 
 /**
- * xmlSAX2CDataBlock:
- * @ctx: the user data (XML parser context)
- * @value:  The pcdata content
- * @len:  the block length
+ * @param ctx  the user data (XML parser context)
+ * @param value  The pcdata content
+ * @param len  the block length
  *
  * called when a pcdata block has been parsed
  */
@@ -2668,14 +2624,13 @@ xmlSAX2CDataBlock(void *ctx, const xmlChar *value, int len)
 
 #ifdef LIBXML_SAX1_ENABLED
 /**
- * xmlSAXDefaultVersion:
- * @version:  the version, must be 2
+ * @param version  the version, must be 2
  *
- * DEPRECATED: Use parser option XML_PARSE_SAX1.
+ * @deprecated Use parser option XML_PARSE_SAX1.
  *
  * Has no effect.
  *
- * Returns 2 in case of success and -1 in case of error.
+ * @returns 2 in case of success and -1 in case of error.
  */
 int
 xmlSAXDefaultVersion(int version)
@@ -2687,13 +2642,12 @@ xmlSAXDefaultVersion(int version)
 #endif /* LIBXML_SAX1_ENABLED */
 
 /**
- * xmlSAXVersion:
- * @hdlr:  the SAX handler
- * @version:  the version, 1 or 2
+ * @param hdlr  the SAX handler
+ * @param version  the version, 1 or 2
  *
  * Initialize the default XML SAX handler according to the version
  *
- * Returns 0 in case of success and -1 in case of error.
+ * @returns 0 in case of success and -1 in case of error.
  */
 int
 xmlSAXVersion(xmlSAXHandler *hdlr, int version)
@@ -2747,9 +2701,8 @@ xmlSAXVersion(xmlSAXHandler *hdlr, int version)
 }
 
 /**
- * xmlSAX2InitDefaultSAXHandler:
- * @hdlr:  the SAX handler
- * @warning:  flag if non-zero sets the handler warning procedure
+ * @param hdlr  the SAX handler
+ * @param warning  flag if non-zero sets the handler warning procedure
  *
  * Initialize the default XML SAX2 handler
  */
@@ -2765,9 +2718,8 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 }
 
 /**
- * xmlDefaultSAXHandlerInit:
  *
- * DEPRECATED: This function is a no-op. Call xmlInitParser to
+ * @deprecated This function is a no-op. Call xmlInitParser to
  * initialize the library.
  *
  * Initialize the default SAX2 handler
@@ -2780,8 +2732,7 @@ xmlDefaultSAXHandlerInit(void)
 #ifdef LIBXML_HTML_ENABLED
 
 /**
- * xmlSAX2InitHtmlDefaultSAXHandler:
- * @hdlr:  the SAX handler
+ * @param hdlr  the SAX handler
  *
  * Initialize the default HTML SAX2 handler
  */
@@ -2823,9 +2774,8 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 }
 
 /**
- * htmlDefaultSAXHandlerInit:
  *
- * DEPRECATED: This function is a no-op. Call xmlInitParser to
+ * @deprecated This function is a no-op. Call xmlInitParser to
  * initialize the library.
  */
 void

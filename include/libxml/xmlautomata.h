@@ -1,10 +1,13 @@
-/*
- * Summary: API to build regexp automata
- * Description: the API to build regexp automata
+/**
+ * @file
+ * 
+ * @brief API to build regexp automata
+ * 
+ * the API to build regexp automata
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_AUTOMATA_H__
@@ -21,7 +24,6 @@ extern "C" {
 #endif
 
 /**
- * xmlAutomataPtr:
  *
  * A libxml automata description, It can be compiled into a regexp
  */
@@ -29,7 +31,6 @@ typedef struct _xmlAutomata xmlAutomata;
 typedef xmlAutomata *xmlAutomataPtr;
 
 /**
- * xmlAutomataStatePtr:
  *
  * A state int the automata description,
  */

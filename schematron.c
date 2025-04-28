@@ -155,7 +155,6 @@ struct _xmlSchematron {
 };
 
 /**
- * xmlSchematronValidCtxt:
  *
  * A Schematrons validation context
  */
@@ -225,8 +224,7 @@ struct _xmlSchematronParserCtxt {
  ************************************************************************/
 
 /**
- * xmlSchematronPErrMemory:
- * @ctxt: parser context
+ * @param ctxt  parser context
  *
  * Handle an out of memory condition
  */
@@ -239,13 +237,12 @@ xmlSchematronPErrMemory(xmlSchematronParserCtxtPtr ctxt)
 }
 
 /**
- * xmlSchematronPErr:
- * @ctxt: the parsing context
- * @node: the context node
- * @error: the error code
- * @msg: the error message
- * @str1: extra data
- * @str2: extra data
+ * @param ctxt  the parsing context
+ * @param node  the context node
+ * @param error  the error code
+ * @param msg  the error message
+ * @param str1  extra data
+ * @param str2  extra data
  *
  * Handle a parser error
  */
@@ -279,8 +276,7 @@ xmlSchematronPErr(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr node, int error,
 }
 
 /**
- * xmlSchematronVTypeErrMemory:
- * @ctxt: validation context
+ * @param ctxt  validation context
  *
  * Handle an out of memory condition
  */
@@ -295,11 +291,10 @@ xmlSchematronVErrMemory(xmlSchematronValidCtxtPtr ctxt)
 }
 
 /**
- * xmlSchematronVErr:
- * @ctxt: validation context
- * @error: the error code
- * @msg: the error message
- * @str1: extra data
+ * @param ctxt  validation context
+ * @param error  the error code
+ * @param msg  the error message
+ * @param str1  extra data
  *
  * Handle a validation error
  */
@@ -339,17 +334,16 @@ xmlSchematronVErr(xmlSchematronValidCtxtPtr ctxt, int error,
  ************************************************************************/
 
 /**
- * xmlSchematronAddTest:
- * @ctxt: the schema parsing context
- * @type:  the type of test
- * @rule:  the parent rule
- * @node:  the node hosting the test
- * @test: the associated test
- * @report: the associated report string
+ * @param ctxt  the schema parsing context
+ * @param type  the type of test
+ * @param rule  the parent rule
+ * @param node  the node hosting the test
+ * @param test  the associated test
+ * @param report  the associated report string
  *
  * Add a test to a schematron
  *
- * Returns the new pointer or NULL in case of error
+ * @returns the new pointer or NULL in case of error
  */
 static xmlSchematronTestPtr
 xmlSchematronAddTest(xmlSchematronParserCtxtPtr ctxt,
@@ -401,8 +395,7 @@ xmlSchematronAddTest(xmlSchematronParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronFreeTests:
- * @tests:  a list of tests
+ * @param tests  a list of tests
  *
  * Free a list of tests.
  */
@@ -424,8 +417,7 @@ xmlSchematronFreeTests(xmlSchematronTestPtr tests) {
 }
 
 /**
- * xmlSchematronFreeLets:
- * @lets:  a list of let variables
+ * @param lets  a list of let variables
  *
  * Free a list of let variables.
  */
@@ -445,17 +437,16 @@ xmlSchematronFreeLets(xmlSchematronLetPtr lets) {
 }
 
 /**
- * xmlSchematronAddRule:
- * @ctxt: the schema parsing context
- * @schema:  a schema structure
- * @pat:  a pattern
- * @node:  the node hosting the rule
- * @context: the associated context string
- * @report: the associated report string
+ * @param ctxt  the schema parsing context
+ * @param schema  a schema structure
+ * @param pat  a pattern
+ * @param node  the node hosting the rule
+ * @param context  the associated context string
+ * @param report  the associated report string
  *
  * Add a rule to a schematron
  *
- * Returns the new pointer or NULL in case of error
+ * @returns the new pointer or NULL in case of error
  */
 static xmlSchematronRulePtr
 xmlSchematronAddRule(xmlSchematronParserCtxtPtr ctxt, xmlSchematronPtr schema,
@@ -516,8 +507,7 @@ xmlSchematronAddRule(xmlSchematronParserCtxtPtr ctxt, xmlSchematronPtr schema,
 }
 
 /**
- * xmlSchematronFreeRules:
- * @rules:  a list of rules
+ * @param rules  a list of rules
  *
  * Free a list of rules.
  */
@@ -543,15 +533,14 @@ xmlSchematronFreeRules(xmlSchematronRulePtr rules) {
 }
 
 /**
- * xmlSchematronAddPattern:
- * @ctxt: the schema parsing context
- * @schema:  a schema structure
- * @node:  the node hosting the pattern
- * @name: the name of the pattern
+ * @param ctxt  the schema parsing context
+ * @param schema  a schema structure
+ * @param node  the node hosting the pattern
+ * @param name  the name of the pattern
  *
  * Add a pattern to a schematron
  *
- * Returns the new pointer or NULL in case of error
+ * @returns the new pointer or NULL in case of error
  */
 static xmlSchematronPatternPtr
 xmlSchematronAddPattern(xmlSchematronParserCtxtPtr ctxt,
@@ -583,8 +572,7 @@ xmlSchematronAddPattern(xmlSchematronParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronFreePatterns:
- * @patterns:  a list of patterns
+ * @param patterns  a list of patterns
  *
  * Free a list of patterns.
  */
@@ -602,12 +590,11 @@ xmlSchematronFreePatterns(xmlSchematronPatternPtr patterns) {
 }
 
 /**
- * xmlSchematronNewSchematron:
- * @ctxt:  a schema validation context
+ * @param ctxt  a schema validation context
  *
  * Allocate a new Schematron structure.
  *
- * Returns the newly allocated structure or NULL in case or error
+ * @returns the newly allocated structure or NULL in case or error
  */
 static xmlSchematronPtr
 xmlSchematronNewSchematron(xmlSchematronParserCtxtPtr ctxt)
@@ -627,8 +614,7 @@ xmlSchematronNewSchematron(xmlSchematronParserCtxtPtr ctxt)
 }
 
 /**
- * xmlSchematronFree:
- * @schema:  a schema structure
+ * @param schema  a schema structure
  *
  * Deallocate a Schematron structure.
  */
@@ -651,13 +637,12 @@ xmlSchematronFree(xmlSchematronPtr schema)
 }
 
 /**
- * xmlSchematronNewParserCtxt:
- * @URL:  the location of the schema
+ * @param URL  the location of the schema
  *
  * Create an XML Schematrons parse context for that file/resource expected
  * to contain an XML Schematrons file.
  *
- * Returns the parser context or NULL in case of error
+ * @returns the parser context or NULL in case of error
  */
 xmlSchematronParserCtxtPtr
 xmlSchematronNewParserCtxt(const char *URL)
@@ -690,14 +675,13 @@ xmlSchematronNewParserCtxt(const char *URL)
 }
 
 /**
- * xmlSchematronNewMemParserCtxt:
- * @buffer:  a pointer to a char array containing the schemas
- * @size:  the size of the array
+ * @param buffer  a pointer to a char array containing the schemas
+ * @param size  the size of the array
  *
  * Create an XML Schematrons parse context for that memory buffer expected
  * to contain an XML Schematrons file.
  *
- * Returns the parser context or NULL in case of error
+ * @returns the parser context or NULL in case of error
  */
 xmlSchematronParserCtxtPtr
 xmlSchematronNewMemParserCtxt(const char *buffer, int size)
@@ -728,13 +712,12 @@ xmlSchematronNewMemParserCtxt(const char *buffer, int size)
 }
 
 /**
- * xmlSchematronNewDocParserCtxt:
- * @doc:  a preparsed document tree
+ * @param doc  a preparsed document tree
  *
  * Create an XML Schematrons parse context for that document.
  * NB. The document may be modified during the parsing process.
  *
- * Returns the parser context or NULL in case of error
+ * @returns the parser context or NULL in case of error
  */
 xmlSchematronParserCtxtPtr
 xmlSchematronNewDocParserCtxt(xmlDocPtr doc)
@@ -767,8 +750,7 @@ xmlSchematronNewDocParserCtxt(xmlDocPtr doc)
 }
 
 /**
- * xmlSchematronFreeParserCtxt:
- * @ctxt:  the schema parser context
+ * @param ctxt  the schema parser context
  *
  * Free the resources associated to the schema parser context
  */
@@ -790,10 +772,9 @@ xmlSchematronFreeParserCtxt(xmlSchematronParserCtxtPtr ctxt)
 
 #if 0
 /**
- * xmlSchematronPushInclude:
- * @ctxt:  the schema parser context
- * @doc:  the included document
- * @cur:  the current include node
+ * @param ctxt  the schema parser context
+ * @param doc  the included document
+ * @param cur  the current include node
  *
  * Add an included document
  */
@@ -829,12 +810,11 @@ xmlSchematronPushInclude(xmlSchematronParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronPopInclude:
- * @ctxt:  the schema parser context
+ * @param ctxt  the schema parser context
  *
  * Pop an include level. The included document is being freed
  *
- * Returns the node immediately following the include or NULL if the
+ * @returns the node immediately following the include or NULL if the
  *         include list was empty.
  */
 static xmlNodePtr
@@ -858,10 +838,9 @@ xmlSchematronPopInclude(xmlSchematronParserCtxtPtr ctxt)
 #endif
 
 /**
- * xmlSchematronAddNamespace:
- * @ctxt:  the schema parser context
- * @prefix:  the namespace prefix
- * @ns:  the namespace name
+ * @param ctxt  the schema parser context
+ * @param prefix  the namespace prefix
+ * @param ns  the namespace name
  *
  * Add a namespace definition in the context
  */
@@ -902,9 +881,8 @@ xmlSchematronAddNamespace(xmlSchematronParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronParseTestReportMsg:
- * @ctxt:  the schema parser context
- * @con:  the assert or report node
+ * @param ctxt  the schema parser context
+ * @param con  the assert or report node
  *
  * Format the message content of the assert or report test
  */
@@ -952,10 +930,9 @@ xmlSchematronParseTestReportMsg(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr con)
 }
 
 /**
- * xmlSchematronParseRule:
- * @ctxt:  a schema validation context
- * @pattern:  a pattern
- * @rule:  the rule node
+ * @param ctxt  a schema validation context
+ * @param pattern  a pattern
+ * @param rule  the rule node
  *
  * parse a rule element
  */
@@ -1121,9 +1098,8 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronParsePattern:
- * @ctxt:  a schema validation context
- * @pat:  the pattern node
+ * @param ctxt  a schema validation context
+ * @param pat  the pattern node
  *
  * parse a pattern element
  */
@@ -1170,13 +1146,12 @@ xmlSchematronParsePattern(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr pat)
 
 #if 0
 /**
- * xmlSchematronLoadInclude:
- * @ctxt:  a schema validation context
- * @cur:  the include element
+ * @param ctxt  a schema validation context
+ * @param cur  the include element
  *
  * Load the include document, Push the current pointer
  *
- * Returns the updated node pointer
+ * @returns the updated node pointer
  */
 static xmlNodePtr
 xmlSchematronLoadInclude(xmlSchematronParserCtxtPtr ctxt, xmlNodePtr cur)
@@ -1236,13 +1211,12 @@ done:
 #endif
 
 /**
- * xmlSchematronParse:
- * @ctxt:  a schema validation context
+ * @param ctxt  a schema validation context
  *
  * parse a schema definition resource and build an internal
  * XML Schema structure which can be used to validate instances.
  *
- * Returns the internal XML Schematron structure built from the resource or
+ * @returns the internal XML Schematron structure built from the resource or
  *         NULL in case of error
  */
 xmlSchematronPtr
@@ -1435,10 +1409,9 @@ xmlSchematronGetNode(xmlSchematronValidCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronReportOutput:
- * @ctxt: the validation context
- * @cur: the current node tested
- * @msg: the message output
+ * @param ctxt  the validation context
+ * @param cur  the current node tested
+ * @param msg  the message output
  *
  * Output part of the report to whatever channel the user selected
  */
@@ -1451,14 +1424,13 @@ xmlSchematronReportOutput(xmlSchematronValidCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlSchematronFormatReport:
- * @ctxt:  the validation context
- * @test: the test node
- * @cur: the current node tested
+ * @param ctxt  the validation context
+ * @param test  the test node
+ * @param cur  the current node tested
  *
  * Build the string being reported to the user.
  *
- * Returns a report string or NULL in case of error. The string needs
+ * @returns a report string or NULL in case of error. The string needs
  *         to be deallocated by the caller
  */
 static xmlChar *
@@ -1580,12 +1552,11 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronReportSuccess:
- * @ctxt:  the validation context
- * @test: the compiled test
- * @cur: the current node tested
- * @pattern:  a pattern
- * @success: boolean value for the result
+ * @param ctxt  the validation context
+ * @param test  the compiled test
+ * @param cur  the current node tested
+ * @param pattern  a pattern
+ * @param success  boolean value for the result
  *
  * called from the validation engine when an assert or report test have
  * been done.
@@ -1671,9 +1642,8 @@ xmlSchematronReportSuccess(xmlSchematronValidCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronReportPattern:
- * @ctxt:  the validation context
- * @pattern: the current pattern
+ * @param ctxt  the validation context
+ * @param pattern  the current pattern
  *
  * called from the validation engine when starting to check a pattern
  */
@@ -1704,10 +1674,9 @@ xmlSchematronReportPattern(xmlSchematronValidCtxtPtr ctxt,
  ************************************************************************/
 
 /**
- * xmlSchematronSetValidStructuredErrors:
- * @ctxt:  a Schematron validation context
- * @serror:  the structured error function
- * @ctx: the functions context
+ * @param ctxt  a Schematron validation context
+ * @param serror  the structured error function
+ * @param ctx  the functions context
  *
  * Set the structured error callback
  */
@@ -1724,13 +1693,12 @@ xmlSchematronSetValidStructuredErrors(xmlSchematronValidCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronNewValidCtxt:
- * @schema:  a precompiled XML Schematrons
- * @options: a set of xmlSchematronValidOptions
+ * @param schema  a precompiled XML Schematrons
+ * @param options  a set of xmlSchematronValidOptions
  *
  * Create an XML Schematrons validation context based on the given schema.
  *
- * Returns the validation context or NULL in case of error
+ * @returns the validation context or NULL in case of error
  */
 xmlSchematronValidCtxtPtr
 xmlSchematronNewValidCtxt(xmlSchematronPtr schema, int options)
@@ -1767,8 +1735,7 @@ xmlSchematronNewValidCtxt(xmlSchematronPtr schema, int options)
 }
 
 /**
- * xmlSchematronFreeValidCtxt:
- * @ctxt:  the schema validation context
+ * @param ctxt  the schema validation context
  *
  * Free the resources associated to the schema validation context
  */
@@ -1820,16 +1787,15 @@ xmlSchematronNextNode(xmlNodePtr cur) {
 }
 
 /**
- * xmlSchematronRunTest:
- * @ctxt:  the schema validation context
- * @test:  the current test
- * @instance:  the document instance tree
- * @cur:  the current node in the instance
- * @pattern:  a pattern
+ * @param ctxt  the schema validation context
+ * @param test  the current test
+ * @param instance  the document instance tree
+ * @param cur  the current node in the instance
+ * @param pattern  a pattern
  *
  * Validate a rule against a tree instance at a given position
  *
- * Returns 1 in case of success, 0 if error and -1 in case of internal error
+ * @returns 1 in case of success, 0 if error and -1 in case of internal error
  */
 static int
 xmlSchematronRunTest(xmlSchematronValidCtxtPtr ctxt,
@@ -1883,16 +1849,15 @@ xmlSchematronRunTest(xmlSchematronValidCtxtPtr ctxt,
 }
 
 /**
- * xmlSchematronRegisterVariables:
- * @vctxt:  the schema validation context
- * @ctxt:  an XPath context
- * @let:  the list of let variables
- * @instance:  the document instance tree
- * @cur:  the current node
+ * @param vctxt  the schema validation context
+ * @param ctxt  an XPath context
+ * @param let  the list of let variables
+ * @param instance  the document instance tree
+ * @param cur  the current node
  *
- * Registers a list of let variables to the current context of @cur
+ * Registers a list of let variables to the current context of `cur`
  *
- * Returns -1 in case of errors, otherwise 0
+ * @returns -1 in case of errors, otherwise 0
  */
 static int
 xmlSchematronRegisterVariables(xmlSchematronValidCtxtPtr vctxt,
@@ -1923,14 +1888,13 @@ xmlSchematronRegisterVariables(xmlSchematronValidCtxtPtr vctxt,
 }
 
 /**
- * xmlSchematronUnregisterVariables:
- * @vctxt:  the schema validation context
- * @ctxt:  an XPath context
- * @let:  the list of let variables
+ * @param vctxt  the schema validation context
+ * @param ctxt  an XPath context
+ * @param let  the list of let variables
  *
  * Unregisters a list of let variables from the context
  *
- * Returns -1 in case of errors, otherwise 0
+ * @returns -1 in case of errors, otherwise 0
  */
 static int
 xmlSchematronUnregisterVariables(xmlSchematronValidCtxtPtr vctxt,
@@ -1949,13 +1913,12 @@ xmlSchematronUnregisterVariables(xmlSchematronValidCtxtPtr vctxt,
 }
 
 /**
- * xmlSchematronValidateDoc:
- * @ctxt:  the schema validation context
- * @instance:  the document instance tree
+ * @param ctxt  the schema validation context
+ * @param instance  the document instance tree
  *
  * Validate a tree instance against the schematron
  *
- * Returns 0 in case of success, -1 in case of internal error
+ * @returns 0 in case of success, -1 in case of internal error
  *         and an error count otherwise.
  */
 int

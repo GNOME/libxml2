@@ -1,11 +1,14 @@
-/*
- * Summary: implementation of XML Schema Datatypes
- * Description: module providing the XML Schema Datatypes implementation
+/**
+ * @file
+ * 
+ * @brief implementation of XML Schema Datatypes
+ * 
+ * module providing the XML Schema Datatypes implementation
  *              both definition and validity checking
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 

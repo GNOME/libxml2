@@ -1,10 +1,13 @@
-/*
- * Summary: text writing API for XML
- * Description: text writing API for XML
+/**
+ * @file
+ * 
+ * @brief text writing API for XML
+ * 
+ * text writing API for XML
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Alfred Mickautsch
+ * @author Alfred Mickautsch
  */
 
 #ifndef __XML_XMLWRITER_H__
@@ -268,7 +271,6 @@ extern "C" {
                              const xmlChar * content);
 
 /**
- * xmlTextWriterWriteProcessingInstruction:
  *
  * This macro maps to xmlTextWriterWritePI
  */
@@ -330,7 +332,6 @@ extern "C" {
                               const xmlChar * subset);
 
 /**
- * xmlTextWriterWriteDocType:
  *
  * this macro maps to xmlTextWriterWriteDTD
  */

@@ -1,6 +1,9 @@
-/*
- * Summary: Provide Canonical XML and Exclusive XML Canonicalization
- * Description: the c14n modules provides a
+/**
+ * @file
+ * 
+ * @brief Provide Canonical XML and Exclusive XML Canonicalization
+ * 
+ * the c14n modules provides a
  *
  * "Canonical XML" implementation
  * http://www.w3.org/TR/xml-c14n
@@ -10,9 +13,9 @@
  * "Exclusive XML Canonicalization" implementation
  * http://www.w3.org/TR/xml-exc-c14n
 
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Aleksey Sanin
+ * @author Aleksey Sanin
  */
 #ifndef __XML_C14N_H__
 #define __XML_C14N_H__
@@ -43,7 +46,6 @@ extern "C" {
  */
 
 /*
- * xmlC14NMode:
  *
  * Predefined values for C14N modes
  *
@@ -84,14 +86,13 @@ XMLPUBFUN int
  * This is the core C14N function
  */
 /**
- * xmlC14NIsVisibleCallback:
- * @user_data: user data
- * @node: the current node
- * @parent: the parent node
+ * @param user_data  user data
+ * @param node  the current node
+ * @param parent  the parent node
  *
  * Signature for a C14N callback on visible nodes
  *
- * Returns 1 if the node should be included
+ * @returns 1 if the node should be included
  */
 typedef int (*xmlC14NIsVisibleCallback)	(void* user_data,
 					 xmlNodePtr node,

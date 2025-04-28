@@ -1,13 +1,16 @@
-/*
- * Summary: internal interfaces for XML Schemas
- * Description: internal interfaces for the XML Schemas handling
+/**
+ * @file
+ * 
+ * @brief internal interfaces for XML Schemas
+ * 
+ * internal interfaces for the XML Schemas handling
  *              and schema validity checking
  *		The Schemas development is a Work In Progress.
  *              Some of those interfaces are not guaranteed to be API or ABI stable !
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 
@@ -240,7 +243,6 @@ struct _xmlSchemaAnnot {
 #define XML_SCHEMAS_ATTR_FIXED        1 << 9
 
 /**
- * xmlSchemaAttribute:
  * An attribute definition.
  */
 
@@ -270,7 +272,6 @@ struct _xmlSchemaAttribute {
 };
 
 /**
- * xmlSchemaAttributeLink:
  * Used to build a list of attribute uses on complexType definitions.
  * WARNING: Deprecated; not used.
  */
@@ -289,7 +290,6 @@ struct _xmlSchemaAttributeLink {
 #define XML_SCHEMAS_WILDCARD_COMPLETE 1 << 0
 
 /**
- * xmlSchemaCharValueLink:
  * Used to build a list of namespaces on wildcards.
  */
 typedef struct _xmlSchemaWildcardNs xmlSchemaWildcardNs;
@@ -379,7 +379,6 @@ struct _xmlSchemaAttributeGroup {
 };
 
 /**
- * xmlSchemaTypeLink:
  * Used to build a list of types (e.g. member types of
  * simpleType with variety "union").
  */
@@ -391,7 +390,6 @@ struct _xmlSchemaTypeLink {
 };
 
 /**
- * xmlSchemaFacetLink:
  * Used to build a list of facets.
  */
 typedef struct _xmlSchemaFacetLink xmlSchemaFacetLink;
@@ -636,7 +634,6 @@ struct _xmlSchemaType {
 };
 
 /*
- * xmlSchemaElement:
  * An element definition.
  *
  * xmlSchemaType, xmlSchemaFacet and xmlSchemaElement start of

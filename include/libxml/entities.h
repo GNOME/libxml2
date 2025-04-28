@@ -1,11 +1,14 @@
-/*
- * Summary: interface for the XML entities handling
- * Description: this module provides some of the entity API needed
+/**
+ * @file
+ * 
+ * @brief interface for the XML entities handling
+ * 
+ * this module provides some of the entity API needed
  *              for the parser and applications.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_ENTITIES_H__

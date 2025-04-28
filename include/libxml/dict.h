@@ -1,11 +1,14 @@
-/*
- * Summary: string dictionary
- * Description: dictionary of reusable strings, just used to avoid allocation
+/**
+ * @file
+ * 
+ * @brief string dictionary
+ * 
+ * dictionary of reusable strings, just used to avoid allocation
  *         and freeing operations.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_DICT_H__

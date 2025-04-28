@@ -1,11 +1,14 @@
-/*
- * Summary: regular expressions handling
- * Description: basic API for libxml regular expressions handling used
+/**
+ * @file
+ * 
+ * @brief regular expressions handling
+ * 
+ * basic API for libxml regular expressions handling used
  *              for XML Schemas and validation.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_REGEXP_H__
@@ -22,7 +25,6 @@ extern "C" {
 #endif
 
 /**
- * xmlRegexpPtr:
  *
  * A libxml regular expression, they can actually be far more complex
  * thank the POSIX regex expressions.
@@ -31,7 +33,6 @@ typedef struct _xmlRegexp xmlRegexp;
 typedef xmlRegexp *xmlRegexpPtr;
 
 /**
- * xmlRegExecCtxtPtr:
  *
  * A libxml progressive regular expression evaluation context
  */
@@ -55,11 +56,10 @@ XMLPUBFUN int
 		    xmlRegexpIsDeterminist(xmlRegexpPtr comp);
 
 /**
- * xmlRegExecCallbacks:
- * @exec: the regular expression context
- * @token: the current token string
- * @transdata: transition data
- * @inputdata: input data
+ * @param exec  the regular expression context
+ * @param token  the current token string
+ * @param transdata  transition data
+ * @param inputdata  input data
  *
  * Callback function when doing a transition in the automata
  */

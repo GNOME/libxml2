@@ -1,11 +1,14 @@
-/*
- * Summary: lists interfaces
- * Description: this module implement the list support used in
+/**
+ * @file
+ * 
+ * @brief lists interfaces
+ * 
+ * this module implement the list support used in
  * various place in the library.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Gary Pennington
+ * @author Gary Pennington
  */
 
 #ifndef __XML_LINK_INCLUDE__
@@ -24,30 +27,27 @@ typedef struct _xmlList xmlList;
 typedef xmlList *xmlListPtr;
 
 /**
- * xmlListDeallocator:
- * @lk:  the data to deallocate
+ * @param lk  the data to deallocate
  *
  * Callback function used to free data from a list.
  */
 typedef void (*xmlListDeallocator) (xmlLinkPtr lk);
 /**
- * xmlListDataCompare:
- * @data0: the first data
- * @data1: the second data
+ * @param data0  the first data
+ * @param data1  the second data
  *
  * Callback function used to compare 2 data.
  *
- * Returns 0 is equality, -1 or 1 otherwise depending on the ordering.
+ * @returns 0 is equality, -1 or 1 otherwise depending on the ordering.
  */
 typedef int  (*xmlListDataCompare) (const void *data0, const void *data1);
 /**
- * xmlListWalker:
- * @data: the data found in the list
- * @user: extra user provided data to the walker
+ * @param data  the data found in the list
+ * @param user  extra user provided data to the walker
  *
  * Callback function used when walking a list with xmlListWalk().
  *
- * Returns 0 to stop walking the list, 1 otherwise.
+ * @returns 0 to stop walking the list, 1 otherwise.
  */
 typedef int (*xmlListWalker) (const void *data, void *user);
 

@@ -1,11 +1,14 @@
-/*
- * Summary: Tree debugging APIs
- * Description: Interfaces to a set of routines used for debugging the tree
+/**
+ * @file
+ * 
+ * @brief Tree debugging APIs
+ * 
+ * Interfaces to a set of routines used for debugging the tree
  *              produced by the XML parser.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __DEBUG_XML__

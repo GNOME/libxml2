@@ -355,8 +355,7 @@ static int xmlRegCheckCharacterRange(xmlRegAtomType type, int codepoint,
  *									*
  ************************************************************************/
 /**
- * xmlRegexpErrMemory:
- * @ctxt:  regexp parser context
+ * @param ctxt  regexp parser context
  *
  * Handle an out of memory condition
  */
@@ -370,9 +369,8 @@ xmlRegexpErrMemory(xmlRegParserCtxtPtr ctxt)
 }
 
 /**
- * xmlRegexpErrCompile:
- * @ctxt:  regexp parser context
- * @extra:  extra information
+ * @param ctxt  regexp parser context
+ * @param extra  extra information
  *
  * Handle a compilation failure
  */
@@ -406,14 +404,13 @@ xmlRegexpErrCompile(xmlRegParserCtxtPtr ctxt, const char *extra)
 static int xmlFAComputesDeterminism(xmlRegParserCtxtPtr ctxt);
 
 /**
- * xmlRegCalloc2:
- * @dim1:  size of first dimension
- * @dim2:  size of second dimension
- * @elemSize:  size of element
+ * @param dim1  size of first dimension
+ * @param dim2  size of second dimension
+ * @param elemSize  size of element
  *
  * Allocate a two-dimensional array and set all elements to zero.
  *
- * Returns the new array or NULL in case of error.
+ * @returns the new array or NULL in case of error.
  */
 static void*
 xmlRegCalloc2(size_t dim1, size_t dim2, size_t elemSize) {
@@ -432,12 +429,11 @@ xmlRegCalloc2(size_t dim1, size_t dim2, size_t elemSize) {
 }
 
 /**
- * xmlRegEpxFromParse:
- * @ctxt:  the parser context used to build it
+ * @param ctxt  the parser context used to build it
  *
  * Allocate a new regexp and fill it with the result from the parser
  *
- * Returns the new regexp or NULL in case of error
+ * @returns the new regexp or NULL in case of error
  */
 static xmlRegexpPtr
 xmlRegEpxFromParse(xmlRegParserCtxtPtr ctxt) {
@@ -662,12 +658,11 @@ not_determ:
 }
 
 /**
- * xmlRegNewParserCtxt:
- * @string:  the string to parse
+ * @param string  the string to parse
  *
  * Allocate a new regexp parser context
  *
- * Returns the new context or NULL in case of error
+ * @returns the new context or NULL in case of error
  */
 static xmlRegParserCtxtPtr
 xmlRegNewParserCtxt(const xmlChar *string) {
@@ -693,16 +688,15 @@ xmlRegNewParserCtxt(const xmlChar *string) {
 }
 
 /**
- * xmlRegNewRange:
- * @ctxt:  the regexp parser context
- * @neg:  is that negative
- * @type:  the type of range
- * @start:  the start codepoint
- * @end:  the end codepoint
+ * @param ctxt  the regexp parser context
+ * @param neg  is that negative
+ * @param type  the type of range
+ * @param start  the start codepoint
+ * @param end  the end codepoint
  *
  * Allocate a new regexp range
  *
- * Returns the new range or NULL in case of error
+ * @returns the new range or NULL in case of error
  */
 static xmlRegRangePtr
 xmlRegNewRange(xmlRegParserCtxtPtr ctxt,
@@ -722,8 +716,7 @@ xmlRegNewRange(xmlRegParserCtxtPtr ctxt,
 }
 
 /**
- * xmlRegFreeRange:
- * @range:  the regexp range
+ * @param range  the regexp range
  *
  * Free a regexp range
  */
@@ -738,13 +731,12 @@ xmlRegFreeRange(xmlRegRangePtr range) {
 }
 
 /**
- * xmlRegCopyRange:
- * @ctxt:  regexp parser context
- * @range:  the regexp range
+ * @param ctxt  regexp parser context
+ * @param range  the regexp range
  *
  * Copy a regexp range
  *
- * Returns the new copy or NULL in case of error.
+ * @returns the new copy or NULL in case of error.
  */
 static xmlRegRangePtr
 xmlRegCopyRange(xmlRegParserCtxtPtr ctxt, xmlRegRangePtr range) {
@@ -769,13 +761,12 @@ xmlRegCopyRange(xmlRegParserCtxtPtr ctxt, xmlRegRangePtr range) {
 }
 
 /**
- * xmlRegNewAtom:
- * @ctxt:  the regexp parser context
- * @type:  the type of atom
+ * @param ctxt  the regexp parser context
+ * @param type  the type of atom
  *
  * Allocate a new atom
  *
- * Returns the new atom or NULL in case of error
+ * @returns the new atom or NULL in case of error
  */
 static xmlRegAtomPtr
 xmlRegNewAtom(xmlRegParserCtxtPtr ctxt, xmlRegAtomType type) {
@@ -795,8 +786,7 @@ xmlRegNewAtom(xmlRegParserCtxtPtr ctxt, xmlRegAtomType type) {
 }
 
 /**
- * xmlRegFreeAtom:
- * @atom:  the regexp atom
+ * @param atom  the regexp atom
  *
  * Free a regexp atom
  */
@@ -821,13 +811,12 @@ xmlRegFreeAtom(xmlRegAtomPtr atom) {
 }
 
 /**
- * xmlRegCopyAtom:
- * @ctxt:  the regexp parser context
- * @atom:  the original atom
+ * @param ctxt  the regexp parser context
+ * @param atom  the original atom
  *
  * Allocate a new regexp range
  *
- * Returns the new atom or NULL in case of error
+ * @returns the new atom or NULL in case of error
  */
 static xmlRegAtomPtr
 xmlRegCopyAtom(xmlRegParserCtxtPtr ctxt, xmlRegAtomPtr atom) {
@@ -882,8 +871,7 @@ xmlRegNewState(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlRegFreeState:
- * @state:  the regexp state
+ * @param state  the regexp state
  *
  * Free a regexp state
  */
@@ -900,8 +888,7 @@ xmlRegFreeState(xmlRegStatePtr state) {
 }
 
 /**
- * xmlRegFreeParserCtxt:
- * @ctxt:  the regexp parser context
+ * @param ctxt  the regexp parser context
  *
  * Free a regexp parser context
  */
@@ -1275,8 +1262,8 @@ xmlRegPrintStateCompact(FILE* output, xmlRegexpPtr regexp, int state)
 
 /*
  * xmlRegPrintCompact
- * @output an output stream
- * @regexp the regexp instance
+ * `output` an output stream
+ * `regexp` the regexp instance
  * 
  * Print the compact representation of a regexp, in the same fashion as the
  * public xmlRegexpPrint function.
@@ -1562,11 +1549,10 @@ xmlRegStatePush(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAGenerateAllTransition:
- * @ctxt:  a regexp parser context
- * @from:  the from state
- * @to:  the target state or NULL for building a new one
- * @lax:
+ * @param ctxt  a regexp parser context
+ * @param from  the from state
+ * @param to  the target state or NULL for building a new one
+ * @param lax  
  *
  */
 static int
@@ -1587,10 +1573,9 @@ xmlFAGenerateAllTransition(xmlRegParserCtxtPtr ctxt,
 }
 
 /**
- * xmlFAGenerateEpsilonTransition:
- * @ctxt:  a regexp parser context
- * @from:  the from state
- * @to:  the target state or NULL for building a new one
+ * @param ctxt  a regexp parser context
+ * @param from  the from state
+ * @param to  the target state or NULL for building a new one
  *
  */
 static int
@@ -1607,11 +1592,10 @@ xmlFAGenerateEpsilonTransition(xmlRegParserCtxtPtr ctxt,
 }
 
 /**
- * xmlFAGenerateCountedEpsilonTransition:
- * @ctxt:  a regexp parser context
- * @from:  the from state
- * @to:  the target state or NULL for building a new one
- * @counter:  the counter for that transition
+ * @param ctxt  a regexp parser context
+ * @param from  the from state
+ * @param to  the target state or NULL for building a new one
+ * @param counter  the counter for that transition
  */
 static int
 xmlFAGenerateCountedEpsilonTransition(xmlRegParserCtxtPtr ctxt,
@@ -1627,11 +1611,10 @@ xmlFAGenerateCountedEpsilonTransition(xmlRegParserCtxtPtr ctxt,
 }
 
 /**
- * xmlFAGenerateCountedTransition:
- * @ctxt:  a regexp parser context
- * @from:  the from state
- * @to:  the target state or NULL for building a new one
- * @counter:  the counter for that transition
+ * @param ctxt  a regexp parser context
+ * @param from  the from state
+ * @param to  the target state or NULL for building a new one
+ * @param counter  the counter for that transition
  */
 static int
 xmlFAGenerateCountedTransition(xmlRegParserCtxtPtr ctxt,
@@ -1647,13 +1630,12 @@ xmlFAGenerateCountedTransition(xmlRegParserCtxtPtr ctxt,
 }
 
 /**
- * xmlFAGenerateTransitions:
- * @ctxt:  a regexp parser context
- * @from:  the from state
- * @to:  the target state or NULL for building a new one
- * @atom:  the atom generating the transition
+ * @param ctxt  a regexp parser context
+ * @param from  the from state
+ * @param to  the target state or NULL for building a new one
+ * @param atom  the atom generating the transition
  *
- * Returns 0 if success and -1 in case of error.
+ * @returns 0 if success and -1 in case of error.
  */
 static int
 xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
@@ -1880,11 +1862,10 @@ xmlFAGenerateTransitions(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr from,
 }
 
 /**
- * xmlFAReduceEpsilonTransitions:
- * @ctxt:  a regexp parser context
- * @fromnr:  the from state
- * @tonr:  the to state
- * @counter:  should that transition be associated to a counted
+ * @param ctxt  a regexp parser context
+ * @param fromnr  the from state
+ * @param tonr  the to state
+ * @param counter  should that transition be associated to a counted
  *
  */
 static void
@@ -1942,9 +1923,8 @@ xmlFAReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int fromnr,
 }
 
 /**
- * xmlFAFinishReduceEpsilonTransitions:
- * @ctxt:  a regexp parser context
- * @tonr:  the to state
+ * @param ctxt  a regexp parser context
+ * @param tonr  the to state
  */
 static void
 xmlFAFinishReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int tonr) {
@@ -1967,8 +1947,7 @@ xmlFAFinishReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int tonr) {
 }
 
 /**
- * xmlFAEliminateSimpleEpsilonTransitions:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * Eliminating general epsilon transitions can get costly in the general
  * algorithm due to the large amount of generated new transitions and
@@ -2036,8 +2015,7 @@ xmlFAEliminateSimpleEpsilonTransitions(xmlRegParserCtxtPtr ctxt) {
     }
 }
 /**
- * xmlFAEliminateEpsilonTransitions:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  */
 static void
@@ -2338,14 +2316,13 @@ xmlFACompareRanges(xmlRegRangePtr range1, xmlRegRangePtr range2) {
 }
 
 /**
- * xmlFACompareAtomTypes:
- * @type1:  an atom type
- * @type2:  an atom type
+ * @param type1  an atom type
+ * @param type2  an atom type
  *
  * Compares two atoms type to check whether they intersect in some ways,
  * this is used by xmlFACompareAtoms only
  *
- * Returns 1 if they may intersect and 0 otherwise
+ * @returns 1 if they may intersect and 0 otherwise
  */
 static int
 xmlFACompareAtomTypes(xmlRegAtomType type1, xmlRegAtomType type2) {
@@ -2539,15 +2516,14 @@ xmlFACompareAtomTypes(xmlRegAtomType type1, xmlRegAtomType type2) {
 }
 
 /**
- * xmlFAEqualAtoms:
- * @atom1:  an atom
- * @atom2:  an atom
- * @deep: if not set only compare string pointers
+ * @param atom1  an atom
+ * @param atom2  an atom
+ * @param deep  if not set only compare string pointers
  *
  * Compares two atoms to check whether they are the same exactly
  * this is used to remove equivalent transitions
  *
- * Returns 1 if same and 0 otherwise
+ * @returns 1 if same and 0 otherwise
  */
 static int
 xmlFAEqualAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2, int deep) {
@@ -2584,15 +2560,14 @@ xmlFAEqualAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2, int deep) {
 }
 
 /**
- * xmlFACompareAtoms:
- * @atom1:  an atom
- * @atom2:  an atom
- * @deep: if not set only compare string pointers
+ * @param atom1  an atom
+ * @param atom2  an atom
+ * @param deep  if not set only compare string pointers
  *
  * Compares two atoms to check whether they intersect in some ways,
  * this is used by xmlFAComputesDeterminism and xmlFARecurseDeterminism only
  *
- * Returns 1 if yes and 0 otherwise
+ * @returns 1 if yes and 0 otherwise
  */
 static int
 xmlFACompareAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2, int deep) {
@@ -2683,12 +2658,11 @@ not_determinist:
 }
 
 /**
- * xmlFARecurseDeterminism:
- * @ctxt:  a regexp parser context
- * @state:  regexp state
- * @fromnr:  the from state
- * @tonr:  the to state
- * @atom:  the atom
+ * @param ctxt  a regexp parser context
+ * @param state  regexp state
+ * @param fromnr  the from state
+ * @param tonr  the to state
+ * @param atom  the atom
  *
  * Check whether the associated regexp is determinist,
  * should be called after xmlFAEliminateEpsilonTransitions()
@@ -2746,9 +2720,8 @@ xmlFARecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state,
 }
 
 /**
- * xmlFAFinishRecurseDeterminism:
- * @ctxt:  a regexp parser context
- * @state:  regexp state
+ * @param ctxt  a regexp parser context
+ * @param state  regexp state
  *
  * Reset flags after checking determinism.
  */
@@ -2771,8 +2744,7 @@ xmlFAFinishRecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
 }
 
 /**
- * xmlFAComputesDeterminism:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * Check whether the associated regexp is determinist,
  * should be called after xmlFAEliminateEpsilonTransitions()
@@ -3580,15 +3552,14 @@ error:
  ************************************************************************/
 
 /**
- * xmlRegNewExecCtxt:
- * @comp: a precompiled regular expression
- * @callback: a callback function used for handling progresses in the
+ * @param comp  a precompiled regular expression
+ * @param callback  a callback function used for handling progresses in the
  *            automata matching phase
- * @data: the context data associated to the callback in this context
+ * @param data  the context data associated to the callback in this context
  *
  * Build a context used for progressive evaluation of a regexp.
  *
- * Returns the new context
+ * @returns the new context
  */
 xmlRegExecCtxtPtr
 xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
@@ -3643,8 +3614,7 @@ xmlRegNewExecCtxt(xmlRegexpPtr comp, xmlRegExecCallbacks callback, void *data) {
 }
 
 /**
- * xmlRegFreeExecCtxt:
- * @exec: a regular expression evaluation context
+ * @param exec  a regular expression evaluation context
  *
  * Free the structures associated to a regular expression evaluation context.
  */
@@ -3736,15 +3706,14 @@ xmlFARegExecSaveInputString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 }
 
 /**
- * xmlRegStrEqualWildcard:
- * @expStr:  the string to be evaluated
- * @valStr:  the validation string
+ * @param expStr  the string to be evaluated
+ * @param valStr  the validation string
  *
  * Checks if both strings are equal or have the same content. "*"
- * can be used as a wildcard in @valStr; "|" is used as a separator of
- * substrings in both @expStr and @valStr.
+ * can be used as a wildcard in `valStr`; "|" is used as a separator of
+ * substrings in both `expStr` and `valStr`.
  *
- * Returns 1 if the comparison is satisfied and the number of substrings
+ * @returns 1 if the comparison is satisfied and the number of substrings
  * is equal, 0 otherwise.
  */
 
@@ -3786,15 +3755,14 @@ xmlRegStrEqualWildcard(const xmlChar *expStr, const xmlChar *valStr) {
 }
 
 /**
- * xmlRegCompactPushString:
- * @exec: a regexp execution context
- * @comp:  the precompiled exec with a compact table
- * @value: a string token input
- * @data: data associated to the token to reuse in callbacks
+ * @param exec  a regexp execution context
+ * @param comp  the precompiled exec with a compact table
+ * @param value  a string token input
+ * @param data  data associated to the token to reuse in callbacks
  *
  * Push one input token in the execution context
  *
- * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ * @returns 1 if the regexp reached a final state, 0 if non-final, and
  *     a negative value in case of error.
  */
 static int
@@ -3854,15 +3822,14 @@ error:
 }
 
 /**
- * xmlRegExecPushStringInternal:
- * @exec: a regexp execution context or NULL to indicate the end
- * @value: a string token input
- * @data: data associated to the token to reuse in callbacks
- * @compound: value was assembled from 2 strings
+ * @param exec  a regexp execution context or NULL to indicate the end
+ * @param value  a string token input
+ * @param data  data associated to the token to reuse in callbacks
+ * @param compound  value was assembled from 2 strings
  *
  * Push one input token in the execution context
  *
- * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ * @returns 1 if the regexp reached a final state, 0 if non-final, and
  *     a negative value in case of error.
  */
 static int
@@ -4166,14 +4133,13 @@ progress:
 }
 
 /**
- * xmlRegExecPushString:
- * @exec: a regexp execution context or NULL to indicate the end
- * @value: a string token input
- * @data: data associated to the token to reuse in callbacks
+ * @param exec  a regexp execution context or NULL to indicate the end
+ * @param value  a string token input
+ * @param data  data associated to the token to reuse in callbacks
  *
  * Push one input token in the execution context
  *
- * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ * @returns 1 if the regexp reached a final state, 0 if non-final, and
  *     a negative value in case of error.
  */
 int
@@ -4183,15 +4149,14 @@ xmlRegExecPushString(xmlRegExecCtxtPtr exec, const xmlChar *value,
 }
 
 /**
- * xmlRegExecPushString2:
- * @exec: a regexp execution context or NULL to indicate the end
- * @value: the first string token input
- * @value2: the second string token input
- * @data: data associated to the token to reuse in callbacks
+ * @param exec  a regexp execution context or NULL to indicate the end
+ * @param value  the first string token input
+ * @param value2  the second string token input
+ * @param data  data associated to the token to reuse in callbacks
  *
  * Push one input token in the execution context
  *
- * Returns: 1 if the regexp reached a final state, 0 if non-final, and
+ * @returns 1 if the regexp reached a final state, 0 if non-final, and
  *     a negative value in case of error.
  */
 int
@@ -4239,18 +4204,17 @@ xmlRegExecPushString2(xmlRegExecCtxtPtr exec, const xmlChar *value,
 }
 
 /**
- * xmlRegExecGetValues:
- * @exec: a regexp execution context
- * @err: error extraction or normal one
- * @nbval: pointer to the number of accepted values IN/OUT
- * @nbneg: return number of negative transitions
- * @values: pointer to the array of acceptable values
- * @terminal: return value if this was a terminal state
+ * @param exec  a regexp execution context
+ * @param err  error extraction or normal one
+ * @param nbval  pointer to the number of accepted values IN/OUT
+ * @param nbneg  return number of negative transitions
+ * @param values  pointer to the array of acceptable values
+ * @param terminal  return value if this was a terminal state
  *
  * Extract information from the regexp execution, internal routine to
  * implement xmlRegExecNextValues() and xmlRegExecErrInfo()
  *
- * Returns: 0 in case of success or -1 in case of error.
+ * @returns 0 in case of success or -1 in case of error.
  */
 static int
 xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
@@ -4397,21 +4361,20 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 }
 
 /**
- * xmlRegExecNextValues:
- * @exec: a regexp execution context
- * @nbval: pointer to the number of accepted values IN/OUT
- * @nbneg: return number of negative transitions
- * @values: pointer to the array of acceptable values
- * @terminal: return value if this was a terminal state
+ * @param exec  a regexp execution context
+ * @param nbval  pointer to the number of accepted values IN/OUT
+ * @param nbneg  return number of negative transitions
+ * @param values  pointer to the array of acceptable values
+ * @param terminal  return value if this was a terminal state
  *
  * Extract information from the regexp execution,
- * the parameter @values must point to an array of @nbval string pointers
+ * the parameter `values` must point to an array of `nbval` string pointers
  * on return nbval will contain the number of possible strings in that
- * state and the @values array will be updated with them. The string values
- * returned will be freed with the @exec context and don't need to be
+ * state and the `values` array will be updated with them. The string values
+ * returned will be freed with the `exec` context and don't need to be
  * deallocated.
  *
- * Returns: 0 in case of success or -1 in case of error.
+ * @returns 0 in case of success or -1 in case of error.
  */
 int
 xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, int *nbneg,
@@ -4420,23 +4383,22 @@ xmlRegExecNextValues(xmlRegExecCtxtPtr exec, int *nbval, int *nbneg,
 }
 
 /**
- * xmlRegExecErrInfo:
- * @exec: a regexp execution context generating an error
- * @string: return value for the error string
- * @nbval: pointer to the number of accepted values IN/OUT
- * @nbneg: return number of negative transitions
- * @values: pointer to the array of acceptable values
- * @terminal: return value if this was a terminal state
+ * @param exec  a regexp execution context generating an error
+ * @param string  return value for the error string
+ * @param nbval  pointer to the number of accepted values IN/OUT
+ * @param nbneg  return number of negative transitions
+ * @param values  pointer to the array of acceptable values
+ * @param terminal  return value if this was a terminal state
  *
  * Extract error information from the regexp execution, the parameter
- * @string will be updated with the value pushed and not accepted,
- * the parameter @values must point to an array of @nbval string pointers
+ * `string` will be updated with the value pushed and not accepted,
+ * the parameter `values` must point to an array of `nbval` string pointers
  * on return nbval will contain the number of possible strings in that
- * state and the @values array will be updated with them. The string values
- * returned will be freed with the @exec context and don't need to be
+ * state and the `values` array will be updated with them. The string values
+ * returned will be freed with the `exec` context and don't need to be
  * deallocated.
  *
- * Returns: 0 in case of success or -1 in case of error.
+ * @returns 0 in case of success or -1 in case of error.
  */
 int
 xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
@@ -4460,10 +4422,9 @@ xmlRegExecErrInfo(xmlRegExecCtxtPtr exec, const xmlChar **string,
  ************************************************************************/
 
 /**
- * xmlFAIsChar:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
- * [10]   Char   ::=   [^.\?*+()|#x5B#x5D]
+ * [10]   Char   ::=   [^.\?*+()|\#x5B\#x5D]
  */
 static int
 xmlFAIsChar(xmlRegParserCtxtPtr ctxt) {
@@ -4485,8 +4446,7 @@ xmlFAIsChar(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseCharProp:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [27]   charProp   ::=   IsCategory | IsBlock
  * [28]   IsCategory ::= Letters | Marks | Numbers | Punctuation |
@@ -4498,7 +4458,7 @@ xmlFAIsChar(xmlRegParserCtxtPtr ctxt) {
  * [33]   Separators   ::=   'Z' [slp]?
  * [34]   Symbols   ::=   'S' [mcko]?
  * [35]   Others   ::=   'C' [cfon]?
- * [36]   IsBlock   ::=   'Is' [a-zA-Z0-9#x2D]+
+ * [36]   IsBlock   ::=   'Is' [a-zA-Z0-9\#x2D]+
  */
 static void
 xmlFAParseCharProp(xmlRegParserCtxtPtr ctxt) {
@@ -4756,12 +4716,11 @@ static int parse_escaped_codepoint(xmlRegParserCtxtPtr ctxt)
 }
 
 /**
- * xmlFAParseCharClassEsc:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * ```
  * [23] charClassEsc ::= ( SingleCharEsc | MultiCharEsc | catEsc | complEsc )
- * [24] SingleCharEsc ::= '\' [nrt\|.?*+(){}#x2D#x5B#x5D#x5E]
+ * [24] SingleCharEsc ::= '\' [nrt\|.?*+(){}\#x2D\#x5B\#x5D\#x5E]
  * [25] catEsc   ::=   '\p{' charProp '}'
  * [26] complEsc ::=   '\P{' charProp '}'
  * [37] MultiCharEsc ::= '.' | ('\' [sSiIcCdDwW])
@@ -4928,15 +4887,14 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseCharRange:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * ```
  * [17]   charRange   ::=     seRange | XmlCharRef | XmlCharIncDash
  * [18]   seRange   ::=   charOrEsc '-' charOrEsc
  * [20]   charOrEsc   ::=   XmlChar | SingleCharEsc
- * [21]   XmlChar   ::=   [^\#x2D#x5B#x5D]
- * [22]   XmlCharIncDash   ::=   [^\#x5B#x5D]
+ * [21]   XmlChar   ::=   [^\\#x2D\#x5B\#x5D]
+ * [22]   XmlCharIncDash   ::=   [^\\#x5B\#x5D]
  * ```
  */
 static void
@@ -5035,8 +4993,7 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParsePosCharGroup:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [14]   posCharGroup ::= ( charRange | charClassEsc  )+
  */
@@ -5053,8 +5010,7 @@ xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseCharGroup:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [13]   charGroup    ::= posCharGroup | negCharGroup | charClassSub
  * [15]   negCharGroup ::= '^' posCharGroup
@@ -5091,8 +5047,7 @@ xmlFAParseCharGroup(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseCharClass:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [11]   charClass   ::=     charClassEsc | charClassExpr
  * [12]   charClassExpr   ::=   '[' charGroup ']'
@@ -5116,12 +5071,11 @@ xmlFAParseCharClass(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseQuantExact:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [8]   QuantExact   ::=   [0-9]+
  *
- * Returns 0 if success or -1 in case of error
+ * @returns 0 if success or -1 in case of error
  */
 static int
 xmlFAParseQuantExact(xmlRegParserCtxtPtr ctxt) {
@@ -5151,8 +5105,7 @@ xmlFAParseQuantExact(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseQuantifier:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [4]   quantifier   ::=   [?*+] | ( '{' quantity '}' )
  * [5]   quantity   ::=   quantRange | quantMin | QuantExact
@@ -5218,8 +5171,7 @@ xmlFAParseQuantifier(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseAtom:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [9]   atom   ::=   Char | charClass | ( '(' regExp ')' )
  */
@@ -5290,8 +5242,7 @@ xmlFAParseAtom(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParsePiece:
- * @ctxt:  a regexp parser context
+ * @param ctxt  a regexp parser context
  *
  * [3]   piece   ::=   atom quantifier?
  */
@@ -5311,11 +5262,10 @@ xmlFAParsePiece(xmlRegParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlFAParseBranch:
- * @ctxt:  a regexp parser context
- * @to: optional target to the end of the branch
+ * @param ctxt  a regexp parser context
+ * @param to  optional target to the end of the branch
  *
- * @to is used to optimize by removing duplicate path in automata
+ * `to` is used to optimize by removing duplicate path in automata
  * in expressions like (a|b)(c|d)
  *
  * [2]   branch   ::=   piece*
@@ -5359,9 +5309,8 @@ xmlFAParseBranch(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr to) {
 }
 
 /**
- * xmlFAParseRegExp:
- * @ctxt:  a regexp parser context
- * @top:  is this the top-level expression ?
+ * @param ctxt  a regexp parser context
+ * @param top  is this the top-level expression ?
  *
  * [1]   regExp   ::=     branch  ( '|' branch )*
  */
@@ -5400,11 +5349,10 @@ xmlFAParseRegExp(xmlRegParserCtxtPtr ctxt, int top) {
  ************************************************************************/
 
 /**
- * xmlRegexpPrint:
- * @output: the file for the output debug
- * @regexp: the compiled regexp
+ * @param output  the file for the output debug
+ * @param regexp  the compiled regexp
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * No-op since 2.14.0.
  */
@@ -5414,14 +5362,13 @@ xmlRegexpPrint(FILE *output ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlRegexpCompile:
- * @regexp:  a regular expression string
+ * @param regexp  a regular expression string
  *
  * Parses a regular expression conforming to XML Schemas Part 2 Datatype
  * Appendix F and builds an automata suitable for testing strings against
  * that regular expression
  *
- * Returns the compiled expression or NULL in case of error
+ * @returns the compiled expression or NULL in case of error
  */
 xmlRegexpPtr
 xmlRegexpCompile(const xmlChar *regexp) {
@@ -5467,13 +5414,12 @@ error:
 }
 
 /**
- * xmlRegexpExec:
- * @comp:  the compiled regular expression
- * @content:  the value to check against the regular expression
+ * @param comp  the compiled regular expression
+ * @param content  the value to check against the regular expression
  *
  * Check if the regular expression generates the value
  *
- * Returns 1 if it matches, 0 if not and a negative value in case of error
+ * @returns 1 if it matches, 0 if not and a negative value in case of error
  */
 int
 xmlRegexpExec(xmlRegexpPtr comp, const xmlChar *content) {
@@ -5483,12 +5429,11 @@ xmlRegexpExec(xmlRegexpPtr comp, const xmlChar *content) {
 }
 
 /**
- * xmlRegexpIsDeterminist:
- * @comp:  the compiled regular expression
+ * @param comp  the compiled regular expression
  *
  * Check if the regular expression is determinist
  *
- * Returns 1 if it yes, 0 if not and a negative value in case of error
+ * @returns 1 if it yes, 0 if not and a negative value in case of error
  */
 int
 xmlRegexpIsDeterminist(xmlRegexpPtr comp) {
@@ -5525,8 +5470,7 @@ xmlRegexpIsDeterminist(xmlRegexpPtr comp) {
 }
 
 /**
- * xmlRegFreeRegexp:
- * @regexp:  the regexp
+ * @param regexp  the regexp
  *
  * Free a regexp
  */
@@ -5570,11 +5514,10 @@ xmlRegFreeRegexp(xmlRegexpPtr regexp) {
  ************************************************************************/
 
 /**
- * xmlNewAutomata:
  *
  * Create a new automata
  *
- * Returns the new object or NULL in case of failure
+ * @returns the new object or NULL in case of failure
  */
 xmlAutomataPtr
 xmlNewAutomata(void) {
@@ -5600,8 +5543,7 @@ xmlNewAutomata(void) {
 }
 
 /**
- * xmlFreeAutomata:
- * @am: an automata
+ * @param am  an automata
  *
  * Free an automata
  */
@@ -5613,9 +5555,8 @@ xmlFreeAutomata(xmlAutomataPtr am) {
 }
 
 /**
- * xmlAutomataSetFlags:
- * @am: an automata
- * @flags:  a set of internal flags
+ * @param am  an automata
+ * @param flags  a set of internal flags
  *
  * Set some flags on the automata
  */
@@ -5627,12 +5568,11 @@ xmlAutomataSetFlags(xmlAutomataPtr am, int flags) {
 }
 
 /**
- * xmlAutomataGetInitState:
- * @am: an automata
+ * @param am  an automata
  *
  * Initial state lookup
  *
- * Returns the initial state of the automata
+ * @returns the initial state of the automata
  */
 xmlAutomataStatePtr
 xmlAutomataGetInitState(xmlAutomataPtr am) {
@@ -5642,13 +5582,12 @@ xmlAutomataGetInitState(xmlAutomataPtr am) {
 }
 
 /**
- * xmlAutomataSetFinalState:
- * @am: an automata
- * @state: a state in this automata
+ * @param am  an automata
+ * @param state  a state in this automata
  *
  * Makes that state a final state
  *
- * Returns 0 or -1 in case of error
+ * @returns 0 or -1 in case of error
  */
 int
 xmlAutomataSetFinalState(xmlAutomataPtr am, xmlAutomataStatePtr state) {
@@ -5659,18 +5598,17 @@ xmlAutomataSetFinalState(xmlAutomataPtr am, xmlAutomataStatePtr state) {
 }
 
 /**
- * xmlAutomataNewTransition:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the input string associated to that transition
- * @data: data passed to the callback function if the transition is activated
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the input string associated to that transition
+ * @param data  data passed to the callback function if the transition is activated
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by the value of @token
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by the value of `token`
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewTransition(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -5701,19 +5639,18 @@ xmlAutomataNewTransition(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataNewTransition2:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the first input string associated to that transition
- * @token2: the second input string associated to that transition
- * @data: data passed to the callback function if the transition is activated
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the first input string associated to that transition
+ * @param token2  the second input string associated to that transition
+ * @param data  data passed to the callback function if the transition is activated
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by the value of @token
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by the value of `token`
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -5759,21 +5696,20 @@ xmlAutomataNewTransition2(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataNewNegTrans:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the first input string associated to that transition
- * @token2: the second input string associated to that transition
- * @data: data passed to the callback function if the transition is activated
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the first input string associated to that transition
+ * @param token2  the second input string associated to that transition
+ * @param data  data passed to the callback function if the transition is activated
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by any value except (@token,@token2)
- * Note that if @token2 is not NULL, then (X, NULL) won't match to follow
- * the semantic of XSD ##other
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by any value except (`token`,`token2`)
+ * Note that if `token2` is not NULL, then (X, NULL) won't match to follow
+ * the semantic of XSD \#\#other
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewNegTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -5825,22 +5761,21 @@ xmlAutomataNewNegTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataNewCountTrans2:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the input string associated to that transition
- * @token2: the second input string associated to that transition
- * @min:  the minimum successive occurrences of token
- * @max:  the maximum successive occurrences of token
- * @data:  data associated to the transition
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the input string associated to that transition
+ * @param token2  the second input string associated to that transition
+ * @param min  the minimum successive occurrences of token
+ * @param max  the maximum successive occurrences of token
+ * @param data  data associated to the transition
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by a succession of input of value @token and @token2 and
- * whose number is between @min and @max
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by a succession of input of value `token` and `token2` and
+ * whose number is between `min` and `max`
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewCountTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -5921,21 +5856,20 @@ error:
 }
 
 /**
- * xmlAutomataNewCountTrans:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the input string associated to that transition
- * @min:  the minimum successive occurrences of token
- * @max:  the maximum successive occurrences of token
- * @data:  data associated to the transition
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the input string associated to that transition
+ * @param min  the minimum successive occurrences of token
+ * @param max  the maximum successive occurrences of token
+ * @param data  data associated to the transition
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by a succession of input of value @token and whose number
- * is between @min and @max
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by a succession of input of value `token` and whose number
+ * is between `min` and `max`
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewCountTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -5997,23 +5931,22 @@ error:
 }
 
 /**
- * xmlAutomataNewOnceTrans2:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the input string associated to that transition
- * @token2: the second input string associated to that transition
- * @min:  the minimum successive occurrences of token
- * @max:  the maximum successive occurrences of token
- * @data:  data associated to the transition
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the input string associated to that transition
+ * @param token2  the second input string associated to that transition
+ * @param min  the minimum successive occurrences of token
+ * @param max  the maximum successive occurrences of token
+ * @param data  data associated to the transition
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by a succession of input of value @token and @token2 and whose
- * number is between @min and @max, moreover that transition can only be
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by a succession of input of value `token` and `token2` and whose
+ * number is between `min` and `max`, moreover that transition can only be
  * crossed once.
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewOnceTrans2(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -6086,22 +6019,21 @@ error:
 
 
 /**
- * xmlAutomataNewOnceTrans:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @token: the input string associated to that transition
- * @min:  the minimum successive occurrences of token
- * @max:  the maximum successive occurrences of token
- * @data:  data associated to the transition
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param token  the input string associated to that transition
+ * @param min  the minimum successive occurrences of token
+ * @param max  the maximum successive occurrences of token
+ * @param data  data associated to the transition
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a transition from the @from state to the target state
- * activated by a succession of input of value @token and whose number
- * is between @min and @max, moreover that transition can only be crossed
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a transition from the `from` state to the target state
+ * activated by a succession of input of value `token` and whose number
+ * is between `min` and `max`, moreover that transition can only be crossed
  * once.
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewOnceTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -6151,12 +6083,11 @@ error:
 }
 
 /**
- * xmlAutomataNewState:
- * @am: an automata
+ * @param am  an automata
  *
  * Create a new disconnected state in the automata
  *
- * Returns the new state or NULL in case of error
+ * @returns the new state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewState(xmlAutomataPtr am) {
@@ -6166,16 +6097,15 @@ xmlAutomataNewState(xmlAutomataPtr am) {
 }
 
 /**
- * xmlAutomataNewEpsilon:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds an epsilon transition from the @from state to the
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds an epsilon transition from the `from` state to the
  * target state
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewEpsilon(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -6189,18 +6119,17 @@ xmlAutomataNewEpsilon(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataNewAllTrans:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @lax: allow to transition if not all all transitions have been activated
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param lax  allow to transition if not all all transitions have been activated
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds a an ALL transition from the @from state to the
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds a an ALL transition from the `from` state to the
  * target state. That transition is an epsilon transition allowed only when
- * all transitions from the @from node have been activated.
+ * all transitions from the `from` node have been activated.
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewAllTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -6214,14 +6143,13 @@ xmlAutomataNewAllTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataNewCounter:
- * @am: an automata
- * @min:  the minimal value on the counter
- * @max:  the maximal value on the counter
+ * @param am  an automata
+ * @param min  the minimal value on the counter
+ * @param max  the maximal value on the counter
  *
  * Create a new counter
  *
- * Returns the counter number or -1 in case of error
+ * @returns the counter number or -1 in case of error
  */
 int
 xmlAutomataNewCounter(xmlAutomataPtr am, int min, int max) {
@@ -6239,17 +6167,16 @@ xmlAutomataNewCounter(xmlAutomataPtr am, int min, int max) {
 }
 
 /**
- * xmlAutomataNewCountedTrans:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @counter: the counter associated to that transition
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param counter  the counter associated to that transition
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds an epsilon transition from the @from state to the target state
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds an epsilon transition from the `from` state to the target state
  * which will increment the counter provided
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewCountedTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -6263,17 +6190,16 @@ xmlAutomataNewCountedTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataNewCounterTrans:
- * @am: an automata
- * @from: the starting point of the transition
- * @to: the target point of the transition or NULL
- * @counter: the counter associated to that transition
+ * @param am  an automata
+ * @param from  the starting point of the transition
+ * @param to  the target point of the transition or NULL
+ * @param counter  the counter associated to that transition
  *
- * If @to is NULL, this creates first a new target state in the automata
- * and then adds an epsilon transition from the @from state to the target state
+ * If `to` is NULL, this creates first a new target state in the automata
+ * and then adds an epsilon transition from the `from` state to the target state
  * which will be allowed only if the counter is within the right range.
  *
- * Returns the target state or NULL in case of error
+ * @returns the target state or NULL in case of error
  */
 xmlAutomataStatePtr
 xmlAutomataNewCounterTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
@@ -6287,13 +6213,12 @@ xmlAutomataNewCounterTrans(xmlAutomataPtr am, xmlAutomataStatePtr from,
 }
 
 /**
- * xmlAutomataCompile:
- * @am: an automata
+ * @param am  an automata
  *
  * Compile the automata into a Reg Exp ready for being executed.
  * The automata should be free after this point.
  *
- * Returns the compiled regexp or NULL in case of error
+ * @returns the compiled regexp or NULL in case of error
  */
 xmlRegexpPtr
 xmlAutomataCompile(xmlAutomataPtr am) {
@@ -6310,12 +6235,11 @@ xmlAutomataCompile(xmlAutomataPtr am) {
 }
 
 /**
- * xmlAutomataIsDeterminist:
- * @am: an automata
+ * @param am  an automata
  *
  * Checks if an automata is determinist.
  *
- * Returns 1 if true, 0 if not, and -1 in case of error
+ * @returns 1 if true, 0 if not, and -1 in case of error
  */
 int
 xmlAutomataIsDeterminist(xmlAutomataPtr am) {
@@ -6329,7 +6253,7 @@ xmlAutomataIsDeterminist(xmlAutomataPtr am) {
 }
 
 #ifdef LIBXML_EXPR_ENABLED
-/** DOC_DISABLE */
+/** @cond IGNORE */
 /************************************************************************
  *									*
  *		Formal Expression handling code				*
@@ -6462,13 +6386,12 @@ struct _xmlExpCtxt {
 };
 
 /**
- * xmlExpNewCtxt:
- * @maxNodes:  the maximum number of nodes
- * @dict:  optional dictionary to use internally
+ * @param maxNodes  the maximum number of nodes
+ * @param dict  optional dictionary to use internally
  *
  * Creates a new context for manipulating expressions
  *
- * Returns the context or NULL in case of error
+ * @returns the context or NULL in case of error
  */
 xmlExpCtxtPtr
 xmlExpNewCtxt(int maxNodes, xmlDictPtr dict) {
@@ -6506,8 +6429,7 @@ xmlExpNewCtxt(int maxNodes, xmlDictPtr dict) {
 }
 
 /**
- * xmlExpFreeCtxt:
- * @ctxt:  an expression context
+ * @param ctxt  an expression context
  *
  * Free an expression context
  */
@@ -6590,7 +6512,6 @@ xmlExpNodePtr emptyExp = &emptyExpNode;
  *									*
  ************************************************************************/
 /*
- * xmlExpHashNameComputeKey:
  * Calculate the hash key for a token
  */
 static unsigned short
@@ -6608,7 +6529,6 @@ xmlExpHashNameComputeKey(const xmlChar *name) {
 }
 
 /*
- * xmlExpHashComputeKey:
  * Calculate the hash key for a compound expression
  */
 static unsigned short
@@ -6660,14 +6580,13 @@ xmlExpNewNode(xmlExpCtxtPtr ctxt, xmlExpNodeType type) {
 }
 
 /**
- * xmlExpHashGetEntry:
- * @table: the hash table
+ * @param table  the hash table
  *
  * Get the unique entry from the hash table. The entry is created if
- * needed. @left and @right are consumed, i.e. their ref count will
+ * needed. `left` and `right` are consumed, i.e. their ref count will
  * be decremented by the operation.
  *
- * Returns the pointer or NULL in case of error
+ * @returns the pointer or NULL in case of error
  */
 static xmlExpNodePtr
 xmlExpHashGetEntry(xmlExpCtxtPtr ctxt, xmlExpNodeType type,
@@ -6897,9 +6816,8 @@ xmlExpHashGetEntry(xmlExpCtxtPtr ctxt, xmlExpNodeType type,
 }
 
 /**
- * xmlExpFree:
- * @ctxt: the expression context
- * @exp: the expression
+ * @param ctxt  the expression context
+ * @param exp  the expression
  *
  * Dereference the expression
  */
@@ -6940,8 +6858,7 @@ xmlExpFree(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp) {
 }
 
 /**
- * xmlExpRef:
- * @exp: the expression
+ * @param exp  the expression
  *
  * Increase the reference count of the expression
  */
@@ -6952,14 +6869,13 @@ xmlExpRef(xmlExpNodePtr exp) {
 }
 
 /**
- * xmlExpNewAtom:
- * @ctxt: the expression context
- * @name: the atom name
- * @len: the atom name length in byte (or -1);
+ * @param ctxt  the expression context
+ * @param name  the atom name
+ * @param len  the atom name length in byte (or -1);
  *
  * Get the atom associated to this name from that context
  *
- * Returns the node or NULL in case of error
+ * @returns the node or NULL in case of error
  */
 xmlExpNodePtr
 xmlExpNewAtom(xmlExpCtxtPtr ctxt, const xmlChar *name, int len) {
@@ -6972,17 +6888,16 @@ xmlExpNewAtom(xmlExpCtxtPtr ctxt, const xmlChar *name, int len) {
 }
 
 /**
- * xmlExpNewOr:
- * @ctxt: the expression context
- * @left: left expression
- * @right: right expression
+ * @param ctxt  the expression context
+ * @param left  left expression
+ * @param right  right expression
  *
- * Get the atom associated to the choice @left | @right
- * Note that @left and @right are consumed in the operation, to keep
+ * Get the atom associated to the choice `left` | `right`
+ * Note that `left` and `right` are consumed in the operation, to keep
  * an handle on them use xmlExpRef() and use xmlExpFree() to release them,
  * this is true even in case of failure (unless ctxt == NULL).
  *
- * Returns the node or NULL in case of error
+ * @returns the node or NULL in case of error
  */
 xmlExpNodePtr
 xmlExpNewOr(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
@@ -6997,17 +6912,16 @@ xmlExpNewOr(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
 }
 
 /**
- * xmlExpNewSeq:
- * @ctxt: the expression context
- * @left: left expression
- * @right: right expression
+ * @param ctxt  the expression context
+ * @param left  left expression
+ * @param right  right expression
  *
- * Get the atom associated to the sequence @left , @right
- * Note that @left and @right are consumed in the operation, to keep
+ * Get the atom associated to the sequence `left` , `right`
+ * Note that `left` and `right` are consumed in the operation, to keep
  * an handle on them use xmlExpRef() and use xmlExpFree() to release them,
  * this is true even in case of failure (unless ctxt == NULL).
  *
- * Returns the node or NULL in case of error
+ * @returns the node or NULL in case of error
  */
 xmlExpNodePtr
 xmlExpNewSeq(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
@@ -7022,18 +6936,17 @@ xmlExpNewSeq(xmlExpCtxtPtr ctxt, xmlExpNodePtr left, xmlExpNodePtr right) {
 }
 
 /**
- * xmlExpNewRange:
- * @ctxt: the expression context
- * @subset: the expression to be repeated
- * @min: the lower bound for the repetition
- * @max: the upper bound for the repetition, -1 means infinite
+ * @param ctxt  the expression context
+ * @param subset  the expression to be repeated
+ * @param min  the lower bound for the repetition
+ * @param max  the upper bound for the repetition, -1 means infinite
  *
- * Get the atom associated to the range (@subset){@min, @max}
- * Note that @subset is consumed in the operation, to keep
+ * Get the atom associated to the range (`subset`){`min`, `max`}
+ * Note that `subset` is consumed in the operation, to keep
  * an handle on it use xmlExpRef() and use xmlExpFree() to release it,
  * this is true even in case of failure (unless ctxt == NULL).
  *
- * Returns the node or NULL in case of error
+ * @returns the node or NULL in case of error
  */
 xmlExpNodePtr
 xmlExpNewRange(xmlExpCtxtPtr ctxt, xmlExpNodePtr subset, int min, int max) {
@@ -7088,16 +7001,15 @@ tail:
 }
 
 /**
- * xmlExpGetLanguage:
- * @ctxt: the expression context
- * @exp: the expression
- * @langList: where to store the tokens
- * @len: the allocated length of @list
+ * @param ctxt  the expression context
+ * @param exp  the expression
+ * @param langList  where to store the tokens
+ * @param len  the allocated length of `list`
  *
- * Find all the strings used in @exp and store them in @list
+ * Find all the strings used in `exp` and store them in `list`
  *
- * Returns the number of unique strings found, -1 in case of errors and
- *         -2 if there is more than @len strings
+ * @returns the number of unique strings found, -1 in case of errors and
+ *         -2 if there is more than `len` strings
  */
 int
 xmlExpGetLanguage(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
@@ -7154,18 +7066,17 @@ tail:
 }
 
 /**
- * xmlExpGetStart:
- * @ctxt: the expression context
- * @exp: the expression
- * @tokList: where to store the tokens
- * @len: the allocated length of @list
+ * @param ctxt  the expression context
+ * @param exp  the expression
+ * @param tokList  where to store the tokens
+ * @param len  the allocated length of `list`
  *
  * Find all the strings that appears at the start of the languages
- * accepted by @exp and store them in @list. E.g. for (a, b) | c
+ * accepted by `exp` and store them in `list`. E.g. for (a, b) | c
  * it will return the list [a, c]
  *
- * Returns the number of unique strings found, -1 in case of errors and
- *         -2 if there is more than @len strings
+ * @returns the number of unique strings found, -1 in case of errors and
+ *         -2 if there is more than `len` strings
  */
 int
 xmlExpGetStart(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
@@ -7176,12 +7087,11 @@ xmlExpGetStart(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
 }
 
 /**
- * xmlExpIsNillable:
- * @exp: the expression
+ * @param exp  the expression
  *
  * Finds if the expression is nillable, i.e. if it accepts the empty sequence
  *
- * Returns 1 if nillable, 0 if not and -1 in case of error
+ * @returns 1 if nillable, 0 if not and -1 in case of error
  */
 int
 xmlExpIsNillable(xmlExpNodePtr exp) {
@@ -7274,16 +7184,15 @@ xmlExpStringDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, const xmlChar *str)
 }
 
 /**
- * xmlExpStringDerive:
- * @ctxt: the expression context
- * @exp: the expression
- * @str: the string
- * @len: the string len in bytes if available
+ * @param ctxt  the expression context
+ * @param exp  the expression
+ * @param str  the string
+ * @param len  the string len in bytes if available
  *
- * Do one step of Brzozowski derivation of the expression @exp with
+ * Do one step of Brzozowski derivation of the expression `exp` with
  * respect to the input string
  *
- * Returns the resulting expression or NULL in case of internal error
+ * @returns the resulting expression or NULL in case of internal error
  */
 xmlExpNodePtr
 xmlExpStringDerive(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
@@ -7320,17 +7229,16 @@ xmlExpCheckCard(xmlExpNodePtr exp, xmlExpNodePtr sub) {
 static xmlExpNodePtr xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp,
                                         xmlExpNodePtr sub);
 /**
- * xmlExpDivide:
- * @ctxt: the expressions context
- * @exp: the englobing expression
- * @sub: the subexpression
- * @mult: the multiple expression
- * @remain: the remain from the derivation of the multiple
+ * @param ctxt  the expressions context
+ * @param exp  the englobing expression
+ * @param sub  the subexpression
+ * @param mult  the multiple expression
+ * @param remain  the remain from the derivation of the multiple
  *
  * Check if exp is a multiple of sub, i.e. if there is a finite number n
  * so that sub{n} subsume exp
  *
- * Returns the multiple value if successful, 0 if it is not a multiple
+ * @returns the multiple value if successful, 0 if it is not a multiple
  *         and -1 in case of internal error.
  */
 
@@ -7379,15 +7287,14 @@ xmlExpDivide(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub,
 }
 
 /**
- * xmlExpExpDeriveInt:
- * @ctxt: the expressions context
- * @exp: the englobing expression
- * @sub: the subexpression
+ * @param ctxt  the expressions context
+ * @param exp  the englobing expression
+ * @param sub  the subexpression
  *
  * Try to do a step of Brzozowski derivation but at a higher level
  * the input being a subexpression.
  *
- * Returns the resulting expression or NULL in case of internal error
+ * @returns the resulting expression or NULL in case of internal error
  */
 static xmlExpNodePtr
 xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
@@ -7737,17 +7644,16 @@ xmlExpExpDeriveInt(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 }
 
 /**
- * xmlExpExpDerive:
- * @ctxt: the expressions context
- * @exp: the englobing expression
- * @sub: the subexpression
+ * @param ctxt  the expressions context
+ * @param exp  the englobing expression
+ * @param sub  the subexpression
  *
- * Evaluates the expression resulting from @exp consuming a sub expression @sub
+ * Evaluates the expression resulting from `exp` consuming a sub expression `sub`
  * Based on algebraic derivation and sometimes direct Brzozowski derivation
  * it usually takes less than linear time and can handle expressions generating
  * infinite languages.
  *
- * Returns the resulting expression or NULL in case of internal error, the
+ * @returns the resulting expression or NULL in case of internal error, the
  *         result must be freed
  */
 xmlExpNodePtr
@@ -7768,15 +7674,14 @@ xmlExpExpDerive(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
 }
 
 /**
- * xmlExpSubsume:
- * @ctxt: the expressions context
- * @exp: the englobing expression
- * @sub: the subexpression
+ * @param ctxt  the expressions context
+ * @param exp  the englobing expression
+ * @param sub  the subexpression
  *
- * Check whether @exp accepts all the languages accepted by @sub
+ * Check whether `exp` accepts all the languages accepted by `sub`
  * the input being a subexpression.
  *
- * Returns 1 if true 0 if false and -1 in case of failure.
+ * @returns 1 if true 0 if false and -1 in case of failure.
  */
 int
 xmlExpSubsume(xmlExpCtxtPtr ctxt, xmlExpNodePtr exp, xmlExpNodePtr sub) {
@@ -7964,9 +7869,8 @@ xmlExpParseExpr(xmlExpCtxtPtr ctxt) {
 }
 
 /**
- * xmlExpParse:
- * @ctxt: the expressions context
- * @expr: the 0 terminated string
+ * @param ctxt  the expressions context
+ * @param expr  the 0 terminated string
  *
  * Minimal parser for regexps, it understand the following constructs
  *  - string terminals
@@ -7978,7 +7882,7 @@ xmlExpParseExpr(xmlExpCtxtPtr ctxt) {
  *  - infinite sequences { min, * }
  * There is minimal checkings made especially no checking on strings values
  *
- * Returns a new expression or NULL in case of failure
+ * @returns a new expression or NULL in case of failure
  */
 xmlExpNodePtr
 xmlExpParse(xmlExpCtxtPtr ctxt, const char *expr) {
@@ -8073,9 +7977,8 @@ xmlExpDumpInt(xmlBufferPtr buf, xmlExpNodePtr expr, int glob) {
         xmlBufferWriteChar(buf, ")");
 }
 /**
- * xmlExpDump:
- * @buf:  a buffer to receive the output
- * @expr:  the compiled expression
+ * @param buf  a buffer to receive the output
+ * @param expr  the compiled expression
  *
  * Serialize the expression as compiled to the buffer
  */
@@ -8087,12 +7990,11 @@ xmlExpDump(xmlBufferPtr buf, xmlExpNodePtr expr) {
 }
 
 /**
- * xmlExpMaxToken:
- * @expr: a compiled expression
+ * @param expr  a compiled expression
  *
  * Indicate the maximum number of input a expression can accept
  *
- * Returns the maximum length or -1 in case of error
+ * @returns the maximum length or -1 in case of error
  */
 int
 xmlExpMaxToken(xmlExpNodePtr expr) {
@@ -8102,12 +8004,11 @@ xmlExpMaxToken(xmlExpNodePtr expr) {
 }
 
 /**
- * xmlExpCtxtNbNodes:
- * @ctxt: an expression context
+ * @param ctxt  an expression context
  *
  * Debugging facility provides the number of allocated nodes at a that point
  *
- * Returns the number of nodes in use or -1 in case of error
+ * @returns the number of nodes in use or -1 in case of error
  */
 int
 xmlExpCtxtNbNodes(xmlExpCtxtPtr ctxt) {
@@ -8117,12 +8018,11 @@ xmlExpCtxtNbNodes(xmlExpCtxtPtr ctxt) {
 }
 
 /**
- * xmlExpCtxtNbCons:
- * @ctxt: an expression context
+ * @param ctxt  an expression context
  *
  * Debugging facility provides the number of allocated nodes over lifetime
  *
- * Returns the number of nodes ever allocated or -1 in case of error
+ * @returns the number of nodes ever allocated or -1 in case of error
  */
 int
 xmlExpCtxtNbCons(xmlExpCtxtPtr ctxt) {
@@ -8131,7 +8031,7 @@ xmlExpCtxtNbCons(xmlExpCtxtPtr ctxt) {
     return(ctxt->nb_cons);
 }
 
-/** DOC_ENABLE */
+/** @endcond */
 #endif /* LIBXML_EXPR_ENABLED */
 
 #endif /* LIBXML_REGEXP_ENABLED */

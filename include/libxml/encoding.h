@@ -1,6 +1,9 @@
-/*
- * Summary: interface for the encoding conversion functions
- * Description: interface for the encoding conversion functions needed for
+/**
+ * @file
+ * 
+ * @brief interface for the encoding conversion functions
+ * 
+ * interface for the encoding conversion functions needed for
  *              XML basic encoding and iconv() support.
  *
  * Related specs are
@@ -10,13 +13,13 @@
  * [UNICODE]      The Unicode Consortium, "The Unicode Standard --
  *                Worldwide Character Encoding -- Version 1.0", Addison-
  *                Wesley, Volume 1, 1991, Volume 2, 1992.  UTF-8 is
- *                described in Unicode Technical Report #4.
+ *                described in Unicode Technical Report \#4.
  * [US-ASCII]     Coded Character Set--7-bit American Standard Code for
  *                Information Interchange, ANSI X3.4-1986.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_CHAR_ENCODING_H__
@@ -44,7 +47,6 @@ typedef enum {
 } xmlCharEncError;
 
 /*
- * xmlCharEncoding:
  *
  * Predefined values for some standard encodings.
  */
@@ -90,68 +92,64 @@ typedef enum {
 } xmlCharEncFlags;
 
 /**
- * xmlCharEncodingInputFunc:
- * @out:  a pointer to an array of bytes to store the UTF-8 result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of chars in the original encoding
- * @inlen:  the length of @in
+ * @param out  a pointer to an array of bytes to store the UTF-8 result
+ * @param outlen  the length of `out`
+ * @param in  a pointer to an array of chars in the original encoding
+ * @param inlen  the length of `in`
  *
  * Convert characters to UTF-8.
  *
- * On success, the value of @inlen after return is the number of
- * bytes consumed and @outlen is the number of bytes produced.
+ * On success, the value of `inlen` after return is the number of
+ * bytes consumed and `outlen` is the number of bytes produced.
  *
- * Returns the number of bytes written or an XML_ENC_ERR code.
+ * @returns the number of bytes written or an XML_ENC_ERR code.
  */
 typedef int (*xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
                                         const unsigned char *in, int *inlen);
 
 
 /**
- * xmlCharEncodingOutputFunc:
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of UTF-8 chars
- * @inlen:  the length of @in
+ * @param out  a pointer to an array of bytes to store the result
+ * @param outlen  the length of `out`
+ * @param in  a pointer to an array of UTF-8 chars
+ * @param inlen  the length of `in`
  *
  * Convert characters from UTF-8.
  *
- * On success, the value of @inlen after return is the number of
- * bytes consumed and @outlen is the number of bytes produced.
+ * On success, the value of `inlen` after return is the number of
+ * bytes consumed and `outlen` is the number of bytes produced.
  *
- * Returns the number of bytes written or an XML_ENC_ERR code.
+ * @returns the number of bytes written or an XML_ENC_ERR code.
  */
 typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
                                          const unsigned char *in, int *inlen);
 
 
 /**
- * xmlCharEncConvFunc:
- * @vctxt:  conversion context
- * @out:  a pointer to an array of bytes to store the result
- * @outlen:  the length of @out
- * @in:  a pointer to an array of input bytes
- * @inlen:  the length of @in
- * @flush:  end of input
+ * @param vctxt  conversion context
+ * @param out  a pointer to an array of bytes to store the result
+ * @param outlen  the length of `out`
+ * @param in  a pointer to an array of input bytes
+ * @param inlen  the length of `in`
+ * @param flush  end of input
  *
  * Convert between character encodings.
  *
- * The value of @inlen after return is the number of bytes consumed
- * and @outlen is the number of bytes produced.
+ * The value of `inlen` after return is the number of bytes consumed
+ * and `outlen` is the number of bytes produced.
  *
  * If the converter can consume partial multi-byte sequences, the
- * @flush flag can be used to detect truncated sequences at EOF.
+ * `flush` flag can be used to detect truncated sequences at EOF.
  * Otherwise, the flag can be ignored.
  *
- * Returns an XML_ENC_ERR code.
+ * @returns an XML_ENC_ERR code.
  */
 typedef xmlCharEncError
 (*xmlCharEncConvFunc)(void *vctxt, unsigned char *out, int *outlen,
                       const unsigned char *in, int *inlen, int flush);
 
 /**
- * xmlCharEncConvCtxtDtor:
- * @vctxt:  conversion context
+ * @param vctxt  conversion context
  *
  * Free a conversion context.
  */
@@ -182,19 +180,18 @@ struct _xmlCharEncodingHandler {
 };
 
 /**
- * xmlCharEncConvImpl:
- * @vctxt:  user data
- * @name:  encoding name
- * @flags:  bit mask of flags
- * @out:  pointer to resulting handler
+ * @param vctxt  user data
+ * @param name  encoding name
+ * @param flags  bit mask of flags
+ * @param out  pointer to resulting handler
  *
- * If this function returns XML_ERR_OK, it must fill the @out
+ * If this function returns XML_ERR_OK, it must fill the `out`
  * pointer with an encoding handler. The handler can be obtained
  * from xmlCharEncNewCustomHandler.
  *
- * @flags can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.
+ * `flags` can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.
  *
- * Returns an xmlParserErrors code.
+ * @returns an xmlParserErrors code.
  */
 typedef xmlParserErrors
 (*xmlCharEncConvImpl)(void *vctxt, const char *name, xmlCharEncFlags flags,
@@ -271,9 +268,9 @@ XMLPUBFUN xmlCharEncoding
 	xmlDetectCharEncoding		(const unsigned char *in,
 					 int len);
 
-/** DOC_DISABLE */
+/** @cond IGNORE */
 struct _xmlBuffer;
-/** DOC_ENABLE */
+/** @endcond */
 XMLPUBFUN int
 	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
 					 struct _xmlBuffer *out,

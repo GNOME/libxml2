@@ -1,10 +1,13 @@
-/*
- * Summary: the XML document serializer
- * Description: API to save document or subtree of document
+/**
+ * @file
+ * 
+ * @brief the XML document serializer
+ * 
+ * API to save document or subtree of document
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_XMLSAVE_H__
@@ -21,7 +24,6 @@ extern "C" {
 #endif
 
 /**
- * xmlSaveOption:
  *
  * This is the set of XML save options that can be passed down
  * to the xmlSaveToFd() and similar calls.

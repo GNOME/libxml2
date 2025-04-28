@@ -15,42 +15,38 @@
 #include <libxml/xmlIO.h>
 
 /**
- * xmlNanoHTTPInit:
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  */
 void
 xmlNanoHTTPInit(void) {
 }
 
 /**
- * xmlNanoHTTPCleanup:
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  */
 void
 xmlNanoHTTPCleanup(void) {
 }
 
 /**
- * xmlNanoHTTPScanProxy:
- * @URL:  The proxy URL used to initialize the proxy context
+ * @param URL  The proxy URL used to initialize the proxy context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  */
 void
 xmlNanoHTTPScanProxy(const char *URL ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPOpen:
- * @URL:  The URL to load
- * @contentType:  if available the Content-Type information will be
+ * @param URL  The URL to load
+ * @param contentType  if available the Content-Type information will be
  *                returned at that location
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 void*
 xmlNanoHTTPOpen(const char *URL ATTRIBUTE_UNUSED, char **contentType) {
@@ -59,15 +55,14 @@ xmlNanoHTTPOpen(const char *URL ATTRIBUTE_UNUSED, char **contentType) {
 }
 
 /**
- * xmlNanoHTTPOpenRedir:
- * @URL:  The URL to load
- * @contentType:  if available the Content-Type information will be
+ * @param URL  The URL to load
+ * @param contentType  if available the Content-Type information will be
  *                returned at that location
- * @redir: if available the redirected URL will be returned
+ * @param redir  if available the redirected URL will be returned
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 void*
 xmlNanoHTTPOpenRedir(const char *URL ATTRIBUTE_UNUSED, char **contentType,
@@ -78,14 +73,13 @@ xmlNanoHTTPOpenRedir(const char *URL ATTRIBUTE_UNUSED, char **contentType,
 }
 
 /**
- * xmlNanoHTTPRead:
- * @ctx:  the HTTP context
- * @dest:  a buffer
- * @len:  the buffer length
+ * @param ctx  the HTTP context
+ * @param dest  a buffer
+ * @param len  the buffer length
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns -1.
+ * @returns -1.
  */
 int
 xmlNanoHTTPRead(void *ctx ATTRIBUTE_UNUSED, void *dest ATTRIBUTE_UNUSED,
@@ -94,28 +88,26 @@ xmlNanoHTTPRead(void *ctx ATTRIBUTE_UNUSED, void *dest ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlNanoHTTPClose:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  */
 void
 xmlNanoHTTPClose(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPMethodRedir:
- * @URL:  The URL to load
- * @method:  the HTTP method to use
- * @input:  the input string if any
- * @contentType:  the Content-Type information IN and OUT
- * @redir:  the redirected URL OUT
- * @headers:  the extra headers
- * @ilen:  input length
+ * @param URL  The URL to load
+ * @param method  the HTTP method to use
+ * @param input  the input string if any
+ * @param contentType  the Content-Type information IN and OUT
+ * @param redir  the redirected URL OUT
+ * @param headers  the extra headers
+ * @param ilen  input length
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 void*
 xmlNanoHTTPMethodRedir(const char *URL ATTRIBUTE_UNUSED,
@@ -130,17 +122,16 @@ xmlNanoHTTPMethodRedir(const char *URL ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlNanoHTTPMethod:
- * @URL:  The URL to load
- * @method:  the HTTP method to use
- * @input:  the input string if any
- * @contentType:  the Content-Type information IN and OUT
- * @headers:  the extra headers
- * @ilen:  input length
+ * @param URL  The URL to load
+ * @param method  the HTTP method to use
+ * @param input  the input string if any
+ * @param contentType  the Content-Type information IN and OUT
+ * @param headers  the extra headers
+ * @param ilen  input length
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 void*
 xmlNanoHTTPMethod(const char *URL ATTRIBUTE_UNUSED,
@@ -153,15 +144,14 @@ xmlNanoHTTPMethod(const char *URL ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlNanoHTTPFetch:
- * @URL:  The URL to load
- * @filename:  the filename where the content should be saved
- * @contentType:  if available the Content-Type information will be
+ * @param URL  The URL to load
+ * @param filename  the filename where the content should be saved
+ * @param contentType  if available the Content-Type information will be
  *                returned at that location
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns -1.
+ * @returns -1.
  */
 int
 xmlNanoHTTPFetch(const char *URL ATTRIBUTE_UNUSED,
@@ -172,13 +162,12 @@ xmlNanoHTTPFetch(const char *URL ATTRIBUTE_UNUSED,
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
- * xmlNanoHTTPSave:
- * @ctxt:  the HTTP context
- * @filename:  the filename where the content should be saved
+ * @param ctxt  the HTTP context
+ * @param filename  the filename where the content should be saved
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns -1.
+ * @returns -1.
  */
 int
 xmlNanoHTTPSave(void *ctxt ATTRIBUTE_UNUSED,
@@ -188,12 +177,11 @@ xmlNanoHTTPSave(void *ctxt ATTRIBUTE_UNUSED,
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
- * xmlNanoHTTPReturnCode:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns -1.
+ * @returns -1.
  */
 int
 xmlNanoHTTPReturnCode(void *ctx ATTRIBUTE_UNUSED) {
@@ -201,12 +189,11 @@ xmlNanoHTTPReturnCode(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPAuthHeader:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 const char *
 xmlNanoHTTPAuthHeader(void *ctx ATTRIBUTE_UNUSED) {
@@ -214,12 +201,11 @@ xmlNanoHTTPAuthHeader(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPContentLength:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns -1.
+ * @returns -1.
  */
 int
 xmlNanoHTTPContentLength(void *ctx ATTRIBUTE_UNUSED) {
@@ -227,12 +213,11 @@ xmlNanoHTTPContentLength(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPRedir:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 const char *
 xmlNanoHTTPRedir(void *ctx ATTRIBUTE_UNUSED) {
@@ -240,12 +225,11 @@ xmlNanoHTTPRedir(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPEncoding:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 const char *
 xmlNanoHTTPEncoding(void *ctx ATTRIBUTE_UNUSED) {
@@ -253,12 +237,11 @@ xmlNanoHTTPEncoding(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlNanoHTTPMimeType:
- * @ctx:  the HTTP context
+ * @param ctx  the HTTP context
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 const char *
 xmlNanoHTTPMimeType(void *ctx ATTRIBUTE_UNUSED) {
@@ -266,12 +249,11 @@ xmlNanoHTTPMimeType(void *ctx ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlIOHTTPMatch:
- * @filename:  the URI for matching
+ * @param filename  the URI for matching
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns 0.
+ * @returns 0.
  */
 int
 xmlIOHTTPMatch(const char *filename ATTRIBUTE_UNUSED) {
@@ -279,12 +261,11 @@ xmlIOHTTPMatch(const char *filename ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlIOHTTPOpen:
- * @filename:  the URI for matching
+ * @param filename  the URI for matching
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 void *
 xmlIOHTTPOpen(const char *filename ATTRIBUTE_UNUSED) {
@@ -293,13 +274,12 @@ xmlIOHTTPOpen(const char *filename ATTRIBUTE_UNUSED) {
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
- * xmlIOHTTPOpenW:
- * @post_uri:  The destination URI for the document
- * @compression:  The compression desired for the document.
+ * @param post_uri  The destination URI for the document
+ * @param compression  The compression desired for the document.
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns NULL.
+ * @returns NULL.
  */
 void *
 xmlIOHTTPOpenW(const char *post_uri ATTRIBUTE_UNUSED,
@@ -310,14 +290,13 @@ xmlIOHTTPOpenW(const char *post_uri ATTRIBUTE_UNUSED,
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
- * xmlIOHTTPRead:
- * @context:  the I/O context
- * @buffer:  where to drop data
- * @len:  number of bytes to write
+ * @param context  the I/O context
+ * @param buffer  where to drop data
+ * @param len  number of bytes to write
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  *
- * Returns -1.
+ * @returns -1.
  */
 int
 xmlIOHTTPRead(void *context ATTRIBUTE_UNUSED, char *buffer ATTRIBUTE_UNUSED,
@@ -326,12 +305,11 @@ xmlIOHTTPRead(void *context ATTRIBUTE_UNUSED, char *buffer ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlIOHTTPClose:
- * @context:  the I/O context
+ * @param context  the I/O context
  *
- * DEPRECATED: Internal function, don't use.
+ * @deprecated Internal function, don't use.
  *
- * Returns 0
+ * @returns 0
  */
 int
 xmlIOHTTPClose (void *context ATTRIBUTE_UNUSED) {
@@ -339,9 +317,8 @@ xmlIOHTTPClose (void *context ATTRIBUTE_UNUSED) {
 }
 
 /**
- * xmlRegisterHTTPPostCallbacks:
  *
- * DEPRECATED: HTTP support was removed in 2.15.
+ * @deprecated HTTP support was removed in 2.15.
  */
 void
 xmlRegisterHTTPPostCallbacks(void) {

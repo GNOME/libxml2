@@ -59,12 +59,11 @@ static char *filename = NULL;
  *									*
  ************************************************************************/
 /**
- * xmlShellReadline:
- * @prompt:  the prompt value
+ * @param prompt  the prompt value
  *
  * Read a string
  *
- * Returns a pointer to it or NULL on EOF the caller is expected to
+ * @returns a pointer to it or NULL on EOF the caller is expected to
  *     free the returned string.
  */
 static char *

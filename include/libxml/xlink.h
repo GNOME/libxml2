@@ -1,10 +1,13 @@
-/*
- * Summary: unfinished XLink detection module
- * Description: unfinished XLink detection module
+/**
+ * @file
+ * 
+ * @brief unfinished XLink detection module
+ * 
+ * unfinished XLink detection module
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_XLINK_H__
@@ -54,9 +57,8 @@ typedef enum {
 } xlinkActuate;
 
 /**
- * xlinkNodeDetectFunc:
- * @ctx:  user data pointer
- * @node:  the node to check
+ * @param ctx  user data pointer
+ * @param node  the node to check
  *
  * This is the prototype for the link detection routine.
  * It calls the default link detection callbacks upon link detection.
@@ -69,12 +71,11 @@ typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
  */
 
 /**
- * xlinkSimpleLinkFunk:
- * @ctx:  user data pointer
- * @node:  the node carrying the link
- * @href:  the target of the link
- * @role:  the role string
- * @title:  the link title
+ * @param ctx  user data pointer
+ * @param node  the node carrying the link
+ * @param href  the target of the link
+ * @param role  the role string
+ * @param title  the link title
  *
  * This is the prototype for a simple link detection callback.
  */
@@ -86,20 +87,19 @@ typedef void
 			 const xlinkTitle title);
 
 /**
- * xlinkExtendedLinkFunk:
- * @ctx:  user data pointer
- * @node:  the node carrying the link
- * @nbLocators: the number of locators detected on the link
- * @hrefs:  pointer to the array of locator hrefs
- * @roles:  pointer to the array of locator roles
- * @nbArcs: the number of arcs detected on the link
- * @from:  pointer to the array of source roles found on the arcs
- * @to:  pointer to the array of target roles found on the arcs
- * @show:  array of values for the show attributes found on the arcs
- * @actuate:  array of values for the actuate attributes found on the arcs
- * @nbTitles: the number of titles detected on the link
- * @titles:  array of titles detected on the link
- * @langs:  array of xml:lang values for the titles
+ * @param ctx  user data pointer
+ * @param node  the node carrying the link
+ * @param nbLocators  the number of locators detected on the link
+ * @param hrefs  pointer to the array of locator hrefs
+ * @param roles  pointer to the array of locator roles
+ * @param nbArcs  the number of arcs detected on the link
+ * @param from  pointer to the array of source roles found on the arcs
+ * @param to  pointer to the array of target roles found on the arcs
+ * @param show  array of values for the show attributes found on the arcs
+ * @param actuate  array of values for the actuate attributes found on the arcs
+ * @param nbTitles  the number of titles detected on the link
+ * @param titles  array of titles detected on the link
+ * @param langs  array of xml:lang values for the titles
  *
  * This is the prototype for a extended link detection callback.
  */
@@ -119,15 +119,14 @@ typedef void
 			 const xmlChar **langs);
 
 /**
- * xlinkExtendedLinkSetFunk:
- * @ctx:  user data pointer
- * @node:  the node carrying the link
- * @nbLocators: the number of locators detected on the link
- * @hrefs:  pointer to the array of locator hrefs
- * @roles:  pointer to the array of locator roles
- * @nbTitles: the number of titles detected on the link
- * @titles:  array of titles detected on the link
- * @langs:  array of xml:lang values for the titles
+ * @param ctx  user data pointer
+ * @param node  the node carrying the link
+ * @param nbLocators  the number of locators detected on the link
+ * @param hrefs  pointer to the array of locator hrefs
+ * @param roles  pointer to the array of locator roles
+ * @param nbTitles  the number of titles detected on the link
+ * @param titles  array of titles detected on the link
+ * @param langs  array of xml:lang values for the titles
  *
  * This is the prototype for a extended link set detection callback.
  */

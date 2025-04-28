@@ -37,7 +37,6 @@
 #define BUF_STATIC(buf) ((buf)->flags & BUF_FLAG_STATIC)
 
 /**
- * xmlBuf:
  *
  * A buffer structure. The base of the structure is somehow compatible
  * with struct _xmlBuffer to limit risks on application which accessed
@@ -87,8 +86,7 @@ struct _xmlBuf {
 #endif /* WITH_BUFFER_COMPAT */
 
 /**
- * xmlBufMemoryError:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Handle an out of memory condition
  * To be improved...
@@ -101,8 +99,7 @@ xmlBufMemoryError(xmlBufPtr buf)
 }
 
 /**
- * xmlBufOverflowError:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Handle a buffer overflow error
  * To be improved...
@@ -115,11 +112,10 @@ xmlBufOverflowError(xmlBufPtr buf)
 }
 
 /**
- * xmlBufCreate:
- * @size: initial size of buffer
+ * @param size  initial size of buffer
  *
  * routine to create an XML buffer.
- * returns the new structure.
+ * @returns the new structure.
  */
 xmlBufPtr
 xmlBufCreate(size_t size) {
@@ -150,19 +146,18 @@ xmlBufCreate(size_t size) {
 }
 
 /**
- * xmlBufCreateMem:
- * @mem:  a memory area
- * @size:  size of the buffer excluding terminator
- * @isStatic:  whether the memory area is static
+ * @param mem  a memory area
+ * @param size  size of the buffer excluding terminator
+ * @param isStatic  whether the memory area is static
  *
  * Create a buffer initialized with memory.
  *
- * If @isStatic is set, uses the memory area directly as backing store.
+ * If `isStatic` is set, uses the memory area directly as backing store.
  * The memory must be zero-terminated and not be modified for the
  * lifetime of the buffer. A static buffer can't be grown, modified or
  * detached, but it can be shrunk.
  *
- * Returns a new buffer.
+ * @returns a new buffer.
  */
 xmlBufPtr
 xmlBufCreateMem(const xmlChar *mem, size_t size, int isStatic) {
@@ -204,14 +199,13 @@ xmlBufCreateMem(const xmlChar *mem, size_t size, int isStatic) {
 }
 
 /**
- * xmlBufDetach:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Remove the string contained in a buffer and give it back to the
  * caller. The buffer is reset to an empty content.
  * This doesn't work with immutable buffers as they can't be reset.
  *
- * Returns the previous string contained by the buffer.
+ * @returns the previous string contained by the buffer.
  */
 xmlChar *
 xmlBufDetach(xmlBufPtr buf) {
@@ -237,8 +231,7 @@ xmlBufDetach(xmlBufPtr buf) {
 }
 
 /**
- * xmlBufFree:
- * @buf:  the buffer to free
+ * @param buf  the buffer to free
  *
  * Frees an XML buffer. It frees both the content and the structure which
  * encapsulate it.
@@ -254,8 +247,7 @@ xmlBufFree(xmlBufPtr buf) {
 }
 
 /**
- * xmlBufEmpty:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * empty a buffer.
  */
@@ -276,18 +268,17 @@ xmlBufEmpty(xmlBufPtr buf) {
 }
 
 /**
- * xmlBufShrink:
- * @buf:  the buffer to dump
- * @len:  the number of xmlChar to remove
+ * @param buf  the buffer to dump
+ * @param len  the number of xmlChar to remove
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Remove the beginning of an XML buffer.
  * NOTE that this routine behaviour differs from xmlBufferShrink()
  * as it will return 0 on error instead of -1 due to size_t being
  * used as the return type.
  *
- * Returns the number of byte removed or 0 in case of failure
+ * @returns the number of byte removed or 0 in case of failure
  */
 size_t
 xmlBufShrink(xmlBufPtr buf, size_t len) {
@@ -309,13 +300,12 @@ xmlBufShrink(xmlBufPtr buf, size_t len) {
 }
 
 /**
- * xmlBufGrowInternal:
- * @buf:  the buffer
- * @len:  the minimum free size to allocate
+ * @param buf  the buffer
+ * @param len  the minimum free size to allocate
  *
- * Grow the available space of an XML buffer, @len is the target value
+ * Grow the available space of an XML buffer, `len` is the target value
  *
- * Returns 0 on success, -1 in case of error
+ * @returns 0 on success, -1 in case of error
  */
 static int
 xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
@@ -376,14 +366,13 @@ xmlBufGrowInternal(xmlBufPtr buf, size_t len) {
 }
 
 /**
- * xmlBufGrow:
- * @buf:  the buffer
- * @len:  the minimum free size to allocate
+ * @param buf  the buffer
+ * @param len  the minimum free size to allocate
  *
- * Grow the available space of an XML buffer, @len is the target value
+ * Grow the available space of an XML buffer, `len` is the target value
  * This is been kept compatible with xmlBufferGrow() as much as possible
  *
- * Returns 0 on succes, -1 in case of error
+ * @returns 0 on succes, -1 in case of error
  */
 int
 xmlBufGrow(xmlBufPtr buf, size_t len) {
@@ -402,12 +391,11 @@ xmlBufGrow(xmlBufPtr buf, size_t len) {
 }
 
 /**
- * xmlBufContent:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Function to extract the content of a buffer
  *
- * Returns the internal content
+ * @returns the internal content
  */
 
 xmlChar *
@@ -420,12 +408,11 @@ xmlBufContent(const xmlBuf *buf)
 }
 
 /**
- * xmlBufEnd:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Function to extract the end of the content of a buffer
  *
- * Returns the end of the internal content or NULL in case of error
+ * @returns the end of the internal content or NULL in case of error
  */
 
 xmlChar *
@@ -439,15 +426,14 @@ xmlBufEnd(xmlBufPtr buf)
 }
 
 /**
- * xmlBufAddLen:
- * @buf:  the buffer
- * @len:  the size which were added at the end
+ * @param buf  the buffer
+ * @param len  the size which were added at the end
  *
  * Sometime data may be added at the end of the buffer without
  * using the xmlBuf APIs that is used to expand the used space
  * and set the zero terminating at the end of the buffer
  *
- * Returns -1 in case of error and 0 otherwise
+ * @returns -1 in case of error and 0 otherwise
  */
 int
 xmlBufAddLen(xmlBufPtr buf, size_t len) {
@@ -463,12 +449,11 @@ xmlBufAddLen(xmlBufPtr buf, size_t len) {
 }
 
 /**
- * xmlBufUse:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Function to get the length of a buffer
  *
- * Returns the length of data in the internal content
+ * @returns the length of data in the internal content
  */
 
 size_t
@@ -482,15 +467,14 @@ xmlBufUse(const xmlBufPtr buf)
 }
 
 /**
- * xmlBufAvail:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Function to find how much free space is allocated but not
  * used in the buffer. It reserves one byte for the NUL
  * terminator character that is usually needed, so there is
  * no need to subtract 1 from the result anymore.
  *
- * Returns the amount, or 0 if none or if an error occurred.
+ * @returns the amount, or 0 if none or if an error occurred.
  */
 
 size_t
@@ -504,12 +488,11 @@ xmlBufAvail(const xmlBufPtr buf)
 }
 
 /**
- * xmlBufIsEmpty:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Tell if a buffer is empty
  *
- * Returns 0 if no, 1 if yes and -1 in case of error
+ * @returns 0 if no, 1 if yes and -1 in case of error
  */
 int
 xmlBufIsEmpty(const xmlBufPtr buf)
@@ -522,15 +505,14 @@ xmlBufIsEmpty(const xmlBufPtr buf)
 }
 
 /**
- * xmlBufAdd:
- * @buf:  the buffer to dump
- * @str:  the #xmlChar string
- * @len:  the number of #xmlChar to add
+ * @param buf  the buffer to dump
+ * @param str  the \#xmlChar string
+ * @param len  the number of \#xmlChar to add
  *
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
  *
- * Returns 0 if successful, -1 in case of error.
+ * @returns 0 if successful, -1 in case of error.
  */
 int
 xmlBufAdd(xmlBufPtr buf, const xmlChar *str, size_t len) {
@@ -556,13 +538,12 @@ xmlBufAdd(xmlBufPtr buf, const xmlChar *str, size_t len) {
 }
 
 /**
- * xmlBufCat:
- * @buf:  the buffer to add to
- * @str:  the #xmlChar string (optional)
+ * @param buf  the buffer to add to
+ * @param str  the \#xmlChar string (optional)
  *
  * Append a zero terminated string to an XML buffer.
  *
- * Returns 0 successful, a positive error code number otherwise
+ * @returns 0 successful, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 int
@@ -573,15 +554,14 @@ xmlBufCat(xmlBufPtr buf, const xmlChar *str) {
 }
 
 /**
- * xmlBufFromBuffer:
- * @buffer: incoming old buffer to convert to a new one
+ * @param buffer  incoming old buffer to convert to a new one
  *
  * Helper routine to switch from the old buffer structures in use
  * in various APIs. It creates a wrapper xmlBufPtr which will be
  * used for internal processing until the xmlBufBackToBuffer() is
  * issued.
  *
- * Returns a new xmlBufPtr unless the call failed and NULL is returned
+ * @returns a new xmlBufPtr unless the call failed and NULL is returned
  */
 xmlBufPtr
 xmlBufFromBuffer(xmlBufferPtr buffer) {
@@ -620,17 +600,16 @@ xmlBufFromBuffer(xmlBufferPtr buffer) {
 }
 
 /**
- * xmlBufBackToBuffer:
- * @buf: new buffer wrapping the old one
- * @ret: old buffer
+ * @param buf  new buffer wrapping the old one
+ * @param ret  old buffer
  *
  * Function to be called once internal processing had been done to
  * update back the buffer provided by the user. This can lead to
  * a failure in case the size accumulated in the xmlBuf is larger
  * than what an xmlBuffer can support on 64 bits (INT_MAX)
- * The xmlBufPtr @buf wrapper is deallocated by this call in any case.
+ * The xmlBufPtr `buf` wrapper is deallocated by this call in any case.
  *
- * Returns 0 on success, -1 on error.
+ * @returns 0 on success, -1 on error.
  */
 int
 xmlBufBackToBuffer(xmlBufPtr buf, xmlBufferPtr ret) {
@@ -662,13 +641,12 @@ xmlBufBackToBuffer(xmlBufPtr buf, xmlBufferPtr ret) {
 }
 
 /**
- * xmlBufResetInput:
- * @buf: an xmlBufPtr
- * @input: an xmlParserInputPtr
+ * @param buf  an xmlBufPtr
+ * @param input  an xmlParserInputPtr
  *
  * Update the input to use the current set of pointers from the buffer.
  *
- * Returns -1 in case of error, 0 otherwise
+ * @returns -1 in case of error, 0 otherwise
  */
 int
 xmlBufResetInput(xmlBufPtr buf, xmlParserInputPtr input) {
@@ -676,15 +654,14 @@ xmlBufResetInput(xmlBufPtr buf, xmlParserInputPtr input) {
 }
 
 /**
- * xmlBufUpdateInput:
- * @buf: an xmlBufPtr
- * @input: an xmlParserInputPtr
- * @pos: the cur value relative to the beginning of the buffer
+ * @param buf  an xmlBufPtr
+ * @param input  an xmlParserInputPtr
+ * @param pos  the cur value relative to the beginning of the buffer
  *
  * Update the input to use the base and cur relative to the buffer
  * after a possible reallocation of its content
  *
- * Returns -1 in case of error, 0 otherwise
+ * @returns -1 in case of error, 0 otherwise
  */
 int
 xmlBufUpdateInput(xmlBufPtr buf, xmlParserInputPtr input, size_t pos) {
@@ -704,10 +681,9 @@ xmlBufUpdateInput(xmlBufPtr buf, xmlParserInputPtr input, size_t pos) {
  ************************************************************************/
 
 /**
- * xmlSetBufferAllocationScheme:
- * @scheme:  allocation method to use
+ * @param scheme  allocation method to use
  *
- * DEPRECATED: Use xmlBufferSetAllocationScheme.
+ * @deprecated Use xmlBufferSetAllocationScheme.
  *
  * Set the buffer allocation method.  Types are
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
@@ -719,9 +695,8 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme ATTRIBUTE_UNUSED) 
 }
 
 /**
- * xmlGetBufferAllocationScheme:
  *
- * DEPRECATED: Use xmlBufferSetAllocationScheme.
+ * @deprecated Use xmlBufferSetAllocationScheme.
  *
  * Types are
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
@@ -731,7 +706,7 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme ATTRIBUTE_UNUSED) 
  *                            in normal usage, and doubleit on large strings to avoid
  *                            pathological performance.
  *
- * Returns the current allocation scheme
+ * @returns the current allocation scheme
  */
 xmlBufferAllocationScheme
 xmlGetBufferAllocationScheme(void) {
@@ -739,10 +714,9 @@ xmlGetBufferAllocationScheme(void) {
 }
 
 /**
- * xmlBufferCreate:
  *
  * routine to create an XML buffer.
- * returns the new structure.
+ * @returns the new structure.
  */
 xmlBufferPtr
 xmlBufferCreate(void) {
@@ -767,11 +741,10 @@ xmlBufferCreate(void) {
 }
 
 /**
- * xmlBufferCreateSize:
- * @size: initial size of buffer
+ * @param size  initial size of buffer
  *
  * routine to create an XML buffer.
- * returns the new structure.
+ * @returns the new structure.
  */
 xmlBufferPtr
 xmlBufferCreateSize(size_t size) {
@@ -805,14 +778,13 @@ xmlBufferCreateSize(size_t size) {
 }
 
 /**
- * xmlBufferDetach:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Remove the string contained in a buffer and gie it back to the
  * caller. The buffer is reset to an empty content.
  * This doesn't work with immutable buffers as they can't be reset.
  *
- * Returns the previous string contained by the buffer.
+ * @returns the previous string contained by the buffer.
  */
 xmlChar *
 xmlBufferDetach(xmlBufferPtr buf) {
@@ -838,11 +810,10 @@ xmlBufferDetach(xmlBufferPtr buf) {
 }
 
 /**
- * xmlBufferCreateStatic:
- * @mem: the memory area
- * @size:  the size in byte
+ * @param mem  the memory area
+ * @param size  the size in byte
  *
- * Returns an XML buffer initialized with bytes.
+ * @returns an XML buffer initialized with bytes.
  */
 xmlBufferPtr
 xmlBufferCreateStatic(void *mem, size_t size) {
@@ -853,9 +824,8 @@ xmlBufferCreateStatic(void *mem, size_t size) {
 }
 
 /**
- * xmlBufferSetAllocationScheme:
- * @buf:  the buffer to tune
- * @scheme:  allocation scheme to use
+ * @param buf  the buffer to tune
+ * @param scheme  allocation scheme to use
  *
  * Sets the allocation scheme for this buffer.
  *
@@ -868,8 +838,7 @@ xmlBufferSetAllocationScheme(xmlBufferPtr buf ATTRIBUTE_UNUSED,
 }
 
 /**
- * xmlBufferFree:
- * @buf:  the buffer to free
+ * @param buf  the buffer to free
  *
  * Frees an XML buffer. It frees both the content and the structure which
  * encapsulate it.
@@ -888,8 +857,7 @@ xmlBufferFree(xmlBufferPtr buf) {
 }
 
 /**
- * xmlBufferEmpty:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * empty a buffer.
  */
@@ -912,15 +880,14 @@ xmlBufferEmpty(xmlBufferPtr buf) {
 }
 
 /**
- * xmlBufferShrink:
- * @buf:  the buffer to dump
- * @len:  the number of xmlChar to remove
+ * @param buf  the buffer to dump
+ * @param len  the number of xmlChar to remove
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Remove the beginning of an XML buffer.
  *
- * Returns the number of #xmlChar removed, or -1 in case of failure.
+ * @returns the number of \#xmlChar removed, or -1 in case of failure.
  */
 int
 xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
@@ -944,15 +911,14 @@ xmlBufferShrink(xmlBufferPtr buf, unsigned int len) {
 }
 
 /**
- * xmlBufferGrow:
- * @buf:  the buffer
- * @len:  the minimum free size to allocate
+ * @param buf  the buffer
+ * @param len  the minimum free size to allocate
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
  *
  * Grow the available space of an XML buffer.
  *
- * Returns the new available space or -1 in case of error
+ * @returns the new available space or -1 in case of error
  */
 int
 xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
@@ -1001,12 +967,11 @@ xmlBufferGrow(xmlBufferPtr buf, unsigned int len) {
 }
 
 /**
- * xmlBufferDump:
- * @file:  the file output
- * @buf:  the buffer to dump
+ * @param file  the file output
+ * @param buf  the buffer to dump
  *
  * Dumps an XML buffer to  a FILE *.
- * Returns the number of #xmlChar written
+ * @returns the number of \#xmlChar written
  */
 int
 xmlBufferDump(FILE *file, xmlBufferPtr buf) {
@@ -1023,12 +988,11 @@ xmlBufferDump(FILE *file, xmlBufferPtr buf) {
 }
 
 /**
- * xmlBufferContent:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Function to extract the content of a buffer
  *
- * Returns the internal content
+ * @returns the internal content
  */
 
 const xmlChar *
@@ -1041,12 +1005,11 @@ xmlBufferContent(const xmlBuffer *buf)
 }
 
 /**
- * xmlBufferLength:
- * @buf:  the buffer
+ * @param buf  the buffer
  *
  * Function to get the length of a buffer
  *
- * Returns the length of data in the internal content
+ * @returns the length of data in the internal content
  */
 
 int
@@ -1059,15 +1022,14 @@ xmlBufferLength(const xmlBuffer *buf)
 }
 
 /**
- * xmlBufferResize:
- * @buf:  the buffer to resize
- * @size:  the desired size
+ * @param buf  the buffer to resize
+ * @param size  the desired size
  *
- * DEPRECATED: Don't use.
+ * @deprecated Don't use.
 
- * Resize a buffer to accommodate minimum size of @size.
+ * Resize a buffer to accommodate minimum size of `size`.
  *
- * Returns  0 in case of problems, 1 otherwise
+ * @returns  0 in case of problems, 1 otherwise
  */
 int
 xmlBufferResize(xmlBufferPtr buf, unsigned int size)
@@ -1084,15 +1046,14 @@ xmlBufferResize(xmlBufferPtr buf, unsigned int size)
 }
 
 /**
- * xmlBufferAdd:
- * @buf:  the buffer to dump
- * @str:  the #xmlChar string
- * @len:  the number of #xmlChar to add
+ * @param buf  the buffer to dump
+ * @param str  the \#xmlChar string
+ * @param len  the number of \#xmlChar to add
  *
  * Add a string range to an XML buffer. if len == -1, the length of
  * str is recomputed.
  *
- * Returns a xmlParserErrors code.
+ * @returns a xmlParserErrors code.
  */
 int
 xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
@@ -1116,15 +1077,14 @@ xmlBufferAdd(xmlBufferPtr buf, const xmlChar *str, int len) {
 }
 
 /**
- * xmlBufferAddHead:
- * @buf:  the buffer
- * @str:  the #xmlChar string
- * @len:  the number of #xmlChar to add
+ * @param buf  the buffer
+ * @param str  the \#xmlChar string
+ * @param len  the number of \#xmlChar to add
  *
  * Add a string range to the beginning of an XML buffer.
- * if len == -1, the length of @str is recomputed.
+ * if len == -1, the length of `str` is recomputed.
  *
- * Returns a xmlParserErrors code.
+ * @returns a xmlParserErrors code.
  */
 int
 xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
@@ -1172,13 +1132,12 @@ xmlBufferAddHead(xmlBufferPtr buf, const xmlChar *str, int len) {
 }
 
 /**
- * xmlBufferCat:
- * @buf:  the buffer to add to
- * @str:  the #xmlChar string
+ * @param buf  the buffer to add to
+ * @param str  the \#xmlChar string
  *
  * Append a zero terminated string to an XML buffer.
  *
- * Returns 0 successful, a positive error code number otherwise
+ * @returns 0 successful, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 int
@@ -1187,13 +1146,12 @@ xmlBufferCat(xmlBufferPtr buf, const xmlChar *str) {
 }
 
 /**
- * xmlBufferCCat:
- * @buf:  the buffer to dump
- * @str:  the C char string
+ * @param buf  the buffer to dump
+ * @param str  the C char string
  *
  * Append a zero terminated C string to an XML buffer.
  *
- * Returns 0 successful, a positive error code number otherwise
+ * @returns 0 successful, a positive error code number otherwise
  *         and -1 in case of internal or API error.
  */
 int
@@ -1202,9 +1160,8 @@ xmlBufferCCat(xmlBufferPtr buf, const char *str) {
 }
 
 /**
- * xmlBufferWriteCHAR:
- * @buf:  the XML buffer
- * @string:  the string to add
+ * @param buf  the XML buffer
+ * @param string  the string to add
  *
  * routine which manages and grows an output buffer. This one adds
  * xmlChars at the end of the buffer.
@@ -1215,9 +1172,8 @@ xmlBufferWriteCHAR(xmlBufferPtr buf, const xmlChar *string) {
 }
 
 /**
- * xmlBufferWriteChar:
- * @buf:  the XML buffer output
- * @string:  the string to add
+ * @param buf  the XML buffer output
+ * @param string  the string to add
  *
  * routine which manage and grows an output buffer. This one add
  * C chars at the end of the array.
@@ -1229,12 +1185,11 @@ xmlBufferWriteChar(xmlBufferPtr buf, const char *string) {
 
 
 /**
- * xmlBufferWriteQuotedString:
- * @buf:  the XML buffer output
- * @string:  the string to add
+ * @param buf  the XML buffer output
+ * @param string  the string to add
  *
  * routine which manage and grows an output buffer. This one writes
- * a quoted or double quoted #xmlChar string, checking first if it holds
+ * a quoted or double quoted \#xmlChar string, checking first if it holds
  * quote or double-quotes internally
  */
 void

@@ -1,10 +1,13 @@
-/*
- * Summary: the XMLReader implementation
- * Description: API of the XML streaming API based on C# interfaces.
+/**
+ * @file
+ * 
+ * @brief the XMLReader implementation
+ * 
+ * API of the XML streaming API based on C\# interfaces.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __XML_XMLREADER_H__
@@ -27,7 +30,6 @@ extern "C" {
 #endif
 
 /**
- * xmlParserSeverities:
  *
  * How severe an error callback is when the per-reader error callback API
  * is used.
@@ -42,7 +44,6 @@ typedef enum {
 #ifdef LIBXML_READER_ENABLED
 
 /**
- * xmlTextReaderMode:
  *
  * Internal state values for the reader.
  */
@@ -56,7 +57,6 @@ typedef enum {
 } xmlTextReaderMode;
 
 /**
- * xmlParserProperties:
  *
  * Some common options to use with xmlTextReaderSetParserProp, but it
  * is better to use xmlParserOption and the xmlReaderNewxxx and
@@ -70,7 +70,6 @@ typedef enum {
 } xmlParserProperties;
 
 /**
- * xmlReaderTypes:
  *
  * Predefined constants for the different types of nodes.
  */
@@ -96,14 +95,12 @@ typedef enum {
 } xmlReaderTypes;
 
 /**
- * xmlTextReader:
  *
  * Structure for an xmlReader context.
  */
 typedef struct _xmlTextReader xmlTextReader;
 
 /**
- * xmlTextReaderPtr:
  *
  * Pointer to an xmlReader context.
  */
@@ -400,11 +397,10 @@ XMLPUBFUN int
 typedef void *  xmlTextReaderLocatorPtr;
 
 /**
- * xmlTextReaderErrorFunc:
- * @arg: the user argument
- * @msg: the message
- * @severity: the severity of the error
- * @locator: a locator indicating where the error occurred
+ * @param arg  the user argument
+ * @param msg  the message
+ * @param severity  the severity of the error
+ * @param locator  a locator indicating where the error occurred
  *
  * Signature of an error callback from a reader parser
  */

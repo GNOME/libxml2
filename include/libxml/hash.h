@@ -1,9 +1,12 @@
-/*
- * Summary: Chained hash tables
- * Description: This module implements the hash table support used in
+/**
+ * @file
+ * 
+ * @brief Chained hash tables
+ * 
+ * This module implements the hash table support used in
  *		various places in the library.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  */
 
 #ifndef __XML_HASH_H__
@@ -32,13 +35,13 @@ typedef xmlHashTable *xmlHashTablePtr;
  */
 /**
  * XML_CAST_FPTR:
- * @fptr:  pointer to a function
+ * @param fptr  pointer to a function
  *
  * Macro to do a casting from an object pointer to a
  * function pointer without encountering a warning from
  * gcc
  *
- * #define XML_CAST_FPTR(fptr) (*(void **)(&fptr))
+ * \#define XML_CAST_FPTR(fptr) (*(void **)(&fptr))
  * This macro violated ISO C aliasing rules (gcc4 on s390 broke)
  * so it is disabled now
  */
@@ -49,39 +52,35 @@ typedef xmlHashTable *xmlHashTablePtr;
  * function types:
  */
 /**
- * xmlHashDeallocator:
- * @payload:  the data in the hash
- * @name:  the name associated
+ * @param payload  the data in the hash
+ * @param name  the name associated
  *
  * Callback to free data from a hash.
  */
 typedef void (*xmlHashDeallocator)(void *payload, const xmlChar *name);
 /**
- * xmlHashCopier:
- * @payload:  the data in the hash
- * @name:  the name associated
+ * @param payload  the data in the hash
+ * @param name  the name associated
  *
  * Callback to copy data from a hash.
  *
- * Returns a copy of the data or NULL in case of error.
+ * @returns a copy of the data or NULL in case of error.
  */
 typedef void *(*xmlHashCopier)(void *payload, const xmlChar *name);
 /**
- * xmlHashScanner:
- * @payload:  the data in the hash
- * @data:  extra scanner data
- * @name:  the name associated
+ * @param payload  the data in the hash
+ * @param data  extra scanner data
+ * @param name  the name associated
  *
  * Callback when scanning data in a hash with the simple scanner.
  */
 typedef void (*xmlHashScanner)(void *payload, void *data, const xmlChar *name);
 /**
- * xmlHashScannerFull:
- * @payload:  the data in the hash
- * @data:  extra scanner data
- * @name:  the name associated
- * @name2:  the second name associated
- * @name3:  the third name associated
+ * @param payload  the data in the hash
+ * @param data  extra scanner data
+ * @param name  the name associated
+ * @param name2  the second name associated
+ * @param name3  the third name associated
  *
  * Callback when scanning data in a hash with the full scanner.
  */

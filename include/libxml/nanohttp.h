@@ -1,11 +1,14 @@
-/*
- * Summary: minimal HTTP implementation
- * Description: minimal HTTP implementation allowing to fetch resources
+/**
+ * @file
+ * 
+ * @brief minimal HTTP implementation
+ * 
+ * minimal HTTP implementation allowing to fetch resources
  *              like external subset.
  *
- * Copy: See Copyright for the status of this software.
+ * @copyright See Copyright for the status of this software.
  *
- * Author: Daniel Veillard
+ * @author Daniel Veillard
  */
 
 #ifndef __NANO_HTTP_H__

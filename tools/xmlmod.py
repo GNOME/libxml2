@@ -42,6 +42,7 @@ symbolMap1 = {
 
     'xmlRegisterHTTPPostCallbacks': 'HTTP',
 
+    '__xmlOutputBufferCreateFilename': 'OUTPUT',
     'xmlAttrSerializeTxtContent': 'OUTPUT',
     'xmlUTF8ToIsolat1': 'OUTPUT',
     'xmlSprintfElementContent': 'OUTPUT',

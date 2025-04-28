@@ -1,7 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
 EXTRA_DIST = \
-	libxml2-api.xml \
 	xmlcatalog.xml \
 	xmllint.xml \
 	meson.build

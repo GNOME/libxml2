@@ -524,12 +524,20 @@ if(LIBXML2_WITH_DOCS OR LIBXML2_WITH_PYTHON)
 endif()
 
 if(LIBXML2_WITH_PYTHON)
-    execute_process(
+    add_custom_command(
+        OUTPUT
+            libxml2-py.c
+            libxml2-py.h
+            libxml2.py
         COMMAND
-        ${Python3_EXECUTABLE}
-        ${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
-        ${CMAKE_CURRENT_BINARY_DIR}
+            ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/python/generator.py
+            ${CMAKE_CURRENT_BINARY_DIR}
+        DEPENDS
+            python/generator.py
+            Doxygen
     )
+
     Python3_add_library(
         LibXml2Mod MODULE WITH_SOABI
         libxml2-py.c

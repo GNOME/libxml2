@@ -316,132 +316,6 @@ else:
 
 #######################################################################
 #
-#  That part if purely the API acquisition phase from the
-#  XML API description
-#
-#######################################################################
-import os
-import xml.sax
-
-debug = 0
-
-def getparser():
-    # Attach parser to an unmarshalling object. return both objects.
-    target = docParser()
-    parser = xml.sax.make_parser()
-    parser.setContentHandler(target)
-    return parser, target
-
-class docParser(xml.sax.handler.ContentHandler):
-    def __init__(self):
-        self._methodname = None
-        self._data = []
-        self.in_function = 0
-
-        self.startElement = self.start
-        self.endElement = self.end
-        self.characters = self.data
-
-    def close(self):
-        if debug:
-            print("close")
-
-    def getmethodname(self):
-        return self._methodname
-
-    def data(self, text):
-        if debug:
-            print("data %s" % text)
-        self._data.append(text)
-
-    def start(self, tag, attrs):
-        if debug:
-            print("start %s, %s" % (tag, attrs))
-        if tag == 'function':
-            self._data = []
-            self.in_function = 1
-            self.function = None
-            self.function_cond = None
-            self.function_args = []
-            self.function_descr = None
-            self.function_return = None
-            self.function_file = None
-            if 'name' in attrs.keys():
-                self.function = attrs['name']
-            if 'file' in attrs.keys():
-                self.function_file = attrs['file']
-        elif tag == 'cond':
-            self._data = []
-        elif tag == 'info':
-            self._data = []
-        elif tag == 'arg':
-            if self.in_function == 1:
-                self.function_arg_name = None
-                self.function_arg_type = None
-                self.function_arg_info = None
-                if 'name' in attrs.keys():
-                    self.function_arg_name = attrs['name']
-                if 'type' in attrs.keys():
-                    self.function_arg_type = attrs['type']
-                if 'info' in attrs.keys():
-                    self.function_arg_info = attrs['info']
-        elif tag == 'return':
-            if self.in_function == 1:
-                self.function_return_type = None
-                self.function_return_info = None
-                self.function_return_field = None
-                if 'type' in attrs.keys():
-                    self.function_return_type = attrs['type']
-                if 'info' in attrs.keys():
-                    self.function_return_info = attrs['info']
-                if 'field' in attrs.keys():
-                    self.function_return_field = attrs['field']
-        elif tag == 'enum':
-            enum(attrs['type'],attrs['name'],attrs['value'])
-
-    def end(self, tag):
-        if debug:
-            print("end %s" % tag)
-        if tag == 'function':
-            if self.function != None:
-                function(self.function, self.function_descr,
-                         self.function_return, self.function_args,
-                         self.function_file, self.function_cond)
-                self.in_function = 0
-        elif tag == 'arg':
-            if self.in_function == 1:
-                self.function_args.append([self.function_arg_name,
-                                           self.function_arg_type,
-                                           self.function_arg_info])
-        elif tag == 'return':
-            if self.in_function == 1:
-                self.function_return = [self.function_return_type,
-                                        self.function_return_info,
-                                        self.function_return_field]
-        elif tag == 'info':
-            str = ''
-            for c in self._data:
-                str = str + c
-            if self.in_function == 1:
-                self.function_descr = str
-        elif tag == 'cond':
-            str = ''
-            for c in self._data:
-                str = str + c
-            if self.in_function == 1:
-                self.function_cond = str
-
-
-def function(name, desc, ret, args, file, cond):
-    functions[name] = (desc, ret, args, file, cond)
-
-def enum(type, name, value):
-    if type not in enums:
-        enums[type] = {}
-    enums[type][name] = value
-
-#######################################################################
-#
 #  Some filtering rukes to drop functions/types which should not
 #  be exposed as-is on the Python interface
 #
@@ -466,6 +340,132 @@ skipped_types = {
     'xmlBufferPtr': "internal representation not suitable for python",
     'FILE *': None,
 }
+
+#######################################################################
+#
+#  That part if purely the API acquisition phase from the
+#  XML API description
+#
+#######################################################################
+import os
+import xml.etree.ElementTree as etree
+
+sys.path.append(srcPref + '/../tools')
+import xmlmod
+
+xmlDocDir = dstPref + '/../doc/xml'
+if not os.path.isdir(xmlDocDir):
+    xmlDocDir = dstPref + '/doc/xml'
+    if not os.path.isdir(xmlDocDir):
+        raise Exception(f'Doxygen XML not found in {dstPref}')
+
+def extractDocs(node):
+    text = ''
+
+    if node.text is not None:
+        text = node.text.strip()
+        if text == 'Deprecated':
+            text = 'DEPRECATED:'
+
+    i = 0
+    n = len(node)
+    for child in node:
+        i += 1
+
+        if (child.tag != 'parameterlist' and
+            (child.tag != 'simplesect' or child.get('kind') != 'return')):
+            childtext = extractDocs(child)
+            if childtext != '':
+                if text != '':
+                    text += ' '
+                text += childtext
+
+        tail = child.tail
+        if tail is not None:
+            tail = tail.strip()
+            if tail != '':
+                if text != '':
+                    text += ' '
+                text += child.tail.strip()
+
+    return text
+
+for file in os.listdir(xmlDocDir):
+    if not file.endswith('_8h.xml'):
+        continue
+
+    doc = etree.parse(xmlDocDir + '/' + file)
+
+    compound = doc.find('compounddef')
+    module = compound.find('compoundname').text
+    if not module.endswith('.h'):
+        continue
+    module = module[:-2]
+    if module in skipped_modules:
+        continue
+
+    for section in compound.findall('sectiondef'):
+        kind = section.get('kind')
+
+        if kind == 'func':
+            for func in section.findall('memberdef'):
+                name = func.find('name').text
+                if name in functions:
+                    continue
+
+                docs = extractDocs(func.find('detaileddescription'))
+
+                rtype = etree.tostring(func.find('type'),
+                    method='text', encoding='unicode').rstrip()
+
+                valid = True
+                args = []
+                for arg in func.findall('param'):
+                    atype = etree.tostring(arg.find('type'),
+                        method='text', encoding='unicode').rstrip()
+                    if atype == 'void':
+                        continue
+
+                    aname = arg.find('declname')
+                    if aname is None:
+                        valid = False
+                        break
+
+                    args.append([aname.text, atype])
+
+                if not valid:
+                    continue
+
+                module1, module2 = xmlmod.findModules(module, name)
+
+                cond = None
+                if module1 != '':
+                    cond = f'defined(LIBXML_{module1}_ENABLED)'
+                if module2 != '':
+                    cond += f' && defined(LIBXML_{module2}_ENABLED)'
+
+                functions[name] = (docs, [rtype], args, module, cond)
+        elif kind == 'enum':
+            for enum in section.findall('memberdef'):
+                name = enum.find('name').text
+                edict = {}
+                enums[name] = edict
+                prev = -1
+
+                for value in enum.findall('enumvalue'):
+                    ename = value.find('name').text
+
+                    init = value.find('initializer')
+                    if init is None:
+                        evalue = prev + 1
+                    else:
+                        evalue = init.text.lstrip()
+                        if evalue[0] != '=':
+                            raise Exception(f'invalid init value {init}')
+                        evalue = eval(evalue[1:].strip())
+
+                    edict[ename] = evalue
+                    prev = evalue
 
 #######################################################################
 #
@@ -961,28 +961,6 @@ def buildStubs():
     global py_return_types
     global unknown_types
 
-    n0 = len(list(functions.keys()))
-
-    try:
-        f = open(os.path.join(srcPref,"libxml2-api.xml"))
-        data = f.read()
-        (parser, target)  = getparser()
-        parser.feed(data)
-        parser.close()
-    except IOError as msg:
-        try:
-            f = open(os.path.join(srcPref,"..","doc","libxml2-api.xml"))
-            data = f.read()
-            (parser, target)  = getparser()
-            parser.feed(data)
-            parser.close()
-        except IOError as msg:
-            print("Failed to open libxml2-api.xml:", msg)
-            sys.exit(1)
-
-    n1 = len(list(functions.keys()))
-    print("Found %d functions in libxml2-api.xml" % (n1 - n0))
-
     py_types['pythonObject'] = ('O', "pythonObject", "pythonObject", "pythonObject")
     nb_wrap = 0
     failed = 0
@@ -1015,8 +993,8 @@ def buildStubs():
     export.close()
     wrapper.close()
 
-    print("Generated %d wrapper functions, %d failed, %d skipped" % (nb_wrap,
-                                                              failed, skipped))
+#    print("Generated %d wrapper functions, %d failed, %d skipped" % (nb_wrap,
+#                                                              failed, skipped))
 #    print("Missing type converters: ")
 #    for type in list(unknown_types.keys()):
 #        print("%s:%d " % (type, len(unknown_types[type])))
@@ -1267,6 +1245,7 @@ def writeDoc(name, args, indent, output):
          return
      val = functions[name][0]
      val = val.replace("NULL", "None")
+     val = val.replace("\\", "\\\\")
      output.write(indent)
      output.write('"""')
      while len(val) > 60:
@@ -1652,7 +1631,8 @@ def buildWrappers():
     #
     # Generate enum constants
     #
-    for type,enum in enums.items():
+    for type in sorted(enums.keys()):
+        enum = enums[type]
         classes.write("# %s\n" % type)
         items = enum.items()
         items = sorted(items, key=(lambda i: int(i[1])))

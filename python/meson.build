@@ -7,17 +7,14 @@ if py.found() == true
 
     pygenerated = custom_target(
         'Python generated files',
-        input: files('generator.py'),
-        depend_files: files(
-            '..' / 'doc' / 'libxml2-api.xml',
-        ),
+        input: doxygen_docs[1],
         output: [
             'libxml2-py.h',
             'libxml2-export.c',
             'libxml2-py.c',
             'libxml2.py',
         ],
-        command: [py, '@INPUT@', meson.current_build_dir()],
+        command: [ py, files('generator.py'), meson.current_build_dir() ],
         install: true,
         install_dir: [ false, false, false, py.get_install_dir() ],
     )

@@ -30,7 +30,7 @@ BUILT_SOURCES = libxml2-export.c libxml2-py.h libxml2-py.c
 python_PYTHON = drv_libxml2.py
 nodist_python_PYTHON = libxml2.py
 
-API_DESC = $(top_srcdir)/doc/libxml2-api.xml
+API_DESC = ../doc/html.stamp
 GENERATED = libxml2.py $(BUILT_SOURCES)
 CLEANFILES = $(GENERATED)
 

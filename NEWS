@@ -4,7 +4,12 @@ v2.15.0: not released yet
 
 ### Major changes
 
-The Python bindings are disabled by default now.
+The API documentation is now generated with Doxygen. Building the
+documentation requires the new --with-docs configuration option as well
+as Doxygen, xsltproc and the DocBook 4 XSLT stylesheets.
+
+The Python bindings are disabled by default now. Building the bindings
+also requires Doxygen.
 
 ### Removals
 

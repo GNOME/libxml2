@@ -14,32 +14,33 @@ expected results. You can restore the original results by running
 
 ## Generated files
 
-The documentation and other generated files can be rebuilt by running
+Some source code is generated with Python scripts in the `tools`
+directory.
 
-    make -C doc rebuild
+- `tools/genChRanges.py` generates code to handle character ranges
+  from chvalid.def:
+  - `chvalid.c`
+  - `include/libxml/chvalid.h`
 
-Besides Python, this requires `xsltproc` and the DocBook stylesheets in
-your XML Catalog. On Debian/Ubuntu, try
+- `tools/genEscape prints lookup tables for serialization.
 
-    apt install xsltproc docbook-xsl docbook-xml
+- `tools/genHtml5LibTests.py` creates test cases and expected results
+  from the html5lib test suite:
+  - `test/html-tokenizer`
+  - `result/html-tokenizer`
 
-doc/apibuild.py generates doc/libxml2-api.xml which is used to generate
+- `tools/genHtmlEnt.py` prints lookup tables for HTML5 named character
+  references (predefined entities):
+  - `html5ent.inc`
 
-- API documentation with XSLT stylesheets
-- testapi.c with gentest.py
-- Python bindings with python/generator.py
+- `tools/gentest.py` generates test code using the Doxygen XML output:
+  - `testapi.c`
 
-Man pages and HTML documentation for xmllint and xmlcatalog are
-generated with xsltproc and DocBook stylesheets.
+- `tools/genUnicode.py` generates code to handle Unicode ranges
+  from Unicode data files:
+  - `xmlunicode.c`
 
 ## Making a release
-
-### Rebuild generated files and documentation
-
-See above for details and run `make -C doc rebuild`.
-
-Look for new warning messages and inspect changes for correctness
-before committing.
 
 ### Update the NEWS file
 

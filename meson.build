@@ -28,6 +28,7 @@ dir_bin = dir_prefix / get_option('bindir')
 dir_include = dir_prefix / get_option('includedir')
 dir_pkginclude = dir_include / meson.project_name()
 dir_lib = dir_prefix / get_option('libdir')
+dir_man = dir_prefix / get_option('mandir')
 dir_data = dir_prefix / get_option('datadir')
 dir_doc = dir_data / 'doc' / meson.project_name()
 dir_locale = dir_prefix / get_option('localedir')
@@ -80,6 +81,7 @@ add_project_arguments(global_args, language: 'c')
 # options
 
 # disabled by default
+want_docs = get_option('docs').enabled()
 want_http = get_option('http').enabled()
 want_icu = get_option('icu').enabled()
 want_legacy = get_option('legacy').enabled()
@@ -450,13 +452,14 @@ foreach file : xml_opt_src
     endif
 endforeach
 
+xml_src_files = files(xml_src)
 v_min_compat = 14
 so_version = v_maj + v_min_compat
 age = v_min - v_min_compat
 darwin_compat = v_maj + v_min + 1
 xml_lib = library(
     'xml2',
-    files(xml_src),
+    xml_src_files,
     c_args: libxml2_cflags,
     dependencies: xml_deps,
     include_directories: config_dir,
@@ -547,7 +550,11 @@ if sh.found()
 endif
 
 subdir('example')
-subdir('doc')
+
+if want_docs or want_python
+    doxyfile = files('Doxyfile')
+    subdir('doc')
+endif
 
 if want_python == true
     subdir('python')

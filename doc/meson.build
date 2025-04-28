@@ -1,10 +1,60 @@
+# Doxygen
 
-install_man(files(['xml2-config.1', 'xmlcatalog.1', 'xmllint.1']))
+doxygen = find_program('doxygen')
 
-
-tutorial_files = files(
-    'xmlcatalog.html',
-    'xmllint.html',
+doxygen_docs = custom_target(
+    'Doxygen documentation',
+    input: [ xml_src_files, libxml_headers ],
+    output: [ 'html', 'xml' ],
+    command: [ doxygen, '-q', doxyfile ],
+    env: {
+        'SOURCE_ROOT': meson.project_source_root() + '/',
+        'BUILD_ROOT':  meson.project_build_root()  + '/',
+    },
+    install: true,
+    install_dir: [ want_docs ? dir_doc : false, false ],
 )
 
-install_data(tutorial_files, install_dir: dir_doc)
+if want_docs
+    # xml2-config
+
+    install_man('xml2-config.1')
+
+    # Docbook
+
+    xsltproc = find_program('xsltproc')
+    types = [
+        [ 'manpages', '.1',    dir_man ],
+        [ 'html',     '.html', dir_doc ],
+    ]
+    programs = [ 'xmllint' ]
+    if want_catalog and want_output
+        programs += 'xmlcatalog'
+    endif
+
+    foreach prog : programs
+        foreach type : types
+            format = type[0]
+            ext = type[1]
+            install_dir = type[2]
+
+            xsl = 'http://docbook.sourceforge.net' + \
+                  f'/release/xsl/current/@format@/docbook.xsl'
+            output = prog + ext
+
+            custom_target(
+                output,
+                input: prog + '.xml',
+                output: output,
+                command: [xsltproc,
+                    '--nonet', '--novalid',
+                    '--param', 'man.output.quietly', '1',
+                    '-o', '@OUTPUT@',
+                    xsl, '@INPUT@'
+                ],
+                install: true,
+                install_dir: install_dir
+            )
+        endforeach
+    endforeach
+endif

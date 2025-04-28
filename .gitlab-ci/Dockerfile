@@ -4,9 +4,12 @@
 # ------------------------------------------------------------
 # libclang-rt-dev   sanitizer runtimes
 # llvm              llvm-symbolizer (for sanitizer backtraces)
-# git               libxslt
+# git               libxslt, downstream projects
 # libgcrypt-dev     libxslt
 # xz-utils          make dist
+# doxygen           documentation
+# xsltproc          documentation
+# docbook-xsl       documentation
 
 FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
@@ -19,7 +22,8 @@ RUN apt-get update && \
         zlib1g-dev liblzma-dev libgcrypt-dev \
         python3-dev \
         cmake meson \
-        xz-utils
+        xz-utils \
+        doxygen xsltproc docbook-xsl
 WORKDIR /tests
 RUN curl https://www.w3.org/XML/Test/xmlts20080827.tar.gz |tar xz
 

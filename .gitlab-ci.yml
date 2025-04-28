@@ -323,9 +323,9 @@ dist:
       dotenv: build.env
 
 pages:
+  needs: [install]
   script:
-    - mkdir -p public
-    - cp -r doc/xmllint.html doc/xmlcatalog.html public
+    - cp -r install/share/doc/libxml2 public
   artifacts:
     paths:
       - public

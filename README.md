@@ -47,6 +47,7 @@ The following options disable or enable code modules and relevant symbols:
     --with-c14n             Canonical XML 1.0 support (on)
     --with-catalog          XML Catalogs support (on)
     --with-debug            debugging module (on)
+    --with-docs             Build documentation (off)
     --with-history          history support for xmllint shell (off)
     --with-readline[=DIR]   use readline in DIR for shell (off)
     --with-html             HTML parser (on)
@@ -151,6 +152,13 @@ If enabled, libxml uses [libz](https://zlib.net/) or
 Use of this feature is discouraged.
 
 The xmllint executable uses libreadline and libhistory if enabled.
+
+### Build requirements
+
+Besides build system tools, only a C compiler should be required.
+Reconfiguration of the Autotools build requires the pkg.m4 macro from
+pkg-config. Building the documentation requires Doxygen, xsltproc and the
+DocBook 4 XSLT stylesheets. Building the Python bindings requires Doxygen.
 
 ## Contributing
 

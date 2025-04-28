@@ -26,6 +26,7 @@ include(GNUInstallDirs)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(LIBXML2_WITH_CATALOG "Add the Catalog support" ON)
 option(LIBXML2_WITH_DEBUG "Add the debugging module" ON)
+option(LIBXML2_WITH_DOCS "Build documentation" OFF)
 option(LIBXML2_WITH_HTML "Add the HTML support" ON)
 option(LIBXML2_WITH_HTTP "ABI compatibility for removed HTTP support" OFF)
 option(LIBXML2_WITH_ICONV "Add ICONV support" ON)
@@ -508,6 +509,20 @@ if(LIBXML2_WITH_TESTS)
     add_test(NAME testrecurse COMMAND testrecurse WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
+if(LIBXML2_WITH_DOCS OR LIBXML2_WITH_PYTHON)
+    set(DOXYFILE ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+    add_custom_command(
+        OUTPUT doc/html doc/xml
+        COMMAND ${CMAKE_COMMAND} -E env
+            SOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}/
+            BUILD_ROOT=${CMAKE_CURRENT_BINARY_DIR}/
+            doxygen -q ${DOXYFILE}
+        MAIN_DEPENDENCY ${DOXYFILE}
+        DEPENDS ${LIBXML2_HDRS} ${LIBXML2_SRCS}
+    )
+    add_custom_target(Doxygen ALL DEPENDS doc/html doc/xml)
+endif()
+
 if(LIBXML2_WITH_PYTHON)
     execute_process(
         COMMAND
@@ -549,19 +564,61 @@ if(LIBXML2_WITH_PYTHON)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml2.py DESTINATION ${LIBXML2_PYTHON_INSTALL_DIR} COMPONENT runtime)
 endif()
 
-install(FILES doc/xml2-config.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 COMPONENT documentation)
-if(LIBXML2_WITH_PROGRAMS)
-    install(FILES doc/xmlcatalog.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 COMPONENT documentation)
-    install(FILES doc/xmllint.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 COMPONENT documentation)
+if (LIBXML2_WITH_DOCS)
+    set(MAN_PAGES doc/xml2-config.1)
+
+    if(LIBXML2_WITH_PROGRAMS)
+        set(PROGNAMES xmllint)
+        if(LIBXML2_WITH_CATALOG AND LIBXML2_WITH_OUTPUT)
+            list(APPEND PROGNAMES xmlcatalog)
+        endif()
+        foreach(PROG IN ITEMS ${PROGNAMES})
+            set(XML_SRC ${CMAKE_CURRENT_SOURCE_DIR}/doc/${PROG}.xml)
+
+            add_custom_command(
+                OUTPUT ${PROG}.1
+                COMMAND xsltproc
+                    --nonet --novalid
+                    --param man.output.quietly 1
+                    -o ${PROG}.1
+                    http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl
+                    ${XML_SRC}
+                MAIN_DEPENDENCY ${XML_SRC}
+            )
+            list(APPEND MAN_PAGES ${CMAKE_CURRENT_BINARY_DIR}/${PROG}.1)
+
+            add_custom_command(
+                OUTPUT ${PROG}.html
+                COMMAND xsltproc
+                    --nonet --novalid
+                    -o ${PROG}.html
+                    http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl
+                    ${XML_SRC}
+                MAIN_DEPENDENCY ${XML_SRC}
+            )
+            list(APPEND HTML_PAGES ${CMAKE_CURRENT_BINARY_DIR}/${PROG}.html)
+        endforeach()
+
+        add_custom_target(DocBook ALL DEPENDS ${MAN_PAGES} ${HTML_PAGES})
+
+        install(
+            FILES ${HTML_PAGES}
+            DESTINATION ${CMAKE_INSTALL_DOCDIR}
+            COMPONENT documentation
+        )
+    endif()
+
+    install(
+        FILES ${MAN_PAGES}
+        DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
+        COMPONENT documentation
+    )
+    install(
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/html
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}
+        COMPONENT documentation
+    )
 endif()
-install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation
-    PATTERN "Makefile.*" EXCLUDE
-    PATTERN "meson.build" EXCLUDE
-    PATTERN "*.1" EXCLUDE
-    PATTERN "*.py" EXCLUDE
-    PATTERN "*.res" EXCLUDE
-    PATTERN "*.xml" EXCLUDE
-    PATTERN "*.xsl" EXCLUDE)
 
 configure_package_config_file(
     libxml2-config.cmake.cmake.in libxml2-config.cmake

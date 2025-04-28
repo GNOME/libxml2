@@ -2,7 +2,10 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = include . doc example xstc
+SUBDIRS = include . example xstc
+if WITH_DOXYGEN
+SUBDIRS += doc
+endif
 if WITH_PYTHON
 SUBDIRS += python
 endif
@@ -206,8 +209,8 @@ EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     timsort.h \
 	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in \
-	     meson.build meson_options.txt xml2-config-meson
-
+	     meson.build meson_options.txt xml2-config-meson \
+	     Doxyfile
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libxml-2.0.pc

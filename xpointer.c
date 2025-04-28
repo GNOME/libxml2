@@ -11,7 +11,7 @@
  *
  * See Copyright for the status of this software.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 /* To avoid EBCDIC trouble when parsing on zOS */

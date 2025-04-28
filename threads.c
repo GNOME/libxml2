@@ -3,8 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Gary Pennington <Gary.Pennington@uk.sun.com>
- * daniel@veillard.com
+ * Author: Gary Pennington, Daniel Veillard
  */
 
 #define IN_LIBXML

@@ -215,7 +215,6 @@ header.write(
  *
  * Generation date: %s
  * Sources: %s
- * Author: William Brack <wbrack@mmm.com.hk>
  */
 
 #ifndef __XML_CHVALID_H__
@@ -272,7 +271,6 @@ output.write(
  *
  * Generation date: %s
  * Sources: %s
- * William Brack <wbrack@mmm.com.hk>
  */
 
 #define IN_LIBXML

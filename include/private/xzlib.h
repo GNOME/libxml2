@@ -4,7 +4,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Anders F Bjorklund <afb@users.sourceforge.net>
+ * Author: Anders F Bjorklund
  */
 
 #ifndef LIBXML2_XZLIB_H

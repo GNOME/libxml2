@@ -1,7 +1,7 @@
 /*
  * xmlmemory.c:  libxml memory allocator wrapper.
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #define IN_LIBXML

@@ -7,7 +7,6 @@
  *
  * Generation date: Mon Mar 27 11:09:48 2006
  * Sources: chvalid.def
- * William Brack <wbrack@mmm.com.hk>
  */
 
 #define IN_LIBXML

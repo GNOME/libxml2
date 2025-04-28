@@ -210,7 +210,6 @@ output.write(
  *
  * Generation date: %s
  * Sources: %s
- * Daniel Veillard <veillard@redhat.com>
  */
 
 #define IN_LIBXML

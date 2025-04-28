@@ -4,7 +4,7 @@
  *
  * Copy: See Copyright for the status of this software.
  *
- * Author: Alfred Mickautsch <alfred@mickautsch.de>
+ * Author: Alfred Mickautsch
  */
 
 #ifndef __XML_XMLWRITER_H__

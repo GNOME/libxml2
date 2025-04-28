@@ -3,9 +3,6 @@
  *            of the library
  *
  * See Copyright for the status of this software.
- *
- * Gary Pennington <Gary.Pennington@uk.sun.com>
- * daniel@veillard.com
  */
 
 #define IN_LIBXML

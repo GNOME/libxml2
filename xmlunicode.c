@@ -8,7 +8,6 @@
  *
  * Generation date: Tue Mar  4 16:29:31 2025
  * Sources: Blocks-4.0.1.txt UnicodeData-4.0.1.txt
- * Daniel Veillard <veillard@redhat.com>
  */
 
 #define IN_LIBXML

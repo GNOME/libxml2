@@ -5,7 +5,7 @@
  * For license and disclaimer see the license and disclaimer of
  * libxml2.
  *
- * alfred@mickautsch.de
+ * Author: Alfred Mickautsch
  */
 
 #define IN_LIBXML

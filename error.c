@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel Veillard <daniel@veillard.com>
+ * Author: Daniel Veillard
  */
 
 #define IN_LIBXML

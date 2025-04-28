@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel Veillard <veillard@redhat.com>
+ * Author: Daniel Veillard
  */
 
 /**

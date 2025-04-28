@@ -12,7 +12,7 @@
 
  * Copy: See Copyright for the status of this software.
  *
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Author: Aleksey Sanin
  */
 #ifndef __XML_C14N_H__
 #define __XML_C14N_H__

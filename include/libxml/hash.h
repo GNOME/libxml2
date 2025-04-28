@@ -4,8 +4,6 @@
  *		various places in the library.
  *
  * Copy: See Copyright for the status of this software.
- *
- * Author: Bjorn Reese <bjorn.reese@systematic.dk>
  */
 
 #ifndef __XML_HASH_H__

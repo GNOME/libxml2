@@ -8,7 +8,6 @@
  *
  * Generation date: Mon Mar 27 11:09:48 2006
  * Sources: chvalid.def
- * Author: William Brack <wbrack@mmm.com.hk>
  */
 
 #ifndef __XML_CHVALID_H__

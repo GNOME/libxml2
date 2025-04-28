@@ -7,7 +7,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Author: Aleksey Sanin
  */
 #define IN_LIBXML
 #include "libxml.h"

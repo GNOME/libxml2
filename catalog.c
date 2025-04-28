@@ -9,7 +9,7 @@
  *
  * See Copyright for the status of this software.
  *
- * Daniel.Veillard@imag.fr
+ * Author: Daniel Veillard
  */
 
 #define IN_LIBXML

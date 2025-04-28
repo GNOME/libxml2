@@ -3,7 +3,7 @@
  *
  * See Copyright for the status of this software.
  *
- * joelwreed@comcast.net
+ * Author: Joel W. Reed
  *
  * http://www.fortran-2000.com/ArnaudRecipes/sharedlib.html
  */

@@ -5,7 +5,7 @@
  *
  * Copy: See Copyright for the status of this software.
  *
- * Author: Gary Pennington <Gary.Pennington@uk.sun.com>
+ * Author: Gary Pennington
  */
 
 #ifndef __XML_LINK_INCLUDE__

@@ -7,10 +7,9 @@
  *
  * See Copyright for the status of this software.
  *
- * UTF8 string routines from:
- * William Brack <wbrack@mmm.com.hk>
+ * UTF8 string routines from: William Brack
  *
- * daniel@veillard.com
+ * Author: Daniel Veillard
  */
 
 #define IN_LIBXML

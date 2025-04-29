@@ -603,6 +603,7 @@ deprecated_funcs = {
     'xmlCleanupCharEncodingHandlers': True,
     'xmlCleanupEncodingAliases': True,
     'xmlCleanupGlobals': True,
+    'xmlClearParserCtxt': True,
     'xmlCopyChar': True,
     'xmlCopyCharMultiByte': True,
     'xmlCreateEntityParserCtxt': True,

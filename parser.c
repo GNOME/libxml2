@@ -12748,7 +12748,7 @@ xmlSetupParserForBuffer(xmlParserCtxtPtr ctxt, const xmlChar* buffer,
     if ((ctxt == NULL) || (buffer == NULL))
         return;
 
-    xmlClearParserCtxt(ctxt);
+    xmlCtxtReset(ctxt);
 
     input = xmlCtxtNewInputFromString(ctxt, filename, (const char *) buffer,
                                       NULL, 0);

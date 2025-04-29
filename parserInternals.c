@@ -3199,16 +3199,14 @@ xmlCtxtGetValidCtxt(xmlParserCtxtPtr ctxt) {
 /**
  * @param ctxt  an XML parser context
  *
- * Clear (release owned resources) and reinitialize a parser context
+ * @deprecated Use xmlCtxtReset()
+ *
+ * Same as xmlCtxtReset()
  */
-
 void
 xmlClearParserCtxt(xmlParserCtxtPtr ctxt)
 {
-  if (ctxt==NULL)
-    return;
-  xmlClearNodeInfoSeq(&ctxt->node_seq);
-  xmlCtxtReset(ctxt);
+    xmlCtxtReset(ctxt);
 }
 
 

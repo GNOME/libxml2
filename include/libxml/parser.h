@@ -1281,6 +1281,7 @@ XMLPUBFUN xmlParserCtxtPtr
 					 void *userData);
 XMLPUBFUN int
 		xmlInitParserCtxt	(xmlParserCtxtPtr ctxt);
+XML_DEPRECATED
 XMLPUBFUN void
 		xmlClearParserCtxt	(xmlParserCtxtPtr ctxt);
 XMLPUBFUN void

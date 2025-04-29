@@ -20,6 +20,7 @@
         <author>
             <firstname>John</firstname>
             <surname>Fleck</surname>
+            <contrib></contrib>
             <affiliation>
                 <address>
                     <email>jfleck@inkstain.net</email>
@@ -29,6 +30,7 @@
         <author>
             <firstname>Ziying</firstname>
             <surname>Sherwin</surname>
+            <contrib></contrib>
             <affiliation>
                 <address>
                     <email>sherwin@nlm.nih.gov</email>
@@ -38,6 +40,7 @@
         <author>
             <firstname>Heiko</firstname>
             <surname>Rupp</surname>
+            <contrib></contrib>
             <affiliation>
                 <address>
                     <email>hwr@pilhuhn.de</email>

@@ -835,7 +835,6 @@ xmlEncodeSpecialChars(const xmlDoc *doc ATTRIBUTE_UNUSED,
 }
 
 /**
- *
  * create and initialize an empty entities hash table.
  * This really doesn't make sense and should be deprecated
  *

@@ -25,7 +25,6 @@ extern "C" {
 #endif
 
 /**
- *
  * A compiled (XPath based) pattern to select nodes
  */
 typedef struct _xmlPattern xmlPattern;

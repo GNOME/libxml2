@@ -252,7 +252,6 @@ typedef enum {
 } xmlAttributeDefault;
 
 /**
- *
  * List structure used when there is an enumeration in DTDs.
  */
 
@@ -744,7 +743,6 @@ typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 
 /**
- *
  * Macro for compatibility naming layer with libxml1. Maps
  * to "children."
  */
@@ -753,7 +751,6 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 #endif
 
 /**
- *
  * Macro for compatibility naming layer with libxml1. Maps
  * to "children".
  */

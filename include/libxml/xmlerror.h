@@ -108,7 +108,6 @@ typedef enum {
 } xmlErrorDomain;
 
 /**
- *
  * An XML Error instance.
  */
 

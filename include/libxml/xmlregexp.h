@@ -25,7 +25,6 @@ extern "C" {
 #endif
 
 /**
- *
  * A libxml regular expression, they can actually be far more complex
  * thank the POSIX regex expressions.
  */
@@ -33,7 +32,6 @@ typedef struct _xmlRegexp xmlRegexp;
 typedef xmlRegexp *xmlRegexpPtr;
 
 /**
- *
  * A libxml progressive regular expression evaluation context
  */
 typedef struct _xmlRegExecCtxt xmlRegExecCtxt;

@@ -315,7 +315,6 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
 }
 
 /**
- *
  * @deprecated This function modifies global state and is not
  * thread-safe. See xmlCtxtSetCharEncConvImpl for an alternative.
  *
@@ -693,7 +692,6 @@ error:
 }
 
 /**
- *
  * @deprecated Alias for xmlInitParser.
  */
 void
@@ -702,7 +700,6 @@ xmlInitCharEncodingHandlers(void) {
 }
 
 /**
- *
  * Initialize the char encoding support.
  */
 void
@@ -715,7 +712,6 @@ xmlInitEncodingInternal(void) {
 }
 
 /**
- *
  * @deprecated This function will be made private. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't

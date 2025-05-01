@@ -65,7 +65,6 @@ xmlInitMutex(xmlMutexPtr mutex)
 }
 
 /**
- *
  * xmlNewMutex() is used to allocate a libxml2 token struct for use in
  * synchronizing access to data.
  *
@@ -174,7 +173,6 @@ xmlInitRMutex(xmlRMutexPtr tok) {
 }
 
 /**
- *
  * xmlRNewMutex() is used to allocate a reentrant mutex for use in
  * synchronizing access to data. token_r is a re-entrant lock and thus useful
  * for synchronizing access to data structures that may be manipulated in a
@@ -289,7 +287,6 @@ xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
  ************************************************************************/
 
 /**
- *
  * xmlLockLibrary() is used to take out a re-entrant lock on the libxml2
  * library.
  */
@@ -300,7 +297,6 @@ xmlLockLibrary(void)
 }
 
 /**
- *
  * xmlUnlockLibrary() is used to release a re-entrant lock on the libxml2
  * library.
  */
@@ -311,7 +307,6 @@ xmlUnlockLibrary(void)
 }
 
 /**
- *
  * @deprecated Alias for xmlInitParser.
  */
 void
@@ -321,7 +316,6 @@ xmlInitThreads(void)
 }
 
 /**
- *
  * @deprecated This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
@@ -391,7 +385,6 @@ xmlInitParserWinWrapper(INIT_ONCE *initOnce ATTRIBUTE_UNUSED,
 #endif
 
 /**
- *
  * Initialization function for the XML parser.
  *
  * For older versions, it's recommended to call this function once
@@ -416,7 +409,6 @@ xmlInitParser(void) {
 }
 
 /**
- *
  * This function is named somewhat misleadingly. It does not clean up
  * parser state but global memory allocated by the library itself.
  *

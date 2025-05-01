@@ -288,7 +288,6 @@ xmlMemSize(void *ptr) {
 }
 
 /**
- *
  * Provides the amount of memory currently allocated
  *
  * @returns an int representing the amount of memory allocated.
@@ -300,7 +299,6 @@ xmlMemUsed(void) {
 }
 
 /**
- *
  * Provides the number of memory areas currently allocated
  *
  * @returns an int representing the number of blocks
@@ -349,7 +347,6 @@ xmlMemShow(FILE *fp ATTRIBUTE_UNUSED, int nr ATTRIBUTE_UNUSED)
 }
 
 /**
- *
  * @deprecated This feature was removed.
  */
 void
@@ -365,7 +362,6 @@ xmlMemoryDump(void)
  ****************************************************************/
 
 /**
- *
  * @deprecated Alias for xmlInitParser.
  *
  * @returns 0.
@@ -377,7 +373,6 @@ xmlInitMemory(void) {
 }
 
 /**
- *
  * Initialize the memory layer.
  */
 void
@@ -386,7 +381,6 @@ xmlInitMemoryInternal(void) {
 }
 
 /**
- *
  * @deprecated This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
@@ -397,7 +391,6 @@ xmlCleanupMemory(void) {
 }
 
 /**
- *
  * Free up all the memory allocated by the library for its own
  * use. This should not be called by user level code.
  */

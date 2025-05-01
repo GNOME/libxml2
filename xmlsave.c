@@ -278,7 +278,6 @@ xmlSaveCtxtInit(xmlSaveCtxtPtr ctxt, int options)
 }
 
 /**
- *
  * Free a saving context, destroying the output in any remaining buffer
  */
 static void
@@ -293,7 +292,6 @@ xmlFreeSaveCtxt(xmlSaveCtxtPtr ctxt)
 }
 
 /**
- *
  * Create a new saving context
  *
  * @returns the new structure or NULL in case of error

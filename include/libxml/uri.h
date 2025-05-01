@@ -23,7 +23,6 @@ extern "C" {
 #endif
 
 /**
- *
  * A parsed URI reference. This is a struct containing the various fields
  * as described in RFC 2396 but separated for further processing.
  *

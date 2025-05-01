@@ -647,7 +647,6 @@ done:
  ****************************************************************/
 
 /**
- *
  * Allocate a validation context structure.
  *
  * @returns NULL if not, otherwise the new validation context structure

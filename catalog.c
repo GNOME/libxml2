@@ -185,7 +185,6 @@ static int xmlCatalogInitialized = 0;
  ************************************************************************/
 
 /**
- *
  * Handle an out of memory condition
  */
 static void
@@ -2995,7 +2994,6 @@ xmlCatalogIsEmpty(xmlCatalogPtr catal) {
  ************************************************************************/
 
 /**
- *
  * Do the catalog initialization only of global data, doesn't try to load
  * any catalog actually.
  */
@@ -3007,7 +3005,6 @@ xmlInitCatalogInternal(void) {
 }
 
 /**
- *
  * Load the default system catalog.
  */
 void
@@ -3149,7 +3146,6 @@ xmlLoadCatalogs(const char *pathss) {
 }
 
 /**
- *
  * Free up all the memory associated with catalogs
  */
 void
@@ -3170,7 +3166,6 @@ xmlCatalogCleanup(void) {
 }
 
 /**
- *
  * Free global data.
  */
 void
@@ -3335,7 +3330,6 @@ xmlCatalogRemove(const xmlChar *value) {
 }
 
 /**
- *
  * Convert all the SGML catalog entries as XML ones
  *
  * @returns the number of entries converted if successful, -1 otherwise
@@ -3360,7 +3354,6 @@ xmlCatalogConvert(void) {
  ************************************************************************/
 
 /**
- *
  * @deprecated Use XML_PARSE_NO_SYS_CATALOG and
  * XML_PARSE_CATALOG_PI.
  *

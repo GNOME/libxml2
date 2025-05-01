@@ -81,7 +81,6 @@ struct _xmlDict {
 static xmlMutex xmlDictMutex;
 
 /**
- *
  * @deprecated Alias for xmlInitParser.
  *
  * @returns 0.
@@ -93,7 +92,6 @@ xmlInitializeDict(void) {
 }
 
 /**
- *
  * Initialize mutex.
  */
 void
@@ -102,7 +100,6 @@ xmlInitDictInternal(void) {
 }
 
 /**
- *
  * @deprecated This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
@@ -113,7 +110,6 @@ xmlDictCleanup(void) {
 }
 
 /**
- *
  * Free the dictionary mutex.
  */
 void
@@ -249,7 +245,6 @@ found_pool:
 }
 
 /**
- *
  * Create a new dictionary
  *
  * @returns the newly created dictionary, or NULL if an error occurred.

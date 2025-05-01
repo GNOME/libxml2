@@ -383,7 +383,6 @@ typedef xmlSchemaBucket *xmlSchemaBucketPtr;
 #define XML_SCHEMA_SCHEMA_REDEFINE 3
 
 /**
- *
  * Used to create a graph of schema relationships.
  */
 typedef struct _xmlSchemaSchemaRelation xmlSchemaSchemaRelation;
@@ -472,7 +471,6 @@ struct _xmlSchemaInclude {
 };
 
 /**
- *
  * The abstract base type for schema components.
  */
 typedef struct _xmlSchemaBasicItem xmlSchemaBasicItem;
@@ -483,7 +481,6 @@ struct _xmlSchemaBasicItem {
 };
 
 /**
- *
  * The abstract base type for annotated schema components.
  * (Extends xmlSchemaBasicItem)
  */
@@ -495,7 +492,6 @@ struct _xmlSchemaAnnotItem {
 };
 
 /**
- *
  * The abstract base type for tree-like structured schema components.
  * (Extends xmlSchemaAnnotItem)
  */
@@ -511,7 +507,6 @@ struct _xmlSchemaTreeItem {
 
 #define XML_SCHEMA_ATTR_USE_FIXED 1<<0
 /**
- *
  * The abstract base type for tree-like structured schema components.
  * (Extends xmlSchemaTreeItem)
  */
@@ -535,7 +530,6 @@ struct _xmlSchemaAttributeUse {
 };
 
 /**
- *
  * A helper component to reflect attribute prohibitions.
  * (Extends xmlSchemaBasicItem)
  */
@@ -638,7 +632,6 @@ struct _xmlSchemaParserCtxt {
 };
 
 /**
- *
  * A component reference item (not a schema component)
  * (Extends xmlSchemaBasicItem)
  */
@@ -654,7 +647,6 @@ struct _xmlSchemaQNameRef {
 };
 
 /**
- *
  * A particle component.
  * (Extends xmlSchemaTreeItem)
  */
@@ -673,7 +665,6 @@ struct _xmlSchemaParticle {
 };
 
 /**
- *
  * A model group component.
  * (Extends xmlSchemaTreeItem)
  */
@@ -690,7 +681,6 @@ struct _xmlSchemaModelGroup {
 #define XML_SCHEMA_MODEL_GROUP_DEF_MARKED 1<<0
 #define XML_SCHEMA_MODEL_GROUP_DEF_REDEFINED 1<<1
 /**
- *
  * A model group definition component.
  * (Extends xmlSchemaTreeItem)
  */
@@ -711,7 +701,6 @@ typedef struct _xmlSchemaIDC xmlSchemaIDC;
 typedef xmlSchemaIDC *xmlSchemaIDCPtr;
 
 /**
- *
  * The identity-constraint "field" and "selector" item, holding the
  * XPath expression.
  */
@@ -726,7 +715,6 @@ struct _xmlSchemaIDCSelect {
 };
 
 /**
- *
  * The identity-constraint definition component.
  * (Extends xmlSchemaAnnotItem)
  */
@@ -745,7 +733,6 @@ struct _xmlSchemaIDC {
 };
 
 /**
- *
  * The augmented IDC information used for validation.
  */
 typedef struct _xmlSchemaIDCAug xmlSchemaIDCAug;
@@ -758,7 +745,6 @@ struct _xmlSchemaIDCAug {
 };
 
 /**
- *
  * The key sequence of a node table item.
  */
 typedef struct _xmlSchemaPSVIIDCKey xmlSchemaPSVIIDCKey;
@@ -769,7 +755,6 @@ struct _xmlSchemaPSVIIDCKey {
 };
 
 /**
- *
  * The node table item of a node table.
  */
 typedef struct _xmlSchemaPSVIIDCNode xmlSchemaPSVIIDCNode;
@@ -783,7 +768,6 @@ struct _xmlSchemaPSVIIDCNode {
 };
 
 /**
- *
  * The identity-constraint binding item of the [identity-constraint table].
  */
 typedef struct _xmlSchemaPSVIIDCBinding xmlSchemaPSVIIDCBinding;
@@ -808,7 +792,6 @@ typedef struct _xmlSchemaIDCMatcher xmlSchemaIDCMatcher;
 typedef xmlSchemaIDCMatcher *xmlSchemaIDCMatcherPtr;
 
 /**
- *
  * The state object used to evaluate XPath expressions.
  */
 typedef struct _xmlSchemaIDCStateObj xmlSchemaIDCStateObj;
@@ -829,7 +812,6 @@ struct _xmlSchemaIDCStateObj {
 #define IDC_MATCHER 0
 
 /**
- *
  * Used to evaluate IDC selectors (and fields).
  */
 struct _xmlSchemaIDCMatcher {
@@ -865,7 +847,6 @@ struct _xmlSchemaIDCMatcher {
 #define XML_SCHEMA_NODE_INFO_ERR_BAD_TYPE      (1<<10)
 
 /**
- *
  * Holds information of an element node.
  */
 struct _xmlSchemaNodeInfo {
@@ -949,7 +930,6 @@ struct _xmlSchemaAttrInfo {
 
 #define XML_SCHEMA_VALID_CTXT_FLAG_STREAM 1
 /**
- *
  * A Schemas validation context
  */
 struct _xmlSchemaValidCtxt {
@@ -1026,10 +1006,6 @@ struct _xmlSchemaValidCtxt {
     void *locCtxt;
 };
 
-/**
- *
- *
- */
 typedef struct _xmlSchemaSubstGroup xmlSchemaSubstGroup;
 typedef xmlSchemaSubstGroup *xmlSchemaSubstGroupPtr;
 struct _xmlSchemaSubstGroup {
@@ -1038,7 +1014,6 @@ struct _xmlSchemaSubstGroup {
 };
 
 /**
- *
  * an entry in hash tables to quickly look up keys/uniques
  */
 typedef struct _xmlIDCHashEntry xmlIDCHashEntry;
@@ -3319,7 +3294,6 @@ xmlSchemaNewSchema(xmlSchemaParserCtxtPtr ctxt)
 }
 
 /**
- *
  * Allocate a new Facet structure.
  *
  * @returns the newly allocated structure or NULL in case or error
@@ -6092,7 +6066,6 @@ xmlSchemaParseAnyAttribute(xmlSchemaParserCtxtPtr ctxt,
                            xmlSchemaPtr schema, xmlNodePtr node);
 
 /**
- *
  * @param pctxt  a schema parser context
  * @param ownerItem  the schema object owner if existent
  * @param attr  the schema attribute node being validated
@@ -6163,7 +6136,6 @@ xmlSchemaPValAttrNodeValue(xmlSchemaParserCtxtPtr pctxt,
 }
 
 /**
- *
  * @param ctxt  a schema parser context
  * @param ownerItem  the schema object owner if existent
  * @param attr  the schema attribute node being validated
@@ -6198,7 +6170,6 @@ xmlSchemaPValAttrNode(xmlSchemaParserCtxtPtr ctxt,
 }
 
 /**
- *
  * @param ctxt  a schema parser context
  * @param ownerItem  the schema object owner if existent
  * @param ownerElem  the owner element node
@@ -12371,7 +12342,6 @@ xmlSchemaFreeParserCtxt(xmlSchemaParserCtxtPtr ctxt)
  ************************************************************************/
 
 /**
- *
  * @returns 1 if nillable, 0 otherwise
  */
 static int
@@ -12487,7 +12457,6 @@ xmlSchemaBuildContentModelForSubstGroup(xmlSchemaParserCtxtPtr pctxt,
 }
 
 /**
- *
  * @returns 1 if nillable, 0 otherwise
  */
 static int
@@ -21975,7 +21944,6 @@ xmlSchemaIDCFreeKey(xmlSchemaPSVIIDCKeyPtr key)
 }
 
 /**
- *
  * Frees an IDC binding. Note that the node table-items
  * are not freed.
  */

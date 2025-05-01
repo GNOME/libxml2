@@ -910,7 +910,6 @@ xmlParserValidityWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
  ************************************************************************/
 
 /**
- *
  * Get the last global error registered. This is per thread if compiled
  * with thread support.
  *
@@ -953,7 +952,6 @@ xmlResetError(xmlErrorPtr err)
 }
 
 /**
- *
  * Cleanup the last global error registered. For parsing error
  * this does not change the well-formedness result.
  */

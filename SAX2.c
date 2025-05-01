@@ -2718,7 +2718,6 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 }
 
 /**
- *
  * @deprecated This function is a no-op. Call xmlInitParser to
  * initialize the library.
  *
@@ -2774,7 +2773,6 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 }
 
 /**
- *
  * @deprecated This function is a no-op. Call xmlInitParser to
  * initialize the library.
  */

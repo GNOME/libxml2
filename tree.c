@@ -6916,7 +6916,6 @@ xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
 }
 
 /**
- *
  * @deprecated Use xmlGetDocCompressMode
  *
  * get the default compression mode used, ZLIB based.

@@ -155,7 +155,6 @@ struct _xmlSchematron {
 };
 
 /**
- *
  * A Schematrons validation context
  */
 struct _xmlSchematronValidCtxt {

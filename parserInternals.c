@@ -2523,7 +2523,6 @@ xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
 }
 
 /**
- *
  * @deprecated See xmlSetExternalEntityLoader.
  *
  * Get the default external entity resolver function for the application
@@ -2928,7 +2927,6 @@ xmlFreeParserCtxt(xmlParserCtxtPtr ctxt)
 }
 
 /**
- *
  * Allocate and initialize a new parser context.
  *
  * @returns the xmlParserCtxtPtr or NULL

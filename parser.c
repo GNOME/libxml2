@@ -177,7 +177,6 @@ xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt);
 #define XML_PARSER_CHUNK_SIZE 100
 
 /**
- *
  * Constant string describing the internal version of the library
  */
 const char *const
@@ -1177,7 +1176,6 @@ mem_error:
 }
 
 /**
- *
  * Removes CDATA attributes from the special attribute table
  */
 static void
@@ -1417,7 +1415,6 @@ static xmlChar *
 xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar **str);
 
 /**
- *
  * Create a new namespace database.
  *
  * @returns the new obejct.

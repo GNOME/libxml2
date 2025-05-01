@@ -1073,7 +1073,6 @@ xmlParseURIRaw(const char *str, int raw) {
  ************************************************************************/
 
 /**
- *
  * Simply creates an empty xmlURI
  *
  * @returns the new structure or NULL in case of error
@@ -1091,7 +1090,6 @@ xmlCreateURI(void) {
 }
 
 /**
- *
  * Function to handle properly a reallocation when saving an URI
  * Also imposes some limit on the length of an URI string output
  */

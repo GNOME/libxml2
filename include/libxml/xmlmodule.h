@@ -23,7 +23,6 @@ extern "C" {
 #endif
 
 /**
- *
  * A handle to a dynamically loaded module
  */
 typedef struct _xmlModule xmlModule;

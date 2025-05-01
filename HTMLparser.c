@@ -1237,7 +1237,6 @@ htmlParserFinishElementParsing(htmlParserCtxtPtr ctxt) {
 }
 
 /**
- *
  * @deprecated This is a no-op.
  */
 void
@@ -4617,7 +4616,6 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
 }
 
 /**
- *
  * Allocate and initialize a new HTML parser context.
  *
  * This can be used to parse HTML documents into DOM trees with

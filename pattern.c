@@ -192,7 +192,6 @@ struct _xmlPatParserContext {
  ************************************************************************/
 
 /**
- *
  * Create a new XSLT Pattern
  *
  * @returns the newly allocated xmlPatternPtr or NULL in case of error

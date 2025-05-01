@@ -37,7 +37,6 @@
 #define BUF_STATIC(buf) ((buf)->flags & BUF_FLAG_STATIC)
 
 /**
- *
  * A buffer structure. The base of the structure is somehow compatible
  * with struct _xmlBuffer to limit risks on application which accessed
  * directly the input->buf->buffer structures.
@@ -695,7 +694,6 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme ATTRIBUTE_UNUSED) 
 }
 
 /**
- *
  * @deprecated Use xmlBufferSetAllocationScheme.
  *
  * Types are
@@ -714,8 +712,8 @@ xmlGetBufferAllocationScheme(void) {
 }
 
 /**
- *
  * routine to create an XML buffer.
+ *
  * @returns the new structure.
  */
 xmlBufferPtr

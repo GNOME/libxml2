@@ -34,7 +34,6 @@ static xlinkHandlerPtr xlinkDefaultHandler = NULL;
 static xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
 
 /**
- *
  * @deprecated Don't use.
  *
  * Get the default xlink handler.
@@ -60,7 +59,6 @@ xlinkSetDefaultHandler(xlinkHandlerPtr handler) {
 }
 
 /**
- *
  * @deprecated Don't use.
  *
  * Get the default xlink detection routine

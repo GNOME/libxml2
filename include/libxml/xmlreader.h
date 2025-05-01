@@ -113,13 +113,11 @@ typedef enum {
 } xmlReaderTypes;
 
 /**
- *
  * Structure for an xmlReader context.
  */
 typedef struct _xmlTextReader xmlTextReader;
 
 /**
- *
  * Pointer to an xmlReader context.
  */
 typedef xmlTextReader *xmlTextReaderPtr;

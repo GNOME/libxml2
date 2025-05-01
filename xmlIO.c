@@ -2562,7 +2562,6 @@ xmlNoNetExists(const char *filename) {
  ************************************************************************/
 
 /**
- *
  * Initialize callback tables.
  */
 void
@@ -2606,7 +2605,6 @@ xmlRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
 }
 
 /**
- *
  * Registers the default compiled-in I/O handlers.
  */
 void
@@ -2615,7 +2613,6 @@ xmlRegisterDefaultInputCallbacks(void) {
 }
 
 /**
- *
  * Clear the top input callback from the input stack. this includes the
  * compiled-in I/O.
  *
@@ -2635,7 +2632,6 @@ xmlPopInputCallbacks(void)
 }
 
 /**
- *
  * clears the entire input callback table. this includes the
  * compiled-in I/O.
  */
@@ -2675,7 +2671,6 @@ xmlRegisterOutputCallbacks(xmlOutputMatchCallback matchFunc,
 }
 
 /**
- *
  * Registers the default compiled-in I/O handlers.
  */
 void
@@ -2684,7 +2679,6 @@ xmlRegisterDefaultOutputCallbacks (void) {
 }
 
 /**
- *
  * Remove the top output callbacks from the output stack. This includes the
  * compiled-in I/O.
  *
@@ -2704,7 +2698,6 @@ xmlPopOutputCallbacks(void)
 }
 
 /**
- *
  * clears the entire output callback table. this includes the
  * compiled-in I/O callbacks.
  */

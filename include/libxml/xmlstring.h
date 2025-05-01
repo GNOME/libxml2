@@ -22,7 +22,6 @@ extern "C" {
 #endif
 
 /**
- *
  * This is a basic byte in an UTF-8 encoded string.
  * It's unsigned allowing to pinpoint case where char * are assigned
  * to xmlChar * (possibly making serialization back impossible).

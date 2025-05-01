@@ -276,7 +276,6 @@ static int xmlSaveNoEmptyTagsThrDef = 0;
 
 #ifdef LIBXML_SAX1_ENABLED
 /**
- *
  * @deprecated This handler is unused and will be removed from future
  * versions.
  *
@@ -315,7 +314,6 @@ const xmlSAXHandlerV1 xmlDefaultSAXHandler = {
 #endif /* LIBXML_SAX1_ENABLED */
 
 /**
- *
  * @deprecated Don't use
  *
  * The default SAX Locator
@@ -330,7 +328,6 @@ const xmlSAXLocator xmlDefaultSAXLocator = {
 
 #if defined(LIBXML_HTML_ENABLED) && defined(LIBXML_SAX1_ENABLED)
 /**
- *
  * @deprecated This handler is unused and will be removed from future
  * versions.
  *
@@ -378,7 +375,6 @@ xmlInitGlobalState(xmlGlobalStatePtr gs);
  ************************************************************************/
 
 /**
- *
  * @deprecated Alias for xmlInitParser.
  */
 void xmlInitGlobals(void) {
@@ -386,7 +382,6 @@ void xmlInitGlobals(void) {
 }
 
 /**
- *
  * Additional initialisation for multi-threading
  */
 void xmlInitGlobalsInternal(void) {
@@ -405,7 +400,6 @@ void xmlInitGlobalsInternal(void) {
 }
 
 /**
- *
  * @deprecated This function is a no-op. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
@@ -415,7 +409,6 @@ void xmlCleanupGlobals(void) {
 }
 
 /**
- *
  * Additional cleanup for multi-threading
  */
 void xmlCleanupGlobalsInternal(void) {
@@ -501,7 +494,6 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
 
 #ifndef USE_TLS
 /**
- *
  * xmlNewGlobalState() allocates a global state. This structure is used to
  * hold all data for use by a thread when supporting backwards compatibility
  * of libxml2 to pre-thread-safe behaviour.
@@ -766,7 +758,6 @@ __xmlMemStrdup(void) {
 #endif /* LIBXML_THREAD_ALLOC_ENABLED */
 
 /**
- *
  * @returns the local RNG state.
  */
 unsigned *
@@ -775,7 +766,6 @@ xmlGetLocalRngState(void) {
 }
 
 /**
- *
  * Check whether thread-local storage could be allocated.
  *
  * In cross-platform code running in multithreaded environments, this
@@ -799,7 +789,6 @@ xmlCheckThreadLocalStorage(void) {
 }
 
 /**
- *
  * @returns a pointer to the global error struct.
  */
 xmlError *

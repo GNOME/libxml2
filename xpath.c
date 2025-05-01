@@ -181,7 +181,6 @@ double xmlXPathPINF = 0.0;
 double xmlXPathNINF = 0.0;
 
 /**
- *
  * @deprecated Alias for xmlInitParser.
  */
 void
@@ -202,7 +201,6 @@ xmlXPathSFComputeHash(const xmlChar *name) {
 }
 
 /**
- *
  * Initialize the XPath environment
  */
 ATTRIBUTE_NO_SANITIZE("float-divide-by-zero")
@@ -932,7 +930,6 @@ xmlXPathFreeObjectEntry(void *obj, const xmlChar *name);
  ************************************************************************/
 
 /**
- *
  * Create a new Xpath component
  *
  * @returns the newly allocated xmlXPathCompExprPtr or NULL in case of error
@@ -1508,7 +1505,6 @@ xmlXPathDebugDumpCompExpr(FILE *output, xmlXPathCompExprPtr comp,
  ************************************************************************/
 
 /**
- *
  * Create a new object cache
  *
  * @returns the xmlXPathCache just allocated.
@@ -1559,7 +1555,6 @@ xmlXPathFreeCache(xmlXPathContextCachePtr cache)
 }
 
 /**
- *
  * @param ctxt  the XPath context
  * @param active  enables/disables (creates/frees) the cache
  * @param value  a value with semantics dependent on `options`

@@ -5514,7 +5514,6 @@ xmlRegFreeRegexp(xmlRegexpPtr regexp) {
  ************************************************************************/
 
 /**
- *
  * Create a new automata
  *
  * @returns the new object or NULL in case of failure

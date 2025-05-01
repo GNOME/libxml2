@@ -964,7 +964,6 @@ xmlC14NPrintAttrs(const void *data, void *user)
 }
 
 /**
- *
  * Finds an attribute in a hidden parent node.
  *
  * @returns a pointer to the attribute node (if found) or NULL otherwise.
@@ -986,7 +985,6 @@ xmlC14NFindHiddenParentAttr(xmlC14NCtxPtr ctx, xmlNodePtr cur, const xmlChar * n
 }
 
 /**
- *
  * Fixes up the xml:base attribute
  *
  * @returns the newly created attribute or NULL

@@ -189,7 +189,6 @@ static xmlSchemaTypePtr xmlSchemaTypeNmtokensDef = NULL;
  *									*
  ************************************************************************/
 /**
- *
  * Handle an out of memory condition
  */
 static void
@@ -479,7 +478,6 @@ xmlSchemaFreeTypeEntry(void *type, const xmlChar *name ATTRIBUTE_UNUSED) {
 }
 
 /**
- *
  * Cleanup the default XML Schemas type library
  */
 static void
@@ -863,7 +861,6 @@ error:
 }
 
 /**
- *
  * @deprecated This function will be made private. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't

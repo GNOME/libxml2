@@ -239,7 +239,6 @@ struct _xmlRelaxNGParserCtxt {
 #define FLAGS_NOERROR		8
 
 /**
- *
  * A RelaxNGs partition set associated to lists of definitions
  */
 typedef struct _xmlRelaxNGInterleaveGroup xmlRelaxNGInterleaveGroup;
@@ -254,7 +253,6 @@ struct _xmlRelaxNGInterleaveGroup {
 #define IS_NEEDCHECK		2
 
 /**
- *
  * A RelaxNGs partition associated to an interleave group
  */
 typedef struct _xmlRelaxNGPartition xmlRelaxNGPartition;
@@ -268,7 +266,6 @@ struct _xmlRelaxNGPartition {
 };
 
 /**
- *
  * A RelaxNGs validation state
  */
 #define MAX_ATTR 20
@@ -286,7 +283,6 @@ struct _xmlRelaxNGValidState {
 };
 
 /**
- *
  * A RelaxNGs container for validation state
  */
 typedef struct _xmlRelaxNGStates xmlRelaxNGStates;
@@ -300,7 +296,6 @@ struct _xmlRelaxNGStates {
 #define ERROR_IS_DUP	1
 
 /**
- *
  * A RelaxNGs validation error
  */
 typedef struct _xmlRelaxNGValidError xmlRelaxNGValidError;
@@ -315,7 +310,6 @@ struct _xmlRelaxNGValidError {
 };
 
 /**
- *
  * A RelaxNGs validation context
  */
 
@@ -365,7 +359,6 @@ struct _xmlRelaxNGValidCtxt {
 };
 
 /**
- *
  * Structure associated to a RelaxNGs document element
  */
 struct _xmlRelaxNGInclude {
@@ -377,7 +370,6 @@ struct _xmlRelaxNGInclude {
 };
 
 /**
- *
  * Structure associated to a RelaxNGs document element
  */
 struct _xmlRelaxNGDocument {
@@ -2720,7 +2712,6 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar * namespace, void *data,
 }
 
 /**
- *
  * Initialize the default type libraries.
  *
  * @returns 0 in case of success and -1 in case of error.
@@ -2750,7 +2741,6 @@ xmlRelaxNGInitTypes(void)
 }
 
 /**
- *
  * @deprecated This function will be made private. Call xmlCleanupParser
  * to free global state but see the warnings there. xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't

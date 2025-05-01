@@ -15,7 +15,6 @@
 #include <libxml/xmlIO.h>
 
 /**
- *
  * @deprecated HTTP support was removed in 2.15.
  */
 void
@@ -23,7 +22,6 @@ xmlNanoHTTPInit(void) {
 }
 
 /**
- *
  * @deprecated HTTP support was removed in 2.15.
  */
 void
@@ -317,7 +315,6 @@ xmlIOHTTPClose (void *context ATTRIBUTE_UNUSED) {
 }
 
 /**
- *
  * @deprecated HTTP support was removed in 2.15.
  */
 void

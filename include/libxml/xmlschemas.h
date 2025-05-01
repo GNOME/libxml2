@@ -67,7 +67,6 @@ typedef enum {
 * options below.
 */
 /**
- *
  * This is the set of XML Schema validation options.
  */
 typedef enum {

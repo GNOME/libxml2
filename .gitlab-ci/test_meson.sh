@@ -11,6 +11,7 @@ meson  setup \
        --werror \
        --buildtype=debugoptimized \
        --default-library shared \
+       -Ddocs=enabled \
        -Dhttp=enabled \
        -Dlzma=enabled \
        -Dzlib=enabled \

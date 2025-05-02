@@ -95,8 +95,8 @@ clang:msan:
     - win32-ps
   variables:
     BASE_CONFIG: "--with-http --with-lzma --with-zlib --with-python"
-    # Disabled for now, see #658
-    CONFIG: "--without-python"
+    # Python is disabled for now, see #658
+    CONFIG: "--with-docs --without-python"
     CHERE_INVOKING: "yes"
   before_script:
     - $Env:Path="C:\msys64\usr\bin;$Env:Path"

@@ -1,6 +1,7 @@
 PROJECT_NAME           = libxml2
 OUTPUT_DIRECTORY       = $(BUILD_ROOT)doc
-STRIP_FROM_PATH        = $(SOURCE_ROOT)include/libxml
+STRIP_FROM_PATH        = $(SOURCE_ROOT)include/libxml \
+                         $(BUILD_ROOT)include/libxml
 OPTIMIZE_OUTPUT_FOR_C  = YES
 EXTRACT_LOCAL_CLASSES  = NO
 HIDE_UNDOC_MEMBERS     = YES
@@ -45,6 +46,7 @@ INPUT                  = $(SOURCE_ROOT)README.md \
                          $(SOURCE_ROOT)include/libxml/xmlschemastypes.h \
                          $(SOURCE_ROOT)include/libxml/xmlstring.h \
                          $(SOURCE_ROOT)include/libxml/xmlunicode.h \
+                         $(BUILD_ROOT)include/libxml/xmlversion.h \
                          $(SOURCE_ROOT)include/libxml/xmlwriter.h \
                          $(SOURCE_ROOT)include/libxml/xpath.h \
                          $(SOURCE_ROOT)include/libxml/xpathInternals.h \

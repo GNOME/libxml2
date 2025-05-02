@@ -1,13 +1,17 @@
 ## Process this file with automake to produce Makefile.in
 
 EXTRA_DIST = \
+	Doxyfile \
+	libxml2.css \
+	mainpage.md \
+	meson.build \
+	xml2-config.1 \
 	xmlcatalog.xml \
-	xmllint.xml \
-	meson.build
+	xmllint.xml
 
 all-local: html.stamp
 
-html.stamp: $(top_srcdir)/Doxyfile
+html.stamp: Doxyfile
 	SOURCE_ROOT=$(top_srcdir)/ BUILD_ROOT=$(top_builddir)/ \
 	    $(DOXYGEN) -q $<
 	@touch $@

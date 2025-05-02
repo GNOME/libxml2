@@ -552,7 +552,6 @@ endif
 subdir('example')
 
 if want_docs or want_python
-    doxyfile = files('Doxyfile')
     subdir('doc')
 endif
 
@@ -614,6 +613,7 @@ summary(
         'c14n': want_c14n,
         'catalog': want_catalog,
         'debug': want_debug,
+        'docs': want_docs,
         'history': want_history,
         'html': want_html,
         'http': want_http,

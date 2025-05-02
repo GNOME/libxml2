@@ -510,7 +510,7 @@ if(LIBXML2_WITH_TESTS)
 endif()
 
 if(LIBXML2_WITH_DOCS OR LIBXML2_WITH_PYTHON)
-    set(DOXYFILE ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+    set(DOXYFILE ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
     add_custom_command(
         OUTPUT doc/html doc/xml
         COMMAND ${CMAKE_COMMAND} -E env

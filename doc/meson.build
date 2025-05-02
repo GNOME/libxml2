@@ -9,7 +9,7 @@ doxygen_docs = custom_target(
         files('libxml2.css', 'mainpage.md'),
     ],
     output: [ 'html', 'xml' ],
-    command: [ doxygen, '-q', doxyfile ],
+    command: [ doxygen, '-q', files('Doxyfile') ],
     env: {
         'SOURCE_ROOT': meson.project_source_root() + '/',
         'BUILD_ROOT':  meson.project_build_root()  + '/',

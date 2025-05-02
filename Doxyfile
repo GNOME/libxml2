@@ -9,6 +9,7 @@ HIDE_UNDOC_CLASSES     = YES
 HIDE_SCOPE_NAMES       = YES
 SHOW_INCLUDE_FILES     = NO
 WARN_NO_PARAMDOC       = YES
+WARN_AS_ERROR          = $(DOXYGEN_WARN_AS_ERROR)
 INPUT                  = $(SOURCE_ROOT)README.md \
                          $(SOURCE_ROOT)include/libxml/c14n.h \
                          $(SOURCE_ROOT)include/libxml/catalog.h \

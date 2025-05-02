@@ -1,0 +1,7 @@
+# Redirects for GitLab pages
+
+# Start page
+/ /html/index.html 302
+
+# Old documentation
+/devhelp/* /html/index.html

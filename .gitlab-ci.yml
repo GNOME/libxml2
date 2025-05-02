@@ -326,6 +326,7 @@ pages:
   needs: [install]
   script:
     - cp -r install/share/doc/libxml2 public
+    - cp doc/_redirects public
   artifacts:
     paths:
       - public

@@ -854,6 +854,8 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
 /**
  * @param filename  the filename
  *
+ * @deprecated Use XML_PARSE_NO_SYS_CATALOG.
+ *
  * parse an XML file and build a tree. It's like xmlParseFile()
  * except it bypass all catalog lookups.
  *

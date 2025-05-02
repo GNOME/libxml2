@@ -134,6 +134,7 @@ XMLPUBFUN int
 					 const xmlChar *replace);
 XMLPUBFUN int
 		xmlCatalogRemove	(const xmlChar *value);
+XML_DEPRECATED
 XMLPUBFUN xmlDocPtr
 		xmlParseCatalogFile	(const char *filename);
 XMLPUBFUN int
@@ -170,8 +171,10 @@ XMLPUBFUN xmlCatalogAllow
 
 
 /* DEPRECATED interfaces */
+XML_DEPRECATED
 XMLPUBFUN const xmlChar *
 		xmlCatalogGetSystem	(const xmlChar *sysID);
+XML_DEPRECATED
 XMLPUBFUN const xmlChar *
 		xmlCatalogGetPublic	(const xmlChar *pubID);
 

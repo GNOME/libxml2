@@ -3595,7 +3595,8 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
  * @param sysID  the system ID string
  *
  * Try to lookup the catalog reference associated to a system ID
- * @deprecated, use xmlCatalogResolveSystem()
+ *
+ * @deprecated use xmlCatalogResolveSystem()
  *
  * @returns the resource if found or NULL otherwise.
  */
@@ -3638,7 +3639,8 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
  * @param pubID  the public ID string
  *
  * Try to lookup the catalog reference associated to a public ID
- * @deprecated, use xmlCatalogResolvePublic()
+ *
+ * @deprecated use xmlCatalogResolvePublic()
  *
  * @returns the resource if found or NULL otherwise.
  */

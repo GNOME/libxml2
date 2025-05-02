@@ -2656,7 +2656,7 @@ xmlDummyCompare(const void *data0 ATTRIBUTE_UNUSED,
  * @param value  the value name
  * @param attr  the attribute holding the Ref
  *
- * @deprecated, do not use. This function will be removed from the public API.
+ * @deprecated do not use. This function will be removed from the public API.
  *
  * Register a new ref declaration
  *
@@ -2753,7 +2753,7 @@ failed:
 /**
  * @param table  An ref table
  *
- * @deprecated, do not use. This function will be removed from the public API.
+ * @deprecated do not use. This function will be removed from the public API.
  *
  * Deallocate the memory used by an Ref hash table.
  */
@@ -2767,7 +2767,7 @@ xmlFreeRefTable(xmlRefTablePtr table) {
  * @param elem  the element carrying the attribute
  * @param attr  the attribute
  *
- * @deprecated, do not use. This function will be removed from the public API.
+ * @deprecated do not use. This function will be removed from the public API.
  *
  * Determine whether an attribute is of type Ref. In case we have DTD(s)
  * then this is simple, otherwise we use an heuristic: name Ref (upper
@@ -2813,7 +2813,7 @@ xmlIsRef(xmlDocPtr doc, xmlNodePtr elem, xmlAttrPtr attr) {
  * @param doc  the document
  * @param attr  the attribute
  *
- * @deprecated, do not use. This function will be removed from the public API.
+ * @deprecated do not use. This function will be removed from the public API.
  *
  * Remove the given attribute from the Ref table maintained internally.
  *
@@ -2870,7 +2870,7 @@ xmlRemoveRef(xmlDocPtr doc, xmlAttrPtr attr) {
  * @param doc  pointer to the document
  * @param ID  the ID value
  *
- * @deprecated, do not use. This function will be removed from the public API.
+ * @deprecated do not use. This function will be removed from the public API.
  *
  * Find the set of references for the supplied ID.
  *

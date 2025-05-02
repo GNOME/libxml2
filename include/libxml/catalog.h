@@ -1,6 +1,6 @@
 /**
  * @file
- * *
+ *
  * @brief interfaces to the Catalog handling system
  * 
  * the catalog module implements the support for

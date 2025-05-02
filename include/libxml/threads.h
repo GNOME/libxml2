@@ -1,6 +1,6 @@
 /**
  * @file
- * *
+ *
  * @brief interfaces for thread handling
  * 
  * set of generic threading related routines

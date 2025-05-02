@@ -2,7 +2,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = include . example xstc
+SUBDIRS = include . example
 if WITH_DOXYGEN
 SUBDIRS += doc
 endif
@@ -13,7 +13,7 @@ if WITH_GLOB
 SUBDIRS += fuzz
 endif
 
-DIST_SUBDIRS = include . doc example fuzz python xstc
+DIST_SUBDIRS = include . doc example fuzz python
 
 AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include -DSYSCONFDIR='"$(sysconfdir)"'
 

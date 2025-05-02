@@ -3,6 +3,7 @@
 import sys, os
 import libxml2
 
+# TODO: Check what this does and move away from libxml2 Python bindings
 
 libxml2.debugMemory(1)
 baseDir = os.path.join('msxsdtest', 'Particles')

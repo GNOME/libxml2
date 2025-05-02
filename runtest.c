@@ -1808,7 +1808,7 @@ htmlTokenizerTest(const char *filename, const char *result,
  * @param result  the file with expected result
  * @param err  the file with error messages: unused
  *
- * Parse a file using the old xmlParseFile API, then serialize back
+ * Parse a file using the old xmlParseFile() API, then serialize back
  * reparse the result and serialize again, then check for deviation
  * in serialization.
  *
@@ -2378,7 +2378,7 @@ testParseContent(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const char *filename) {
  * @param result  the file with expected result
  * @param err  the file with error messages: unused
  *
- * Parse a file using the old xmlReadMemory API, then serialize back
+ * Parse a file using the old xmlReadMemory() API, then serialize back
  * reparse the result and serialize again, then check for deviation
  * in serialization.
  *
@@ -2490,7 +2490,7 @@ noentParseTest(const char *filename, const char *result,
  * @param result  the file with expected result
  * @param err  the file with error messages
  *
- * Parse a file using the xmlReadFile API and check for errors.
+ * Parse a file using the xmlReadFile() API and check for errors.
  *
  * @returns 0 in case of success, an error code otherwise
  */
@@ -2578,7 +2578,7 @@ errParseTest(const char *filename, const char *result, const char *err,
  * @param result  the file with expected result
  * @param err  the file with error messages
  *
- * Parse a file using the xmlReadFd API and check for errors.
+ * Parse a file using the xmlReadFd() API and check for errors.
  *
  * @returns 0 in case of success, an error code otherwise
  */

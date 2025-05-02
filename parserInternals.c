@@ -104,11 +104,11 @@ xmlCheckVersion(int version) {
  * takes precedence over all other error reporting mechanisms.
  * These are (in order of precedence):
  *
- * - per-context structured handler (xmlCtxtSetErrorHandler)
+ * - per-context structured handler (xmlCtxtSetErrorHandler())
  * - per-context structured "serror" SAX handler
- * - global structured handler (xmlSetStructuredErrorFunc)
+ * - global structured handler (xmlSetStructuredErrorFunc())
  * - per-context generic "error" and "warning" SAX handlers
- * - global generic handler (xmlSetGenericErrorFunc)
+ * - global generic handler (xmlSetGenericErrorFunc())
  * - print to stderr
  *
  * Available since 2.13.0.
@@ -1194,7 +1194,7 @@ done:
  * the encoding found in the XML declaration.
  *
  * This function can also be used to override the encoding of chunks
- * passed to xmlParseChunk.
+ * passed to xmlParseChunk().
  *
  * @returns 0 in case of success, -1 otherwise
  */
@@ -1267,7 +1267,7 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
  * encoding found in the XML declaration.
  *
  * This function can also be used to override the encoding of chunks
- * passed to xmlParseChunk.
+ * passed to xmlParseChunk().
  *
  * Available since 2.13.0.
  *
@@ -1411,7 +1411,7 @@ xmlSwitchInputEncoding(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
  * Use encoding handler to decode input data.
  *
  * This function can be used to enforce the encoding of chunks passed
- * to xmlParseChunk.
+ * to xmlParseChunk().
  *
  * @returns 0 in case of success, -1 otherwise
  */
@@ -1724,7 +1724,7 @@ xmlFreeInputStream(xmlParserInputPtr input) {
 /**
  * @param ctxt  an XML parser context
  *
- * @deprecated Use xmlNewInputFromUrl or similar functions.
+ * @deprecated Use xmlNewInputFromUrl() or similar functions.
  *
  * Create a new input stream structure.
  *
@@ -2214,7 +2214,7 @@ xmlNewEntityInputStream(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
  * @param ctxt  an XML parser context
  * @param buffer  an memory buffer
  *
- * @deprecated Use xmlNewInputFromString.
+ * @deprecated Use xmlNewInputFromString().
  *
  * Create a new input stream based on a memory buffer.
  *
@@ -2241,8 +2241,8 @@ xmlNewStringInputStream(xmlParserCtxtPtr ctxt, const xmlChar *buffer) {
  * @param ctxt  the context in which the entity is called or NULL
  *
  * Resolves the URL and ID against the appropriate catalog.
- * This function is used by xmlDefaultExternalEntityLoader and
- * xmlNoNetExternalEntityLoader.
+ * This function is used by xmlDefaultExternalEntityLoader() and
+ * xmlNoNetExternalEntityLoader().
  *
  * @returns a new allocated URL, or NULL.
  */
@@ -2349,11 +2349,11 @@ xmlCheckHTTPInput(xmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
  * The following resource loaders will be called if they were
  * registered (in order of precedence):
  *
- * - the per-thread xmlParserInputBufferCreateFilenameFunc set with
- *   xmlParserInputBufferCreateFilenameDefault (deprecated)
+ * - the per-thread xmlParserInputBufferCreateFilenameFunc() set with
+ *   xmlParserInputBufferCreateFilenameDefault() (deprecated)
  * - the default loader which will return
  *   - the result from a matching global input callback set with
- *     xmlRegisterInputCallbacks (deprecated)
+ *     xmlRegisterInputCallbacks() (deprecated)
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *
@@ -2398,7 +2398,7 @@ xmlNewInputFromUrl(const char *filename, xmlParserInputFlags flags,
  * @param ctxt  an XML parser context
  * @param filename  the filename to use as entity
  *
- * @deprecated Use xmlNewInputFromUrl.
+ * @deprecated Use xmlNewInputFromUrl().
  *
  * Create a new input stream based on a file or an URL.
  *
@@ -2512,7 +2512,7 @@ xmlCurrentExternalEntityLoader = xmlDefaultExternalEntityLoader;
  * @param f  the new entity resolver function
  *
  * @deprecated This is a global setting and not thread-safe. Use
- * xmlCtxtSetResourceLoader or similar functions.
+ * xmlCtxtSetResourceLoader() or similar functions.
  *
  * Changes the default external entity resolver function for the
  * application.
@@ -2523,11 +2523,11 @@ xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
 }
 
 /**
- * @deprecated See xmlSetExternalEntityLoader.
+ * @deprecated See xmlSetExternalEntityLoader().
  *
  * Get the default external entity resolver function for the application
  *
- * @returns the xmlExternalEntityLoader function pointer
+ * @returns the xmlExternalEntityLoader() function pointer
  */
 xmlExternalEntityLoader
 xmlGetExternalEntityLoader(void) {
@@ -2626,15 +2626,15 @@ xmlLoadResource(xmlParserCtxtPtr ctxt, const char *url, const char *publicId,
  * result. Then the following resource loaders will be called if
  * they were registered (in order of precedence):
  *
- * - the resource loader set with xmlCtxtSetResourceLoader
+ * - the resource loader set with xmlCtxtSetResourceLoader()
  * - the global external entity loader set with
- *   xmlSetExternalEntityLoader (without catalog resolution,
+ *   xmlSetExternalEntityLoader() (without catalog resolution,
  *   deprecated)
- * - the per-thread xmlParserInputBufferCreateFilenameFunc set with
- *   xmlParserInputBufferCreateFilenameDefault (deprecated)
+ * - the per-thread xmlParserInputBufferCreateFilenameFunc() set with
+ *   xmlParserInputBufferCreateFilenameDefault() (deprecated)
  * - the default loader which will return
  *   - the result from a matching global input callback set with
- *     xmlRegisterInputCallbacks (deprecated)
+ *     xmlRegisterInputCallbacks() (deprecated)
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *
@@ -2946,7 +2946,7 @@ xmlNewParserCtxt(void)
  * the parser context will be passed as user data.
  *
  * Available since 2.11.0. If you want support older versions,
- * it's best to invoke xmlNewParserCtxt and set ctxt->sax with
+ * it's best to invoke xmlNewParserCtxt() and set ctxt->sax with
  * struct assignment.
  *
  * @returns the xmlParserCtxtPtr or NULL if memory allocation failed.
@@ -3278,7 +3278,7 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  *
  * @deprecated Don't use.
  *
- * xmlParserFindNodeInfoIndex : Find the index that the info record for
+ * xmlParserFindNodeInfoIndex() : Find the index that the info record for
  *   the given node is or should be at in a sorted sequence
  *
  * @returns a long indicating the position of the record

@@ -307,7 +307,7 @@ xmlUnlockLibrary(void)
 }
 
 /**
- * @deprecated Alias for xmlInitParser.
+ * @deprecated Alias for xmlInitParser().
  */
 void
 xmlInitThreads(void)
@@ -316,8 +316,8 @@ xmlInitThreads(void)
 }
 
 /**
- * @deprecated This function is a no-op. Call xmlCleanupParser
- * to free global state but see the warnings there. xmlCleanupParser
+ * @deprecated This function is a no-op. Call xmlCleanupParser()
+ * to free global state but see the warnings there. xmlCleanupParser()
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  */
@@ -417,7 +417,7 @@ xmlInitParser(void) {
  * be used to avoid false positives from memory leak checkers in
  * static builds.
  *
- * WARNING: xmlCleanupParser assumes that all other threads that called
+ * WARNING: xmlCleanupParser() assumes that all other threads that called
  * libxml2 functions have terminated. No library calls must be made
  * after calling this function. In general, THIS FUNCTION SHOULD ONLY
  * BE CALLED RIGHT BEFORE THE WHOLE PROCESS EXITS.

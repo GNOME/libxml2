@@ -236,7 +236,7 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
  * @param ctx  the new error handling context
  * @param handler  the new handler function
  *
- * @deprecated See xmlSetStructuredErrorFunc for alternatives.
+ * @deprecated See xmlSetStructuredErrorFunc() for alternatives.
  *
  * Set the global "generic" handler and context for error messages.
  * The generic error handler will only receive fragments of error
@@ -269,14 +269,14 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  *
  * It's recommended to use the per-context error handlers instead:
  *
- * - xmlCtxtSetErrorHandler (since 2.13.0)
- * - xmlTextReaderSetStructuredErrorHandler
- * - xmlXPathSetErrorHandler (since 2.13.0)
- * - xmlXIncludeSetErrorHandler (since 2.13.0)
+ * - xmlCtxtSetErrorHandler() (since 2.13.0)
+ * - xmlTextReaderSetStructuredErrorHandler()
+ * - xmlXPathSetErrorHandler() (since 2.13.0)
+ * - xmlXIncludeSetErrorHandler() (since 2.13.0)
  * - xmlSchemaSetParserStructuredErrors
  * - xmlSchemaSetValidStructuredErrors
- * - xmlRelaxNGSetParserStructuredErrors
- * - xmlRelaxNGSetValidStructuredErrors
+ * - xmlRelaxNGSetParserStructuredErrors()
+ * - xmlRelaxNGSetValidStructuredErrors()
  *
  * Set the global "structured" handler and context for error messages.
  * If handler is NULL, the error handler is deactivated.
@@ -305,7 +305,7 @@ xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
 /**
  * @param input  an xmlParserInputPtr input
  *
- * @deprecated Use xmlFormatError.
+ * @deprecated Use xmlFormatError().
  *
  * Displays the associated file and line information for the current input
  */
@@ -398,7 +398,7 @@ xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
 /**
  * @param input  an xmlParserInputPtr input
  *
- * @deprecated Use xmlFormatError.
+ * @deprecated Use xmlFormatError().
  *
  * Displays current context within the input content for error tracking
  */

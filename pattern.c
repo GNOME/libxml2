@@ -2272,7 +2272,7 @@ xmlPatternMatch(xmlPatternPtr comp, xmlNodePtr node)
  * @param comp  the precompiled pattern
  *
  * Get a streaming context for that pattern
- * Use xmlFreeStreamCtxt to free the context.
+ * Use xmlFreeStreamCtxt() to free the context.
  *
  * @returns a pointer to the context or NULL in case of failure
  */

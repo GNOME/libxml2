@@ -2739,8 +2739,8 @@ xmlRelaxNGInitTypes(void)
 }
 
 /**
- * @deprecated This function will be made private. Call xmlCleanupParser
- * to free global state but see the warnings there. xmlCleanupParser
+ * @deprecated This function will be made private. Call xmlCleanupParser()
+ * to free global state but see the warnings there. xmlCleanupParser()
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  *
@@ -7390,7 +7390,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
  * @param warn  the warning callback
  * @param ctx  contextual data for the callbacks
  *
- * @deprecated Use xmlRelaxNGSetParserStructuredErrors.
+ * @deprecated Use xmlRelaxNGSetParserStructuredErrors().
  *
  * Set the callback functions used to handle errors for a validation context
  */
@@ -10608,7 +10608,7 @@ xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt)
  * @param warn  the warning function
  * @param ctx  the functions context
  *
- * @deprecated Use xmlRelaxNGSetValidStructuredErrors.
+ * @deprecated Use xmlRelaxNGSetValidStructuredErrors().
  *
  * Set the error and warning callback information
  */

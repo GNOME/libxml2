@@ -217,7 +217,7 @@ xmlCharInRange (unsigned int val, const xmlChRangeGroup *rptr) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsBaseChar_ch or xmlIsBaseCharQ instead
+ * Use xmlIsBaseChar_ch() or xmlIsBaseCharQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -231,7 +231,7 @@ xmlIsBaseChar(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsBlank_ch or xmlIsBlankQ instead
+ * Use xmlIsBlank_ch() or xmlIsBlankQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -245,7 +245,7 @@ xmlIsBlank(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsChar_ch or xmlIsCharQ instead
+ * Use xmlIsChar_ch() or xmlIsCharQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -259,7 +259,7 @@ xmlIsChar(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsCombiningQ instead
+ * Use xmlIsCombiningQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -273,7 +273,7 @@ xmlIsCombining(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsDigit_ch or xmlIsDigitQ instead
+ * Use xmlIsDigit_ch() or xmlIsDigitQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -287,7 +287,7 @@ xmlIsDigit(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsExtender_ch or xmlIsExtenderQ instead
+ * Use xmlIsExtender_ch() or xmlIsExtenderQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -301,7 +301,7 @@ xmlIsExtender(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsIdeographicQ instead
+ * Use xmlIsIdeographicQ() instead
  *
  * @returns true if argument valid, false otherwise
  */
@@ -315,7 +315,7 @@ xmlIsIdeographic(unsigned int ch) {
  * @param ch  character to validate
  *
  * This function is DEPRECATED.
- * Use xmlIsPubidChar_ch or xmlIsPubidCharQ instead
+ * Use xmlIsPubidChar_ch() or xmlIsPubidCharQ() instead
  *
  * @returns true if argument valid, false otherwise
  */

@@ -2878,7 +2878,7 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
  *
  * parse a value for an attribute
  * Note: the parser won't do substitution of entities here, this
- * will be handled later in xmlStringGetNodeList, unless it was
+ * will be handled later in xmlStringGetNodeList(), unless it was
  * asked for ctxt->replaceEntities != 0
  *
  * @returns the AttValue parsed or NULL.
@@ -4149,7 +4149,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
  * @param ctxt  an HTML parser context
  *
  * Parse a content: comment, sub-element, reference or text.
- * New version for non recursive htmlParseElementInternal
+ * New version for non recursive htmlParseElementInternal()
  */
 
 static void
@@ -4382,7 +4382,7 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  *
  * Parse an HTML document and invoke the SAX handlers. This is useful
  * if you're only interested in custom SAX callbacks. If you want a
- * document tree, use htmlCtxtParseDocument.
+ * document tree, use htmlCtxtParseDocument().
  *
  * @returns 0, -1 in case of error.
  */
@@ -4617,13 +4617,13 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
  * Allocate and initialize a new HTML parser context.
  *
  * This can be used to parse HTML documents into DOM trees with
- * functions like xmlCtxtReadFile or xmlCtxtReadMemory.
+ * functions like xmlCtxtReadFile() or xmlCtxtReadMemory().
  *
- * See htmlCtxtUseOptions for parser options.
+ * See htmlCtxtUseOptions() for parser options.
  *
- * See xmlCtxtSetErrorHandler for advanced error handling.
+ * See xmlCtxtSetErrorHandler() for advanced error handling.
  *
- * See htmlNewSAXParserCtxt for custom SAX parsers.
+ * See htmlNewSAXParserCtxt() for custom SAX parsers.
  *
  * @returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
@@ -4642,10 +4642,10 @@ htmlNewParserCtxt(void)
  * is NULL, the parser context will be passed as user data.
  *
  * Available since 2.11.0. If you want support older versions,
- * it's best to invoke htmlNewParserCtxt and set ctxt->sax with
+ * it's best to invoke htmlNewParserCtxt() and set ctxt->sax with
  * struct assignment.
  *
- * Also see htmlNewParserCtxt.
+ * Also see htmlNewParserCtxt().
  *
  * @returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
@@ -4701,7 +4701,7 @@ htmlCreateMemoryParserCtxtInternal(const char *url,
  * @param buffer  a pointer to a char array
  * @param size  the size of the array
  *
- * @deprecated Use htmlNewParserCtxt and htmlCtxtReadMemory.
+ * @deprecated Use htmlNewParserCtxt() and htmlCtxtReadMemory().
  *
  * Create a parser context for an HTML in-memory document. The input
  * buffer must not contain any terminating null bytes.
@@ -5179,7 +5179,7 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
  * Parse a chunk of memory in push parser mode.
  *
  * Assumes that the parser context was initialized with
- * htmlCreatePushParserCtxt.
+ * htmlCreatePushParserCtxt().
  *
  * The last chunk, which will often be empty, must be marked with
  * the `terminate` flag. With the default SAX callbacks, the resulting
@@ -5305,7 +5305,7 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
  * @param sax  the SAX handler block
  * @param userData  if using SAX, this pointer will be provided on callbacks.
  *
- * @deprecated Use htmlNewSAXParserCtxt and htmlCtxtReadDoc.
+ * @deprecated Use htmlNewSAXParserCtxt() and htmlCtxtReadDoc().
  *
  * Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks
  * to handle parse events. If sax is NULL, fallback to the default DOM
@@ -5344,7 +5344,7 @@ htmlSAXParseDoc(const xmlChar *cur, const char *encoding,
  * @param cur  a pointer to an array of xmlChar
  * @param encoding  the encoding (optional)
  *
- * @deprecated Use htmlReadDoc.
+ * @deprecated Use htmlReadDoc().
  *
  * Parse an HTML in-memory document and build a tree.
  *
@@ -5363,7 +5363,7 @@ htmlParseDoc(const xmlChar *cur, const char *encoding) {
  * @param filename  the filename
  * @param encoding  optional encoding
  *
- * @deprecated Use htmlNewParserCtxt and htmlCtxtReadFile.
+ * @deprecated Use htmlNewParserCtxt() and htmlCtxtReadFile().
  *
  * Create a parser context to read from a file.
  *
@@ -5408,7 +5408,7 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
  * @param sax  the SAX handler block
  * @param userData  if using SAX, this pointer will be provided on callbacks.
  *
- * @deprecated Use htmlNewSAXParserCtxt and htmlCtxtReadFile.
+ * @deprecated Use htmlNewSAXParserCtxt() and htmlCtxtReadFile().
  *
  * parse an HTML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
@@ -5710,7 +5710,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * cleared.
  *
  * Available since 2.14.0. With older versions, you can use
- * htmlCtxtUseOptions.
+ * htmlCtxtUseOptions().
  *
  * HTML_PARSE_RECOVER
  *
@@ -5733,7 +5733,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * HTML_PARSE_NOERROR
  *
  * Disable error and warning reports to the error handlers.
- * Errors are still accessible with xmlCtxtGetLastError.
+ * Errors are still accessible with xmlCtxtGetLastError().
  *
  * HTML_PARSE_NOWARNING
  *
@@ -5810,7 +5810,7 @@ htmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
  * @param ctxt  an HTML parser context
  * @param options  a combination of htmlParserOption(s)
  *
- * @deprecated Use htmlCtxtSetOptions.
+ * @deprecated Use htmlCtxtSetOptions().
  *
  * Applies the options to the parser context. The following options
  * are never cleared and can only be enabled:
@@ -5898,7 +5898,7 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
  * Convenience function to parse an HTML document from a zero-terminated
  * string.
  *
- * See htmlCtxtReadDoc for details.
+ * See htmlCtxtReadDoc() for details.
  *
  * @returns the resulting document tree.
  */
@@ -5934,7 +5934,7 @@ htmlReadDoc(const xmlChar *str, const char *url, const char *encoding,
  * Convenience function to parse an HTML file from the filesystem,
  * the network or a global user-defined resource loader.
  *
- * See htmlCtxtReadFile for details.
+ * See htmlCtxtReadFile() for details.
  *
  * @returns the resulting document tree.
  */
@@ -5970,7 +5970,7 @@ htmlReadFile(const char *filename, const char *encoding, int options)
  * Convenience function to parse an HTML document from memory.
  * The input buffer must not contain any terminating null bytes.
  *
- * See htmlCtxtReadMemory for details.
+ * See htmlCtxtReadMemory() for details.
  *
  * @returns the resulting document tree
  */
@@ -6013,7 +6013,7 @@ htmlReadMemory(const char *buffer, int size, const char *url,
  * NOTE that the file descriptor will not be closed when the
  * context is freed or reset.
  *
- * See htmlCtxtReadFd for details.
+ * See htmlCtxtReadFd() for details.
  *
  * @returns the resulting document tree
  */
@@ -6050,7 +6050,7 @@ htmlReadFd(int fd, const char *url, const char *encoding, int options)
  * Convenience function to parse an HTML document from I/O functions
  * and context.
  *
- * See htmlCtxtReadIO for details.
+ * See htmlCtxtReadIO() for details.
  *
  * @returns the resulting document tree
  */
@@ -6087,7 +6087,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
  *
  * Parse an HTML in-memory document and build a tree.
  *
- * See htmlCtxtUseOptions for details.
+ * See htmlCtxtUseOptions() for details.
  *
  * @returns the resulting document tree
  */
@@ -6120,7 +6120,7 @@ htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
  * Parse an HTML file from the filesystem, the network or a
  * user-defined resource loader.
  *
- * See htmlCtxtUseOptions for details.
+ * See htmlCtxtUseOptions() for details.
  *
  * @returns the resulting document tree
  */
@@ -6154,7 +6154,7 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
  * Parse an HTML in-memory document and build a tree. The input buffer must
  * not contain any terminating null bytes.
  *
- * See htmlCtxtUseOptions for details.
+ * See htmlCtxtUseOptions() for details.
  *
  * @returns the resulting document tree
  */
@@ -6187,7 +6187,7 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
  *
  * Parse an HTML from a file descriptor and build a tree.
  *
- * See htmlCtxtUseOptions for details.
+ * See htmlCtxtUseOptions() for details.
  *
  * NOTE that the file descriptor will not be closed when the
  * context is freed or reset.
@@ -6224,7 +6224,7 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
  *
  * Parse an HTML document from I/O functions and source and build a tree.
  *
- * See htmlCtxtUseOptions for details.
+ * See htmlCtxtUseOptions() for details.
  *
  * @returns the resulting document tree
  */

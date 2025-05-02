@@ -230,7 +230,7 @@ struct _xmlCharEncodingHandler {
  *
  * If this function returns XML_ERR_OK, it must fill the `out`
  * pointer with an encoding handler. The handler can be obtained
- * from xmlCharEncNewCustomHandler.
+ * from xmlCharEncNewCustomHandler().
  *
  * `flags` can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.
  *

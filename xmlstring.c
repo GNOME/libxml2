@@ -465,7 +465,7 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
  * @param str2  second xmlChar string
  * @param len  the len of `str2` or < 0
  *
- * same as xmlStrncat, but creates a new string.  The original
+ * same as xmlStrncat(), but creates a new string.  The original
  * two strings are not freed. If `len` is < 0 then the length
  * will be calculated automatically.
  *
@@ -695,7 +695,7 @@ xmlStrVASPrintf(xmlChar **out, int maxSize, const char *msg, va_list ap) {
  * @param msg  printf format string
  * @...:  arguments for format string
  *
- * See xmlStrVASPrintf.
+ * See xmlStrVASPrintf().
  *
  * @returns 0 on success, 1 if the result was truncated or on other
  * errors, -1 if a memory allocation failed.
@@ -763,7 +763,7 @@ xmlUTF8Size(const xmlChar *utf) {
  *
  * compares the two UCS4 values
  *
- * @returns result of the compare as with xmlStrncmp
+ * @returns result of the compare as with xmlStrncmp()
  */
 int
 xmlUTF8Charcmp(const xmlChar *utf1, const xmlChar *utf2) {

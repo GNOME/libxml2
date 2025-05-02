@@ -3832,7 +3832,7 @@ xmlTextWriterWriteDTDInternalEntity(xmlTextWriterPtr writer,
  * @param sysid  the system identifier, which is the URI of the DTD
  * @param ndataid  the xml notation name.
  *
- * Write a DTD external entity. The entity must have been started with xmlTextWriterStartDTDEntity
+ * Write a DTD external entity. The entity must have been started with xmlTextWriterStartDTDEntity()
  *
  * @returns the bytes written (may be 0 because of buffering) or -1 in case of error
  */

@@ -512,7 +512,7 @@ xmlCatalogDumpEntry(void *payload, void *data,
  * @param ns  the current namespace
  * @param cgroup  group node for group members
  *
- * Serializes a Catalog entry, called by xmlDumpXMLCatalog and recursively
+ * Serializes a Catalog entry, called by xmlDumpXMLCatalog() and recursively
  * for group entries
  */
 static void xmlDumpXMLCatalogNode(xmlCatalogEntryPtr catal, xmlNodePtr catalog,

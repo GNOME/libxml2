@@ -173,7 +173,7 @@ double xmlXPathPINF = 0.0;
 double xmlXPathNINF = 0.0;
 
 /**
- * @deprecated Alias for xmlInitParser.
+ * @deprecated Alias for xmlInitParser().
  */
 void
 xmlXPathInit(void) {
@@ -3640,7 +3640,7 @@ xmlXPathNodeTrailingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
  *
  * Implements the EXSLT - Sets trailing() function:
  *    node-set set:trailing (node-set, node-set)
- * `nodes` is sorted by document order, then xmlXPathNodeTrailingSorted
+ * `nodes` is sorted by document order, then xmlXPathNodeTrailingSorted()
  * is called.
  *
  * @returns the nodes in `nodes` that follow `node` in document order,
@@ -3679,7 +3679,7 @@ xmlXPathTrailingSorted (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
  * Implements the EXSLT - Sets trailing() function:
  *    node-set set:trailing (node-set, node-set)
  * `nodes1` and `nodes2` are sorted by document order, then
- * xmlXPathTrailingSorted is called.
+ * xmlXPathTrailingSorted() is called.
  *
  * @returns the nodes in `nodes1` that follow the first node in `nodes2`
  *         in document order, `nodes1` if `nodes2` is NULL or empty or
@@ -8772,7 +8772,7 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
  *  [29]   Literal ::=   '"' [^"]* '"'
  *                    | "'" [^']* "'"
  *
- * TODO: xmlXPathCompLiteral memory allocation could be improved.
+ * TODO: xmlXPathCompLiteral() memory allocation could be improved.
  */
 static void
 xmlXPathCompLiteral(xmlXPathParserContextPtr ctxt) {

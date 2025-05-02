@@ -775,7 +775,7 @@ xmlEscapeText(const xmlChar *text, int flags) {
  *
  * Do a global encoding of a string, replacing the predefined entities
  * and non ASCII values with their entities and CharRef counterparts.
- * Contrary to xmlEncodeEntities, this routine is reentrant, and result
+ * Contrary to xmlEncodeEntities(), this routine is reentrant, and result
  * must be deallocated.
  *
  * @returns A newly allocated string with the substitution done.
@@ -800,7 +800,7 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
  *
  * Do a global encoding of a string, replacing the predefined entities
  * and non ASCII values with their entities and CharRef counterparts.
- * Contrary to xmlEncodeEntities, this routine is reentrant, and result
+ * Contrary to xmlEncodeEntities(), this routine is reentrant, and result
  * must be deallocated.
  *
  * This escapes `<`, `>`, `&` and `\r`. If the document has no encoding,

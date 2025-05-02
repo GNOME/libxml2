@@ -768,7 +768,7 @@ error:
  * @deprecated Internal function, don't use.
  *
  * Allocate an element content structure.
- * Deprecated in favor of xmlNewDocElementContent
+ * Deprecated in favor of xmlNewDocElementContent()
  *
  * @returns NULL if not, otherwise the new element content structure
  */
@@ -878,7 +878,7 @@ error:
  * @deprecated Internal function, don't use.
  *
  * Build a copy of an element content description.
- * Deprecated, use xmlCopyDocElementContent instead
+ * Deprecated, use xmlCopyDocElementContent() instead
  *
  * @returns the new xmlElementContentPtr or NULL in case of error.
  */
@@ -960,7 +960,7 @@ xmlFreeDocElementContent(xmlDocPtr doc, xmlElementContentPtr cur) {
  * @deprecated Internal function, don't use.
  *
  * Free an element content structure. The whole subtree is removed.
- * Deprecated, use xmlFreeDocElementContent instead
+ * Deprecated, use xmlFreeDocElementContent() instead
  */
 void
 xmlFreeElementContent(xmlElementContentPtr cur) {
@@ -975,7 +975,7 @@ xmlFreeElementContent(xmlElementContentPtr cur) {
  *
  * @deprecated Internal function, don't use.
  *
- * Deprecated, unsafe, use xmlSnprintfElementContent
+ * Deprecated, unsafe, use xmlSnprintfElementContent()
  */
 void
 xmlSprintfElementContent(char *buf ATTRIBUTE_UNUSED,
@@ -1403,7 +1403,7 @@ xmlCopyElementTable(xmlElementTablePtr table) {
  * @param buf  the XML buffer output
  * @param elem  An element table
  *
- * @deprecated Use xmlSaveTree.
+ * @deprecated Use xmlSaveTree().
  *
  * This will dump the content of the element declaration as an XML
  * DTD definition
@@ -1948,7 +1948,7 @@ xmlCopyAttributeTable(xmlAttributeTablePtr table) {
  * @param buf  the XML buffer output
  * @param attr  An attribute declaration
  *
- * @deprecated Use xmlSaveTree.
+ * @deprecated Use xmlSaveTree().
  *
  * This will dump the content of the attribute declaration as an XML
  * DTD definition
@@ -6422,7 +6422,7 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
  *
  * Validate a document against a DTD.
  *
- * Like xmlValidateDtd but uses the parser context's error handler.
+ * Like xmlValidateDtd() but uses the parser context's error handler.
  *
  * Availabe since 2.14.0.
  *
@@ -6694,7 +6694,7 @@ xmlValidateDocumentInternal(xmlParserCtxtPtr ctxt, xmlValidCtxtPtr vctxt,
  * @param doc  a document instance
  *
  * @deprecated This function can't report malloc or other failures.
- * Use xmlCtxtValidateDocument.
+ * Use xmlCtxtValidateDocument().
  *
  * Try to validate the document instance
  *
@@ -6715,7 +6715,7 @@ xmlValidateDocument(xmlValidCtxtPtr vctxt, xmlDocPtr doc) {
  *
  * Validate a document.
  *
- * Like xmlValidateDocument but uses the parser context's error handler.
+ * Like xmlValidateDocument() but uses the parser context's error handler.
  *
  * Option XML_PARSE_DTDLOAD should be enabled in the parser context
  * to make external entities work.

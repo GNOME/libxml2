@@ -4589,7 +4589,7 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
  * @param f  	the callback function to call on error and warnings
  * @param arg  a user argument to pass to the callback function
  *
- * @deprecated Use xmlTextReaderSetStructuredErrorHandler.
+ * @deprecated Use xmlTextReaderSetStructuredErrorHandler().
  *
  * Register a callback function that will be called on error and warnings.
  *
@@ -4969,7 +4969,7 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
  * @param reader  an XML reader
  * @param maxAmpl  maximum amplification factor
  *
- * Set the maximum amplification factor. See xmlCtxtSetMaxAmplification.
+ * Set the maximum amplification factor. See xmlCtxtSetMaxAmplification().
  */
 void
 xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader, unsigned maxAmpl)

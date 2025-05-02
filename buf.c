@@ -682,7 +682,7 @@ xmlBufUpdateInput(xmlBufPtr buf, xmlParserInputPtr input, size_t pos) {
 /**
  * @param scheme  allocation method to use
  *
- * @deprecated Use xmlBufferSetAllocationScheme.
+ * @deprecated Use xmlBufferSetAllocationScheme().
  *
  * Set the buffer allocation method.  Types are
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down
@@ -694,7 +694,7 @@ xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme ATTRIBUTE_UNUSED) 
 }
 
 /**
- * @deprecated Use xmlBufferSetAllocationScheme.
+ * @deprecated Use xmlBufferSetAllocationScheme().
  *
  * Types are
  * XML_BUFFER_ALLOC_EXACT - use exact sizes, keeps memory usage down

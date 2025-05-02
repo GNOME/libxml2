@@ -1731,7 +1731,7 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
  * @returns an copy of the string, but escaped
  *
  * 25 May 2001
- * Uses xmlParseURI and xmlURIEscapeStr to try to escape correctly
+ * Uses xmlParseURI() and xmlURIEscapeStr() to try to escape correctly
  * according to RFC2396.
  *   - Carl Douglas
  */
@@ -2738,7 +2738,7 @@ done:
  * @param URI  the URI reference under consideration
  * @param base  the base value
  *
- * See xmlBuildRelativeURISafe.
+ * See xmlBuildRelativeURISafe().
  *
  * @returns a new URI string (to be freed by the caller) or NULL in case
  * error.

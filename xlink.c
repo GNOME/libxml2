@@ -93,6 +93,8 @@ xlinkSetDefaultDetect	(xlinkNodeDetectFunc func) {
  * @param doc  the document containing the node
  * @param node  the node pointer itself
  *
+ * @deprecated The XLink code was never finished.
+ *
  * Check whether the given node carries the attributes needed
  * to be a link element (or is one of the linking elements issued
  * from the (X)HTML DtDs).

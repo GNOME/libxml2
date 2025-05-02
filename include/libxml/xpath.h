@@ -229,14 +229,10 @@ typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
  * Flags for XPath engine compilation and runtime
  */
 /**
- * XML_XPATH_CHECKNS:
- *
  * check namespaces at compilation
  */
 #define XML_XPATH_CHECKNS (1<<0)
 /**
- * XML_XPATH_NOVAR:
- *
  * forbid variables in expression
  */
 #define XML_XPATH_NOVAR	  (1<<1)

@@ -22,8 +22,6 @@
 #include "private/memory.h"
 
 /**
- * MAX_URI_LENGTH:
- *
  * The definition of the URI regexp in the above RFC has no size limit
  * In practice they are usually relatively short except for the
  * data URI scheme as defined in RFC 2397. Even for data URI the usual

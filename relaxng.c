@@ -146,8 +146,6 @@ struct _xmlRelaxNGDefine {
 };
 
 /**
- * _xmlRelaxNG:
- *
  * A RelaxNGs definition
  */
 struct _xmlRelaxNG {

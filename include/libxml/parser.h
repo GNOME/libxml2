@@ -35,8 +35,6 @@ extern "C" {
 #endif
 
 /**
- * XML_DEFAULT_VERSION:
- *
  * The default version of XML used: 1.0
  */
 #define XML_DEFAULT_VERSION	"1.0"
@@ -498,7 +496,6 @@ struct _xmlSAXLocator {
 };
 
 /**
- * resolveEntitySAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param publicId  The public ID of the entity
  * @param systemId  The system ID of the entity
@@ -516,7 +513,6 @@ typedef xmlParserInputPtr (*resolveEntitySAXFunc) (void *ctx,
 				const xmlChar *publicId,
 				const xmlChar *systemId);
 /**
- * internalSubsetSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  the root element name
  * @param ExternalID  the external ID
@@ -529,7 +525,6 @@ typedef void (*internalSubsetSAXFunc) (void *ctx,
 				const xmlChar *ExternalID,
 				const xmlChar *SystemID);
 /**
- * externalSubsetSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  the root element name
  * @param ExternalID  the external ID
@@ -542,7 +537,6 @@ typedef void (*externalSubsetSAXFunc) (void *ctx,
 				const xmlChar *ExternalID,
 				const xmlChar *SystemID);
 /**
- * getEntitySAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
  *
@@ -553,7 +547,6 @@ typedef void (*externalSubsetSAXFunc) (void *ctx,
 typedef xmlEntityPtr (*getEntitySAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * getParameterEntitySAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
  *
@@ -564,7 +557,6 @@ typedef xmlEntityPtr (*getEntitySAXFunc) (void *ctx,
 typedef xmlEntityPtr (*getParameterEntitySAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * entityDeclSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  the entity name
  * @param type  the entity type
@@ -581,7 +573,6 @@ typedef void (*entityDeclSAXFunc) (void *ctx,
 				const xmlChar *systemId,
 				xmlChar *content);
 /**
- * notationDeclSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The name of the notation
  * @param publicId  The public ID of the entity
@@ -594,7 +585,6 @@ typedef void (*notationDeclSAXFunc)(void *ctx,
 				const xmlChar *publicId,
 				const xmlChar *systemId);
 /**
- * attributeDeclSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param elem  the name of the element
  * @param fullname  the attribute name
@@ -613,7 +603,6 @@ typedef void (*attributeDeclSAXFunc)(void *ctx,
 				const xmlChar *defaultValue,
 				xmlEnumerationPtr tree);
 /**
- * elementDeclSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  the element name
  * @param type  the element type
@@ -626,7 +615,6 @@ typedef void (*elementDeclSAXFunc)(void *ctx,
 				int type,
 				xmlElementContentPtr content);
 /**
- * unparsedEntityDeclSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The name of the entity
  * @param publicId  The public ID of the entity
@@ -641,7 +629,6 @@ typedef void (*unparsedEntityDeclSAXFunc)(void *ctx,
 				const xmlChar *systemId,
 				const xmlChar *notationName);
 /**
- * setDocumentLocatorSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param loc  A SAX Locator
  *
@@ -651,21 +638,18 @@ typedef void (*unparsedEntityDeclSAXFunc)(void *ctx,
 typedef void (*setDocumentLocatorSAXFunc) (void *ctx,
 				xmlSAXLocatorPtr loc);
 /**
- * startDocumentSAXFunc:
  * @param ctx  the user data (XML parser context)
  *
  * Called when the document start being processed.
  */
 typedef void (*startDocumentSAXFunc) (void *ctx);
 /**
- * endDocumentSAXFunc:
  * @param ctx  the user data (XML parser context)
  *
  * Called when the document end has been detected.
  */
 typedef void (*endDocumentSAXFunc) (void *ctx);
 /**
- * startElementSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The element name, including namespace prefix
  * @param atts  An array of name/value attributes pairs, NULL terminated
@@ -676,7 +660,6 @@ typedef void (*startElementSAXFunc) (void *ctx,
 				const xmlChar *name,
 				const xmlChar **atts);
 /**
- * endElementSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The element name
  *
@@ -685,7 +668,6 @@ typedef void (*startElementSAXFunc) (void *ctx,
 typedef void (*endElementSAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * attributeSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The attribute name, including namespace prefix
  * @param value  The attribute value
@@ -699,7 +681,6 @@ typedef void (*attributeSAXFunc) (void *ctx,
 				const xmlChar *name,
 				const xmlChar *value);
 /**
- * referenceSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
  *
@@ -708,7 +689,6 @@ typedef void (*attributeSAXFunc) (void *ctx,
 typedef void (*referenceSAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * charactersSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param ch  a xmlChar string
  * @param len  the number of xmlChar
@@ -719,7 +699,6 @@ typedef void (*charactersSAXFunc) (void *ctx,
 				const xmlChar *ch,
 				int len);
 /**
- * ignorableWhitespaceSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param ch  a xmlChar string
  * @param len  the number of xmlChar
@@ -731,7 +710,6 @@ typedef void (*ignorableWhitespaceSAXFunc) (void *ctx,
 				const xmlChar *ch,
 				int len);
 /**
- * processingInstructionSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param target  the target name
  * @param data  the PI data's
@@ -742,7 +720,6 @@ typedef void (*processingInstructionSAXFunc) (void *ctx,
 				const xmlChar *target,
 				const xmlChar *data);
 /**
- * commentSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param value  the comment content
  *
@@ -751,7 +728,6 @@ typedef void (*processingInstructionSAXFunc) (void *ctx,
 typedef void (*commentSAXFunc) (void *ctx,
 				const xmlChar *value);
 /**
- * cdataBlockSAXFunc:
  * @param ctx  the user data (XML parser context)
  * @param value  The pcdata content
  * @param len  the block length
@@ -763,7 +739,6 @@ typedef void (*cdataBlockSAXFunc) (
 				const xmlChar *value,
 				int len);
 /**
- * warningSAXFunc:
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
@@ -773,7 +748,6 @@ typedef void (*cdataBlockSAXFunc) (
 typedef void (*warningSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * errorSAXFunc:
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
@@ -783,7 +757,6 @@ typedef void (*warningSAXFunc) (void *ctx,
 typedef void (*errorSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * fatalErrorSAXFunc:
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
@@ -795,7 +768,6 @@ typedef void (*errorSAXFunc) (void *ctx,
 typedef void (*fatalErrorSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * isStandaloneSAXFunc:
  * @param ctx  the user data (XML parser context)
  *
  * Is this document tagged standalone?
@@ -804,7 +776,6 @@ typedef void (*fatalErrorSAXFunc) (void *ctx,
  */
 typedef int (*isStandaloneSAXFunc) (void *ctx);
 /**
- * hasInternalSubsetSAXFunc:
  * @param ctx  the user data (XML parser context)
  *
  * Does this document has an internal subset.
@@ -814,7 +785,6 @@ typedef int (*isStandaloneSAXFunc) (void *ctx);
 typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
 
 /**
- * hasExternalSubsetSAXFunc:
  * @param ctx  the user data (XML parser context)
  *
  * Does this document has an external subset?
@@ -829,14 +799,11 @@ typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
  *									*
  ************************************************************************/
 /**
- * XML_SAX2_MAGIC:
- *
  * Special constant found in SAX2 blocks initialized fields
  */
 #define XML_SAX2_MAGIC 0xDEEDBEAF
 
 /**
- * startElementNsSAX2Func:
  * @param ctx  the user data (XML parser context)
  * @param localname  the local name of the element
  * @param prefix  the element namespace prefix if available
@@ -865,7 +832,6 @@ typedef void (*startElementNsSAX2Func) (void *ctx,
 					const xmlChar **attributes);
 
 /**
- * endElementNsSAX2Func:
  * @param ctx  the user data (XML parser context)
  * @param localname  the local name of the element
  * @param prefix  the element namespace prefix if available

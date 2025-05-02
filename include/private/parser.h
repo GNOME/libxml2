@@ -9,14 +9,10 @@
 #define XML_MAX_URI_LENGTH 2000
 
 /**
- * XML_VCTXT_DTD_VALIDATED:
- *
  * Set after xmlValidateDtdFinal was called.
  */
 #define XML_VCTXT_DTD_VALIDATED (1u << 0)
 /**
- * XML_VCTXT_USE_PCTXT:
- *
  * Set if the validation context is part of a parser context.
  */
 #define XML_VCTXT_USE_PCTXT (1u << 1)
@@ -50,8 +46,6 @@
       ((ctxt)->input->entity->etype == XML_EXTERNAL_PARAMETER_ENTITY)))
 
 /**
- * INPUT_CHUNK:
- *
  * The parser tries to always have that amount of input ready.
  * One of the point is providing context when reporting errors.
  */

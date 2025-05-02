@@ -68,15 +68,6 @@ typedef xmlSAXHandler *xmlSAXHandlerPtr;
 typedef struct _xmlEntity xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 
-/**
- * LIBXML_NAMESPACE_DICT:
- *
- * Defines experimental behaviour:
- * 1) xmlNs gets an additional field `context` (a xmlDoc)
- * 2) when creating a tree, xmlNs->href is stored in the dict of xmlDoc.
- */
-/* #define LIBXML_NAMESPACE_DICT */
-
 /*
  * Removed, buffers always use XML_BUFFER_ALLOC_IO now.
  */
@@ -129,8 +120,6 @@ XMLPUBFUN size_t         xmlBufUse      (const xmlBufPtr buf);
 XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
 
 /*
- * LIBXML2_NEW_BUFFER:
- *
  * Macro used to express that the API use the new buffers for
  * xmlParserInputBuffer and xmlOutputBuffer. The change was
  * introduced in 2.9.0.
@@ -138,8 +127,6 @@ XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
 #define LIBXML2_NEW_BUFFER
 
 /**
- * XML_XML_NAMESPACE:
- *
  * This is the namespace for the special xml: prefix predefined in the
  * XML Namespace specification.
  */
@@ -147,8 +134,6 @@ XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
     (const xmlChar *) "http://www.w3.org/XML/1998/namespace"
 
 /**
- * XML_XML_ID:
- *
  * This is the name for the special xml:id attribute
  */
 #define XML_XML_ID (const xmlChar *) "xml:id"
@@ -400,8 +385,6 @@ struct _xmlElement {
 
 
 /**
- * XML_LOCAL_NAMESPACE:
- *
  * A namespace declaration node.
  */
 #define XML_LOCAL_NAMESPACE XML_NAMESPACE_DECL
@@ -586,16 +569,12 @@ struct _xmlNode {
 };
 
 /**
- * XML_GET_CONTENT:
- *
  * Macro to extract the content pointer of a node.
  */
 #define XML_GET_CONTENT(n)					\
     ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
 
 /**
- * XML_GET_LINE:
- *
  * Macro to extract the line number of an element node.
  */
 #define XML_GET_LINE(n)						\

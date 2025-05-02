@@ -2235,7 +2235,6 @@ xmlDumpNotationTable(xmlBufferPtr buf, xmlNotationTablePtr table) {
  *									*
  ************************************************************************/
 /**
- * DICT_FREE:
  * @param str  a string
  *
  * Free a string if it is not owned by the "dict" dictionary in the
@@ -2639,7 +2638,6 @@ xmlWalkRemoveRef(const void *data, void *user)
 }
 
 /**
- * xmlDummyCompare
  * @param data0  Value supplied by the user
  * @param data1  Value supplied by the user
  *

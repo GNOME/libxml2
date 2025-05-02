@@ -175,7 +175,6 @@ static int xmlTextReaderReadTree(xmlTextReaderPtr reader);
 static int xmlTextReaderNextTree(xmlTextReaderPtr reader);
 
 /**
- * DICT_FREE:
  * @param str  a string
  *
  * Free a string if it is not owned by the "dict" dictionary in the

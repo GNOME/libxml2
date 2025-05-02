@@ -1261,9 +1261,8 @@ xmlRegPrintStateCompact(FILE* output, xmlRegexpPtr regexp, int state)
 }
 
 /*
- * xmlRegPrintCompact
- * `output` an output stream
- * `regexp` the regexp instance
+ * @param output  an output stream
+ * @param regexp  the regexp instance
  * 
  * Print the compact representation of a regexp, in the same fashion as the
  * public xmlRegexpPrint function.

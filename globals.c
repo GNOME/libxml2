@@ -223,7 +223,6 @@ xmlMallocFunc xmlMallocAtomic = malloc;
  */
 xmlReallocFunc xmlRealloc = realloc;
 /**
- * xmlPosixStrdup
  * @param cur  the input char *
  *
  * a strdup implementation with a type signature matching POSIX
@@ -799,7 +798,6 @@ xmlGetLastErrorInternal(void) {
 /** @cond IGNORE */
 
 /**
- * DllMain:
  * @param hinstDLL  handle to DLL instance
  * @param fdwReason  Reason code for entry
  * @param lpvReserved  generic pointer (depends upon reason code)

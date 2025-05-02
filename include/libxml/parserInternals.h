@@ -33,8 +33,6 @@ extern "C" {
 #define xmlParserMaxDepth 256
 
 /**
- * XML_MAX_TEXT_LENGTH:
- *
  * Maximum size allowed for a single text node when building a tree.
  * This is not a limitation of the parser but a safety boundary feature,
  * use XML_PARSE_HUGE option to override it.
@@ -43,15 +41,11 @@ extern "C" {
 #define XML_MAX_TEXT_LENGTH 10000000
 
 /**
- * XML_MAX_HUGE_LENGTH:
- *
  * Maximum size allowed when XML_PARSE_HUGE is set.
  */
 #define XML_MAX_HUGE_LENGTH 1000000000
 
 /**
- * XML_MAX_NAME_LENGTH:
- *
  * Maximum size allowed for a markup identifier.
  * This is not a limitation of the parser but a safety boundary feature,
  * use XML_PARSE_HUGE option to override it.
@@ -62,8 +56,6 @@ extern "C" {
 #define XML_MAX_NAME_LENGTH 50000
 
 /**
- * XML_MAX_DICTIONARY_LIMIT:
- *
  * Maximum size allowed by the parser for a dictionary by default
  * This is not a limitation of the parser but a safety boundary feature,
  * use XML_PARSE_HUGE option to override it.
@@ -72,8 +64,6 @@ extern "C" {
 #define XML_MAX_DICTIONARY_LIMIT 100000000
 
 /**
- * XML_MAX_LOOKUP_LIMIT:
- *
  * Maximum size allowed by the parser for ahead lookup
  * This is an upper boundary enforced by the parser to avoid bad
  * behaviour on "unfriendly' content
@@ -82,8 +72,6 @@ extern "C" {
 #define XML_MAX_LOOKUP_LIMIT 10000000
 
 /**
- * XML_MAX_NAMELEN:
- *
  * Identifiers can be longer, but this will be more costly
  * at runtime.
  */
@@ -95,7 +83,6 @@ extern "C" {
  *									*
  ************************************************************************/
 /**
- * IS_BYTE_CHAR:
  * @param c  an byte value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -106,7 +93,6 @@ extern "C" {
 #define IS_BYTE_CHAR(c)	 xmlIsChar_ch(c)
 
 /**
- * IS_CHAR:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -118,7 +104,6 @@ extern "C" {
 #define IS_CHAR(c)   xmlIsCharQ(c)
 
 /**
- * IS_CHAR_CH:
  * @param c  an xmlChar (usually an unsigned char)
  *
  * Behaves like IS_CHAR on single-byte value
@@ -126,7 +111,6 @@ extern "C" {
 #define IS_CHAR_CH(c)  xmlIsChar_ch(c)
 
 /**
- * IS_BLANK:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -136,7 +120,6 @@ extern "C" {
 #define IS_BLANK(c)  xmlIsBlankQ(c)
 
 /**
- * IS_BLANK_CH:
  * @param c  an xmlChar value (normally unsigned char)
  *
  * Behaviour same as IS_BLANK
@@ -144,7 +127,6 @@ extern "C" {
 #define IS_BLANK_CH(c)  xmlIsBlank_ch(c)
 
 /**
- * IS_BASECHAR:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -154,7 +136,6 @@ extern "C" {
 #define IS_BASECHAR(c) xmlIsBaseCharQ(c)
 
 /**
- * IS_DIGIT:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -164,7 +145,6 @@ extern "C" {
 #define IS_DIGIT(c) xmlIsDigitQ(c)
 
 /**
- * IS_DIGIT_CH:
  * @param c  an xmlChar value (usually an unsigned char)
  *
  * Behaves like IS_DIGIT but with a single byte argument
@@ -172,7 +152,6 @@ extern "C" {
 #define IS_DIGIT_CH(c)  xmlIsDigit_ch(c)
 
 /**
- * IS_COMBINING:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -182,7 +161,6 @@ extern "C" {
 #define IS_COMBINING(c) xmlIsCombiningQ(c)
 
 /**
- * IS_COMBINING_CH:
  * @param c  an xmlChar (usually an unsigned char)
  *
  * Always false (all combining chars > 0xff)
@@ -190,7 +168,6 @@ extern "C" {
 #define IS_COMBINING_CH(c) 0
 
 /**
- * IS_EXTENDER:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -203,7 +180,6 @@ extern "C" {
 #define IS_EXTENDER(c) xmlIsExtenderQ(c)
 
 /**
- * IS_EXTENDER_CH:
  * @param c  an xmlChar value (usually an unsigned char)
  *
  * Behaves like IS_EXTENDER but with a single-byte argument
@@ -211,7 +187,6 @@ extern "C" {
 #define IS_EXTENDER_CH(c)  xmlIsExtender_ch(c)
 
 /**
- * IS_IDEOGRAPHIC:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -222,7 +197,6 @@ extern "C" {
 #define IS_IDEOGRAPHIC(c) xmlIsIdeographicQ(c)
 
 /**
- * IS_LETTER:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -233,7 +207,6 @@ extern "C" {
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
 /**
- * IS_LETTER_CH:
  * @param c  an xmlChar value (normally unsigned char)
  *
  * Macro behaves like IS_LETTER, but only check base chars
@@ -242,7 +215,6 @@ extern "C" {
 #define IS_LETTER_CH(c) xmlIsBaseChar_ch(c)
 
 /**
- * IS_ASCII_LETTER:
  * @param c  an xmlChar value
  *
  * Macro to check [a-zA-Z]
@@ -252,7 +224,6 @@ extern "C" {
                                  (((c) | 0x20) <= 0x7a))
 
 /**
- * IS_ASCII_DIGIT:
  * @param c  an xmlChar value
  *
  * Macro to check [0-9]
@@ -261,7 +232,6 @@ extern "C" {
 #define IS_ASCII_DIGIT(c)	((0x30 <= (c)) && ((c) <= 0x39))
 
 /**
- * IS_PUBIDCHAR:
  * @param c  an UNICODE value (int)
  *
  * Macro to check the following production in the XML spec:
@@ -272,7 +242,6 @@ extern "C" {
 #define IS_PUBIDCHAR(c)	xmlIsPubidCharQ(c)
 
 /**
- * IS_PUBIDCHAR_CH:
  * @param c  an xmlChar value (normally unsigned char)
  *
  * Same as IS_PUBIDCHAR but for single-byte value
@@ -514,26 +483,18 @@ XMLPUBFUN void
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
 /**
- * XML_SUBSTITUTE_NONE:
- *
  * If no entities need to be substituted.
  */
 #define XML_SUBSTITUTE_NONE	0
 /**
- * XML_SUBSTITUTE_REF:
- *
  * Whether general entities need to be substituted.
  */
 #define XML_SUBSTITUTE_REF	1
 /**
- * XML_SUBSTITUTE_PEREF:
- *
  * Whether parameter entities need to be substituted.
  */
 #define XML_SUBSTITUTE_PEREF	2
 /**
- * XML_SUBSTITUTE_BOTH:
- *
  * Both general and parameter entities need to be substituted.
  */
 #define XML_SUBSTITUTE_BOTH	3

@@ -1542,7 +1542,6 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 }
 
 /**
- * htmlStartCharData
  * @param ctxt  an HTML parser context
  *
  * Prepare for non-whitespace character data.
@@ -2162,7 +2161,6 @@ static const char *allowPCData[] = {
 };
 
 /**
- * areBlanks:
  * @param ctxt  an HTML parser context
  * @param str  a xmlChar *
  * @param len  the size of `str`
@@ -5545,7 +5543,6 @@ htmlNodeStatus(htmlNodePtr node ATTRIBUTE_UNUSED,
  *									*
  ************************************************************************/
 /**
- * DICT_FREE:
  * @param str  a string
  *
  * Free a string if it is not owned by the "dict" dictionary in the

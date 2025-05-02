@@ -69,8 +69,6 @@ typedef enum {
 } xmlSchematronTestType;
 
 /**
- * _xmlSchematronLet:
- *
  * A Schematron let variable
  */
 typedef struct _xmlSchematronLet xmlSchematronLet;
@@ -82,8 +80,6 @@ struct _xmlSchematronLet {
 };
 
 /**
- * _xmlSchematronTest:
- *
  * A Schematrons test, either an assert or a report
  */
 typedef struct _xmlSchematronTest xmlSchematronTest;
@@ -98,8 +94,6 @@ struct _xmlSchematronTest {
 };
 
 /**
- * _xmlSchematronRule:
- *
  * A Schematrons rule
  */
 typedef struct _xmlSchematronRule xmlSchematronRule;
@@ -116,8 +110,6 @@ struct _xmlSchematronRule {
 };
 
 /**
- * _xmlSchematronPattern:
- *
  * A Schematrons pattern
  */
 typedef struct _xmlSchematronPattern xmlSchematronPattern;
@@ -129,8 +121,6 @@ struct _xmlSchematronPattern {
 };
 
 /**
- * _xmlSchematron:
- *
  * A Schematrons definition
  */
 struct _xmlSchematron {

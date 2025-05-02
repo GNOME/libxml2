@@ -962,7 +962,6 @@ error:
 }
 
 /**
- * DICT_FREE:
  * @param str  a string
  *
  * Free a string if it is not owned by the "dict" dictionary in the
@@ -4910,7 +4909,7 @@ xmlDocGetRootElement(const xmlDoc *doc) {
 /**
  * @param doc  the document
  * @param root  the new document root element, if root is NULL no action is taken,
- *         to remove a node from a document use xmlUnlinkNode(root) instead.
+ *         to remove a node from a document use xmlUnlinkNode() instead.
  *
  * Set the root element of the document (doc->children is a list
  * containing possibly comments, PIs, etc ...).

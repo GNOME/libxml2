@@ -27,36 +27,26 @@ extern "C" {
 
 
 /**
- * HTML_TEXT_NODE:
- *
  * Macro. A text node in a HTML document is really implemented
  * the same way as a text node in an XML document.
  */
 #define HTML_TEXT_NODE		XML_TEXT_NODE
 /**
- * HTML_ENTITY_REF_NODE:
- *
  * Macro. An entity reference in a HTML document is really implemented
  * the same way as an entity reference in an XML document.
  */
 #define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE
 /**
- * HTML_COMMENT_NODE:
- *
  * Macro. A comment in a HTML document is really implemented
  * the same way as a comment in an XML document.
  */
 #define HTML_COMMENT_NODE	XML_COMMENT_NODE
 /**
- * HTML_PRESERVE_NODE:
- *
  * Macro. A preserved node in a HTML document is really implemented
  * the same way as a CDATA section in an XML document.
  */
 #define HTML_PRESERVE_NODE	XML_CDATA_SECTION_NODE
 /**
- * HTML_PI_NODE:
- *
  * Macro. A processing instruction in a HTML document is really implemented
  * the same way as a processing instruction in an XML document.
  */

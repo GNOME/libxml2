@@ -34,7 +34,6 @@ typedef xmlHashTable *xmlHashTablePtr;
  * serious trouble within the library.
  */
 /**
- * XML_CAST_FPTR:
  * @param fptr  pointer to a function
  *
  * Macro to do a casting from an object pointer to a

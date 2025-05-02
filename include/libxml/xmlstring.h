@@ -29,8 +29,6 @@ extern "C" {
 typedef unsigned char xmlChar;
 
 /**
- * BAD_CAST:
- *
  * Macro to cast a string to an xmlChar * when one know its safe.
  */
 #define BAD_CAST (xmlChar *)

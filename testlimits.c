@@ -89,7 +89,6 @@ static unsigned int currentTest = 0;
 static int instate = 0;
 
 /**
- * hugeMatch:
  * @param URI  an URI to test
  *
  * Check for an huge: query
@@ -104,7 +103,6 @@ hugeMatch(const char * URI) {
 }
 
 /**
- * hugeOpen:
  * @param URI  an URI to test
  *
  * @returns a pointer to the huge: query handler, in this example simply
@@ -132,7 +130,6 @@ found:
 }
 
 /**
- * hugeClose:
  * @param context  the read context
  *
  * Close the huge: query handler
@@ -164,7 +161,6 @@ size_t curlen = 0;
 size_t dotlen;
 
 /**
- * hugeRead:
  * @param context  the read context
  * @param buffer  where to store data
  * @param len  number of bytes to read
@@ -252,7 +248,6 @@ foo\
 <!-- tst -->";
 
 /**
- * crazyMatch:
  * @param URI  an URI to test
  *
  * Check for a crazy: query
@@ -267,7 +262,6 @@ crazyMatch(const char * URI) {
 }
 
 /**
- * crazyOpen:
  * @param URI  an URI to test
  *
  * @returns a pointer to the crazy: query handler, in this example simply
@@ -290,7 +284,6 @@ crazyOpen(const char * URI) {
 }
 
 /**
- * crazyClose:
  * @param context  the read context
  *
  * Close the crazy: query handler
@@ -305,7 +298,6 @@ crazyClose(void * context) {
 
 
 /**
- * crazyRead:
  * @param context  the read context
  * @param buffer  where to store data
  * @param len  number of bytes to read
@@ -405,7 +397,6 @@ initializeLibxml2(void) {
 unsigned long callbacks = 0;
 
 /**
- * isStandaloneCallback:
  * @param ctxt  An XML parser context
  *
  * Is this document tagged standalone ?
@@ -420,7 +411,6 @@ isStandaloneCallback(void *ctx ATTRIBUTE_UNUSED)
 }
 
 /**
- * hasInternalSubsetCallback:
  * @param ctxt  An XML parser context
  *
  * Does this document has an internal subset
@@ -435,7 +425,6 @@ hasInternalSubsetCallback(void *ctx ATTRIBUTE_UNUSED)
 }
 
 /**
- * hasExternalSubsetCallback:
  * @param ctxt  An XML parser context
  *
  * Does this document has an external subset
@@ -450,7 +439,6 @@ hasExternalSubsetCallback(void *ctx ATTRIBUTE_UNUSED)
 }
 
 /**
- * internalSubsetCallback:
  * @param ctxt  An XML parser context
  *
  * Does this document has an internal subset
@@ -465,7 +453,6 @@ internalSubsetCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * externalSubsetCallback:
  * @param ctxt  An XML parser context
  *
  * Does this document has an external subset
@@ -480,7 +467,6 @@ externalSubsetCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * resolveEntityCallback:
  * @param ctxt  An XML parser context
  * @param publicId  The public ID of the entity
  * @param systemId  The system ID of the entity
@@ -503,7 +489,6 @@ resolveEntityCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * getEntityCallback:
  * @param ctxt  An XML parser context
  * @param name  The entity name
  *
@@ -520,7 +505,6 @@ getEntityCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * getParameterEntityCallback:
  * @param ctxt  An XML parser context
  * @param name  The entity name
  *
@@ -538,7 +522,6 @@ getParameterEntityCallback(void *ctx ATTRIBUTE_UNUSED,
 
 
 /**
- * entityDeclCallback:
  * @param ctxt  An XML parser context
  * @param name  the entity name
  * @param type  the entity type
@@ -560,7 +543,6 @@ entityDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * attributeDeclCallback:
  * @param ctxt  An XML parser context
  * @param name  the attribute name
  * @param type  the attribute type
@@ -579,7 +561,6 @@ attributeDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * elementDeclCallback:
  * @param ctxt  An XML parser context
  * @param name  the element name
  * @param type  the element type
@@ -597,7 +578,6 @@ elementDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * notationDeclCallback:
  * @param ctxt  An XML parser context
  * @param name  The name of the notation
  * @param publicId  The public ID of the entity
@@ -615,7 +595,6 @@ notationDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * unparsedEntityDeclCallback:
  * @param ctxt  An XML parser context
  * @param name  The name of the entity
  * @param publicId  The public ID of the entity
@@ -635,7 +614,6 @@ unparsedEntityDeclCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * setDocumentLocatorCallback:
  * @param ctxt  An XML parser context
  * @param loc  A SAX Locator
  *
@@ -650,7 +628,6 @@ setDocumentLocatorCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * startDocumentCallback:
  * @param ctxt  An XML parser context
  *
  * called when the document start being processed.
@@ -662,7 +639,6 @@ startDocumentCallback(void *ctx ATTRIBUTE_UNUSED)
 }
 
 /**
- * endDocumentCallback:
  * @param ctxt  An XML parser context
  *
  * called when the document end has been detected.
@@ -675,7 +651,6 @@ endDocumentCallback(void *ctx ATTRIBUTE_UNUSED)
 
 #if 0
 /**
- * startElementCallback:
  * @param ctxt  An XML parser context
  * @param name  The element name
  *
@@ -691,7 +666,6 @@ startElementCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * endElementCallback:
  * @param ctxt  An XML parser context
  * @param name  The element name
  *
@@ -707,7 +681,6 @@ endElementCallback(void *ctx ATTRIBUTE_UNUSED,
 #endif
 
 /**
- * charactersCallback:
  * @param ctxt  An XML parser context
  * @param ch  a xmlChar string
  * @param len  the number of xmlChar
@@ -724,7 +697,6 @@ charactersCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * referenceCallback:
  * @param ctxt  An XML parser context
  * @param name  The entity name
  *
@@ -738,7 +710,6 @@ referenceCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * ignorableWhitespaceCallback:
  * @param ctxt  An XML parser context
  * @param ch  a xmlChar string
  * @param start  the first char in the string
@@ -756,7 +727,6 @@ ignorableWhitespaceCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * processingInstructionCallback:
  * @param ctxt  An XML parser context
  * @param target  the target name
  * @param data  the PI data's
@@ -773,7 +743,6 @@ processingInstructionCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * cdataBlockCallback:
  * @param ctx  the user data (XML parser context)
  * @param value  The pcdata content
  * @param len  the block length
@@ -789,7 +758,6 @@ cdataBlockCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * commentCallback:
  * @param ctxt  An XML parser context
  * @param value  the comment content
  *
@@ -803,7 +771,6 @@ commentCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * warningCallback:
  * @param ctxt  An XML parser context
  * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
@@ -819,7 +786,6 @@ warningCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * errorCallback:
  * @param ctxt  An XML parser context
  * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
@@ -835,7 +801,6 @@ errorCallback(void *ctx ATTRIBUTE_UNUSED, const char *msg ATTRIBUTE_UNUSED,
 }
 
 /**
- * fatalErrorCallback:
  * @param ctxt  An XML parser context
  * @param msg  the message to display/transmit
  * @...:  extra parameters for the message display
@@ -855,7 +820,6 @@ fatalErrorCallback(void *ctx ATTRIBUTE_UNUSED,
  */
 
 /**
- * startElementNsCallback:
  * @param ctxt  An XML parser context
  * @param name  The element name
  *
@@ -876,7 +840,6 @@ startElementNsCallback(void *ctx ATTRIBUTE_UNUSED,
 }
 
 /**
- * endElementCallback:
  * @param ctxt  An XML parser context
  * @param name  The element name
  *
@@ -935,7 +898,6 @@ static xmlSAXHandlerPtr callbackSAX2Handler = &callbackSAX2HandlerStruct;
  ************************************************************************/
 
 /**
- * readerTest:
  * @param filename  the file to parse
  * @param max_size  size of the limit to test
  * @param options  parsing options
@@ -987,7 +949,6 @@ saxTest(const char *filename, size_t limit, int options, int fail) {
 }
 #ifdef LIBXML_READER_ENABLED
 /**
- * readerTest:
  * @param filename  the file to parse
  * @param max_size  size of the limit to test
  * @param options  parsing options

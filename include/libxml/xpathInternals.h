@@ -223,23 +223,18 @@ XMLPUBFUN void *
     { while ((ns)->nodeNr > 0) (ns)->nodeTab[--(ns)->nodeNr] = NULL; }
 
 /**
- * CHECK_ERROR:
- *
  * Macro to return from the function if an XPath error was detected.
  */
 #define CHECK_ERROR							\
     if (ctxt->error != XPATH_EXPRESSION_OK) return
 
 /**
- * CHECK_ERROR0:
- *
  * Macro to return 0 from the function if an XPath error was detected.
  */
 #define CHECK_ERROR0							\
     if (ctxt->error != XPATH_EXPRESSION_OK) return(0)
 
 /**
- * XP_ERROR:
  * @param X  the error code
  *
  * Macro to raise an XPath error and return.
@@ -248,7 +243,6 @@ XMLPUBFUN void *
     { xmlXPathErr(ctxt, X); return; }
 
 /**
- * XP_ERROR0:
  * @param X  the error code
  *
  * Macro to raise an XPath error and return 0.
@@ -257,7 +251,6 @@ XMLPUBFUN void *
     { xmlXPathErr(ctxt, X); return(0); }
 
 /**
- * CHECK_TYPE:
  * @param typeval  the XPath type
  *
  * Macro to check that the value on top of the XPath stack is of a given
@@ -268,7 +261,6 @@ XMLPUBFUN void *
         XP_ERROR(XPATH_INVALID_TYPE)
 
 /**
- * CHECK_TYPE0:
  * @param typeval  the XPath type
  *
  * Macro to check that the value on top of the XPath stack is of a given
@@ -279,7 +271,6 @@ XMLPUBFUN void *
         XP_ERROR0(XPATH_INVALID_TYPE)
 
 /**
- * CHECK_ARITY:
  * @param x  the number of expected args
  *
  * Macro to check that the number of args passed to an XPath function matches.
@@ -292,8 +283,6 @@ XMLPUBFUN void *
         XP_ERROR(XPATH_STACK_ERROR);
 
 /**
- * CAST_TO_STRING:
- *
  * Macro to try to cast the value on the top of the XPath stack to a string.
  */
 #define CAST_TO_STRING							\
@@ -301,8 +290,6 @@ XMLPUBFUN void *
         xmlXPathStringFunction(ctxt, 1);
 
 /**
- * CAST_TO_NUMBER:
- *
  * Macro to try to cast the value on the top of the XPath stack to a number.
  */
 #define CAST_TO_NUMBER							\
@@ -310,8 +297,6 @@ XMLPUBFUN void *
         xmlXPathNumberFunction(ctxt, 1);
 
 /**
- * CAST_TO_BOOLEAN:
- *
  * Macro to try to cast the value on the top of the XPath stack to a boolean.
  */
 #define CAST_TO_BOOLEAN							\

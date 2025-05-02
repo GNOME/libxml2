@@ -376,7 +376,6 @@ xmlNsErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
- * xmlNsWarn
  * @param ctxt  an XML parser context
  * @param error  the error number
  * @param msg  the message
@@ -1993,7 +1992,6 @@ xmlCtxtPopInput(xmlParserCtxtPtr ctxt)
 }
 
 /**
- * nodePush:
  * @param ctxt  an XML parser context
  * @param value  the element node
  *
@@ -2040,7 +2038,6 @@ nodePush(xmlParserCtxtPtr ctxt, xmlNodePtr value)
 }
 
 /**
- * nodePop:
  * @param ctxt  an XML parser context
  *
  * @deprecated Internal function, do not use.
@@ -2068,7 +2065,6 @@ nodePop(xmlParserCtxtPtr ctxt)
 }
 
 /**
- * nameNsPush:
  * @param ctxt  an XML parser context
  * @param value  the element name
  * @param prefix  the element prefix
@@ -2127,7 +2123,6 @@ mem_error:
 }
 #ifdef LIBXML_PUSH_ENABLED
 /**
- * nameNsPop:
  * @param ctxt  an XML parser context
  *
  * Pops the top element/prefix/URI name from the name stack
@@ -2153,7 +2148,6 @@ nameNsPop(xmlParserCtxtPtr ctxt)
 #endif /* LIBXML_PUSH_ENABLED */
 
 /**
- * namePop:
  * @param ctxt  an XML parser context
  *
  * @deprecated Internal function, do not use.
@@ -2836,7 +2830,6 @@ xmlStringDecodeEntities(xmlParserCtxtPtr ctxt, const xmlChar *str,
  ************************************************************************/
 
 /**
- * areBlanks:
  * @param ctxt  an XML parser context
  * @param str  a xmlChar *
  * @param len  the size of `str`
@@ -6882,7 +6875,6 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
 }
 
 /**
- * xmlParseConditionalSections
  * @param ctxt  an XML parser context
  *
  * Parse a conditional section. Always consumes '<!['.
@@ -13104,7 +13096,6 @@ xmlParseDoc(const xmlChar *cur) {
  ************************************************************************/
 
 /**
- * DICT_FREE:
  * @param str  a string
  *
  * Free a string if it is not owned by the "dict" dictionary in the

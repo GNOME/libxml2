@@ -288,7 +288,6 @@ xmlIOErr(int err)
 #if defined(_WIN32)
 
 /**
- * __xmlIOWin32UTF8ToWChar:
  * @param u8String  uft-8 string
  *
  * Convert a string from utf-8 to wchar (WINDOWS ONLY!)
@@ -2061,9 +2060,7 @@ xmlParserInputBufferPush(xmlParserInputBufferPtr in,
     return(nbchars);
 }
 
-/**
- * endOfInput:
- *
+/*
  * When reading from an Input channel indicated end of file or error
  * don't reread from it again.
  */

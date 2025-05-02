@@ -893,7 +893,6 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur, xmlSaveCtxtPtr ctxt) {
 }
 
 /**
- * xmlNsListDumpOutputCtxt
  * @param ctxt  the save context
  * @param cur  the first namespace
  *
@@ -1468,7 +1467,6 @@ xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur,
  ************************************************************************/
 
 /**
- * xhtmlIsEmpty:
  * @param node  the node
  *
  * Check if a node is an empty xhtml node
@@ -1535,7 +1533,6 @@ xhtmlIsEmpty(xmlNodePtr node) {
 }
 
 /**
- * xhtmlAttrListDumpOutput:
  * @param ctxt  the save context
  * @param cur  the first attribute pointer
  *
@@ -1604,7 +1601,6 @@ xhtmlAttrListDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
 }
 
 /**
- * xhtmlNodeDumpOutput:
  * @param ctxt  the save context
  * @param cur  the current node
  *

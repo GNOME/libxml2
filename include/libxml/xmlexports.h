@@ -59,10 +59,10 @@
   #if defined(IN_LIBXML)
     #define XML_DEPRECATED
   #elif __GNUC__ * 100 + __GNUC_MINOR__ >= 301
-    #define XML_DEPRECATED __attribute__((deprecated))
+    #define XML_DEPRECATED __attribute__((deprecated("See https://gnome.pages.gitlab.gnome.org/libxml2/html/deprecated.html")))
   #elif defined(_MSC_VER) && _MSC_VER >= 1400
     /* Available since Visual Studio 2005 */
-    #define XML_DEPRECATED __declspec(deprecated)
+    #define XML_DEPRECATED __declspec(deprecated("See https://gnome.pages.gitlab.gnome.org/libxml2/html/deprecated.html"))
   #else
     #define XML_DEPRECATED
   #endif

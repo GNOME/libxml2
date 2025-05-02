@@ -157,7 +157,7 @@ xmlWriterErrMsgInt(xmlTextWriterPtr ctxt, xmlParserErrors error,
 /**
  * @param out  an xmlOutputBufferPtr
  *
- * Create a new xmlNewTextWriter structure using an xmlOutputBufferPtr
+ * Create a new xmlTextWriter structure using an xmlOutputBufferPtr
  * NOTE: the `out` parameter will be deallocated when the writer is closed
  *       (if the call succeed.)
  *
@@ -219,7 +219,7 @@ xmlNewTextWriter(xmlOutputBufferPtr out)
  * @param uri  the URI of the resource for the output
  * @param compression  compress the output?
  *
- * Create a new xmlNewTextWriter structure with `uri` as output
+ * Create a new xmlTextWriter structure with `uri` as output
  *
  * @returns the new xmlTextWriterPtr or NULL in case of error
  */
@@ -253,7 +253,7 @@ xmlNewTextWriterFilename(const char *uri, int compression)
  * @param buf  xmlBufferPtr
  * @param compression  compress the output?
  *
- * Create a new xmlNewTextWriter structure with `buf` as output
+ * Create a new xmlTextWriter structure with `buf` as output
  * TODO: handle compression
  *
  * @returns the new xmlTextWriterPtr or NULL in case of error
@@ -288,7 +288,7 @@ xmlNewTextWriterMemory(xmlBufferPtr buf, int compression ATTRIBUTE_UNUSED)
  * @param ctxt  xmlParserCtxtPtr to hold the new XML document tree
  * @param compression  compress the output?
  *
- * Create a new xmlNewTextWriter structure with `ctxt` as output
+ * Create a new xmlTextWriter structure with `ctxt` as output
  * NOTE: the `ctxt` context will be freed with the resulting writer
  *       (if the call succeeds).
  * TODO: handle compression
@@ -334,7 +334,7 @@ xmlNewTextWriterPushParser(xmlParserCtxtPtr ctxt,
  * @param doc  address of a xmlDocPtr to hold the new XML document tree
  * @param compression  compress the output?
  *
- * Create a new xmlNewTextWriter structure with @*doc as output
+ * Create a new xmlTextWriter structure with @*doc as output
  *
  * @returns the new xmlTextWriterPtr or NULL in case of error
  */
@@ -393,7 +393,7 @@ xmlNewTextWriterDoc(xmlDocPtr * doc, int compression)
  * @param node  xmlNodePtr or NULL for doc->children
  * @param compression  compress the output?
  *
- * Create a new xmlNewTextWriter structure with `doc` as output
+ * Create a new xmlTextWriter structure with `doc` as output
  * starting at `node`
  *
  * @returns the new xmlTextWriterPtr or NULL in case of error

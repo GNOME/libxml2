@@ -4,7 +4,10 @@ doxygen = find_program('doxygen')
 
 doxygen_docs = custom_target(
     'Doxygen documentation',
-    input: [ xml_src_files, libxml_headers ],
+    input: [
+        xml_src_files, libxml_headers,
+        files('libxml2.css', 'mainpage.md'),
+    ],
     output: [ 'html', 'xml' ],
     command: [ doxygen, '-q', doxyfile ],
     env: {

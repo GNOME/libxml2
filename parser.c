@@ -10415,7 +10415,7 @@ xmlParseXMLDecl(xmlParserCtxtPtr ctxt) {
 /**
  * @param ctxt  parser context
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns the version from the XML declaration.
  */
@@ -10430,7 +10430,7 @@ xmlCtxtGetVersion(xmlParserCtxtPtr ctxt) {
 /**
  * @param ctxt  parser context
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns the value from the standalone document declaration.
  */
@@ -11593,7 +11593,7 @@ xmlCreateIOParserCtxt(xmlSAXHandlerPtr sax, void *user_data,
  * Option XML_PARSE_DTDLOAD should be enabled in the parser context
  * to make external entities work.
  *
- * Availabe since 2.14.0.
+ * @since 2.14.0
  *
  * @returns the resulting xmlDtdPtr or NULL in case of error.
  * `input` will be freed by the function in any case.
@@ -12127,7 +12127,7 @@ xmlParseBalancedChunkMemory(xmlDocPtr doc, xmlSAXHandlerPtr sax,
  *
  * Always consumes `input` even in error case.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns a node list or NULL in case of error.
  */
@@ -13325,7 +13325,9 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * Applies the options to the parser context. Unset options are
  * cleared.
  *
- * Available since 2.13.0. With older versions, you can use
+ * @since 2.13.0
+ *
+ * With older versions, you can use
  * xmlCtxtUseOptions().
  *
  * XML_PARSE_RECOVER
@@ -13371,7 +13373,7 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Disables loading of external DTDs or entities.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * XML_PARSE_NOERROR
  *
@@ -13477,19 +13479,19 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * Enable input decompression. Setting this option is discouraged
  * to avoid zip bombs.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * XML_PARSE_NO_SYS_CATALOG
  *
  * Disables the global system XML catalog.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * XML_PARSE_CATALOG_PI
  *
  * Enable XML catalog processing instructions.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -13510,7 +13512,7 @@ xmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
  *
  * Get the current options of the parser context.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns the current options set in the parser context, or -1 if ctxt is NULL.
  */
@@ -13602,7 +13604,7 @@ xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt, unsigned maxAmpl)
  * Parse an XML document and return the resulting document tree.
  * Takes ownership of the input object.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns the resulting document tree or NULL
  */

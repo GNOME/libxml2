@@ -4722,7 +4722,7 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
  * Register a callback function that will be called to load external
  * resources like entities.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  */
 void
 xmlTextReaderSetResourceLoader(xmlTextReaderPtr reader,
@@ -4982,7 +4982,7 @@ xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader, unsigned maxAmpl)
 /**
  * @param reader  an XML reader
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns the last error.
  */

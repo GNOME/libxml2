@@ -2105,7 +2105,7 @@ xmlStreamWantsAnyNode(xmlStreamCtxtPtr streamCtxt)
  *
  * Compile a pattern.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 on success, 1 on error, -1 if a memory allocation failed.
  */

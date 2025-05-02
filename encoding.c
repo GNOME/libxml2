@@ -862,7 +862,7 @@ xmlFindExtraHandler(const char *norig, const char *name, xmlCharEncFlags flags,
  * If the encoding is UTF-8, a NULL handler and no error code will
  * be returned.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another
  * xmlParserErrors error code.
@@ -943,7 +943,7 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  *
  * `flags` can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another
  * xmlParserErrors error code.
@@ -1004,7 +1004,7 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
  * If the encoding is UTF-8, a NULL handler and no error code will
  * be returned.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns XML_ERR_OK, XML_ERR_UNSUPPORTED_ENCODING or another
  * xmlParserErrors error code.

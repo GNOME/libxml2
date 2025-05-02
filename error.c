@@ -418,7 +418,7 @@ xmlParserPrintFileContext(xmlParserInputPtr input) {
  * This can result in a verbose multi-line report including additional
  * information from the parser context.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  */
 void
 xmlFormatError(const xmlError *err, xmlGenericErrorFunc channel, void *data)

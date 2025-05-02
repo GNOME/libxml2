@@ -4857,7 +4857,7 @@ xmlXPathFreeContext(xmlXPathContextPtr ctxt) {
  * Register a callback function that will be called on errors and
  * warnings. If handler is NULL, the error handler will be deactivated.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  */
 void
 xmlXPathSetErrorHandler(xmlXPathContextPtr ctxt,

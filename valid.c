@@ -2367,7 +2367,7 @@ xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
  *
  * Register a new id declaration
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 1 on success, 0 if the ID already exists, -1 if a memory
  * allocation fails.
@@ -6424,7 +6424,7 @@ xmlValidateDtd(xmlValidCtxtPtr ctxt, xmlDocPtr doc, xmlDtdPtr dtd) {
  *
  * Like xmlValidateDtd() but uses the parser context's error handler.
  *
- * Availabe since 2.14.0.
+ * @since 2.14.0
  *
  * @returns 1 if valid or 0 otherwise.
  */
@@ -6720,7 +6720,7 @@ xmlValidateDocument(xmlValidCtxtPtr vctxt, xmlDocPtr doc) {
  * Option XML_PARSE_DTDLOAD should be enabled in the parser context
  * to make external entities work.
  *
- * Availabe since 2.14.0.
+ * @since 2.14.0
  *
  * @returns 1 if valid or 0 otherwise.
  */

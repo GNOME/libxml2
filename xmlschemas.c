@@ -21173,7 +21173,7 @@ xmlSchemaGetParserErrors(xmlSchemaParserCtxtPtr ctxt,
  * Register a callback function that will be called to load documents
  * or external entities.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  */
 void
 xmlSchemaSetResourceLoader(xmlSchemaParserCtxtPtr ctxt,

@@ -4154,7 +4154,7 @@ xmlTextWriterFlush(xmlTextWriterPtr writer)
  *
  * Flushes and closes the output buffer.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns an xmlParserErrors code.
  */

@@ -4641,7 +4641,9 @@ htmlNewParserCtxt(void)
  * Allocate and initialize a new HTML SAX parser context. If userData
  * is NULL, the parser context will be passed as user data.
  *
- * Available since 2.11.0. If you want support older versions,
+ * @since 2.11.0
+ *
+ * If you want support older versions,
  * it's best to invoke htmlNewParserCtxt() and set ctxt->sax with
  * struct assignment.
  *
@@ -5709,7 +5711,9 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * Applies the options to the parser context. Unset options are
  * cleared.
  *
- * Available since 2.14.0. With older versions, you can use
+ * @since 2.14.0
+ *
+ * With older versions, you can use
  * htmlCtxtUseOptions().
  *
  * HTML_PARSE_RECOVER
@@ -5724,7 +5728,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  * For now, this is only usable to tokenize HTML5 with custom SAX
  * callbacks. A tree builder isn't implemented yet.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * HTML_PARSE_NODEFDTD
  *
@@ -5768,7 +5772,9 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Relax some internal limits.
  *
- * Available since 2.14.0. Use XML_PARSE_HUGE with older versions.
+ * @since 2.14.0
+ *
+ * Use XML_PARSE_HUGE with older versions.
  *
  * Maximum size of text nodes, tags, comments, CDATA sections
  *
@@ -5795,7 +5801,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * Enable reporting of line numbers larger than 65535.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -5853,7 +5859,7 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
  *
  * Parse an HTML document and return the resulting document tree.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns the resulting document tree or NULL
  */

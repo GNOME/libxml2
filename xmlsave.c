@@ -228,7 +228,7 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
  *
  * Sets the indent string.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  *
  * @returns 0 on success, -1 if the string is NULL, empty or too long.
  */
@@ -2168,7 +2168,7 @@ xmlSaveClose(xmlSaveCtxtPtr ctxt)
  * Close a document saving context, i.e. make sure that all bytes have
  * been output and free the associated data.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns an xmlParserErrors code.
  */

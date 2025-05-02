@@ -971,7 +971,7 @@ xmlParse3986URIReference(xmlURIPtr uri, const char *str) {
  *
  * URI-reference = [ absoluteURI | relativeURI ] [ "\#" fragment ]
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 on success, an error code (typically 1) if the URI is invalid
  * or -1 if a memory allocation failed.
@@ -1991,7 +1991,7 @@ err_memory:
  *
  * 5.2. Resolving Relative References to Absolute Form
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.
@@ -2512,7 +2512,7 @@ done:
  *     img/pic1.gif                     ../img/pic1.gif
  *     http://site1.com/docs/pic1.gif   http://site1.com/docs/pic1.gif
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.

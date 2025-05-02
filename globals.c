@@ -776,7 +776,7 @@ xmlGetLocalRngState(void) {
  * allocation signals a typically fatal and irrecoverable out-of-memory
  * situation. Don't call any library functions in this case.
  *
- * Available since 2.12.0.
+ * @since 2.12.0
  */
 int
 xmlCheckThreadLocalStorage(void) {

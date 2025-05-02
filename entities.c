@@ -178,7 +178,7 @@ error:
  *
  * Register a new entity for this document.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns an xmlParserErrors error code.
  */

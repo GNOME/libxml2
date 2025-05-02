@@ -1982,7 +1982,7 @@ xmlXIncludeDoProcessRoot(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
 /**
  * @param ctxt  an XInclude processing context
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns the last error code.
  */
@@ -2001,7 +2001,7 @@ xmlXIncludeGetLastError(xmlXIncludeCtxtPtr ctxt) {
  * Register a callback function that will be called on errors and
  * warnings. If handler is NULL, the error handler will be deactivated.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  */
 void
 xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,
@@ -2020,7 +2020,7 @@ xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,
  * Register a callback function that will be called to load included
  * documents.
  *
- * Available since 2.14.0.
+ * @since 2.14.0
  */
 void
 xmlXIncludeSetResourceLoader(xmlXIncludeCtxtPtr ctxt,

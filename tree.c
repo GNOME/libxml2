@@ -5201,7 +5201,7 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
  * However it does not return the document base (5.1.3), use
  * doc->URL in this case
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 in case of success, 1 if a URI or argument is invalid, -1 if a
  * memory allocation failed.
@@ -5720,7 +5720,7 @@ xmlTextMerge(xmlNodePtr first, xmlNodePtr second) {
  * terminated array of namespace pointers that must be freed by
  * the caller.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 on success, 1 if no namespaces were found, -1 if a
  * memory allocation failed.
@@ -6562,7 +6562,7 @@ xmlHasNsProp(const xmlNode *node, const xmlChar *name, const xmlChar *nameSpace)
  * This does the entity substitution. The returned value must be
  * freed by the caller.
  *
- * Available since 2.13.0.
+ * @since 2.13.0
  *
  * @returns 0 on success, 1 if no attribute was found, -1 if a
  * memory allocation failed.

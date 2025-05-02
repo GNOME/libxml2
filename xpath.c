@@ -2043,7 +2043,7 @@ xmlXPathValuePush(xmlXPathParserContextPtr ctxt, xmlXPathObjectPtr value)
  * @param ctxt  an XPath parser context
  *
  * Pops a boolean from the stack, handling conversion if needed.
- * Check error with \#xmlXPathCheckError.
+ * Check error with xmlXPathCheckError.
  *
  * @returns the boolean
  */
@@ -2069,7 +2069,7 @@ xmlXPathPopBoolean (xmlXPathParserContextPtr ctxt) {
  * @param ctxt  an XPath parser context
  *
  * Pops a number from the stack, handling conversion if needed.
- * Check error with \#xmlXPathCheckError.
+ * Check error with xmlXPathCheckError.
  *
  * @returns the number
  */
@@ -2095,7 +2095,7 @@ xmlXPathPopNumber (xmlXPathParserContextPtr ctxt) {
  * @param ctxt  an XPath parser context
  *
  * Pops a string from the stack, handling conversion if needed.
- * Check error with \#xmlXPathCheckError.
+ * Check error with xmlXPathCheckError.
  *
  * @returns the string
  */
@@ -2120,7 +2120,7 @@ xmlXPathPopString (xmlXPathParserContextPtr ctxt) {
  * @param ctxt  an XPath parser context
  *
  * Pops a node-set from the stack, handling conversion if needed.
- * Check error with \#xmlXPathCheckError.
+ * Check error with xmlXPathCheckError.
  *
  * @returns the node-set
  */
@@ -2149,7 +2149,7 @@ xmlXPathPopNodeSet (xmlXPathParserContextPtr ctxt) {
  * @param ctxt  an XPath parser context
  *
  * Pops an external object from the stack, handling conversion if needed.
- * Check error with \#xmlXPathCheckError.
+ * Check error with xmlXPathCheckError.
  *
  * @returns the object
  */
@@ -3447,7 +3447,7 @@ error:
  *
  * Implements the EXSLT - Sets distinct() function:
  *    node-set set:distinct (node-set)
- * `nodes` is sorted by document order, then \#exslSetsDistinctSorted
+ * `nodes` is sorted by document order, then exslSetsDistinctSorted
  * is called with the sorted node-set
  *
  * @returns a subset of the nodes contained in `nodes`, or `nodes` if
@@ -3536,7 +3536,7 @@ xmlXPathNodeLeadingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
  *
  * Implements the EXSLT - Sets leading() function:
  *    node-set set:leading (node-set, node-set)
- * `nodes` is sorted by document order, then \#exslSetsNodeLeadingSorted
+ * `nodes` is sorted by document order, then exslSetsNodeLeadingSorted
  * is called.
  *
  * @returns the nodes in `nodes` that precede `node` in document order,
@@ -3575,7 +3575,7 @@ xmlXPathLeadingSorted (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
  * Implements the EXSLT - Sets leading() function:
  *    node-set set:leading (node-set, node-set)
  * `nodes1` and `nodes2` are sorted by document order, then
- * \#exslSetsLeadingSorted is called.
+ * exslSetsLeadingSorted is called.
  *
  * @returns the nodes in `nodes1` that precede the first node in `nodes2`
  *         in document order, `nodes1` if `nodes2` is NULL or empty or
@@ -3640,7 +3640,7 @@ xmlXPathNodeTrailingSorted (xmlNodeSetPtr nodes, xmlNodePtr node) {
  *
  * Implements the EXSLT - Sets trailing() function:
  *    node-set set:trailing (node-set, node-set)
- * `nodes` is sorted by document order, then \#xmlXPathNodeTrailingSorted
+ * `nodes` is sorted by document order, then xmlXPathNodeTrailingSorted
  * is called.
  *
  * @returns the nodes in `nodes` that follow `node` in document order,
@@ -3679,7 +3679,7 @@ xmlXPathTrailingSorted (xmlNodeSetPtr nodes1, xmlNodeSetPtr nodes2) {
  * Implements the EXSLT - Sets trailing() function:
  *    node-set set:trailing (node-set, node-set)
  * `nodes1` and `nodes2` are sorted by document order, then
- * \#xmlXPathTrailingSorted is called.
+ * xmlXPathTrailingSorted is called.
  *
  * @returns the nodes in `nodes1` that follow the first node in `nodes2`
  *         in document order, `nodes1` if `nodes2` is NULL or empty or

@@ -15,7 +15,7 @@ endif
 
 DIST_SUBDIRS = include . doc example fuzz python
 
-AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include -DSYSCONFDIR='"$(sysconfdir)"'
+AM_CPPFLAGS = -I$(builddir)/include -I$(srcdir)/include
 
 check_PROGRAMS = \
 	runsuite \

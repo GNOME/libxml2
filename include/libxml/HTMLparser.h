@@ -200,37 +200,84 @@ XMLPUBFUN void
  */
 
 /**
- * This is the set of HTML parser options that can be passed down
- * to the htmlReadDoc() and similar calls. See htmlCtxtSetOptions()
- * for a more detailed description.
+ * This is the set of HTML parser options that can be passed to
+ * htmlReadDoc(), htmlCtxtSetOptions() and other functions.
  */
 typedef enum {
-    /** No effect */
-    HTML_PARSE_RECOVER  = 1<<0,
-    /** do not default a doctype if not found */
+    /**
+     * No effect as of 2.14.0.
+     */
+    HTML_PARSE_RECOVER = 1<<0,
+    /**
+     * Do not default to a doctype if none was found.
+     */
     HTML_PARSE_NODEFDTD = 1<<2,
-    /** suppress error reports */
-    HTML_PARSE_NOERROR	= 1<<5,
-    /** suppress warning reports */
-    HTML_PARSE_NOWARNING= 1<<6,
-    /** No effect */
-    HTML_PARSE_PEDANTIC	= 1<<7,
-    /** remove blank nodes */
-    HTML_PARSE_NOBLANKS	= 1<<8,
-    /** No effect */
-    HTML_PARSE_NONET	= 1<<11,
-    /** Do not add implied html/body... elements */
-    HTML_PARSE_NOIMPLIED= 1<<13,
-    /** compact small text nodes */
-    HTML_PARSE_COMPACT  = 1<<16,
-    /** relax any hardcoded limit from the parser */
-    HTML_PARSE_HUGE     = 1<<19,
-    /** ignore internal document encoding hint */
-    HTML_PARSE_IGNORE_ENC=1<<21,
-    /** Store big lines numbers in text PSVI field */
-    HTML_PARSE_BIG_LINES= 1<<22,
-    /** HTML5 support */
-    HTML_PARSE_HTML5    = 1<<26
+    /**
+     * Disable error and warning reports to the error handlers.
+     * Errors are still accessible with xmlCtxtGetLastError().
+     */
+    HTML_PARSE_NOERROR = 1<<5,
+    /**
+     * Disable warning reports.
+     */
+    HTML_PARSE_NOWARNING = 1<<6,
+    /**
+     * No effect.
+     */
+    HTML_PARSE_PEDANTIC = 1<<7,
+    /**
+     * Remove some text nodes containing only whitespace from the
+     * result document. Which nodes are removed depends on a conservative
+     * heuristic. The reindenting feature of the serialization code relies
+     * on this option to be set when parsing. Use of this option is
+     * DISCOURAGED.
+     */
+    HTML_PARSE_NOBLANKS = 1<<8,
+    /**
+     * No effect.
+     */
+    HTML_PARSE_NONET = 1<<11,
+    /**
+     * Do not add implied html, head or body elements.
+     */
+    HTML_PARSE_NOIMPLIED = 1<<13,
+    /**
+     * Store small strings directly in the node struct to save
+     * memory.
+    */
+    HTML_PARSE_COMPACT = 1<<16,
+    /**
+     * Relax some internal limits. See XML_PARSE_HUGE in xmlParserOption.
+     *
+     * @since 2.14.0
+     *
+     * Use XML_PARSE_HUGE with older versions.
+     */
+    HTML_PARSE_HUGE = 1<<19,
+    /**
+     * Ignore the encoding in the HTML declaration. This option is
+     * mostly unneeded these days. The only effect is to enforce
+     * ISO-8859-1 decoding of ASCII-like data.
+     */
+    HTML_PARSE_IGNORE_ENC =1<<21,
+    /**
+     * Enable reporting of line numbers larger than 65535.
+     *
+     * @since 2.14.0
+     *
+     * Use XML_PARSE_BIG_LINES with older versions.
+     */
+    HTML_PARSE_BIG_LINES = 1<<22,
+    /**
+     * Make the tokenizer emit a SAX callback for each token. This results
+     * in unbalanced invocations of startElement and endElement.
+     *
+     * For now, this is only usable to tokenize HTML5 with custom SAX
+     * callbacks. A tree builder isn't implemented yet.
+     *
+     * @since 2.14.0
+    */
+    HTML_PARSE_HTML5 = 1<<26
 } htmlParserOption;
 
 XMLPUBFUN void

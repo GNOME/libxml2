@@ -13327,171 +13327,7 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * @since 2.13.0
  *
- * With older versions, you can use
- * xmlCtxtUseOptions().
- *
- * XML_PARSE_RECOVER
- *
- * Enable "recovery" mode which allows non-wellformed documents.
- * How this mode behaves exactly is unspecified and may change
- * without further notice. Use of this feature is DISCOURAGED.
- *
- * Not supported by the push parser.
- *
- * XML_PARSE_NOENT
- *
- * Despite the confusing name, this option enables substitution
- * of entities. The resulting tree won't contain any entity
- * reference nodes.
- *
- * This option also enables loading of external entities (both
- * general and parameter entities) which is dangerous. If you
- * process untrusted data, it's recommended to set the
- * XML_PARSE_NO_XXE option to disable loading of external
- * entities.
- *
- * XML_PARSE_DTDLOAD
- *
- * Enables loading of an external DTD and the loading and
- * substitution of external parameter entities. Has no effect
- * if XML_PARSE_NO_XXE is set.
- *
- * XML_PARSE_DTDATTR
- *
- * Adds default attributes from the DTD to the result document.
- *
- * Implies XML_PARSE_DTDLOAD, but loading of external content
- * can be disabled with XML_PARSE_NO_XXE.
- *
- * XML_PARSE_DTDVALID
- *
- * This option enables DTD validation which requires to load
- * external DTDs and external entities (both general and
- * parameter entities) unless XML_PARSE_NO_XXE was set.
- *
- * XML_PARSE_NO_XXE
- *
- * Disables loading of external DTDs or entities.
- *
- * @since 2.13.0
- *
- * XML_PARSE_NOERROR
- *
- * Disable error and warning reports to the error handlers.
- * Errors are still accessible with xmlCtxtGetLastError().
- *
- * XML_PARSE_NOWARNING
- *
- * Disable warning reports.
- *
- * XML_PARSE_PEDANTIC
- *
- * Enable some pedantic warnings.
- *
- * XML_PARSE_NOBLANKS
- *
- * Remove some whitespace from the result document. Where to
- * remove whitespace depends on DTD element declarations or a
- * broken heuristic with unfixable bugs. Use of this option is
- * DISCOURAGED.
- *
- * Not supported by the push parser.
- *
- * XML_PARSE_SAX1
- *
- * Always invoke the deprecated SAX1 startElement and endElement
- * handlers. This option is DEPRECATED.
- *
- * XML_PARSE_NONET
- *
- * Disable network access with the built-in HTTP or FTP clients.
- *
- * After the last built-in network client was removed in 2.15,
- * this option has no effect expect for being passed on to custom
- * resource loaders.
- *
- * XML_PARSE_NODICT
- *
- * Create a document without interned strings, making all
- * strings separate memory allocations.
- *
- * XML_PARSE_NSCLEAN
- *
- * Remove redundant namespace declarations from the result
- * document.
- *
- * XML_PARSE_NOCDATA
- *
- * Output normal text nodes instead of CDATA nodes.
- *
- * XML_PARSE_COMPACT
- *
- * Store small strings directly in the node struct to save
- * memory.
- *
- * XML_PARSE_OLD10
- *
- * Use old Name productions from before XML 1.0 Fifth Edition.
- * This options is DEPRECATED.
- *
- * XML_PARSE_HUGE
- *
- * Relax some internal limits.
- *
- * Maximum size of text nodes, tags, comments, processing instructions,
- * CDATA sections, entity values
- *
- * normal: 10M
- * huge:    1B
- *
- * Maximum size of names, system literals, pubid literals
- *
- * normal: 50K
- * huge:   10M
- *
- * Maximum nesting depth of elements
- *
- * normal:  256
- * huge:   2048
- *
- * Maximum nesting depth of entities
- *
- * normal: 20
- * huge:   40
- *
- * XML_PARSE_OLDSAX
- *
- * Enable an unspecified legacy mode for SAX parsers. This
- * option is DEPRECATED.
- *
- * XML_PARSE_IGNORE_ENC
- *
- * Ignore the encoding in the XML declaration. This option is
- * mostly unneeded these days. The only effect is to enforce
- * UTF-8 decoding of ASCII-like data.
- *
- * XML_PARSE_BIG_LINES
- *
- * Enable reporting of line numbers larger than 65535.
- *
- * XML_PARSE_UNZIP
- *
- * Enable input decompression. Setting this option is discouraged
- * to avoid zip bombs.
- *
- * @since 2.14.0
- *
- * XML_PARSE_NO_SYS_CATALOG
- *
- * Disables the global system XML catalog.
- *
- * @since 2.14.0
- *
- * XML_PARSE_CATALOG_PI
- *
- * Enable XML catalog processing instructions.
- *
- * @since 2.14.0
+ * With older versions, you can use xmlCtxtUseOptions().
  *
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -13534,17 +13370,17 @@ xmlCtxtGetOptions(xmlParserCtxtPtr ctxt)
  * Applies the options to the parser context. The following options
  * are never cleared and can only be enabled:
  *
- * XML_PARSE_NOERROR
- * XML_PARSE_NOWARNING
- * XML_PARSE_NONET
- * XML_PARSE_NSCLEAN
- * XML_PARSE_NOCDATA
- * XML_PARSE_COMPACT
- * XML_PARSE_OLD10
- * XML_PARSE_HUGE
- * XML_PARSE_OLDSAX
- * XML_PARSE_IGNORE_ENC
- * XML_PARSE_BIG_LINES
+ * - XML_PARSE_NOERROR
+ * - XML_PARSE_NOWARNING
+ * - XML_PARSE_NONET
+ * - XML_PARSE_NSCLEAN
+ * - XML_PARSE_NOCDATA
+ * - XML_PARSE_COMPACT
+ * - XML_PARSE_OLD10
+ * - XML_PARSE_HUGE
+ * - XML_PARSE_OLDSA- X
+ * - XML_PARSE_IGNORE_ENC
+ * - XML_PARSE_BIG_LINES
  *
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.

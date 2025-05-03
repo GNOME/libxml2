@@ -5706,102 +5706,14 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
 
 /**
  * @param ctxt  an HTML parser context
- * @param options  a bitmask of xmlParserOption values
+ * @param options  a bitmask of htmlParserOption values
  *
  * Applies the options to the parser context. Unset options are
  * cleared.
  *
  * @since 2.14.0
  *
- * With older versions, you can use
- * htmlCtxtUseOptions().
- *
- * HTML_PARSE_RECOVER
- *
- * No effect as of 2.14.0.
- *
- * HTML_PARSE_HTML5
- *
- * Make the tokenizer emit a SAX callback for each token. This results
- * in unbalanced invocations of startElement and endElement.
- *
- * For now, this is only usable to tokenize HTML5 with custom SAX
- * callbacks. A tree builder isn't implemented yet.
- *
- * @since 2.14.0
- *
- * HTML_PARSE_NODEFDTD
- *
- * Do not default to a doctype if none was found.
- *
- * HTML_PARSE_NOERROR
- *
- * Disable error and warning reports to the error handlers.
- * Errors are still accessible with xmlCtxtGetLastError().
- *
- * HTML_PARSE_NOWARNING
- *
- * Disable warning reports.
- *
- * HTML_PARSE_PEDANTIC
- *
- * No effect.
- *
- * HTML_PARSE_NOBLANKS
- *
- * Remove some text nodes containing only whitespace from the
- * result document. Which nodes are removed depends on a conservative
- * heuristic. The reindenting feature of the serialization code relies
- * on this option to be set when parsing. Use of this option is
- * DISCOURAGED.
- *
- * HTML_PARSE_NONET
- *
- * No effect.
- *
- * HTML_PARSE_NOIMPLIED
- *
- * Do not add implied html, head or body elements.
- *
- * HTML_PARSE_COMPACT
- *
- * Store small strings directly in the node struct to save
- * memory.
- *
- * HTML_PARSE_HUGE
- *
- * Relax some internal limits.
- *
- * @since 2.14.0
- *
- * Use XML_PARSE_HUGE with older versions.
- *
- * Maximum size of text nodes, tags, comments, CDATA sections
- *
- * normal: 10M
- * huge:    1B
- *
- * Maximum size of names, system literals, pubid literals
- *
- * normal: 50K
- * huge:   10M
- *
- * Maximum nesting depth of elements
- *
- * normal:  256
- * huge:   2048
- *
- * HTML_PARSE_IGNORE_ENC
- *
- * Ignore the encoding in the HTML declaration. This option is
- * mostly unneeded these days. The only effect is to enforce
- * ISO-8859-1 decoding of ASCII-like data.
- *
- * HTML_PARSE_BIG_LINES
- *
- * Enable reporting of line numbers larger than 65535.
- *
- * @since 2.14.0
+ * With older versions, you can use htmlCtxtUseOptions().
  *
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -5814,21 +5726,21 @@ htmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
 
 /**
  * @param ctxt  an HTML parser context
- * @param options  a combination of htmlParserOption(s)
+ * @param options  a combination of htmlParserOption values
  *
  * @deprecated Use htmlCtxtSetOptions().
  *
  * Applies the options to the parser context. The following options
  * are never cleared and can only be enabled:
  *
- * HTML_PARSE_NODEFDTD
- * HTML_PARSE_NOERROR
- * HTML_PARSE_NOWARNING
- * HTML_PARSE_NOIMPLIED
- * HTML_PARSE_COMPACT
- * HTML_PARSE_HUGE
- * HTML_PARSE_IGNORE_ENC
- * HTML_PARSE_BIG_LINES
+ * - HTML_PARSE_NODEFDTD
+ * - HTML_PARSE_NOERROR
+ * - HTML_PARSE_NOWARNING
+ * - HTML_PARSE_NOIMPLIED
+ * - HTML_PARSE_COMPACT
+ * - HTML_PARSE_HUGE
+ * - HTML_PARSE_IGNORE_ENC
+ * - HTML_PARSE_BIG_LINES
  *
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
@@ -5899,7 +5811,7 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
  * @param str  a pointer to a zero terminated string
  * @param url  only used for error reporting (optoinal)
  * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Convenience function to parse an HTML document from a zero-terminated
  * string.
@@ -5935,7 +5847,7 @@ htmlReadDoc(const xmlChar *str, const char *url, const char *encoding,
 /**
  * @param filename  a file or URL
  * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Convenience function to parse an HTML file from the filesystem,
  * the network or a global user-defined resource loader.
@@ -5971,7 +5883,7 @@ htmlReadFile(const char *filename, const char *encoding, int options)
  * @param size  the size of the array
  * @param url  only used for error reporting (optional)
  * @param encoding  the document encoding, or NULL
- * @param options  a combination of htmlParserOption(s)
+ * @param options  a combination of htmlParserOption values
  *
  * Convenience function to parse an HTML document from memory.
  * The input buffer must not contain any terminating null bytes.
@@ -6011,7 +5923,7 @@ htmlReadMemory(const char *buffer, int size, const char *url,
  * @param fd  an open file descriptor
  * @param url  only used for error reporting (optional)
  * @param encoding  the document encoding, or NULL
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Convenience function to parse an HTML document from a
  * file descriptor.
@@ -6051,7 +5963,7 @@ htmlReadFd(int fd, const char *url, const char *encoding, int options)
  * @param ioctx  an I/O handler
  * @param url  only used for error reporting (optional)
  * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOption(s)
+ * @param options  a combination of htmlParserOption values
  *
  * Convenience function to parse an HTML document from I/O functions
  * and context.
@@ -6089,7 +6001,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
  * @param str  a pointer to a zero terminated string
  * @param URL  only used for error reporting (optional)
  * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Parse an HTML in-memory document and build a tree.
  *
@@ -6121,7 +6033,7 @@ htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
  * @param ctxt  an HTML parser context
  * @param filename  a file or URL
  * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Parse an HTML file from the filesystem, the network or a
  * user-defined resource loader.
@@ -6155,7 +6067,7 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
  * @param size  the size of the array
  * @param URL  only used for error reporting (optional)
  * @param encoding  the document encoding (optinal)
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Parse an HTML in-memory document and build a tree. The input buffer must
  * not contain any terminating null bytes.
@@ -6189,7 +6101,7 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
  * @param fd  an open file descriptor
  * @param URL  only used for error reporting (optional)
  * @param encoding  the document encoding (optinal)
- * @param options  a combination of htmlParserOptions
+ * @param options  a combination of htmlParserOption values
  *
  * Parse an HTML from a file descriptor and build a tree.
  *
@@ -6226,7 +6138,7 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
  * @param ioctx  an I/O handler
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
- * @param options  a combination of htmlParserOption(s)
+ * @param options  a combination of htmlParserOption values
  *
  * Parse an HTML document from I/O functions and source and build a tree.
  *

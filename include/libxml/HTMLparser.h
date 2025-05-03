@@ -1,12 +1,15 @@
 /**
  * @file
  * 
- * @brief interface for an HTML 4.0 non-verifying parser
+ * @brief HTML parser, doesn't support HTML5
  * 
- * this module implements an HTML 4.0 non-verifying parser
- *              with API compatible with the XML parser ones. It should
- *              be able to parse "real world" HTML, even if severely
- *              broken from a specification point of view.
+ * This module orginally implemented an HTML parser based on the
+ * (underspecified) HTML 4.0 spec. As of 2.14, the tokenizer
+ * conforms to HTML5. Tree construction still follows a custom,
+ * unspecified algorithm with many differences to HTML5.
+ *
+ * The parser defaults to ISO-8859-1, the default encoding of
+ * HTTP/1.0.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -179,7 +182,7 @@ XMLPUBFUN int
 			htmlHandleOmittedElem(int val);
 
 #ifdef LIBXML_PUSH_ENABLED
-/**
+/*
  * Interfaces for the Push mode.
  */
 XMLPUBFUN htmlParserCtxtPtr

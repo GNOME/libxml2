@@ -4208,13 +4208,8 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 /**
  * @param ctxt  an HTML parser context
  *
- * parse an HTML element, new version, non recursive
- *
- * [39] element ::= EmptyElemTag | STag content ETag
- *
- * [41] Attribute ::= Name Eq AttValue
+ * Parse an HTML element, new version, non recursive
  */
-
 static int
 htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
     const xmlChar *name;
@@ -4286,14 +4281,8 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
  *
  * @deprecated Internal function, don't use.
  *
- * parse an HTML element, this is highly recursive
- * this is kept for compatibility with previous code versions
- *
- * [39] element ::= EmptyElemTag | STag content ETag
- *
- * [41] Attribute ::= Name Eq AttValue
+ * This is kept for compatibility with previous code versions
  */
-
 void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
     const xmlChar *oldptr;
@@ -4386,7 +4375,6 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  *
  * @returns 0, -1 in case of error.
  */
-
 int
 htmlParseDocument(htmlParserCtxtPtr ctxt) {
     xmlDtdPtr dtd;
@@ -4518,7 +4506,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
  *
  * @returns 0 in case of success and -1 in case of error
  */
-
 static int
 htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
                    void *userData)
@@ -4604,9 +4591,8 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
  * @param ctxt  an HTML parser context
  *
  * Free all the memory used by a parser context. However the parsed
- * document in ctxt->myDoc is not freed.
+ * document in `ctxt->myDoc` is not freed.
  */
-
 void
 htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
 {
@@ -4627,7 +4613,6 @@ htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
  *
  * @returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
-
 htmlParserCtxtPtr
 htmlNewParserCtxt(void)
 {
@@ -4638,20 +4623,18 @@ htmlNewParserCtxt(void)
  * @param sax  SAX handler
  * @param userData  user data
  *
- * Allocate and initialize a new HTML SAX parser context. If userData
+ * Allocate and initialize a new HTML SAX parser context. If `userData`
  * is NULL, the parser context will be passed as user data.
  *
  * @since 2.11.0
  *
- * If you want support older versions,
- * it's best to invoke htmlNewParserCtxt() and set ctxt->sax with
- * struct assignment.
+ * If you want support older versions, it's best to invoke
+ * htmlNewParserCtxt() and set `ctxt->sax` with struct assignment.
  *
  * Also see htmlNewParserCtxt().
  *
  * @returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
-
 htmlParserCtxtPtr
 htmlNewSAXParserCtxt(const htmlSAXHandler *sax, void *userData)
 {
@@ -4929,13 +4912,11 @@ htmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
  * @param ctxt  an HTML parser context
  *
  * Try to find a comment end tag in the input stream
- * The search includes "-->" as well as WHATWG-recommended incorrectly-closed tags.
- * (See https://html.spec.whatwg.org/multipage/parsing.html\#parse-error-incorrectly-closed-comment)
- * This function has a side effect of (possibly) incrementing ctxt->checkIndex
- * to avoid rescanning sequences of bytes, it DOES change the state of the
- * parser, do not use liberally.
+ * The search includes "-->" as well as WHATWG-recommended
+ * incorrectly-closed tags.
  *
- * @returns the index to the current parsing point if the full sequence is available, -1 otherwise.
+ * @returns the index to the current parsing point if the full
+ * sequence is available, -1 otherwise.
  */
 static int
 htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
@@ -5185,10 +5166,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
  *
  * The last chunk, which will often be empty, must be marked with
  * the `terminate` flag. With the default SAX callbacks, the resulting
- * document will be available in ctxt->myDoc. This pointer will not
+ * document will be available in `ctxt->myDoc`. This pointer will not
  * be freed by the library.
  *
- * If the document isn't well-formed, ctxt->myDoc is set to NULL.
+ * If the document isn't well-formed, `ctxt->myDoc` is set to NULL.
  *
  * @returns an xmlParserErrors code (0 on success).
  */

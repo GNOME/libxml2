@@ -7,11 +7,11 @@ cmake "$@" \
     -DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS \
     -DCMAKE_INSTALL_PREFIX=libxml2-install \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DLIBXML2_WITH_DOCS=ON \
     -DLIBXML2_WITH_HTTP=ON \
     -DLIBXML2_WITH_LZMA=ON \
     -DLIBXML2_WITH_ZLIB=ON \
     -DLIBXML2_WITH_PYTHON=ON \
+    $CONFIG \
     -S . -B libxml2-build
 cmake --build libxml2-build --target install
 

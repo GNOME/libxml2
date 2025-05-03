@@ -146,6 +146,7 @@ cmake:linux:gcc:shared:
   extends: .cmake:linux
   variables:
     BUILD_SHARED_LIBS: "ON"
+    CONFIG: "-DLIBXML2_WITH_DOCS=ON"
     CC: gcc
     SUFFIX: linux-gcc-shared
 
@@ -201,6 +202,7 @@ cmake:mingw:w64-i686:shared:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
+    CONFIG: "-DLIBXML2_WITH_DOCS=ON"
     MSYSTEM: MINGW32
     SUFFIX: mingw-w64-i686-shared
 

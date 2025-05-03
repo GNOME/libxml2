@@ -2815,10 +2815,13 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
 
     res = xmllintParseOptions(lint, argc, argv);
     if (res != XMLLINT_RETURN_OK) {
-        lint->progresult = res;
-        goto error;
+        return(res);
     }
 
+    /*
+     * Note that we must not make any memory allocations through xmlMalloc
+     * before calling xmlMemSetup.
+     */
     if (lint->maxmem != 0) {
         xmllintMaxmem = 0;
         xmllintMaxmemReached = 0;

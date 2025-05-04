@@ -257,13 +257,13 @@ xmlCharEncUconv(const char *name, xmlCharEncFlags flags,
 
 /**
  * @param in  a pointer to the first bytes of the XML entity, must be at least
- *       2 bytes long (at least 4 if encoding is UTF4 variant).
+ *            2 bytes long (at least 4 if encoding is UTF4 variant).
  * @param len  pointer to the length of the buffer
  *
  * Guess the encoding of the entity using the first bytes of the entity content
  * according to the non-normative appendix F of the XML-1.0 recommendation.
  *
- * @returns one of the XML_CHAR_ENCODING_... values.
+ * @returns a xmlCharEncoding value.
  */
 xmlCharEncoding
 xmlDetectCharEncoding(const unsigned char* in, int len)
@@ -318,7 +318,7 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
  * @deprecated This function modifies global state and is not
  * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
  *
- * Unregisters all aliases
+ * Unregisters all aliases.
  */
 void
 xmlCleanupEncodingAliases(void) {
@@ -346,7 +346,7 @@ xmlCleanupEncodingAliases(void) {
  *
  * Lookup an encoding name for the given alias.
  *
- * @returns NULL if not found, otherwise the original name
+ * @returns NULL if not found, otherwise the original name.
  */
 const char *
 xmlGetEncodingAlias(const char *alias) {
@@ -383,10 +383,10 @@ xmlGetEncodingAlias(const char *alias) {
  * @deprecated This function modifies global state and is not
  * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
  *
- * Registers an alias `alias` for an encoding named `name`. Existing alias
- * will be overwritten.
+ * Registers an alias `alias` for an encoding named `name`. Existing
+ * aliases will be overwritten.
  *
- * @returns 0 in case of success, -1 in case of error
+ * @returns 0 in case of success, -1 in case of error.
  */
 int
 xmlAddEncodingAlias(const char *name, const char *alias) {
@@ -457,9 +457,9 @@ xmlAddEncodingAlias(const char *name, const char *alias) {
  * @deprecated This function modifies global state and is not
  * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
  *
- * Unregisters an encoding alias `alias`
+ * Unregisters an encoding alias.
  *
- * @returns 0 in case of success, -1 in case of error
+ * @returns 0 in case of success, -1 in case of error.
  */
 int
 xmlDelEncodingAlias(const char *alias) {
@@ -518,7 +518,7 @@ xmlParseCharEncodingInternal(const char *name)
  * that the comparison is case insensitive accordingly to the section
  * [XML] 4.3.3 Character Encoding in Entities.
  *
- * @returns one of the XML_CHAR_ENCODING_... values or XML_CHAR_ENCODING_NONE
+ * @returns one of the xmlCharEncoding values or XML_CHAR_ENCODING_NONE
  * if not recognized.
  */
 xmlCharEncoding
@@ -537,10 +537,10 @@ xmlParseCharEncoding(const char *name)
  * @param enc  the encoding
  *
  * The "canonical" name for XML encoding.
- * C.f. http://www.w3.org/TR/REC-xml\#charencoding
+ * C.f. http://www.w3.org/TR/REC-xml#charencoding
  * Section 4.3.3  Character Encoding in Entities
  *
- * @returns the canonical name for the given encoding
+ * @returns the canonical name for the given encoding.
  */
 const char*
 xmlGetCharEncodingName(xmlCharEncoding enc) {
@@ -1070,11 +1070,10 @@ typedef struct {
  * @param inlen  the length of `in`
  * @param flush  end of input
  *
- * The value of `inlen` after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
- * The value of `outlen` after return is the number of octets produced.
+ * The value of `inlen` after return is the number of bytes consumed.
+ * The value of `outlen` after return is the number of bytes produced.
  *
- * @returns an XML_ENC_ERR code.
+ * @returns an xmlCharEncError code.
  */
 static xmlCharEncError
 xmlIconvConvert(void *vctxt, unsigned char *out, int *outlen,
@@ -1303,11 +1302,10 @@ struct _uconv_t {
  * @param inlen  the length of `in`
  * @param flush  end of input
  *
- * @returns an XML_ENC_ERR code.
+ * The value of `inlen` after return is the number of bytes consumed.
+ * The value of `outlen` after return is the number of bytes produced.
  *
- * The value of `inlen` after return is the number of octets consumed
- *     as the return value is positive, else unpredictable.
- * The value of `outlen` after return is the number of octets produced.
+ * @returns an xmlCharEncError code.
  */
 static xmlCharEncError
 xmlUconvConvert(void *vctxt, unsigned char *out, int *outlen,
@@ -1490,9 +1488,9 @@ error:
  ************************************************************************/
 
 /**
- * @param code  XML_ENC_ERR code
+ * @param code  xmlCharEncError code
  *
- * Convert XML_ENC_ERR to libxml2 error codes.
+ * Convert xmlCharEncError to xmlParserErrors code.
  */
 static xmlParserErrors
 xmlEncConvertError(xmlCharEncError code) {
@@ -1524,11 +1522,10 @@ xmlEncConvertError(xmlCharEncError code) {
  * @param inlen  the length of `in`
  * @param flush  end of input
  *
- * The value of `inlen` after return is the number of octets consumed
- *     as the return value is 0, else unpredictable.
- * The value of `outlen` after return is the number of octets produced.
+ * The value of `inlen` after return is the number of bytes consumed.
+ * The value of `outlen` after return is the number of bytes produced.
  *
- * @returns an XML_ENC_ERR code.
+ * @returns an xmlCharEncError code.
  */
 xmlCharEncError
 xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
@@ -1579,11 +1576,10 @@ xmlEncInputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
  * @param in  a pointer to an array of input bytes
  * @param inlen  the length of `in`
  *
- * @returns an XML_ENC_ERR code.
+ * The value of `inlen` after return is the number of bytes consumed.
+ * The value of `outlen` after return is the number of bytes produced.
  *
- * The value of `inlen` after return is the number of octets consumed
- *     as the return value is 0, else unpredictable.
- * The value of `outlen` after return is the number of octets produced.
+ * @returns an xmlCharEncError code.
  */
 static xmlCharEncError
 xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
@@ -1619,13 +1615,13 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
 }
 
 /**
- * @param handler  char encoding transformation data structure
+ * @param handler  encoding handler
  * @param out  an xmlBuffer for the output.
  * @param in  an xmlBuffer for the input
  *
  * DEPERECATED: Don't use.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
 xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
@@ -1638,12 +1634,12 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
  * @param sizeOut  pointer to output size
  * @param flush  end of input
  *
+ * Generic front-end for input encoding conversion.
+ *
  * `sizeOut` should be set to the maximum output size (or SIZE_MAX).
  * After return, it is set to the number of bytes written.
  *
- * Generic front-end for the encoding handler on parser input
- *
- * @returns an XML_ENC_ERR code.
+ * @returns an xmlCharEncError code.
  */
 xmlCharEncError
 xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut, int flush)
@@ -1737,13 +1733,13 @@ xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut, int flush)
 }
 
 /**
- * @param handler  	char encoding transformation data structure
+ * @param handler  encoding handler
  * @param out  an xmlBuffer for the output.
  * @param in  an xmlBuffer for the input
  *
- * Generic front-end for the encoding handler input function
+ * Generic front-end for input encoding conversion.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
 xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
@@ -1782,14 +1778,15 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
  * @param output  a parser output buffer
  * @param init  is this an initialization call without data
  *
- * Generic front-end for the encoding handler on parser output
- * a first call with `init` == 1 has to be made first to initiate the
- * output in case of non-stateless encoding needing to initiate their
- * state or the output (like the BOM in UTF16).
- * In case of UTF8 sequence conversion errors for the given encoder,
- * the content will be automatically remapped to a CharRef sequence.
+ * Generic front-end for output encoding conversion.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * A first call with `init` set to 1 has to be made to write a BOM.
+ *
+ * When using GNU libiconv, unsupported characters in the output
+ * encoding will be automatically replaced with a numeric character
+ * reference.
+ *
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
 xmlCharEncOutput(xmlOutputBufferPtr output, int init)
@@ -1901,18 +1898,19 @@ error:
 #endif
 
 /**
- * @param handler  	char encoding transformation data structure
+ * @param handler  encoding handler
  * @param out  an xmlBuffer for the output.
  * @param in  an xmlBuffer for the input
  *
- * Generic front-end for the encoding handler output function
- * a first call with `in` == NULL has to be made firs to initiate the
- * output in case of non-stateless encoding needing to initiate their
- * state or the output (like the BOM in UTF16).
- * In case of UTF8 sequence conversion errors for the given encoder,
- * the content will be automatically remapped to a CharRef sequence.
+ * Generic front-end for output encoding conversion.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * A first call with `in` set to NULL has to be made to write a BOM.
+ *
+ * When using GNU libiconv, unsupported characters in the output
+ * encoding will be automatically replaced with a numeric character
+ * reference.
+ *
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
 xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
@@ -2000,7 +1998,7 @@ retry:
 }
 
 /**
- * @param handler  	char encoding transformation data structure
+ * @param handler  encoding handler
  *
  * Releases an xmlCharEncodingHandler. Must be called after
  * a handler is no longer in use.
@@ -2187,11 +2185,10 @@ done:
  * Take a block of ISO Latin 1 chars in and try to convert it to an UTF-8
  * block of chars out.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * The value of `inlen` after return is the number of bytes consumed.
+ * The value of `outlen` after return is the number of bytes produced.
  *
- * The value of `inlen` after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of `outlen` after return is the number of octets produced.
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
 xmlIsolat1ToUTF8(unsigned char* out, int *outlen,
@@ -2292,11 +2289,10 @@ done:
  * Take a block of UTF-8 chars in and try to convert it to an ISO Latin 1
  * block of chars out.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * The value of `inlen` after return is the number of bytes consumed.
+ * The value of `outlen` after return is the number of bytes produced.
  *
- * The value of `inlen` after return is the number of octets consumed
- *     if the return value is positive, else unpredictable.
- * The value of `outlen` after return is the number of octets produced.
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
 xmlUTF8ToIsolat1(unsigned char* out, int *outlen,

@@ -1,22 +1,8 @@
 /**
  * @file
  * 
- * @brief interface for the encoding conversion functions
+ * @brief Character encoding conversion functions
  * 
- * interface for the encoding conversion functions needed for
- *              XML basic encoding and iconv() support.
- *
- * Related specs are
- * rfc2044        (UTF-8 and UTF-16) F. Yergeau Alis Technologies
- * [ISO-10646]    UTF-8 and UTF-16 in Annexes
- * [ISO-8859-1]   ISO Latin-1 characters codes.
- * [UNICODE]      The Unicode Consortium, "The Unicode Standard --
- *                Worldwide Character Encoding -- Version 1.0", Addison-
- *                Wesley, Volume 1, 1991, Volume 2, 1992.  UTF-8 is
- *                described in Unicode Technical Report \#4.
- * [US-ASCII]     Coded Character Set--7-bit American Standard Code for
- *                Information Interchange, ANSI X3.4-1986.
- *
  * @copyright See Copyright for the status of this software.
  *
  * @author Daniel Veillard
@@ -145,7 +131,7 @@ typedef enum {
  * On success, the value of `inlen` after return is the number of
  * bytes consumed and `outlen` is the number of bytes produced.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 typedef int (*xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
                                         const unsigned char *in, int *inlen);
@@ -162,7 +148,7 @@ typedef int (*xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
  * On success, the value of `inlen` after return is the number of
  * bytes consumed and `outlen` is the number of bytes produced.
  *
- * @returns the number of bytes written or an XML_ENC_ERR code.
+ * @returns the number of bytes written or an xmlCharEncError code.
  */
 typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
                                          const unsigned char *in, int *inlen);
@@ -185,7 +171,7 @@ typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
  * `flush` flag can be used to detect truncated sequences at EOF.
  * Otherwise, the flag can be ignored.
  *
- * @returns an XML_ENC_ERR code.
+ * @returns an xmlCharEncError code.
  */
 typedef xmlCharEncError
 (*xmlCharEncConvFunc)(void *vctxt, unsigned char *out, int *outlen,
@@ -311,9 +297,7 @@ XMLPUBFUN xmlCharEncoding
 	xmlDetectCharEncoding		(const unsigned char *in,
 					 int len);
 
-/** @cond IGNORE */
 struct _xmlBuffer;
-/** @endcond */
 XMLPUBFUN int
 	xmlCharEncOutFunc		(xmlCharEncodingHandler *handler,
 					 struct _xmlBuffer *out,

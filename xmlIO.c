@@ -1495,11 +1495,9 @@ error:
  * @param compression  the compression ration (0 none, 9 max).
  *
  * Create a buffered  output for the progressive saving of a file
- * If filename is "-' then we use stdout as the output.
+ * If filename is `"-"` then we use stdout as the output.
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
- * TODO: currently if compression is set, the library only support
- *       writing to a local file.
  *
  * Consumes `encoder` even in error case.
  *
@@ -1549,11 +1547,11 @@ xmlParserInputBufferCreateFile(FILE *file, xmlCharEncoding enc) {
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
- * @param file  a FILE*
+ * @param file  a `FILE *`
  * @param encoder  the encoding converter or NULL
  *
- * Create a buffered output for the progressive saving to a FILE *
- * buffered C I/O
+ * Create a buffered output for the progressive saving to a `FILE *`
+ * buffered C I/O.
  *
  * Consumes `encoder` even in error case.
  *

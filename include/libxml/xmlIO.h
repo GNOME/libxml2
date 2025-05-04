@@ -1,9 +1,9 @@
 /**
  * @file
  * 
- * @brief interface for the I/O interfaces used by the parser
+ * @brief I/O interfaces used by the parser
  * 
- * interface for the I/O interfaces used by the parser
+ * Functions and datatypes for parser input and output.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -23,11 +23,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*
- * Those are the functions and datatypes for the parser input
- * I/O structures.
- */
 
 /**
  * @param filename  the filename or URI
@@ -66,11 +61,6 @@ typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
 typedef int (*xmlInputCloseCallback) (void * context);
 
 #ifdef LIBXML_OUTPUT_ENABLED
-/*
- * Those are the functions and datatypes for the library output
- * I/O structures.
- */
-
 /**
  * @param filename  the filename or URI
  *
@@ -137,6 +127,10 @@ typedef xmlOutputBufferPtr
 (*xmlOutputBufferCreateFilenameFunc)(const char *URI,
         xmlCharEncodingHandlerPtr encoder, int compression);
 
+/*
+ * This struct and all related functions should be ultimately
+ * be removed from the public interface.
+ */
 struct _xmlParserInputBuffer {
     void*                  context;
     xmlInputReadCallback   readcallback;
@@ -153,6 +147,9 @@ struct _xmlParserInputBuffer {
 
 
 #ifdef LIBXML_OUTPUT_ENABLED
+/**
+ * Output buffer
+ */
 struct _xmlOutputBuffer {
     void*                   context;
     xmlOutputWriteCallback  writecallback;
@@ -167,7 +164,6 @@ struct _xmlOutputBuffer {
 };
 #endif /* LIBXML_OUTPUT_ENABLED */
 
-/** @cond IGNORE */
 XML_DEPRECATED
 XMLPUBFUN xmlParserInputBufferCreateFilenameFunc *
 __xmlParserInputBufferCreateFilenameValue(void);
@@ -181,7 +177,6 @@ __xmlOutputBufferCreateFilenameValue(void);
   #define xmlOutputBufferCreateFilenameValue \
     (*__xmlOutputBufferCreateFilenameValue())
 #endif
-/** @endcond */
 
 /*
  * Interfaces for input
@@ -335,9 +330,7 @@ XMLPUBFUN xmlChar *
 XML_DEPRECATED
 XMLPUBFUN int
 	xmlCheckFilename		(const char *path);
-/**
- * Default 'file://' protocol callbacks
- */
+
 XML_DEPRECATED
 XMLPUBFUN int
 	xmlFileMatch			(const char *filename);
@@ -353,9 +346,6 @@ XML_DEPRECATED
 XMLPUBFUN int
 	xmlFileClose			(void * context);
 
-/**
- * Default 'http://' protocol callbacks
- */
 #ifdef LIBXML_HTTP_STUBS_ENABLED
 /** @cond IGNORE */
 XML_DEPRECATED

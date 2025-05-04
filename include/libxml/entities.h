@@ -1,10 +1,9 @@
 /**
  * @file
  * 
- * @brief interface for the XML entities handling
+ * @brief XML entities
  * 
- * this module provides some of the entity API needed
- *              for the parser and applications.
+ * This module provides an API to work with XML entities.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -24,7 +23,7 @@ extern "C" {
 #endif
 
 /**
- * The different valid entity types.
+ * The different entity types.
  */
 typedef enum {
     /** internal general entity */
@@ -89,17 +88,8 @@ struct _xmlEntity {
     unsigned long   expandedSize;
 };
 
-/*
- * All entities are stored in an hash table.
- * There is 2 separate hash tables for global and parameter entities.
- */
-
 typedef struct _xmlHashTable xmlEntitiesTable;
 typedef xmlEntitiesTable *xmlEntitiesTablePtr;
-
-/*
- * External functions:
- */
 
 XMLPUBFUN xmlEntityPtr
 			xmlNewEntity		(xmlDocPtr doc,

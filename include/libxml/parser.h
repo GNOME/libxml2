@@ -847,41 +847,41 @@ typedef void (*endElementNsSAX2Func)   (void *ctx,
  * ignored.
  */
 struct _xmlSAXHandler {
-    /** @brief DTD */
+    /** DTD */
     internalSubsetSAXFunc internalSubset;
-    /** @brief unused */
+    /** unused */
     isStandaloneSAXFunc isStandalone;
-    /** @brief DTD */
+    /** DTD */
     hasInternalSubsetSAXFunc hasInternalSubset;
-    /** @brief DTD */
+    /** DTD */
     hasExternalSubsetSAXFunc hasExternalSubset;
-    /** @brief DTD */
+    /** DTD */
     resolveEntitySAXFunc resolveEntity;
-    /** @brief DTD */
+    /** DTD */
     getEntitySAXFunc getEntity;
-    /** @brief DTD */
+    /** DTD */
     entityDeclSAXFunc entityDecl;
-    /** @brief DTD */
+    /** DTD */
     notationDeclSAXFunc notationDecl;
-    /** @brief DTD */
+    /** DTD */
     attributeDeclSAXFunc attributeDecl;
-    /** @brief DTD */
+    /** DTD */
     elementDeclSAXFunc elementDecl;
-    /** @brief DTD */
+    /** DTD */
     unparsedEntityDeclSAXFunc unparsedEntityDecl;
-    /** @brief useless */
+    /** useless */
     setDocumentLocatorSAXFunc setDocumentLocator;
     /**
-     * @brief Called at the start of a document
+     * Called at the start of a document
      *
      * Use xmlCtxtGetVersion(), xmlCtxtGetDeclaredEncoding() and
      * xmlCtxtGetStandalone() to get data from the XML declaration.
      */
     startDocumentSAXFunc startDocument;
-    /** @brief End of document */
+    /** End of document */
     endDocumentSAXFunc endDocument;
     /**
-     * @brief Legacy start tag handler
+     * Legacy start tag handler
      *
      * `startElement` and `endElement` are only used by the legacy SAX1
      * interface and should not be used in new software. If you really
@@ -896,50 +896,50 @@ struct _xmlSAXHandler {
      * together with custom SAX callbacks.
      */
     startElementSAXFunc startElement;
-    /** @brief See _xmlSAXHandler.startElement */
+    /** See _xmlSAXHandler.startElement */
     endElementSAXFunc endElement;
-    /** @brief Entity reference */
+    /** Entity reference */
     referenceSAXFunc reference;
-    /** @brief Text */
+    /** Text */
     charactersSAXFunc characters;
     /**
-     * @brief Ignorable whitespace
+     * Ignorable whitespace
      *
      * `ignorableWhitespace` should always be set to the same value
      * as `characters`. Otherwise, the parser will try to detect
      * whitespace which is unreliable.
      */
     ignorableWhitespaceSAXFunc ignorableWhitespace;
-    /** @brief Processing instruction */
+    /** Processing instruction */
     processingInstructionSAXFunc processingInstruction;
-    /** @brief Comment */
+    /** Comment */
     commentSAXFunc comment;
-    /** @brief Warning message */
+    /** Warning message */
     warningSAXFunc warning;
-    /** @brief Error message */
+    /** Error message */
     errorSAXFunc error;
-    /** @brief Unused, all errors go to `error`. */
+    /** Unused, all errors go to `error`. */
     fatalErrorSAXFunc fatalError;
-    /** @brief DTD */
+    /** DTD */
     getParameterEntitySAXFunc getParameterEntity;
     cdataBlockSAXFunc cdataBlock;
-    /** @brief DTD */
+    /** DTD */
     externalSubsetSAXFunc externalSubset;
     /**
-     * @brief Legacy magic value
+     * Legacy magic value
      *
      * `initialized` should always be set to XML_SAX2_MAGIC to
      * enable the modern SAX2 interface.
      */
     unsigned int initialized;
-    /** @brief Application data */
+    /** Application data */
     void *_private;
-    /** @brief Start tag */
+    /** Start tag */
     startElementNsSAX2Func startElementNs;
-    /** @brief End tag */
+    /** End tag */
     endElementNsSAX2Func endElementNs;
     /**
-     * @brief Structured error handler.
+     * Structured error handler.
      *
      * Takes precedence over `error` or `warning`, but modern code
      * should use xmlCtxtSetErrorHandler().

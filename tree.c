@@ -202,11 +202,11 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
  *
  * parse an XML qualified name string
  *
- * [NS 5] QName ::= (Prefix ':')? LocalPart
+ *     [NS 5] QName ::= (Prefix ':')? LocalPart
  *
- * [NS 6] Prefix ::= NCName
+ *     [NS 6] Prefix ::= NCName
  *
- * [NS 7] LocalPart ::= NCName
+ *     [NS 7] LocalPart ::= NCName
  *
  * @returns NULL if the name doesn't have a prefix. Otherwise, returns the
  * local part, and prefix is updated to get the Prefix. Both the return value
@@ -254,7 +254,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
  * @param name  the full QName
  * @param len  an int *
  *
- * parse an XML qualified name string,i
+ * parse an XML qualified name string
  *
  * @returns NULL if it is not a Qualified Name, otherwise, update len
  *         with the length in byte of the prefix and return a pointer
@@ -1027,9 +1027,9 @@ xmlFreeDtd(xmlDtdPtr cur) {
 }
 
 /**
- * @param version  XML version string like "1.0" (optional)
+ * @param version  XML version string like `"1.0"` (optional)
  *
- * Creates a new XML document. If version is NULL, "1.0" is used.
+ * Creates a new XML document. If version is NULL, `"1.0"` is used.
  *
  * @returns a new document or NULL if a memory allocation failed.
  */
@@ -1538,7 +1538,7 @@ error:
  *
  * If `inLine` is true, entity references will be substituted.
  * Otherwise, entity references will be kept and special characters
- * like '&' as well as non-ASCII chars will be escaped. See
+ * like `&` as well as non-ASCII chars will be escaped. See
  * xmlNodeListGetRawString() for an alternative option.
  *
  * @returns a string or NULL if a memory allocation failed.
@@ -1575,7 +1575,7 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
  *
  * If `inLine` is true, entity references will be substituted.
  * Otherwise, entity references will be kept and special characters
- * like '&' will be escaped.
+ * like `&` will be escaped.
  *
  * @returns a string or NULL if a memory allocation failed.
  */
@@ -4315,11 +4315,17 @@ error:
 
 /**
  * @param node  the node
- * @param extended  if 1 do a recursive copy (properties, namespaces and children
- *			when applicable)
- *		if 2 copy properties and namespaces (when applicable)
+ * @param extended  mode of operation
  *
  * Copy a node.
+ *
+ * If `extended` is 0, make a shallow copy.
+ *
+ * If `extended` is 1, make a deep copy (properties, namespaces
+ * and children when applicable).
+ *
+ * If `extended` is 2, make a shallow copy including properties and
+ * namespaces of elements.
  *
  * Use of this function is DISCOURAGED in favor of xmlDocCopyNode().
  *
@@ -4336,11 +4342,17 @@ xmlCopyNode(xmlNodePtr node, int extended) {
 /**
  * @param node  the node
  * @param doc  the document
- * @param extended  if 1 do a recursive copy (properties, namespaces and children
- *			when applicable)
- *		if 2 copy properties and namespaces (when applicable)
+ * @param extended  mode of operation
  *
  * Copy a node into another document.
+ *
+ * If `extended` is 0, make a shallow copy.
+ *
+ * If `extended` is 1, make a deep copy (properties, namespaces
+ * and children when applicable).
+ *
+ * If `extended` is 2, make a shallow copy including properties and
+ * namespaces of elements.
  *
  * @returns the copied node or NULL if a memory allocation failed.
  */
@@ -4570,8 +4582,9 @@ error:
  * @param node  valid node
  * @param depth  used to limit any risk of recursion
  *
- * Get line number of `node`.
- * Try to override the limitation of lines being store in 16 bits ints
+ * Get line number of `node`. Try to work around the limitation of
+ * line numbers being stored as 16 bits ints. Requires xmlParserOption
+ * XML_PARSE_BIG_LINES to be set when parsing.
  *
  * @returns the line number if successful, -1 otherwise
  */
@@ -4618,9 +4631,9 @@ xmlGetLineNoInternal(const xmlNode *node, int depth)
 /**
  * @param node  valid node
  *
- * Get line number of `node`.
- * Try to override the limitation of lines being store in 16 bits ints
- * if XML_PARSE_BIG_LINES parser option was used
+ * Get line number of `node`. Try to work around the limitation of
+ * line numbers being stored as 16 bits ints. Requires xmlParserOption
+ * XML_PARSE_BIG_LINES to be set when parsing.
  *
  * @returns the line number if successful, -1 otherwise
  */
@@ -4887,7 +4900,7 @@ xmlGetNodePath(const xmlNode *node)
 /**
  * @param doc  the document
  *
- * Get the root element of the document (doc->children is a list
+ * Get the root element of the document (`doc->children` is a list
  * containing possibly comments, PIs, etc ...).
  *
  * @returns the root element or NULL if no element was found.
@@ -4908,10 +4921,12 @@ xmlDocGetRootElement(const xmlDoc *doc) {
 
 /**
  * @param doc  the document
- * @param root  the new document root element, if root is NULL no action is taken,
- *         to remove a node from a document use xmlUnlinkNode() instead.
+ * @param root  the new document root element
  *
- * Set the root element of the document (doc->children is a list
+ * If `root` is NULL no action is taken. To remove a node from a
+ * document, use xmlUnlinkNode() instead.
+ *
+ * Set the root element of the document (`doc->children` is a list
  * containing possibly comments, PIs, etc ...).
  *
  * `root` must be an element node. It is unlinked before insertion.
@@ -4955,7 +4970,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
  * @param cur  the node being changed
  * @param lang  the language description
  *
- * Set the language of a node, i.e. the values of the xml:lang
+ * Set the language of a node, i.e. the values of the `xml:lang`
  * attribute.
  *
  * @returns 0 on success, 1 if arguments are invalid, -1 if a
@@ -4983,7 +4998,7 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
 /**
  * @param cur  the node being checked
  *
- * Searches the language of a node, i.e. the values of the xml:lang
+ * Searches the language of a node, i.e. the values of the `xml:lang`
  * attribute or the one carried by the nearest ancestor.
  *
  * @returns a pointer to the lang value, or NULL if not found
@@ -5017,7 +5032,7 @@ xmlNodeGetLang(const xmlNode *cur) {
  * @param val  the xml:space value ("0": default, 1: "preserve")
  *
  * Set (or reset) the space preserving behaviour of a node, i.e. the
- * value of the xml:space attribute.
+ * value of the `xml:space` attribute.
  *
  * @returns 0 on success, 1 if arguments are invalid, -1 if a
  * memory allocation failed.
@@ -5052,7 +5067,7 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
  * @param cur  the node being checked
  *
  * Searches the space preserving behaviour of a node, i.e. the values
- * of the xml:space attribute or the one carried by the nearest
+ * of the `xml:space` attribute or the one carried by the nearest
  * ancestor.
  *
  * @returns -1 if xml:space is not inherited, 0 if "default", 1 if "preserve"
@@ -5138,7 +5153,7 @@ xmlNodeSetName(xmlNodePtr cur, const xmlChar *name) {
  * @param uri  the new base URI
  *
  * Set (or reset) the base URI of a node, i.e. the value of the
- * xml:base attribute.
+ * `xml:base` attribute.
  *
  * @returns 0 on success, -1 on error.
  */
@@ -5192,14 +5207,12 @@ xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri) {
  * @param cur  the node being checked
  * @param baseOut  pointer to base
  *
- * Searches for the BASE URL. The code should work on both XML
+ * Searches for the base URI. The code should work on both XML
  * and HTML document even if base mechanisms are completely different.
- * It returns the base as defined in RFC 2396 sections
- * 5.1.1. Base URI within Document Content
- * and
- * 5.1.2. Base URI from the Encapsulating Entity
- * However it does not return the document base (5.1.3), use
- * doc->URL in this case
+ * It returns the base as defined in RFC 2396 sections "5.1.1. Base
+ * URI within Document Content" and "5.1.2. Base URI from the
+ * Encapsulating Entity". However it does not return the document base
+ * (5.1.3), use `doc->URL` in this case.
  *
  * @since 2.13.0
  *
@@ -5328,11 +5341,12 @@ xmlNodeGetBase(const xmlDoc *doc, const xmlNode *cur) {
  * @param buffer  a buffer
  * @param cur  the node being read
  *
- * Read the value of a node `cur`, this can be either the text carried
- * directly by this node if it's a TEXT node or the aggregate string
- * of the values carried by this node child's (TEXT and ENTITY_REF).
+ * Append the string value of a node to `buffer`. For text nodes,
+ * the string value is the text content. Otherwise, the string value
+ * is the concatenation of the string values of the node's
+ * descendants.
+ *
  * Entity references are substituted.
- * Fills up the buffer `buffer` with this value
  *
  * @returns 0 in case of success and -1 in case of error.
  */
@@ -5418,11 +5432,12 @@ xmlBufGetChildContent(xmlBufPtr buf, const xmlNode *tree) {
  * @param buf  a buffer xmlBufPtr
  * @param cur  the node being read
  *
- * Read the value of a node `cur`, this can be either the text carried
- * directly by this node if it's a TEXT node or the aggregate string
- * of the values carried by this node child's (TEXT and ENTITY_REF).
+ * Append the string value of a node to `buf`. For text nodes,
+ * the string value is the text content. Otherwise, the string value
+ * is the concatenation of the string values of the node's
+ * descendants.
+ *
  * Entity references are substituted.
- * Fills up the buffer `buf` with this value
  *
  * @returns 0 in case of success and -1 in case of error.
  */
@@ -5467,12 +5482,16 @@ xmlBufGetNodeContent(xmlBufPtr buf, const xmlNode *cur)
 /**
  * @param cur  the node being read
  *
- * Read the value of a node, this can be either the text carried
- * directly by this node if it's a TEXT node or the aggregate string
- * of the values carried by this node child's (TEXT and ENTITY_REF).
+ * Returns the string value of a node. For text nodes, the string
+ * value is the text content. Otherwise, the string value is the
+ * concatenation of the string values of the node's descendants.
+ *
  * Entity references are substituted.
- * @returns a new \#xmlChar * or NULL if no content is available.
- *     It's up to the caller to free the memory with xmlFree().
+ *
+ * It's up to the caller to free the result with xmlFree().
+ *
+ * @returns a new string or NULL if arguments are invalid or a
+ * memory allocation failed.
  */
 xmlChar *
 xmlNodeGetContent(const xmlNode *cur)
@@ -5622,9 +5641,10 @@ xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
  * @param len  the size of `content`
  *
  * Append the extra substring to the node content.
- * NOTE: In contrast to xmlNodeSetContentLen(), `content` is supposed to be
- *       raw text, so unescaped XML special chars are allowed, entity
- *       references are not supported.
+ *
+ * NOTE: In contrast to xmlNodeSetContentLen(), `content` is supposed
+ * to be raw text, so unescaped XML special chars are allowed, entity
+ * references are not supported.
  *
  * @returns 0 on success, 1 on error, -1 if a memory allocation failed.
  */
@@ -5669,9 +5689,10 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
  * @param content  extra content
  *
  * Append the extra substring to the node content.
- * NOTE: In contrast to xmlNodeSetContent(), `content` is supposed to be
- *       raw text, so unescaped XML special chars are allowed, entity
- *       references are not supported.
+ *
+ * NOTE: In contrast to xmlNodeSetContent(), `content` is supposed
+ * to be raw text, so unescaped XML special chars are allowed, entity
+ * references are not supported.
  *
  * @returns 0 on success, 1 on error, -1 if a memory allocation failed.
  */
@@ -5942,16 +5963,16 @@ xmlSearchNsSafe(xmlNodePtr node, const xmlChar *prefix,
  * @param node  the current node
  * @param nameSpace  the namespace prefix
  *
- * Search a Ns registered under a given name space for a document.
- * recurse on the parents until it finds the defined namespace
+ * Search for a namespace registered under a given prefix for a document.
+ * Recurse on the parents until it finds the defined namespace
  * or return NULL otherwise.
- * `nameSpace` can be NULL, this is a search for the default namespace.
- * We don't allow to cross entities boundaries. If you don't declare
- * the namespace within those you will be in troubles !!! A warning
- * is generated to cover this case.
+ *
+ * If `nameSpace` is NULL, the default namespace is looked up.
+ *
+ * Namespace search doesn't cross entity boundaries.
  *
  * @returns the namespace pointer or NULL if no namespace was found or
- * a memory allocation failed. Allocations can only fail if the "xml"
+ * a memory allocation failed. Allocations can only fail if the `xml`
  * namespace is queried.
  */
 xmlNsPtr
@@ -6009,7 +6030,7 @@ xmlNsInScope(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
  * @param href  a namespace URI
  * @param out  pointer to resulting namespace
  *
- * Search a namespace matching `URI` in scope of `node`.
+ * Search for a namespace matching `URI` in scope of `node`.
  *
  * @returns 0 on success, -1 if a memory allocation failed, 1 on
  * other errors.
@@ -6100,11 +6121,11 @@ xmlSearchNsByHrefSafe(xmlNodePtr node, const xmlChar *href,
  * @param node  the current node
  * @param href  the namespace value
  *
- * Search a Ns aliasing a given URI. Recurse on the parents until it finds
- * the defined namespace or return NULL otherwise.
+ * Search for a namespace aliasing a given URI. Recurse on the parents
+ * until the namespace is found or return NULL otherwise.
  *
  * @returns the namespace pointer or NULL if no namespace was found or
- * a memory allocation failed. Allocations can only fail if the "xml"
+ * a memory allocation failed. Allocations can only fail if the `xml`
  * namespace is queried.
  */
 xmlNsPtr
@@ -6125,6 +6146,7 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
  * `ns` trying to reuse the same prefix. However if the given prefix is
  * null (default namespace) or reused within the subtree defined by
  * `tree` or on one of its ancestors then a new prefix is generated.
+ *
  * @returns the (new) namespace definition or NULL in case of error
  */
 static xmlNsPtr
@@ -6208,10 +6230,10 @@ xmlGrowNsCache(xmlNsCache **cache, int *capacity) {
  * @param tree  a node defining the subtree to reconciliate
  *
  * This function checks that all the namespaces declared within the given
- * tree are properly declared. This is needed for example after Copy or Cut
+ * tree are properly declared. This is needed for example after copy or cut
  * and then paste operations. The subtree may still hold pointers to
  * namespace declarations outside the subtree or invalid/masked. As much
- * as possible the function try to reuse the existing namespaces found in
+ * as possible the function tries to reuse the existing namespaces found in
  * the new environment. If not possible the new namespaces are redeclared
  * on `tree` at the top of the given subtree.
  *
@@ -6480,15 +6502,16 @@ xmlGetPropNodeValueInternal(const xmlAttr *prop)
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  *
- * Search an attribute associated to a node
+ * Search for an attribute of an element.
+ *
  * This function also looks in DTD attribute declaration for \#FIXED or
  * default declaration values.
  *
  * @returns the attribute or the attribute declaration or NULL if
- * neither was found. Also returns NULL if a memory allocation failed
+ * neither was found. Also returns NULL if a memory allocation failed,
  * making this function unreliable.
  */
 xmlAttrPtr
@@ -6530,16 +6553,17 @@ xmlHasProp(const xmlNode *node, const xmlChar *name) {
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  * @param nameSpace  the URI of the namespace
  *
- * Search for an attribute associated to a node
- * This attribute has to be anchored in the namespace specified.
- * This does the entity substitution.
- * This function looks in DTD attribute declaration for \#FIXED or
+ * Search for an attribute of an element.
+ *
+ * The attribute has to match the specified namespace. A namespace of
+ * NULL means that the attribute must have no namespace.
+ *
+ * This function also looks in DTD attribute declaration for \#FIXED or
  * default declaration values.
- * Note that a namespace of NULL indicates to use the default namespace.
  *
  * @returns the attribute or the attribute declaration or NULL if
  * neither was found. Also returns NULL if a memory allocation failed
@@ -6552,15 +6576,18 @@ xmlHasNsProp(const xmlNode *node, const xmlChar *name, const xmlChar *nameSpace)
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  * @param nsUri  the URI of the namespace
  * @param out  the returned string
  *
- * Search and get the value of an attribute associated to a node
- * This attribute has to be anchored in the namespace specified.
- * This does the entity substitution. The returned value must be
- * freed by the caller.
+ * Look up the value of an element's attribute.
+ *
+ * The attribute has to match the specified namespace. A namespace of
+ * NULL means that the attribute must have no namespace.
+ *
+ * Entities are substituted. The returned value must be freed by the
+ * caller.
  *
  * @since 2.13.0
  *
@@ -6587,23 +6614,25 @@ xmlNodeGetAttrValue(const xmlNode *node, const xmlChar *name,
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  *
- * Search and get the value of an attribute associated to a node
- * This does the entity substitution.
- * This function looks in DTD attribute declaration for \#FIXED or
+ * Look up the value of an element's attribute.
+ *
+ * Entities are substituted. The returned value must be freed by the
+ * caller.
+ *
+ * This function looks in DTD attribute declarations for \#FIXED or
  * default declaration values.
  *
- * NOTE: This function acts independently of namespaces associated
- *       to the attribute. Use xmlGetNsProp() or xmlGetNoNsProp()
- *       for namespace aware processing.
+ * NOTE: This function is ignores namespaces. Use xmlGetNsProp() or
+ * xmlGetNoNsProp() for namespace aware processing.
  *
  * NOTE: This function doesn't allow to distinguish malloc failures from
- *       missing attributes. It's more robust to use xmlNodeGetAttrValue().
+ * missing attributes.
  *
  * @returns the attribute value or NULL if not found or a memory allocation
- * failed. It's up to the caller to free the memory with xmlFree().
+ * failed.
  */
 xmlChar *
 xmlGetProp(const xmlNode *node, const xmlChar *name) {
@@ -6616,21 +6645,25 @@ xmlGetProp(const xmlNode *node, const xmlChar *name) {
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  *
- * Search and get the value of an attribute associated to a node
- * This does the entity substitution.
- * This function looks in DTD attribute declaration for \#FIXED or
+ * Look up the value of an element's attribute.
+ *
+ * Entities are substituted. The returned value must be freed by the
+ * caller.
+ *
+ * This function looks in DTD attribute declarations for \#FIXED or
  * default declaration values.
+ *
  * This function is similar to xmlGetProp() except it will accept only
  * an attribute in no namespace.
  *
  * NOTE: This function doesn't allow to distinguish malloc failures from
- *       missing attributes. It's more robust to use xmlNodeGetAttrValue().
+ * missing attributes. It's more robust to use xmlNodeGetAttrValue().
  *
  * @returns the attribute value or NULL if not found or a memory allocation
- * failed. It's up to the caller to free the memory with xmlFree().
+ * failed.
  */
 xmlChar *
 xmlGetNoNsProp(const xmlNode *node, const xmlChar *name) {
@@ -6643,21 +6676,26 @@ xmlGetNoNsProp(const xmlNode *node, const xmlChar *name) {
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  * @param nameSpace  the URI of the namespace
  *
- * Search and get the value of an attribute associated to a node
- * This attribute has to be anchored in the namespace specified.
- * This does the entity substitution.
+ * Look up the value of an element's attribute.
+ *
+ * The attribute has to match the specified namespace. A namespace of
+ * NULL means that the attribute must have no namespace.
+ *
+ * Entities are substituted. The returned value must be freed by the
+ * caller.
+ *
  * This function looks in DTD attribute declaration for \#FIXED or
  * default declaration values.
  *
  * NOTE: This function doesn't allow to distinguish malloc failures from
- *       missing attributes. It's more robust to use xmlNodeGetAttrValue().
+ * missing attributes. It's more robust to use xmlNodeGetAttrValue().
  *
  * @returns the attribute value or NULL if not found or a memory allocation
- * failed. It's up to the caller to free the memory with xmlFree().
+ * failed.
  */
 xmlChar *
 xmlGetNsProp(const xmlNode *node, const xmlChar *name, const xmlChar *nameSpace) {
@@ -6670,11 +6708,12 @@ xmlGetNsProp(const xmlNode *node, const xmlChar *name, const xmlChar *nameSpace)
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param name  the attribute name
  *
- * Remove an attribute carried by a node.
+ * Remove an attribute of an element.
  * This handles only attributes in no namespace.
+ *
  * @returns 0 if successful, -1 if not found
  */
 int
@@ -6690,11 +6729,12 @@ xmlUnsetProp(xmlNodePtr node, const xmlChar *name) {
 }
 
 /**
- * @param node  the node
+ * @param node  the element
  * @param ns  the namespace definition
  * @param name  the attribute name
  *
- * Remove an attribute carried by a node.
+ * Remove an attribute of an element.
+ *
  * @returns 0 if successful, -1 if not found
  */
 int
@@ -6715,13 +6755,11 @@ xmlUnsetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name) {
  * @param name  the attribute name (a QName)
  * @param value  the attribute value
  *
- * Set (or reset) an attribute carried by a node.
- * If `name` has a prefix, then the corresponding
- * namespace-binding will be used, if in scope; it is an
- * error it there's no such ns-binding for the prefix in
- * scope.
- * @returns the attribute pointer.
+ * Set (or reset) an element's attribute. If `name` has a prefix,
+ * the corresponding namespace will be used. It is an error if
+ * there's no such binding for the prefix in scope.
  *
+ * @returns the attribute pointer.
  */
 xmlAttrPtr
 xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
@@ -6758,8 +6796,9 @@ xmlSetProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
  * @param name  the attribute name
  * @param value  the attribute value
  *
- * Set (or reset) an attribute carried by a node.
- * The ns structure must be in scope, this is not checked
+ * Set (or reset) an element's attribute.
+ *
+ * The namespace must be in scope.
  *
  * @returns the attribute pointer.
  */
@@ -6824,8 +6863,9 @@ xmlSetNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 /**
  * @param node  the node
  *
- * Is this node a Text node ?
- * @returns 1 yes, 0 no
+ * Check whether the node is a text node.
+ *
+ * @returns 1 if yes, 0 if no
  */
 int
 xmlNodeIsText(const xmlNode *node) {
@@ -6838,10 +6878,10 @@ xmlNodeIsText(const xmlNode *node) {
 /**
  * @param node  the node
  *
- * Checks whether this node is an empty or whitespace only
- * (and possibly ignorable) text-node.
+ * Checks whether this node is an empty or whitespace-only
+ * (and possibly ignorable) text node.
  *
- * @returns 1 yes, 0 no
+ * @returns 1 if yes, 0 if no
  */
 int
 xmlIsBlankNode(const xmlNode *node) {
@@ -6890,7 +6930,8 @@ xmlTextConcat(xmlNodePtr node, const xmlChar *content, int len) {
 /**
  * @param doc  the document
  *
- * get the compression ratio for a document, ZLIB based
+ * Get the compression level of a document, ZLIB based.
+ *
  * @returns 0 (uncompressed) to 9 (max compression)
  */
 int
@@ -6903,7 +6944,8 @@ xmlGetDocCompressMode (const xmlDoc *doc) {
  * @param doc  the document
  * @param mode  the compression ratio
  *
- * set the compression ratio for a document, ZLIB based
+ * Set the compression level of a document, ZLIB based.
+ *
  * Correct values: 0 (uncompressed) to 9 (max compression)
  */
 void
@@ -6917,7 +6959,8 @@ xmlSetDocCompressMode (xmlDocPtr doc, int mode) {
 /**
  * @deprecated Use xmlGetDocCompressMode()
  *
- * get the default compression mode used, ZLIB based.
+ * Get the global compression level, ZLIB based.
+ *
  * @returns 0 (uncompressed) to 9 (max compression)
  */
 int
@@ -6931,7 +6974,8 @@ xmlGetCompressMode(void)
  *
  * @deprecated Use xmlSetDocCompressMode()
  *
- * set the default compression mode used, ZLIB based
+ * Set the global compression level, ZLIB based.
+ *
  * Correct values: 0 (uncompressed) to 9 (max compression)
  */
 void
@@ -6983,12 +7027,11 @@ struct xmlNsMap {
     (i)->next = (m)->pool; \
     (m)->pool = i;
 
-/*
-* xmlDOMWrapNsMapFree:
-* @map: the ns-map
-*
-* Frees the ns-map
-*/
+/**
+ * @param nsmap  the ns-map
+ *
+ * Frees the ns-map
+ */
 static void
 xmlDOMWrapNsMapFree(xmlNsMapPtr nsmap)
 {
@@ -7011,15 +7054,17 @@ xmlDOMWrapNsMapFree(xmlNsMapPtr nsmap)
     xmlFree(nsmap);
 }
 
-/*
-* xmlDOMWrapNsMapAddItem:
-* @map: the ns-map
-* @oldNs: the old ns-struct
-* @newNs: the new ns-struct
-* @depth: depth and ns-kind information
-*
-* Adds an ns-mapping item.
-*/
+/**
+ * @param nsmap  the ns-map
+ * @param position  position
+ * @param oldNs  the old ns-struct
+ * @param newNs  the new ns-struct
+ * @param depth  depth and ns-kind information
+ *
+ * Adds an ns-mapping item.
+ *
+ * @returns the added item.
+ */
 static xmlNsMapItemPtr
 xmlDOMWrapNsMapAddItem(xmlNsMapPtr *nsmap, int position,
 		       xmlNsPtr oldNs, xmlNsPtr newNs, int depth)
@@ -7090,18 +7135,17 @@ xmlDOMWrapNsMapAddItem(xmlNsMapPtr *nsmap, int position,
     return (ret);
 }
 
-/*
-* xmlDOMWrapStoreNs:
-* @doc: the doc
-* @nsName: the namespace name
-* @prefix: the prefix
-*
-* Creates or reuses an xmlNs struct on doc->oldNs with
-* the given prefix and namespace name.
-*
-* Returns the acquired ns struct or NULL in case of an API
-*         or internal error.
-*/
+/**
+ * @param doc  the doc
+ * @param nsName  the namespace name
+ * @param prefix  the prefix
+ *
+ * Creates or reuses an xmlNs struct on doc->oldNs with
+ * the given prefix and namespace name.
+ *
+ * @returns the acquired ns struct or NULL in case of an API
+ *          or internal error.
+ */
 static xmlNsPtr
 xmlDOMWrapStoreNs(xmlDocPtr doc,
 		   const xmlChar *nsName,
@@ -7136,13 +7180,11 @@ xmlDOMWrapStoreNs(xmlDocPtr doc,
     return(NULL);
 }
 
-/*
-* xmlDOMWrapNewCtxt:
-*
-* Allocates and initializes a new DOM-wrapper context.
-*
-* Returns the xmlDOMWrapCtxtPtr or NULL in case of an internal error.
-*/
+/**
+ * Allocates and initializes a new DOM-wrapper context.
+ *
+ * @returns the xmlDOMWrapCtxtPtr or NULL in case of an internal error.
+ */
 xmlDOMWrapCtxtPtr
 xmlDOMWrapNewCtxt(void)
 {
@@ -7155,12 +7197,11 @@ xmlDOMWrapNewCtxt(void)
     return (ret);
 }
 
-/*
-* xmlDOMWrapFreeCtxt:
-* @ctxt: the DOM-wrapper context
-*
-* Frees the DOM-wrapper context.
-*/
+/**
+ * @param ctxt  the DOM-wrapper context
+ *
+ * Frees the DOM-wrapper context.
+ */
 void
 xmlDOMWrapFreeCtxt(xmlDOMWrapCtxtPtr ctxt)
 {
@@ -7174,16 +7215,15 @@ xmlDOMWrapFreeCtxt(xmlDOMWrapCtxtPtr ctxt)
     xmlFree(ctxt);
 }
 
-/*
-* xmlTreeLookupNsListByPrefix:
-* @nsList: a list of ns-structs
-* @prefix: the searched prefix
-*
-* Searches for a ns-decl with the given prefix in @nsList.
-*
-* Returns the ns-decl if found, NULL if not found and on
-*         API errors.
-*/
+/**
+ * @param nsList  a list of ns-structs
+ * @param prefix  the searched prefix
+ *
+ * Searches for a ns-decl with the given prefix in `nsList`.
+ *
+ * @returns the ns-decl if found, NULL if not found and on
+ *          API errors.
+ */
 static xmlNsPtr
 xmlTreeNSListLookupByPrefix(xmlNsPtr nsList, const xmlChar *prefix)
 {
@@ -7203,16 +7243,14 @@ xmlTreeNSListLookupByPrefix(xmlNsPtr nsList, const xmlChar *prefix)
     return (NULL);
 }
 
-/*
-*
-* xmlDOMWrapNSNormGatherInScopeNs:
-* @map: the namespace map
-* @node: the node to start with
-*
-* Puts in-scope namespaces into the ns-map.
-*
-* Returns 0 on success, -1 on API or internal errors.
-*/
+/**
+ * @param map  the namespace map
+ * @param node  the node to start with
+ *
+ * Puts in-scope namespaces into the ns-map.
+ *
+ * @returns 0 on success, -1 on API or internal errors.
+ */
 static int
 xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapPtr *map,
 				xmlNodePtr node)
@@ -7267,12 +7305,10 @@ xmlDOMWrapNSNormGatherInScopeNs(xmlNsMapPtr *map,
 }
 
 /*
-* xmlDOMWrapNSNormAddNsMapItem2:
-*
-* For internal use. Adds a ns-decl mapping.
-*
-* Returns 0 on success, -1 on internal errors.
-*/
+ * For internal use. Adds a ns-decl mapping.
+ *
+ * Returns 0 on success, -1 on internal errors.
+ */
 static int
 xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
 			xmlNsPtr oldNs, xmlNsPtr newNs)
@@ -7297,23 +7333,22 @@ xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
     return (0);
 }
 
-/*
-* xmlDOMWrapRemoveNode:
-* @ctxt: a DOM wrapper context
-* @doc: the doc
-* @node: the node to be removed.
-* @options: set of options, unused at the moment
-*
-* Unlinks the given node from its owner.
-* This will substitute ns-references to node->nsDef for
-* ns-references to doc->oldNs, thus ensuring the removed
-* branch to be autark wrt ns-references.
-*
-* NOTE: This function was not intensively tested.
-*
-* Returns 0 on success, 1 if the node is not supported,
-*         -1 on API and internal errors.
-*/
+/**
+ * @param ctxt  a DOM wrapper context
+ * @param doc  the doc
+ * @param node  the node to be removed.
+ * @param options  set of options, unused at the moment
+ *
+ * Unlinks the given node from its owner.
+ * This will substitute ns-references to node->nsDef for
+ * ns-references to doc->oldNs, thus ensuring the removed
+ * branch to be autark wrt ns-references.
+ *
+ * NOTE: This function was not intensively tested.
+ *
+ * @returns 0 on success, 1 if the node is not supported,
+ *          -1 on API and internal errors.
+ */
 int
 xmlDOMWrapRemoveNode(xmlDOMWrapCtxtPtr ctxt, xmlDocPtr doc,
 		     xmlNodePtr node, int options ATTRIBUTE_UNUSED)
@@ -7436,20 +7471,20 @@ next_sibling:
     return (ret);
 }
 
-/*
-* xmlSearchNsByNamespaceStrict:
-* @doc: the document
-* @node: the start node
-* @nsName: the searched namespace name
-* @retNs: the resulting ns-decl
-* @prefixed: if the found ns-decl must have a prefix (for attributes)
-*
-* Dynamically searches for a ns-declaration which matches
-* the given @nsName in the ancestor-or-self axis of @node.
-*
-* Returns 1 if a ns-decl was found, 0 if not and -1 on API
-*         and internal errors.
-*/
+/**
+ * @param doc  the document
+ * @param node  the start node
+ * @param nsName  the searched namespace name
+ * @param retNs  the resulting ns-decl
+ * @param prefixed  if the found ns-decl must have a prefix
+ *                  (for attributes)
+ *
+ * Dynamically searches for a ns-declaration which matches
+ * the given `nsName` in the ancestor-or-self axis of `node`.
+ *
+ * @returns 1 if a ns-decl was found, 0 if not and -1 on API
+ *          and internal errors.
+ */
 static int
 xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
 			     const xmlChar* nsName,
@@ -7538,19 +7573,18 @@ xmlSearchNsByNamespaceStrict(xmlDocPtr doc, xmlNodePtr node,
     return (0);
 }
 
-/*
-* xmlSearchNsByPrefixStrict:
-* @doc: the document
-* @node: the start node
-* @prefix: the searched namespace prefix
-* @retNs: the resulting ns-decl
-*
-* Dynamically searches for a ns-declaration which matches
-* the given @nsName in the ancestor-or-self axis of @node.
-*
-* Returns 1 if a ns-decl was found, 0 if not and -1 on API
-*         and internal errors.
-*/
+/**
+ * @param doc  the document
+ * @param node  the start node
+ * @param prefix  the searched namespace prefix
+ * @param retNs  the resulting ns-decl
+ *
+ * Dynamically searches for a ns-declaration which matches
+ * the given `nsName` in the ancestor-or-self axis of `node`.
+ *
+ * @returns 1 if a ns-decl was found, 0 if not and -1 on API
+ *          and internal errors.
+ */
 static int
 xmlSearchNsByPrefixStrict(xmlDocPtr doc, xmlNodePtr node,
 			  const xmlChar* prefix,
@@ -7600,21 +7634,21 @@ xmlSearchNsByPrefixStrict(xmlDocPtr doc, xmlNodePtr node,
     return (0);
 }
 
-/*
-* xmlDOMWrapNSNormDeclareNsForced:
-* @doc: the doc
-* @elem: the element-node to declare on
-* @nsName: the namespace-name of the ns-decl
-* @prefix: the preferred prefix of the ns-decl
-* @checkShadow: ensure that the new ns-decl doesn't shadow ancestor ns-decls
-*
-* Declares a new namespace on @elem. It tries to use the
-* given @prefix; if a ns-decl with the given prefix is already existent
-* on @elem, it will generate an other prefix.
-*
-* Returns 1 if a ns-decl was found, 0 if not and -1 on API
-*         and internal errors.
-*/
+/**
+ * @param doc  the doc
+ * @param elem  the element-node to declare on
+ * @param nsName  the namespace-name of the ns-decl
+ * @param prefix  the preferred prefix of the ns-decl
+ * @param checkShadow  ensure that the new ns-decl doesn't shadow
+ *                     ancestor ns-decls
+ *
+ * Declares a new namespace on `elem`. It tries to use the
+ * given `prefix`. If a ns-decl with the given prefix is already existent
+ * on `elem`, it will generate an other prefix.
+ *
+ * @returns 1 if a ns-decl was found, 0 if not and -1 on API
+ *          and internal errors.
+ */
 static xmlNsPtr
 xmlDOMWrapNSNormDeclareNsForced(xmlDocPtr doc,
 				xmlNodePtr elem,
@@ -7675,25 +7709,25 @@ ns_next_prefix:
     }
 }
 
-/*
-* xmlDOMWrapNSNormAcquireNormalizedNs:
-* @doc: the doc
-* @elem: the element-node to declare namespaces on
-* @ns: the ns-struct to use for the search
-* @retNs: the found/created ns-struct
-* @nsMap: the ns-map
-* @depth: the current tree depth
-* @ancestorsOnly: search in ancestor ns-decls only
-* @prefixed: if the searched ns-decl must have a prefix (for attributes)
-*
-* Searches for a matching ns-name in the ns-decls of @nsMap, if not
-* found it will either declare it on @elem, or store it in doc->oldNs.
-* If a new ns-decl needs to be declared on @elem, it tries to use the
-* @ns->prefix for it, if this prefix is already in use on @elem, it will
-* change the prefix or the new ns-decl.
-*
-* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
-*/
+/**
+ * @param doc  the doc
+ * @param elem  the element-node to declare namespaces on
+ * @param ns  the ns-struct to use for the search
+ * @param retNs  the found/created ns-struct
+ * @param nsMap  the ns-map
+ * @param depth  the current tree depth
+ * @param ancestorsOnly  search in ancestor ns-decls only
+ * @param prefixed  if the searched ns-decl must have a prefix
+ *                  (for attributes)
+ *
+ * Searches for a matching ns-name in the ns-decls of `nsMap`, if not
+ * found it will either declare it on `elem`, or store it in `doc->oldNs`.
+ * If a new ns-decl needs to be declared on `elem`, it tries to use the
+ * `ns->prefix` for it, if this prefix is already in use on `elem`, it will
+ * change the prefix or the new ns-decl.
+ *
+ * @returns 0 if succeeded, -1 otherwise and on API/internal errors.
+ */
 static int
 xmlDOMWrapNSNormAcquireNormalizedNs(xmlDocPtr doc,
 				   xmlNodePtr elem,
@@ -7817,23 +7851,21 @@ typedef enum {
     XML_DOM_RECONNS_REMOVEREDUND = 1<<0
 } xmlDOMReconcileNSOptions;
 
-/*
-* xmlDOMWrapReconcileNamespaces:
-* @ctxt: DOM wrapper context, unused at the moment
-* @elem: the element-node
-* @options: option flags
-*
-* Ensures that ns-references point to ns-decls hold on element-nodes.
-* Ensures that the tree is namespace wellformed by creating additional
-* ns-decls where needed. Note that, since prefixes of already existent
-* ns-decls can be shadowed by this process, it could break QNames in
-* attribute values or element content.
-*
-* NOTE: This function was not intensively tested.
-*
-* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
-*/
-
+/**
+ * @param ctxt  DOM wrapper context, unused at the moment
+ * @param elem  the element-node
+ * @param options  option flags
+ *
+ * Ensures that ns-references point to ns-decls hold on element-nodes.
+ * Ensures that the tree is namespace wellformed by creating additional
+ * ns-decls where needed. Note that, since prefixes of already existent
+ * ns-decls can be shadowed by this process, it could break QNames in
+ * attribute values or element content.
+ *
+ * NOTE: This function was not intensively tested.
+ *
+ * @returns 0 if succeeded, -1 otherwise and on API/internal errors.
+ */
 int
 xmlDOMWrapReconcileNamespaces(xmlDOMWrapCtxtPtr ctxt ATTRIBUTE_UNUSED,
 			      xmlNodePtr elem,
@@ -8072,28 +8104,28 @@ next_sibling:
     return (ret);
 }
 
-/*
-* xmlDOMWrapAdoptBranch:
-* @ctxt: the optional context for custom processing
-* @sourceDoc: the optional sourceDoc
-* @node: the element-node to start with
-* @destDoc: the destination doc for adoption
-* @destParent: the optional new parent of @node in @destDoc
-* @options: option flags
-*
-* Ensures that ns-references point to @destDoc: either to
-* elements->nsDef entries if @destParent is given, or to
-* @destDoc->oldNs otherwise.
-* If @destParent is given, it ensures that the tree is namespace
-* wellformed by creating additional ns-decls where needed.
-* Note that, since prefixes of already existent ns-decls can be
-* shadowed by this process, it could break QNames in attribute
-* values or element content.
-*
-* NOTE: This function was not intensively tested.
-*
-* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
-*/
+/**
+ * @param ctxt  the optional context for custom processing
+ * @param sourceDoc  the optional sourceDoc
+ * @param node  the element-node to start with
+ * @param destDoc  the destination doc for adoption
+ * @param destParent  the optional new parent of `node` in `destDoc`
+ * @param options  option flags
+ *
+ * Ensures that ns-references point to `destDoc`: either to
+ * `elements->nsDef` entries if `destParent` is given, or to
+ * `destDoc->oldNs` otherwise.
+ *
+ * If `destParent` is given, it ensures that the tree is namespace
+ * wellformed by creating additional ns-decls where needed.
+ * Note that, since prefixes of already existent ns-decls can be
+ * shadowed by this process, it could break QNames in attribute
+ * values or element content.
+ *
+ * NOTE: This function was not intensively tested.
+ *
+ * @returns 0 if succeeded, -1 otherwise and on API/internal errors.
+ */
 static int
 xmlDOMWrapAdoptBranch(xmlDOMWrapCtxtPtr ctxt,
 		      xmlDocPtr sourceDoc ATTRIBUTE_UNUSED,
@@ -8353,36 +8385,32 @@ leave_node:
     return(ret);
 }
 
-/*
-* xmlDOMWrapCloneNode:
-* @ctxt: the optional context for custom processing
-* @sourceDoc: the optional sourceDoc
-* @node: the node to start with
-* @resNode: the clone of the given @node
-* @destDoc: the destination doc
-* @destParent: the optional new parent of @node in @destDoc
-* @deep: descend into child if set
-* @options: option flags
-*
-* References of out-of scope ns-decls are remapped to point to @destDoc:
-* 1) If @destParent is given, then nsDef entries on element-nodes are used
-* 2) If *no* @destParent is given, then @destDoc->oldNs entries are used.
-*    This is the case when you don't know already where the cloned branch
-*    will be added to.
-*
-* If @destParent is given, it ensures that the tree is namespace
-* wellformed by creating additional ns-decls where needed.
-* Note that, since prefixes of already existent ns-decls can be
-* shadowed by this process, it could break QNames in attribute
-* values or element content.
-* TODO:
-*   1) What to do with XInclude? Currently this returns an error for XInclude.
-*
-* Returns 0 if the operation succeeded,
-*         1 if a node of unsupported (or not yet supported) type was given,
-*         -1 on API/internal errors.
-*/
-
+/**
+ * @param ctxt  the optional context for custom processing
+ * @param sourceDoc  the optional sourceDoc
+ * @param node  the node to start with
+ * @param resNode  the clone of the given `node`
+ * @param destDoc  the destination doc
+ * @param destParent  the optional new parent of `node` in `destDoc`
+ * @param deep  descend into child if set
+ * @param options  option flags
+ *
+ * References of out-of scope ns-decls are remapped to point to `destDoc`.
+ * If `destParent` is given, then nsDef entries on element-nodes are used.
+ * If *no* `destParent` is given, then `destDoc->oldNs` entries are used.
+ * This is the case when you don't know already where the cloned branch
+ * will be added to.
+ *
+ * If `destParent` is given, it ensures that the tree is namespace
+ * wellformed by creating additional ns-decls where needed.
+ * Note that, since prefixes of already existent ns-decls can be
+ * shadowed by this process, it could break QNames in attribute
+ * values or element content.
+ *
+ * @returns 0 if the operation succeeded,
+ *          1 if a node of unsupported (or not yet supported) type was given,
+ *          -1 on API/internal errors.
+ */
 int
 xmlDOMWrapCloneNode(xmlDOMWrapCtxtPtr ctxt,
 		      xmlDocPtr sourceDoc,
@@ -8895,22 +8923,21 @@ exit:
     return (ret);
 }
 
-/*
-* xmlDOMWrapAdoptAttr:
-* @ctxt: the optional context for custom processing
-* @sourceDoc: the optional source document of attr
-* @attr: the attribute-node to be adopted
-* @destDoc: the destination doc for adoption
-* @destParent: the optional new parent of @attr in @destDoc
-* @options: option flags
-*
-* @attr is adopted by @destDoc.
-* Ensures that ns-references point to @destDoc: either to
-* elements->nsDef entries if @destParent is given, or to
-* @destDoc->oldNs otherwise.
-*
-* Returns 0 if succeeded, -1 otherwise and on API/internal errors.
-*/
+/**
+ * @param ctxt  the optional context for custom processing
+ * @param sourceDoc  unused
+ * @param attr  the attribute-node to be adopted
+ * @param destDoc  the destination doc for adoption
+ * @param destParent  the optional new parent of `attr` in `destDoc`
+ * @param options  option flags (unused)
+ *
+ * `attr` is adopted by `destDoc`.
+ * Ensures that ns-references point to `destDoc`: either to
+ * `elements->nsDef` entries if `destParent` is given, or to
+ * `destDoc->oldNs` otherwise.
+ *
+ * @returns 0 if succeeded, -1 otherwise and on API/internal errors.
+ */
 static int
 xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 		    xmlDocPtr sourceDoc ATTRIBUTE_UNUSED,
@@ -8963,33 +8990,33 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
     return (ret);
 }
 
-/*
-* xmlDOMWrapAdoptNode:
-* @ctxt: the optional context for custom processing
-* @sourceDoc: the optional sourceDoc
-* @node: the node to start with
-* @destDoc: the destination doc
-* @destParent: the optional new parent of @node in @destDoc
-* @options: option flags
-*
-* References of out-of scope ns-decls are remapped to point to @destDoc:
-* 1) If @destParent is given, then nsDef entries on element-nodes are used
-* 2) If *no* @destParent is given, then @destDoc->oldNs entries are used
-*    This is the case when you have an unlinked node and just want to move it
-*    to the context of
-*
-* If @destParent is given, it ensures that the tree is namespace
-* wellformed by creating additional ns-decls where needed.
-* Note that, since prefixes of already existent ns-decls can be
-* shadowed by this process, it could break QNames in attribute
-* values or element content.
-* NOTE: This function was not intensively tested.
-*
-* Returns 0 if the operation succeeded,
-*         1 if a node of unsupported type was given,
-*         2 if a node of not yet supported type was given and
-*         -1 on API/internal errors.
-*/
+/**
+ * @param ctxt  the optional context for custom processing
+ * @param sourceDoc  the optional sourceDoc
+ * @param node  the node to start with
+ * @param destDoc  the destination doc
+ * @param destParent  the optional new parent of `node` in `destDoc`
+ * @param options  option flags
+ *
+ * References of out-of scope ns-decls are remapped to point to `destDoc`:
+ * If `destParent` is given, then nsDef entries on element-nodes are used.
+ * If *no* `destParent` is given, then `destDoc->oldNs` entries are used
+ * This is the case when you have an unlinked node and just want to move it
+ * to the context of.
+ *
+ * If `destParent` is given, it ensures that the tree is namespace
+ * wellformed by creating additional ns-decls where needed.
+ * Note that, since prefixes of already existent ns-decls can be
+ * shadowed by this process, it could break QNames in attribute
+ * values or element content.
+ *
+ * NOTE: This function was not intensively tested.
+ *
+ * @returns 0 if the operation succeeded,
+ *          1 if a node of unsupported type was given,
+ *          2 if a node of not yet supported type was given and
+ *          -1 on API/internal errors.
+ */
 int
 xmlDOMWrapAdoptNode(xmlDOMWrapCtxtPtr ctxt,
 		    xmlDocPtr sourceDoc,

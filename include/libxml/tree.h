@@ -1,8 +1,8 @@
 /**
  * @file
- * 
+ *
  * @brief interfaces for tree manipulation
- * 
+ *
  * this module describes the structures found in an tree resulting
  *              from an XML or HTML parsing, as well as the API provided for
  *              various processing on that tree
@@ -40,6 +40,9 @@ extern "C" {
  */
 #define xmlBufferAllocScheme XML_BUFFER_ALLOC_EXACT
 #define xmlDefaultBufferSize 4096
+#define XML_GET_CONTENT(n) \
+    ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
+#define XML_GET_LINE(n)	xmlGetLineNo(n)
 
 /*
  * Some of the basic types pointer to structures:
@@ -80,12 +83,12 @@ typedef enum {
     XML_BUFFER_ALLOC_BOUNDED	/* limit the upper size of the buffer */
 } xmlBufferAllocationScheme;
 
+typedef struct _xmlBuffer xmlBuffer;
+typedef xmlBuffer *xmlBufferPtr;
 /**
  * A buffer structure, this old construct is limited to 2GB and
  * is being deprecated, use API with xmlBuf instead.
  */
-typedef struct _xmlBuffer xmlBuffer;
-typedef xmlBuffer *xmlBufferPtr;
 struct _xmlBuffer {
     /* The buffer content UTF8 */
     xmlChar *content XML_DEPRECATED_MEMBER;
@@ -103,11 +106,6 @@ struct _xmlBuffer {
  * A buffer structure, new one, the actual structure internals are not public
  */
 typedef struct _xmlBuf xmlBuf;
-
-/**
- * A pointer to a buffer structure, the actual structure internals are not
- * public
- */
 typedef xmlBuf *xmlBufPtr;
 
 /*
@@ -236,12 +234,11 @@ typedef enum {
     XML_ATTRIBUTE_FIXED
 } xmlAttributeDefault;
 
+typedef struct _xmlEnumeration xmlEnumeration;
+typedef xmlEnumeration *xmlEnumerationPtr;
 /**
  * List structure used when there is an enumeration in DTDs.
  */
-
-typedef struct _xmlEnumeration xmlEnumeration;
-typedef xmlEnumeration *xmlEnumerationPtr;
 struct _xmlEnumeration {
     struct _xmlEnumeration    *next;	/* next one */
     const xmlChar            *name;	/* Enumeration name */
@@ -255,36 +252,36 @@ typedef xmlAttribute *xmlAttributePtr;
 struct _xmlAttribute {
     /** application data */
     void           *_private;
-    /** XML_ATTRIBUTE_DECL, must be second ! */
+    /** XML_ATTRIBUTE_DECL */
     xmlElementType          type;
-    /** Attribute name */
+    /** attribute name */
     const xmlChar          *name;
     /** NULL */
     struct _xmlNode    *children;
     /** NULL */
     struct _xmlNode        *last;
-    /** -> DTD */
+    /** DTD */
     struct _xmlDtd       *parent;
-    /** next sibling link  */
+    /** next sibling */
     struct _xmlNode        *next;
-    /** previous sibling link  */
+    /** previous sibling */
     struct _xmlNode        *prev;
-    /** the containing document */
+    /** containing document */
     struct _xmlDoc          *doc;
 
     /** next in hash table */
     struct _xmlAttribute  *nexth;
-    /** The attribute type */
+    /** attribute type */
     xmlAttributeType       atype;
-    /** the default */
+    /** attribute default */
     xmlAttributeDefault      def;
-    /** or the default value */
+    /** default value */
     const xmlChar  *defaultValue;
-    /** or the enumeration tree if any */
+    /** enumeration tree if any */
     xmlEnumerationPtr       tree;
-    /** the namespace prefix if any */
+    /** namespace prefix if any */
     const xmlChar        *prefix;
-    /** Element holding the attribute */
+    /** element name */
     const xmlChar          *elem;
 };
 
@@ -319,7 +316,7 @@ struct _xmlElementContent {
     xmlElementContentType     type;
     /** ONCE, OPT, MULT or PLUS */
     xmlElementContentOccur    ocur;
-    /** Element name */
+    /** element name */
     const xmlChar             *name;
     /** first child */
     struct _xmlElementContent *c1;
@@ -327,7 +324,7 @@ struct _xmlElementContent {
     struct _xmlElementContent *c2;
     /** parent */
     struct _xmlElementContent *parent;
-    /** Namespace prefix */
+    /** namespace prefix */
     const xmlChar             *prefix;
 };
 
@@ -350,9 +347,9 @@ typedef xmlElement *xmlElementPtr;
 struct _xmlElement {
     /** application data */
     void           *_private;
-    /** XML_ELEMENT_DECL, must be second ! */
+    /** XML_ELEMENT_DECL */
     xmlElementType          type;
-    /** Element name */
+    /** element name */
     const xmlChar          *name;
     /** NULL */
     struct _xmlNode    *children;
@@ -360,23 +357,23 @@ struct _xmlElement {
     struct _xmlNode        *last;
     /** -> DTD */
     struct _xmlDtd       *parent;
-    /** next sibling link  */
+    /** next sibling */
     struct _xmlNode        *next;
-    /** previous sibling link  */
+    /** previous sibling */
     struct _xmlNode        *prev;
-    /** the containing document */
+    /** containing document */
     struct _xmlDoc          *doc;
 
-    /** The type */
+    /** element type */
     xmlElementTypeVal      etype;
-    /** the allowed element content */
+    /** allowed element content */
     xmlElementContentPtr content;
-    /** List of the declared attributes */
+    /** list of declared attributes */
     xmlAttributePtr   attributes;
-    /** the namespace prefix if any */
+    /** namespace prefix if any */
     const xmlChar        *prefix;
 #ifdef LIBXML_REGEXP_ENABLED
-    /** the validating regexp */
+    /** validating regexp */
     xmlRegexpPtr       contModel;
 #else
     void	      *contModel;
@@ -398,15 +395,19 @@ typedef xmlNs *xmlNsPtr;
  * within the subtree (until overridden).
  *
  * xmlNsType is unified with xmlElementType.
+ *
+ * Note that the XPath engine returns XPath namespace nodes as
+ * xmlNs cast to xmlNode. This is a terrible design decision that
+ * can easily cause type confusion errors.
  */
 struct _xmlNs {
-    /** next Ns link for this node */
+    /** next namespace */
     struct _xmlNs  *next;
-    /** global or local */
+    /** XML_NAMESPACE_DECL */
     xmlNsType      type;
-    /** URL for the namespace */
+    /** namespace URI */
     const xmlChar *href;
-    /** prefix for the namespace */
+    /** namespace prefix */
     const xmlChar *prefix;
     /** application data */
     void           *_private;
@@ -423,38 +424,38 @@ typedef xmlDtd *xmlDtdPtr;
 struct _xmlDtd {
     /** application data */
     void           *_private;
-    /** XML_DTD_NODE, must be second ! */
+    /** XML_DTD_NODE */
     xmlElementType  type;
-    /** Name of the DTD */
+    /** name of the DTD */
     const xmlChar *name;
-    /** the value of the property link */
+    /** first child */
     struct _xmlNode *children;
-    /** last child link */
+    /** last child */
     struct _xmlNode *last;
-    /** child->parent link */
+    /** parent node */
     struct _xmlDoc  *parent;
-    /** next sibling link  */
+    /** next sibling */
     struct _xmlNode *next;
-    /** previous sibling link  */
+    /** previous sibling */
     struct _xmlNode *prev;
-    /** the containing document */
+    /** containing document */
     struct _xmlDoc  *doc;
 
     /* End of common part */
 
-    /** Hash table for notations if any */
+    /** hash table for notations if any */
     void          *notations;
-    /** Hash table for elements if any */
+    /** hash table for elements if any */
     void          *elements;
-    /** Hash table for attributes if any */
+    /** hash table for attributes if any */
     void          *attributes;
-    /** Hash table for entities if any */
+    /** hash table for entities if any */
     void          *entities;
-    /** External identifier for PUBLIC DTD */
+    /** public identifier */
     const xmlChar *ExternalID;
-    /** URI for a SYSTEM or PUBLIC DTD */
+    /** system identifier */
     const xmlChar *SystemID;
-    /** Hash table for param entities if any */
+    /** hash table for parameter entities if any */
     void          *pentities;
 };
 
@@ -466,49 +467,49 @@ typedef xmlAttr *xmlAttrPtr;
 struct _xmlAttr {
     /** application data */
     void           *_private;
-    /** XML_ATTRIBUTE_NODE, must be second ! */
+    /** XML_ATTRIBUTE_NODE */
     xmlElementType   type;
-    /** the name of the property */
+    /** local name */
     const xmlChar   *name;
-    /** the value of the property */
+    /** first child */
     struct _xmlNode *children;
-    /** NULL */
+    /** last child */
     struct _xmlNode *last;
-    /** child->parent link */
+    /** parent node */
     struct _xmlNode *parent;
-    /** next sibling link  */
+    /** next sibling */
     struct _xmlAttr *next;
-    /** previous sibling link  */
+    /** previous sibling */
     struct _xmlAttr *prev;
-    /** the containing document */
+    /** containing document */
     struct _xmlDoc  *doc;
-    /** pointer to the associated namespace */
+    /** namespace if any */
     xmlNs           *ns;
-    /** the attribute type if validating */
+    /** attribute type if validating */
     xmlAttributeType atype;
     /** for type/PSVI information */
     void            *psvi;
-    /** the ID struct */
+    /** ID struct if any */
     struct _xmlID   *id;
 };
 
 typedef struct _xmlID xmlID;
 typedef xmlID *xmlIDPtr;
-/**
+/*
  * An XML ID instance.
  */
 struct _xmlID {
-    /** next ID */
+    /* next ID */
     struct _xmlID    *next;
-    /** The ID name */
+    /* The ID name */
     const xmlChar    *value;
-    /** The attribute holding it */
+    /* The attribute holding it */
     xmlAttrPtr        attr;
-    /** The attribute if attr is not available */
+    /* The attribute if attr is not available */
     const xmlChar    *name;
-    /** The line number if attr is not available */
+    /* The line number if attr is not available */
     int               lineno;
-    /** The document holding the ID */
+    /* The document holding the ID */
     struct _xmlDoc   *doc;
 };
 
@@ -528,35 +529,46 @@ struct _xmlRef {
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
 /**
- * A node in an XML tree.
+ * A node in an XML or HTML tree.
+ *
+ * This is used for
+ *
+ * - XML_ELEMENT_NODE
+ * - XML_TEXT_NODE
+ * - XML_CDATA_SECTION_NODE
+ * - XML_ENTITY_REF_NODE
+ * - XML_PI_NODE
+ * - XML_COMMENT_NODE
+ * - XML_XINCLUDE_START_NODE
+ * - XML_XINCLUDE_END_NODE
  */
 struct _xmlNode {
     /** application data */
     void           *_private;
-    /** type number, must be second ! */
+    /** type enum */
     xmlElementType   type;
-    /** the name of the node, or the entity */
+    /** local name for elements */
     const xmlChar   *name;
-    /** parent->childs link */
+    /** first child */
     struct _xmlNode *children;
-    /** last child link */
+    /** last child */
     struct _xmlNode *last;
-    /** child->parent link */
+    /** parent node */
     struct _xmlNode *parent;
-    /** next sibling link  */
+    /** next sibling */
     struct _xmlNode *next;
-    /** previous sibling link  */
+    /** previous sibling */
     struct _xmlNode *prev;
-    /** the containing document */
+    /** containing document */
     struct _xmlDoc  *doc;
 
     /* End of common part */
 
-    /** pointer to the associated namespace */
+    /** namespace if any */
     xmlNs           *ns;
-    /** the content */
+    /** content of text, comment, PI nodes */
     xmlChar         *content;
-    /** properties list */
+    /** attributes for elements */
     struct _xmlAttr *properties;
     /** namespace definitions on this node */
     xmlNs           *nsDef;
@@ -567,18 +579,6 @@ struct _xmlNode {
     /** extra data for XPath/XSLT */
     unsigned short   extra;
 };
-
-/**
- * Macro to extract the content pointer of a node.
- */
-#define XML_GET_CONTENT(n)					\
-    ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
-
-/**
- * Macro to extract the line number of an element node.
- */
-#define XML_GET_LINE(n)						\
-    (xmlGetLineNo(n))
 
 /**
  * Set of properties of the document as found by the parser
@@ -606,65 +606,68 @@ typedef enum {
 typedef struct _xmlDoc xmlDoc;
 typedef xmlDoc *xmlDocPtr;
 /**
- * An XML document.
+ * An XML or HTML document.
  */
 struct _xmlDoc {
     /** application data */
-    void           *_private;	
-    /** XML_DOCUMENT_NODE, must be second ! */
-    xmlElementType  type;       
-    /** name/filename/URI of the document */
-    char           *name;	
-    /** the document tree */
-    struct _xmlNode *children;	
-    /** last child link */
-    struct _xmlNode *last;	
-    /** child->parent link */
-    struct _xmlNode *parent;	
-    /** next sibling link  */
-    struct _xmlNode *next;	
-    /** previous sibling link  */
-    struct _xmlNode *prev;	
-    /** autoreference to itself */
-    struct _xmlDoc  *doc;	
+    void           *_private;
+    /** XML_DOCUMENT_NODE or XML_HTML_DOCUMENT_NODE */
+    xmlElementType  type;
+    /** NULL */
+    char           *name;
+    /** first child */
+    struct _xmlNode *children;
+    /** last child */
+    struct _xmlNode *last;
+    /** parent node */
+    struct _xmlNode *parent;
+    /** next sibling */
+    struct _xmlNode *next;
+    /** previous sibling */
+    struct _xmlNode *prev;
+    /** reference to itself */
+    struct _xmlDoc  *doc;
 
     /* End of common part */
-    
+
     /** level of zlib compression */
     int             compression;
-    /** standalone document (no external refs):
-         1 if standalone="yes",
-         0 if standalone="no",
-        -1 if there is no XML declaration,
-        -2 if there is an XML declaration, but no
-            standalone attribute was specified */
-    int             standalone; 
-    /** the document internal subset */
-    struct _xmlDtd  *intSubset;	
-    /** the document external subset */
-    struct _xmlDtd  *extSubset;	
-    /** Global namespace, the old way */
-    struct _xmlNs   *oldNs;	
-    /** the XML version string */
-    const xmlChar  *version;	
-    /** actual encoding, if any */
-    const xmlChar  *encoding;   
-    /** Hash table for ID attributes if any */
-    void           *ids;        
-    /** Hash table for IDREFs attributes if any */
-    void           *refs;       
-    /** The URI for that document */
-    const xmlChar  *URL;	
+    /**
+     * standalone document (no external refs)
+     *
+     * - 1 if standalone="yes",
+     * - 0 if standalone="no",
+     * - -1 if there is no XML declaration,
+     * - -2 if there is an XML declaration, but no
+     *   standalone attribute was specified
+     */
+    int             standalone;
+    /** internal subset */
+    struct _xmlDtd  *intSubset;
+    /** external subset */
+    struct _xmlDtd  *extSubset;
+    /** used to hold the XML namespace if needed */
+    struct _xmlNs   *oldNs;
+    /** version string from XML declaration */
+    const xmlChar  *version;
+    /** actual encoding if any */
+    const xmlChar  *encoding;
+    /** hash table for ID attributes if any */
+    void           *ids;
+    /** hash table for IDREFs attributes if any */
+    void           *refs;
+    /** URI of the document */
+    const xmlChar  *URL;
     /** unused */
-    int             charset;    
-    /** dict used to allocate names or NULL */
-    struct _xmlDict *dict;      
+    int             charset;
+    /** dict used to allocate names if any */
+    struct _xmlDict *dict;
     /** for type/PSVI information */
-    void           *psvi;	
-    /** xmlParserOptions used to parse the document */
-    int             parseFlags;	
-    /** xmlDocProperties for this document set at the end of parsing */
-    int             properties;	
+    void           *psvi;
+    /** xmlParserOption enum used to parse the document */
+    int             parseFlags;
+    /** xmlDocProperties of the document */
+    int             properties;
 };
 
 
@@ -741,7 +744,6 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  * Variables.
  */
 
-/** @cond IGNORE */
 XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
 XML_DEPRECATED
@@ -753,7 +755,6 @@ XMLPUBFUN xmlDeregisterNodeFunc *__xmlDeregisterNodeDefaultValue(void);
   #define xmlDeregisterNodeDefaultValue \
     (*__xmlDeregisterNodeDefaultValue())
 #endif
-/** @endcond */
 
 /*
  * Some helper functions

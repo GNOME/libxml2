@@ -1,9 +1,9 @@
 /**
  * @file
  * 
- * @brief the core parser module
+ * @brief Validating XML 1.0 parser
  * 
- * Interfaces, constants and types related to the XML parser
+ * Interfaces, constants and types related to the XML parser.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -92,12 +92,7 @@ typedef enum {
 typedef void (* xmlParserInputDeallocate)(xmlChar *str);
 
 /**
- * An xmlParserInput is an input flow for the XML processor.
- * Each entity parsed is associated an xmlParserInput (except the
- * few predefined ones). This is the case both for internal entities
- * - in which case the flow is already completely in memory - or
- * external entities - in which case we use the buf structure for
- * progressive reading and I18N conversions to the internal UTF-8 format.
+ * Parser input
  */
 struct _xmlParserInput {
     /* Input buffer */
@@ -187,14 +182,12 @@ typedef enum {
     XML_PARSER_XML_DECL         /* before XML decl (but after BOM) */
 } xmlParserInputState;
 
-/** @cond IGNORE */
 /*
  * Internal bits in the 'loadsubset' context member
  */
 #define XML_DETECT_IDS		2
 #define XML_COMPLETE_ATTRS	4
 #define XML_SKIP_IDS		8
-/** @endcond */
 
 /*
  * Internal type. Only XML_PARSE_READER is used.
@@ -234,8 +227,8 @@ typedef xmlParserErrors
                      xmlResourceType type, xmlParserInputFlags flags,
                      xmlParserInputPtr *out);
 
-/*
- * The parser context.
+/**
+ * Parser context
  */
 struct _xmlParserCtxt {
     /* The SAX handler */
@@ -846,28 +839,50 @@ typedef void (*endElementNsSAX2Func)   (void *ctx,
 					const xmlChar *prefix,
 					const xmlChar *URI);
 
-
+/**
+ * Callbacks for SAX parser
+ *
+ * For DTD-related handlers, it's recommended to either use the
+ * original libxml2 handler or set them to NULL if DTDs can be
+ * ignored.
+ */
 struct _xmlSAXHandler {
-    /*
-     * For DTD-related handlers, it's recommended to either use the
-     * original libxml2 handler or set them to NULL if DTDs can be
-     * ignored.
+    /** @brief DTD */
+    internalSubsetSAXFunc internalSubset;
+    /** @brief unused */
+    isStandaloneSAXFunc isStandalone;
+    /** @brief DTD */
+    hasInternalSubsetSAXFunc hasInternalSubset;
+    /** @brief DTD */
+    hasExternalSubsetSAXFunc hasExternalSubset;
+    /** @brief DTD */
+    resolveEntitySAXFunc resolveEntity;
+    /** @brief DTD */
+    getEntitySAXFunc getEntity;
+    /** @brief DTD */
+    entityDeclSAXFunc entityDecl;
+    /** @brief DTD */
+    notationDeclSAXFunc notationDecl;
+    /** @brief DTD */
+    attributeDeclSAXFunc attributeDecl;
+    /** @brief DTD */
+    elementDeclSAXFunc elementDecl;
+    /** @brief DTD */
+    unparsedEntityDeclSAXFunc unparsedEntityDecl;
+    /** @brief useless */
+    setDocumentLocatorSAXFunc setDocumentLocator;
+    /**
+     * @brief Called at the start of a document
+     *
+     * Use xmlCtxtGetVersion(), xmlCtxtGetDeclaredEncoding() and
+     * xmlCtxtGetStandalone() to get data from the XML declaration.
      */
-    internalSubsetSAXFunc internalSubset; /* DTD */
-    isStandaloneSAXFunc isStandalone; /* unused */
-    hasInternalSubsetSAXFunc hasInternalSubset; /* DTD */
-    hasExternalSubsetSAXFunc hasExternalSubset; /* DTD */
-    resolveEntitySAXFunc resolveEntity; /* DTD */
-    getEntitySAXFunc getEntity; /* DTD */
-    entityDeclSAXFunc entityDecl; /* DTD */
-    notationDeclSAXFunc notationDecl; /* DTD */
-    attributeDeclSAXFunc attributeDecl; /* DTD */
-    elementDeclSAXFunc elementDecl; /* DTD */
-    unparsedEntityDeclSAXFunc unparsedEntityDecl; /* DTD */
-    setDocumentLocatorSAXFunc setDocumentLocator; /* deprecated */
     startDocumentSAXFunc startDocument;
+    /** @brief End of document */
     endDocumentSAXFunc endDocument;
-    /*
+    /**
+     * @brief Legacy start tag handler
+     *
      * `startElement` and `endElement` are only used by the legacy SAX1
      * interface and should not be used in new software. If you really
      * have to enable SAX1, the preferred way is set the `initialized`
@@ -881,37 +896,53 @@ struct _xmlSAXHandler {
      * together with custom SAX callbacks.
      */
     startElementSAXFunc startElement;
+    /** @brief See _xmlSAXHandler.startElement */
     endElementSAXFunc endElement;
+    /** @brief Entity reference */
     referenceSAXFunc reference;
+    /** @brief Text */
     charactersSAXFunc characters;
-    /*
+    /**
+     * @brief Ignorable whitespace
+     *
      * `ignorableWhitespace` should always be set to the same value
      * as `characters`. Otherwise, the parser will try to detect
      * whitespace which is unreliable.
      */
     ignorableWhitespaceSAXFunc ignorableWhitespace;
+    /** @brief Processing instruction */
     processingInstructionSAXFunc processingInstruction;
+    /** @brief Comment */
     commentSAXFunc comment;
+    /** @brief Warning message */
     warningSAXFunc warning;
+    /** @brief Error message */
     errorSAXFunc error;
-    fatalErrorSAXFunc fatalError; /* unused, `error` gets all the errors */
-    getParameterEntitySAXFunc getParameterEntity; /* DTD */
+    /** @brief Unused, all errors go to `error`. */
+    fatalErrorSAXFunc fatalError;
+    /** @brief DTD */
+    getParameterEntitySAXFunc getParameterEntity;
     cdataBlockSAXFunc cdataBlock;
-    externalSubsetSAXFunc externalSubset; /* DTD */
-    /*
-     * `initialized` should always be set to XML_SAX2_MAGIC to enable the
-     * modern SAX2 interface.
+    /** @brief DTD */
+    externalSubsetSAXFunc externalSubset;
+    /**
+     * @brief Legacy magic value
+     *
+     * `initialized` should always be set to XML_SAX2_MAGIC to
+     * enable the modern SAX2 interface.
      */
     unsigned int initialized;
-    /*
-     * The following members are only used by the SAX2 interface.
-     */
+    /** @brief Application data */
     void *_private;
+    /** @brief Start tag */
     startElementNsSAX2Func startElementNs;
+    /** @brief End tag */
     endElementNsSAX2Func endElementNs;
-    /*
+    /**
+     * @brief Structured error handler.
+     *
      * Takes precedence over `error` or `warning`, but modern code
-     * should use xmlCtxtSetErrorHandler.
+     * should use xmlCtxtSetErrorHandler().
      */
     xmlStructuredErrorFunc serror;
 };
@@ -972,7 +1003,6 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
 
 XMLPUBVAR const char *const xmlParserVersion;
 
-/** @cond IGNORE */
 XML_DEPRECATED
 XMLPUBVAR const xmlSAXLocator xmlDefaultSAXLocator;
 #ifdef LIBXML_SAX1_ENABLED
@@ -1005,25 +1035,85 @@ XMLPUBFUN int *__xmlSaveNoEmptyTags(void);
 #endif
 
 #ifndef XML_GLOBALS_NO_REDEFINITION
+  /**
+   * Thread-local setting to enable validation. Defaults to 0.
+   *
+   * @deprecated Use the parser option XML_PARSE_DTDVALID.
+   */
   #define xmlDoValidityCheckingDefaultValue \
     (*__xmlDoValidityCheckingDefaultValue())
+  /**
+   * Thread-local setting to disable warnings. Defaults to 1.
+   *
+   * @deprecated Use the parser option XML_PARSE_NOWARNING.
+   */
   #define xmlGetWarningsDefaultValue \
     (*__xmlGetWarningsDefaultValue())
+  /**
+   * Thread-local setting to ignore some whitespace. Defaults
+   * to 1.
+   *
+   * @deprecated Use the parser option XML_PARSE_NOBLANKS.
+   */
   #define xmlKeepBlanksDefaultValue (*__xmlKeepBlanksDefaultValue())
+  /**
+   * Thread-local setting to store line numbers. Defaults
+   * to 0, but is always enabled after setting parser options.
+   *
+   * @deprecated Shouldn't be needed when using parser options.
+   */
   #define xmlLineNumbersDefaultValue \
     (*__xmlLineNumbersDefaultValue())
+  /**
+   * Thread-local setting to enable loading of external DTDs.
+   * Defaults to 0.
+   *
+   * @deprecated Use the parser option XML_PARSE_DTDLOAD.
+   */
   #define xmlLoadExtDtdDefaultValue (*__xmlLoadExtDtdDefaultValue())
+  /**
+   * Thread-local setting to enable pedantic warnings.
+   * Defaults to 0.
+   *
+   * @deprecated Use the parser option XML_PARSE_PEDANTIC.
+   */
   #define xmlPedanticParserDefaultValue \
     (*__xmlPedanticParserDefaultValue())
+  /**
+   * Thread-local setting to enable entity substitution.
+   * Defaults to 0.
+   *
+   * @deprecated Use the parser option XML_PARSE_NOENT.
+   */
   #define xmlSubstituteEntitiesDefaultValue \
     (*__xmlSubstituteEntitiesDefaultValue())
   #ifdef LIBXML_OUTPUT_ENABLED
+    /**
+     * Thread-local setting to disable indenting when
+     * formatting output. Defaults to 1.
+     *
+     * @deprecated Use the xmlsave.h API with option
+     * XML_SAVE_NO_INDENT.
+     */
     #define xmlIndentTreeOutput (*__xmlIndentTreeOutput())
+    /**
+     * Thread-local setting to change the indent string.
+     * Defaults to two spaces.
+     *
+     * @deprecated Use the xmlsave.h API and
+     * xmlSaveSetIndentString().
+     */
     #define xmlTreeIndentString (*__xmlTreeIndentString())
+    /**
+     * Thread-local setting to disable empty tags when
+     * serializing. Defaults to 0.
+     *
+     * @deprecated Use the xmlsave.h API with option
+     * XML_SAVE_NO_EMPTY.
+     */
     #define xmlSaveNoEmptyTags (*__xmlSaveNoEmptyTags())
   #endif
 #endif
-/** @endcond */
 
 /*
  * Init/Cleanup
@@ -1666,7 +1756,7 @@ XMLPUBFUN xmlDocPtr
 					 const char *encoding,
 					 int options);
 
-/**
+/*
  * New input API
  */
 

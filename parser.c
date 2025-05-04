@@ -1217,50 +1217,51 @@ xmlCleanSpecialAttr(xmlParserCtxtPtr ctxt)
  * Checks that the value conforms to the LanguageID production:
  *
  * NOTE: this is somewhat deprecated, those productions were removed from
- *       the XML Second edition.
+ * the XML Second edition.
  *
- * [33] LanguageID ::= Langcode ('-' Subcode)*
- * [34] Langcode ::= ISO639Code |  IanaCode |  UserCode
- * [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z])
- * [36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+
- * [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
- * [38] Subcode ::= ([a-z] | [A-Z])+
+ *     [33] LanguageID ::= Langcode ('-' Subcode)*
+ *     [34] Langcode ::= ISO639Code |  IanaCode |  UserCode
+ *     [35] ISO639Code ::= ([a-z] | [A-Z]) ([a-z] | [A-Z])
+ *     [36] IanaCode ::= ('i' | 'I') '-' ([a-z] | [A-Z])+
+ *     [37] UserCode ::= ('x' | 'X') '-' ([a-z] | [A-Z])+
+ *     [38] Subcode ::= ([a-z] | [A-Z])+
  *
  * The current REC reference the successors of RFC 1766, currently 5646
  *
  * http://www.rfc-editor.org/rfc/rfc5646.txt
- * langtag       = language
- *                 ["-" script]
- *                 ["-" region]
- *                 *("-" variant)
- *                 *("-" extension)
- *                 ["-" privateuse]
- * language      = 2*3ALPHA            ; shortest ISO 639 code
- *                 ["-" extlang]       ; sometimes followed by
- *                                     ; extended language subtags
- *               / 4ALPHA              ; or reserved for future use
- *               / 5*8ALPHA            ; or registered language subtag
  *
- * extlang       = 3ALPHA              ; selected ISO 639 codes
- *                 *2("-" 3ALPHA)      ; permanently reserved
+ *     langtag       = language
+ *                     ["-" script]
+ *                     ["-" region]
+ *                     *("-" variant)
+ *                     *("-" extension)
+ *                     ["-" privateuse]
+ *     language      = 2*3ALPHA            ; shortest ISO 639 code
+ *                     ["-" extlang]       ; sometimes followed by
+ *                                         ; extended language subtags
+ *                   / 4ALPHA              ; or reserved for future use
+ *                   / 5*8ALPHA            ; or registered language subtag
  *
- * script        = 4ALPHA              ; ISO 15924 code
+ *     extlang       = 3ALPHA              ; selected ISO 639 codes
+ *                     *2("-" 3ALPHA)      ; permanently reserved
  *
- * region        = 2ALPHA              ; ISO 3166-1 code
- *               / 3DIGIT              ; UN M.49 code
+ *     script        = 4ALPHA              ; ISO 15924 code
  *
- * variant       = 5*8alphanum         ; registered variants
- *               / (DIGIT 3alphanum)
+ *     region        = 2ALPHA              ; ISO 3166-1 code
+ *                   / 3DIGIT              ; UN M.49 code
  *
- * extension     = singleton 1*("-" (2*8alphanum))
+ *     variant       = 5*8alphanum         ; registered variants
+ *                   / (DIGIT 3alphanum)
  *
- *                                     ; Single alphanumerics
- *                                     ; "x" reserved for private use
- * singleton     = DIGIT               ; 0 - 9
- *               / %x41-57             ; A - W
- *               / %x59-5A             ; Y - Z
- *               / %x61-77             ; a - w
- *               / %x79-7A             ; y - z
+ *     extension     = singleton 1*("-" (2*8alphanum))
+ *
+ *                                         ; Single alphanumerics
+ *                                         ; "x" reserved for private use
+ *     singleton     = DIGIT               ; 0 - 9
+ *                   / %x41-57             ; A - W
+ *                   / %x59-5A             ; Y - Z
+ *                   / %x61-77             ; a - w
+ *                   / %x79-7A             ; y - z
  *
  * it sounds right to still allow Irregular i-xxx IANA and user codes too
  * The parser below doesn't try to cope with extension or privateuse
@@ -2539,8 +2540,8 @@ xmlPushInput(xmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  *
  * Parse a numeric character reference. Always consumes '&'.
  *
- * [66] CharRef ::= '&\#' [0-9]+ ';' |
- *                  '&\#x' [0-9a-fA-F]+ ';'
+ *     [66] CharRef ::= '&#' [0-9]+ ';' |
+ *                      '&#x' [0-9a-fA-F]+ ';'
  *
  * [ WFC: Legal Character ]
  * Characters referred to using character references must match the
@@ -2645,8 +2646,8 @@ xmlParseCharRef(xmlParserCtxtPtr ctxt) {
  * parse Reference declarations, variant parsing from a string rather
  * than an an input flow.
  *
- * [66] CharRef ::= '&\#' [0-9]+ ';' |
- *                  '&\#x' [0-9a-fA-F]+ ';'
+ *     [66] CharRef ::= '&#' [0-9]+ ';' |
+ *                      '&#x' [0-9a-fA-F]+ ';'
  *
  * [ WFC: Legal Character ]
  * Characters referred to using character references must match the
@@ -2736,7 +2737,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  *
  * @deprecated Internal function, do not use.
  *
- * [69] PEReference ::= '%' Name ';'
+ *     [69] PEReference ::= '%' Name ';'
  *
  * [ WFC: No Recursion ]
  * A parsed entity must not contain a recursive
@@ -2759,7 +2760,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  *
  * A PEReference may have been detected in the current input stream
  * the handling is done accordingly to
- *      http://www.w3.org/TR/REC-xml\#entproc
+ *      http://www.w3.org/TR/REC-xml#entproc
  * i.e.
  *   - Included in literal in entity values
  *   - Included as Parameter Entity reference within DTDs
@@ -2925,11 +2926,11 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
  *
  * parse an UTF8 encoded XML qualified name string
  *
- * [NS 5] QName ::= (Prefix ':')? LocalPart
+ *     [NS 5] QName ::= (Prefix ':')? LocalPart
  *
- * [NS 6] Prefix ::= NCName
+ *     [NS 6] Prefix ::= NCName
  *
- * [NS 7] LocalPart ::= NCName
+ *     [NS 7] LocalPart ::= NCName
  *
  * @returns the local part, and prefix is updated
  *   to get the Prefix if any.
@@ -3321,12 +3322,12 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML name.
  *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
+ *     [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+ *                      CombiningChar | Extender
  *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
+ *     [5] Name ::= (Letter | '_' | ':') (NameChar)*
  *
- * [6] Names ::= Name (\#x20 Name)*
+ *     [6] Names ::= Name (#x20 Name)*
  *
  * @returns the Name parsed or NULL
  */
@@ -3419,10 +3420,10 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML name.
  *
- * [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
- *                      CombiningChar | Extender
+ *     [4NS] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
+ *                          CombiningChar | Extender
  *
- * [5NS] NCName ::= (Letter | '_') (NCNameChar)*
+ *     [5NS] NCName ::= (Letter | '_') (NCNameChar)*
  *
  * @returns the Name parsed or NULL
  */
@@ -3519,12 +3520,12 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
  *
  * parse an XML name.
  *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
+ *     [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
+ *                      CombiningChar | Extender
  *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
+ *     [5] Name ::= (Letter | '_' | ':') (NameChar)*
  *
- * [6] Names ::= Name (\#x20 Name)*
+ *     [6] Names ::= Name (#x20 Name)*
  *
  * @returns the Name parsed or NULL. The `str` pointer
  * is updated to the current location in the string.
@@ -3614,9 +3615,9 @@ xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
  *
  * parse an XML Nmtoken.
  *
- * [7] Nmtoken ::= (NameChar)+
+ *     [7] Nmtoken ::= (NameChar)+
  *
- * [8] Nmtokens ::= Nmtoken (\#x20 Nmtoken)*
+ *     [8] Nmtokens ::= Nmtoken (#x20 Nmtoken)*
  *
  * @returns the Nmtoken parsed or NULL
  */
@@ -3847,8 +3848,8 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
  *
  * parse a value for ENTITY declarations
  *
- * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"' |
- *	               "'" ([^%&'] | PEReference | Reference)* "'"
+ *     [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"' |
+ *                         "'" ([^%&'] | PEReference | Reference)* "'"
  *
  * @returns the EntityValue parsed with reference substituted or NULL
  */
@@ -4228,21 +4229,25 @@ xmlExpandEntitiesInAttValue(xmlParserCtxtPtr ctxt, const xmlChar *str,
  * @param isNamespace  whether this is a namespace declaration
  *
  * parse a value for an attribute.
+ *
  * NOTE: if no normalization is needed, the routine will return pointers
- *       directly from the data buffer.
+ * directly from the data buffer.
  *
  * 3.3.3 Attribute-Value Normalization:
+ *
  * Before the value of an attribute is passed to the application or
  * checked for validity, the XML processor must normalize it as follows:
+ *
  * - a character reference is processed by appending the referenced
  *   character to the attribute value
  * - an entity reference is processed by recursively processing the
  *   replacement text of the entity
  * - a whitespace character (\#x20, \#xD, \#xA, \#x9) is processed by
  *   appending \#x20 to the normalized value, except that only a single
- *   \#x20 is appended for a "\#xD\#xA" sequence that is part of an external
+ *   \#x20 is appended for a "#xD#xA" sequence that is part of an external
  *   parsed entity or the literal entity value of an internal parsed entity
  * - other characters are processed by appending them to the normalized value
+ *
  * If the declared value is not CDATA, then the XML processor must further
  * process the normalized attribute value by discarding any leading and
  * trailing space (\#x20) characters, and by replacing sequences of space
@@ -4493,21 +4498,24 @@ error:
  * Note: the parser won't do substitution of entities here, this
  * will be handled later in xmlStringGetNodeList()
  *
- * [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
- *                   "'" ([^<&'] | Reference)* "'"
+ *     [10] AttValue ::= '"' ([^<&"] | Reference)* '"' |
+ *                       "'" ([^<&'] | Reference)* "'"
  *
  * 3.3.3 Attribute-Value Normalization:
+ *
  * Before the value of an attribute is passed to the application or
  * checked for validity, the XML processor must normalize it as follows:
+ *
  * - a character reference is processed by appending the referenced
  *   character to the attribute value
  * - an entity reference is processed by recursively processing the
  *   replacement text of the entity
  * - a whitespace character (\#x20, \#xD, \#xA, \#x9) is processed by
  *   appending \#x20 to the normalized value, except that only a single
- *   \#x20 is appended for a "\#xD\#xA" sequence that is part of an external
+ *   \#x20 is appended for a "#xD#xA" sequence that is part of an external
  *   parsed entity or the literal entity value of an internal parsed entity
  * - other characters are processed by appending them to the normalized value
+ *
  * If the declared value is not CDATA, then the XML processor must further
  * process the normalized attribute value by discarding any leading and
  * trailing space (\#x20) characters, and by replacing sequences of space
@@ -4515,10 +4523,9 @@ error:
  * All attributes for which no declaration has been read should be treated
  * by a non-validating parser as if declared CDATA.
  *
- * @returns the AttValue parsed or NULL. The value has to be freed by the caller.
+ * @returns the AttValue parsed or NULL. The value has to be freed by the
+ * caller.
  */
-
-
 xmlChar *
 xmlParseAttValue(xmlParserCtxtPtr ctxt) {
     if ((ctxt == NULL) || (ctxt->input == NULL)) return(NULL);
@@ -4532,7 +4539,7 @@ xmlParseAttValue(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML Literal
  *
- * [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
+ *     [11] SystemLiteral ::= ('"' [^"]* '"') | ("'" [^']* "'")
  *
  * @returns the SystemLiteral parsed or NULL
  */
@@ -4605,7 +4612,7 @@ xmlParseSystemLiteral(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML public literal
  *
- * [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
+ *     [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
  *
  * @returns the PubidLiteral parsed or NULL.
  */
@@ -4757,7 +4764,7 @@ xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size,
  * reference when it appears in the string "]]>" in content, when that
  * string is not marking the end of a CDATA section.
  *
- * [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
+ *     [14] CharData ::= [^<&]* - ([^<&]* ']]>' [^<&]*)
  */
 static void
 xmlParseCharDataInternal(xmlParserCtxtPtr ctxt, int partial) {
@@ -4947,12 +4954,12 @@ xmlParseCharData(xmlParserCtxtPtr ctxt, ATTRIBUTE_UNUSED int cdata) {
  * Parse an External ID or a Public ID
  *
  * NOTE: Productions [75] and [83] interact badly since [75] can generate
- *       'PUBLIC' S PubidLiteral S SystemLiteral
+ * `'PUBLIC' S PubidLiteral S SystemLiteral`
  *
- * [75] ExternalID ::= 'SYSTEM' S SystemLiteral
- *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
+ *     [75] ExternalID ::= 'SYSTEM' S SystemLiteral
+ *                       | 'PUBLIC' S PubidLiteral S SystemLiteral
  *
- * [83] PublicID ::= 'PUBLIC' S PubidLiteral
+ *     [83] PublicID ::= 'PUBLIC' S PubidLiteral
  *
  * @returns the function returns SystemLiteral and in the second
  *                case publicID receives PubidLiteral, is strict is off
@@ -5021,7 +5028,7 @@ xmlParseExternalID(xmlParserCtxtPtr ctxt, xmlChar **publicID, int strict) {
  *  must not occur within comments. "
  * This is the slow routine in case the accelerator for ascii didn't work
  *
- * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+ *     [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
  */
 static void
 xmlParseCommentComplex(xmlParserCtxtPtr ctxt, xmlChar *buf,
@@ -5136,7 +5143,7 @@ not_terminated:
  *  The spec says that "For compatibility, the string "--" (double-hyphen)
  *  must not occur within comments. "
  *
- * [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+ *     [15] Comment ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
  */
 void
 xmlParseComment(xmlParserCtxtPtr ctxt) {
@@ -5286,7 +5293,7 @@ get_more:
  *
  * parse the name of a PI
  *
- * [17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
+ *     [17] PITarget ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
  *
  * @returns the PITarget name or NULL
  */
@@ -5400,7 +5407,7 @@ error:
  *
  * parse an XML Processing Instruction.
  *
- * [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
+ *     [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
  *
  * The processing is transferred to SAX once parsed.
  */
@@ -5517,12 +5524,14 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
  *
  * Parse a notation declaration. Always consumes '<!'.
  *
- * [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID) S? '>'
+ *     [82] NotationDecl ::= '<!NOTATION' S Name S (ExternalID |  PublicID)
+ *                           S? '>'
  *
  * Hence there is actually 3 choices:
+ *
  *     'PUBLIC' S PubidLiteral
  *     'PUBLIC' S PubidLiteral S SystemLiteral
- * and 'SYSTEM' S SystemLiteral
+ *     'SYSTEM' S SystemLiteral
  *
  * See the NOTE on xmlParseExternalID().
  */
@@ -5593,17 +5602,17 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
  *
  * Parse an entity declaration. Always consumes '<!'.
  *
- * [70] EntityDecl ::= GEDecl | PEDecl
+ *     [70] EntityDecl ::= GEDecl | PEDecl
  *
- * [71] GEDecl ::= '<!ENTITY' S Name S EntityDef S? '>'
+ *     [71] GEDecl ::= '<!ENTITY' S Name S EntityDef S? '>'
  *
- * [72] PEDecl ::= '<!ENTITY' S '%' S Name S PEDef S? '>'
+ *     [72] PEDecl ::= '<!ENTITY' S '%' S Name S PEDef S? '>'
  *
- * [73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)
+ *     [73] EntityDef ::= EntityValue | (ExternalID NDataDecl?)
  *
- * [74] PEDef ::= EntityValue | ExternalID
+ *     [74] PEDef ::= EntityValue | ExternalID
  *
- * [76] NDataDecl ::= S 'NDATA' S Name
+ *     [76] NDataDecl ::= S 'NDATA' S Name
  *
  * [ VC: Notation Declared ]
  * The Name must match the declared name of a notation.
@@ -5835,7 +5844,7 @@ done:
  *
  * Parse an attribute default declaration
  *
- * [60] DefaultDecl ::= '\#REQUIRED' | '\#IMPLIED' | (('\#FIXED' S)? AttValue)
+ *     [60] DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)
  *
  * [ VC: Required Attribute ]
  * if the default declaration is the keyword \#REQUIRED, then the
@@ -5898,7 +5907,7 @@ xmlParseDefaultDecl(xmlParserCtxtPtr ctxt, xmlChar **value) {
  *
  * Note: the leading 'NOTATION' S part has already being parsed...
  *
- * [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+ *     [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
  *
  * [ VC: Notation Attributes ]
  * Values of this type must match one of the notation names included
@@ -5969,7 +5978,7 @@ xmlParseNotationType(xmlParserCtxtPtr ctxt) {
  *
  * parse an Enumeration attribute type.
  *
- * [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+ *     [59] Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
  *
  * [ VC: Enumeration ]
  * Values of this type must match one of the Nmtoken tokens in
@@ -6040,10 +6049,9 @@ xmlParseEnumerationType(xmlParserCtxtPtr ctxt) {
  *
  * parse an Enumerated attribute type.
  *
- * [57] EnumeratedType ::= NotationType | Enumeration
+ *     [57] EnumeratedType ::= NotationType | Enumeration
  *
- * [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
- *
+ *     [58] NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
  *
  * @returns XML_ATTRIBUTE_ENUMERATION or XML_ATTRIBUTE_NOTATION
  */
@@ -6074,12 +6082,12 @@ xmlParseEnumeratedType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
  *
  * parse the Attribute list def for an element
  *
- * [54] AttType ::= StringType | TokenizedType | EnumeratedType
+ *     [54] AttType ::= StringType | TokenizedType | EnumeratedType
  *
- * [55] StringType ::= 'CDATA'
+ *     [55] StringType ::= 'CDATA'
  *
- * [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
- *                        'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
+ *     [56] TokenizedType ::= 'ID' | 'IDREF' | 'IDREFS' | 'ENTITY' |
+ *                            'ENTITIES' | 'NMTOKEN' | 'NMTOKENS'
  *
  * Validity constraints for attribute values syntax are checked in
  * xmlValidateAttributeValue()
@@ -6149,10 +6157,9 @@ xmlParseAttributeType(xmlParserCtxtPtr ctxt, xmlEnumerationPtr *tree) {
  *
  * Parse an attribute list declaration for an element. Always consumes '<!'.
  *
- * [52] AttlistDecl ::= '<!ATTLIST' S Name AttDef* S? '>'
+ *     [52] AttlistDecl ::= '<!ATTLIST' S Name AttDef* S? '>'
  *
- * [53] AttDef ::= S Name S AttType S DefaultDecl
- *
+ *     [53] AttDef ::= S Name S AttType S DefaultDecl
  */
 void
 xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
@@ -6276,8 +6283,8 @@ xmlParseAttributeListDecl(xmlParserCtxtPtr ctxt) {
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl()
  *
- * [51] Mixed ::= '(' S? '\#PCDATA' (S? '|' S? Name)* S? ')*' |
- *                '(' S? '\#PCDATA' S? ')'
+ *     [51] Mixed ::= '(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' |
+ *                    '(' S? '#PCDATA' S? ')'
  *
  * [ VC: Proper Group/PE Nesting ] applies to [51] too (see [49])
  *
@@ -6388,14 +6395,13 @@ mem_error:
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl()
  *
+ *     [47] children ::= (choice | seq) ('?' | '*' | '+')?
  *
- * [47] children ::= (choice | seq) ('?' | '*' | '+')?
+ *     [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
  *
- * [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
+ *     [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
  *
- * [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
- *
- * [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
+ *     [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
  *
  * [ VC: Proper Group/PE Nesting ] applies to [49] and [50]
  * TODO Parameter-entity replacement text must be properly nested
@@ -6695,13 +6701,13 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl()
  *
- * [47] children ::= (choice | seq) ('?' | '*' | '+')?
+ *     [47] children ::= (choice | seq) ('?' | '*' | '+')?
  *
- * [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
+ *     [48] cp ::= (Name | choice | seq) ('?' | '*' | '+')?
  *
- * [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
+ *     [49] choice ::= '(' S? cp ( S? '|' S? cp )* S? ')'
  *
- * [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
+ *     [50] seq ::= '(' S? cp ( S? ',' S? cp )* S? ')'
  *
  * [ VC: Proper Group/PE Nesting ] applies to [49] and [50]
  * TODO Parameter-entity replacement text must be properly nested
@@ -6733,7 +6739,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxtPtr ctxt, int inputchk) {
  * parse the declaration for an Element content either Mixed or Children,
  * the cases EMPTY and ANY are handled directly in xmlParseElementDecl()
  *
- * [46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children
+ *     [46] contentspec ::= 'EMPTY' | 'ANY' | Mixed | children
  *
  * @returns the type of element content XML_ELEMENT_TYPE_xxx
  */
@@ -6775,7 +6781,7 @@ xmlParseElementContentDecl(xmlParserCtxtPtr ctxt, const xmlChar *name,
  *
  * Parse an element declaration. Always consumes '<!'.
  *
- * [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
+ *     [45] elementdecl ::= '<!ELEMENT' S Name S contentspec S? '>'
  *
  * [ VC: Unique Element Type Declaration ]
  * No element type may be declared more than once
@@ -6879,11 +6885,12 @@ xmlParseElementDecl(xmlParserCtxtPtr ctxt) {
  *
  * Parse a conditional section. Always consumes '<!['.
  *
- * [61] conditionalSect ::= includeSect | ignoreSect
- * [62] includeSect ::= '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'
- * [63] ignoreSect ::= '<![' S? 'IGNORE' S? '[' ignoreSectContents* ']]>'
- * [64] ignoreSectContents ::= Ignore ('<![' ignoreSectContents ']]>' Ignore)*
- * [65] Ignore ::= Char* - (Char* ('<![' | ']]>') Char*)
+ *     [61] conditionalSect ::= includeSect | ignoreSect
+ *     [62] includeSect ::= '<![' S? 'INCLUDE' S? '[' extSubsetDecl ']]>'
+ *     [63] ignoreSect ::= '<![' S? 'IGNORE' S? '[' ignoreSectContents* ']]>'
+ *     [64] ignoreSectContents ::= Ignore ('<![' ignoreSectContents ']]>'
+ *                                 Ignore)*
+ *     [65] Ignore ::= Char* - (Char* ('<![' | ']]>') Char*)
  */
 
 static void
@@ -7023,8 +7030,8 @@ error:
  *
  * Parse markup declarations. Always consumes '<!' or '<?'.
  *
- * [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
- *                     NotationDecl | PI | Comment
+ *     [29] markupdecl ::= elementdecl | AttlistDecl | EntityDecl |
+ *                         NotationDecl | PI | Comment
  *
  * [ VC: Proper Declaration/PE Nesting ]
  * Parameter-entity replacement text must be properly nested with
@@ -7084,7 +7091,7 @@ xmlParseMarkupDecl(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML declaration header for external entities
  *
- * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
+ *     [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
  */
 
 void
@@ -7157,9 +7164,10 @@ xmlParseTextDecl(xmlParserCtxtPtr ctxt) {
  *
  * parse Markup declarations from an external subset
  *
- * [30] extSubset ::= textDecl? extSubsetDecl
+ *     [30] extSubset ::= textDecl? extSubsetDecl
  *
- * [31] extSubsetDecl ::= (markupdecl | conditionalSect | PEReference | S) *
+ *     [31] extSubsetDecl ::= (markupdecl | conditionalSect |
+ *                             PEReference | S) *
  */
 void
 xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
@@ -7224,7 +7232,7 @@ xmlParseExternalSubset(xmlParserCtxtPtr ctxt, const xmlChar *ExternalID,
  *
  * Always consumes '&'.
  *
- * [67] Reference ::= EntityRef | CharRef
+ *     [67] Reference ::= EntityRef | CharRef
  */
 void
 xmlParseReference(xmlParserCtxtPtr ctxt) {
@@ -7586,7 +7594,7 @@ xmlLookupGeneralEntity(xmlParserCtxtPtr ctxt, const xmlChar *name, int inAttr) {
  *
  * Parse an entity reference. Always consumes '&'.
  *
- * [68] EntityRef ::= '&' Name ';'
+ *     [68] EntityRef ::= '&' Name ';'
  *
  * @returns the name, or NULL in case of error.
  */
@@ -7642,7 +7650,7 @@ xmlParseEntityRef(xmlParserCtxtPtr ctxt) {
  * parse ENTITY references declarations, but this version parses it from
  * a string value.
  *
- * [68] EntityRef ::= '&' Name ';'
+ *     [68] EntityRef ::= '&' Name ';'
  *
  * [ WFC: Entity Declared ]
  * In a document without any DTD, a document with only an internal DTD
@@ -7708,7 +7716,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
  * The entity content is handled directly by pushing it's content as
  * a new input stream.
  *
- * [69] PEReference ::= '%' Name ';'
+ *     [69] PEReference ::= '%' Name ';'
  *
  * [ WFC: No Recursion ]
  * A parsed entity must not contain a recursive
@@ -7956,7 +7964,7 @@ error:
  *
  * parse PEReference declarations
  *
- * [69] PEReference ::= '%' Name ';'
+ *     [69] PEReference ::= '%' Name ';'
  *
  * [ WFC: No Recursion ]
  * A parsed entity must not contain a recursive
@@ -8045,8 +8053,8 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  *
  * parse a DOCTYPE declaration
  *
- * [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
- *                      ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
+ *     [28] doctypedecl ::= '<!DOCTYPE' S Name (S ExternalID)? S?
+ *                          ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
  *
  * [ VC: Root Element Type ]
  * The Name in the document type declaration must match the element
@@ -8111,7 +8119,7 @@ xmlParseDocTypeDecl(xmlParserCtxtPtr ctxt) {
  *
  * parse the internal subset declaration
  *
- * [28 end] ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
+ *     [28 end] ('[' (markupdecl | PEReference | S)* ']' S?)? '>'
  */
 
 static void
@@ -8180,7 +8188,7 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
  *
  * parse an attribute
  *
- * [41] Attribute ::= Name Eq AttValue
+ *     [41] Attribute ::= Name Eq AttValue
  *
  * [ WFC: No External Entity References ]
  * Attribute values cannot contain direct or indirect entity references
@@ -8194,11 +8202,11 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
  * The attribute must have been declared; the value must be of the type
  * declared for it.
  *
- * [25] Eq ::= S? '=' S?
+ *     [25] Eq ::= S? '=' S?
  *
  * With namespace:
  *
- * [NS 11] Attribute ::= QName Eq AttValue
+ *     [NS 11] Attribute ::= QName Eq AttValue
  *
  * Also the case QName == xmlns:??? is handled independently as a namespace
  * definition.
@@ -8273,13 +8281,13 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
  *
  * Parse a start tag. Always consumes '<'.
  *
- * [40] STag ::= '<' Name (S Attribute)* S? '>'
+ *     [40] STag ::= '<' Name (S Attribute)* S? '>'
  *
  * [ WFC: Unique Att Spec ]
  * No attribute name may appear more than once in the same start-tag or
  * empty-element tag.
  *
- * [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
+ *     [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
  *
  * [ WFC: Unique Att Spec ]
  * No attribute name may appear more than once in the same start-tag or
@@ -8287,9 +8295,9 @@ xmlParseAttribute(xmlParserCtxtPtr ctxt, xmlChar **value) {
  *
  * With namespace:
  *
- * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
+ *     [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
  *
- * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
+ *     [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
  * @returns the element name parsed
  */
@@ -8418,11 +8426,11 @@ failed:
  *
  * Parse an end tag. Always consumes '</'.
  *
- * [42] ETag ::= '</' Name S? '>'
+ *     [42] ETag ::= '</' Name S? '>'
  *
  * With namespace
  *
- * [NS 9] ETag ::= '</' QName S? '>'
+ *     [NS 9] ETag ::= '</' QName S? '>'
  */
 
 static void
@@ -8480,11 +8488,11 @@ xmlParseEndTag1(xmlParserCtxtPtr ctxt, int line) {
  *
  * parse an end of tag
  *
- * [42] ETag ::= '</' Name S? '>'
+ *     [42] ETag ::= '</' Name S? '>'
  *
  * With namespace
  *
- * [NS 9] ETag ::= '</' QName S? '>'
+ *     [NS 9] ETag ::= '</' QName S? '>'
  */
 
 void
@@ -8505,9 +8513,9 @@ xmlParseEndTag(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML Namespace QName
  *
- * [6]  QName  ::= (Prefix ':')? LocalPart
- * [7]  Prefix  ::= NCName
- * [8]  LocalPart  ::= NCName
+ *     [6]  QName  ::= (Prefix ':')? LocalPart
+ *     [7]  Prefix  ::= NCName
+ *     [8]  LocalPart  ::= NCName
  *
  * @returns the Name parsed or NULL
  */
@@ -8562,9 +8570,9 @@ xmlParseQNameHashed(xmlParserCtxtPtr ctxt, xmlHashedString *prefix) {
  *
  * parse an XML Namespace QName
  *
- * [6]  QName  ::= (Prefix ':')? LocalPart
- * [7]  Prefix  ::= NCName
- * [8]  LocalPart  ::= NCName
+ *     [6]  QName  ::= (Prefix ':')? LocalPart
+ *     [7]  Prefix  ::= NCName
+ *     [8]  LocalPart  ::= NCName
  *
  * @returns the Name parsed or NULL
  */
@@ -8841,13 +8849,13 @@ xmlAttrHashInsertQName(xmlParserCtxtPtr ctxt, unsigned size,
  *
  * This routine is called when running SAX2 parsing
  *
- * [40] STag ::= '<' Name (S Attribute)* S? '>'
+ *     [40] STag ::= '<' Name (S Attribute)* S? '>'
  *
  * [ WFC: Unique Att Spec ]
  * No attribute name may appear more than once in the same start-tag or
  * empty-element tag.
  *
- * [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
+ *     [44] EmptyElemTag ::= '<' Name (S Attribute)* S? '/>'
  *
  * [ WFC: Unique Att Spec ]
  * No attribute name may appear more than once in the same start-tag or
@@ -8855,9 +8863,9 @@ xmlAttrHashInsertQName(xmlParserCtxtPtr ctxt, unsigned size,
  *
  * With namespace:
  *
- * [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
+ *     [NS 8] STag ::= '<' QName (S Attribute)* S? '>'
  *
- * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
+ *     [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
  * @returns the element name parsed
  */
@@ -9474,11 +9482,11 @@ done:
  *
  * Parse an end tag. Always consumes '</'.
  *
- * [42] ETag ::= '</' Name S? '>'
+ *     [42] ETag ::= '</' Name S? '>'
  *
  * With namespace
  *
- * [NS 9] ETag ::= '</' QName S? '>'
+ *     [NS 9] ETag ::= '</' QName S? '>'
  */
 
 static void
@@ -9540,13 +9548,13 @@ xmlParseEndTag2(xmlParserCtxtPtr ctxt, const xmlStartTag *tag) {
  *
  * Parse escaped pure raw content. Always consumes '<!['.
  *
- * [18] CDSect ::= CDStart CData CDEnd
+ *     [18] CDSect ::= CDStart CData CDEnd
  *
- * [19] CDStart ::= '<![CDATA['
+ *     [19] CDStart ::= '<![CDATA['
  *
- * [20] Data ::= (Char* - (Char* ']]>' Char*))
+ *     [20] Data ::= (Char* - (Char* ']]>' Char*))
  *
- * [21] CDEnd ::= ']]>'
+ *     [21] CDEnd ::= ']]>'
  */
 void
 xmlParseCDSect(xmlParserCtxtPtr ctxt) {
@@ -9769,7 +9777,7 @@ xmlParseContent(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML element
  *
- * [39] element ::= EmptyElemTag | STag content ETag
+ *     [39] element ::= EmptyElemTag | STag content ETag
  *
  * [ WFC: Element Type Match ]
  * The Name in an element's end-tag must match the element type in the
@@ -9971,7 +9979,7 @@ xmlParseElementEnd(xmlParserCtxtPtr ctxt) {
  *
  * parse the XML version value.
  *
- * [26] VersionNum ::= '1.' [0-9]+
+ *     [26] VersionNum ::= '1.' [0-9]+
  *
  * In practice allow [0-9].[0-9]+ at that level
  *
@@ -10042,9 +10050,9 @@ xmlParseVersionNum(xmlParserCtxtPtr ctxt) {
  *
  * parse the XML version.
  *
- * [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
+ *     [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
  *
- * [25] Eq ::= S? '=' S?
+ *     [25] Eq ::= S? '=' S?
  *
  * @returns the version string, e.g. "1.0"
  */
@@ -10090,7 +10098,7 @@ xmlParseVersionInfo(xmlParserCtxtPtr ctxt) {
  *
  * parse the XML encoding name
  *
- * [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
+ *     [81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
  *
  * @returns the encoding name value or NULL
  */
@@ -10158,7 +10166,8 @@ xmlParseEncName(xmlParserCtxtPtr ctxt) {
  *
  * parse the XML encoding declaration
  *
- * [80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' |  "'" EncName "'")
+ *     [80] EncodingDecl ::= S 'encoding' Eq ('"' EncName '"' | 
+ *                           "'" EncName "'")
  *
  * this setups the conversion filters.
  *
@@ -10218,8 +10227,8 @@ xmlParseEncodingDecl(xmlParserCtxtPtr ctxt) {
  *
  * parse the XML standalone declaration
  *
- * [32] SDDecl ::= S 'standalone' Eq
- *                 (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"'))
+ *     [32] SDDecl ::= S 'standalone' Eq
+ *                     (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no')'"'))
  *
  * [ VC: Standalone Document Declaration ]
  * TODO The standalone document declaration must have the value "no"
@@ -10303,7 +10312,7 @@ xmlParseSDDecl(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML declaration header
  *
- * [23] XMLDecl ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
+ *     [23] XMLDecl ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
  */
 
 void
@@ -10449,7 +10458,7 @@ xmlCtxtGetStandalone(xmlParserCtxtPtr ctxt) {
  *
  * parse an XML Misc* optional field.
  *
- * [27] Misc ::= Comment | PI |  S
+ *     [27] Misc ::= Comment | PI |  S
  */
 
 void
@@ -10630,7 +10639,7 @@ xmlParseDocument(xmlParserCtxtPtr ctxt) {
  * An external general parsed entity is well-formed if it matches the
  * production labeled extParsedEnt.
  *
- * [78] extParsedEnt ::= TextDecl? content
+ *     [78] extParsedEnt ::= TextDecl? content
  *
  * @returns 0, -1 in case of error. the parser context is augmented
  *                as a result of the parsing.
@@ -12006,7 +12015,7 @@ error:
  * An external general parsed entity is well-formed if it matches the
  * production labeled extParsedEnt.
  *
- * [78] extParsedEnt ::= TextDecl? content
+ *     [78] extParsedEnt ::= TextDecl? content
  *
  * @returns 0 if the entity is well formed, -1 in case of args problem and
  *    the parser error code otherwise
@@ -12057,7 +12066,7 @@ xmlParseCtxtExternalEntity(xmlParserCtxtPtr ctxt, const xmlChar *URL,
  * An external general parsed entity is well-formed if it matches the
  * production labeled extParsedEnt.
  *
- * [78] extParsedEnt ::= TextDecl? content
+ *     [78] extParsedEnt ::= TextDecl? content
  *
  * @returns 0 if the entity is well formed, -1 in case of args problem and
  *    the parser error code otherwise
@@ -12100,7 +12109,8 @@ xmlParseExternalEntity(xmlDocPtr doc, xmlSAXHandlerPtr sax, void *user_data,
  * The allowed sequence for the Well Balanced Chunk is the one defined by
  * the content production in the XML grammar:
  *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *     [43] content ::= (element | CharData | Reference | CDSect | PI |
+ *                       Comment)*
  *
  * @returns 0 if the chunk is well balanced, -1 in case of args problem and
  *    the parser error code otherwise
@@ -12270,7 +12280,8 @@ exit:
  * The allowed sequence for the data is a Well Balanced Chunk defined by
  * the content production in the XML grammar:
  *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *     [43] content ::= (element | CharData | Reference | CDSect | PI |
+ *                       Comment)*
  *
  * This function assumes the encoding of `node`'s document which is
  * typically not what you want. A better alternative is
@@ -12351,7 +12362,8 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
  * The allowed sequence for the Well Balanced Chunk is the one defined by
  * the content production in the XML grammar:
  *
- * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *     [43] content ::= (element | CharData | Reference | CDSect | PI |
+ *                       Comment)*
  *
  * @returns 0 if the chunk is well balanced, or thehe parser error code
  * otherwise.
@@ -12421,7 +12433,7 @@ error:
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  *
- * [78] extParsedEnt ::= TextDecl? content
+ *     [78] extParsedEnt ::= TextDecl? content
  *
  * This correspond to a "Well Balanced" chunk
  *
@@ -12466,7 +12478,7 @@ xmlSAXParseEntity(xmlSAXHandlerPtr sax, const char *filename) {
  *
  * parse an XML external entity out of context and build a tree.
  *
- * [78] extParsedEnt ::= TextDecl? content
+ *     [78] extParsedEnt ::= TextDecl? content
  *
  * This correspond to a "Well Balanced" chunk
  *

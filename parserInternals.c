@@ -486,7 +486,10 @@ xmlFatalErr(xmlParserCtxtPtr ctxt, xmlParserErrors code, const char *info)
  * @deprecated Internal function, don't use.
  *
  * Check whether the character is allowed by the production
+ *
+ * ```
  * [84] Letter ::= BaseChar | Ideographic
+ * ```
  *
  * @returns 0 if not, non-zero otherwise
  */
@@ -844,10 +847,12 @@ encoding_error:
  *
  * The current char value, if using UTF-8 this may actually span multiple
  * bytes in the input buffer. Implement the end of line normalization:
+ *
  * 2.11 End-of-Line Handling
+ *
  * Wherever an external parsed entity or the literal entity value
  * of an internal parsed entity contains either the literal two-character
- * sequence "\#xD\#xA" or a standalone literal \#xD, an XML processor
+ * sequence "#xD#xA" or a standalone literal \#xD, an XML processor
  * must pass to the application the single character \#xA.
  * This behavior can conveniently be produced by normalizing all
  * line breaks to \#xA on input, before parsing.)
@@ -3244,7 +3249,7 @@ xmlParserFindNodeInfo(xmlParserCtxtPtr ctx, xmlNodePtr node)
  *
  * @deprecated Don't use.
  *
- * -- Initialize (set to initial state) node info sequence
+ * Initialize (set to initial state) node info sequence
  */
 void
 xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
@@ -3261,8 +3266,7 @@ xmlInitNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  *
  * @deprecated Don't use.
  *
- * -- Clear (release memory and reinitialize) node
- *   info sequence
+ * Clear (release memory and reinitialize) node info sequence
  */
 void
 xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
@@ -3280,8 +3284,8 @@ xmlClearNodeInfoSeq(xmlParserNodeInfoSeqPtr seq)
  *
  * @deprecated Don't use.
  *
- * xmlParserFindNodeInfoIndex() : Find the index that the info record for
- *   the given node is or should be at in a sorted sequence
+ * Find the index that the info record for the given node is or
+ * should be at in a sorted sequence.
  *
  * @returns a long indicating the position of the record
  */

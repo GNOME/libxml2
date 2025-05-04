@@ -1,11 +1,10 @@
 /**
  * @file
  * 
- * @brief internals routines and limits exported by the parser.
+ * @brief Internals routines and limits exported by the parser.
  * 
- * this module exports a number of internal parsing routines
- *              they are not really all intended for applications but
- *              can prove useful doing low level processing.
+ * Except for some I/O-related functions, most of these macros and
+ * functions are deprecated.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -87,7 +86,8 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- * [2] Char ::= \#x9 | \#xA | \#xD | [\#x20...]
+ *     [2] Char ::= #x9 | #xA | #xD | [#x20...]
+ *
  * any byte character in the accepted range
  */
 #define IS_BYTE_CHAR(c)	 xmlIsChar_ch(c)
@@ -97,8 +97,9 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- * [2] Char ::= \#x9 | \#xA | \#xD | [\#x20-\#xD7FF] | [\#xE000-\#xFFFD]
- *                  | [\#x10000-\#x10FFFF]
+ *     [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
+ *                      | [#x10000-#x10FFFF]
+ *
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
  */
 #define IS_CHAR(c)   xmlIsCharQ(c)
@@ -115,7 +116,7 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- * [3] S ::= (\#x20 | \#x9 | \#xD | \#xA)+
+ *     [3] S ::= (#x20 | #x9 | #xD | #xA)+
  */
 #define IS_BLANK(c)  xmlIsBlankQ(c)
 
@@ -131,7 +132,7 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- * [85] BaseChar ::= ... long list see REC ...
+ *     [85] BaseChar ::= ... long list see REC ...
  */
 #define IS_BASECHAR(c) xmlIsBaseCharQ(c)
 
@@ -140,7 +141,7 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- * [88] Digit ::= ... long list see REC ...
+ *     [88] Digit ::= ... long list see REC ...
  */
 #define IS_DIGIT(c) xmlIsDigitQ(c)
 
@@ -156,7 +157,7 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- * [87] CombiningChar ::= ... long list see REC ...
+ *     [87] CombiningChar ::= ... long list see REC ...
  */
 #define IS_COMBINING(c) xmlIsCombiningQ(c)
 
@@ -172,10 +173,9 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- *
- * [89] Extender ::= \#x00B7 | \#x02D0 | \#x02D1 | \#x0387 | \#x0640 |
- *                   \#x0E46 | \#x0EC6 | \#x3005 | [\#x3031-\#x3035] |
- *                   [\#x309D-\#x309E] | [\#x30FC-\#x30FE]
+ *     [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 |
+ *                       #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] |
+ *                       [#x309D-#x309E] | [#x30FC-#x30FE]
  */
 #define IS_EXTENDER(c) xmlIsExtenderQ(c)
 
@@ -191,8 +191,7 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- *
- * [86] Ideographic ::= [\#x4E00-\#x9FA5] | \#x3007 | [\#x3021-\#x3029]
+ *     [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]
  */
 #define IS_IDEOGRAPHIC(c) xmlIsIdeographicQ(c)
 
@@ -201,8 +200,7 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- *
- * [84] Letter ::= BaseChar | Ideographic
+ *     [84] Letter ::= BaseChar | Ideographic
  */
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
@@ -236,8 +234,8 @@ extern "C" {
  *
  * Macro to check the following production in the XML spec:
  *
- *
- * [13] PubidChar ::= \#x20 | \#xD | \#xA | [a-zA-Z0-9] | [-'()+,./:=?;!*\#@$_%]
+ *     [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] |
+ *                        [-'()+,./:=?;!*#@$_%]
  */
 #define IS_PUBIDCHAR(c)	xmlIsPubidCharQ(c)
 
@@ -248,7 +246,7 @@ extern "C" {
  */
 #define IS_PUBIDCHAR_CH(c) xmlIsPubidChar_ch(c)
 
-/**
+/*
  * Global variables used for predefined strings.
  */
 XMLPUBVAR const xmlChar xmlStringText[];
@@ -259,7 +257,7 @@ XMLPUBVAR const xmlChar xmlStringComment[];
 XML_DEPRECATED
 XMLPUBFUN int                   xmlIsLetter     (int c);
 
-/**
+/*
  * Parser context.
  */
 XMLPUBFUN xmlParserCtxtPtr
@@ -292,7 +290,7 @@ XMLPUBFUN int
 						 xmlParserInputPtr input,
 					 xmlCharEncodingHandlerPtr handler);
 
-/**
+/*
  * Input Streams.
  */
 XMLPUBFUN xmlParserInputPtr
@@ -322,7 +320,7 @@ XMLPUBFUN xmlParserInputPtr
 XMLPUBFUN xmlParserInputPtr
 			xmlNewInputStream	(xmlParserCtxtPtr ctxt);
 
-/**
+/*
  * Namespaces.
  */
 XMLPUBFUN xmlChar *
@@ -330,7 +328,7 @@ XMLPUBFUN xmlChar *
 						 const xmlChar *name,
 						 xmlChar **prefix);
 
-/**
+/*
  * Generic production rules.
  */
 XML_DEPRECATED
@@ -482,23 +480,11 @@ XMLPUBFUN void
 			xmlParseExternalSubset	(xmlParserCtxtPtr ctxt,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
-/**
- * If no entities need to be substituted.
- */
-#define XML_SUBSTITUTE_NONE	0
-/**
- * Whether general entities need to be substituted.
- */
-#define XML_SUBSTITUTE_REF	1
-/**
- * Whether parameter entities need to be substituted.
- */
-#define XML_SUBSTITUTE_PEREF	2
-/**
- * Both general and parameter entities need to be substituted.
- */
-#define XML_SUBSTITUTE_BOTH	3
 
+#define XML_SUBSTITUTE_NONE	0
+#define XML_SUBSTITUTE_REF	1
+#define XML_SUBSTITUTE_PEREF	2
+#define XML_SUBSTITUTE_BOTH	3
 XML_DEPRECATED
 XMLPUBFUN xmlChar *
 		xmlStringDecodeEntities		(xmlParserCtxtPtr ctxt,

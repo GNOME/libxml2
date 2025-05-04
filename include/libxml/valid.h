@@ -1,9 +1,10 @@
 /**
  * @file
  * 
- * @brief The DTD validation
+ * @brief DTD validator
  * 
- * API for the DTD handling and the validity checking
+ * API to handle XML Document Type Definitions and validate
+ * documents.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -28,34 +29,28 @@ extern "C" {
 #endif
 
 /*
- * Validation state added for non-determinist content model.
+ * Validation state added for non-deterministic content model.
  */
 typedef struct _xmlValidState xmlValidState;
 typedef xmlValidState *xmlValidStatePtr;
 
 /**
- * @param ctx  usually an xmlValidCtxtPtr to a validity error context,
- *        but comes from ctxt->userData (which normally contains such
- *        a pointer); ctxt->userData can be changed by the user.
- * @param msg  the string to format *printf like vararg
- * @...:  remaining arguments to the format
+ * @param ctx  user data (usually an xmlValidCtxtPtr)
+ * @param msg  printf-like format string
+ * @param ...  arguments to format
  *
- * Callback called when a validity error is found. This is a message
- * oriented function similar to an *printf function.
+ * Report a validity error.
  */
 typedef void (*xmlValidityErrorFunc) (void *ctx,
 			     const char *msg,
 			     ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
- * @param ctx  usually an xmlValidCtxtPtr to a validity error context,
- *        but comes from ctxt->userData (which normally contains such
- *        a pointer); ctxt->userData can be changed by the user.
- * @param msg  the string to format *printf like vararg
- * @...:  remaining arguments to the format
+ * @param ctx  user data (usually an xmlValidCtxtPtr)
+ * @param msg  printf-like format string
+ * @param ...  arguments to format
  *
- * Callback called when a validity warning is found. This is a message
- * oriented function similar to an *printf function.
+ * Report a validity warning.
  */
 typedef void (*xmlValidityWarningFunc) (void *ctx,
 			       const char *msg,
@@ -96,42 +91,17 @@ struct _xmlValidCtxt {
 #endif
 };
 
-/*
- * ALL notation declarations are stored in a table.
- * There is one table per DTD.
- */
-
 typedef struct _xmlHashTable xmlNotationTable;
 typedef xmlNotationTable *xmlNotationTablePtr;
-
-/*
- * ALL element declarations are stored in a table.
- * There is one table per DTD.
- */
 
 typedef struct _xmlHashTable xmlElementTable;
 typedef xmlElementTable *xmlElementTablePtr;
 
-/*
- * ALL attribute declarations are stored in a table.
- * There is one table per DTD.
- */
-
 typedef struct _xmlHashTable xmlAttributeTable;
 typedef xmlAttributeTable *xmlAttributeTablePtr;
 
-/*
- * ALL IDs attributes are stored in a table.
- * There is one table per document.
- */
-
 typedef struct _xmlHashTable xmlIDTable;
 typedef xmlIDTable *xmlIDTablePtr;
-
-/*
- * ALL Refs attributes are stored in a table.
- * There is one table per document.
- */
 
 typedef struct _xmlHashTable xmlRefTable;
 typedef xmlRefTable *xmlRefTablePtr;
@@ -162,7 +132,6 @@ XMLPUBFUN void
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /* Element Content */
-/* the non Doc version are being deprecated */
 XML_DEPRECATED
 XMLPUBFUN xmlElementContentPtr
 		xmlNewElementContent	(const xmlChar *name,
@@ -173,7 +142,6 @@ XMLPUBFUN xmlElementContentPtr
 XML_DEPRECATED
 XMLPUBFUN void
 		xmlFreeElementContent	(xmlElementContentPtr cur);
-/* the new versions with doc argument */
 XML_DEPRECATED
 XMLPUBFUN xmlElementContentPtr
 		xmlNewDocElementContent	(xmlDocPtr doc,
@@ -476,7 +444,9 @@ XMLPUBFUN int
 					 xmlNodePtr elem,
 					 const xmlChar *qname);
 #endif /* LIBXML_REGEXP_ENABLED */
+
 #endif /* LIBXML_VALID_ENABLED */
+
 #ifdef __cplusplus
 }
 #endif

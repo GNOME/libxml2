@@ -37,9 +37,15 @@
 /**
  * @param doc  the document
  *
- * Encoding definition lookup in the Meta tags
+ * Look up and encoding declaration in the meta tags.
  *
- * @returns the current encoding as flagged in the HTML source
+ * Does not support `<meta charset="">` yet. Only supports deprecated
+ * `<meta http-equiv="Content-Type" content="">`.
+ *
+ * The returned string points into attribute content. It should be
+ * copied before modifying or freeing nodes.
+ *
+ * @returns the encoding ot NULL if not found.
  */
 const xmlChar *
 htmlGetMetaEncoding(htmlDocPtr doc) {
@@ -148,9 +154,12 @@ found_content:
  * @param doc  the document
  * @param encoding  the encoding string
  *
- * Sets the current encoding in the Meta tags
- * NOTE: this will not change the document content encoding, just
- * the META flag associated.
+ * Creates or updates a meta tag with an encoding declaration.
+ *
+ * Does not support `<meta charset="">` yet. Only supports deprecated
+ * `<meta http-equiv="Content-Type" content="">`.
+ *
+ * NOTE: This will not change the document content encoding.
  *
  * @returns 0 in case of success and -1 in case of error
  */
@@ -307,7 +316,8 @@ static const char* const htmlBooleanAttrs[] = {
  *
  * @deprecated Internal function, don't use.
  *
- * Determine if a given attribute is a boolean attribute.
+ * Determine if a given attribute is a boolean attribute. This
+ * doesn't handle HTML5.
  *
  * @returns false if the attribute is not boolean, true otherwise.
  */
@@ -346,11 +356,11 @@ htmlFindOutputEncoder(const char *encoding, xmlCharEncodingHandler **out) {
  * @param buf  the xmlBufPtr output
  * @param doc  the document
  * @param cur  the current node
- * @param format  should formatting spaces been added
+ * @param format  should formatting newlines been added
  *
- * Dump an HTML node, recursive behaviour,children are printed too.
+ * Serialize an HTML document to an xmlBuf.
  *
- * @returns the number of byte written or -1 in case of error
+ * @returns the number of bytes written or -1 in case of error
  */
 static size_t
 htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
@@ -391,10 +401,9 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  * @param doc  the document
  * @param cur  the current node
  *
- * Dump an HTML node, recursive behaviour,children are printed too,
- * and formatting returns are added.
+ * Serialize an HTML node to an xmlBuffer. Always uses UTF-8.
  *
- * @returns the number of byte written or -1 in case of error
+ * @returns the number of bytes written or -1 in case of error
  */
 int
 htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
@@ -423,14 +432,16 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
  * @param out  the FILE pointer
  * @param doc  the document
  * @param cur  the current node
- * @param encoding  the document encoding
- * @param format  should formatting spaces been added
+ * @param encoding  the document encoding (optional)
+ * @param format  should formatting newlines been added
  *
- * Dump an HTML node, recursive behaviour,children are printed too.
+ * Serialize an HTML node to an xmlBuffer.
  *
- * TODO: if encoding == NULL try to save in the doc encoding
+ * If encoding is NULL, ASCII with HTML 4.0 named character entities
+ * will be used. This is inefficient compared to UTF-8 and might be
+ * changed in a future version.
  *
- * @returns the number of byte written or -1 in case of failure.
+ * @returns the number of bytes written or -1 in case of failure.
  */
 int
 htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
@@ -461,8 +472,9 @@ htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
  * @param doc  the document
  * @param cur  the current node
  *
- * Dump an HTML node, recursive behaviour,children are printed too,
- * and formatting returns are added.
+ * Same as htmlNodeDumpFileFormat() with `format` set to 1 which is
+ * typically undesired. Use of this function is DISCOURAGED in favor
+ * of htmlNodeDumpFileFormat().
  */
 void
 htmlNodeDumpFile(FILE *out, xmlDocPtr doc, xmlNodePtr cur) {
@@ -473,10 +485,19 @@ htmlNodeDumpFile(FILE *out, xmlDocPtr doc, xmlNodePtr cur) {
  * @param cur  the document
  * @param mem  OUT: the memory pointer
  * @param size  OUT: the memory length
- * @param format  should formatting spaces been added
+ * @param format  should formatting newlines been added
  *
- * Dump an HTML document in memory and return the xmlChar * and it's size.
- * It's up to the caller to free the memory.
+ * Serialize an HTML node to a memory, also returning the size of
+ * the result. It's up to the caller to free the memory.
+ *
+ * WARNING: Uses the encoding from a deprecated meta tag, see
+ * htmlGetMetaEncoding(). This is typically undesired. If no such
+ * tag was found, ASCII with HTML 4.0 named character entities will
+ * be used. This is inefficient compared to UTF-8 and might be
+ * changed in a future version.
+ *
+ * Use of this function is therefore DISCOURAGED in favor of
+ * htmlDocContentDumpFormatOutput().
  */
 void
 htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
@@ -522,12 +543,14 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
  * @param mem  OUT: the memory pointer
  * @param size  OUT: the memory length
  *
- * Dump an HTML document in memory and return the xmlChar * and it's size.
- * It's up to the caller to free the memory.
+ * Same as htmlDocDumpMemoryFormat() with `format` set to 1 which
+ * is typically undesired. Also see the warnings there. Use of
+ * this function is DISCOURAGED in favor of
+ * htmlDocContentDumpFormatOutput().
  */
 void
 htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
-	htmlDocDumpMemoryFormat(cur, mem, size, 1);
+    htmlDocDumpMemoryFormat(cur, mem, size, 1);
 }
 
 
@@ -540,11 +563,11 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
 /**
  * @param buf  the HTML buffer output
  * @param doc  the document
- * @param encoding  the encoding string
+ * @param encoding  the encoding string (unused)
  *
- * TODO: check whether encoding is needed
+ * Serialize the HTML document's DTD, if any.
  *
- * Dump the HTML document DTD, if any.
+ * Ignores `encoding` and uses the encoding of the output buffer.
  */
 static void
 htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
@@ -575,7 +598,7 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @param doc  the document
  * @param cur  the attribute pointer
  *
- * Dump an HTML attribute
+ * Serialize an HTML attribute.
  */
 static void
 htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
@@ -644,9 +667,11 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
  * @param doc  the document
  * @param cur  the current node
  * @param encoding  the encoding string (unused)
- * @param format  should formatting spaces been added
+ * @param format  should formatting newlines been added
  *
- * Dump an HTML node, recursive behaviour,children are printed too.
+ * Serialize an HTML node to an output buffer.
+ *
+ * Ignores `encoding` and uses the encoding of the output buffer.
  */
 void
 htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
@@ -879,8 +904,11 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @param cur  the current node
  * @param encoding  the encoding string (unused)
  *
- * Dump an HTML node, recursive behaviour,children are printed too,
- * and formatting returns/spaces are added.
+ * Same as htmlNodeDumpFormatOutput() with `format` set to 1 which is
+ * typically undesired. Use of this function is DISCOURAGED in favor
+ * of htmlNodeDumpFormatOutput().
+ *
+ * Ignores `encoding` and uses the encoding of the output buffer.
  */
 void
 htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
@@ -892,9 +920,11 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @param buf  the HTML buffer output
  * @param cur  the document
  * @param encoding  the encoding string (unused)
- * @param format  should formatting spaces been added
+ * @param format  should formatting newlines been added
  *
- * Dump an HTML document.
+ * Serialize an HTML document to an output buffer.
+ *
+ * Ignores `encoding` and uses the encoding of the output buffer.
  */
 void
 htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
@@ -915,7 +945,11 @@ htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
  * @param cur  the document
  * @param encoding  the encoding string (unused)
  *
- * Dump an HTML document. Formatting return/spaces are added.
+ * Same as htmlNodeDumpFormatOutput() with `format` set to 1 which is
+ * typically undesired. Use of this function is DISCOURAGED in favor
+ * of htmlDocContentDumpFormatOutput().
+ *
+ * Ignores `encoding` and uses the encoding of the output buffer.
  */
 void
 htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
@@ -933,9 +967,21 @@ htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
  * @param f  the FILE*
  * @param cur  the document
  *
- * Dump an HTML document to an open FILE.
+ * Serialize an HTML document to an open `FILE`.
  *
- * @returns the number of byte written or -1 in case of failure.
+ * WARNING: Uses the encoding from a deprecated meta tag, see
+ * htmlGetMetaEncoding(). This is typically undesired. If no such
+ * tag was found, ASCII with HTML 4.0 named character entities will
+ * be used. This is inefficient compared to UTF-8 and might be
+ * changed in a future version.
+ *
+ * Also enables "formatting" unconditionally which is typically
+ * undesired.
+ *
+ * Use of this function is DISCOURAGED in favor of
+ * htmlNodeDumpFileFormat().
+ *
+ * @returns the number of bytes written or -1 in case of failure.
  */
 int
 htmlDocDump(FILE *f, xmlDocPtr cur) {
@@ -966,9 +1012,23 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
  * @param filename  the filename (or URL)
  * @param cur  the document
  *
- * Dump an HTML document to a file. If `filename` is "-" the stdout file is
- * used.
- * @returns the number of byte written or -1 in case of failure.
+ * Serialize an HTML document to a file. If `filename` is `"-"`,
+ * stdout is used. This is potentially insecure and might be
+ * changed in a future version.
+ *
+ * WARNING: Uses the encoding from a deprecated meta tag, see
+ * htmlGetMetaEncoding(). This is typically undesired. If no such
+ * tag was found, ASCII with HTML 4.0 named character entities will
+ * be used. This is inefficient compared to UTF-8 and might be
+ * changed in a future version.
+ *
+ * Also enables "formatting" unconditionally which is typically
+ * undesired.
+ *
+ * Use of this function is DISCOURAGED in favor of
+ * htmlSaveFileFormat().
+ *
+ * @returns the number of bytes written or -1 in case of failure.
  */
 int
 htmlSaveFile(const char *filename, xmlDocPtr cur) {
@@ -998,12 +1058,18 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
 /**
  * @param filename  the filename
  * @param cur  the document
- * @param format  should formatting spaces been added
- * @param encoding  the document encoding
+ * @param format  should formatting newlines been added
+ * @param encoding  the document encoding (optional)
  *
- * Dump an HTML document to a file using a given encoding.
+ * Serialize an HTML document to a file using a given encoding.
+ * If `filename` is `"-"`, stdout is used. This is potentially
+ * insecure and might be changed in a future version.
  *
- * @returns the number of byte written or -1 in case of failure.
+ * If encoding is NULL, ASCII with HTML 4.0 named character entities
+ * will be used. This is inefficient compared to UTF-8 and might be
+ * changed in a future version.
+ *
+ * @returns the number of bytes written or -1 in case of failure.
  */
 int
 htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
@@ -1042,10 +1108,11 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
  * @param cur  the document
  * @param encoding  the document encoding
  *
- * Dump an HTML document to a file using a given encoding
- * and formatting returns/spaces are added.
+ * Same as htmlSaveFileFormat() with `format` set to 1 which is
+ * typically undesired. Also see the warnings there. Use of this
+ * function is DISCOURAGED in favor of htmlSaveFileFormat().
  *
- * @returns the number of byte written or -1 in case of failure.
+ * @returns the number of bytes written or -1 in case of failure.
  */
 int
 htmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {

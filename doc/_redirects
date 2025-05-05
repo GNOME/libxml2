@@ -4,4 +4,51 @@
 /libxml2/ /libxml2/html/index.html 302
 
 # Old documentation
+
+/libxml2/devhelp/libxml2-c14n.html /libxml2/html/c14n_8h.html
+/libxml2/devhelp/libxml2-catalog.html /libxml2/html/catalog_8h.html
+/libxml2/devhelp/libxml2-chvalid.html /libxml2/html/chvalid_8h.html
+/libxml2/devhelp/libxml2-debugXML.html /libxml2/html/debugXML_8h.html
+/libxml2/devhelp/libxml2-dict.html /libxml2/html/dict_8h.html
+/libxml2/devhelp/libxml2-encoding.html /libxml2/html/encoding_8h.html
+/libxml2/devhelp/libxml2-entities.html /libxml2/html/entities_8h.html
+/libxml2/devhelp/libxml2-globals.html /libxml2/html/globals_8h.html
+/libxml2/devhelp/libxml2-hash.html /libxml2/html/hash_8h.html
+/libxml2/devhelp/libxml2-HTMLparser.html /libxml2/html/HTMLparser_8h.html
+/libxml2/devhelp/libxml2-HTMLtree.html /libxml2/html/HTMLtree_8h.html
+/libxml2/devhelp/libxml2-list.html /libxml2/html/list_8h.html
+/libxml2/devhelp/libxml2-nanoftp.html /libxml2/html/nanoftp_8h.html
+/libxml2/devhelp/libxml2-nanohttp.html /libxml2/html/nanohttp_8h.html
+/libxml2/devhelp/libxml2-parser.html /libxml2/html/parser_8h.html
+/libxml2/devhelp/libxml2-parserInternals.html /libxml2/html/parserInternals_8h.html
+/libxml2/devhelp/libxml2-pattern.html /libxml2/html/pattern_8h.html
+/libxml2/devhelp/libxml2-relaxng.html /libxml2/html/relaxng_8h.html
+/libxml2/devhelp/libxml2-SAX2.html /libxml2/html/SAX2_8h.html
+/libxml2/devhelp/libxml2-schemasInternals.html /libxml2/html/schemasInternals_8h.html
+/libxml2/devhelp/libxml2-schematron.html /libxml2/html/schematron_8h.html
+/libxml2/devhelp/libxml2-threads.html /libxml2/html/threads_8h.html
+/libxml2/devhelp/libxml2-tree.html /libxml2/html/tree_8h.html
+/libxml2/devhelp/libxml2-uri.html /libxml2/html/uri_8h.html
+/libxml2/devhelp/libxml2-valid.html /libxml2/html/valid_8h.html
+/libxml2/devhelp/libxml2-xinclude.html /libxml2/html/xinclude_8h.html
+/libxml2/devhelp/libxml2-xlink.html /libxml2/html/xlink_8h.html
+/libxml2/devhelp/libxml2-xmlautomata.html /libxml2/html/xmlautomata_8h.html
+/libxml2/devhelp/libxml2-xmlerror.html /libxml2/html/xmlerror_8h.html
+/libxml2/devhelp/libxml2-xmlIO.html /libxml2/html/xmlIO_8h.html
+/libxml2/devhelp/libxml2-xmlmemory.html /libxml2/html/xmlmemory_8h.html
+/libxml2/devhelp/libxml2-xmlmodule.html /libxml2/html/xmlmodule_8h.html
+/libxml2/devhelp/libxml2-xmlreader.html /libxml2/html/xmlreader_8h.html
+/libxml2/devhelp/libxml2-xmlregexp.html /libxml2/html/xmlregexp_8h.html
+/libxml2/devhelp/libxml2-xmlsave.html /libxml2/html/xmlsave_8h.html
+/libxml2/devhelp/libxml2-xmlschemas.html /libxml2/html/xmlschemas_8h.html
+/libxml2/devhelp/libxml2-xmlschemastypes.html /libxml2/html/xmlschemastypes_8h.html
+/libxml2/devhelp/libxml2-xmlstring.html /libxml2/html/xmlstring_8h.html
+/libxml2/devhelp/libxml2-xmlunicode.html /libxml2/html/xmlunicode_8h.html
+/libxml2/devhelp/libxml2-xmlversion.html /libxml2/html/xmlversion_8h.html
+/libxml2/devhelp/libxml2-xmlwriter.html /libxml2/html/xmlwriter_8h.html
+/libxml2/devhelp/libxml2-xpath.html /libxml2/html/xpath_8h.html
+/libxml2/devhelp/libxml2-xpathInternals.html /libxml2/html/xpathInternals_8h.html
+/libxml2/devhelp/libxml2-xpointer.html /libxml2/html/xpointer_8h.html
+
+/libxml2/devhelp/general.html /libxml2/html/files.html
 /libxml2/devhelp/* /libxml2/html/index.html

@@ -6,6 +6,7 @@ OPTIMIZE_OUTPUT_FOR_C  = YES
 EXTRACT_LOCAL_CLASSES  = NO
 HIDE_UNDOC_MEMBERS     = YES
 HIDE_UNDOC_CLASSES     = YES
+CASE_SENSE_NAMES       = YES
 HIDE_SCOPE_NAMES       = YES
 SHOW_INCLUDE_FILES     = NO
 WARN_NO_PARAMDOC       = YES
@@ -91,12 +92,12 @@ INPUT                  = $(SOURCE_ROOT)doc/mainpage.md \
                          $(SOURCE_ROOT)xmlwriter.c \
                          $(SOURCE_ROOT)xpath.c \
                          $(SOURCE_ROOT)xpointer.c
-USE_MDFILE_AS_MAINPAGE = $(SOURCE_ROOT)doc/mainpage.md
 EXCLUDE_SYMLINKS       = YES
+USE_MDFILE_AS_MAINPAGE = $(SOURCE_ROOT)doc/mainpage.md
 VERBATIM_HEADERS       = NO
+HTML_EXTRA_STYLESHEET  = $(SOURCE_ROOT)doc/libxml2.css
 DISABLE_INDEX          = NO
 GENERATE_TREEVIEW      = NO
-HTML_EXTRA_STYLESHEET  = $(SOURCE_ROOT)doc/libxml2.css
 ENUM_VALUES_PER_LINE   = 0
 GENERATE_LATEX         = NO
 GENERATE_XML           = YES

@@ -1,9 +1,9 @@
 /**
  * @file
  * 
- * @brief the XML document serializer
+ * @brief XML/HTML serializer
  * 
- * API to save document or subtree of document
+ * API to save documents or subtrees of documents.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -28,30 +28,63 @@ extern "C" {
  * to the xmlSaveToFd() and similar calls.
  */
 typedef enum {
-    /** format save output */
+    /**
+     * Format output. This adds newlines and enables indenting
+     * by default.
+     */
     XML_SAVE_FORMAT     = 1<<0,
-    /** drop the xml declaration */
+    /**
+     * Don't emit an XML declaration.
+     */
     XML_SAVE_NO_DECL    = 1<<1,
-    /** no empty tags */
+    /**
+     * Don't emit empty tags.
+     */
     XML_SAVE_NO_EMPTY	= 1<<2,
-    /** disable XHTML1 specific rules */
+    /**
+     * Don't serialize as XHTML.
+     */
     XML_SAVE_NO_XHTML	= 1<<3,
-    /** force XHTML1 specific rules */
+    /**
+     * Always serialize as XHTML.
+     */
     XML_SAVE_XHTML	= 1<<4,
-    /** force XML serialization on HTML doc */
+    /**
+     * Serialize HTML documents as XML.
+     */
     XML_SAVE_AS_XML     = 1<<5,
-    /** force HTML serialization on XML doc */
+    /**
+     * Serialize XML documents as HTML.
+     */
     XML_SAVE_AS_HTML    = 1<<6,
-    /** format with non-significant whitespace */
+    /**
+     * Format with non-significant whitespace.
+     * TODO: What does this mean?
+     */
     XML_SAVE_WSNONSIG   = 1<<7,
-    /** force empty tags, overriding global, available since 2.14 */
+    /**
+     * Always emit empty tags. This is the default unless the
+     * deprecated thread-local setting xmlSaveNoEmptyTags is
+     * set to 1.
+     *
+     * @since 2.14
+     */
     XML_SAVE_EMPTY      = 1<<8,
-    /** disable indenting, available since 2.14 */
+    /**
+     * Don't indent output when formatting.
+     *
+     * @since 2.14
+     */
     XML_SAVE_NO_INDENT  = 1<<9,
-    /** force indenting, overriding global, available since 2.14 */
+    /**
+     * Always indent output when formatting. This is the default
+     * unless the deprecated thread-local setting
+     * xmlIndentTreeOutput is set to 0.
+     *
+     * @since 2.14
+     */
     XML_SAVE_INDENT     = 1<<10
 } xmlSaveOption;
-
 
 typedef struct _xmlSaveCtxt xmlSaveCtxt;
 typedef xmlSaveCtxt *xmlSaveCtxtPtr;

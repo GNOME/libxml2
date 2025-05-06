@@ -34,9 +34,9 @@ static xlinkHandlerPtr xlinkDefaultHandler = NULL;
 static xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
 
 /**
- * @deprecated Don't use.
- *
  * Get the default xlink handler.
+ *
+ * @deprecated Don't use.
  *
  * @returns the current xlinkHandlerPtr value.
  */
@@ -47,11 +47,11 @@ xlinkGetDefaultHandler(void) {
 
 
 /**
- * @param handler  the new value for the xlink handler block
+ * Set the default xlink handlers
  *
  * @deprecated Don't use.
  *
- * Set the default xlink handlers
+ * @param handler  the new value for the xlink handler block
  */
 void
 xlinkSetDefaultHandler(xlinkHandlerPtr handler) {
@@ -59,9 +59,9 @@ xlinkSetDefaultHandler(xlinkHandlerPtr handler) {
 }
 
 /**
- * @deprecated Don't use.
- *
  * Get the default xlink detection routine
+ *
+ * @deprecated Don't use.
  *
  * @returns the current function or NULL;
  */
@@ -71,11 +71,11 @@ xlinkGetDefaultDetect	(void) {
 }
 
 /**
- * @param func  pointer to the new detection routine.
+ * Set the default xlink detection routine
  *
  * @deprecated Don't use.
  *
- * Set the default xlink detection routine
+ * @param func  pointer to the new detection routine.
  */
 void
 xlinkSetDefaultDetect	(xlinkNodeDetectFunc func) {
@@ -90,17 +90,16 @@ xlinkSetDefaultDetect	(xlinkNodeDetectFunc func) {
 
 
 /**
- * @param doc  the document containing the node
- * @param node  the node pointer itself
- *
- * @deprecated The XLink code was never finished.
- *
  * Check whether the given node carries the attributes needed
  * to be a link element (or is one of the linking elements issued
  * from the (X)HTML DtDs).
  * This routine don't try to do full checking of the link validity
  * but tries to detect and return the appropriate link type.
  *
+ * @deprecated The XLink code was never finished.
+ *
+ * @param doc  the document containing the node
+ * @param node  the node pointer itself
  * @returns the xlinkType of the node (XLINK_TYPE_NONE if there is no
  *         link detected.
  */

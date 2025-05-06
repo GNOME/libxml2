@@ -49,10 +49,10 @@ struct _xmlList
  ************************************************************************/
 
 /**
+ * Unlink and deallocate `lk` from list `l`
+ *
  * @param l  a list
  * @param lk  a link
- *
- * Unlink and deallocate `lk` from list `l`
  */
 static void
 xmlLinkDeallocator(xmlListPtr l, xmlLinkPtr lk)
@@ -65,11 +65,10 @@ xmlLinkDeallocator(xmlListPtr l, xmlLinkPtr lk)
 }
 
 /**
- * @param data0  first data
- * @param data1  second data
- *
  * Compares two arbitrary data
  *
+ * @param data0  first data
+ * @param data1  second data
  * @returns -1, 0 or 1 depending on whether data1 is greater equal or smaller
  *          than data0
  */
@@ -84,11 +83,10 @@ xmlLinkCompare(const void *data0, const void *data1)
 }
 
 /**
- * @param l  a list
- * @param data  a data
- *
  * Search data in the ordered list walking from the beginning
  *
+ * @param l  a list
+ * @param data  a data
  * @returns the link containing the data or NULL
  */
 static xmlLinkPtr
@@ -103,11 +101,10 @@ xmlListLowerSearch(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  a data
- *
  * Search data in the ordered list walking backward from the end
  *
+ * @param l  a list
+ * @param data  a data
  * @returns the link containing the data or NULL
  */
 static xmlLinkPtr
@@ -122,11 +119,10 @@ xmlListHigherSearch(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  a data
- *
  * Search data in the list
  *
+ * @param l  a list
+ * @param data  a data
  * @returns the link containing the data or NULL
  */
 static xmlLinkPtr
@@ -146,11 +142,10 @@ xmlListLinkSearch(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  a data
- *
  * Search data in the list processing backward
  *
+ * @param l  a list
+ * @param data  a data
  * @returns the link containing the data or NULL
  */
 static xmlLinkPtr
@@ -170,11 +165,10 @@ xmlListLinkReverseSearch(xmlListPtr l, void *data)
 }
 
 /**
- * @param deallocator  an optional deallocator function
- * @param compare  an optional comparison function
- *
  * Create a new list
  *
+ * @param deallocator  an optional deallocator function
+ * @param compare  an optional comparison function
  * @returns the new list or NULL in case of error
  */
 xmlListPtr
@@ -209,11 +203,10 @@ xmlListCreate(xmlListDeallocator deallocator, xmlListDataCompare compare)
 }
 
 /**
- * @param l  a list
- * @param data  a search value
- *
  * Search the list for an existing value of `data`
  *
+ * @param l  a list
+ * @param data  a search value
  * @returns the value associated to `data` or NULL in case of error
  */
 void *
@@ -229,11 +222,10 @@ xmlListSearch(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  a search value
- *
  * Search the list in reverse order for an existing value of `data`
  *
+ * @param l  a list
+ * @param data  a search value
  * @returns the value associated to `data` or NULL in case of error
  */
 void *
@@ -249,11 +241,10 @@ xmlListReverseSearch(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  the data
- *
  * Insert data in the ordered list at the beginning for this value
  *
+ * @param l  a list
+ * @param data  the data
  * @returns 0 in case of success, 1 in case of failure
  */
 int
@@ -278,11 +269,10 @@ xmlListInsert(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  the data
- *
  * Insert data in the ordered list at the end for this value
  *
+ * @param l  a list
+ * @param data  the data
  * @returns 0 in case of success, 1 in case of failure
  */
 int xmlListAppend(xmlListPtr l, void *data)
@@ -305,9 +295,9 @@ int xmlListAppend(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- *
  * Deletes the list and its associated data
+ *
+ * @param l  a list
  */
 void xmlListDelete(xmlListPtr l)
 {
@@ -320,11 +310,10 @@ void xmlListDelete(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- * @param data  list data
- *
  * Remove the first instance associated to data in the list
  *
+ * @param l  a list
+ * @param data  list data
  * @returns 1 if a deallocation occurred, or 0 if not found
  */
 int
@@ -344,11 +333,10 @@ xmlListRemoveFirst(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  list data
- *
  * Remove the last instance associated to data in the list
  *
+ * @param l  a list
+ * @param data  list data
  * @returns 1 if a deallocation occurred, or 0 if not found
  */
 int
@@ -368,11 +356,10 @@ xmlListRemoveLast(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  list data
- *
  * Remove the all instance associated to data in the list
  *
+ * @param l  a list
+ * @param data  list data
  * @returns the number of deallocation, or 0 if not found
  */
 int
@@ -389,9 +376,9 @@ xmlListRemoveAll(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- *
  * Remove the all data in the list
+ *
+ * @param l  a list
  */
 void
 xmlListClear(xmlListPtr l)
@@ -410,10 +397,9 @@ xmlListClear(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Is the list empty ?
  *
+ * @param l  a list
  * @returns 1 if the list is empty, 0 if not empty and -1 in case of error
  */
 int
@@ -425,10 +411,9 @@ xmlListEmpty(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Get the first element in the list
  *
+ * @param l  a list
  * @returns the first element in the list, or NULL
  */
 xmlLinkPtr
@@ -440,10 +425,9 @@ xmlListFront(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Get the last element in the list
  *
+ * @param l  a list
  * @returns the last element in the list, or NULL
  */
 xmlLinkPtr
@@ -455,10 +439,9 @@ xmlListEnd(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Get the number of elements in the list
  *
+ * @param l  a list
  * @returns the number of elements in the list or -1 in case of error
  */
 int
@@ -475,9 +458,9 @@ xmlListSize(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Removes the first element in the list
+ *
+ * @param l  a list
  */
 void
 xmlListPopFront(xmlListPtr l)
@@ -487,9 +470,9 @@ xmlListPopFront(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Removes the last element in the list
+ *
+ * @param l  a list
  */
 void
 xmlListPopBack(xmlListPtr l)
@@ -499,11 +482,10 @@ xmlListPopBack(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- * @param data  new data
- *
  * add the new data at the beginning of the list
  *
+ * @param l  a list
+ * @param data  new data
  * @returns 1 if successful, 0 otherwise
  */
 int
@@ -527,11 +509,10 @@ xmlListPushFront(xmlListPtr l, void *data)
 }
 
 /**
- * @param l  a list
- * @param data  new data
- *
  * add the new data at the end of the list
  *
+ * @param l  a list
+ * @param data  new data
  * @returns 1 if successful, 0 otherwise
  */
 int
@@ -555,10 +536,9 @@ xmlListPushBack(xmlListPtr l, void *data)
 }
 
 /**
- * @param lk  a link
- *
  * See Returns.
  *
+ * @param lk  a link
  * @returns a pointer to the data referenced from this link
  */
 void *
@@ -570,9 +550,9 @@ xmlLinkGetData(xmlLinkPtr lk)
 }
 
 /**
- * @param l  a list
- *
  * Reverse the order of the elements in the list
+ *
+ * @param l  a list
  */
 void
 xmlListReverse(xmlListPtr l)
@@ -594,9 +574,9 @@ xmlListReverse(xmlListPtr l)
 }
 
 /**
- * @param l  a list
- *
  * Sort all the elements in the list
+ *
+ * @param l  a list
  */
 void
 xmlListSort(xmlListPtr l)
@@ -623,12 +603,12 @@ xmlListSort(xmlListPtr l)
 }
 
 /**
+ * Walk all the element of the first from first to last and
+ * apply the walker function to it
+ *
  * @param l  a list
  * @param walker  a processing function
  * @param user  a user parameter passed to the walker function
- *
- * Walk all the element of the first from first to last and
- * apply the walker function to it
  */
 void
 xmlListWalk(xmlListPtr l, xmlListWalker walker, void *user) {
@@ -643,12 +623,12 @@ xmlListWalk(xmlListPtr l, xmlListWalker walker, void *user) {
 }
 
 /**
+ * Walk all the element of the list in reverse order and
+ * apply the walker function to it
+ *
  * @param l  a list
  * @param walker  a processing function
  * @param user  a user parameter passed to the walker function
- *
- * Walk all the element of the list in reverse order and
- * apply the walker function to it
  */
 void
 xmlListReverseWalk(xmlListPtr l, xmlListWalker walker, void *user) {
@@ -663,11 +643,11 @@ xmlListReverseWalk(xmlListPtr l, xmlListWalker walker, void *user) {
 }
 
 /**
- * @param l1  the original list
- * @param l2  the new list
- *
  * include all the elements of the second list in the first one and
  * clear the second list
+ *
+ * @param l1  the original list
+ * @param l2  the new list
  */
 void
 xmlListMerge(xmlListPtr l1, xmlListPtr l2)
@@ -677,10 +657,9 @@ xmlListMerge(xmlListPtr l1, xmlListPtr l2)
 }
 
 /**
- * @param old  the list
- *
  * Duplicate the list
  *
+ * @param old  the list
  * @returns a new copy of the list or NULL in case of error
  */
 xmlListPtr
@@ -705,11 +684,10 @@ xmlListDup(xmlListPtr old)
 }
 
 /**
- * @param cur  the new list
- * @param old  the old list
- *
  * Move all the element from the old list in the new list
  *
+ * @param cur  the new list
+ * @param old  the old list
  * @returns 0 in case of success 1 in case of error
  */
 int

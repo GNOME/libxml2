@@ -42,9 +42,6 @@ static int xmlModulePlatformSymbol(void *handle, const char *name, void **result
  ************************************************************************/
 
 /**
- * @param name  the module name
- * @param options  a set of xmlModuleOption
- *
  * Opens a module/shared library given its name or path
  * NOTE: that due to portability issues, behaviour can only be
  * guaranteed with `name` using ASCII. We cannot guarantee that
@@ -52,6 +49,8 @@ static int xmlModulePlatformSymbol(void *handle, const char *name, void **result
  * and not a const xmlChar * .
  * TODO: options are not yet implemented.
  *
+ * @param name  the module name
+ * @param options  a set of xmlModuleOption
  * @returns a handle for the module or NULL in case of error
  */
 xmlModulePtr
@@ -77,16 +76,15 @@ xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
 }
 
 /**
- * @param module  the module
- * @param name  the name of the symbol
- * @param symbol  the resulting symbol address
- *
  * Lookup for a symbol address in the given module
  * NOTE: that due to portability issues, behaviour can only be
  * guaranteed with `name` using ASCII. We cannot guarantee that
  * an UTF-8 string would work, which is why name is a const char *
  * and not a const xmlChar * .
  *
+ * @param module  the module
+ * @param name  the name of the symbol
+ * @param symbol  the resulting symbol address
  * @returns 0 if the symbol was found, or -1 in case of error
  */
 int
@@ -106,11 +104,10 @@ xmlModuleSymbol(xmlModulePtr module, const char *name, void **symbol)
 }
 
 /**
- * @param module  the module handle
- *
  * The close operations unload the associated module and free the
  * data associated to the module.
  *
+ * @param module  the module handle
  * @returns 0 in case of success, -1 in case of argument error and -2
  *         if the module could not be closed/unloaded.
  */
@@ -132,12 +129,11 @@ xmlModuleClose(xmlModulePtr module)
 }
 
 /**
- * @param module  the module handle
- *
  * The free operations free the data associated to the module
  * but does not unload the associated shared library which may still
  * be in use.
  *
+ * @param module  the module handle
  * @returns 0 in case of success, -1 in case of argument error
  */
 int
@@ -161,7 +157,6 @@ xmlModuleFree(xmlModulePtr module)
 
 /**
  * @param name  path to the module
- *
  * @returns a handle on success, and zero on error.
  */
 

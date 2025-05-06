@@ -82,167 +82,154 @@ extern "C" {
  *									*
  ************************************************************************/
 /**
- * @param c  an byte value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [2] Char ::= #x9 | #xA | #xD | [#x20...]
  *
  * any byte character in the accepted range
+ * @param c  an byte value (int)
  */
 #define IS_BYTE_CHAR(c)	 xmlIsChar_ch(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD]
  *                      | [#x10000-#x10FFFF]
  *
  * any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
+ * @param c  an UNICODE value (int)
  */
 #define IS_CHAR(c)   xmlIsCharQ(c)
 
 /**
- * @param c  an xmlChar (usually an unsigned char)
- *
  * Behaves like IS_CHAR on single-byte value
+ *
+ * @param c  an xmlChar (usually an unsigned char)
  */
 #define IS_CHAR_CH(c)  xmlIsChar_ch(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [3] S ::= (#x20 | #x9 | #xD | #xA)+
+ * @param c  an UNICODE value (int)
  */
 #define IS_BLANK(c)  xmlIsBlankQ(c)
 
 /**
- * @param c  an xmlChar value (normally unsigned char)
- *
  * Behaviour same as IS_BLANK
+ *
+ * @param c  an xmlChar value (normally unsigned char)
  */
 #define IS_BLANK_CH(c)  xmlIsBlank_ch(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [85] BaseChar ::= ... long list see REC ...
+ * @param c  an UNICODE value (int)
  */
 #define IS_BASECHAR(c) xmlIsBaseCharQ(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [88] Digit ::= ... long list see REC ...
+ * @param c  an UNICODE value (int)
  */
 #define IS_DIGIT(c) xmlIsDigitQ(c)
 
 /**
- * @param c  an xmlChar value (usually an unsigned char)
- *
  * Behaves like IS_DIGIT but with a single byte argument
+ *
+ * @param c  an xmlChar value (usually an unsigned char)
  */
 #define IS_DIGIT_CH(c)  xmlIsDigit_ch(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [87] CombiningChar ::= ... long list see REC ...
+ * @param c  an UNICODE value (int)
  */
 #define IS_COMBINING(c) xmlIsCombiningQ(c)
 
 /**
- * @param c  an xmlChar (usually an unsigned char)
- *
  * Always false (all combining chars > 0xff)
+ *
+ * @param c  an xmlChar (usually an unsigned char)
  */
 #define IS_COMBINING_CH(c) 0
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [89] Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 |
  *                       #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] |
  *                       [#x309D-#x309E] | [#x30FC-#x30FE]
+ * @param c  an UNICODE value (int)
  */
 #define IS_EXTENDER(c) xmlIsExtenderQ(c)
 
 /**
- * @param c  an xmlChar value (usually an unsigned char)
- *
  * Behaves like IS_EXTENDER but with a single-byte argument
+ *
+ * @param c  an xmlChar value (usually an unsigned char)
  */
 #define IS_EXTENDER_CH(c)  xmlIsExtender_ch(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [86] Ideographic ::= [#x4E00-#x9FA5] | #x3007 | [#x3021-#x3029]
+ * @param c  an UNICODE value (int)
  */
 #define IS_IDEOGRAPHIC(c) xmlIsIdeographicQ(c)
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [84] Letter ::= BaseChar | Ideographic
+ * @param c  an UNICODE value (int)
  */
 #define IS_LETTER(c) (IS_BASECHAR(c) || IS_IDEOGRAPHIC(c))
 
 /**
- * @param c  an xmlChar value (normally unsigned char)
- *
  * Macro behaves like IS_LETTER, but only check base chars
  *
+ * @param c  an xmlChar value (normally unsigned char)
  */
 #define IS_LETTER_CH(c) xmlIsBaseChar_ch(c)
 
 /**
- * @param c  an xmlChar value
- *
  * Macro to check [a-zA-Z]
  *
+ * @param c  an xmlChar value
  */
 #define IS_ASCII_LETTER(c)	((0x61 <= ((c) | 0x20)) && \
                                  (((c) | 0x20) <= 0x7a))
 
 /**
- * @param c  an xmlChar value
- *
  * Macro to check [0-9]
  *
+ * @param c  an xmlChar value
  */
 #define IS_ASCII_DIGIT(c)	((0x30 <= (c)) && ((c) <= 0x39))
 
 /**
- * @param c  an UNICODE value (int)
- *
  * Macro to check the following production in the XML spec:
  *
  *     [13] PubidChar ::= #x20 | #xD | #xA | [a-zA-Z0-9] |
  *                        [-'()+,./:=?;!*#@$_%]
+ * @param c  an UNICODE value (int)
  */
 #define IS_PUBIDCHAR(c)	xmlIsPubidCharQ(c)
 
 /**
- * @param c  an xmlChar value (normally unsigned char)
- *
  * Same as IS_PUBIDCHAR but for single-byte value
+ *
+ * @param c  an xmlChar value (normally unsigned char)
  */
 #define IS_PUBIDCHAR_CH(c) xmlIsPubidChar_ch(c)
 

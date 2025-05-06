@@ -413,12 +413,12 @@ XMLPUBFUN int
 typedef void *  xmlTextReaderLocatorPtr;
 
 /**
+ * Signature of an error callback from a reader parser
+ *
  * @param arg  the user argument
  * @param msg  the message
  * @param severity  the severity of the error
  * @param locator  a locator indicating where the error occurred
- *
- * Signature of an error callback from a reader parser
  */
 typedef void (*xmlTextReaderErrorFunc)(void *arg,
 					       const char *msg,

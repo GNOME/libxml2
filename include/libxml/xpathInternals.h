@@ -42,63 +42,59 @@ extern "C" {
  * shouldn't be used in \#ifdef's preprocessor instructions.
  */
 /**
+ * Raises an error.
+ *
  * @param ctxt  an XPath parser context
  * @param err  an xmlXPathError code
- *
- * Raises an error.
  */
 #define xmlXPathSetError(ctxt, err)					\
     { xmlXPatherror((ctxt), __FILE__, __LINE__, (err));			\
       if ((ctxt) != NULL) (ctxt)->error = (err); }
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Raises an XPATH_INVALID_ARITY error.
+ *
+ * @param ctxt  an XPath parser context
  */
 #define xmlXPathSetArityError(ctxt)					\
     xmlXPathSetError((ctxt), XPATH_INVALID_ARITY)
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Raises an XPATH_INVALID_TYPE error.
+ *
+ * @param ctxt  an XPath parser context
  */
 #define xmlXPathSetTypeError(ctxt)					\
     xmlXPathSetError((ctxt), XPATH_INVALID_TYPE)
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Get the error code of an XPath context.
  *
+ * @param ctxt  an XPath parser context
  * @returns the context error.
  */
 #define xmlXPathGetError(ctxt)	  ((ctxt)->error)
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Check if an XPath error was raised.
  *
+ * @param ctxt  an XPath parser context
  * @returns true if an error has been raised, false otherwise.
  */
 #define xmlXPathCheckError(ctxt)  ((ctxt)->error != XPATH_EXPRESSION_OK)
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Get the document of an XPath context.
  *
+ * @param ctxt  an XPath parser context
  * @returns the context document.
  */
 #define xmlXPathGetDocument(ctxt)	((ctxt)->context->doc)
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Get the context node of an XPath context.
  *
+ * @param ctxt  an XPath parser context
  * @returns the context node.
  */
 #define xmlXPathGetContextNode(ctxt)	((ctxt)->context->node)
@@ -115,86 +111,85 @@ XMLPUBFUN void *
 		xmlXPathPopExternal	(xmlXPathParserContextPtr ctxt);
 
 /**
+ * Pushes the boolean `val` on the context stack.
+ *
  * @param ctxt  an XPath parser context
  * @param val  a boolean
- *
- * Pushes the boolean `val` on the context stack.
  */
 #define xmlXPathReturnBoolean(ctxt, val)				\
     valuePush((ctxt), xmlXPathNewBoolean(val))
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Pushes true on the context stack.
+ *
+ * @param ctxt  an XPath parser context
  */
 #define xmlXPathReturnTrue(ctxt)   xmlXPathReturnBoolean((ctxt), 1)
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Pushes false on the context stack.
+ *
+ * @param ctxt  an XPath parser context
  */
 #define xmlXPathReturnFalse(ctxt)  xmlXPathReturnBoolean((ctxt), 0)
 
 /**
+ * Pushes the double `val` on the context stack.
+ *
  * @param ctxt  an XPath parser context
  * @param val  a double
- *
- * Pushes the double `val` on the context stack.
  */
 #define xmlXPathReturnNumber(ctxt, val)					\
     valuePush((ctxt), xmlXPathNewFloat(val))
 
 /**
+ * Pushes the string `str` on the context stack.
+ *
  * @param ctxt  an XPath parser context
  * @param str  a string
- *
- * Pushes the string `str` on the context stack.
  */
 #define xmlXPathReturnString(ctxt, str)					\
     valuePush((ctxt), xmlXPathWrapString(str))
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Pushes an empty string on the stack.
+ *
+ * @param ctxt  an XPath parser context
  */
 #define xmlXPathReturnEmptyString(ctxt)					\
     valuePush((ctxt), xmlXPathNewCString(""))
 
 /**
+ * Pushes the node-set `ns` on the context stack.
+ *
  * @param ctxt  an XPath parser context
  * @param ns  a node-set
- *
- * Pushes the node-set `ns` on the context stack.
  */
 #define xmlXPathReturnNodeSet(ctxt, ns)					\
     valuePush((ctxt), xmlXPathWrapNodeSet(ns))
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Pushes an empty node-set on the context stack.
+ *
+ * @param ctxt  an XPath parser context
  */
 #define xmlXPathReturnEmptyNodeSet(ctxt)				\
     valuePush((ctxt), xmlXPathNewNodeSet(NULL))
 
 /**
+ * Pushes user data on the context stack.
+ *
  * @param ctxt  an XPath parser context
  * @param val  user data
- *
- * Pushes user data on the context stack.
  */
 #define xmlXPathReturnExternal(ctxt, val)				\
     valuePush((ctxt), xmlXPathWrapExternal(val))
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Check if the current value on the XPath stack is a node set or
  * an XSLT value tree.
  *
+ * @param ctxt  an XPath parser context
  * @returns true if the current object on the stack is a node-set.
  */
 #define xmlXPathStackIsNodeSet(ctxt)					\
@@ -203,11 +198,10 @@ XMLPUBFUN void *
          || ((ctxt)->value->type == XPATH_XSLT_TREE)))
 
 /**
- * @param ctxt  an XPath parser context
- *
  * Checks if the current value on the XPath stack is an external
  * object.
  *
+ * @param ctxt  an XPath parser context
  * @returns true if the current object on the stack is an external
  * object.
  */
@@ -215,9 +209,9 @@ XMLPUBFUN void *
 	((ctxt->value != NULL) && (ctxt->value->type == XPATH_USERS))
 
 /**
- * @param ns  a node-set
- *
  * Empties a node-set.
+ *
+ * @param ns  a node-set
  */
 #define xmlXPathEmptyNodeSet(ns)					\
     { while ((ns)->nodeNr > 0) (ns)->nodeTab[--(ns)->nodeNr] = NULL; }
@@ -235,45 +229,45 @@ XMLPUBFUN void *
     if (ctxt->error != XPATH_EXPRESSION_OK) return(0)
 
 /**
- * @param X  the error code
- *
  * Macro to raise an XPath error and return.
+ *
+ * @param X  the error code
  */
 #define XP_ERROR(X)							\
     { xmlXPathErr(ctxt, X); return; }
 
 /**
- * @param X  the error code
- *
  * Macro to raise an XPath error and return 0.
+ *
+ * @param X  the error code
  */
 #define XP_ERROR0(X)							\
     { xmlXPathErr(ctxt, X); return(0); }
 
 /**
- * @param typeval  the XPath type
- *
  * Macro to check that the value on top of the XPath stack is of a given
  * type.
+ *
+ * @param typeval  the XPath type
  */
 #define CHECK_TYPE(typeval)						\
     if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
         XP_ERROR(XPATH_INVALID_TYPE)
 
 /**
- * @param typeval  the XPath type
- *
  * Macro to check that the value on top of the XPath stack is of a given
  * type. Return(0) in case of failure
+ *
+ * @param typeval  the XPath type
  */
 #define CHECK_TYPE0(typeval)						\
     if ((ctxt->value == NULL) || (ctxt->value->type != typeval))	\
         XP_ERROR0(XPATH_INVALID_TYPE)
 
 /**
- * @param x  the number of expected args
- *
  * Macro to check that the number of args passed to an XPath function matches.
+ *
+ * @param x  the number of expected args
  */
 #define CHECK_ARITY(x)							\
     if (ctxt == NULL) return;						\

@@ -74,9 +74,9 @@ static xmlEntity xmlEntityApos = {
 };
 
 /**
- * @param entity  an entity
- *
  * Frees the entity.
+ *
+ * @param entity  an entity
  */
 void
 xmlFreeEntity(xmlEntityPtr entity)
@@ -166,6 +166,10 @@ error:
 }
 
 /**
+ * Register a new entity for this document.
+ *
+ * @since 2.13.0
+ *
  * @param doc  the document
  * @param extSubset  add to the external or internal subset
  * @param name  the entity name
@@ -174,11 +178,6 @@ error:
  * @param SystemID  the entity system ID (optional)
  * @param content  the entity content
  * @param out  pointer to resulting entity (optional)
- *
- * Register a new entity for this document.
- *
- * @since 2.13.0
- *
  * @returns an xmlParserErrors error code.
  */
 int
@@ -296,10 +295,9 @@ xmlAddEntity(xmlDocPtr doc, int extSubset, const xmlChar *name, int type,
 }
 
 /**
- * @param name  the entity name
- *
  * Look up a predefined entity.
  *
+ * @param name  the entity name
  * @returns the entity, or NULL if not found.
  */
 xmlEntityPtr
@@ -331,17 +329,16 @@ xmlGetPredefinedEntity(const xmlChar *name) {
 }
 
 /**
+ * Add a new entity to the document's external subset.
+ *
+ * xmlAddEntity() offers better error handling.
+ *
  * @param doc  the document
  * @param name  the entity name
  * @param type  an xmlEntityType value
  * @param ExternalID  the entity external ID (optional)
  * @param SystemID  the entity system ID (optional)
  * @param content  the entity content
- *
- * Add a new entity to the document's external subset.
- *
- * xmlAddEntity() offers better error handling.
- *
  * @returns a pointer to the entity or NULL in case of error
  */
 xmlEntityPtr
@@ -355,17 +352,16 @@ xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
 }
 
 /**
+ * Add a new entity to the document's internal subset.
+ *
+ * xmlAddEntity() offers better error handling.
+ *
  * @param doc  the document
  * @param name  the entity name
  * @param type  an xmlEntityType value
  * @param ExternalID  the entity external ID (optional)
  * @param SystemID  the entity system ID (optional)
  * @param content  the entity content
- *
- * Add a new entity to the document's internal subset.
- *
- * xmlAddEntity() offers better error handling.
- *
  * @returns a pointer to the entity or NULL in case of error
  */
 xmlEntityPtr
@@ -379,13 +375,6 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
 }
 
 /**
- * @param doc  the document (optional)
- * @param name  the entity name
- * @param type  an xmlEntityType value
- * @param ExternalID  the entity external ID (optional)
- * @param SystemID  the entity system ID (optional)
- * @param content  the entity content
- *
  * Create a new entity.
  *
  * Like xmlAddDocEntity(), but if `doc` is NULL or has no internal
@@ -393,6 +382,12 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
  * the responsibility of the caller to link it to the document later
  * or free it when not needed anymore.
  *
+ * @param doc  the document (optional)
+ * @param name  the entity name
+ * @param type  an xmlEntityType value
+ * @param ExternalID  the entity external ID (optional)
+ * @param SystemID  the entity system ID (optional)
+ * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
 xmlEntityPtr
@@ -408,11 +403,10 @@ xmlNewEntity(xmlDocPtr doc, const xmlChar *name, int type,
 }
 
 /**
- * @param table  an entity table
- * @param name  the entity name
- *
  * Look up an entity in a table.
  *
+ * @param table  an entity table
+ * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
 static xmlEntityPtr
@@ -421,12 +415,11 @@ xmlGetEntityFromTable(xmlEntitiesTablePtr table, const xmlChar *name) {
 }
 
 /**
- * @param doc  the document
- * @param name  the entity name
- *
  * Look up a paramater entity in the internal and external subset
  * of `doc`.
  *
+ * @param doc  the document
+ * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
 xmlEntityPtr
@@ -450,11 +443,10 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
 }
 
 /**
- * @param doc  the document
- * @param name  the entity name
- *
  * Look up a general entity in the external subset of `doc`.
  *
+ * @param doc  the document
+ * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
 xmlEntityPtr
@@ -471,12 +463,11 @@ xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
 }
 
 /**
- * @param doc  the document referencing the entity
- * @param name  the entity name
- *
  * Look up a general entity in the internal and external subset
  * of `doc`. Also checks for predefined entities.
  *
+ * @param doc  the document referencing the entity
+ * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
 xmlEntityPtr
@@ -769,12 +760,11 @@ xmlEscapeText(const xmlChar *text, int flags) {
 }
 
 /**
+ * See xmlEncodeEntitiesReentrant(). Allows extra flags.
+ *
  * @param doc  the document containing the string (optional)
  * @param input  A string to convert to XML.
  * @param flags  XML_ESCAPE flags
- *
- * See xmlEncodeEntitiesReentrant(). Allows extra flags.
- *
  * @returns a newly allocated string with substitutions.
  */
 xmlChar *
@@ -792,9 +782,6 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
 }
 
 /**
- * @param doc  the document containing the string (optional)
- * @param input  A string to convert to XML.
- *
  * Replace special characters with predefined entities or numeric
  * character references.
  *
@@ -809,6 +796,8 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
  * Silently removes some invalid characters like ASCII control
  * codes.
  *
+ * @param doc  the document containing the string (optional)
+ * @param input  A string to convert to XML.
  * @returns a newly allocated string with substitutions.
  */
 xmlChar *
@@ -817,15 +806,14 @@ xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
 }
 
 /**
- * @param doc  unused
- * @param input  A string to convert to XML.
- *
  * Replace special characters with predefined entities or numeric
  * character references.
  *
  * Replaces `<`, `>`, `&` and `"` with predefined entities. Carriage
  * return is replaced with `&#13;`.
  *
+ * @param doc  unused
+ * @param input  A string to convert to XML.
  * @returns a newly allocated string with substitutions.
  */
 xmlChar *
@@ -848,10 +836,10 @@ xmlCreateEntitiesTable(void) {
 }
 
 /**
+ * Deallocate the memory used by an entities in the hash table.
+ *
  * @param entity  An entity
  * @param name  its name
- *
- * Deallocate the memory used by an entities in the hash table.
  */
 static void
 xmlFreeEntityWrapper(void *entity, const xmlChar *name ATTRIBUTE_UNUSED) {
@@ -860,9 +848,9 @@ xmlFreeEntityWrapper(void *entity, const xmlChar *name ATTRIBUTE_UNUSED) {
 }
 
 /**
- * @param table  An entity table
- *
  * Deallocate the memory used by an entities hash table.
+ *
+ * @param table  An entity table
  */
 void
 xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
@@ -870,11 +858,10 @@ xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
 }
 
 /**
- * @param payload  An entity
- * @param name  unused
- *
  * Build a copy of an entity
  *
+ * @param payload  An entity
+ * @param name  unused
  * @returns the new xmlEntitiesPtr or NULL in case of error.
  */
 static void *
@@ -927,10 +914,9 @@ error:
 }
 
 /**
- * @param table  An entity table
- *
  * Build a copy of an entity table.
  *
+ * @param table  An entity table
  * @returns the new xmlEntitiesTablePtr or NULL in case of error.
  */
 xmlEntitiesTablePtr
@@ -941,11 +927,11 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
 #ifdef LIBXML_OUTPUT_ENABLED
 
 /**
- * @param buf  An XML buffer.
- * @param ent  An entity table
- *
  * This will dump the content of the entity table as an XML DTD
  * definition.
+ *
+ * @param buf  An XML buffer.
+ * @param ent  An entity table
  */
 void
 xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
@@ -961,12 +947,12 @@ xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
 }
 
 /**
+ * When using the hash table scan function, arguments need to be
+ * reversed.
+ *
  * @param ent  an entity table
  * @param save  a save context
  * @param name  unused
- *
- * When using the hash table scan function, arguments need to be
- * reversed.
  */
 static void
 xmlDumpEntityDeclScan(void *ent, void *save,
@@ -975,11 +961,11 @@ xmlDumpEntityDeclScan(void *ent, void *save,
 }
 
 /**
- * @param buf  An XML buffer.
- * @param table  An entity table
- *
  * This will dump the content of the entity table as an XML DTD
  * definition.
+ *
+ * @param buf  An XML buffer.
+ * @param table  An entity table
  */
 void
 xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {

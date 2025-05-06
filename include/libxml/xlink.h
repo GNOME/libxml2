@@ -57,11 +57,11 @@ typedef enum {
 } xlinkActuate;
 
 /**
- * @param ctx  user data pointer
- * @param node  the node to check
- *
  * This is the prototype for the link detection routine.
  * It calls the default link detection callbacks upon link detection.
+ *
+ * @param ctx  user data pointer
+ * @param node  the node to check
  */
 typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
 
@@ -71,13 +71,13 @@ typedef void (*xlinkNodeDetectFunc) (void *ctx, xmlNodePtr node);
  */
 
 /**
+ * This is the prototype for a simple link detection callback.
+ *
  * @param ctx  user data pointer
  * @param node  the node carrying the link
  * @param href  the target of the link
  * @param role  the role string
  * @param title  the link title
- *
- * This is the prototype for a simple link detection callback.
  */
 typedef void
 (*xlinkSimpleLinkFunk)	(void *ctx,
@@ -87,6 +87,8 @@ typedef void
 			 const xlinkTitle title);
 
 /**
+ * This is the prototype for a extended link detection callback.
+ *
  * @param ctx  user data pointer
  * @param node  the node carrying the link
  * @param nbLocators  the number of locators detected on the link
@@ -100,8 +102,6 @@ typedef void
  * @param nbTitles  the number of titles detected on the link
  * @param titles  array of titles detected on the link
  * @param langs  array of xml:lang values for the titles
- *
- * This is the prototype for a extended link detection callback.
  */
 typedef void
 (*xlinkExtendedLinkFunk)(void *ctx,
@@ -119,6 +119,8 @@ typedef void
 			 const xmlChar **langs);
 
 /**
+ * This is the prototype for a extended link set detection callback.
+ *
  * @param ctx  user data pointer
  * @param node  the node carrying the link
  * @param nbLocators  the number of locators detected on the link
@@ -127,8 +129,6 @@ typedef void
  * @param nbTitles  the number of titles detected on the link
  * @param titles  array of titles detected on the link
  * @param langs  array of xml:lang values for the titles
- *
- * This is the prototype for a extended link set detection callback.
  */
 typedef void
 (*xlinkExtendedLinkSetFunk)	(void *ctx,

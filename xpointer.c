@@ -54,12 +54,12 @@
  ************************************************************************/
 
 /**
+ * Handle an XPointer error
+ *
  * @param ctxt  an XPTR evaluation context
  * @param code  error code
  * @param msg  error message
  * @param extra  extra information
- *
- * Handle an XPointer error
  */
 static void LIBXML_ATTR_FORMAT(3,0)
 xmlXPtrErr(xmlXPathParserContextPtr ctxt, int code,
@@ -118,7 +118,6 @@ xmlXPtrErr(xmlXPathParserContextPtr ctxt, int code,
 /**
  * @param cur  the node
  * @param no  the child number
- *
  * @returns the `no`'th element child of `cur` or NULL
  */
 static xmlNodePtr
@@ -213,9 +212,6 @@ xmlXPtrGetChildNo(xmlXPathParserContextPtr ctxt, int indx) {
 }
 
 /**
- * @param ctxt  the XPointer Parser context
- * @param name  the preparsed Scheme for the XPtrPart
- *
  * XPtrPart ::= 'xpointer' '(' XPtrExpr ')'
  *            | Scheme '(' SchemeSpecificExpr ')'
  *
@@ -243,6 +239,8 @@ xmlXPtrGetChildNo(xmlXPathParserContextPtr ctxt, int indx) {
  * string and if the scheme is 'xpointer' it will call the XPath interpreter.
  *
  * TODO: there is no new scheme registration mechanism
+ * @param ctxt  the XPointer Parser context
+ * @param name  the preparsed Scheme for the XPtrPart
  */
 
 static void
@@ -380,9 +378,6 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 }
 
 /**
- * @param ctxt  the XPointer Parser context
- * @param name  the preparsed Scheme for the first XPtrPart
- *
  * FullXPtr ::= XPtrPart (S? XPtrPart)*
  *
  * As the specs says:
@@ -404,6 +399,8 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
  *
  * Parse and evaluate a Full XPtr i.e. possibly a cascade of XPath based
  * expressions or other schemes.
+ * @param ctxt  the XPointer Parser context
+ * @param name  the preparsed Scheme for the first XPtrPart
  */
 static void
 xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
@@ -459,14 +456,13 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 }
 
 /**
- * @param ctxt  the XPointer Parser context
- * @param name  a possible ID name of the child sequence
- *
  *  ChildSeq ::= '/1' ('/' [0-9]*)*
  *             | Name ('/' [0-9]*)+
  *
  * Parse and evaluate a Child Sequence. This routine also handle the
  * case of a Bare Name used to get a document ID.
+ * @param ctxt  the XPointer Parser context
+ * @param name  a possible ID name of the child sequence
  */
 static void
 xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
@@ -510,13 +506,12 @@ xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
 
 
 /**
- * @param ctxt  the XPointer Parser context
- *
  *  XPointer ::= Name
  *             | ChildSeq
  *             | FullXPtr
  *
  * Parse and evaluate an XPointer
+ * @param ctxt  the XPointer Parser context
  */
 static void
 xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
@@ -564,13 +559,12 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
  ************************************************************************/
 
 /**
+ * Create a new XPointer context
+ *
  * @param doc  the XML document
  * @param here  the node that directly contains the XPointer being evaluated or NULL
  * @param origin  the element from which a user or program initiated traversal of
  *           the link, or NULL.
- *
- * Create a new XPointer context
- *
  * @returns the xmlXPathContext just allocated.
  */
 xmlXPathContextPtr
@@ -587,11 +581,10 @@ xmlXPtrNewContext(xmlDocPtr doc, xmlNodePtr here, xmlNodePtr origin) {
 }
 
 /**
- * @param str  the XPointer expression
- * @param ctx  the XPointer context
- *
  * Evaluate the XPath Location Path in the given context.
  *
+ * @param str  the XPointer expression
+ * @param ctx  the XPointer context
  * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */

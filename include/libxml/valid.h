@@ -35,22 +35,22 @@ typedef struct _xmlValidState xmlValidState;
 typedef xmlValidState *xmlValidStatePtr;
 
 /**
+ * Report a validity error.
+ *
  * @param ctx  user data (usually an xmlValidCtxtPtr)
  * @param msg  printf-like format string
  * @param ...  arguments to format
- *
- * Report a validity error.
  */
 typedef void (*xmlValidityErrorFunc) (void *ctx,
 			     const char *msg,
 			     ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
+ * Report a validity warning.
+ *
  * @param ctx  user data (usually an xmlValidCtxtPtr)
  * @param msg  printf-like format string
  * @param ...  arguments to format
- *
- * Report a validity warning.
  */
 typedef void (*xmlValidityWarningFunc) (void *ctx,
 			       const char *msg,

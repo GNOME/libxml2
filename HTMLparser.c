@@ -113,9 +113,9 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt);
  ************************************************************************/
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Handle an out-of-memory error
+ *
+ * @param ctxt  an HTML parser context
  */
 static void
 htmlErrMemory(xmlParserCtxtPtr ctxt)
@@ -124,13 +124,13 @@ htmlErrMemory(xmlParserCtxtPtr ctxt)
 }
 
 /**
+ * Handle a fatal parser error, i.e. violating Well-Formedness constraints
+ *
  * @param ctxt  an HTML parser context
  * @param error  the error number
  * @param msg  the error message
  * @param str1  string infor
  * @param str2  string infor
- *
- * Handle a fatal parser error, i.e. violating Well-Formedness constraints
  */
 static void LIBXML_ATTR_FORMAT(3,0)
 htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
@@ -147,11 +147,10 @@ htmlParseErr(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  ************************************************************************/
 
 /**
- * @param ctxt  an HTML parser context
- * @param value  the element name
- *
  * Pushes a new element name on top of the name stack
  *
+ * @param ctxt  an HTML parser context
+ * @param value  the element name
  * @returns -1 in case of error, the index in the stack otherwise
  */
 static int
@@ -184,10 +183,9 @@ htmlnamePush(htmlParserCtxtPtr ctxt, const xmlChar * value)
     return (ctxt->nameNr++);
 }
 /**
- * @param ctxt  an HTML parser context
- *
  * Pops the top element name from the name stack
  *
+ * @param ctxt  an HTML parser context
  * @returns the name just removed
  */
 static const xmlChar *
@@ -210,11 +208,10 @@ htmlnamePop(htmlParserCtxtPtr ctxt)
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param value  the node info
- *
  * Pushes a new element name on top of the node info stack
  *
+ * @param ctxt  an HTML parser context
+ * @param value  the node info
  * @returns 0 in case of error, the index in the stack otherwise
  */
 static int
@@ -244,10 +241,9 @@ htmlNodeInfoPush(htmlParserCtxtPtr ctxt, htmlParserNodeInfo *value)
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Pops the top element name from the node info stack
  *
+ * @param ctxt  an HTML parser context
  * @returns 0 in case of error, the pointer to NodeInfo otherwise
  */
 static htmlParserNodeInfo *
@@ -438,10 +434,9 @@ invalid:
 }
 
 /**
- * @param ctxt  the HTML parser context
- *
  * skip all blanks character found at that point in the input streams.
  *
+ * @param ctxt  the HTML parser context
  * @returns the number of space chars skipped
  */
 
@@ -1252,12 +1247,11 @@ htmlCompareTags(const void *key, const void *member) {
 }
 
 /**
- * @param tag  The tag name in lowercase
+ * Lookup the HTML tag in the ElementTable
  *
  * @deprecated Only supports HTML 4.
  *
- * Lookup the HTML tag in the ElementTable
- *
+ * @param tag  The tag name in lowercase
  * @returns the related htmlElemDescPtr or NULL if not found.
  */
 const htmlElemDesc *
@@ -1272,7 +1266,6 @@ htmlTagLookup(const xmlChar *tag) {
 
 /**
  * @param name  The name of the element to look up the priority for.
- *
  * @returns value: The "endtag" priority.
  **/
 static int
@@ -1301,12 +1294,11 @@ htmlCompareStartClose(const void *vkey, const void *member) {
 }
 
 /**
- * @param newtag  The new tag name
- * @param oldtag  The old tag name
- *
  * Checks whether the new tag is one of the registered valid tags for
  * closing old.
  *
+ * @param newtag  The new tag name
+ * @param oldtag  The old tag name
  * @returns 0 if no, 1 if yes.
  */
 static int
@@ -1324,10 +1316,10 @@ htmlCheckAutoClose(const xmlChar * newtag, const xmlChar * oldtag)
 }
 
 /**
+ * The HTML DTD allows an ending tag to implicitly close other tags.
+ *
  * @param ctxt  an HTML parser context
  * @param newtag  The new tag name
- *
- * The HTML DTD allows an ending tag to implicitly close other tags.
  */
 static void
 htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
@@ -1371,9 +1363,9 @@ htmlAutoCloseOnClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Close all remaining tags at the end of the stream
+ *
+ * @param ctxt  an HTML parser context
  */
 static void
 htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
@@ -1394,15 +1386,15 @@ htmlAutoCloseOnEnd(htmlParserCtxtPtr ctxt)
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param newtag  The new tag name or NULL
- *
  * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function is
  * called when a new tag has been detected and generates the
  * appropriates closes if possible/needed.
  * If newtag is NULL this mean we are at the end of the resource
  * and we should check
+ *
+ * @param ctxt  an HTML parser context
+ * @param newtag  The new tag name or NULL
  */
 static void
 htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
@@ -1423,17 +1415,16 @@ htmlAutoClose(htmlParserCtxtPtr ctxt, const xmlChar * newtag)
 }
 
 /**
- * @param doc  the HTML document
- * @param name  The tag name
- * @param elem  the HTML element
- *
- * @deprecated Internal function, don't use.
- *
  * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function checks
  * if the element or one of it's children would autoclose the
  * given tag.
  *
+ * @deprecated Internal function, don't use.
+ *
+ * @param doc  the HTML document
+ * @param name  The tag name
+ * @param elem  the HTML element
  * @returns 1 if autoclose, 0 otherwise
  */
 int
@@ -1452,15 +1443,14 @@ htmlAutoCloseTag(htmlDocPtr doc, const xmlChar *name, htmlNodePtr elem) {
 }
 
 /**
- * @param doc  the HTML document
- * @param elem  the HTML element
- *
- * @deprecated Internal function, don't use.
- *
  * The HTML DTD allows a tag to implicitly close other tags.
  * The list is kept in htmlStartClose array. This function checks
  * if a tag is autoclosed by one of it's child
  *
+ * @deprecated Internal function, don't use.
+ *
+ * @param doc  the HTML document
+ * @param elem  the HTML element
  * @returns 1 if autoclosed, 0 otherwise
  */
 int
@@ -1477,12 +1467,12 @@ htmlIsAutoClosed(htmlDocPtr doc, htmlNodePtr elem) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param newtag  The new tag name
- *
  * The HTML DTD allows a tag to exists only implicitly
  * called when a new tag has been detected and generates the
  * appropriates implicit tags if missing
+ *
+ * @param ctxt  an HTML parser context
+ * @param newtag  The new tag name
  */
 static void
 htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
@@ -1542,9 +1532,9 @@ htmlCheckImplied(htmlParserCtxtPtr ctxt, const xmlChar *newtag) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Prepare for non-whitespace character data.
+ *
+ * @param ctxt  an HTML parser context
  */
 
 static void
@@ -1560,12 +1550,11 @@ htmlStartCharData(htmlParserCtxtPtr ctxt) {
 }
 
 /**
- * @param name  an attribute name
+ * Check if an attribute is of content type Script
  *
  * @deprecated Only supports HTML 4.
  *
- * Check if an attribute is of content type Script
- *
+ * @param name  an attribute name
  * @returns 1 is the attribute is a script 0 otherwise
  */
 int
@@ -1885,14 +1874,13 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
  ************************************************************************/
 
 /**
- * @param name  the entity name
+ * Lookup the given entity in EntitiesTable
  *
  * @deprecated Only supports HTML 4.
  *
- * Lookup the given entity in EntitiesTable
- *
  * TODO: the linear scan is really ugly, an hash table is really needed.
  *
+ * @param name  the entity name
  * @returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
 const htmlEntityDesc *
@@ -1917,14 +1905,13 @@ htmlCompareEntityDesc(const void *vkey, const void *vdesc) {
 }
 
 /**
- * @param value  the entity's unicode value
+ * Lookup the given entity in EntitiesTable
  *
  * @deprecated Only supports HTML 4.
  *
- * Lookup the given entity in EntitiesTable
- *
  * TODO: the linear scan is really ugly, an hash table is really needed.
  *
+ * @param value  the entity's unicode value
  * @returns the associated htmlEntityDescPtr if found, NULL otherwise.
  */
 const htmlEntityDesc *
@@ -1940,16 +1927,15 @@ htmlEntityValueLookup(unsigned int value) {
 }
 
 /**
+ * Take a block of UTF-8 chars in and try to convert it to an ASCII
+ * plus HTML entities block of chars out.
+ *
+ * @deprecated Internal function, don't use.
+ *
  * @param out  a pointer to an array of bytes to store the result
  * @param outlen  the length of `out`
  * @param in  a pointer to an array of UTF-8 chars
  * @param inlen  the length of `in`
- *
- * @deprecated Internal function, don't use.
- *
- * Take a block of UTF-8 chars in and try to convert it to an ASCII
- * plus HTML entities block of chars out.
- *
  * @returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of `inlen` after return is the number of octets consumed
  *     as the return value is positive, else unpredictable.
@@ -2041,17 +2027,16 @@ done:
 }
 
 /**
+ * Take a block of UTF-8 chars in and try to convert it to an ASCII
+ * plus HTML entities block of chars out.
+ *
+ * @deprecated Only supports HTML 4.
+ *
  * @param out  a pointer to an array of bytes to store the result
  * @param outlen  the length of `out`
  * @param in  a pointer to an array of UTF-8 chars
  * @param inlen  the length of `in`
  * @param quoteChar  the quote character to escape (' or ") or zero.
- *
- * @deprecated Only supports HTML 4.
- *
- * Take a block of UTF-8 chars in and try to convert it to an ASCII
- * plus HTML entities block of chars out.
- *
  * @returns 0 if success, -2 if the transcoding fails, or -1 otherwise
  * The value of `inlen` after return is the number of octets consumed
  *     as the return value is positive, else unpredictable.
@@ -2161,12 +2146,11 @@ static const char *allowPCData[] = {
 };
 
 /**
+ * Is this a sequence of blank chars that one can ignore ?
+ *
  * @param ctxt  an HTML parser context
  * @param str  a xmlChar *
  * @param len  the size of `str`
- *
- * Is this a sequence of blank chars that one can ignore ?
- *
  * @returns 1 if ignorable 0 if whitespace, -1 otherwise.
  */
 
@@ -2227,12 +2211,11 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 }
 
 /**
- * @param URI  URI for the dtd, or NULL
- * @param ExternalID  the external ID of the DTD, or NULL
- *
  * Creates a new HTML document without a DTD node if `URI` and `ExternalID`
  * are NULL
  *
+ * @param URI  URI for the dtd, or NULL
+ * @param ExternalID  the external ID of the DTD, or NULL
  * @returns a new document, do not initialize the DTD if not provided
  */
 htmlDocPtr
@@ -2279,11 +2262,10 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
 }
 
 /**
- * @param URI  URI for the dtd, or NULL
- * @param ExternalID  the external ID of the DTD, or NULL
- *
  * Creates a new HTML document
  *
+ * @param URI  URI for the dtd, or NULL
+ * @param ExternalID  the external ID of the DTD, or NULL
  * @returns a new document
  */
 htmlDocPtr
@@ -2311,12 +2293,11 @@ htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
  ************************************************************************/
 
 /**
- * @param ctxt  an HTML parser context
- * @param attr  whether this is an attribute name
- *
  * parse an HTML tag or attribute name, note that we convert it to lowercase
  * since HTML names are not case-sensitive.
  *
+ * @param ctxt  an HTML parser context
+ * @param attr  whether this is an attribute name
  * @returns the Tag Name parsed or NULL
  */
 
@@ -2547,14 +2528,13 @@ htmlFindEntityPrefix(const xmlChar *string, size_t slen, int isAttr,
 }
 
 /**
+ * Parse data until terminator is reached.
+ *
  * @param ctxt  an HTML parser context
  * @param mask  mask of terminating characters
  * @param comment  true if parsing a comment
  * @param refs  true if references are allowed
  * @param maxLength  maximum output length
- *
- * Parse data until terminator is reached.
- *
  * @returns the parsed string or NULL in case of errors.
  */
 
@@ -2860,11 +2840,10 @@ error:
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param str  location to store the entity name
- *
  * @deprecated Internal function, don't use.
  *
+ * @param ctxt  an HTML parser context
+ * @param str  location to store the entity name
  * @returns NULL.
  */
 const htmlEntityDesc *
@@ -2874,13 +2853,12 @@ htmlParseEntityRef(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * parse a value for an attribute
  * Note: the parser won't do substitution of entities here, this
  * will be handled later in xmlStringGetNodeList(), unless it was
  * asked for ctxt->replaceEntities != 0
  *
+ * @param ctxt  an HTML parser context
  * @returns the AttValue parsed or NULL.
  */
 
@@ -2968,11 +2946,10 @@ htmlCharDataSAXCallback(htmlParserCtxtPtr ctxt, const xmlChar *buf,
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param partial  true if the input buffer is incomplete
- *
  * Parse character data and references.
  *
+ * @param ctxt  an HTML parser context
+ * @param partial  true if the input buffer is incomplete
  * @returns 1 if all data was parsed, 0 otherwise.
  */
 
@@ -3358,10 +3335,10 @@ restart:
 }
 
 /**
+ * Parse an HTML comment
+ *
  * @param ctxt  an HTML parser context
  * @param bogus  true if this is a bogus comment
- *
- * Parse an HTML comment
  */
 static void
 htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
@@ -3398,10 +3375,9 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * @deprecated Internal function, don't use.
  *
+ * @param ctxt  an HTML parser context
  * @returns 0
  */
 int
@@ -3411,10 +3387,9 @@ htmlParseCharRef(htmlParserCtxtPtr ctxt ATTRIBUTE_UNUSED) {
 
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Parse a DOCTYPE SYTSTEM or PUBLIC literal.
  *
+ * @param ctxt  an HTML parser context
  * @returns the literal or NULL in case of error.
  */
 
@@ -3498,9 +3473,9 @@ htmlSkipBogusDoctype(htmlParserCtxtPtr ctxt) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Parse a DOCTYPE declaration.
+ *
+ * @param ctxt  an HTML parser context
  */
 
 static void
@@ -3571,9 +3546,6 @@ bogus:
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param value  a xmlChar ** used to store the value of the attribute
- *
  * parse an attribute
  *
  * [41] Attribute ::= Name Eq AttValue
@@ -3587,6 +3559,8 @@ bogus:
  * Also the case QName == xmlns:??? is handled independently as a namespace
  * definition.
  *
+ * @param ctxt  an HTML parser context
+ * @param value  a xmlChar ** used to store the value of the attribute
  * @returns the attribute name, and the value in *value.
  */
 
@@ -3615,13 +3589,13 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param attvalue  the attribute value
- *
  * Checks an http-equiv attribute from a Meta tag to detect
  * the encoding
  * If a new encoding is detected the parser is switched to decode
  * it and pass UTF8
+ *
+ * @param ctxt  an HTML parser context
+ * @param attvalue  the attribute value
  */
 static void
 htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
@@ -3650,10 +3624,10 @@ htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
 }
 
 /**
+ * Checks an attributes from a Meta tag
+ *
  * @param ctxt  an HTML parser context
  * @param atts  the attributes values
- *
- * Checks an attributes from a Meta tag
  */
 static void
 htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
@@ -3692,14 +3666,13 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
 }
 
 /**
+ * Inserts a new attribute into the hash table.
+ *
  * @param ctxt  parser context
  * @param size  size of the hash table
  * @param name  attribute name
  * @param hashValue  hash value of name
  * @param aindex  attribute index (this is a multiple of 5)
- *
- * Inserts a new attribute into the hash table.
- *
  * @returns INT_MAX if no existing attribute was found, the attribute
  * index if an attribute was found, -1 if a memory allocation failed.
  */
@@ -3733,8 +3706,6 @@ htmlAttrHashInsert(xmlParserCtxtPtr ctxt, unsigned size, const xmlChar *name,
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * parse a start of tag either for rule element or
  * EmptyElement. In both case we don't parse the tag closing chars.
  *
@@ -3748,6 +3719,7 @@ htmlAttrHashInsert(xmlParserCtxtPtr ctxt, unsigned size, const xmlChar *name,
  *
  * [NS 10] EmptyElement ::= '<' QName (S Attribute)* S? '/>'
  *
+ * @param ctxt  an HTML parser context
  * @returns 0 in case of success, -1 in case of error and 1 if discarded
  */
 
@@ -4004,8 +3976,6 @@ done:
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * parse an end of tag
  *
  * [42] ETag ::= '</' Name S? '>'
@@ -4014,6 +3984,7 @@ done:
  *
  * [NS 9] ETag ::= '</' QName S? '>'
  *
+ * @param ctxt  an HTML parser context
  * @returns 1 if the current level should be closed.
  */
 
@@ -4146,10 +4117,10 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Parse a content: comment, sub-element, reference or text.
  * New version for non recursive htmlParseElementInternal()
+ *
+ * @param ctxt  an HTML parser context
  */
 
 static void
@@ -4206,9 +4177,9 @@ htmlParseContent(htmlParserCtxtPtr ctxt) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Parse an HTML element, new version, non recursive
+ *
+ * @param ctxt  an HTML parser context
  */
 static int
 htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
@@ -4277,11 +4248,11 @@ htmlParseElementInternal(htmlParserCtxtPtr ctxt) {
 }
 
 /**
- * @param ctxt  an HTML parser context
+ * This is kept for compatibility with previous code versions
  *
  * @deprecated Internal function, don't use.
  *
- * This is kept for compatibility with previous code versions
+ * @param ctxt  an HTML parser context
  */
 void
 htmlParseElement(htmlParserCtxtPtr ctxt) {
@@ -4313,7 +4284,6 @@ htmlParseElement(htmlParserCtxtPtr ctxt) {
 /**
  * @param ctxt  parser context
  * @param input  parser input
- *
  * @returns a node list.
  */
 xmlNodePtr
@@ -4367,12 +4337,11 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Parse an HTML document and invoke the SAX handlers. This is useful
  * if you're only interested in custom SAX callbacks. If you want a
  * document tree, use htmlCtxtParseDocument().
  *
+ * @param ctxt  an HTML parser context
  * @returns 0, -1 in case of error.
  */
 int
@@ -4498,12 +4467,11 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
  ************************************************************************/
 
 /**
+ * Initialize a parser context
+ *
  * @param ctxt  an HTML parser context
  * @param sax  SAX handler
  * @param userData  user data
- *
- * Initialize a parser context
- *
  * @returns 0 in case of success and -1 in case of error
  */
 static int
@@ -4588,10 +4556,10 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Free all the memory used by a parser context. However the parsed
  * document in `ctxt->myDoc` is not freed.
+ *
+ * @param ctxt  an HTML parser context
  */
 void
 htmlFreeParserCtxt(htmlParserCtxtPtr ctxt)
@@ -4620,9 +4588,6 @@ htmlNewParserCtxt(void)
 }
 
 /**
- * @param sax  SAX handler
- * @param userData  user data
- *
  * Allocate and initialize a new HTML SAX parser context. If `userData`
  * is NULL, the parser context will be passed as user data.
  *
@@ -4633,6 +4598,8 @@ htmlNewParserCtxt(void)
  *
  * Also see htmlNewParserCtxt().
  *
+ * @param sax  SAX handler
+ * @param userData  user data
  * @returns the htmlParserCtxtPtr or NULL in case of allocation error
  */
 htmlParserCtxtPtr
@@ -4683,14 +4650,13 @@ htmlCreateMemoryParserCtxtInternal(const char *url,
 }
 
 /**
- * @param buffer  a pointer to a char array
- * @param size  the size of the array
- *
- * @deprecated Use htmlNewParserCtxt() and htmlCtxtReadMemory().
- *
  * Create a parser context for an HTML in-memory document. The input
  * buffer must not contain any terminating null bytes.
  *
+ * @deprecated Use htmlNewParserCtxt() and htmlCtxtReadMemory().
+ *
+ * @param buffer  a pointer to a char array
+ * @param size  the size of the array
  * @returns the new parser context or NULL
  */
 htmlParserCtxtPtr
@@ -4702,12 +4668,11 @@ htmlCreateMemoryParserCtxt(const char *buffer, int size) {
 }
 
 /**
+ * Create a parser context for a null-terminated string.
+ *
  * @param str  a pointer to an array of xmlChar
  * @param url  URL of the document (optional)
  * @param encoding  encoding (optional)
- *
- * Create a parser context for a null-terminated string.
- *
  * @returns the new parser context or NULL if a memory allocation failed.
  */
 static htmlParserCtxtPtr
@@ -4758,10 +4723,10 @@ typedef enum {
 } xmlLookupStates;
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Check whether there's enough data in the input buffer to finish parsing
  * a tag. This has to take quotes into account.
+ *
+ * @param ctxt  an HTML parser context
  */
 static int
 htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
@@ -4855,13 +4820,13 @@ htmlParseLookupGt(xmlParserCtxtPtr ctxt) {
 }
 
 /**
+ * Check whether the input buffer contains a string.
+ *
  * @param ctxt  an XML parser context
  * @param startDelta  delta to apply at the start
  * @param str  string
  * @param strLen  length of string
  * @param extraLen  extra length
- *
- * Check whether the input buffer contains a string.
  */
 static int
 htmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
@@ -4909,12 +4874,11 @@ htmlParseLookupString(xmlParserCtxtPtr ctxt, size_t startDelta,
 }
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Try to find a comment end tag in the input stream
  * The search includes "-->" as well as WHATWG-recommended
  * incorrectly-closed tags.
  *
+ * @param ctxt  an HTML parser context
  * @returns the index to the current parsing point if the full
  * sequence is available, -1 otherwise.
  */
@@ -4951,11 +4915,10 @@ htmlParseLookupCommentEnd(htmlParserCtxtPtr ctxt)
 
 
 /**
- * @param ctxt  an HTML parser context
- * @param terminate  last chunk indicator
- *
  * Try to progress on parsing
  *
+ * @param ctxt  an HTML parser context
+ * @param terminate  last chunk indicator
  * @returns zero if no parsing was possible
  */
 static void
@@ -5154,11 +5117,6 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param chunk  chunk of memory
- * @param size  size of chunk in bytes
- * @param terminate  last chunk indicator
- *
  * Parse a chunk of memory in push parser mode.
  *
  * Assumes that the parser context was initialized with
@@ -5171,6 +5129,10 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
  *
  * If the document isn't well-formed, `ctxt->myDoc` is set to NULL.
  *
+ * @param ctxt  an HTML parser context
+ * @param chunk  chunk of memory
+ * @param size  size of chunk in bytes
+ * @param terminate  last chunk indicator
  * @returns an xmlParserErrors code (0 on success).
  */
 int
@@ -5238,15 +5200,14 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
  ************************************************************************/
 
 /**
+ * Create a parser context for using the HTML parser in push mode.
+ *
  * @param sax  a SAX handler (optional)
  * @param user_data  The user data returned on SAX callbacks (optional)
  * @param chunk  a pointer to an array of chars (optional)
  * @param size  number of chars in the array
  * @param filename  only used for error reporting (optional)
  * @param enc  encoding (deprecated, pass XML_CHAR_ENCODING_NONE)
- *
- * Create a parser context for using the HTML parser in push mode.
- *
  * @returns the new parser context or NULL if a memory allocation
  * failed.
  */
@@ -5283,17 +5244,16 @@ htmlCreatePushParserCtxt(htmlSAXHandlerPtr sax, void *user_data,
 #endif /* LIBXML_PUSH_ENABLED */
 
 /**
- * @param cur  a pointer to an array of xmlChar
- * @param encoding  a free form C string describing the HTML document encoding, or NULL
- * @param sax  the SAX handler block
- * @param userData  if using SAX, this pointer will be provided on callbacks.
- *
- * @deprecated Use htmlNewSAXParserCtxt() and htmlCtxtReadDoc().
- *
  * Parse an HTML in-memory document. If sax is not NULL, use the SAX callbacks
  * to handle parse events. If sax is NULL, fallback to the default DOM
  * behavior and return a tree.
  *
+ * @deprecated Use htmlNewSAXParserCtxt() and htmlCtxtReadDoc().
+ *
+ * @param cur  a pointer to an array of xmlChar
+ * @param encoding  a free form C string describing the HTML document encoding, or NULL
+ * @param sax  the SAX handler block
+ * @param userData  if using SAX, this pointer will be provided on callbacks.
  * @returns the resulting document tree unless SAX is NULL or the document is
  *     not well formed.
  */
@@ -5324,15 +5284,14 @@ htmlSAXParseDoc(const xmlChar *cur, const char *encoding,
 }
 
 /**
- * @param cur  a pointer to an array of xmlChar
- * @param encoding  the encoding (optional)
+ * Parse an HTML in-memory document and build a tree.
  *
  * @deprecated Use htmlReadDoc().
  *
- * Parse an HTML in-memory document and build a tree.
- *
  * This function uses deprecated global parser options.
  *
+ * @param cur  a pointer to an array of xmlChar
+ * @param encoding  the encoding (optional)
  * @returns the resulting document tree
  */
 
@@ -5343,18 +5302,17 @@ htmlParseDoc(const xmlChar *cur, const char *encoding) {
 
 
 /**
- * @param filename  the filename
- * @param encoding  optional encoding
+ * Create a parser context to read from a file.
  *
  * @deprecated Use htmlNewParserCtxt() and htmlCtxtReadFile().
- *
- * Create a parser context to read from a file.
  *
  * A non-NULL encoding overrides encoding declarations in the document.
  *
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
  *
+ * @param filename  the filename
+ * @param encoding  optional encoding
  * @returns the new parser context or NULL if a memory allocation failed.
  */
 htmlParserCtxtPtr
@@ -5386,18 +5344,17 @@ htmlCreateFileParserCtxt(const char *filename, const char *encoding)
 }
 
 /**
- * @param filename  the filename
- * @param encoding  encoding (optional)
- * @param sax  the SAX handler block
- * @param userData  if using SAX, this pointer will be provided on callbacks.
- *
- * @deprecated Use htmlNewSAXParserCtxt() and htmlCtxtReadFile().
- *
  * parse an HTML file and build a tree. Automatic support for ZLIB/Compress
  * compressed document is provided by default if found at compile-time.
  * It use the given SAX function block to handle the parsing callback.
  * If sax is NULL, fallback to the default DOM tree building routines.
  *
+ * @deprecated Use htmlNewSAXParserCtxt() and htmlCtxtReadFile().
+ *
+ * @param filename  the filename
+ * @param encoding  encoding (optional)
+ * @param sax  the SAX handler block
+ * @param userData  if using SAX, this pointer will be provided on callbacks.
  * @returns the resulting document tree unless SAX is NULL or the document is
  *     not well formed.
  */
@@ -5430,11 +5387,10 @@ htmlSAXParseFile(const char *filename, const char *encoding, htmlSAXHandlerPtr s
 }
 
 /**
- * @param filename  the filename
- * @param encoding  encoding (optional)
- *
  * Parse an HTML file and build a tree.
  *
+ * @param filename  the filename
+ * @param encoding  encoding (optional)
  * @returns the resulting document tree
  */
 
@@ -5444,12 +5400,11 @@ htmlParseFile(const char *filename, const char *encoding) {
 }
 
 /**
- * @param val  int 0 or 1
+ * Set and return the previous value for handling HTML omitted tags.
  *
  * @deprecated Use HTML_PARSE_NOIMPLIED
  *
- * Set and return the previous value for handling HTML omitted tags.
- *
+ * @param val  int 0 or 1
  * @returns the last value for 0 for no handling, 1 for auto insertion.
  */
 
@@ -5462,11 +5417,10 @@ htmlHandleOmittedElem(int val) {
 }
 
 /**
- * @param parent  HTML parent element
- * @param elt  HTML element
- *
  * @deprecated Don't use.
  *
+ * @param parent  HTML parent element
+ * @param elt  HTML element
  * @returns 1
  */
 int
@@ -5476,11 +5430,10 @@ htmlElementAllowedHere(const htmlElemDesc* parent ATTRIBUTE_UNUSED,
 }
 
 /**
- * @param parent  HTML parent element
- * @param elt  HTML element
- *
  * @deprecated Don't use.
  *
+ * @param parent  HTML parent element
+ * @param elt  HTML element
  * @returns HTML_VALID
  */
 htmlStatus
@@ -5490,12 +5443,11 @@ htmlElementStatusHere(const htmlElemDesc* parent ATTRIBUTE_UNUSED,
 }
 
 /**
+ * @deprecated Don't use.
+ *
  * @param elt  HTML element
  * @param attr  HTML attribute
  * @param legacy  whether to allow deprecated attributes
- *
- * @deprecated Don't use.
- *
  * @returns HTML_VALID
  */
 htmlStatus
@@ -5506,12 +5458,11 @@ htmlAttrAllowed(const htmlElemDesc* elt ATTRIBUTE_UNUSED,
 }
 
 /**
+ * @deprecated Don't use.
+ *
  * @param node  an htmlNodePtr in a tree
  * @param legacy  whether to allow deprecated elements (YES is faster here
  *	for Element nodes)
- *
- * @deprecated Don't use.
- *
  * @returns HTML_VALID
  */
 htmlStatus
@@ -5526,10 +5477,10 @@ htmlNodeStatus(htmlNodePtr node ATTRIBUTE_UNUSED,
  *									*
  ************************************************************************/
 /**
- * @param str  a string
- *
  * Free a string if it is not owned by the "dict" dictionary in the
  * current scope
+ *
+ * @param str  a string
  */
 #define DICT_FREE(str)						\
 	if ((str) && ((!dict) ||				\
@@ -5537,9 +5488,9 @@ htmlNodeStatus(htmlNodePtr node ATTRIBUTE_UNUSED,
 	    xmlFree((char *)(str));
 
 /**
- * @param ctxt  an HTML parser context
- *
  * Reset a parser context
+ *
+ * @param ctxt  an HTML parser context
  */
 void
 htmlCtxtReset(htmlParserCtxtPtr ctxt)
@@ -5686,9 +5637,6 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param options  a bitmask of htmlParserOption values
- *
  * Applies the options to the parser context. Unset options are
  * cleared.
  *
@@ -5696,6 +5644,8 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *
  * With older versions, you can use htmlCtxtUseOptions().
  *
+ * @param ctxt  an HTML parser context
+ * @param options  a bitmask of htmlParserOption values
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
  */
@@ -5706,13 +5656,10 @@ htmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param options  a combination of htmlParserOption values
- *
- * @deprecated Use htmlCtxtSetOptions().
- *
  * Applies the options to the parser context. The following options
  * are never cleared and can only be enabled:
+ *
+ * @deprecated Use htmlCtxtSetOptions().
  *
  * - HTML_PARSE_NODEFDTD
  * - HTML_PARSE_NOERROR
@@ -5723,6 +5670,8 @@ htmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
  * - HTML_PARSE_IGNORE_ENC
  * - HTML_PARSE_BIG_LINES
  *
+ * @param ctxt  an HTML parser context
+ * @param options  a combination of htmlParserOption values
  * @returns 0 in case of success, the set of unknown or unimplemented options
  *         in case of error.
  */
@@ -5747,13 +5696,12 @@ htmlCtxtUseOptions(htmlParserCtxtPtr ctxt, int options)
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param input  parser input
- *
  * Parse an HTML document and return the resulting document tree.
  *
  * @since 2.13.0
  *
+ * @param ctxt  an HTML parser context
+ * @param input  parser input
  * @returns the resulting document tree or NULL
  */
 htmlDocPtr
@@ -5789,16 +5737,15 @@ htmlCtxtParseDocument(htmlParserCtxtPtr ctxt, xmlParserInputPtr input)
 }
 
 /**
- * @param str  a pointer to a zero terminated string
- * @param url  only used for error reporting (optoinal)
- * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOption values
- *
  * Convenience function to parse an HTML document from a zero-terminated
  * string.
  *
  * See htmlCtxtReadDoc() for details.
  *
+ * @param str  a pointer to a zero terminated string
+ * @param url  only used for error reporting (optoinal)
+ * @param encoding  the document encoding (optional)
+ * @param options  a combination of htmlParserOption values
  * @returns the resulting document tree.
  */
 htmlDocPtr
@@ -5826,15 +5773,14 @@ htmlReadDoc(const xmlChar *str, const char *url, const char *encoding,
 }
 
 /**
- * @param filename  a file or URL
- * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOption values
- *
  * Convenience function to parse an HTML file from the filesystem,
  * the network or a global user-defined resource loader.
  *
  * See htmlCtxtReadFile() for details.
  *
+ * @param filename  a file or URL
+ * @param encoding  the document encoding (optional)
+ * @param options  a combination of htmlParserOption values
  * @returns the resulting document tree.
  */
 htmlDocPtr
@@ -5860,17 +5806,16 @@ htmlReadFile(const char *filename, const char *encoding, int options)
 }
 
 /**
- * @param buffer  a pointer to a char array
- * @param size  the size of the array
- * @param url  only used for error reporting (optional)
- * @param encoding  the document encoding, or NULL
- * @param options  a combination of htmlParserOption values
- *
  * Convenience function to parse an HTML document from memory.
  * The input buffer must not contain any terminating null bytes.
  *
  * See htmlCtxtReadMemory() for details.
  *
+ * @param buffer  a pointer to a char array
+ * @param size  the size of the array
+ * @param url  only used for error reporting (optional)
+ * @param encoding  the document encoding, or NULL
+ * @param options  a combination of htmlParserOption values
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -5901,11 +5846,6 @@ htmlReadMemory(const char *buffer, int size, const char *url,
 }
 
 /**
- * @param fd  an open file descriptor
- * @param url  only used for error reporting (optional)
- * @param encoding  the document encoding, or NULL
- * @param options  a combination of htmlParserOption values
- *
  * Convenience function to parse an HTML document from a
  * file descriptor.
  *
@@ -5914,6 +5854,10 @@ htmlReadMemory(const char *buffer, int size, const char *url,
  *
  * See htmlCtxtReadFd() for details.
  *
+ * @param fd  an open file descriptor
+ * @param url  only used for error reporting (optional)
+ * @param encoding  the document encoding, or NULL
+ * @param options  a combination of htmlParserOption values
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -5939,18 +5883,17 @@ htmlReadFd(int fd, const char *url, const char *encoding, int options)
 }
 
 /**
+ * Convenience function to parse an HTML document from I/O functions
+ * and context.
+ *
+ * See htmlCtxtReadIO() for details.
+ *
  * @param ioread  an I/O read function
  * @param ioclose  an I/O close function (optional)
  * @param ioctx  an I/O handler
  * @param url  only used for error reporting (optional)
  * @param encoding  the document encoding (optional)
  * @param options  a combination of htmlParserOption values
- *
- * Convenience function to parse an HTML document from I/O functions
- * and context.
- *
- * See htmlCtxtReadIO() for details.
- *
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -5978,16 +5921,15 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 }
 
 /**
+ * Parse an HTML in-memory document and build a tree.
+ *
+ * See htmlCtxtUseOptions() for details.
+ *
  * @param ctxt  an HTML parser context
  * @param str  a pointer to a zero terminated string
  * @param URL  only used for error reporting (optional)
  * @param encoding  the document encoding (optional)
  * @param options  a combination of htmlParserOption values
- *
- * Parse an HTML in-memory document and build a tree.
- *
- * See htmlCtxtUseOptions() for details.
- *
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -6011,16 +5953,15 @@ htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param filename  a file or URL
- * @param encoding  the document encoding (optional)
- * @param options  a combination of htmlParserOption values
- *
  * Parse an HTML file from the filesystem, the network or a
  * user-defined resource loader.
  *
  * See htmlCtxtUseOptions() for details.
  *
+ * @param ctxt  an HTML parser context
+ * @param filename  a file or URL
+ * @param encoding  the document encoding (optional)
+ * @param options  a combination of htmlParserOption values
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -6043,18 +5984,17 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
 }
 
 /**
+ * Parse an HTML in-memory document and build a tree. The input buffer must
+ * not contain any terminating null bytes.
+ *
+ * See htmlCtxtUseOptions() for details.
+ *
  * @param ctxt  an HTML parser context
  * @param buffer  a pointer to a char array
  * @param size  the size of the array
  * @param URL  only used for error reporting (optional)
  * @param encoding  the document encoding (optinal)
  * @param options  a combination of htmlParserOption values
- *
- * Parse an HTML in-memory document and build a tree. The input buffer must
- * not contain any terminating null bytes.
- *
- * See htmlCtxtUseOptions() for details.
- *
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -6078,12 +6018,6 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
 }
 
 /**
- * @param ctxt  an HTML parser context
- * @param fd  an open file descriptor
- * @param URL  only used for error reporting (optional)
- * @param encoding  the document encoding (optinal)
- * @param options  a combination of htmlParserOption values
- *
  * Parse an HTML from a file descriptor and build a tree.
  *
  * See htmlCtxtUseOptions() for details.
@@ -6091,6 +6025,11 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
  * NOTE that the file descriptor will not be closed when the
  * context is freed or reset.
  *
+ * @param ctxt  an HTML parser context
+ * @param fd  an open file descriptor
+ * @param URL  only used for error reporting (optional)
+ * @param encoding  the document encoding (optinal)
+ * @param options  a combination of htmlParserOption values
  * @returns the resulting document tree
  */
 htmlDocPtr
@@ -6113,6 +6052,10 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
 }
 
 /**
+ * Parse an HTML document from I/O functions and source and build a tree.
+ *
+ * See htmlCtxtUseOptions() for details.
+ *
  * @param ctxt  an HTML parser context
  * @param ioread  an I/O read function
  * @param ioclose  an I/O close function
@@ -6120,11 +6063,6 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of htmlParserOption values
- *
- * Parse an HTML document from I/O functions and source and build a tree.
- *
- * See htmlCtxtUseOptions() for details.
- *
  * @returns the resulting document tree
  */
 htmlDocPtr

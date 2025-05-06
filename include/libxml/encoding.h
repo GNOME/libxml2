@@ -121,16 +121,15 @@ typedef enum {
 } xmlCharEncFlags;
 
 /**
- * @param out  a pointer to an array of bytes to store the UTF-8 result
- * @param outlen  the length of `out`
- * @param in  a pointer to an array of chars in the original encoding
- * @param inlen  the length of `in`
- *
  * Convert characters to UTF-8.
  *
  * On success, the value of `inlen` after return is the number of
  * bytes consumed and `outlen` is the number of bytes produced.
  *
+ * @param out  a pointer to an array of bytes to store the UTF-8 result
+ * @param outlen  the length of `out`
+ * @param in  a pointer to an array of chars in the original encoding
+ * @param inlen  the length of `in`
  * @returns the number of bytes written or an xmlCharEncError code.
  */
 typedef int (*xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
@@ -138,16 +137,15 @@ typedef int (*xmlCharEncodingInputFunc)(unsigned char *out, int *outlen,
 
 
 /**
- * @param out  a pointer to an array of bytes to store the result
- * @param outlen  the length of `out`
- * @param in  a pointer to an array of UTF-8 chars
- * @param inlen  the length of `in`
- *
  * Convert characters from UTF-8.
  *
  * On success, the value of `inlen` after return is the number of
  * bytes consumed and `outlen` is the number of bytes produced.
  *
+ * @param out  a pointer to an array of bytes to store the result
+ * @param outlen  the length of `out`
+ * @param in  a pointer to an array of UTF-8 chars
+ * @param inlen  the length of `in`
  * @returns the number of bytes written or an xmlCharEncError code.
  */
 typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
@@ -155,13 +153,6 @@ typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
 
 
 /**
- * @param vctxt  conversion context
- * @param out  a pointer to an array of bytes to store the result
- * @param outlen  the length of `out`
- * @param in  a pointer to an array of input bytes
- * @param inlen  the length of `in`
- * @param flush  end of input
- *
  * Convert between character encodings.
  *
  * The value of `inlen` after return is the number of bytes consumed
@@ -171,6 +162,12 @@ typedef int (*xmlCharEncodingOutputFunc)(unsigned char *out, int *outlen,
  * `flush` flag can be used to detect truncated sequences at EOF.
  * Otherwise, the flag can be ignored.
  *
+ * @param vctxt  conversion context
+ * @param out  a pointer to an array of bytes to store the result
+ * @param outlen  the length of `out`
+ * @param in  a pointer to an array of input bytes
+ * @param inlen  the length of `in`
+ * @param flush  end of input
  * @returns an xmlCharEncError code.
  */
 typedef xmlCharEncError
@@ -178,9 +175,9 @@ typedef xmlCharEncError
                       const unsigned char *in, int *inlen, int flush);
 
 /**
- * @param vctxt  conversion context
- *
  * Free a conversion context.
+ *
+ * @param vctxt  conversion context
  */
 typedef void
 (*xmlCharEncConvCtxtDtor)(void *vctxt);
@@ -209,17 +206,16 @@ struct _xmlCharEncodingHandler {
 };
 
 /**
- * @param vctxt  user data
- * @param name  encoding name
- * @param flags  bit mask of flags
- * @param out  pointer to resulting handler
- *
  * If this function returns XML_ERR_OK, it must fill the `out`
  * pointer with an encoding handler. The handler can be obtained
  * from xmlCharEncNewCustomHandler().
  *
  * `flags` can contain XML_ENC_INPUT, XML_ENC_OUTPUT or both.
  *
+ * @param vctxt  user data
+ * @param name  encoding name
+ * @param flags  bit mask of flags
+ * @param out  pointer to resulting handler
  * @returns an xmlParserErrors code.
  */
 typedef xmlParserErrors

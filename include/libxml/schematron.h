@@ -42,20 +42,22 @@ typedef struct _xmlSchematron xmlSchematron;
 typedef xmlSchematron *xmlSchematronPtr;
 
 /**
- * @param ctx  the validation context
- * @param msg  the message
+ * Signature of an error callback from a Schematron validation
+ *
  * @...: extra arguments
  *
- * Signature of an error callback from a Schematron validation
+ * @param ctx  the validation context
+ * @param msg  the message
  */
 typedef void (*xmlSchematronValidityErrorFunc) (void *ctx, const char *msg, ...);
 
 /**
- * @param ctx  the validation context
- * @param msg  the message
+ * Signature of a warning callback from a Schematron validation
+ *
  * @...: extra arguments
  *
- * Signature of a warning callback from a Schematron validation
+ * @param ctx  the validation context
+ * @param msg  the message
  */
 typedef void (*xmlSchematronValidityWarningFunc) (void *ctx, const char *msg, ...);
 

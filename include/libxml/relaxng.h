@@ -30,22 +30,24 @@ typedef xmlRelaxNG *xmlRelaxNGPtr;
 
 
 /**
- * @param ctx  the validation context
- * @param msg  the message
+ * Signature of an error callback from a Relax-NG validation
+ *
  * @...: extra arguments
  *
- * Signature of an error callback from a Relax-NG validation
+ * @param ctx  the validation context
+ * @param msg  the message
  */
 typedef void (*xmlRelaxNGValidityErrorFunc) (void *ctx,
 						      const char *msg,
 						      ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
- * @param ctx  the validation context
- * @param msg  the message
+ * Signature of a warning callback from a Relax-NG validation
+ *
  * @...: extra arguments
  *
- * Signature of a warning callback from a Relax-NG validation
+ * @param ctx  the validation context
+ * @param msg  the message
  */
 typedef void (*xmlRelaxNGValidityWarningFunc) (void *ctx,
 							const char *msg,

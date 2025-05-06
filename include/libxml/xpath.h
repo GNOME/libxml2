@@ -183,12 +183,12 @@ struct _xmlXPathAxis {
 };
 
 /**
- * @param ctxt  the XPath interprestation context
- * @param nargs  the number of arguments
- *
  * An XPath function.
  * The arguments (if any) are popped out from the context stack
  * and the result is pushed on the stack.
+ *
+ * @param ctxt  the XPath interprestation context
+ * @param nargs  the number of arguments
  */
 
 typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
@@ -198,13 +198,12 @@ typedef void (*xmlXPathFunction) (xmlXPathParserContextPtr ctxt, int nargs);
  */
 
 /**
- * @param ctxt  an XPath context
- * @param name  name of the variable
- * @param ns_uri  the namespace name hosting this variable
- *
  * Prototype for callbacks used to plug variable lookup in the XPath
  * engine.
  *
+ * @param ctxt  an XPath context
+ * @param name  name of the variable
+ * @param ns_uri  the namespace name hosting this variable
  * @returns the XPath object value or NULL if not found.
  */
 typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
@@ -212,13 +211,12 @@ typedef xmlXPathObjectPtr (*xmlXPathVariableLookupFunc) (void *ctxt,
                                          const xmlChar *ns_uri);
 
 /**
- * @param ctxt  an XPath context
- * @param name  name of the function
- * @param ns_uri  the namespace name hosting this function
- *
  * Prototype for callbacks used to plug function lookup in the XPath
  * engine.
  *
+ * @param ctxt  an XPath context
+ * @param name  name of the function
+ * @param ns_uri  the namespace name hosting this function
  * @returns the XPath function or NULL if not found.
  */
 typedef xmlXPathFunction (*xmlXPathFuncLookupFunc) (void *ctxt,
@@ -414,19 +412,17 @@ XMLPUBVAR double xmlXPathNINF;
 
 /* These macros may later turn into functions */
 /**
- * @param ns  a node-set
- *
  * Implement a functionality similar to the DOM NodeList.length.
  *
+ * @param ns  a node-set
  * @returns the number of nodes in the node-set.
  */
 #define xmlXPathNodeSetGetLength(ns) ((ns) ? (ns)->nodeNr : 0)
 /**
- * @param ns  a node-set
- * @param index  index of a node in the set
- *
  * Implements a functionality similar to the DOM NodeList.item().
  *
+ * @param ns  a node-set
+ * @param index  index of a node in the set
  * @returns the xmlNodePtr at the given `index` in `ns` or NULL if
  *         `index` is out of range (0 to length-1)
  */
@@ -436,10 +432,9 @@ XMLPUBVAR double xmlXPathNINF;
 		 (ns)->nodeTab[(index)]				\
 		 : NULL)
 /**
- * @param ns  a node-set
- *
  * Checks whether `ns` is empty or not.
  *
+ * @param ns  a node-set
  * @returns %TRUE if `ns` is an empty node-set.
  */
 #define xmlXPathNodeSetIsEmpty(ns)                                      \

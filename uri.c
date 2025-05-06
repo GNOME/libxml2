@@ -212,13 +212,12 @@ xmlIsUnreserved(xmlURIPtr uri, const char *cur) {
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  pointer to the string to analyze
- *
  * Parse an URI scheme
  *
  * ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
  *
+ * @param uri  pointer to an URI structure
+ * @param str  pointer to the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -251,9 +250,6 @@ xmlParse3986Scheme(xmlURIPtr uri, const char **str) {
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  pointer to the string to analyze
- *
  * Parse the query part of an URI
  *
  * fragment      = *( pchar / "/" / "?" )
@@ -262,6 +258,8 @@ xmlParse3986Scheme(xmlURIPtr uri, const char **str) {
  *       xpointer scheme selection, so we are allowing it here to not break
  *       for example all the DocBook processing chains.
  *
+ * @param uri  pointer to an URI structure
+ * @param str  pointer to the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -289,13 +287,12 @@ xmlParse3986Fragment(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  pointer to the string to analyze
- *
  * Parse the query part of an URI
  *
  * query = *uric
  *
+ * @param uri  pointer to an URI structure
+ * @param str  pointer to the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -331,14 +328,13 @@ xmlParse3986Query(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse a port part and fills in the appropriate fields
  * of the `uri` structure
  *
  * port          = *DIGIT
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -369,14 +365,13 @@ xmlParse3986Port(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an user information part and fills in the appropriate fields
  * of the `uri` structure
  *
  * userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -405,8 +400,6 @@ xmlParse3986Userinfo(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param str  the string to analyze
- *
  *    dec-octet     = DIGIT                 ; 0-9
  *                  / %x31-39 DIGIT         ; 10-99
  *                  / "1" 2DIGIT            ; 100-199
@@ -415,6 +408,7 @@ xmlParse3986Userinfo(xmlURIPtr uri, const char **str)
  *
  * Skip a dec-octet.
  *
+ * @param str  the string to analyze
  * @returns 0 if found and skipped, 1 otherwise
  */
 static int
@@ -441,9 +435,6 @@ xmlParse3986DecOctet(const char **str) {
     return(0);
 }
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an host part and fills in the appropriate fields
  * of the `uri` structure
  *
@@ -452,6 +443,8 @@ xmlParse3986DecOctet(const char **str) {
  * IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
  * reg-name      = *( unreserved / pct-encoded / sub-delims )
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -522,14 +515,13 @@ found:
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an authority part and fills in the appropriate fields
  * of the `uri` structure
  *
  * authority     = [ userinfo "@" ] host [ ":" port ]
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -561,11 +553,6 @@ xmlParse3986Authority(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  the URI
- * @param str  the string to analyze
- * @param forbid  an optional forbidden character
- * @param empty  allow an empty segment
- *
  * Parse a segment and fills in the appropriate fields
  * of the `uri` structure
  *
@@ -574,6 +561,10 @@ xmlParse3986Authority(xmlURIPtr uri, const char **str)
  * segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" )
  *               ; non-zero-length segment without any colon ":"
  *
+ * @param uri  the URI
+ * @param str  the string to analyze
+ * @param forbid  an optional forbidden character
+ * @param empty  allow an empty segment
  * @returns 0 or the error code
  */
 static int
@@ -604,14 +595,13 @@ xmlParse3986Segment(xmlURIPtr uri, const char **str, char forbid, int empty)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an path absolute or empty and fills in the appropriate fields
  * of the `uri` structure
  *
  * path-abempty  = *( "/" segment )
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -645,14 +635,13 @@ xmlParse3986PathAbEmpty(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an path absolute and fills in the appropriate fields
  * of the `uri` structure
  *
  * path-absolute = "/" [ segment-nz *( "/" segment ) ]
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -692,14 +681,13 @@ xmlParse3986PathAbsolute(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an path without root and fills in the appropriate fields
  * of the `uri` structure
  *
  * path-rootless = segment-nz *( "/" segment )
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -735,14 +723,13 @@ xmlParse3986PathRootless(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an path which is not a scheme and fills in the appropriate fields
  * of the `uri` structure
  *
  * path-noscheme = segment-nz-nc *( "/" segment )
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -778,9 +765,6 @@ xmlParse3986PathNoScheme(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an hierarchical part and fills in the appropriate fields
  * of the `uri` structure
  *
@@ -789,6 +773,8 @@ xmlParse3986PathNoScheme(xmlURIPtr uri, const char **str)
  *                / path-rootless
  *                / path-empty
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -830,9 +816,6 @@ xmlParse3986HierPart(xmlURIPtr uri, const char **str)
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an URI string and fills in the appropriate fields
  * of the `uri` structure
  *
@@ -842,6 +825,8 @@ xmlParse3986HierPart(xmlURIPtr uri, const char **str)
  *               / path-noscheme
  *               / path-empty
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -887,14 +872,13 @@ xmlParse3986RelativeRef(xmlURIPtr uri, const char *str) {
 
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an URI string and fills in the appropriate fields
  * of the `uri` structure
  *
  * scheme ":" hier-part [ "?" query ] [ "\#" fragment ]
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -927,14 +911,13 @@ xmlParse3986URI(xmlURIPtr uri, const char *str) {
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an URI reference string and fills in the appropriate fields
  * of the `uri` structure
  *
  * URI-reference = URI / relative-ref
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 static int
@@ -964,15 +947,14 @@ xmlParse3986URIReference(xmlURIPtr uri, const char *str) {
 }
 
 /**
- * @param str  the URI string to analyze
- * @param uriOut  optional pointer to parsed URI
- *
  * Parse an URI based on RFC 3986
  *
  * URI-reference = [ absoluteURI | relativeURI ] [ "\#" fragment ]
  *
  * @since 2.13.0
  *
+ * @param str  the URI string to analyze
+ * @param uriOut  optional pointer to parsed URI
  * @returns 0 on success, an error code (typically 1) if the URI is invalid
  * or -1 if a memory allocation failed.
  */
@@ -1002,12 +984,11 @@ xmlParseURISafe(const char *str, xmlURIPtr *uriOut) {
 }
 
 /**
- * @param str  the URI string to analyze
- *
  * Parse an URI based on RFC 3986
  *
  * URI-reference = [ absoluteURI | relativeURI ] [ "\#" fragment ]
  *
+ * @param str  the URI string to analyze
  * @returns a newly built xmlURIPtr or NULL in case of error
  */
 xmlURIPtr
@@ -1018,14 +999,13 @@ xmlParseURI(const char *str) {
 }
 
 /**
- * @param uri  pointer to an URI structure
- * @param str  the string to analyze
- *
  * Parse an URI reference string based on RFC 3986 and fills in the
  * appropriate fields of the `uri` structure
  *
  * URI-reference = URI / relative-ref
  *
+ * @param uri  pointer to an URI structure
+ * @param str  the string to analyze
  * @returns 0 or the error code
  */
 int
@@ -1034,13 +1014,12 @@ xmlParseURIReference(xmlURIPtr uri, const char *str) {
 }
 
 /**
- * @param str  the URI string to analyze
- * @param raw  if 1 unescaping of URI pieces are disabled
- *
  * Parse an URI but allows to keep intact the original fragments.
  *
  * URI-reference = URI / relative-ref
  *
+ * @param str  the URI string to analyze
+ * @param raw  if 1 unescaping of URI pieces are disabled
  * @returns a newly built xmlURIPtr or NULL in case of error
  */
 xmlURIPtr
@@ -1107,10 +1086,9 @@ xmlSaveUriRealloc(xmlChar *ret, int *max) {
 }
 
 /**
- * @param uri  pointer to an xmlURI
- *
  * Save the URI as an escaped string
  *
+ * @param uri  pointer to an xmlURI
  * @returns a new string (to be deallocated by caller)
  */
 xmlChar *
@@ -1380,10 +1358,10 @@ mem_error:
 }
 
 /**
+ * Prints the URI in the stream `stream`.
+ *
  * @param stream  a FILE* for the output
  * @param uri  pointer to an xmlURI
- *
- * Prints the URI in the stream `stream`.
  */
 void
 xmlPrintURI(FILE *stream, xmlURIPtr uri) {
@@ -1397,9 +1375,9 @@ xmlPrintURI(FILE *stream, xmlURIPtr uri) {
 }
 
 /**
- * @param uri  pointer to an xmlURI
- *
  * Make sure the xmlURI struct is free of content
+ *
+ * @param uri  pointer to an xmlURI
  */
 static void
 xmlCleanURI(xmlURIPtr uri) {
@@ -1426,9 +1404,9 @@ xmlCleanURI(xmlURIPtr uri) {
 }
 
 /**
- * @param uri  pointer to an xmlURI
- *
  * Free up the xmlURI struct
+ *
+ * @param uri  pointer to an xmlURI
  */
 void
 xmlFreeURI(xmlURIPtr uri) {
@@ -1468,11 +1446,10 @@ xmlIsPathSeparator(int c, int isFile) {
 }
 
 /**
- * @param path  pointer to the path string
- * @param isFile  true for filesystem paths, false for URIs
- *
  * Normalize a filesystem path or URI.
  *
+ * @param path  pointer to the path string
+ * @param isFile  true for filesystem paths, false for URIs
  * @returns 0 or an error code
  */
 static int
@@ -1566,13 +1543,12 @@ xmlNormalizePath(char *path, int isFile) {
 }
 
 /**
- * @param path  pointer to the path string
- *
  * Applies the 5 normalization steps to a path string--that is, RFC 2396
  * Section 5.2, steps 6.c through 6.g.
  *
  * Normalization occurs directly on the string, no new allocation is done
  *
+ * @param path  pointer to the path string
  * @returns 0 or an error code
  */
 int
@@ -1589,15 +1565,14 @@ static int is_hex(char c) {
 }
 
 /**
- * @param str  the string to unescape
- * @param len  the length in bytes to unescape (or <= 0 to indicate full string)
- * @param target  optional destination buffer
- *
  * Unescaping routine, but does not check that the string is an URI. The
  * output is a direct unsigned char translation of %XX values (no encoding)
  * Note that the length of the result can only be smaller or same size as
  * the input string.
  *
+ * @param str  the string to unescape
+ * @param len  the length in bytes to unescape (or <= 0 to indicate full string)
+ * @param target  optional destination buffer
  * @returns a copy of the string, but unescaped, will return NULL only in case
  * of error
  */
@@ -1650,13 +1625,12 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
 }
 
 /**
- * @param str  string to escape
- * @param list  exception list string of chars not to escape
- *
  * This routine escapes a string to hex, ignoring unreserved characters
  * a-z, A-Z, 0-9, "-._~", a few sub-delims "!*'()", the gen-delim "@"
  * (why?) and the characters in the exception list.
  *
+ * @param str  string to escape
+ * @param list  exception list string of chars not to escape
  * @returns a new escaped string or NULL in case of error.
  */
 xmlChar *
@@ -1722,18 +1696,16 @@ xmlURIEscapeStr(const xmlChar *str, const xmlChar *list) {
 }
 
 /**
- * @param str  the string of the URI to escape
- *
  * Escaping routine, does not do validity checks !
  * It will try to escape the chars needing this, but this is heuristic
  * based it's impossible to be sure.
- *
- * @returns an copy of the string, but escaped
  *
  * 25 May 2001
  * Uses xmlParseURI() and xmlURIEscapeStr() to try to escape correctly
  * according to RFC2396.
  *   - Carl Douglas
+ * @param str  the string of the URI to escape
+ * @returns an copy of the string, but escaped
  */
 xmlChar *
 xmlURIEscape(const xmlChar * str)
@@ -1877,12 +1849,11 @@ xmlIsAbsolutePath(const xmlChar *path) {
 }
 
 /**
+ * Resolves a filesystem path from a base path.
+ *
  * @param escRef  the filesystem path
  * @param base  the base value
  * @param out  pointer to result URI
- *
- * Resolves a filesystem path from a base path.
- *
  * @returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.
  */
@@ -1980,10 +1951,6 @@ err_memory:
 }
 
 /**
- * @param URI  the URI instance found in the document
- * @param base  the base value
- * @param valPtr  pointer to result URI
- *
  * Computes he final URI of the reference done by checking that
  * the given URI is valid, and building the final URI using the
  * base URI. This is processed according to section 5.2 of the
@@ -1993,6 +1960,9 @@ err_memory:
  *
  * @since 2.13.0
  *
+ * @param URI  the URI instance found in the document
+ * @param base  the base value
+ * @param valPtr  pointer to result URI
  * @returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.
  */
@@ -2348,9 +2318,6 @@ done:
 }
 
 /**
- * @param URI  the URI instance found in the document
- * @param base  the base value
- *
  * Computes he final URI of the reference done by checking that
  * the given URI is valid, and building the final URI using the
  * base URI. This is processed according to section 5.2 of the
@@ -2358,6 +2325,8 @@ done:
  *
  * 5.2. Resolving Relative References to Absolute Form
  *
+ * @param URI  the URI instance found in the document
+ * @param base  the base value
  * @returns a new URI string (to be freed by the caller) or NULL in case
  *         of error.
  */
@@ -2493,10 +2462,6 @@ done:
 }
 
 /**
- * @param URI  the URI reference under consideration
- * @param base  the base value
- * @param valPtr  pointer to result URI
- *
  * Expresses the URI of the reference in terms relative to the
  * base. Some examples of this operation include:
  *
@@ -2514,6 +2479,9 @@ done:
  *
  * @since 2.13.0
  *
+ * @param URI  the URI reference under consideration
+ * @param base  the base value
+ * @param valPtr  pointer to result URI
  * @returns 0 on success, -1 if a memory allocation failed or an error
  * code if URI or base are invalid.
  */
@@ -2753,8 +2721,6 @@ xmlBuildRelativeURI(const xmlChar * URI, const xmlChar * base)
 }
 
 /**
- * @param path  the resource locator in a filesystem notation
- *
  * Prepares a path.
  *
  * If the path contains the substring "://", it is considered a
@@ -2768,6 +2734,7 @@ xmlBuildRelativeURI(const xmlChar * URI, const xmlChar * base)
  * by the returned string. If there is insufficient memory available, or the
  * argument is NULL, the function returns NULL.
  *
+ * @param path  the resource locator in a filesystem notation
  * @returns the escaped path.
  */
 xmlChar *
@@ -2796,10 +2763,9 @@ xmlCanonicPath(const xmlChar *path)
 }
 
 /**
- * @param path  the resource locator in a filesystem notation
- *
  * Constructs an URI expressing the existing path
  *
+ * @param path  the resource locator in a filesystem notation
  * @returns a new URI, or a duplicate of the path parameter if the
  * construction fails. The caller is responsible for freeing the memory
  * occupied by the returned string. If there is insufficient memory available,

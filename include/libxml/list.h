@@ -27,26 +27,24 @@ typedef struct _xmlList xmlList;
 typedef xmlList *xmlListPtr;
 
 /**
- * @param lk  the data to deallocate
- *
  * Callback function used to free data from a list.
+ *
+ * @param lk  the data to deallocate
  */
 typedef void (*xmlListDeallocator) (xmlLinkPtr lk);
 /**
- * @param data0  the first data
- * @param data1  the second data
- *
  * Callback function used to compare 2 data.
  *
+ * @param data0  the first data
+ * @param data1  the second data
  * @returns 0 is equality, -1 or 1 otherwise depending on the ordering.
  */
 typedef int  (*xmlListDataCompare) (const void *data0, const void *data1);
 /**
- * @param data  the data found in the list
- * @param user  extra user provided data to the walker
- *
  * Callback function used when walking a list with xmlListWalk().
  *
+ * @param data  the data found in the list
+ * @param user  extra user provided data to the walker
  * @returns 0 to stop walking the list, 1 otherwise.
  */
 typedef int (*xmlListWalker) (const void *data, void *user);

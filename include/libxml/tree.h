@@ -675,13 +675,12 @@ typedef struct _xmlDOMWrapCtxt xmlDOMWrapCtxt;
 typedef xmlDOMWrapCtxt *xmlDOMWrapCtxtPtr;
 
 /**
+ * A function called to acquire namespaces (xmlNs) from the wrapper.
+ *
  * @param ctxt  a DOM wrapper context
  * @param node  the context node (element or attribute)
  * @param nsName  the requested namespace name
  * @param nsPrefix  the requested namespace prefix
- *
- * A function called to acquire namespaces (xmlNs) from the wrapper.
- *
  * @returns an xmlNsPtr or NULL in case of an error.
  */
 typedef xmlNsPtr (*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxtPtr ctxt,
@@ -711,16 +710,16 @@ struct _xmlDOMWrapCtxt {
 };
 
 /**
- * @param node  the current node
- *
  * Signature for the registration callback of a created node
+ *
+ * @param node  the current node
  */
 typedef void (*xmlRegisterNodeFunc) (xmlNodePtr node);
 
 /**
- * @param node  the current node
- *
  * Signature for the deregistration callback of a discarded node
+ *
+ * @param node  the current node
  */
 typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
 

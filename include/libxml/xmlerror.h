@@ -902,22 +902,21 @@ typedef enum {
 } xmlParserErrors;
 
 /**
- * @param ctx  user data
- * @param msg  printf-like format string
- * @param ...  arguments to format
- *
  * Generic error callback.
  *
  * @deprecated in favor of structured errors.
+ * @param ctx  user data
+ * @param msg  printf-like format string
+ * @param ...  arguments to format
  */
 typedef void (*xmlGenericErrorFunc) (void *ctx,
 				 const char *msg,
 				 ...) LIBXML_ATTR_FORMAT(2,3);
 /**
+ * Structured error callback receiving an xmlError.
+ *
  * @param userData  user provided data for the error callback
  * @param error  the error being raised
- *
- * Structured error callback receiving an xmlError.
  */
 typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);
 

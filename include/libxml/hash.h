@@ -34,8 +34,6 @@ typedef xmlHashTable *xmlHashTablePtr;
  * serious trouble within the library.
  */
 /**
- * @param fptr  pointer to a function
- *
  * Macro to do a casting from an object pointer to a
  * function pointer without encountering a warning from
  * gcc
@@ -43,6 +41,7 @@ typedef xmlHashTable *xmlHashTablePtr;
  * \#define XML_CAST_FPTR(fptr) (*(void **)(&fptr))
  * This macro violated ISO C aliasing rules (gcc4 on s390 broke)
  * so it is disabled now
+ * @param fptr  pointer to a function
  */
 
 #define XML_CAST_FPTR(fptr) fptr
@@ -51,37 +50,36 @@ typedef xmlHashTable *xmlHashTablePtr;
  * function types:
  */
 /**
+ * Callback to free data from a hash.
+ *
  * @param payload  the data in the hash
  * @param name  the name associated
- *
- * Callback to free data from a hash.
  */
 typedef void (*xmlHashDeallocator)(void *payload, const xmlChar *name);
 /**
- * @param payload  the data in the hash
- * @param name  the name associated
- *
  * Callback to copy data from a hash.
  *
+ * @param payload  the data in the hash
+ * @param name  the name associated
  * @returns a copy of the data or NULL in case of error.
  */
 typedef void *(*xmlHashCopier)(void *payload, const xmlChar *name);
 /**
+ * Callback when scanning data in a hash with the simple scanner.
+ *
  * @param payload  the data in the hash
  * @param data  extra scanner data
  * @param name  the name associated
- *
- * Callback when scanning data in a hash with the simple scanner.
  */
 typedef void (*xmlHashScanner)(void *payload, void *data, const xmlChar *name);
 /**
+ * Callback when scanning data in a hash with the full scanner.
+ *
  * @param payload  the data in the hash
  * @param data  extra scanner data
  * @param name  the name associated
  * @param name2  the second name associated
  * @param name3  the third name associated
- *
- * Callback when scanning data in a hash with the full scanner.
  */
 typedef void (*xmlHashScannerFull)(void *payload, void *data,
 				   const xmlChar *name, const xmlChar *name2,

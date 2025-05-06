@@ -25,87 +25,78 @@ extern "C" {
 #endif
 
 /**
- * @param filename  the filename or URI
- *
  * Callback used in the I/O Input API to detect if the current handler
  * can provide input functionality for this resource.
  *
+ * @param filename  the filename or URI
  * @returns 1 if yes and 0 if another Input module should be used
  */
 typedef int (*xmlInputMatchCallback) (char const *filename);
 /**
- * @param filename  the filename or URI
- *
  * Callback used in the I/O Input API to open the resource
  *
+ * @param filename  the filename or URI
  * @returns an Input context or NULL in case or error
  */
 typedef void * (*xmlInputOpenCallback) (char const *filename);
 /**
+ * Callback used in the I/O Input API to read the resource
+ *
  * @param context  an Input context
  * @param buffer  the buffer to store data read
  * @param len  the length of the buffer in bytes
- *
- * Callback used in the I/O Input API to read the resource
- *
  * @returns the number of bytes read or -1 in case of error
  */
 typedef int (*xmlInputReadCallback) (void * context, char * buffer, int len);
 /**
- * @param context  an Input context
- *
  * Callback used in the I/O Input API to close the resource
  *
+ * @param context  an Input context
  * @returns 0 or -1 in case of error
  */
 typedef int (*xmlInputCloseCallback) (void * context);
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
- * @param filename  the filename or URI
- *
  * Callback used in the I/O Output API to detect if the current handler
  * can provide output functionality for this resource.
  *
+ * @param filename  the filename or URI
  * @returns 1 if yes and 0 if another Output module should be used
  */
 typedef int (*xmlOutputMatchCallback) (char const *filename);
 /**
- * @param filename  the filename or URI
- *
  * Callback used in the I/O Output API to open the resource
  *
+ * @param filename  the filename or URI
  * @returns an Output context or NULL in case or error
  */
 typedef void * (*xmlOutputOpenCallback) (char const *filename);
 /**
+ * Callback used in the I/O Output API to write to the resource
+ *
  * @param context  an Output context
  * @param buffer  the buffer of data to write
  * @param len  the length of the buffer in bytes
- *
- * Callback used in the I/O Output API to write to the resource
- *
  * @returns the number of bytes written or -1 in case of error
  */
 typedef int (*xmlOutputWriteCallback) (void * context, const char * buffer,
                                        int len);
 /**
- * @param context  an Output context
- *
  * Callback used in the I/O Output API to close the resource
  *
+ * @param context  an Output context
  * @returns 0 or -1 in case of error
  */
 typedef int (*xmlOutputCloseCallback) (void * context);
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /**
- * @param URI  the URI to read from
- * @param enc  the requested source encoding
- *
  * Signature for the function doing the lookup for a suitable input method
  * corresponding to an URI.
  *
+ * @param URI  the URI to read from
+ * @param enc  the requested source encoding
  * @returns the new xmlParserInputBufferPtr in case of success or NULL if no
  *         method was found.
  */
@@ -113,13 +104,12 @@ typedef xmlParserInputBufferPtr
 (*xmlParserInputBufferCreateFilenameFunc)(const char *URI, xmlCharEncoding enc);
 
 /**
- * @param URI  the URI to write to
- * @param encoder  the requested target encoding
- * @param compression  compression level
- *
  * Signature for the function doing the lookup for a suitable output method
  * corresponding to an URI.
  *
+ * @param URI  the URI to write to
+ * @param encoder  the requested target encoding
+ * @param compression  compression level
  * @returns the new xmlOutputBufferPtr in case of success or NULL if no
  *         method was found.
  */

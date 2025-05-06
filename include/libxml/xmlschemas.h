@@ -90,21 +90,23 @@ typedef struct _xmlSchema xmlSchema;
 typedef xmlSchema *xmlSchemaPtr;
 
 /**
- * @param ctx  the validation context
- * @param msg  the message
+ * Signature of an error callback from an XSD validation
+ *
  * @...: extra arguments
  *
- * Signature of an error callback from an XSD validation
+ * @param ctx  the validation context
+ * @param msg  the message
  */
 typedef void (*xmlSchemaValidityErrorFunc)
                  (void *ctx, const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 
 /**
- * @param ctx  the validation context
- * @param msg  the message
+ * Signature of a warning callback from an XSD validation
+ *
  * @...: extra arguments
  *
- * Signature of a warning callback from an XSD validation
+ * @param ctx  the validation context
+ * @param msg  the message
  */
 typedef void (*xmlSchemaValidityWarningFunc)
                  (void *ctx, const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
@@ -119,14 +121,13 @@ typedef struct _xmlSchemaValidCtxt xmlSchemaValidCtxt;
 typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 
 /**
- * @param ctx  user provided context
- * @param file  returned file information
- * @param line  returned line information
- *
  * A schemas validation locator, a callback called by the validator.
  * This is used when file or node information are not available
  * to find out what file and line number are affected
  *
+ * @param ctx  user provided context
+ * @param file  returned file information
+ * @param line  returned line information
  * @returns 0 in case of success and -1 in case of error
  */
 

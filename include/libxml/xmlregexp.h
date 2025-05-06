@@ -54,12 +54,12 @@ XMLPUBFUN int
 		    xmlRegexpIsDeterminist(xmlRegexpPtr comp);
 
 /**
+ * Callback function when doing a transition in the automata
+ *
  * @param exec  the regular expression context
  * @param token  the current token string
  * @param transdata  transition data
  * @param inputdata  input data
- *
- * Callback function when doing a transition in the automata
  */
 typedef void (*xmlRegExecCallbacks) (xmlRegExecCtxtPtr exec,
 	                             const xmlChar *token,

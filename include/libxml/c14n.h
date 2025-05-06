@@ -87,12 +87,11 @@ XMLPUBFUN int
  * This is the core C14N function
  */
 /**
+ * Signature for a C14N callback on visible nodes
+ *
  * @param user_data  user data
  * @param node  the current node
  * @param parent  the parent node
- *
- * Signature for a C14N callback on visible nodes
- *
  * @returns 1 if the node should be included
  */
 typedef int (*xmlC14NIsVisibleCallback)	(void* user_data,

@@ -129,9 +129,9 @@ static xmlChar *xmlC11NNormalizeString(const xmlChar * input,
  ************************************************************************/
 
 /**
- * @param ctxt  a C14N evaluation context
- *
  * Handle a redefinition of memory error
+ *
+ * @param ctxt  a C14N evaluation context
  */
 static void
 xmlC14NErrMemory(xmlC14NCtxPtr ctxt)
@@ -163,9 +163,9 @@ xmlC14NErrFull(xmlC14NCtxPtr ctxt, xmlNodePtr node, int code, const char *str1,
 }
 
 /**
- * @param ctxt  a C14N evaluation context
- *
  * Handle a param error
+ *
+ * @param ctxt  a C14N evaluation context
  */
 static void
 xmlC14NErrParam(xmlC14NCtxPtr ctxt)
@@ -175,11 +175,11 @@ xmlC14NErrParam(xmlC14NCtxPtr ctxt)
 }
 
 /**
+ * Handle an invalid node error
+ *
  * @param ctxt  a C14N evaluation context
  * @param node_type  node type
  * @param extra  extra information
- *
- * Handle an invalid node error
  */
 static void
 xmlC14NErrInvalidNode(xmlC14NCtxPtr ctxt, const char *node_type,
@@ -190,11 +190,11 @@ xmlC14NErrInvalidNode(xmlC14NCtxPtr ctxt, const char *node_type,
 }
 
 /**
+ * Handle an unknown node error
+ *
  * @param ctxt  a C14N evaluation context
  * @param node_type  node type
  * @param extra  extra information
- *
- * Handle an unknown node error
  */
 static void
 xmlC14NErrUnknownNode(xmlC14NCtxPtr ctxt, int node_type, const char *extra)
@@ -204,10 +204,10 @@ xmlC14NErrUnknownNode(xmlC14NCtxPtr ctxt, int node_type, const char *extra)
 }
 
 /**
+ * Handle a relative namespace error
+ *
  * @param ctxt  a C14N evaluation context
  * @param ns_uri  namespace URI
- *
- * Handle a relative namespace error
  */
 static void
 xmlC14NErrRelativeNamespace(xmlC14NCtxPtr ctxt, const char *ns_uri)
@@ -219,12 +219,12 @@ xmlC14NErrRelativeNamespace(xmlC14NCtxPtr ctxt, const char *ns_uri)
 
 
 /**
+ * Handle an error
+ *
  * @param ctxt  a C14N evaluation context
  * @param node  the context node
  * @param error  the error code
  * @param msg  the message
- *
- * Handle an error
  */
 static void
 xmlC14NErr(xmlC14NCtxPtr ctxt, xmlNodePtr node, int error,
@@ -379,11 +379,10 @@ xmlC14NStrEqual(const xmlChar *str1, const xmlChar *str2) {
 }
 
 /**
- * @param cur  		the visible stack
- * @param ns  			the namespace to check
- *
  * Checks whether the given namespace was already rendered or not
  *
+ * @param cur  		the visible stack
+ * @param ns  			the namespace to check
  * @returns 1 if we already wrote this namespace or 0 otherwise
  */
 static int
@@ -461,11 +460,10 @@ xmlExcC14NVisibleNsStackFind(xmlC14NVisibleNsStackPtr cur, xmlNsPtr ns, xmlC14NC
 
 
 /**
- * @param ns  		the namespace to check
- *
  * Checks whether the given namespace is a default "xml:" namespace
  * with href="http://www.w3.org/XML/1998/namespace"
  *
+ * @param ns  		the namespace to check
  * @returns 1 if the node is default or 0 otherwise
  */
 
@@ -480,11 +478,10 @@ xmlC14NIsXmlNs(xmlNsPtr ns)
 
 
 /**
- * @param data1  		the pointer to first namespace
- * @param data2  		the pointer to second namespace
- *
  * Compares the namespaces by names (prefixes).
  *
+ * @param data1  		the pointer to first namespace
+ * @param data2  		the pointer to second namespace
  * @returns -1 if ns1 < ns2, 0 if ns1 == ns2 or 1 if ns1 > ns2.
  */
 static int
@@ -504,11 +501,10 @@ xmlC14NNsCompare(const void *data1, const void *data2)
 
 
 /**
- * @param ns  			the pointer to namespace
- * @param ctx  		the C14N context
- *
  * Prints the given namespace to the output buffer from C14N context.
  *
+ * @param ns  			the pointer to namespace
+ * @param ctx  		the C14N context
  * @returns 1 on success or 0 on fail.
  */
 static int
@@ -541,10 +537,6 @@ xmlC14NPrintNamespacesWalker(const void *ns, void *ctx) {
 }
 
 /**
- * @param ctx  		the C14N context
- * @param cur  		the current node
- * @param visible  		the visibility of node
- *
  * Prints out canonical namespace axis of the current node to the
  * buffer from C14N context as follows
  *
@@ -577,6 +569,9 @@ xmlC14NPrintNamespacesWalker(const void *ns, void *ctx) {
  * the document subset). This search and copying are omitted from the
  * Exclusive XML Canonicalization method.
  *
+ * @param ctx  		the C14N context
+ * @param cur  		the current node
+ * @param visible  		the visibility of node
  * @returns 0 on success or -1 on fail.
  */
 static int
@@ -659,10 +654,6 @@ error:
 
 
 /**
- * @param ctx  		the C14N context
- * @param cur  		the current node
- * @param visible  		the visibility of node
- *
  * Prints out exclusive canonical namespace axis of the current node to the
  * buffer from C14N context as follows
  *
@@ -686,6 +677,9 @@ error:
  * 3. After the recursion returns, pop thestate stack.
  *
  *
+ * @param ctx  		the C14N context
+ * @param cur  		the current node
+ * @param visible  		the visibility of node
  * @returns 0 on success or -1 on fail.
  */
 static int
@@ -846,11 +840,10 @@ error:
 
 
 /**
- * @param attr  		the attr to check
- *
  * Checks whether the given attribute is a default "xml:" namespace
  * with href="http://www.w3.org/XML/1998/namespace"
  *
+ * @param attr  		the attr to check
  * @returns 1 if the node is default or 0 otherwise
  */
 
@@ -864,11 +857,10 @@ xmlC14NIsXmlAttr(xmlAttrPtr attr)
 
 
 /**
- * @param data1  		the pointer tls o first attr
- * @param data2  		the pointer to second attr
- *
  * Prints the given attribute to the output buffer from C14N context.
  *
+ * @param data1  		the pointer tls o first attr
+ * @param data2  		the pointer to second attr
  * @returns -1 if attr1 < attr2, 0 if attr1 == attr2 or 1 if attr1 > attr2.
  */
 static int
@@ -914,14 +906,13 @@ xmlC14NAttrsCompare(const void *data1, const void *data2)
 
 
 /**
- * @param data  		the pointer to attr
- * @param user  		the C14N context
- *
  * Prints out canonical attribute urrent node to the
  * buffer from C14N context as follows
  *
  * Canonical XML v 1.0 (http://www.w3.org/TR/xml-c14n)
  *
+ * @param data  		the pointer to attr
+ * @param user  		the C14N context
  * @returns 1 on success or 0 on fail.
  */
 static int
@@ -1089,10 +1080,6 @@ xmlC14NFixupBaseAttr(xmlC14NCtxPtr ctx, xmlAttrPtr xml_base_attr)
 }
 
 /**
- * @param ctx  		the C14N context
- * @param cur  		the current node
- * @param parent_visible  	the visibility of the parent node
- *
  * Prints out canonical attribute axis of the current node to the
  * buffer from C14N context as follows
  *
@@ -1117,6 +1104,9 @@ xmlC14NFixupBaseAttr(xmlC14NCtxPtr ctx, xmlAttrPtr xml_base_attr)
  * the document subset). This search and copying are omitted from the
  * Exclusive XML Canonicalization method.
  *
+ * @param ctx  		the C14N context
+ * @param cur  		the current node
+ * @param parent_visible  	the visibility of the parent node
  * @returns 0 on success or -1 on fail.
  */
 static int
@@ -1339,11 +1329,10 @@ xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int parent_visible)
 }
 
 /**
- * @param ctx  		the C14N context
- * @param cur  		the current element node
- *
  * Checks that current element node has no relative namespaces defined
  *
+ * @param ctx  		the C14N context
+ * @param cur  		the current element node
  * @returns 0 if the node has no relative namespaces or -1 otherwise.
  */
 static int
@@ -1384,10 +1373,6 @@ xmlC14NCheckForRelativeNamespaces(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 }
 
 /**
- * @param ctx  		the pointer to C14N context object
- * @param cur  		the node to process
- * @param visible  		this node is visible
- *
  * Canonical XML v 1.0 (http://www.w3.org/TR/xml-c14n)
  *
  * Element Nodes
@@ -1402,6 +1387,9 @@ xmlC14NCheckForRelativeNamespaces(xmlC14NCtxPtr ctx, xmlNodePtr cur)
  * open angle bracket, a forward slash (/), the element QName, and a close
  * angle bracket.
  *
+ * @param ctx  		the pointer to C14N context object
+ * @param cur  		the node to process
+ * @param visible  		this node is visible
  * @returns non-negative value on success or negative value on fail
  */
 static int
@@ -1495,11 +1483,10 @@ xmlC14NProcessElementNode(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
 }
 
 /**
- * @param ctx  		the pointer to C14N context object
- * @param cur  		the node to process
- *
  * Processes the given node
  *
+ * @param ctx  		the pointer to C14N context object
+ * @param cur  		the node to process
  * @returns non-negative value on success or negative value on fail
  */
 static int
@@ -1682,11 +1669,10 @@ xmlC14NProcessNode(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 }
 
 /**
- * @param ctx  		the pointer to C14N context object
- * @param cur  		the node to start from
- *
  * Processes all nodes in the row starting from cur.
  *
+ * @param ctx  		the pointer to C14N context object
+ * @param cur  		the node to start from
  * @returns non-negative value on success or negative value on fail
  */
 static int
@@ -1707,9 +1693,9 @@ xmlC14NProcessNodeList(xmlC14NCtxPtr ctx, xmlNodePtr cur)
 
 
 /**
- * @param ctx  the pointer to C14N context object
- *
  * Cleanups the C14N context object.
+ *
+ * @param ctx  the pointer to C14N context object
  */
 
 static void
@@ -1727,6 +1713,8 @@ xmlC14NFreeCtx(xmlC14NCtxPtr ctx)
 }
 
 /**
+ * Creates new C14N context object to store C14N parameters.
+ *
  * @param doc  		the XML document for canonization
  * @param is_visible_callback  the function to use to determine is node visible
  *			or not
@@ -1741,9 +1729,6 @@ xmlC14NFreeCtx(xmlC14NCtxPtr ctx)
  * @param buf  		the output buffer to store canonical XML; this
  *			buffer MUST have encoder==NULL because C14N requires
  *			UTF-8 output
- *
- * Creates new C14N context object to store C14N parameters.
- *
  * @returns pointer to newly created object (success) or NULL (fail)
  */
 static xmlC14NCtxPtr
@@ -1809,6 +1794,10 @@ xmlC14NNewCtx(xmlDocPtr doc,
 }
 
 /**
+ * Dumps the canonized image of given XML document into the provided buffer.
+ * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+ * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
+ *
  * @param doc  		the XML document for canonization
  * @param is_visible_callback  the function to use to determine is node visible
  *			or not
@@ -1823,11 +1812,6 @@ xmlC14NNewCtx(xmlDocPtr doc,
  * @param buf  		the output buffer to store canonical XML; this
  *			buffer MUST have encoder==NULL because C14N requires
  *			UTF-8 output
- *
- * Dumps the canonized image of given XML document into the provided buffer.
- * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
- * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
- *
  * @returns non-negative value on success or a negative value on fail
  */
 int
@@ -1911,6 +1895,10 @@ xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
 }
 
 /**
+ * Dumps the canonized image of given XML document into the provided buffer.
+ * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+ * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
+ *
  * @param doc  		the XML document for canonization
  * @param nodes  		the nodes set to be included in the canonized image
  *		or NULL if all document nodes should be included
@@ -1923,11 +1911,6 @@ xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
  * @param buf  		the output buffer to store canonical XML; this
  *			buffer MUST have encoder==NULL because C14N requires
  *			UTF-8 output
- *
- * Dumps the canonized image of given XML document into the provided buffer.
- * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
- * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
- *
  * @returns non-negative value on success or a negative value on fail
  */
 int
@@ -1945,6 +1928,10 @@ xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
 
 
 /**
+ * Dumps the canonized image of given XML document into memory.
+ * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+ * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
+ *
  * @param doc  		the XML document for canonization
  * @param nodes  		the nodes set to be included in the canonized image
  *		or NULL if all document nodes should be included
@@ -1957,11 +1944,6 @@ xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
  * @param doc_txt_ptr  	the memory pointer for allocated canonical XML text;
  *			the caller of this functions is responsible for calling
  *			xmlFree() to free allocated memory
- *
- * Dumps the canonized image of given XML document into memory.
- * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
- * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
- *
  * @returns the number of bytes written on success or a negative value on fail
  */
 int
@@ -2012,6 +1994,10 @@ xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
 }
 
 /**
+ * Dumps the canonized image of given XML document into the file.
+ * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
+ * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
+ *
  * @param doc  		the XML document for canonization
  * @param nodes  		the nodes set to be included in the canonized image
  *		or NULL if all document nodes should be included
@@ -2026,11 +2012,6 @@ xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
  *				-1 - libxml default,
  *				 0 - uncompressed,
  *				>0 - compression level
- *
- * Dumps the canonized image of given XML document into the file.
- * For details see "Canonical XML" (http://www.w3.org/TR/xml-c14n) or
- * "Exclusive XML Canonicalization" (http://www.w3.org/TR/xml-exc-c14n)
- *
  * @returns the number of bytes written success or a negative value on fail
  */
 int
@@ -2077,13 +2058,12 @@ xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
 }
 
 /**
- * @param input  		the input string
- * @param mode  		the normalization mode (attribute, comment, PI or text)
- *
  * Converts a string to a canonical (normalized) format. The code is stolen
  * from xmlEncodeEntitiesReentrant(). Added normalization of `\x09`, `\x0a`,
  * `\x0A` and the `mode` parameter.
  *
+ * @param input  		the input string
+ * @param mode  		the normalization mode (attribute, comment, PI or text)
  * @returns a normalized string (caller is responsible for calling xmlFree())
  * or NULL if an error occurs
  */

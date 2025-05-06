@@ -274,13 +274,12 @@ xmlDictCreate(void) {
 }
 
 /**
- * @param sub  an existing dictionary
- *
  * Create a new dictionary, inheriting strings from the read-only
  * dictionary `sub`. On lookup, strings are first searched in the
  * new dictionary, then in `sub`, and if not found are created in the
  * new dictionary.
  *
+ * @param sub  an existing dictionary
  * @returns the newly created dictionary, or NULL if an error occurred.
  */
 xmlDictPtr
@@ -296,10 +295,9 @@ xmlDictCreateSub(xmlDictPtr sub) {
 }
 
 /**
- * @param dict  the dictionary
- *
  * Increment the reference counter of a dictionary
  *
+ * @param dict  the dictionary
  * @returns 0 in case of success and -1 in case of error
  */
 int
@@ -312,10 +310,10 @@ xmlDictReference(xmlDictPtr dict) {
 }
 
 /**
- * @param dict  the dictionary
- *
  * Free the hash `dict` and its contents. The userdata is
  * deallocated with `f` if provided.
+ *
+ * @param dict  the dictionary
  */
 void
 xmlDictFree(xmlDictPtr dict) {
@@ -351,11 +349,10 @@ xmlDictFree(xmlDictPtr dict) {
 }
 
 /**
- * @param dict  the dictionary
- * @param str  the string
- *
  * check if a string is owned by the dictionary
  *
+ * @param dict  the dictionary
+ * @param str  the string
  * @returns 1 if true, 0 if false and -1 in case of error
  * -1 in case of error
  */
@@ -377,10 +374,9 @@ xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
 }
 
 /**
- * @param dict  the dictionary
- *
  * Query the number of elements installed in the hash `dict`.
  *
+ * @param dict  the dictionary
  * @returns the number of elements in the dictionary or
  * -1 in case of error
  */
@@ -394,12 +390,11 @@ xmlDictSize(xmlDictPtr dict) {
 }
 
 /**
- * @param dict  the dictionary
- * @param limit  the limit in bytes
- *
  * Set a size limit for the dictionary
  * Added in 2.9.0
  *
+ * @param dict  the dictionary
+ * @param limit  the limit in bytes
  * @returns the previous limit of the dictionary or 0
  */
 size_t
@@ -414,11 +409,10 @@ xmlDictSetLimit(xmlDictPtr dict, size_t limit) {
 }
 
 /**
- * @param dict  the dictionary
- *
  * Get how much memory is used by a dictionary for strings
  * Added in 2.9.0
  *
+ * @param dict  the dictionary
  * @returns the amount of strings allocated
  */
 size_t
@@ -493,11 +487,10 @@ xmlDictHashQName(unsigned seed, const xmlChar *prefix, const xmlChar *name,
 }
 
 /**
- * @param dict  dictionary
- * @param string  C string
- *
  * Compute the hash value of a C string.
  *
+ * @param dict  dictionary
+ * @param string  C string
  * @returns the hash value.
  */
 unsigned
@@ -509,11 +502,10 @@ xmlDictComputeHash(const xmlDict *dict, const xmlChar *string) {
 #define HASH_ROL31(x,n) ((x) << (n) | ((x) & 0x7FFFFFFF) >> (31 - (n)))
 
 /**
- * @param v1  first hash value
- * @param v2  second hash value
- *
  * Combine two hash values.
  *
+ * @param v1  first hash value
+ * @param v2  second hash value
  * @returns the combined hash value.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
@@ -530,16 +522,16 @@ xmlDictCombineHash(unsigned v1, unsigned v2) {
 }
 
 /**
+ * Try to find a matching hash table entry. If an entry was found, set
+ * `found` to 1 and return the entry. Otherwise, set `found` to 0 and return
+ * the location where a new entry should be inserted.
+ *
  * @param dict  dict
  * @param prefix  optional QName prefix
  * @param name  string
  * @param len  length of string
  * @param hashValue  valid hash value of string
  * @param pfound  result of search
- *
- * Try to find a matching hash table entry. If an entry was found, set
- * `found` to 1 and return the entry. Otherwise, set `found` to 0 and return
- * the location where a new entry should be inserted.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 static xmlDictEntry *
@@ -596,11 +588,10 @@ xmlDictFindEntry(const xmlDict *dict, const xmlChar *prefix,
 }
 
 /**
- * @param dict  dictionary
- * @param size  new size of the dictionary
- *
  * Resize the dictionary hash table.
  *
+ * @param dict  dictionary
+ * @param size  new size of the dictionary
  * @returns 0 in case of success, -1 if a memory allocation failed.
  */
 static int
@@ -662,13 +653,13 @@ done:
 }
 
 /**
+ * Internal lookup and update function.
+ *
  * @param dict  dict
  * @param prefix  optional QName prefix
  * @param name  string
  * @param maybeLen  length of string or -1 if unknown
  * @param update  whether the string should be added
- *
- * Internal lookup and update function.
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 static const xmlDictEntry *
@@ -811,12 +802,11 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
 }
 
 /**
+ * Lookup a string and add it to the dictionary if it wasn't found.
+ *
  * @param dict  dictionary
  * @param name  string key
  * @param len  length of the key, if -1 it is recomputed
- *
- * Lookup a string and add it to the dictionary if it wasn't found.
- *
  * @returns the interned copy of the string or NULL if a memory allocation
  * failed.
  */
@@ -831,13 +821,12 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
 }
 
 /**
- * @param dict  dictionary
- * @param name  string key
- * @param len  length of the key, if -1 it is recomputed
- *
  * Lookup a dictionary entry and add the string to the dictionary if
  * it wasn't found.
  *
+ * @param dict  dictionary
+ * @param name  string key
+ * @param len  length of the key, if -1 it is recomputed
  * @returns the dictionary entry.
  */
 xmlHashedString
@@ -858,12 +847,11 @@ xmlDictLookupHashed(xmlDictPtr dict, const xmlChar *name, int len) {
 }
 
 /**
+ * Check if a string exists in the dictionary.
+ *
  * @param dict  the dictionary
  * @param name  the name of the userdata
  * @param len  the length of the name, if -1 it is recomputed
- *
- * Check if a string exists in the dictionary.
- *
  * @returns the internal copy of the name or NULL if not found.
  */
 const xmlChar *
@@ -877,13 +865,12 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
 }
 
 /**
- * @param dict  the dictionary
- * @param prefix  the prefix
- * @param name  the name
- *
  * Lookup the QName `prefix:name` and add it to the dictionary if
  * it wasn't found.
  *
+ * @param dict  the dictionary
+ * @param prefix  the prefix
+ * @param name  the name
  * @returns the interned copy of the string or NULL if a memory allocation
  * failed.
  */

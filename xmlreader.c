@@ -175,10 +175,10 @@ static int xmlTextReaderReadTree(xmlTextReaderPtr reader);
 static int xmlTextReaderNextTree(xmlTextReaderPtr reader);
 
 /**
- * @param str  a string
- *
  * Free a string if it is not owned by the "dict" dictionary in the
  * current scope
+ *
+ * @param str  a string
  */
 #define DICT_FREE(str)						\
 	if ((str) && ((!dict) ||				\
@@ -263,10 +263,10 @@ constQString(xmlTextReaderPtr reader, const xmlChar *prefix,
  ************************************************************************/
 
 /**
+ * Free a node.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param cur  the node
- *
- * Free a node.
  */
 static void
 xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
@@ -308,10 +308,10 @@ xmlTextReaderFreeProp(xmlTextReaderPtr reader, xmlAttrPtr cur) {
 }
 
 /**
+ * Free a property and all its siblings, all the children are freed too.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param cur  the first property in the list
- *
- * Free a property and all its siblings, all the children are freed too.
  */
 static void
 xmlTextReaderFreePropList(xmlTextReaderPtr reader, xmlAttrPtr cur) {
@@ -325,11 +325,11 @@ xmlTextReaderFreePropList(xmlTextReaderPtr reader, xmlAttrPtr cur) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param cur  the first node in the list
- *
  * Free a node and all its siblings, this is a recursive behaviour, all
  * the children are freed too.
+ *
+ * @param reader  the xmlTextReaderPtr used
+ * @param cur  the first node in the list
  */
 static void
 xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
@@ -419,11 +419,11 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param cur  the node
- *
  * Free a node, this is a recursive behaviour, all the children are freed too.
  * This doesn't unlink the child from the list, use xmlUnlinkNode() first.
+ *
+ * @param reader  the xmlTextReaderPtr used
+ * @param cur  the node
  */
 static void
 xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
@@ -494,10 +494,10 @@ xmlTextReaderFreeNode(xmlTextReaderPtr reader, xmlNodePtr cur) {
 }
 
 /**
+ * Free up all the structures used by a document, tree included.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param cur  pointer to the document
- *
- * Free up all the structures used by a document, tree included.
  */
 static void
 xmlTextReaderFreeDoc(xmlTextReaderPtr reader, xmlDocPtr cur) {
@@ -577,11 +577,10 @@ xmlTextReaderStructuredRelay(void *userData, const xmlError *error)
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param value  the entity reference node
- *
  * Pushes a new entity reference node on top of the entities stack
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param value  the entity reference node
  * @returns -1 in case of error, the index in the stack otherwise
  */
 static int
@@ -611,10 +610,9 @@ xmlTextReaderEntPush(xmlTextReaderPtr reader, xmlNodePtr value)
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Pops the top element entity from the entities stack
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the entity just removed
  */
 static xmlNodePtr
@@ -635,11 +633,11 @@ xmlTextReaderEntPop(xmlTextReaderPtr reader)
 }
 
 /**
+ * called when an opening tag has been processed.
+ *
  * @param ctx  the user data (XML parser context)
  * @param fullname  The element name, including namespace prefix
  * @param atts  An array of name/value attributes pairs, NULL terminated
- *
- * called when an opening tag has been processed.
  */
 static void
 xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
@@ -659,10 +657,10 @@ xmlTextReaderStartElement(void *ctx, const xmlChar *fullname,
 }
 
 /**
+ * called when an ending tag has been processed.
+ *
  * @param ctx  the user data (XML parser context)
  * @param fullname  The element name, including namespace prefix
- *
- * called when an ending tag has been processed.
  */
 static void
 xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
@@ -675,6 +673,8 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
 }
 
 /**
+ * called when an opening tag has been processed.
+ *
  * @param ctx  the user data (XML parser context)
  * @param localname  the local name of the element
  * @param prefix  the element namespace prefix if available
@@ -685,8 +685,6 @@ xmlTextReaderEndElement(void *ctx, const xmlChar *fullname) {
  * @param nb_defaulted  the number of defaulted attributes.
  * @param attributes  pointer to the array of (localname/prefix/URI/value/end)
  *               attribute values.
- *
- * called when an opening tag has been processed.
  */
 static void
 xmlTextReaderStartElementNs(void *ctx,
@@ -716,12 +714,12 @@ xmlTextReaderStartElementNs(void *ctx,
 }
 
 /**
+ * called when an ending tag has been processed.
+ *
  * @param ctx  the user data (XML parser context)
  * @param localname  the local name of the element
  * @param prefix  the element namespace prefix if available
  * @param URI  the element namespace name if available
- *
- * called when an ending tag has been processed.
  */
 static void
 xmlTextReaderEndElementNs(void *ctx,
@@ -739,11 +737,11 @@ xmlTextReaderEndElementNs(void *ctx,
 
 
 /**
+ * receiving some chars from the parser.
+ *
  * @param ctx  the user data (XML parser context)
  * @param ch  a xmlChar string
  * @param len  the number of xmlChar
- *
- * receiving some chars from the parser.
  */
 static void
 xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
@@ -757,11 +755,11 @@ xmlTextReaderCharacters(void *ctx, const xmlChar *ch, int len)
 }
 
 /**
+ * called when a pcdata block has been parsed
+ *
  * @param ctx  the user data (XML parser context)
  * @param ch  The pcdata content
  * @param len  the block length
- *
- * called when a pcdata block has been parsed
  */
 static void
 xmlTextReaderCDataBlock(void *ctx, const xmlChar *ch, int len)
@@ -775,11 +773,10 @@ xmlTextReaderCDataBlock(void *ctx, const xmlChar *ch, int len)
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Push data down the progressive parser until a significant callback
  * got raised.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns -1 in case of failure, 0 otherwise
  */
 static int
@@ -885,9 +882,9 @@ xmlTextReaderPushData(xmlTextReaderPtr reader) {
 
 #ifdef LIBXML_REGEXP_ENABLED
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Push the current node for validation
+ *
+ * @param reader  the xmlTextReaderPtr used
  */
 static int
 xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
@@ -952,11 +949,11 @@ xmlTextReaderValidatePush(xmlTextReaderPtr reader) {
 }
 
 /**
+ * Push some CData for validation
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param data  pointer to the CData
  * @param len  length of the CData block in bytes.
- *
- * Push some CData for validation
  */
 static void
 xmlTextReaderValidateCData(xmlTextReaderPtr reader,
@@ -982,9 +979,9 @@ xmlTextReaderValidateCData(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Pop the current node from validation
+ *
+ * @param reader  the xmlTextReaderPtr used
  */
 static int
 xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
@@ -1039,11 +1036,11 @@ xmlTextReaderValidatePop(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Handle the validation when an entity reference is encountered and
  * entity substitution is not activated. As a result the parser interface
  * must walk through the entity and do the validation calls
+ *
+ * @param reader  the xmlTextReaderPtr used
  */
 static int
 xmlTextReaderValidateEntity(xmlTextReaderPtr reader) {
@@ -1134,10 +1131,9 @@ skip_children:
 
 
 /**
- * @param cur  the current node
- *
  * Get the successor of a node if available.
  *
+ * @param cur  the current node
  * @returns the successor node or NULL
  */
 static xmlNodePtr
@@ -1153,12 +1149,11 @@ xmlTextReaderGetSuccessor(xmlNodePtr cur) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Makes sure that the current node is fully read as well as all its
  * descendant. It means the full DOM subtree must be available at the
  * end of the call.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the node was expanded successfully, 0 if there is no more
  *          nodes to read, or -1 in case of error
  */
@@ -1189,11 +1184,10 @@ xmlTextReaderDoExpand(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  *  Moves the position of the current instance to the next node in
  *  the stream, exposing its properties.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the node was read successfully, 0 if there is no more
  *          nodes to read, or -1 in case of error
  */
@@ -1549,10 +1543,9 @@ node_end:
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Gets the read state of the reader.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the state value, or -1 in case of error
  */
 int
@@ -1563,11 +1556,10 @@ xmlTextReaderReadState(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Reads the contents of the current node and the full subtree. It then makes
  * the subtree available until the next xmlTextReaderRead() call
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns a node pointer valid until the next xmlTextReaderRead() call
  *         or NULL in case of error.
  */
@@ -1585,11 +1577,10 @@ xmlTextReaderExpand(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Skip to the node following the current one in document order while
  * avoiding the subtree if any.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the node was read successfully, 0 if there is no more
  *          nodes to read, or -1 in case of error
  */
@@ -1650,10 +1641,9 @@ xmlTextReaderDumpCopy(xmlTextReaderPtr reader, xmlOutputBufferPtr output,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Reads the contents of the current node, including child nodes and markup.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns a string containing the XML content, or NULL if the current node
  *         is neither an element nor attribute, or has no child nodes. The
  *         string must be deallocated by the caller.
@@ -1690,10 +1680,9 @@ xmlTextReaderReadInnerXml(xmlTextReaderPtr reader)
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Reads the contents of the current node, including child nodes and markup.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns a string containing the node and any XML content, or NULL if the
  *         current node cannot be serialized. The string must be deallocated
  *         by the caller.
@@ -1730,10 +1719,9 @@ xmlTextReaderReadOuterXml(xmlTextReaderPtr reader)
 #endif
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Reads the contents of an element or a text node as a string.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns a string containing the contents of the non-empty Element or
  *         Text node (including CDATA sections), or NULL if the reader
  *         is positioned on any other type of node.
@@ -1875,11 +1863,10 @@ xmlTextReaderNextTree(xmlTextReaderPtr reader)
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  *  Moves the position of the current instance to the next node in
  *  the stream, exposing its properties.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the node was read successfully, 0 if there is no more
  *          nodes to read, or -1 in case of error
  */
@@ -1947,12 +1934,11 @@ found_node:
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Skip to the node following the current one in document order while
  * avoiding the subtree if any.
  * Currently implemented only for Readers built on a document
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the node was read successfully, 0 if there is no more
  *          nodes to read, or -1 in case of error
  */
@@ -1986,11 +1972,10 @@ xmlTextReaderNextSibling(xmlTextReaderPtr reader) {
  *									*
  ************************************************************************/
 /**
- * @param input  the xmlParserInputBufferPtr used to read data
- * @param URI  the URI information for the source if available
- *
  * Create an xmlTextReader structure fed with `input`
  *
+ * @param input  the xmlParserInputBufferPtr used to read data
+ * @param URI  the URI information for the source if available
  * @returns the new xmlTextReaderPtr or NULL in case of error
  */
 xmlTextReaderPtr
@@ -2087,10 +2072,9 @@ xmlNewTextReader(xmlParserInputBufferPtr input, const char *URI) {
 }
 
 /**
- * @param URI  the URI of the resource to process
- *
  * Create an xmlTextReader structure fed with the resource at `URI`
  *
+ * @param URI  the URI of the resource to process
  * @returns the new xmlTextReaderPtr or NULL in case of error
  */
 xmlTextReaderPtr
@@ -2130,9 +2114,9 @@ xmlNewTextReaderFilename(const char *URI) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr
- *
  * Deallocate all the resources associated to the reader
+ *
+ * @param reader  the xmlTextReaderPtr
  */
 void
 xmlFreeTextReader(xmlTextReaderPtr reader) {
@@ -2204,11 +2188,10 @@ xmlFreeTextReader(xmlTextReaderPtr reader) {
  ************************************************************************/
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * This method releases any resources allocated by the current instance
  * changes the state to Closed and close any underlying input.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 0 or -1 in case of error
  */
 int
@@ -2250,12 +2233,11 @@ xmlTextReaderClose(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param no  the zero-based index of the attribute relative to the containing element
- *
  * Provides the value of the attribute with the specified index relative
  * to the containing element.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param no  the zero-based index of the attribute relative to the containing element
  * @returns a string containing the value of the specified attribute, or NULL
  *    in case of error. The string must be deallocated by the caller.
  */
@@ -2302,11 +2284,10 @@ xmlTextReaderGetAttributeNo(xmlTextReaderPtr reader, int no) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param name  the qualified name of the attribute.
- *
  * Provides the value of the attribute with the specified qualified name.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param name  the qualified name of the attribute.
  * @returns a string containing the value of the specified attribute, or NULL
  *    in case of error. The string must be deallocated by the caller.
  */
@@ -2386,12 +2367,11 @@ xmlTextReaderGetAttribute(xmlTextReaderPtr reader, const xmlChar *name) {
 
 
 /**
+ * Provides the value of the specified attribute
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param localName  the local name of the attribute.
  * @param namespaceURI  the namespace URI of the attribute.
- *
- * Provides the value of the specified attribute
- *
  * @returns a string containing the value of the specified attribute, or NULL
  *    in case of error. The string must be deallocated by the caller.
  */
@@ -2437,8 +2417,6 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Method to get the remainder of the buffered XML. this method stops the
  * parser, set its state to End Of File and return the input stream with
  * what is left that the parser did not use.
@@ -2447,6 +2425,7 @@ xmlTextReaderGetAttributeNs(xmlTextReaderPtr reader, const xmlChar *localName,
  * what's left in reader->input, and there is an allocation problem. Best
  * would be to rewrite it differently.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xmlParserInputBufferPtr attached to the XML or NULL
  *    in case of error.
  */
@@ -2487,12 +2466,11 @@ xmlTextReaderGetRemainder(xmlTextReaderPtr reader) {
 }
 
 /**
+ * Resolves a namespace prefix in the scope of the current element.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param prefix  the prefix whose namespace URI is to be resolved. To return
  *          the default namespace, specify NULL
- *
- * Resolves a namespace prefix in the scope of the current element.
- *
  * @returns a string containing the namespace URI to which the prefix maps
  *    or NULL in case of error. The string must be deallocated by the caller.
  */
@@ -2517,13 +2495,12 @@ xmlTextReaderLookupNamespace(xmlTextReaderPtr reader, const xmlChar *prefix) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param no  the zero-based index of the attribute relative to the containing
- *      element.
- *
  * Moves the position of the current instance to the attribute with
  * the specified index relative to the containing element.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param no  the zero-based index of the attribute relative to the containing
+ *      element.
  * @returns 1 in case of success, -1 in case of error, 0 if not found
  */
 int
@@ -2566,12 +2543,11 @@ xmlTextReaderMoveToAttributeNo(xmlTextReaderPtr reader, int no) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param name  the qualified name of the attribute.
- *
  * Moves the position of the current instance to the attribute with
  * the specified qualified name.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param name  the qualified name of the attribute.
  * @returns 1 in case of success, -1 in case of error, 0 if not found
  */
 int
@@ -2668,13 +2644,12 @@ found:
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param localName  the local name of the attribute.
- * @param namespaceURI  the namespace URI of the attribute.
- *
  * Moves the position of the current instance to the attribute with the
  * specified local name and namespace URI.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param localName  the local name of the attribute.
+ * @param namespaceURI  the namespace URI of the attribute.
  * @returns 1 in case of success, -1 in case of error, 0 if not found
  */
 int
@@ -2728,11 +2703,10 @@ xmlTextReaderMoveToAttributeNs(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Moves the position of the current instance to the first attribute
  * associated with the current node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 in case of success, -1 in case of error, 0 if not found
  */
 int
@@ -2756,11 +2730,10 @@ xmlTextReaderMoveToFirstAttribute(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Moves the position of the current instance to the next attribute
  * associated with the current node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 in case of success, -1 in case of error, 0 if not found
  */
 int
@@ -2794,11 +2767,10 @@ xmlTextReaderMoveToNextAttribute(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Moves the position of the current instance to the node that
  * contains the current Attribute  node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 in case of success, -1 in case of error, 0 if not moved
  */
 int
@@ -2817,10 +2789,9 @@ xmlTextReaderMoveToElement(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Parses an attribute value into one or more Text and EntityReference nodes.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 in case of success, 0 if the reader was not positioned on an
  *         attribute node or all the attribute values have been read, or -1
  *         in case of error.
@@ -2872,10 +2843,9 @@ xmlTextReaderReadAttributeValue(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Determine the encoding of the document being read.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns a string containing the encoding of the document or NULL in
  * case of error.  The string is deallocated with the reader.
  */
@@ -2901,10 +2871,9 @@ xmlTextReaderConstEncoding(xmlTextReaderPtr reader) {
  *									*
  ************************************************************************/
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Provides the number of attributes of the current node
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 0 i no attributes, -1 in case of error or the attribute count
  */
 int
@@ -2944,12 +2913,11 @@ xmlTextReaderAttributeCount(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Get the node type of the current node
  * Reference:
  * http://www.gnu.org/software/dotgnu/pnetlib-doc/System/Xml/XmlNodeType.html
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xmlReaderTypes of the current node or -1 in case of error
  */
 int
@@ -3014,10 +2982,9 @@ xmlTextReaderNodeType(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Check if the current node is empty
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if empty, 0 if not and -1 in case of error
  */
 int
@@ -3042,10 +3009,9 @@ xmlTextReaderIsEmptyElement(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The local name of the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the local name or NULL if not available,
  *   if non NULL it need to be freed by the caller.
  */
@@ -3072,10 +3038,9 @@ xmlTextReaderLocalName(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The local name of the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the local name or NULL if not available, the
  *         string will be deallocated with the reader.
  */
@@ -3102,10 +3067,9 @@ xmlTextReaderConstLocalName(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The qualified name of the node, equal to Prefix :LocalName.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the local name or NULL if not available,
  *   if non NULL it need to be freed by the caller.
  */
@@ -3174,10 +3138,9 @@ xmlTextReaderName(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The qualified name of the node, equal to Prefix :LocalName.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the local name or NULL if not available, the string is
  *         deallocated with the reader.
  */
@@ -3238,10 +3201,9 @@ xmlTextReaderConstName(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * A shorthand reference to the namespace associated with the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the prefix or NULL if not available,
  *    if non NULL it need to be freed by the caller.
  */
@@ -3269,10 +3231,9 @@ xmlTextReaderPrefix(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * A shorthand reference to the namespace associated with the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the prefix or NULL if not available, the string is deallocated
  *         with the reader.
  */
@@ -3300,10 +3261,9 @@ xmlTextReaderConstPrefix(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The URI defining the namespace associated with the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the namespace URI or NULL if not available,
  *    if non NULL it need to be freed by the caller.
  */
@@ -3327,10 +3287,9 @@ xmlTextReaderNamespaceUri(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The URI defining the namespace associated with the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the namespace URI or NULL if not available, the string
  *         will be deallocated with the reader
  */
@@ -3354,10 +3313,9 @@ xmlTextReaderConstNamespaceUri(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The base URI of the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the base URI or NULL if not available,
  *    if non NULL it need to be freed by the caller.
  */
@@ -3376,10 +3334,9 @@ xmlTextReaderBaseUri(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The base URI of the node.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the base URI or NULL if not available, the string
  *         will be deallocated with the reader
  */
@@ -3402,10 +3359,9 @@ xmlTextReaderConstBaseUri(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The depth of the node in the tree.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the depth or -1 in case of error
  */
 int
@@ -3425,10 +3381,9 @@ xmlTextReaderDepth(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Whether the node has attributes.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if true, 0 if false, and -1 in case or error
  */
 int
@@ -3451,10 +3406,9 @@ xmlTextReaderHasAttributes(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Whether the node can have a text value.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if true, 0 if false, and -1 in case or error
  */
 int
@@ -3484,10 +3438,9 @@ xmlTextReaderHasValue(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Provides the text value of the node if present
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the string or NULL if not available. The result must be deallocated
  *     with xmlFree()
  */
@@ -3532,10 +3485,9 @@ xmlTextReaderValue(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Provides the text value of the node if present
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the string or NULL if not available. The result will be
  *     deallocated on the next Read() operation.
  */
@@ -3593,11 +3545,10 @@ xmlTextReaderConstValue(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Whether an Attribute  node was generated from the default value
  * defined in the DTD or schema.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 0 if not defaulted, 1 if defaulted, and -1 in case of error
  */
 int
@@ -3608,10 +3559,9 @@ xmlTextReaderIsDefault(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The quotation mark character used to enclose the value of an attribute.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns " or ' and -1 in case of error
  */
 int
@@ -3623,10 +3573,9 @@ xmlTextReaderQuoteChar(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The xml:lang scope within which the node resides.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xml:lang value or NULL if none exists.,
  *    if non NULL it need to be freed by the caller.
  */
@@ -3640,10 +3589,9 @@ xmlTextReaderXmlLang(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The xml:lang scope within which the node resides.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xml:lang value or NULL if none exists.
  */
 const xmlChar *
@@ -3664,12 +3612,11 @@ xmlTextReaderConstXmlLang(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param str  the string to intern.
- *
  * Get an interned string from the reader, allows for example to
  * speedup string name comparisons
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param str  the string to intern.
  * @returns an interned copy of the string or NULL in case of error. The
  *         string will be deallocated with the reader.
  */
@@ -3681,14 +3628,13 @@ xmlTextReaderConstString(xmlTextReaderPtr reader, const xmlChar *str) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * The value indicating whether to normalize white space and attribute values.
  * Since attribute value and end of line normalizations are a MUST in the XML
  * specification only the value true is accepted. The broken behaviour of
  * accepting out of range character entities like &\#0; is of course not
  * supported either.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 or -1 in case of error.
  */
 int
@@ -3705,14 +3651,13 @@ xmlTextReaderNormalization(xmlTextReaderPtr reader) {
  ************************************************************************/
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param prop  the xmlParserProperties to set
- * @param value  usually 0 or 1 to (de)activate it
- *
  * Change the parser processing behaviour by changing some of its internal
  * properties. Note that some properties can only be changed before any
  * read has been done.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param prop  the xmlParserProperties to set
+ * @param value  usually 0 or 1 to (de)activate it
  * @returns 0 if the call was successful, or -1 in case of error
  */
 int
@@ -3771,11 +3716,10 @@ xmlTextReaderSetParserProp(xmlTextReaderPtr reader, int prop, int value) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param prop  the xmlParserProperties to get
- *
  * Read the parser internal property.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param prop  the xmlParserProperties to get
  * @returns the value, usually 0 or 1, or -1 in case of error.
  */
 int
@@ -3806,10 +3750,9 @@ xmlTextReaderGetParserProp(xmlTextReaderPtr reader, int prop) {
 
 
 /**
- * @param reader  the user data (XML reader context)
- *
  * Provide the line number of the current parsing point.
  *
+ * @param reader  the user data (XML reader context)
  * @returns an int or 0 if not available
  */
 int
@@ -3823,10 +3766,9 @@ xmlTextReaderGetParserLineNumber(xmlTextReaderPtr reader)
 }
 
 /**
- * @param reader  the user data (XML reader context)
- *
  * Provide the column number of the current parsing point.
  *
+ * @param reader  the user data (XML reader context)
  * @returns an int or 0 if not available
  */
 int
@@ -3840,12 +3782,11 @@ xmlTextReaderGetParserColumnNumber(xmlTextReaderPtr reader)
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Hacking interface allowing to get the xmlNodePtr corresponding to the
  * current node being accessed by the xmlTextReader. This is dangerous
  * because the underlying node may be destroyed on the next Reads.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xmlNodePtr or NULL in case of error.
  */
 xmlNodePtr
@@ -3859,12 +3800,11 @@ xmlTextReaderCurrentNode(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * This tells the XML Reader to preserve the current node.
  * The caller must also use xmlTextReaderCurrentDoc() to
  * keep an handle on the resulting document once parsing has finished
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xmlNodePtr or NULL in case of error.
  */
 xmlNodePtr
@@ -3895,14 +3835,13 @@ xmlTextReaderPreserve(xmlTextReaderPtr reader) {
 
 #ifdef LIBXML_PATTERN_ENABLED
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param pattern  an XPath subset pattern
- * @param namespaces  the prefix definitions, array of [URI, prefix] or NULL
- *
  * This tells the XML Reader to preserve all nodes matched by the
  * pattern. The caller must also use xmlTextReaderCurrentDoc() to
  * keep an handle on the resulting document once parsing has finished
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param pattern  an XPath subset pattern
+ * @param namespaces  the prefix definitions, array of [URI, prefix] or NULL
  * @returns a non-negative number in case of success and -1 in case of error
  */
 int
@@ -3942,14 +3881,13 @@ xmlTextReaderPreservePattern(xmlTextReaderPtr reader, const xmlChar *pattern,
 #endif
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Hacking interface allowing to get the xmlDocPtr corresponding to the
  * current document being accessed by the xmlTextReader.
  * NOTE: as a result of this call, the reader will not destroy the
  *       associated XML document and calling xmlFreeDoc() on the result
  *       is needed once the reader parsing has finished.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the xmlDocPtr or NULL in case of error.
  */
 xmlDocPtr
@@ -3967,15 +3905,14 @@ xmlTextReaderCurrentDoc(xmlTextReaderPtr reader) {
 
 #ifdef LIBXML_RELAXNG_ENABLED
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param schema  a precompiled RelaxNG schema
- *
  * Use RelaxNG to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * if `schema` is NULL, then RelaxNG validation is deactivated.
  * The `schema` should not be freed until the reader is deallocated
  * or its use has been deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param schema  a precompiled RelaxNG schema
  * @returns 0 in case the RelaxNG validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4023,12 +3960,11 @@ xmlTextReaderRelaxNGSetSchema(xmlTextReaderPtr reader, xmlRelaxNGPtr schema) {
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 /**
+ * Internal locator function for the readers
+ *
  * @param ctx  the xmlTextReaderPtr used
  * @param file  returned file information
  * @param line  returned line information
- *
- * Internal locator function for the readers
- *
  * @returns 0 in case the Schema validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4076,15 +4012,14 @@ xmlTextReaderLocator(void *ctx, const char **file, unsigned long *line) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param schema  a precompiled Schema schema
- *
  * Use XSD Schema to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * if `schema` is NULL, then Schema validation is deactivated.
  * The `schema` should not be freed until the reader is deallocated
  * or its use has been deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param schema  a precompiled Schema schema
  * @returns 0 in case the Schema validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4156,15 +4091,14 @@ xmlTextReaderSetSchema(xmlTextReaderPtr reader, xmlSchemaPtr schema) {
 
 #ifdef LIBXML_RELAXNG_ENABLED
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param rng  the path to a RelaxNG schema or NULL
- * @param ctxt  the RelaxNG schema validation context or NULL
- * @param options  options (not yet used)
- *
  * Use RelaxNG to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * If both `rng` and `ctxt` are NULL, then RelaxNG validation is deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param rng  the path to a RelaxNG schema or NULL
+ * @param ctxt  the RelaxNG schema validation context or NULL
+ * @param options  options (not yet used)
  * @returns 0 in case the RelaxNG validation could be (de)activated and
  *	   -1 in case of error.
  */
@@ -4245,15 +4179,14 @@ xmlTextReaderRelaxNGValidateInternal(xmlTextReaderPtr reader,
 
 #ifdef LIBXML_SCHEMAS_ENABLED
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param xsd  the path to a W3C XSD schema or NULL
- * @param ctxt  the XML Schema validation context or NULL
- * @param options  options (not used yet)
- *
  * Validate the document as it is processed using XML Schema.
  * Activation is only possible before the first Read().
  * If both `xsd` and `ctxt` are NULL then XML Schema validation is deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param xsd  the path to a W3C XSD schema or NULL
+ * @param ctxt  the XML Schema validation context or NULL
+ * @param options  options (not used yet)
  * @returns 0 in case the schemas validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4353,14 +4286,13 @@ xmlTextReaderSchemaValidateInternal(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param ctxt  the XML Schema validation context or NULL
- * @param options  options (not used yet)
- *
  * Use W3C XSD schema context to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * If `ctxt` is NULL, then XML Schema validation is deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param ctxt  the XML Schema validation context or NULL
+ * @param options  options (not used yet)
  * @returns 0 in case the schemas validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4373,13 +4305,12 @@ xmlTextReaderSchemaValidateCtxt(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param xsd  the path to a W3C XSD schema or NULL
- *
  * Use W3C XSD schema to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * If `xsd` is NULL, then XML Schema validation is deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param xsd  the path to a W3C XSD schema or NULL
  * @returns 0 in case the schemas validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4392,14 +4323,13 @@ xmlTextReaderSchemaValidate(xmlTextReaderPtr reader, const char *xsd)
 
 #ifdef LIBXML_RELAXNG_ENABLED
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param ctxt  the RelaxNG schema validation context or NULL
- * @param options  options (not used yet)
- *
  * Use RelaxNG schema context to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * If `ctxt` is NULL, then RelaxNG schema validation is deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param ctxt  the RelaxNG schema validation context or NULL
+ * @param options  options (not used yet)
  * @returns 0 in case the schemas validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4412,13 +4342,12 @@ xmlTextReaderRelaxNGValidateCtxt(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param rng  the path to a RelaxNG schema or NULL
- *
  * Use RelaxNG schema to validate the document as it is processed.
  * Activation is only possible before the first Read().
  * If `rng` is NULL, then RelaxNG schema validation is deactivated.
  *
+ * @param reader  the xmlTextReaderPtr used
+ * @param rng  the path to a RelaxNG schema or NULL
  * @returns 0 in case the schemas validation could be (de)activated and
  *         -1 in case of error.
  */
@@ -4430,11 +4359,10 @@ xmlTextReaderRelaxNGValidate(xmlTextReaderPtr reader, const char *rng)
 #endif /* LIBXML_RELAXNG_ENABLED */
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Determine whether the current node is a namespace declaration
  * rather than a regular attribute.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the current node is a namespace declaration, 0 if it
  * is a regular attribute or other type of node, or -1 in case of
  * error.
@@ -4458,10 +4386,9 @@ xmlTextReaderIsNamespaceDecl(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Determine the XML version of the document being read.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns a string containing the XML version of the document or NULL
  * in case of error.  The string is deallocated with the reader.
  */
@@ -4484,10 +4411,9 @@ xmlTextReaderConstXmlVersion(xmlTextReaderPtr reader) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Determine the standalone status of the document being read.
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns 1 if the document was declared to be standalone, 0 if it
  * was declared to be not standalone, or -1 if the document did not
  * specify its standalone status or in case of error.
@@ -4514,10 +4440,9 @@ xmlTextReaderStandalone(xmlTextReaderPtr reader) {
  ************************************************************************/
 
 /**
- * @param locator  the xmlTextReaderLocatorPtr used
- *
  * Obtain the line number for the given locator.
  *
+ * @param locator  the xmlTextReaderLocatorPtr used
  * @returns the line number or -1 in case of error.
  */
 int
@@ -4549,10 +4474,9 @@ xmlTextReaderLocatorLineNumber(xmlTextReaderLocatorPtr locator) {
 }
 
 /**
- * @param locator  the xmlTextReaderLocatorPtr used
- *
  * Obtain the base URI for the given locator.
  *
+ * @param locator  the xmlTextReaderLocatorPtr used
  * @returns the base URI or NULL in case of error,
  *    if non NULL it need to be freed by the caller.
  */
@@ -4585,15 +4509,14 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- * @param f  	the callback function to call on error and warnings
- * @param arg  a user argument to pass to the callback function
+ * Register a callback function that will be called on error and warnings.
  *
  * @deprecated Use xmlTextReaderSetStructuredErrorHandler().
  *
- * Register a callback function that will be called on error and warnings.
- *
  * If `f` is NULL, the default error and warning handlers are restored.
+ * @param reader  the xmlTextReaderPtr used
+ * @param f  	the callback function to call on error and warnings
+ * @param arg  a user argument to pass to the callback function
  */
 void
 xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
@@ -4643,13 +4566,13 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
 
 /**
 * xmlTextReaderSetStructuredErrorHandler:
- * @param reader  the xmlTextReaderPtr used
- * @param f  	the callback function to call on error and warnings
- * @param arg  a user argument to pass to the callback function
  *
  * Register a callback function that will be called on error and warnings.
  *
  * If `f` is NULL, the default error and warning handlers are restored.
+ * @param reader  the xmlTextReaderPtr used
+ * @param f  	the callback function to call on error and warnings
+ * @param arg  a user argument to pass to the callback function
  */
 void
 xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
@@ -4698,11 +4621,11 @@ xmlTextReaderSetStructuredErrorHandler(xmlTextReaderPtr reader,
 }
 
 /**
+ * Retrieve the error callback function and user argument.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param f  	the callback function or NULL is no callback has been registered
  * @param arg  a user argument
- *
- * Retrieve the error callback function and user argument.
  */
 void
 xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
@@ -4715,14 +4638,13 @@ xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  thr reader
- * @param loader  resource loader
- * @param data  user data which will be passed to the loader
- *
  * Register a callback function that will be called to load external
  * resources like entities.
  *
  * @since 2.14.0
+ * @param reader  thr reader
+ * @param loader  resource loader
+ * @param data  user data which will be passed to the loader
  */
 void
 xmlTextReaderSetResourceLoader(xmlTextReaderPtr reader,
@@ -4737,10 +4659,9 @@ xmlTextReaderSetResourceLoader(xmlTextReaderPtr reader,
 }
 
 /**
- * @param reader  the xmlTextReaderPtr used
- *
  * Retrieve the validity status from the parser context
  *
+ * @param reader  the xmlTextReaderPtr used
  * @returns the flag value 1 if valid, 0 if no, and -1 in case of error
  */
 int
@@ -4768,15 +4689,14 @@ xmlTextReaderIsValid(xmlTextReaderPtr reader)
  ************************************************************************/
 
 /**
+ * Setup an XML reader with new options
+ *
  * @param reader  an XML reader
  * @param input  xmlParserInputBufferPtr used to feed the reader, will
  *         be destroyed with it.
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Setup an XML reader with new options
- *
  * @returns 0 in case of success and -1 in case of error.
  */
 int
@@ -4966,10 +4886,10 @@ xmlTextReaderSetup(xmlTextReaderPtr reader,
 }
 
 /**
+ * Set the maximum amplification factor. See xmlCtxtSetMaxAmplification().
+ *
  * @param reader  an XML reader
  * @param maxAmpl  maximum amplification factor
- *
- * Set the maximum amplification factor. See xmlCtxtSetMaxAmplification().
  */
 void
 xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader, unsigned maxAmpl)
@@ -4980,10 +4900,9 @@ xmlTextReaderSetMaxAmplification(xmlTextReaderPtr reader, unsigned maxAmpl)
 }
 
 /**
- * @param reader  an XML reader
- *
  * @since 2.13.0
  *
+ * @param reader  an XML reader
  * @returns the last error.
  */
 const xmlError *
@@ -4995,18 +4914,17 @@ xmlTextReaderGetLastError(xmlTextReaderPtr reader)
 }
 
 /**
- * @param reader  an XML reader
- *
- * @deprecated The returned value is mostly random and useless.
- * It reflects the parser reading ahead and is in no way related to
- * the current node.
- *
  * This function provides the current index of the parser used
  * by the reader, relative to the start of the current entity.
  * This function actually just wraps a call to xmlBytesConsumed()
  * for the parser context associated with the reader.
  * See xmlBytesConsumed() for more information.
  *
+ * @deprecated The returned value is mostly random and useless.
+ * It reflects the parser reading ahead and is in no way related to
+ * the current node.
+ *
+ * @param reader  an XML reader
  * @returns the index in bytes from the beginning of the entity or -1
  *         in case the index could not be computed.
  */
@@ -5024,10 +4942,9 @@ xmlTextReaderByteConsumed(xmlTextReaderPtr reader) {
 
 
 /**
- * @param doc  a preparsed document
- *
  * Create an xmltextReader for a preparsed document.
  *
+ * @param doc  a preparsed document
  * @returns the new reader or NULL in case of error.
  */
 xmlTextReaderPtr
@@ -5058,14 +4975,13 @@ xmlReaderWalker(xmlDocPtr doc)
 }
 
 /**
+ * Create an xmltextReader for an XML in-memory document.
+ * The parsing flags `options` are a combination of xmlParserOption.
+ *
  * @param cur  a pointer to a zero terminated string
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Create an xmltextReader for an XML in-memory document.
- * The parsing flags `options` are a combination of xmlParserOption.
- *
  * @returns the new reader or NULL in case of error.
  */
 xmlTextReaderPtr
@@ -5083,13 +4999,12 @@ xmlReaderForDoc(const xmlChar * cur, const char *URL, const char *encoding,
 }
 
 /**
- * @param filename  a file or URL
- * @param encoding  the document encoding, or NULL
- * @param options  a combination of xmlParserOption
- *
  * parse an XML file from the filesystem or the network.
  * The parsing flags `options` are a combination of xmlParserOption.
  *
+ * @param filename  a file or URL
+ * @param encoding  the document encoding, or NULL
+ * @param options  a combination of xmlParserOption
  * @returns the new reader or NULL in case of error.
  */
 xmlTextReaderPtr
@@ -5108,15 +5023,14 @@ xmlReaderForFile(const char *filename, const char *encoding, int options)
 }
 
 /**
+ * Create an xmltextReader for an XML in-memory document.
+ * The parsing flags `options` are a combination of xmlParserOption.
+ *
  * @param buffer  a pointer to a char array
  * @param size  the size of the array
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Create an xmltextReader for an XML in-memory document.
- * The parsing flags `options` are a combination of xmlParserOption.
- *
  * @returns the new reader or NULL in case of error.
  */
 xmlTextReaderPtr
@@ -5144,16 +5058,15 @@ xmlReaderForMemory(const char *buffer, int size, const char *URL,
 }
 
 /**
- * @param fd  an open file descriptor
- * @param URL  the base URL to use for the document
- * @param encoding  the document encoding, or NULL
- * @param options  a combination of xmlParserOption
- *
  * Create an xmltextReader for an XML from a file descriptor.
  * The parsing flags `options` are a combination of xmlParserOption.
  * NOTE that the file descriptor will not be closed when the
  *      reader is closed or reset.
  *
+ * @param fd  an open file descriptor
+ * @param URL  the base URL to use for the document
+ * @param encoding  the document encoding, or NULL
+ * @param options  a combination of xmlParserOption
  * @returns the new reader or NULL in case of error.
  */
 xmlTextReaderPtr
@@ -5199,16 +5112,15 @@ xmlReaderForFd(int fd, const char *URL, const char *encoding, int options)
 }
 
 /**
+ * Create an xmltextReader for an XML document from I/O functions and source.
+ * The parsing flags `options` are a combination of xmlParserOption.
+ *
  * @param ioread  an I/O read function
  * @param ioclose  an I/O close function
  * @param ioctx  an I/O handler
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Create an xmltextReader for an XML document from I/O functions and source.
- * The parsing flags `options` are a combination of xmlParserOption.
- *
  * @returns the new reader or NULL in case of error.
  */
 xmlTextReaderPtr
@@ -5243,12 +5155,11 @@ xmlReaderForIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
 }
 
 /**
- * @param reader  an XML reader
- * @param doc  a preparsed document
- *
  * Setup an xmltextReader to parse a preparsed XML document.
  * This reuses the existing `reader` xmlTextReader.
  *
+ * @param reader  an XML reader
+ * @param doc  a preparsed document
  * @returns 0 in case of success and -1 in case of error
  */
 int
@@ -5286,16 +5197,15 @@ xmlReaderNewWalker(xmlTextReaderPtr reader, xmlDocPtr doc)
 }
 
 /**
+ * Setup an xmltextReader to parse an XML in-memory document.
+ * The parsing flags `options` are a combination of xmlParserOption.
+ * This reuses the existing `reader` xmlTextReader.
+ *
  * @param reader  an XML reader
  * @param cur  a pointer to a zero terminated string
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Setup an xmltextReader to parse an XML in-memory document.
- * The parsing flags `options` are a combination of xmlParserOption.
- * This reuses the existing `reader` xmlTextReader.
- *
  * @returns 0 in case of success and -1 in case of error
  */
 int
@@ -5316,15 +5226,14 @@ xmlReaderNewDoc(xmlTextReaderPtr reader, const xmlChar * cur,
 }
 
 /**
- * @param reader  an XML reader
- * @param filename  a file or URL
- * @param encoding  the document encoding, or NULL
- * @param options  a combination of xmlParserOption
- *
  * parse an XML file from the filesystem or the network.
  * The parsing flags `options` are a combination of xmlParserOption.
  * This reuses the existing `reader` xmlTextReader.
  *
+ * @param reader  an XML reader
+ * @param filename  a file or URL
+ * @param encoding  the document encoding, or NULL
+ * @param options  a combination of xmlParserOption
  * @returns 0 in case of success and -1 in case of error
  */
 int
@@ -5372,17 +5281,16 @@ xmlReaderNewFile(xmlTextReaderPtr reader, const char *filename,
 }
 
 /**
+ * Setup an xmltextReader to parse an XML in-memory document.
+ * The parsing flags `options` are a combination of xmlParserOption.
+ * This reuses the existing `reader` xmlTextReader.
+ *
  * @param reader  an XML reader
  * @param buffer  a pointer to a char array
  * @param size  the size of the array
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Setup an xmltextReader to parse an XML in-memory document.
- * The parsing flags `options` are a combination of xmlParserOption.
- * This reuses the existing `reader` xmlTextReader.
- *
  * @returns 0 in case of success and -1 in case of error
  */
 int
@@ -5405,18 +5313,17 @@ xmlReaderNewMemory(xmlTextReaderPtr reader, const char *buffer, int size,
 }
 
 /**
- * @param reader  an XML reader
- * @param fd  an open file descriptor
- * @param URL  the base URL to use for the document
- * @param encoding  the document encoding, or NULL
- * @param options  a combination of xmlParserOption
- *
  * Setup an xmltextReader to parse an XML from a file descriptor.
  * NOTE that the file descriptor will not be closed when the
  *      reader is closed or reset.
  * The parsing flags `options` are a combination of xmlParserOption.
  * This reuses the existing `reader` xmlTextReader.
  *
+ * @param reader  an XML reader
+ * @param fd  an open file descriptor
+ * @param URL  the base URL to use for the document
+ * @param encoding  the document encoding, or NULL
+ * @param options  a combination of xmlParserOption
  * @returns 0 in case of success and -1 in case of error
  */
 int
@@ -5455,6 +5362,11 @@ xmlReaderNewFd(xmlTextReaderPtr reader, int fd,
 }
 
 /**
+ * Setup an xmltextReader to parse an XML document from I/O functions
+ * and source.
+ * The parsing flags `options` are a combination of xmlParserOption.
+ * This reuses the existing `reader` xmlTextReader.
+ *
  * @param reader  an XML reader
  * @param ioread  an I/O read function
  * @param ioclose  an I/O close function
@@ -5462,12 +5374,6 @@ xmlReaderNewFd(xmlTextReaderPtr reader, int fd,
  * @param URL  the base URL to use for the document
  * @param encoding  the document encoding, or NULL
  * @param options  a combination of xmlParserOption
- *
- * Setup an xmltextReader to parse an XML document from I/O functions
- * and source.
- * The parsing flags `options` are a combination of xmlParserOption.
- * This reuses the existing `reader` xmlTextReader.
- *
  * @returns 0 in case of success and -1 in case of error
  */
 int

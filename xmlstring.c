@@ -40,11 +40,10 @@
  ************************************************************************/
 
 /**
- * @param cur  the input xmlChar *
- * @param len  the len of `cur`
- *
  * a strndup for array of xmlChar's
  *
+ * @param cur  the input xmlChar *
+ * @param len  the len of `cur`
  * @returns a new xmlChar * or NULL
  */
 xmlChar *
@@ -62,12 +61,11 @@ xmlStrndup(const xmlChar *cur, int len) {
 }
 
 /**
- * @param cur  the input xmlChar *
- *
  * a strdup for array of xmlChar's. Since they are supposed to be
  * encoded in UTF-8 or an encoding with 8bit based chars, we assume
  * a termination mark of '0'.
  *
+ * @param cur  the input xmlChar *
  * @returns a new xmlChar * or NULL
  */
 xmlChar *
@@ -80,11 +78,10 @@ xmlStrdup(const xmlChar *cur) {
 }
 
 /**
- * @param cur  the input char *
- * @param len  the len of `cur`
- *
  * a strndup for char's to xmlChar's
  *
+ * @param cur  the input char *
+ * @param len  the len of `cur`
  * @returns a new xmlChar * or NULL
  */
 
@@ -108,10 +105,9 @@ xmlCharStrndup(const char *cur, int len) {
 }
 
 /**
- * @param cur  the input char *
- *
  * a strdup for char's to xmlChar's
  *
+ * @param cur  the input char *
  * @returns a new xmlChar * or NULL
  */
 
@@ -125,11 +121,10 @@ xmlCharStrdup(const char *cur) {
 }
 
 /**
- * @param str1  the first xmlChar *
- * @param str2  the second xmlChar *
- *
  * a strcmp for xmlChar's
  *
+ * @param str1  the first xmlChar *
+ * @param str2  the second xmlChar *
  * @returns the integer result of the comparison
  */
 
@@ -150,12 +145,11 @@ xmlStrcmp(const xmlChar *str1, const xmlChar *str2) {
 }
 
 /**
- * @param str1  the first xmlChar *
- * @param str2  the second xmlChar *
- *
  * Check if both strings are equal of have same content.
  * Should be a bit more readable and faster than xmlStrcmp()
  *
+ * @param str1  the first xmlChar *
+ * @param str2  the second xmlChar *
  * @returns 1 if they are equal, 0 if they are different
  */
 
@@ -175,12 +169,11 @@ xmlStrEqual(const xmlChar *str1, const xmlChar *str2) {
 }
 
 /**
+ * Check if a QName is Equal to a given string
+ *
  * @param pref  the prefix of the QName
  * @param name  the localname of the QName
  * @param str  the second xmlChar *
- *
- * Check if a QName is Equal to a given string
- *
  * @returns 1 if they are equal, 0 if they are different
  */
 
@@ -201,12 +194,11 @@ xmlStrQEqual(const xmlChar *pref, const xmlChar *name, const xmlChar *str) {
 }
 
 /**
+ * a strncmp for xmlChar's
+ *
  * @param str1  the first xmlChar *
  * @param str2  the second xmlChar *
  * @param len  the max comparison length
- *
- * a strncmp for xmlChar's
- *
  * @returns the integer result of the comparison
  */
 
@@ -263,11 +255,10 @@ static const xmlChar casemap[256] = {
 };
 
 /**
- * @param str1  the first xmlChar *
- * @param str2  the second xmlChar *
- *
  * a strcasecmp for xmlChar's
  *
+ * @param str1  the first xmlChar *
+ * @param str2  the second xmlChar *
  * @returns the integer result of the comparison
  */
 
@@ -286,12 +277,11 @@ xmlStrcasecmp(const xmlChar *str1, const xmlChar *str2) {
 }
 
 /**
+ * a strncasecmp for xmlChar's
+ *
  * @param str1  the first xmlChar *
  * @param str2  the second xmlChar *
  * @param len  the max comparison length
- *
- * a strncasecmp for xmlChar's
- *
  * @returns the integer result of the comparison
  */
 
@@ -311,11 +301,10 @@ xmlStrncasecmp(const xmlChar *str1, const xmlChar *str2, int len) {
 }
 
 /**
- * @param str  the xmlChar * array
- * @param val  the xmlChar to search
- *
  * a strchr for xmlChar's
  *
+ * @param str  the xmlChar * array
+ * @param val  the xmlChar to search
  * @returns the xmlChar * for the first occurrence or NULL.
  */
 
@@ -330,11 +319,10 @@ xmlStrchr(const xmlChar *str, xmlChar val) {
 }
 
 /**
- * @param str  the xmlChar * array (haystack)
- * @param val  the xmlChar to search (needle)
- *
  * a strstr for xmlChar's
  *
+ * @param str  the xmlChar * array (haystack)
+ * @param val  the xmlChar to search (needle)
  * @returns the xmlChar * for the first occurrence or NULL.
  */
 
@@ -357,11 +345,10 @@ xmlStrstr(const xmlChar *str, const xmlChar *val) {
 }
 
 /**
- * @param str  the xmlChar * array (haystack)
- * @param val  the xmlChar to search (needle)
- *
  * a case-ignoring strstr for xmlChar's
  *
+ * @param str  the xmlChar * array (haystack)
+ * @param val  the xmlChar to search (needle)
  * @returns the xmlChar * for the first occurrence or NULL.
  */
 
@@ -383,12 +370,11 @@ xmlStrcasestr(const xmlChar *str, const xmlChar *val) {
 }
 
 /**
+ * Extract a substring of a given string
+ *
  * @param str  the xmlChar * array (haystack)
  * @param start  the index of the first char (zero based)
  * @param len  the length of the substring
- *
- * Extract a substring of a given string
- *
  * @returns the xmlChar * for the first occurrence or NULL.
  */
 
@@ -409,10 +395,9 @@ xmlStrsub(const xmlChar *str, int start, int len) {
 }
 
 /**
- * @param str  the xmlChar * array
- *
  * length of a xmlChar's string
  *
+ * @param str  the xmlChar * array
  * @returns the number of xmlChar contained in the ARRAY.
  */
 
@@ -423,14 +408,13 @@ xmlStrlen(const xmlChar *str) {
 }
 
 /**
- * @param cur  the original xmlChar * array
- * @param add  the xmlChar * array added
- * @param len  the length of `add`
- *
  * a strncat for array of xmlChar's, it will extend `cur` with the len
  * first bytes of `add`. Note that if `len` < 0 then this is an API error
  * and NULL will be returned.
  *
+ * @param cur  the original xmlChar * array
+ * @param add  the xmlChar * array added
+ * @param len  the length of `add`
  * @returns a new xmlChar *, the original `cur` is reallocated and should
  * not be freed.
  */
@@ -461,14 +445,13 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
 }
 
 /**
- * @param str1  first xmlChar string
- * @param str2  second xmlChar string
- * @param len  the len of `str2` or < 0
- *
  * same as xmlStrncat(), but creates a new string.  The original
  * two strings are not freed. If `len` is < 0 then the length
  * will be calculated automatically.
  *
+ * @param str1  first xmlChar string
+ * @param str2  second xmlChar string
+ * @param len  the len of `str2` or < 0
  * @returns a new xmlChar * or NULL
  */
 xmlChar *
@@ -499,13 +482,12 @@ xmlStrncatNew(const xmlChar *str1, const xmlChar *str2, int len) {
 }
 
 /**
- * @param cur  the original xmlChar * array
- * @param add  the xmlChar * array added
- *
  * a strcat for array of xmlChar's. Since they are supposed to be
  * encoded in UTF-8 or an encoding with 8bit based chars, we assume
  * a termination mark of '0'.
  *
+ * @param cur  the original xmlChar * array
+ * @param add  the xmlChar * array added
  * @returns a new xmlChar * containing the concatenated string. The original
  * `cur` is reallocated and should not be freed.
  */
@@ -522,13 +504,13 @@ xmlStrcat(xmlChar *cur, const xmlChar *add) {
 }
 
 /**
+ * Formats `msg` and places result into `buf`.
+ *
+ * @...:   extra parameters for the message.
+ *
  * @param buf  the result buffer.
  * @param len  the result buffer length.
  * @param msg  the message with printf formatting.
- * @...:   extra parameters for the message.
- *
- * Formats `msg` and places result into `buf`.
- *
  * @returns the number of characters written to `buf` or -1 if an error occurs.
  */
 int
@@ -549,13 +531,12 @@ xmlStrPrintf(xmlChar *buf, int len, const char *msg, ...) {
 }
 
 /**
+ * Formats `msg` and places result into `buf`.
+ *
  * @param buf  the result buffer.
  * @param len  the result buffer length.
  * @param msg  the message with printf formatting.
  * @param ap  extra parameters for the message.
- *
- * Formats `msg` and places result into `buf`.
- *
  * @returns the number of characters written to `buf` or -1 if an error occurs.
  */
 int
@@ -573,13 +554,12 @@ xmlStrVPrintf(xmlChar *buf, int len, const char *msg, va_list ap) {
 }
 
 /**
+ * Creates a newly allocated string according to format.
+ *
  * @param out  pointer to the resulting string
  * @param maxSize  maximum size of the output buffer
  * @param msg  printf format string
  * @param ap  arguments for format string
- *
- * Creates a newly allocated string according to format.
- *
  * @returns 0 on success, 1 if the result was truncated or on other
  * errors, -1 if a memory allocation failed.
  */
@@ -690,13 +670,13 @@ xmlStrVASPrintf(xmlChar **out, int maxSize, const char *msg, va_list ap) {
 }
 
 /**
+ * See xmlStrVASPrintf().
+ *
+ * @...:  arguments for format string
+ *
  * @param out  pointer to the resulting string
  * @param maxSize  maximum size of the output buffer
  * @param msg  printf format string
- * @...:  arguments for format string
- *
- * See xmlStrVASPrintf().
- *
  * @returns 0 on success, 1 if the result was truncated or on other
  * errors, -1 if a memory allocation failed.
  */
@@ -729,10 +709,9 @@ xmlStrASPrintf(xmlChar **out, int maxSize, const char *msg, ...) {
 
 
 /**
- * @param utf  pointer to the UTF8 character
- *
  * calculates the internal size of a UTF8 character
  *
+ * @param utf  pointer to the UTF8 character
  * @returns the numbers of bytes in the character, -1 on format error
  */
 int
@@ -758,11 +737,10 @@ xmlUTF8Size(const xmlChar *utf) {
 }
 
 /**
- * @param utf1  pointer to first UTF8 char
- * @param utf2  pointer to second UTF8 char
- *
  * compares the two UCS4 values
  *
+ * @param utf1  pointer to first UTF8 char
+ * @param utf2  pointer to second UTF8 char
  * @returns result of the compare as with xmlStrncmp()
  */
 int
@@ -777,11 +755,10 @@ xmlUTF8Charcmp(const xmlChar *utf1, const xmlChar *utf2) {
 }
 
 /**
- * @param utf  a sequence of UTF-8 encoded bytes
- *
  * compute the length of an UTF8 string, it doesn't do a full UTF8
  * checking of the content of the string.
  *
+ * @param utf  a sequence of UTF-8 encoded bytes
  * @returns the number of characters in the string or -1 in case of error
  */
 int
@@ -817,13 +794,12 @@ xmlUTF8Strlen(const xmlChar *utf) {
 }
 
 /**
+ * Read the first UTF8 character from `utf`
+ *
  * @param utf  a sequence of UTF-8 encoded bytes
  * @param len  a pointer to the minimum number of bytes present in
  *        the sequence.  This is used to assure the next character
  *        is completely contained within the sequence.
- *
- * Read the first UTF8 character from `utf`
- *
  * @returns the char value or -1 in case of error, and sets *len to
  *        the actual number of bytes consumed (0 in case of error)
  */
@@ -886,8 +862,6 @@ error:
 }
 
 /**
- * @param utf  Pointer to putative UTF-8 encoded string.
- *
  * Checks `utf` for being valid UTF-8. `utf` is assumed to be
  * null-terminated. This function is not super-strict, as it will
  * allow longer UTF-8 sequences than necessary. Note that Java is
@@ -895,6 +869,7 @@ error:
  * routine checks for the 4-byte maximum size, but does not check for
  * 0x10ffff maximum value.
  *
+ * @param utf  Pointer to putative UTF-8 encoded string.
  * @returns value: true if `utf` is valid.
  **/
 int
@@ -940,12 +915,11 @@ xmlCheckUTF8(const unsigned char *utf)
 }
 
 /**
- * @param utf  a sequence of UTF-8 encoded bytes
- * @param len  the number of characters in the array
- *
  * storage size of an UTF8 string
  * the behaviour is not guaranteed if the input string is not UTF-8
  *
+ * @param utf  a sequence of UTF-8 encoded bytes
+ * @param len  the number of characters in the array
  * @returns the storage size of
  * the first 'len' characters of ARRAY
  */
@@ -978,11 +952,10 @@ xmlUTF8Strsize(const xmlChar *utf, int len) {
 
 
 /**
- * @param utf  the input UTF8 *
- * @param len  the len of `utf` (in chars)
- *
  * a strndup for array of UTF8's
  *
+ * @param utf  the input UTF8 *
+ * @param len  the len of `utf` (in chars)
  * @returns a new UTF8 * or NULL
  */
 xmlChar *
@@ -1002,12 +975,11 @@ xmlUTF8Strndup(const xmlChar *utf, int len) {
 }
 
 /**
- * @param utf  the input UTF8 *
- * @param pos  the position of the desired UTF8 char (in chars)
- *
  * a function to provide the equivalent of fetching a
  * character from a string array
  *
+ * @param utf  the input UTF8 *
+ * @param pos  the position of the desired UTF8 char (in chars)
  * @returns a pointer to the UTF8 character or NULL
  */
 const xmlChar *
@@ -1035,11 +1007,10 @@ xmlUTF8Strpos(const xmlChar *utf, int pos) {
 }
 
 /**
- * @param utf  the input UTF8 *
- * @param utfchar  the UTF8 character to be found
- *
  * a function to provide the relative location of a UTF8 char
  *
+ * @param utf  the input UTF8 *
+ * @param utfchar  the UTF8 character to be found
  * @returns the relative character position of the desired char
  * or -1 if not found
  */
@@ -1069,13 +1040,12 @@ xmlUTF8Strloc(const xmlChar *utf, const xmlChar *utfchar) {
     return(-1);
 }
 /**
- * @param utf  a sequence of UTF-8 encoded bytes
- * @param start  relative pos of first char
- * @param len  total number to copy
- *
  * Create a substring from a given UTF-8 string
  * Note:  positions are given in units of UTF-8 chars
  *
+ * @param utf  a sequence of UTF-8 encoded bytes
+ * @param start  relative pos of first char
+ * @param len  total number to copy
  * @returns a pointer to a newly created string or NULL if the
  * start index is out of bounds or a memory allocation failed.
  * If len is too large, the result is truncated.
@@ -1112,11 +1082,11 @@ xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
 }
 
 /**
+ * Replaces the string pointed to by 'msg' with an escaped string.
+ *
  * @param msg  a pointer to the string in which to escape '%' characters.
  * Must be a heap-allocated buffer created by libxml2 that may be
  * returned, or that may be freed and replaced.
- *
- * Replaces the string pointed to by 'msg' with an escaped string.
  * @returns the same string with all '%' characters escaped.
  */
 xmlChar *

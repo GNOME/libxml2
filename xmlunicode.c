@@ -763,11 +763,10 @@ static const xmlChSRange xmlZS[] = {{0x20, 0x20}, {0xa0, 0xa0},
 static const xmlChRangeGroup xmlZG = {9,0,xmlZS,NULL};
 
 /**
- * @param tptr  pointer to the name table
- * @param tname  name to be found
- *
  * binary table lookup for user-supplied name
  *
+ * @param tptr  pointer to the name table
+ * @param tname  name to be found
  * @returns pointer to range function if found, otherwise NULL
  */
 static xmlIntFunc
@@ -794,10 +793,9 @@ static xmlIntFunc
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of AegeanNumbers UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -806,10 +804,9 @@ xmlUCSIsAegeanNumbers(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of AlphabeticPresentationForms UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -818,10 +815,9 @@ xmlUCSIsAlphabeticPresentationForms(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Arabic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -830,10 +826,9 @@ xmlUCSIsArabic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of ArabicPresentationForms-A UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -842,10 +837,9 @@ xmlUCSIsArabicPresentationFormsA(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of ArabicPresentationForms-B UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -854,10 +848,9 @@ xmlUCSIsArabicPresentationFormsB(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Armenian UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -866,10 +859,9 @@ xmlUCSIsArmenian(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Arrows UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -878,10 +870,9 @@ xmlUCSIsArrows(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of BasicLatin UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -890,10 +881,9 @@ xmlUCSIsBasicLatin(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Bengali UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -902,10 +892,9 @@ xmlUCSIsBengali(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of BlockElements UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -914,10 +903,9 @@ xmlUCSIsBlockElements(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Bopomofo UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -926,10 +914,9 @@ xmlUCSIsBopomofo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of BopomofoExtended UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -938,10 +925,9 @@ xmlUCSIsBopomofoExtended(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of BoxDrawing UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -950,10 +936,9 @@ xmlUCSIsBoxDrawing(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of BraillePatterns UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -962,10 +947,9 @@ xmlUCSIsBraillePatterns(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Buhid UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -974,10 +958,9 @@ xmlUCSIsBuhid(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of ByzantineMusicalSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -986,10 +969,9 @@ xmlUCSIsByzantineMusicalSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKCompatibility UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -998,10 +980,9 @@ xmlUCSIsCJKCompatibility(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKCompatibilityForms UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1010,10 +991,9 @@ xmlUCSIsCJKCompatibilityForms(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKCompatibilityIdeographs UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1022,10 +1002,9 @@ xmlUCSIsCJKCompatibilityIdeographs(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKCompatibilityIdeographsSupplement UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1034,10 +1013,9 @@ xmlUCSIsCJKCompatibilityIdeographsSupplement(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKRadicalsSupplement UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1046,10 +1024,9 @@ xmlUCSIsCJKRadicalsSupplement(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKSymbolsandPunctuation UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1058,10 +1035,9 @@ xmlUCSIsCJKSymbolsandPunctuation(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKUnifiedIdeographs UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1070,10 +1046,9 @@ xmlUCSIsCJKUnifiedIdeographs(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKUnifiedIdeographsExtensionA UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1082,10 +1057,9 @@ xmlUCSIsCJKUnifiedIdeographsExtensionA(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CJKUnifiedIdeographsExtensionB UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1094,10 +1068,9 @@ xmlUCSIsCJKUnifiedIdeographsExtensionB(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Cherokee UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1106,10 +1079,9 @@ xmlUCSIsCherokee(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CombiningDiacriticalMarks UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1118,10 +1090,9 @@ xmlUCSIsCombiningDiacriticalMarks(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CombiningDiacriticalMarksforSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1130,10 +1101,9 @@ xmlUCSIsCombiningDiacriticalMarksforSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CombiningHalfMarks UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1142,10 +1112,9 @@ xmlUCSIsCombiningHalfMarks(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CombiningMarksforSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1154,10 +1123,9 @@ xmlUCSIsCombiningMarksforSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of ControlPictures UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1166,10 +1134,9 @@ xmlUCSIsControlPictures(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CurrencySymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1178,10 +1145,9 @@ xmlUCSIsCurrencySymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CypriotSyllabary UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1190,10 +1156,9 @@ xmlUCSIsCypriotSyllabary(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Cyrillic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1202,10 +1167,9 @@ xmlUCSIsCyrillic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of CyrillicSupplement UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1214,10 +1178,9 @@ xmlUCSIsCyrillicSupplement(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Deseret UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1226,10 +1189,9 @@ xmlUCSIsDeseret(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Devanagari UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1238,10 +1200,9 @@ xmlUCSIsDevanagari(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Dingbats UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1250,10 +1211,9 @@ xmlUCSIsDingbats(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of EnclosedAlphanumerics UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1262,10 +1222,9 @@ xmlUCSIsEnclosedAlphanumerics(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of EnclosedCJKLettersandMonths UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1274,10 +1233,9 @@ xmlUCSIsEnclosedCJKLettersandMonths(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Ethiopic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1286,10 +1244,9 @@ xmlUCSIsEthiopic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of GeneralPunctuation UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1298,10 +1255,9 @@ xmlUCSIsGeneralPunctuation(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of GeometricShapes UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1310,10 +1266,9 @@ xmlUCSIsGeometricShapes(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Georgian UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1322,10 +1277,9 @@ xmlUCSIsGeorgian(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Gothic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1334,10 +1288,9 @@ xmlUCSIsGothic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Greek UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1346,10 +1299,9 @@ xmlUCSIsGreek(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of GreekExtended UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1358,10 +1310,9 @@ xmlUCSIsGreekExtended(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of GreekandCoptic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1370,10 +1321,9 @@ xmlUCSIsGreekandCoptic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Gujarati UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1382,10 +1332,9 @@ xmlUCSIsGujarati(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Gurmukhi UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1394,10 +1343,9 @@ xmlUCSIsGurmukhi(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of HalfwidthandFullwidthForms UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1406,10 +1354,9 @@ xmlUCSIsHalfwidthandFullwidthForms(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of HangulCompatibilityJamo UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1418,10 +1365,9 @@ xmlUCSIsHangulCompatibilityJamo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of HangulJamo UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1430,10 +1376,9 @@ xmlUCSIsHangulJamo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of HangulSyllables UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1442,10 +1387,9 @@ xmlUCSIsHangulSyllables(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Hanunoo UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1454,10 +1398,9 @@ xmlUCSIsHanunoo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Hebrew UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1466,10 +1409,9 @@ xmlUCSIsHebrew(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of HighPrivateUseSurrogates UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1478,10 +1420,9 @@ xmlUCSIsHighPrivateUseSurrogates(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of HighSurrogates UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1490,10 +1431,9 @@ xmlUCSIsHighSurrogates(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Hiragana UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1502,10 +1442,9 @@ xmlUCSIsHiragana(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of IPAExtensions UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1514,10 +1453,9 @@ xmlUCSIsIPAExtensions(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of IdeographicDescriptionCharacters UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1526,10 +1464,9 @@ xmlUCSIsIdeographicDescriptionCharacters(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Kanbun UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1538,10 +1475,9 @@ xmlUCSIsKanbun(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of KangxiRadicals UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1550,10 +1486,9 @@ xmlUCSIsKangxiRadicals(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Kannada UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1562,10 +1497,9 @@ xmlUCSIsKannada(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Katakana UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1574,10 +1508,9 @@ xmlUCSIsKatakana(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of KatakanaPhoneticExtensions UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1586,10 +1519,9 @@ xmlUCSIsKatakanaPhoneticExtensions(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Khmer UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1598,10 +1530,9 @@ xmlUCSIsKhmer(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of KhmerSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1610,10 +1541,9 @@ xmlUCSIsKhmerSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Lao UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1622,10 +1552,9 @@ xmlUCSIsLao(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Latin-1Supplement UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1634,10 +1563,9 @@ xmlUCSIsLatin1Supplement(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LatinExtended-A UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1646,10 +1574,9 @@ xmlUCSIsLatinExtendedA(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LatinExtended-B UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1658,10 +1585,9 @@ xmlUCSIsLatinExtendedB(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LatinExtendedAdditional UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1670,10 +1596,9 @@ xmlUCSIsLatinExtendedAdditional(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LetterlikeSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1682,10 +1607,9 @@ xmlUCSIsLetterlikeSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Limbu UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1694,10 +1618,9 @@ xmlUCSIsLimbu(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LinearBIdeograms UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1706,10 +1629,9 @@ xmlUCSIsLinearBIdeograms(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LinearBSyllabary UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1718,10 +1640,9 @@ xmlUCSIsLinearBSyllabary(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of LowSurrogates UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1730,10 +1651,9 @@ xmlUCSIsLowSurrogates(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Malayalam UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1742,10 +1662,9 @@ xmlUCSIsMalayalam(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MathematicalAlphanumericSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1754,10 +1673,9 @@ xmlUCSIsMathematicalAlphanumericSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MathematicalOperators UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1766,10 +1684,9 @@ xmlUCSIsMathematicalOperators(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MiscellaneousMathematicalSymbols-A UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1778,10 +1695,9 @@ xmlUCSIsMiscellaneousMathematicalSymbolsA(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MiscellaneousMathematicalSymbols-B UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1790,10 +1706,9 @@ xmlUCSIsMiscellaneousMathematicalSymbolsB(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MiscellaneousSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1802,10 +1717,9 @@ xmlUCSIsMiscellaneousSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MiscellaneousSymbolsandArrows UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1814,10 +1728,9 @@ xmlUCSIsMiscellaneousSymbolsandArrows(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MiscellaneousTechnical UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1826,10 +1739,9 @@ xmlUCSIsMiscellaneousTechnical(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Mongolian UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1838,10 +1750,9 @@ xmlUCSIsMongolian(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of MusicalSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1850,10 +1761,9 @@ xmlUCSIsMusicalSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Myanmar UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1862,10 +1772,9 @@ xmlUCSIsMyanmar(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of NumberForms UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1874,10 +1783,9 @@ xmlUCSIsNumberForms(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Ogham UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1886,10 +1794,9 @@ xmlUCSIsOgham(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of OldItalic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1898,10 +1805,9 @@ xmlUCSIsOldItalic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of OpticalCharacterRecognition UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1910,10 +1816,9 @@ xmlUCSIsOpticalCharacterRecognition(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Oriya UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1922,10 +1827,9 @@ xmlUCSIsOriya(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Osmanya UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1934,10 +1838,9 @@ xmlUCSIsOsmanya(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of PhoneticExtensions UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1946,10 +1849,9 @@ xmlUCSIsPhoneticExtensions(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of PrivateUse UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1960,10 +1862,9 @@ xmlUCSIsPrivateUse(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of PrivateUseArea UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1972,10 +1873,9 @@ xmlUCSIsPrivateUseArea(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Runic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1984,10 +1884,9 @@ xmlUCSIsRunic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Shavian UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -1996,10 +1895,9 @@ xmlUCSIsShavian(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Sinhala UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2008,10 +1906,9 @@ xmlUCSIsSinhala(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SmallFormVariants UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2020,10 +1917,9 @@ xmlUCSIsSmallFormVariants(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SpacingModifierLetters UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2032,10 +1928,9 @@ xmlUCSIsSpacingModifierLetters(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Specials UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2044,10 +1939,9 @@ xmlUCSIsSpecials(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SuperscriptsandSubscripts UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2056,10 +1950,9 @@ xmlUCSIsSuperscriptsandSubscripts(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SupplementalArrows-A UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2068,10 +1961,9 @@ xmlUCSIsSupplementalArrowsA(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SupplementalArrows-B UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2080,10 +1972,9 @@ xmlUCSIsSupplementalArrowsB(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SupplementalMathematicalOperators UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2092,10 +1983,9 @@ xmlUCSIsSupplementalMathematicalOperators(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SupplementaryPrivateUseArea-A UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2104,10 +1994,9 @@ xmlUCSIsSupplementaryPrivateUseAreaA(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of SupplementaryPrivateUseArea-B UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2116,10 +2005,9 @@ xmlUCSIsSupplementaryPrivateUseAreaB(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Syriac UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2128,10 +2016,9 @@ xmlUCSIsSyriac(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Tagalog UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2140,10 +2027,9 @@ xmlUCSIsTagalog(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Tagbanwa UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2152,10 +2038,9 @@ xmlUCSIsTagbanwa(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Tags UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2164,10 +2049,9 @@ xmlUCSIsTags(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of TaiLe UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2176,10 +2060,9 @@ xmlUCSIsTaiLe(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of TaiXuanJingSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2188,10 +2071,9 @@ xmlUCSIsTaiXuanJingSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Tamil UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2200,10 +2082,9 @@ xmlUCSIsTamil(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Telugu UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2212,10 +2093,9 @@ xmlUCSIsTelugu(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Thaana UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2224,10 +2104,9 @@ xmlUCSIsThaana(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Thai UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2236,10 +2115,9 @@ xmlUCSIsThai(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Tibetan UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2248,10 +2126,9 @@ xmlUCSIsTibetan(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Ugaritic UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2260,10 +2137,9 @@ xmlUCSIsUgaritic(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of UnifiedCanadianAboriginalSyllabics UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2272,10 +2148,9 @@ xmlUCSIsUnifiedCanadianAboriginalSyllabics(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of VariationSelectors UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2284,10 +2159,9 @@ xmlUCSIsVariationSelectors(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of VariationSelectorsSupplement UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2296,10 +2170,9 @@ xmlUCSIsVariationSelectorsSupplement(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of YiRadicals UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2308,10 +2181,9 @@ xmlUCSIsYiRadicals(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of YiSyllables UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2320,10 +2192,9 @@ xmlUCSIsYiSyllables(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of YijingHexagramSymbols UCS Block
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 static int
@@ -2332,10 +2203,9 @@ xmlUCSIsYijingHexagramSymbols(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of C UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2344,10 +2214,9 @@ xmlUCSIsCatC(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Cc UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2357,10 +2226,9 @@ xmlUCSIsCatCc(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Cf UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2369,10 +2237,9 @@ xmlUCSIsCatCf(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Co UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2386,10 +2253,9 @@ xmlUCSIsCatCo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Cs UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2401,10 +2267,9 @@ xmlUCSIsCatCs(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of L UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2413,10 +2278,9 @@ xmlUCSIsCatL(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Ll UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2425,10 +2289,9 @@ xmlUCSIsCatLl(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Lm UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2437,10 +2300,9 @@ xmlUCSIsCatLm(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Lo UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2449,10 +2311,9 @@ xmlUCSIsCatLo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Lt UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2461,10 +2322,9 @@ xmlUCSIsCatLt(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Lu UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2473,10 +2333,9 @@ xmlUCSIsCatLu(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of M UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2485,10 +2344,9 @@ xmlUCSIsCatM(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Mc UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2497,10 +2355,9 @@ xmlUCSIsCatMc(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Me UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2512,10 +2369,9 @@ xmlUCSIsCatMe(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Mn UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2524,10 +2380,9 @@ xmlUCSIsCatMn(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of N UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2536,10 +2391,9 @@ xmlUCSIsCatN(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Nd UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2548,10 +2402,9 @@ xmlUCSIsCatNd(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Nl UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2565,10 +2418,9 @@ xmlUCSIsCatNl(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of No UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2577,10 +2429,9 @@ xmlUCSIsCatNo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of P UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2589,10 +2440,9 @@ xmlUCSIsCatP(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Pc UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2608,10 +2458,9 @@ xmlUCSIsCatPc(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Pd UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2620,10 +2469,9 @@ xmlUCSIsCatPd(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Pe UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2632,10 +2480,9 @@ xmlUCSIsCatPe(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Pf UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2647,10 +2494,9 @@ xmlUCSIsCatPf(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Pi UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2663,10 +2509,9 @@ xmlUCSIsCatPi(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Po UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2675,10 +2520,9 @@ xmlUCSIsCatPo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Ps UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2687,10 +2531,9 @@ xmlUCSIsCatPs(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of S UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2699,10 +2542,9 @@ xmlUCSIsCatS(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Sc UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2711,10 +2553,9 @@ xmlUCSIsCatSc(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Sk UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2723,10 +2564,9 @@ xmlUCSIsCatSk(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Sm UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2735,10 +2575,9 @@ xmlUCSIsCatSm(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of So UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2747,10 +2586,9 @@ xmlUCSIsCatSo(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Z UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2759,10 +2597,9 @@ xmlUCSIsCatZ(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Zl UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2771,10 +2608,9 @@ xmlUCSIsCatZl(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Zp UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2783,10 +2619,9 @@ xmlUCSIsCatZp(int code) {
 }
 
 /**
- * @param code  UCS code point
- *
  * Check whether the character is part of Zs UCS Category
  *
+ * @param code  UCS code point
  * @returns 1 if true 0 otherwise
  */
 int
@@ -2972,11 +2807,10 @@ static const xmlUnicodeNameTable xmlUnicodeBlockTbl = {xmlUnicodeBlocks, 128};
 static const xmlUnicodeNameTable xmlUnicodeCatTbl = {xmlUnicodeCats, 36};
 
 /**
- * @param code  UCS code point
- * @param block  UCS block name
- *
  * Check whether the character is part of the UCS Block
  *
+ * @param code  UCS code point
+ * @param block  UCS block name
  * @returns 1 if true, 0 if false and -1 on unknown block
  */
 int
@@ -2990,11 +2824,10 @@ xmlUCSIsBlock(int code, const char *block) {
 }
 
 /**
- * @param code  UCS code point
- * @param cat  UCS Category name
- *
  * Check whether the character is part of the UCS Category
  *
+ * @param code  UCS code point
+ * @param cat  UCS Category name
  * @returns 1 if true, 0 if false and -1 on unknown category
  */
 int

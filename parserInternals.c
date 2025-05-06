@@ -126,7 +126,12 @@ xmlCtxtSetErrorHandler(xmlParserCtxtPtr ctxt, xmlStructuredErrorFunc handler,
 /**
  * @param ctx  an XML parser context
  *
- * Get the last parsing error registered.
+ * Get the last error raised.
+ *
+ * Note that the XML parser typically doesn't stop after
+ * encountering an error and will often report multiple errors.
+ * Most of the time, the last error isn't useful. Future
+ * versions might return the first parser error instead.
  *
  * @returns NULL if no error occurred or a pointer to the error
  */
@@ -145,8 +150,8 @@ xmlCtxtGetLastError(void *ctx)
 /**
  * @param ctx  an XML parser context
  *
- * Cleanup the last global error registered. For parsing error
- * this does not change the well-formedness result.
+ * Reset the last parser error to success. This does not change
+ * the well-formedness status.
  */
 void
 xmlCtxtResetLastError(void *ctx)

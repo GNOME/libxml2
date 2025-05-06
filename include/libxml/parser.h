@@ -730,20 +730,18 @@ typedef void (*cdataBlockSAXFunc) (
 /**
  * Display and format a warning messages, callback.
  *
- * @...:  extra parameters for the message display
- *
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 typedef void (*warningSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
  * Display and format an error messages, callback.
  *
- * @...:  extra parameters for the message display
- *
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 typedef void (*errorSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
@@ -752,10 +750,10 @@ typedef void (*errorSAXFunc) (void *ctx,
  * Note: so far fatalError() SAX callbacks are not used, error()
  *       get all the callbacks for errors.
  *
- * @...:  extra parameters for the message display
  *
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 typedef void (*fatalErrorSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);

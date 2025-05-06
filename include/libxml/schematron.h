@@ -44,20 +44,18 @@ typedef xmlSchematron *xmlSchematronPtr;
 /**
  * Signature of an error callback from a Schematron validation
  *
- * @...: extra arguments
- *
  * @param ctx  the validation context
  * @param msg  the message
+ * @param ... extra arguments
  */
 typedef void (*xmlSchematronValidityErrorFunc) (void *ctx, const char *msg, ...);
 
 /**
  * Signature of a warning callback from a Schematron validation
  *
- * @...: extra arguments
- *
  * @param ctx  the validation context
  * @param msg  the message
+ * @param ... extra arguments
  */
 typedef void (*xmlSchematronValidityWarningFunc) (void *ctx, const char *msg, ...);
 

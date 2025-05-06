@@ -1121,10 +1121,9 @@ commentDebug(void *ctx ATTRIBUTE_UNUSED, const xmlChar *value)
  * Display and format a warning messages, gives file, line, position and
  * extra parameters.
  *
- * @...:  extra parameters for the message display
- *
  * @param ctxt  An XML parser context
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 static void
 warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
@@ -1144,10 +1143,9 @@ warningDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
  * Display and format a error messages, gives file, line, position and
  * extra parameters.
  *
- * @...:  extra parameters for the message display
- *
  * @param ctxt  An XML parser context
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 static void
 errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
@@ -1167,10 +1165,9 @@ errorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)
  * Display and format a fatalError messages, gives file, line, position and
  * extra parameters.
  *
- * @...:  extra parameters for the message display
- *
  * @param ctxt  An XML parser context
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 static void
 fatalErrorDebug(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...)

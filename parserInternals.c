@@ -395,8 +395,6 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
 /**
  * Raise a parser error.
  *
- * @...:  extra parameters for the message display
- *
  * @param ctxt  a parser context
  * @param node  the current node or NULL
  * @param domain  the domain for the error
@@ -407,6 +405,7 @@ xmlCtxtVErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
  * @param str3  extra string info
  * @param int1  extra int info
  * @param msg  the message to display/transmit
+ * @param ...  extra parameters for the message display
  */
 void
 xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,

@@ -506,11 +506,10 @@ xmlStrcat(xmlChar *cur, const xmlChar *add) {
 /**
  * Formats `msg` and places result into `buf`.
  *
- * @...:   extra parameters for the message.
- *
  * @param buf  the result buffer.
  * @param len  the result buffer length.
  * @param msg  the message with printf formatting.
+ * @param ...   extra parameters for the message.
  * @returns the number of characters written to `buf` or -1 if an error occurs.
  */
 int
@@ -672,11 +671,10 @@ xmlStrVASPrintf(xmlChar **out, int maxSize, const char *msg, va_list ap) {
 /**
  * See xmlStrVASPrintf().
  *
- * @...:  arguments for format string
- *
  * @param out  pointer to the resulting string
  * @param maxSize  maximum size of the output buffer
  * @param msg  printf format string
+ * @param ...  arguments for format string
  * @returns 0 on success, 1 if the result was truncated or on other
  * errors, -1 if a memory allocation failed.
  */

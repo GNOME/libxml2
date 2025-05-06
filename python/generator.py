@@ -742,6 +742,8 @@ def skip_function(name):
         return 1
     if name == "xmlSchemaFreeValidCtxt":
         return 1
+    if name[0:5] == "__xml":
+        return 1
 
 #
 # Those are skipped because the Const version is used of the bindings

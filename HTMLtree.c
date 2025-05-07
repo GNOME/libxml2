@@ -920,6 +920,15 @@ htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	                       const char *encoding ATTRIBUTE_UNUSED,
                                int format) {
     int type = 0;
+
+    /*
+     * This is needed when serializing XML documents as HTML.
+     * xmlEncodeEntitiesReentrant uses the document type to
+     * determine the serialization mode.
+     *
+     * Once we call more low-level functions directly with
+     * HTML flags, this hack can be removed.
+     */
     if (cur) {
         type = cur->type;
         cur->type = XML_HTML_DOCUMENT_NODE;

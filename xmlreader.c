@@ -206,10 +206,16 @@ xmlTextReaderErr(xmlParserErrors code, const char *msg, ...) {
 
 static void
 xmlTextReaderErrMemory(xmlTextReaderPtr reader) {
+    if (reader == NULL) {
+        xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_PARSER, NULL);
+        return;
+    }
+
     if (reader->ctxt != NULL)
         xmlCtxtErrMemory(reader->ctxt);
     else
         xmlRaiseMemoryError(NULL, NULL, NULL, XML_FROM_PARSER, NULL);
+
     reader->mode = XML_TEXTREADER_MODE_ERROR;
     reader->state = XML_TEXTREADER_ERROR;
 }

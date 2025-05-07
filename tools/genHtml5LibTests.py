@@ -43,6 +43,9 @@ for filename in sorted(glob.glob('../html5lib-tests/tokenizer/*.test')):
 
             output = ''
             for token in test['output']:
+                if token[1] == '\0':
+                    continue
+
                 output += token[0] + '\n'
 
                 if token[0] == 'DOCTYPE':
@@ -61,7 +64,11 @@ for filename in sorted(glob.glob('../html5lib-tests/tokenizer/*.test')):
             output = re.sub(r'\\u([A-Fa-f0-9]{4})',
                             lambda m: chr(int(m[1], 16)),
                             output)
-            output = re.sub(r'\x00', '\uFFFD', output)
+
+            # The HTML5 spec splits handling of U+0000 across
+            # tokenizer and tree builder. We already ignore
+            # U+0000 in body text when tokenizing.
+            output = re.sub(r'\x00', '', output)
 
             for state in test.get('initialStates', ['Data state']):
                 state_no = state_map.get(state)

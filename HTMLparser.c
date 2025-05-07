@@ -3226,8 +3226,25 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
 
             case '\0':
                 skip = 1;
-                repl = BAD_CAST "\xEF\xBF\xBD";
-                replSize = 3;
+
+                if (mode == 0) {
+                    /*
+                     * The HTML5 spec says that the tokenizer should
+                     * pass on U+0000 unmodified in normal data mode.
+                     * These characters should then be ignored in body
+                     * and other text, but should be replaced with
+                     * U+FFFD in foreign content.
+                     *
+                     * At least for now, we always strip U+0000 when
+                     * tokenizing.
+                     */
+                    repl = BAD_CAST "";
+                    replSize = 0;
+                } else {
+                    repl = BAD_CAST "\xEF\xBF\xBD";
+                    replSize = 3;
+                }
+
                 goto next_chunk;
 
             case '\n':

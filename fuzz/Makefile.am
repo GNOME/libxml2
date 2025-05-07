@@ -59,7 +59,7 @@ xml_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-xml: xml$(EXEEXT) seed/xml.stamp
 	@mkdir -p corpus/xml
 	./xml$(EXEEXT) \
-	    -dict=xml.dict \
+	    -dict=$(srcdir)/xml.dict \
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/xml seed/xml
@@ -77,7 +77,7 @@ valid_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-valid: valid$(EXEEXT) seed/valid.stamp
 	@mkdir -p corpus/valid
 	./valid$(EXEEXT) \
-	    -dict=xml.dict \
+	    -dict=$(srcdir)/xml.dict \
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/valid seed/valid
@@ -95,7 +95,7 @@ xinclude_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-xinclude: xinclude$(EXEEXT) seed/xinclude.stamp
 	@mkdir -p corpus/xinclude
 	./xinclude$(EXEEXT) \
-	    -dict=xml.dict \
+	    -dict=$(srcdir)/xml.dict \
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/xinclude seed/xinclude
@@ -113,7 +113,7 @@ html_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-html: html$(EXEEXT) seed/html.stamp
 	@mkdir -p corpus/html
 	./html$(EXEEXT) \
-	    -dict=html.dict \
+	    -dict=$(srcdir)/html.dict \
 	    -max_len=1000000 \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/html seed/html
@@ -131,7 +131,7 @@ reader_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-reader: reader$(EXEEXT) seed/reader.stamp
 	@mkdir -p corpus/reader
 	./reader$(EXEEXT) \
-	    -dict=xml.dict \
+	    -dict=$(srcdir)/xml.dict \
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/reader seed/reader
@@ -149,7 +149,7 @@ lint_LDFLAGS = -fsanitize=fuzzer
 fuzz-lint: lint$(EXEEXT) seed/lint.stamp
 	@mkdir -p corpus/lint
 	./lint$(EXEEXT) \
-	    -dict=xml.dict \
+	    -dict=$(srcdir)/xml.dict \
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/lint seed/lint
@@ -179,7 +179,7 @@ regexp_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-regexp: regexp$(EXEEXT) seed/regexp.stamp
 	@mkdir -p corpus/regexp
 	./regexp$(EXEEXT) \
-	    -dict=regexp.dict \
+	    -dict=$(srcdir)/regexp.dict \
 	    -max_len=200 \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/regexp seed/regexp
@@ -214,7 +214,7 @@ schema_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-schema: schema$(EXEEXT) seed/schema.stamp
 	@mkdir -p corpus/schema
 	./schema$(EXEEXT) \
-	    -dict=schema.dict \
+	    -dict=$(srcdir)/schema.dict \
 	    -max_len=$(XML_MAX_LEN) \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/schema seed/schema
@@ -232,7 +232,7 @@ xpath_LDFLAGS = $(AM_LDFLAGS) -fsanitize=fuzzer
 fuzz-xpath: xpath$(EXEEXT) seed/xpath.stamp
 	@mkdir -p corpus/xpath
 	./xpath$(EXEEXT) \
-	    -dict=xpath.dict \
+	    -dict=$(srcdir)/xpath.dict \
 	    -max_len=10000 \
 	    $$XML_FUZZ_OPTIONS \
 	    corpus/xpath seed/xpath

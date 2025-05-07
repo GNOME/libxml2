@@ -119,7 +119,7 @@ static int xmlOutputCallbackNr;
  * @param err  the error number
  * @returns an xmlParserErrors code.
  */
-static xmlParserErrors
+static int
 xmlIOErr(int err)
 {
     xmlParserErrors code;

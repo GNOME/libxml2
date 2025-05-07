@@ -51,3 +51,7 @@ XML_FUZZ_MALLOC_ABORT to see which allocation failed. Debugging
 failures which are erroneously reported can be harder. If the report
 goes through xmlRaiseMemoryError, you can abort() there to get a
 stack trace.
+
+Bugs related to handling of malloc failures are not considered
+security-critical by the libxml2 maintainers. Nevertheless, we'd like
+to see such issues reported.

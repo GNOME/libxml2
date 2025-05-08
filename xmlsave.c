@@ -25,6 +25,7 @@
 #include "private/enc.h"
 #include "private/entities.h"
 #include "private/error.h"
+#include "private/html.h"
 #include "private/io.h"
 #include "private/save.h"
 
@@ -1022,32 +1023,24 @@ xmlAttrDumpOutput(xmlSaveCtxtPtr ctxt, xmlAttrPtr cur) {
  */
 static int
 htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
-    const xmlChar *encoding;
     int switched_encoding = 0;
     int format = 0;
     xmlDocPtr doc;
 
     xmlInitParser();
 
-    encoding = ctxt->encoding;
     doc = cur->doc;
-    if (doc != NULL) {
-        if (encoding == NULL)
-            encoding = doc->encoding;
-
-        /* We probably shouldn't do this unless we're dumping a document. */
-        if (encoding != NULL)
-            htmlSetMetaEncoding(doc, encoding);
-    }
 
     if (ctxt->encoding == NULL) {
-        if ((encoding == NULL) && (doc != NULL))
-            encoding = htmlGetMetaEncoding(doc);
+        const char *encoding = NULL;
+
+        if (doc != NULL)
+            encoding = (char *) doc->encoding;
 
         if (encoding == NULL)
-            encoding = BAD_CAST "HTML";
+            encoding = "HTML";
 
-	if (xmlSaveSwitchEncoding(ctxt, (const char*) encoding) < 0)
+	if (xmlSaveSwitchEncoding(ctxt, encoding) < 0)
 	    return(-1);
 	switched_encoding = 1;
     }
@@ -1055,7 +1048,7 @@ htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     if (ctxt->options & XML_SAVE_FORMAT)
         format = 1;
 
-    htmlNodeDumpFormatOutput(ctxt->buf, doc, cur, NULL, format);
+    htmlNodeDumpInternal(ctxt->buf, doc, cur, (char *) ctxt->encoding, format);
 
     if (switched_encoding) {
 	xmlSaveClearEncoding(ctxt);
@@ -1361,16 +1354,9 @@ xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur,
 #ifdef LIBXML_HTML_ENABLED
         int format = 0;
 
-        if (encoding != NULL)
-	    htmlSetMetaEncoding(cur, encoding);
-
 	if (ctxt->encoding == NULL) {
-            if (encoding == NULL) {
-                encoding = htmlGetMetaEncoding(cur);
-
-                if (encoding == NULL)
-                    encoding = BAD_CAST "HTML";
-            }
+            if (encoding == NULL)
+                encoding = BAD_CAST "HTML";
 
 	    if (xmlSaveSwitchEncoding(ctxt, (const char*) encoding) < 0) {
 		return(-1);
@@ -1380,7 +1366,8 @@ xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur,
 
         if (ctxt->options & XML_SAVE_FORMAT)
             format = 1;
-        htmlDocContentDumpFormatOutput(buf, cur, NULL, format);
+        htmlNodeDumpInternal(buf, cur, (htmlNodePtr) cur,
+                             (char *) ctxt->encoding, format);
 #else
         return(-1);
 #endif

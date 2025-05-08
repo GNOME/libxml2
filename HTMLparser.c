@@ -50,10 +50,6 @@
 #define HTML_PARSER_BIG_BUFFER_SIZE 1000
 #define HTML_PARSER_BUFFER_SIZE 100
 
-#define IS_WS_HTML(c) \
-    (((c) == 0x20) || \
-     (((c) >= 0x09) && ((c) <= 0x0D) && ((c) != 0x0B)))
-
 #define IS_HEX_DIGIT(c) \
     ((IS_ASCII_DIGIT(c)) || \
      ((((c) | 0x20) >= 'a') && (((c) | 0x20) <= 'f')))
@@ -314,17 +310,15 @@ htmlNodeInfoPop(htmlParserCtxtPtr ctxt)
 #define CUR (*ctxt->input->cur)
 
 /**
- * `the` HTML parser context
+ * Prescan to find encoding.
  *
- * Ty to find and encoding in the current data available in the input
- * buffer this is needed to try to switch to the proper encoding when
- * one face a character error.
- * That's an heuristic, since it's operating outside of parsing it could
- * try to use a meta which had been commented out, that's the reason it
- * should only be used in case of error, not as a default.
+ * Try to find an encoding in the current data available in the input
+ * buffer.
  *
- * @returns an encoding string or NULL if not found, the string need to
- *   be freed
+ * TODO: Implement HTML5 prescan algorithm.
+ *
+ * @param ctxt  the HTML parser context
+ * @returns  an encoding string or NULL if not found
  */
 static xmlChar *
 htmlFindEncoding(xmlParserCtxtPtr ctxt) {
@@ -3606,42 +3600,7 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
 }
 
 /**
- * Checks an http-equiv attribute from a Meta tag to detect
- * the encoding
- * If a new encoding is detected the parser is switched to decode
- * it and pass UTF8
- *
- * @param ctxt  an HTML parser context
- * @param attvalue  the attribute value
- */
-static void
-htmlCheckEncoding(htmlParserCtxtPtr ctxt, const xmlChar *attvalue) {
-    const xmlChar *encoding;
-    xmlChar *copy;
-
-    if (!attvalue)
-	return;
-
-    encoding = xmlStrcasestr(attvalue, BAD_CAST"charset");
-    if (encoding != NULL) {
-	encoding += 7;
-    }
-    /*
-     * skip blank
-     */
-    if (encoding && IS_WS_HTML(*encoding))
-	encoding = xmlStrcasestr(attvalue, BAD_CAST"=");
-    if (encoding && *encoding == '=') {
-	encoding ++;
-        copy = xmlStrdup(encoding);
-        if (copy == NULL)
-            htmlErrMemory(ctxt);
-	xmlSetDeclaredEncoding(ctxt, copy);
-    }
-}
-
-/**
- * Checks an attributes from a Meta tag
+ * Handle charset encoding in meta tag.
  *
  * @param ctxt  an HTML parser context
  * @param atts  the attributes values
@@ -3650,7 +3609,7 @@ static void
 htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
     int i;
     const xmlChar *att, *value;
-    int http = 0;
+    int isContentType = 0;
     const xmlChar *content = NULL;
 
     if ((ctxt == NULL) || (atts == NULL))
@@ -3663,23 +3622,33 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
         if (value != NULL) {
             if ((!xmlStrcasecmp(att, BAD_CAST "http-equiv")) &&
                 (!xmlStrcasecmp(value, BAD_CAST "Content-Type"))) {
-                http = 1;
+                isContentType = 1;
             } else if (!xmlStrcasecmp(att, BAD_CAST "charset")) {
-                xmlChar *copy;
+                xmlChar *encoding;
 
-                copy = xmlStrdup(value);
-                if (copy == NULL)
+                encoding = xmlStrdup(value);
+                if (encoding == NULL)
                     htmlErrMemory(ctxt);
-                xmlSetDeclaredEncoding(ctxt, copy);
+                xmlSetDeclaredEncoding(ctxt, encoding);
             } else if (!xmlStrcasecmp(att, BAD_CAST "content")) {
                 content = value;
             }
         }
 	att = atts[i++];
     }
-    if ((http) && (content != NULL))
-	htmlCheckEncoding(ctxt, content);
 
+    if ((isContentType) && (content != NULL)) {
+        htmlMetaEncodingOffsets off;
+
+        if (htmlParseContentType(content, &off)) {
+            xmlChar *encoding;
+
+            encoding = xmlStrndup(content + off.start, off.end - off.start);
+            if (encoding == NULL)
+                htmlErrMemory(ctxt);
+            xmlSetDeclaredEncoding(ctxt, encoding);
+        }
+    }
 }
 
 /**
@@ -3748,7 +3717,6 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     const xmlChar **atts;
     int nbatts = 0;
     int maxatts;
-    int meta = 0;
     int i;
     int discardtag = 0;
 
@@ -3763,8 +3731,6 @@ htmlParseStartTag(htmlParserCtxtPtr ctxt) {
     name = htmlParseHTMLName(ctxt, 0).name;
     if (name == NULL)
         return;
-    if (xmlStrEqual(name, BAD_CAST"meta"))
-	meta = 1;
 
     if ((ctxt->options & HTML_PARSE_HTML5) == 0) {
         /*
@@ -3960,8 +3926,10 @@ failed:
         /*
          * Handle specific association to the META tag
          */
-        if (meta)
+        if (((ctxt->input->flags & XML_INPUT_HAS_ENCODING) == 0) &&
+            (strcmp((char *) name, "meta") == 0)) {
             htmlCheckMeta(ctxt, atts);
+        }
 #endif
     }
 

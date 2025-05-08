@@ -14,6 +14,7 @@
 #include <libxml/xmlsave.h>
 #include <libxml/xmlwriter.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/HTMLtree.h>
 
 #include <string.h>
 
@@ -609,6 +610,129 @@ testHtmlIds(void) {
 
     xmlFreeDoc(doc);
     return 0;
+}
+
+#define MHE "meta http-equiv=\"Content-Type\""
+
+static int
+testHtmlInsertMetaEncoding(void) {
+    /* We currently require a head element to be present. */
+    const char *html =
+        "<html>"
+        "<head></head>"
+        "<body>text</body>"
+        "</html>\n";
+    const char *expect =
+        "<html>"
+        "<head><meta charset=\"utf-8\"></head>"
+        "<body>text</body>"
+        "</html>\n";
+    htmlDocPtr doc;
+    xmlBufferPtr buf;
+    xmlSaveCtxtPtr save;
+    xmlChar *out;
+    int size, err = 0;
+
+
+    doc = htmlReadDoc(BAD_CAST html, NULL, NULL, HTML_PARSE_NODEFDTD);
+
+    /* xmlSave updates meta tags */
+    buf = xmlBufferCreate();
+    save = xmlSaveToBuffer(buf, "utf-8", 0);
+    xmlSaveDoc(save, doc);
+    xmlSaveClose(save);
+    if (!xmlStrEqual(xmlBufferContent(buf), BAD_CAST expect)) {
+        fprintf(stderr, "meta tag insertion failed when serializing\n");
+        err = 1;
+    }
+    xmlBufferFree(buf);
+
+    htmlSetMetaEncoding(doc, BAD_CAST "utf-8");
+    /* htmlDocDumpMemoryFormat doesn't update meta tags */
+    htmlDocDumpMemoryFormat(doc, &out, &size, 0);
+    if (!xmlStrEqual(out, BAD_CAST expect)) {
+        fprintf(stderr, "htmlSetMetaEncoding insertion failed\n");
+        err = 1;
+    }
+    xmlFree(out);
+
+    xmlFreeDoc(doc);
+    return err;
+}
+
+static int
+testHtmlUpdateMetaEncoding(void) {
+    /* We rely on the implementation adjusting all meta tags */
+    const char *html =
+        "<html>\n"
+        "    <head>\n"
+        "        <meta charset=\"utf-8\">\n"
+        "        <meta charset=\"  foo  \">\n"
+        "        <meta charset=\"\">\n"
+        "        <" MHE " content=\"text/html; ChArSeT=foo\">\n"
+        "        <" MHE " content=\"text/html; charset = \">\n"
+        "        <" MHE " content=\"text/html; charset = '  foo  '\">\n"
+        "        <" MHE " content=\"text/html; charset = '  foo  \">\n"
+        "        <" MHE " content='text/html; charset = \"  foo  \"'>\n"
+        "        <" MHE " content='text/html; charset = \"  foo  '>\n"
+        "        <" MHE " content=\"charset ; charset = bar; baz\">\n"
+        "        <" MHE " content=\"text/html\">\n"
+        "        <" MHE " content=\"\">\n"
+        "        <" MHE ">\n"
+        "    </head>\n"
+        "    <body></body>\n"
+        "</html>\n";
+    const char *expect =
+        "<html>\n"
+        "    <head>\n"
+        "        <meta charset=\"utf-8\">\n"
+        "        <meta charset=\"  utf-8  \">\n"
+        "        <meta charset=\"utf-8\">\n"
+        "        <" MHE " content=\"text/html; ChArSeT=utf-8\">\n"
+        "        <" MHE " content=\"text/html; charset = \">\n"
+        "        <" MHE " content=\"text/html; charset = '  utf-8  '\">\n"
+        "        <" MHE " content=\"text/html; charset = '  foo  \">\n"
+        "        <" MHE " content='text/html; charset = \"  utf-8  \"'>\n"
+        "        <" MHE " content='text/html; charset = \"  foo  '>\n"
+        "        <" MHE " content=\"charset ; charset = utf-8; baz\">\n"
+        "        <" MHE " content=\"text/html\">\n"
+        "        <" MHE " content=\"\">\n"
+        "        <" MHE ">\n"
+        "    </head>\n"
+        "    <body></body>\n"
+        "</html>\n";
+    htmlDocPtr doc;
+    xmlBufferPtr buf;
+    xmlSaveCtxtPtr save;
+    xmlChar *out;
+    int size, err = 0;
+
+    doc = htmlReadDoc(BAD_CAST html, NULL, NULL, HTML_PARSE_NODEFDTD);
+
+    /* xmlSave updates meta tags */
+    buf = xmlBufferCreate();
+    save = xmlSaveToBuffer(buf, NULL, 0);
+    xmlSaveDoc(save, doc);
+    xmlSaveClose(save);
+    if (!xmlStrEqual(xmlBufferContent(buf), BAD_CAST expect)) {
+        fprintf(stderr, "meta tag update failed when serializing\n");
+        err = 1;
+    }
+    xmlBufferFree(buf);
+
+    xmlFree((xmlChar *) doc->encoding);
+    doc->encoding = NULL;
+    htmlSetMetaEncoding(doc, BAD_CAST "utf-8");
+    /* htmlDocDumpMemoryFormat doesn't update meta tags */
+    htmlDocDumpMemoryFormat(doc, &out, &size, 0);
+    if (!xmlStrEqual(out, BAD_CAST expect)) {
+        fprintf(stderr, "htmlSetMetaEncoding update failed\n");
+        err = 1;
+    }
+    xmlFree(out);
+
+    xmlFreeDoc(doc);
+    return err;
 }
 
 #ifdef LIBXML_PUSH_ENABLED
@@ -1293,6 +1417,8 @@ main(void) {
 #endif
 #ifdef LIBXML_HTML_ENABLED
     err |= testHtmlIds();
+    err |= testHtmlInsertMetaEncoding();
+    err |= testHtmlUpdateMetaEncoding();
 #ifdef LIBXML_PUSH_ENABLED
     err |= testHtmlPushWithEncoding();
 #endif

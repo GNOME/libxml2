@@ -343,21 +343,21 @@ if test "${GCC}" != "yes" ; then
 	       ;;
     esac
 else
-    if test "${GCC}" != "yes" ; then
-    case "${uname -sr}" in
-        Darwin 24.4.0 )
+    if test "${uname -sr}" == "Darwin 24.4.0" ; then
         # warnings we'd like to see
         AM_CFLAGS="${AM_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes -target arm64-apple-macos11"
         # warnings we'd like to suppress
         AM_CFLAGS="${AM_CFLAGS} -Wno-long-long -Wno-format-extra-args -Wno-array-bounds -target arm64-apple-macos11"
-        ;;
-    esac
     else
         # warnings we'd like to see
         AM_CFLAGS="${AM_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes -target x86_64-apple-macos10.12"
         # warnings we'd like to suppress
         AM_CFLAGS="${AM_CFLAGS} -Wno-long-long -Wno-format-extra-args -Wno-array-bounds -target x86_64-apple-macos10.12"
     fi
+        # warnings we'd like to see
+        AM_CFLAGS="${AM_CFLAGS} -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes"
+        # warnings we'd like to suppress
+        AM_CFLAGS="${AM_CFLAGS} -Wno-long-long -Wno-format-extra-args -Wno-array-bounds"
     case "${host}" in
           alpha*-*-linux* )
 	       AM_CFLAGS="${AM_CFLAGS} -mieee"

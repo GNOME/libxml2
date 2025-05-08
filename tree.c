@@ -5563,7 +5563,8 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
 
     switch (cur->type) {
         case XML_DOCUMENT_FRAG_NODE:
-        case XML_ELEMENT_NODE: {
+        case XML_ELEMENT_NODE:
+        case XML_ATTRIBUTE_NODE: {
 	    xmlNodePtr newNode, tmp;
 
 	    newNode = xmlNewDocTextLen(cur->doc, content, len);
@@ -5576,7 +5577,6 @@ xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar *content, int len) {
             }
 	    break;
 	}
-        case XML_ATTRIBUTE_NODE:
 	    break;
         case XML_TEXT_NODE:
         case XML_CDATA_SECTION_NODE:

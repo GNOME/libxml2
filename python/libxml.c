@@ -234,6 +234,9 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
     PyObject *ret;
     int lenread = -1;
     char *data;
+#ifdef PyUnicode_Check
+    PyObject *b = NULL;
+#endif
 
     file = (PyObject *) context;
     if (file == NULL) return(-1);
@@ -258,15 +261,14 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
 	lenread = (int) size;
 	data = (char *) tmp;
 #else
-        PyObject *b;
 	b = PyUnicode_AsUTF8String(ret);
 	if (b == NULL) {
+	    Py_DECREF(ret);
 	    printf("xmlPythonFileReadRaw: failed to convert to UTF-8\n");
 	    return(-1);
 	}
 	lenread = PyBytes_Size(b);
 	data = PyBytes_AsString(b);
-	Py_DECREF(b);
 #endif
 #endif
     } else {
@@ -277,10 +279,20 @@ xmlPythonFileReadRaw (void * context, char * buffer, int len) {
     if (lenread < 0 || lenread > len) {
 	printf("xmlPythonFileReadRaw: invalid lenread\n");
 	Py_DECREF(ret);
+#ifdef PyUnicode_Check
+	if (b != NULL) {
+	    Py_DECREF(b);
+	}
+#endif
 	return(-1);
     }
     memcpy(buffer, data, lenread);
     Py_DECREF(ret);
+#ifdef PyUnicode_Check
+    if (b != NULL) {
+        Py_DECREF(b);
+    }
+#endif
     return(lenread);
 }
 
@@ -300,6 +312,9 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
     PyObject *ret;
     int lenread = -1;
     char *data;
+#ifdef PyUnicode_Check
+    PyObject *b = NULL;
+#endif
 
     file = (PyObject *) context;
     if (file == NULL) return(-1);
@@ -324,15 +339,14 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
 	lenread = (int) size;
 	data = (char *) tmp;
 #else
-        PyObject *b;
 	b = PyUnicode_AsUTF8String(ret);
 	if (b == NULL) {
+	    Py_DECREF(ret);
 	    printf("xmlPythonFileRead: failed to convert to UTF-8\n");
 	    return(-1);
 	}
 	lenread = PyBytes_Size(b);
 	data = PyBytes_AsString(b);
-	Py_DECREF(b);
 #endif
 #endif
     } else {
@@ -343,10 +357,20 @@ xmlPythonFileRead (void * context, char * buffer, int len) {
     if (lenread < 0 || lenread > len) {
 	printf("xmlPythonFileRead: invalid lenread\n");
 	Py_DECREF(ret);
+#ifdef PyUnicode_Check
+	if (b != NULL) {
+	    Py_DECREF(b);
+	}
+#endif
 	return(-1);
     }
     memcpy(buffer, data, lenread);
     Py_DECREF(ret);
+#ifdef PyUnicode_Check
+    if (b != NULL) {
+	Py_DECREF(b);
+    }
+#endif
     return(lenread);
 }
 

@@ -2,6 +2,7 @@ SAX.setDocumentLocator()
 SAX.startDocument()
 SAX.internalSubset(root, , )
 SAX.attributeDecl(foo, xml:lang, 1, 1, eng, ...)
+SAX.attributeDecl(foo, bar, 1, 1, <>", ...)
 SAX.externalSubset(root, , )
 SAX.startElement(root)
 SAX.characters(

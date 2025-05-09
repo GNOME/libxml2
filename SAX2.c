@@ -851,16 +851,29 @@ xmlSAX2EndDocument(void *ctx)
     }
 
 #ifdef LIBXML_HTML_ENABLED
-    if ((ctxt->html) &&
-        ((ctxt->options & HTML_PARSE_NODEFDTD) == 0) &&
-        (doc->intSubset == NULL)) {
-        doc->intSubset = xmlCreateIntSubset(doc, BAD_CAST "html",
-                BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
-                BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
-        if (doc->intSubset == NULL)
-            xmlSAX2ErrMemory(ctxt);
-    }
+    if (ctxt->html) {
+        if (((ctxt->options & HTML_PARSE_NODEFDTD) == 0) &&
+            (doc->intSubset == NULL)) {
+            doc->intSubset = xmlCreateIntSubset(doc, BAD_CAST "html",
+                    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+                    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
+            if (doc->intSubset == NULL)
+                xmlSAX2ErrMemory(ctxt);
+        }
+    } else
 #endif /* LIBXML_HTML_ENABLED */
+    {
+        if (ctxt->wellFormed) {
+            doc->properties |= XML_DOC_WELLFORMED;
+            if (ctxt->valid)
+                doc->properties |= XML_DOC_DTDVALID;
+            if (ctxt->nsWellFormed)
+                doc->properties |= XML_DOC_NSVALID;
+        }
+
+        if (ctxt->options & XML_PARSE_OLD10)
+            doc->properties |= XML_DOC_OLD10;
+    }
 }
 
 static void

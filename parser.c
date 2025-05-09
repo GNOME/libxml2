@@ -10386,26 +10386,14 @@ xmlFinishDocument(xmlParserCtxtPtr ctxt) {
     if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
 
+    /*
+     * Remove locally kept entity definitions if the tree was not built
+     */
     doc = ctxt->myDoc;
-    if (doc != NULL) {
-        if (ctxt->wellFormed) {
-            doc->properties |= XML_DOC_WELLFORMED;
-            if (ctxt->valid)
-                doc->properties |= XML_DOC_DTDVALID;
-            if (ctxt->nsWellFormed)
-                doc->properties |= XML_DOC_NSVALID;
-        }
-
-        if (ctxt->options & XML_PARSE_OLD10)
-            doc->properties |= XML_DOC_OLD10;
-
-        /*
-         * Remove locally kept entity definitions if the tree was not built
-         */
-	if (xmlStrEqual(doc->version, SAX_COMPAT_MODE)) {
-            xmlFreeDoc(doc);
-            ctxt->myDoc = NULL;
-        }
+    if ((doc != NULL) &&
+        (xmlStrEqual(doc->version, SAX_COMPAT_MODE))) {
+        xmlFreeDoc(doc);
+        ctxt->myDoc = NULL;
     }
 }
 

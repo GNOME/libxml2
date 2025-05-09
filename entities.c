@@ -611,18 +611,21 @@ xmlEscapeText(const xmlChar *text, int flags) {
     xmlChar *out;
     const xmlChar *unescaped;
     size_t size = 50;
+    int isHtmlAttr = 0;
 
     buffer = xmlMalloc(size + 1);
     if (buffer == NULL)
         return(NULL);
     out = buffer;
 
+    if ((flags & XML_ESCAPE_HTML) && (flags & XML_ESCAPE_ATTR))
+        isHtmlAttr = 1;
+
     cur = text;
     unescaped = cur;
 
     while (*cur != '\0') {
         char buf[12];
-	const xmlChar *end;
         const xmlChar *repl;
         size_t used;
         size_t replSize;
@@ -649,21 +652,10 @@ xmlEscapeText(const xmlChar *text, int flags) {
             chunkSize = 0;
             repl = BAD_CAST "";
             replSize = 0;
-        } else if (c == '<') {
-	    /*
-	     * Special handling of server side include in HTML attributes
-	     */
-	    if ((flags & XML_ESCAPE_HTML) && (flags & XML_ESCAPE_ATTR) &&
-	        (cur[1] == '!') && (cur[2] == '-') && (cur[3] == '-') &&
-	        ((end = xmlStrstr(cur, BAD_CAST "-->")) != NULL)) {
-                chunkSize = (end - cur) + 3;
-                repl = cur;
-                replSize = chunkSize;
-	    } else {
-                repl = BAD_CAST "&lt;";
-                replSize = 4;
-            }
-	} else if (c == '>') {
+        } else if ((c == '<') && (!isHtmlAttr)) {
+            repl = BAD_CAST "&lt;";
+            replSize = 4;
+	} else if ((c == '>') && (!isHtmlAttr)) {
             repl = BAD_CAST "&gt;";
             replSize = 4;
 	} else if (c == '&') {

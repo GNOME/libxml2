@@ -903,15 +903,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                 ((parent == NULL) ||
                  ((xmlStrcasecmp(parent->name, BAD_CAST "script")) &&
                   (xmlStrcasecmp(parent->name, BAD_CAST "style"))))) {
-                xmlChar *buffer;
-
-                buffer = xmlEscapeText(cur->content, XML_ESCAPE_HTML);
-                if (buffer == NULL) {
-                    buf->error = XML_ERR_NO_MEMORY;
-                    return;
-                }
-                xmlOutputBufferWriteString(buf, (const char *)buffer);
-                xmlFree(buffer);
+                xmlSerializeText(buf, cur->content, XML_ESCAPE_HTML);
             } else {
                 xmlOutputBufferWriteString(buf, (const char *)cur->content);
             }

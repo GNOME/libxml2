@@ -23,7 +23,6 @@
 
 #include "private/buf.h"
 #include "private/enc.h"
-#include "private/entities.h"
 #include "private/error.h"
 #include "private/html.h"
 #include "private/io.h"
@@ -106,115 +105,6 @@ xmlSaveErr(xmlOutputBufferPtr out, int code, xmlNodePtr node,
                         msg, extra);
     if (res < 0)
         xmlSaveErrMemory(out);
-}
-
-/************************************************************************
- *									*
- *			Special escaping routines			*
- *									*
- ************************************************************************/
-
-/*
- * Tables generated with tools/genEscape.py
- */
-
-static const char xmlEscapeContent[] = {
-      8, '&', '#', 'x', 'F', 'F', 'F', 'D', ';',   4, '&', '#',
-    '9', ';',   5, '&', '#', '1', '0', ';',   5, '&', '#', '1',
-    '3', ';',   6, '&', 'q', 'u', 'o', 't', ';',   5, '&', 'a',
-    'm', 'p', ';',   4, '&', 'l', 't', ';',   4, '&', 'g', 't',
-    ';',
-};
-
-static const signed char xmlEscapeTab[128] = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1,  0,  0, 20,  0,  0,
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    -1, -1, -1, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-};
-
-static const signed char xmlEscapeTabAttr[128] = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  9, 14,  0,  0, 20,  0,  0,
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    -1, -1, 26, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-};
-
-static void
-xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
-                 unsigned flags) {
-    const char *cur;
-    const signed char *tab;
-
-    if (string == NULL)
-        return;
-
-    if (flags & XML_ESCAPE_ATTR)
-        tab = xmlEscapeTabAttr;
-    else
-        tab = xmlEscapeTab;
-
-    cur = (const char *) string;
-
-    while (*cur != 0) {
-        const char *base;
-        int c;
-        int offset;
-
-        base = cur;
-        offset = -1;
-
-        while (1) {
-            c = (unsigned char) *cur;
-
-            if (c < 0x80) {
-                offset = tab[c];
-                if (offset >= 0)
-                    break;
-            } else if (flags & XML_ESCAPE_NON_ASCII) {
-                break;
-            }
-
-            cur += 1;
-        }
-
-        if (cur > base)
-            xmlOutputBufferWrite(buf, cur - base, base);
-
-        if (offset >= 0) {
-            if (c == 0)
-                break;
-
-            xmlOutputBufferWrite(buf, xmlEscapeContent[offset],
-                                 &xmlEscapeContent[offset+1]);
-            cur += 1;
-        } else {
-            char tempBuf[12];
-            int tempSize;
-            int val = 0, len = 4;
-
-            val = xmlGetUTF8Char((const xmlChar *) cur, &len);
-            if (val < 0) {
-                val = 0xFFFD;
-                cur += 1;
-            } else {
-                if ((val == 0xFFFE) || (val == 0xFFFF))
-                    val = 0xFFFD;
-                cur += len;
-            }
-
-            tempSize = xmlSerializeHexCharRef(tempBuf, val);
-            xmlOutputBufferWrite(buf, tempSize, tempBuf);
-        }
-    }
 }
 
 /************************************************************************

@@ -43,7 +43,6 @@
 
 #include "private/buf.h"
 #include "private/enc.h"
-#include "private/entities.h"
 #include "private/error.h"
 #include "private/memory.h"
 
@@ -1752,6 +1751,44 @@ xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
     out->content[out->use] = 0;
 
     return (written? written : ret);
+}
+
+/*
+ * @param buf  a char buffer
+ * @param val  a codepoint
+ *
+ * Serializes a decimal char ref like `&#38;`.
+ *
+ * Writes at most 10 bytes. Does not include a terminating zero byte.
+ *
+ * @returns the number of bytes written.
+ */
+static int
+xmlSerializeDecCharRef(char *buf, int val) {
+    char *out = buf;
+    int len, i;
+
+    *out++ = '&';
+    *out++ = '#';
+
+    if (val < 100) {
+        len = (val < 10) ? 1 : 2;
+    } else if (val < 10000) {
+        len = (val < 1000) ? 3 : 4;
+    } else if (val < 1000000) {
+        len = (val < 100000) ? 5 : 6;
+    } else {
+        len = 7;
+    }
+
+    for (i = len - 1; i >= 0; i--) {
+        out[i] = '0' + val % 10;
+        val /= 10;
+    }
+
+    out[len] = ';';
+
+    return(len + 3);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

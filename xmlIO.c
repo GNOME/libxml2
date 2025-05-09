@@ -43,7 +43,6 @@
 
 #include "private/buf.h"
 #include "private/enc.h"
-#include "private/entities.h"
 #include "private/error.h"
 #include "private/io.h"
 
@@ -105,6 +104,356 @@ typedef struct _xmlOutputCallback {
 
 static xmlOutputCallback xmlOutputCallbackTable[MAX_OUTPUT_CALLBACK];
 static int xmlOutputCallbackNr;
+#endif /* LIBXML_OUTPUT_ENABLED */
+
+/************************************************************************
+ *									*
+ *			Special escaping routines			*
+ *									*
+ ************************************************************************/
+
+/*
+ * @param buf  a char buffer
+ * @param val  a codepoint
+ *
+ * Serializes a hex char ref like `&#xA0;`.
+ *
+ * Writes at most 9 bytes. Does not include a terminating zero byte.
+ *
+ * @returns the number of bytes written.
+ */
+static int
+xmlSerializeHexCharRef(char *buf, int val) {
+    char *out = buf;
+    int shift = 0, bits;
+
+    *out++ = '&';
+    *out++ = '#';
+    *out++ = 'x';
+
+    bits = val;
+    if (bits & 0xFF0000) {
+        shift = 16;
+        bits &= 0xFF0000;
+    } else if (bits & 0x00FF00) {
+        shift = 8;
+        bits &= 0x00FF00;
+    }
+    if (bits & 0xF0F0F0) {
+        shift += 4;
+    }
+
+    do {
+        int d = (val >> shift) & 0x0F;
+
+        if (d < 10)
+            *out++ = '0' + d;
+        else
+            *out++ = 'A' + (d - 10);
+
+	shift -= 4;
+    } while (shift >= 0);
+
+    *out++ = ';';
+
+    return(out - buf);
+}
+
+/*
+ * Tables generated with tools/genEscape.py
+ */
+
+static const char xmlEscapeContent[] = {
+      8, '&', '#', 'x', 'F', 'F', 'F', 'D', ';',   4, '&', '#',
+    '9', ';',   5, '&', '#', '1', '0', ';',   5, '&', '#', '1',
+    '3', ';',   6, '&', 'q', 'u', 'o', 't', ';',   5, '&', 'a',
+    'm', 'p', ';',   4, '&', 'l', 't', ';',   4, '&', 'g', 't',
+    ';',
+};
+
+static const signed char xmlEscapeTab[128] = {
+     0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1,  0,  0, 20,  0,  0,
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    -1, -1, -1, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+static const signed char xmlEscapeTabQuot[128] = {
+     0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1,  0,  0, 20,  0,  0,
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    -1, -1, 26, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+static const signed char xmlEscapeTabAttr[128] = {
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  9, 14,  0,  0, 20,  0,  0,
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    -1, -1, 26, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+#ifdef LIBXML_HTML_ENABLED
+
+static const signed char htmlEscapeTab[128] = {
+     0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 39, -1, 44, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+static const signed char htmlEscapeTabAttr[128] = {
+     0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+#endif /* LIBXML_HTML_ENABLED */
+
+/*
+ * @param text  input text
+ * @param flags  XML_ESCAPE flags
+ *
+ * Escapes certain characters with char refs.
+ *
+ * - XML_ESCAPE_ATTR: for attribute content.
+ * - XML_ESCAPE_NON_ASCII: escape non-ASCII chars.
+ * - XML_ESCAPE_HTML: for HTML content.
+ * - XML_ESCAPE_QUOT: escape double quotes.
+ *
+ * @returns an escaped string or NULL if a memory allocation failed.
+ */
+xmlChar *
+xmlEscapeText(const xmlChar *string, int flags) {
+    const xmlChar *cur;
+    xmlChar *buffer;
+    xmlChar *out;
+    const signed char *tab;
+    size_t size = 50;
+
+#ifdef LIBXML_HTML_ENABLED
+    if (flags & XML_ESCAPE_HTML) {
+        if (flags & XML_ESCAPE_ATTR)
+            tab = htmlEscapeTabAttr;
+        else
+            tab = htmlEscapeTab;
+    }
+    else
+#endif
+    {
+        if (flags & XML_ESCAPE_QUOT)
+            tab = xmlEscapeTabQuot;
+        else if (flags & XML_ESCAPE_ATTR)
+            tab = xmlEscapeTabAttr;
+        else
+            tab = xmlEscapeTab;
+    }
+
+    buffer = xmlMalloc(size + 1);
+    if (buffer == NULL)
+        return(NULL);
+    out = buffer;
+
+    cur = string;
+
+    while (*cur != 0) {
+        const xmlChar *base;
+        const char *repl;
+        size_t used;
+        size_t replSize;
+        size_t unescapedSize;
+        size_t totalSize;
+        int c;
+        int offset;
+
+        base = cur;
+        offset = -1;
+
+        while (1) {
+            c = *cur;
+
+            if (c < 0x80) {
+                offset = tab[c];
+                if (offset >= 0)
+                    break;
+            } else if (flags & XML_ESCAPE_NON_ASCII) {
+                break;
+            }
+
+            cur += 1;
+        }
+
+        unescapedSize = cur - base;
+
+        if (offset >= 0) {
+            if (c == 0) {
+                replSize = 0;
+                repl = "";
+            } else {
+                replSize = xmlEscapeContent[offset],
+                repl = &xmlEscapeContent[offset+1];
+                cur += 1;
+            }
+        } else {
+            char tempBuf[12];
+            int val = 0, len = 4;
+
+            val = xmlGetUTF8Char(cur, &len);
+            if (val < 0) {
+                val = 0xFFFD;
+                cur += 1;
+            } else {
+                if ((val == 0xFFFE) || (val == 0xFFFF))
+                    val = 0xFFFD;
+                cur += len;
+            }
+
+            replSize = xmlSerializeHexCharRef(tempBuf, val);
+            repl = tempBuf;
+        }
+
+        used = out - buffer;
+        totalSize = unescapedSize + replSize;
+
+        if (totalSize > size - used) {
+            xmlChar *tmp;
+            int newSize;
+
+            if ((size > (SIZE_MAX - 1) / 2) ||
+                (totalSize > (SIZE_MAX - 1) / 2 - size)) {
+                xmlFree(buffer);
+                return(NULL);
+            }
+            newSize = size + totalSize;
+            if (*cur != 0)
+                newSize *= 2;
+            tmp = xmlRealloc(buffer, newSize + 1);
+            if (tmp == NULL) {
+                xmlFree(buffer);
+                return(NULL);
+            }
+            buffer = tmp;
+            size = newSize;
+            out = buffer + used;
+        }
+
+        memcpy(out, base, unescapedSize);
+        out += unescapedSize;
+        memcpy(out, repl, replSize);
+        out += replSize;
+
+        if (c == 0)
+            break;
+
+        base = cur;
+    }
+
+    *out = 0;
+    return(buffer);
+}
+
+#ifdef LIBXML_OUTPUT_ENABLED
+void
+xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
+                 unsigned flags) {
+    const char *cur;
+    const signed char *tab;
+
+    if (string == NULL)
+        return;
+
+#ifdef LIBXML_HTML_ENABLED
+    if (flags & XML_ESCAPE_HTML) {
+        if (flags & XML_ESCAPE_ATTR)
+            tab = htmlEscapeTabAttr;
+        else
+            tab = htmlEscapeTab;
+    }
+    else
+#endif
+    {
+        if (flags & XML_ESCAPE_QUOT)
+            tab = xmlEscapeTabQuot;
+        else if (flags & XML_ESCAPE_ATTR)
+            tab = xmlEscapeTabAttr;
+        else
+            tab = xmlEscapeTab;
+    }
+
+    cur = (const char *) string;
+
+    while (*cur != 0) {
+        const char *base;
+        int c;
+        int offset;
+
+        base = cur;
+        offset = -1;
+
+        while (1) {
+            c = (unsigned char) *cur;
+
+            if (c < 0x80) {
+                offset = tab[c];
+                if (offset >= 0)
+                    break;
+            } else if (flags & XML_ESCAPE_NON_ASCII) {
+                break;
+            }
+
+            cur += 1;
+        }
+
+        if (cur > base)
+            xmlOutputBufferWrite(buf, cur - base, base);
+
+        if (offset >= 0) {
+            if (c == 0)
+                break;
+
+            xmlOutputBufferWrite(buf, xmlEscapeContent[offset],
+                                 &xmlEscapeContent[offset+1]);
+            cur += 1;
+        } else {
+            char tempBuf[12];
+            int tempSize;
+            int val = 0, len = 4;
+
+            val = xmlGetUTF8Char((const xmlChar *) cur, &len);
+            if (val < 0) {
+                val = 0xFFFD;
+                cur += 1;
+            } else {
+                if ((val == 0xFFFE) || (val == 0xFFFF))
+                    val = 0xFFFD;
+                cur += len;
+            }
+
+            tempSize = xmlSerializeHexCharRef(tempBuf, val);
+            xmlOutputBufferWrite(buf, tempSize, tempBuf);
+        }
+    }
+}
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /************************************************************************

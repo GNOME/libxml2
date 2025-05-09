@@ -24,7 +24,6 @@
 #include <libxml/uri.h>
 
 #include "private/buf.h"
-#include "private/entities.h"
 #include "private/error.h"
 #include "private/html.h"
 #include "private/io.h"

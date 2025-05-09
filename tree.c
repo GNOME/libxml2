@@ -43,6 +43,7 @@
 #include "private/entities.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/io.h"
 #include "private/tree.h"
 
 /*

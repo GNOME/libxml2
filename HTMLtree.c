@@ -616,21 +616,21 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
     if (cur == NULL)
 	return;
-    xmlOutputBufferWriteString(buf, "<!DOCTYPE ");
+    xmlOutputBufferWrite(buf, 10, "<!DOCTYPE ");
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if (cur->ExternalID != NULL) {
-	xmlOutputBufferWriteString(buf, " PUBLIC ");
+	xmlOutputBufferWrite(buf, 8, " PUBLIC ");
 	xmlOutputBufferWriteQuotedString(buf, cur->ExternalID);
 	if (cur->SystemID != NULL) {
-	    xmlOutputBufferWriteString(buf, " ");
+	    xmlOutputBufferWrite(buf, 1, " ");
 	    xmlOutputBufferWriteQuotedString(buf, cur->SystemID);
 	}
     } else if (cur->SystemID != NULL &&
 	       xmlStrcmp(cur->SystemID, BAD_CAST "about:legacy-compat")) {
-	xmlOutputBufferWriteString(buf, " SYSTEM ");
+	xmlOutputBufferWrite(buf, 8, " SYSTEM ");
 	xmlOutputBufferWriteQuotedString(buf, cur->SystemID);
     }
-    xmlOutputBufferWriteString(buf, ">\n");
+    xmlOutputBufferWrite(buf, 2, ">\n");
 }
 
 /**
@@ -646,10 +646,10 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
     if (cur == NULL) {
 	return;
     }
-    xmlOutputBufferWriteString(buf, " ");
+    xmlOutputBufferWrite(buf, 1, " ");
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
         xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
-	xmlOutputBufferWriteString(buf, ":");
+	xmlOutputBufferWrite(buf, 1, ":");
     }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if ((cur->children != NULL) && (!htmlIsBooleanAttr(cur->name))) {
@@ -658,7 +658,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
         value = xmlNodeListGetStringInternal(cur->children, /* escape */ 1,
                                              flags);
 	if (value) {
-	    xmlOutputBufferWriteString(buf, "=");
+	    xmlOutputBufferWrite(buf, 1, "=");
 	    if ((cur->ns == NULL) && (cur->parent != NULL) &&
 		(cur->parent->ns == NULL) &&
 		((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||
@@ -738,7 +738,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                     continue;
                 }
             } else {
-                xmlOutputBufferWriteString(buf, "\n");
+                xmlOutputBufferWrite(buf, 1, "\n");
             }
             break;
 
@@ -798,10 +798,10 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                 info = NULL;
             }
 
-            xmlOutputBufferWriteString(buf, "<");
+            xmlOutputBufferWrite(buf, 1, "<");
             if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
                 xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
-                xmlOutputBufferWriteString(buf, ":");
+                xmlOutputBufferWrite(buf, 1, ":");
             }
             xmlOutputBufferWriteString(buf, (const char *)cur->name);
             if (cur->nsDef)
@@ -813,7 +813,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                 } else {
                     xmlChar *newVal;
 
-                    xmlOutputBufferWriteString(buf, " ");
+                    xmlOutputBufferWrite(buf, 1, " ");
                     xmlOutputBufferWriteString(buf, (char *) attr->name);
 
                     newVal = htmlUpdateMetaEncoding(&menc, encoding);
@@ -821,7 +821,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                         buf->error = XML_ERR_NO_MEMORY;
                         return;
                     }
-                    xmlOutputBufferWriteString(buf, "=");
+                    xmlOutputBufferWrite(buf, 1, "=");
                     xmlOutputBufferWriteQuotedString(buf, newVal);
                     xmlFree(newVal);
                 }
@@ -829,31 +829,31 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
             }
 
             if ((info != NULL) && (info->empty)) {
-                xmlOutputBufferWriteString(buf, ">");
+                xmlOutputBufferWrite(buf, 1, ">");
             } else if (cur->children == NULL) {
                 if ((info != NULL) && (info->saveEndTag != 0) &&
                     (xmlStrcmp(BAD_CAST info->name, BAD_CAST "html")) &&
                     (xmlStrcmp(BAD_CAST info->name, BAD_CAST "body"))) {
-                    xmlOutputBufferWriteString(buf, ">");
+                    xmlOutputBufferWrite(buf, 1, ">");
                 } else {
                     if (addMeta) {
-                        xmlOutputBufferWriteString(buf, "><meta charset=\"");
+                        xmlOutputBufferWrite(buf, 16, "><meta charset=\"");
                         /* TODO: Escape */
                         xmlOutputBufferWriteString(buf, encoding);
-                        xmlOutputBufferWriteString(buf, "\"></");
+                        xmlOutputBufferWrite(buf, 4, "\"></");
                     } else {
-                        xmlOutputBufferWriteString(buf, "></");
+                        xmlOutputBufferWrite(buf, 3, "></");
                     }
                     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
                         xmlOutputBufferWriteString(buf,
                                 (const char *)cur->ns->prefix);
-                        xmlOutputBufferWriteString(buf, ":");
+                        xmlOutputBufferWrite(buf, 1, ":");
                     }
                     xmlOutputBufferWriteString(buf, (const char *)cur->name);
-                    xmlOutputBufferWriteString(buf, ">");
+                    xmlOutputBufferWrite(buf, 1, ">");
                 }
             } else {
-                xmlOutputBufferWriteString(buf, ">");
+                xmlOutputBufferWrite(buf, 1, ">");
                 if ((format) &&
                     ((addMeta) ||
                      ((info != NULL) && (!info->isinline) &&
@@ -862,16 +862,16 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                       (cur->children != cur->last) &&
                       (cur->name != NULL) &&
                       (cur->name[0] != 'p')))) /* p, pre, param */
-                    xmlOutputBufferWriteString(buf, "\n");
+                    xmlOutputBufferWrite(buf, 1, "\n");
                 if (addMeta) {
-                    xmlOutputBufferWriteString(buf, "<meta charset=\"");
+                    xmlOutputBufferWrite(buf, 15, "<meta charset=\"");
                     /* TODO: Escape */
                     xmlOutputBufferWriteString(buf, encoding);
-                    xmlOutputBufferWriteString(buf, "\">");
+                    xmlOutputBufferWrite(buf, 2, "\">");
                     if ((format) &&
                         (cur->children->type != HTML_TEXT_NODE) &&
                         (cur->children->type != HTML_ENTITY_REF_NODE))
-                        xmlOutputBufferWriteString(buf, "\n");
+                        xmlOutputBufferWrite(buf, 1, "\n");
                 }
                 parent = cur;
                 cur = cur->children;
@@ -885,7 +885,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                     (parent != NULL) &&
                     (parent->name != NULL) &&
                     (parent->name[0] != 'p')) /* p, pre, param */
-                    xmlOutputBufferWriteString(buf, "\n");
+                    xmlOutputBufferWrite(buf, 1, "\n");
             }
 
             break;
@@ -911,29 +911,29 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
 
         case HTML_COMMENT_NODE:
             if (cur->content != NULL) {
-                xmlOutputBufferWriteString(buf, "<!--");
+                xmlOutputBufferWrite(buf, 4, "<!--");
                 xmlOutputBufferWriteString(buf, (const char *)cur->content);
-                xmlOutputBufferWriteString(buf, "-->");
+                xmlOutputBufferWrite(buf, 3, "-->");
             }
             break;
 
         case HTML_PI_NODE:
             if (cur->name != NULL) {
-                xmlOutputBufferWriteString(buf, "<?");
+                xmlOutputBufferWrite(buf, 2, "<?");
                 xmlOutputBufferWriteString(buf, (const char *)cur->name);
                 if (cur->content != NULL) {
-                    xmlOutputBufferWriteString(buf, " ");
+                    xmlOutputBufferWrite(buf, 1, " ");
                     xmlOutputBufferWriteString(buf,
                             (const char *)cur->content);
                 }
-                xmlOutputBufferWriteString(buf, ">");
+                xmlOutputBufferWrite(buf, 1, ">");
             }
             break;
 
         case HTML_ENTITY_REF_NODE:
-            xmlOutputBufferWriteString(buf, "&");
+            xmlOutputBufferWrite(buf, 1, "&");
             xmlOutputBufferWriteString(buf, (const char *)cur->name);
-            xmlOutputBufferWriteString(buf, ";");
+            xmlOutputBufferWrite(buf, 1, ";");
             break;
 
         case HTML_PRESERVE_NODE:
@@ -960,7 +960,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
 
             if ((cur->type == XML_HTML_DOCUMENT_NODE) ||
                 (cur->type == XML_DOCUMENT_NODE)) {
-                xmlOutputBufferWriteString(buf, "\n");
+                xmlOutputBufferWrite(buf, 1, "\n");
             } else {
                 if ((format) && (cur->ns == NULL))
                     info = htmlTagLookup(cur->name);
@@ -973,15 +973,15 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                     ((cur->children != cur->last) || (cur == metaHead)) &&
                     (cur->name != NULL) &&
                     (cur->name[0] != 'p')) /* p, pre, param */
-                    xmlOutputBufferWriteString(buf, "\n");
+                    xmlOutputBufferWrite(buf, 1, "\n");
 
-                xmlOutputBufferWriteString(buf, "</");
+                xmlOutputBufferWrite(buf, 2, "</");
                 if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
                     xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
-                    xmlOutputBufferWriteString(buf, ":");
+                    xmlOutputBufferWrite(buf, 1, ":");
                 }
                 xmlOutputBufferWriteString(buf, (const char *)cur->name);
-                xmlOutputBufferWriteString(buf, ">");
+                xmlOutputBufferWrite(buf, 1, ">");
 
                 if ((format) && (info != NULL) && (!info->isinline) &&
                     (cur->next != NULL)) {
@@ -990,7 +990,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                         (parent != NULL) &&
                         (parent->name != NULL) &&
                         (parent->name[0] != 'p')) /* p, pre, param */
-                        xmlOutputBufferWriteString(buf, "\n");
+                        xmlOutputBufferWrite(buf, 1, "\n");
                 }
 
                 if (cur == metaHead)

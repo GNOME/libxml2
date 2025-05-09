@@ -22,7 +22,7 @@ XML_HIDDEN int
 htmlParseContentType(const xmlChar *val, htmlMetaEncodingOffsets *off);
 
 XML_HIDDEN void
-htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                      const char *encoding, int format);
 
 #endif /* LIBXML_HTML_ENABLED */

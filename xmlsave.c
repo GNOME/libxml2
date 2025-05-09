@@ -1025,17 +1025,14 @@ static int
 htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     int switched_encoding = 0;
     int format = 0;
-    xmlDocPtr doc;
 
     xmlInitParser();
-
-    doc = cur->doc;
 
     if (ctxt->encoding == NULL) {
         const char *encoding = NULL;
 
-        if (doc != NULL)
-            encoding = (char *) doc->encoding;
+        if (cur->doc != NULL)
+            encoding = (char *) cur->doc->encoding;
 
         if (encoding == NULL)
             encoding = "HTML";
@@ -1048,7 +1045,7 @@ htmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
     if (ctxt->options & XML_SAVE_FORMAT)
         format = 1;
 
-    htmlNodeDumpInternal(ctxt->buf, doc, cur, (char *) ctxt->encoding, format);
+    htmlNodeDumpInternal(ctxt->buf, cur, (char *) ctxt->encoding, format);
 
     if (switched_encoding) {
 	xmlSaveClearEncoding(ctxt);
@@ -1366,8 +1363,8 @@ xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur,
 
         if (ctxt->options & XML_SAVE_FORMAT)
             format = 1;
-        htmlNodeDumpInternal(buf, cur, (htmlNodePtr) cur,
-                             (char *) ctxt->encoding, format);
+        htmlNodeDumpInternal(buf, (htmlNodePtr) cur, (char *) ctxt->encoding,
+                             format);
 #else
         return(-1);
 #endif

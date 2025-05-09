@@ -1444,7 +1444,7 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
  * @param flags  escape flags 
  * @returns a pointer to the string.
  */
-static xmlChar *
+xmlChar *
 xmlNodeListGetStringInternal(const xmlNode *node, int escape, int flags) {
     xmlBufPtr buf;
     xmlChar *ret;

@@ -19,4 +19,7 @@ xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
 XML_HIDDEN const xmlChar *
 xmlSplitQName4(const xmlChar *name, xmlChar **prefixPtr);
 
+XML_HIDDEN xmlChar *
+xmlNodeListGetStringInternal(const xmlNode *node, int escape, int flags);
+
 #endif /* XML_TREE_H_PRIVATE__ */

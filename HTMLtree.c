@@ -24,10 +24,12 @@
 #include <libxml/uri.h>
 
 #include "private/buf.h"
+#include "private/entities.h"
 #include "private/error.h"
 #include "private/html.h"
 #include "private/io.h"
 #include "private/save.h"
+#include "private/tree.h"
 
 /************************************************************************
  *									*
@@ -404,14 +406,14 @@ htmlFindOutputEncoder(const char *encoding, xmlCharEncodingHandler **out) {
  * Serialize an HTML document to an xmlBuf.
  *
  * @param buf  the xmlBufPtr output
- * @param doc  the document
+ * @param doc  the document (unused)
  * @param cur  the current node
  * @param format  should formatting newlines been added
  * @returns the number of bytes written or -1 in case of error
  */
 static size_t
-htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
-	           int format) {
+htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc ATTRIBUTE_UNUSED,
+                      xmlNodePtr cur, int format) {
     size_t use;
     size_t ret;
     xmlOutputBufferPtr outbuf;
@@ -434,7 +436,7 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur,
     outbuf->written = 0;
 
     use = xmlBufUse(buf);
-    htmlNodeDumpInternal(outbuf, doc, cur, NULL, format);
+    htmlNodeDumpInternal(outbuf, cur, NULL, format);
     if (outbuf->error)
         ret = (size_t) -1;
     else
@@ -482,14 +484,14 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
  * changed in a future version.
  *
  * @param out  the FILE pointer
- * @param doc  the document
+ * @param doc  the document (unused)
  * @param cur  the current node
  * @param encoding  the document encoding (optional)
  * @param format  should formatting newlines been added
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
+htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc ATTRIBUTE_UNUSED,
 	               xmlNodePtr cur, const char *encoding, int format) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler;
@@ -506,7 +508,7 @@ htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc,
     if (buf == NULL)
         return(-1);
 
-    htmlNodeDumpInternal(buf, doc, cur, NULL, format);
+    htmlNodeDumpInternal(buf, cur, NULL, format);
 
     ret = xmlOutputBufferClose(buf);
     return(ret);
@@ -636,18 +638,17 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * Serialize an HTML attribute.
  *
  * @param buf  the HTML buffer output
- * @param doc  the document
  * @param cur  the attribute pointer
  */
 static void
-htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
+htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
     xmlChar *value;
 
     /*
      * The html output method should not escape a & character
      * occurring in an attribute value immediately followed by
      * a { character (see Section B.7.1 of the HTML 4.0 Recommendation).
-     * This is implemented in xmlEncodeEntitiesReentrant
+     * This is implemented in xmlEscapeText.
      */
 
     if (cur == NULL) {
@@ -660,7 +661,10 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
     }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
     if ((cur->children != NULL) && (!htmlIsBooleanAttr(cur->name))) {
-	value = xmlNodeListGetString(doc, cur->children, 0);
+        int flags = XML_ESCAPE_HTML | XML_ESCAPE_ATTR;
+
+        value = xmlNodeListGetStringInternal(cur->children, /* escape */ 1,
+                                             flags);
 	if (value) {
 	    xmlOutputBufferWriteString(buf, "=");
 	    if ((cur->ns == NULL) && (cur->parent != NULL) &&
@@ -708,13 +712,12 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlAttrPtr cur) {
  * tags containing the character encoding.
  *
  * @param buf  the HTML buffer output
- * @param doc  the document
  * @param cur  the current node
  * @param encoding  the encoding string (optional)
  * @param format  should formatting newlines been added
  */
 void
-htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                      const char *encoding, int format) {
     xmlNodePtr root, parent, metaHead = NULL;
     xmlAttrPtr attr;
@@ -758,7 +761,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
              * case.
              */
             if ((cur->parent != parent) && (cur->children != NULL)) {
-                htmlNodeDumpInternal(buf, doc, cur, encoding, format);
+                htmlNodeDumpInternal(buf, cur, encoding, format);
                 break;
             }
 
@@ -814,7 +817,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
             attr = cur->properties;
             while (attr != NULL) {
                 if ((!isMeta) || (attr != menc.attr)) {
-                    htmlAttrDumpOutput(buf, doc, attr);
+                    htmlAttrDumpOutput(buf, attr);
                 } else {
                     xmlChar *newVal;
 
@@ -897,7 +900,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
         }
 
         case XML_ATTRIBUTE_NODE:
-            htmlAttrDumpOutput(buf, doc, (xmlAttrPtr) cur);
+            htmlAttrDumpOutput(buf, (xmlAttrPtr) cur);
             break;
 
         case HTML_TEXT_NODE:
@@ -910,7 +913,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
                   (xmlStrcasecmp(parent->name, BAD_CAST "style"))))) {
                 xmlChar *buffer;
 
-                buffer = xmlEncodeEntitiesReentrant(doc, cur->content);
+                buffer = xmlEscapeText(cur->content, XML_ESCAPE_HTML);
                 if (buffer == NULL) {
                     buf->error = XML_ERR_NO_MEMORY;
                     return;
@@ -1017,15 +1020,16 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  * Serialize an HTML node to an output buffer.
  *
  * @param buf  the HTML buffer output
- * @param doc  the document
+ * @param doc  the document (unused)
  * @param cur  the current node
  * @param encoding  the encoding string (unused)
  * @param format  should formatting newlines been added
  */
 void
-htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf,
+                         xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr cur,
                          const char *encoding ATTRIBUTE_UNUSED, int format) {
-    htmlNodeDumpInternal(buf, doc, cur, NULL, format);
+    htmlNodeDumpInternal(buf, cur, NULL, format);
 }
 
 /**
@@ -1034,14 +1038,14 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
  * of htmlNodeDumpFormatOutput().
  *
  * @param buf  the HTML buffer output
- * @param doc  the document
+ * @param doc  the document (unused)
  * @param cur  the current node
  * @param encoding  the encoding string (unused)
  */
 void
-htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
-                   const char *encoding ATTRIBUTE_UNUSED) {
-    htmlNodeDumpInternal(buf, doc, cur, NULL, 1);
+htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc ATTRIBUTE_UNUSED,
+                   xmlNodePtr cur, const char *encoding ATTRIBUTE_UNUSED) {
+    htmlNodeDumpInternal(buf, cur, NULL, 1);
 }
 
 /**
@@ -1056,7 +1060,7 @@ void
 htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	                       const char *encoding ATTRIBUTE_UNUSED,
                                int format) {
-    htmlNodeDumpInternal(buf, cur, (xmlNodePtr) cur, NULL, format);
+    htmlNodeDumpInternal(buf, (xmlNodePtr) cur, NULL, format);
 }
 
 /**
@@ -1071,7 +1075,7 @@ htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 void
 htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
 	                 const char *encoding ATTRIBUTE_UNUSED) {
-    htmlNodeDumpInternal(buf, cur, (xmlNodePtr) cur, NULL, 1);
+    htmlNodeDumpInternal(buf, (xmlNodePtr) cur, NULL, 1);
 }
 
 /************************************************************************

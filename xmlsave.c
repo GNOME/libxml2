@@ -689,8 +689,9 @@ xmlBufDumpAttributeDecl(xmlOutputBufferPtr buf, xmlAttributePtr attr) {
     }
 
     if (attr->defaultValue != NULL) {
-	xmlOutputBufferWrite(buf, 1, " ");
-	xmlOutputBufferWriteQuotedString(buf, attr->defaultValue);
+        xmlOutputBufferWrite(buf, 2, " \"");
+        xmlBufAttrSerializeTxtContent(buf, attr->doc, attr->defaultValue);
+        xmlOutputBufferWrite(buf, 1, "\"");
     }
 
     xmlOutputBufferWrite(buf, 2, ">\n");

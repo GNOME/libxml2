@@ -148,6 +148,8 @@ xmlGetParameterEntityFromDtd(const xmlDtd *dtd, const xmlChar *name) {
  ************************************************************************/
 
 /**
+ * Build a QName from prefix and local name.
+ *
  * Builds the QName `prefix:ncname` in `memory` if there is enough space
  * and prefix is not NULL nor empty, otherwise allocate a new string.
  * If prefix is NULL or empty it returns ncname.
@@ -192,7 +194,7 @@ xmlBuildQName(const xmlChar *ncname, const xmlChar *prefix,
 }
 
 /**
- * parse an XML qualified name string
+ * Parse an XML qualified name.
  *
  * @deprecated This function doesn't report malloc failures.
  *
@@ -247,7 +249,7 @@ xmlSplitQName2(const xmlChar *name, xmlChar **prefix) {
 }
 
 /**
- * parse an XML qualified name string
+ * Parse an XML qualified name.
  *
  * @param name  the full QName
  * @param len  an int *
@@ -283,7 +285,9 @@ xmlSplitQName3(const xmlChar *name, int *len) {
 }
 
 /**
- * Parse a QName. The return value points to the start of the local
+ * Parse a QName.
+ *
+ * The return value points to the start of the local
  * name in the input string. If the QName has a prefix, it will be
  * allocated and stored in `prefixPtr`. This string must be freed by
  * the caller. If there's no prefix, `prefixPtr` is set to NULL.
@@ -1412,7 +1416,7 @@ xmlStringLenGetNodeList(const xmlDoc *doc, const xmlChar *value, int len) {
 }
 
 /**
- * Parse an attribute value and build a node list containing only
+ * Parse an attribute value and build a node list with
  * text and entity reference nodes. The resulting nodes will be
  * associated with the document if provided. The document is also
  * used to look up entities.
@@ -1693,7 +1697,7 @@ xmlNewProp(xmlNodePtr node, const xmlChar *name, const xmlChar *value) {
 }
 
 /**
- * Create an attribute object.
+ * Create an attribute node.
  *
  * If provided, `value` should be a raw, unescaped string.
  *
@@ -1720,6 +1724,8 @@ xmlNewNsProp(xmlNodePtr node, xmlNsPtr ns, const xmlChar *name,
 }
 
 /**
+ * Create an attribute node.
+ *
  * Like xmlNewNsProp(), but the `name` string will be used directly
  * without making a copy. Takes ownership of `name` which will also
  * be freed on error.
@@ -1743,7 +1749,7 @@ xmlNewNsPropEatName(xmlNodePtr node, xmlNsPtr ns, xmlChar *name,
 }
 
 /**
- * Create an attribute object.
+ * Create an attribute node.
  *
  * If provided, `value` is expected to be a valid XML attribute value
  * possibly containing character and entity references. Syntax errors
@@ -2287,11 +2293,12 @@ xmlNewEntityRef(xmlDocPtr doc, xmlChar *name) {
 }
 
 /**
+ * Create an empty entity reference node.
+ *
  * This function is MISNAMED. It doesn't create a character reference
  * but an entity reference.
  *
- * Create an empty entity reference node. This function doesn't attempt
- * to look up the entity in `doc`.
+ * This function doesn't attempt to look up the entity in `doc`.
  *
  * Entity names like `&entity;` are handled as well.
  *
@@ -2404,6 +2411,8 @@ xmlNewDocText(const xmlDoc *doc, const xmlChar *content) {
 }
 
 /**
+ * Create a new text node.
+ *
  * Use of this function is DISCOURAGED in favor of xmlNewDocTextLen().
  *
  * @param content  raw text content (optional)
@@ -2694,12 +2703,12 @@ xmlNodeSetDoc(xmlNodePtr node, xmlDocPtr doc) {
 }
 
 /**
+ * Associate all nodes in a tree with a new document.
+ *
  * This is an internal function which shouldn't be used. It is
  * invoked by functions like xmlAddChild(), xmlAddSibling() or
  * xmlReplaceNode(). `tree` must be the root node of an unlinked
  * subtree.
- *
- * Associate all nodes in a tree with a new document.
  *
  * Also copy strings from the old document's dictionary and
  * remove ID attributes from the old ID table.
@@ -4819,8 +4828,11 @@ xmlGetNodePath(const xmlNode *node)
 }
 
 /**
- * Get the root element of the document (`doc->children` is a list
- * containing possibly comments, PIs, etc ...).
+ * Get the root element of the document.
+ *
+ * Searches the document's children for the root element. The first
+ * child is not necessarily the root element, but could also be a
+ * DTD, comment or PI.
  *
  * @param doc  the document
  * @returns the root element or NULL if no element was found.
@@ -4886,8 +4898,7 @@ xmlDocSetRootElement(xmlDocPtr doc, xmlNodePtr root) {
 }
 
 /**
- * Set the language of a node, i.e. the values of the `xml:lang`
- * attribute.
+ * Set the `xml:lang` attribute of a node.
  *
  * @param cur  the node being changed
  * @param lang  the language description
@@ -4914,8 +4925,10 @@ xmlNodeSetLang(xmlNodePtr cur, const xmlChar *lang) {
 }
 
 /**
- * Searches the language of a node, i.e. the values of the `xml:lang`
- * attribute or the one carried by the nearest ancestor.
+ * Find the `xml:lang` of a node.
+ *
+ * Look up the value of the `xml:lang` attribute or the one carried
+ * by the nearest ancestor.
  *
  * @param cur  the node being checked
  * @returns a pointer to the lang value, or NULL if not found
@@ -4945,8 +4958,7 @@ xmlNodeGetLang(const xmlNode *cur) {
 
 
 /**
- * Set (or reset) the space preserving behaviour of a node, i.e. the
- * value of the `xml:space` attribute.
+ * Set the `xml:space` attribute of a node.
  *
  * @param cur  the node being changed
  * @param val  the xml:space value ("0": default, 1: "preserve")
@@ -4980,9 +4992,10 @@ xmlNodeSetSpacePreserve(xmlNodePtr cur, int val) {
 }
 
 /**
- * Searches the space preserving behaviour of a node, i.e. the values
- * of the `xml:space` attribute or the one carried by the nearest
- * ancestor.
+ * Find the `xml:space` of a node.
+ *
+ * Look up the value of the `xml:space` attribute or the one carried
+ * by the nearest ancestor.
  *
  * @param cur  the node being checked
  * @returns -1 if xml:space is not inherited, 0 if "default", 1 if "preserve"
@@ -5779,7 +5792,7 @@ xmlTreeEnsureXMLDecl(xmlDocPtr doc)
 }
 
 /**
- * Search a namespace with `prefix` in scope of `node`.
+ * Search for a namespace with `prefix` in scope of `node`.
  *
  * @param node  a node
  * @param prefix  a namespace prefix
@@ -5860,7 +5873,8 @@ xmlSearchNsSafe(xmlNodePtr node, const xmlChar *prefix,
 }
 
 /**
- * Search for a namespace registered under a given prefix for a document.
+ * Search for a namespace with `prefix` in scope of `node`.
+ *
  * Recurse on the parents until it finds the defined namespace
  * or return NULL otherwise.
  *
@@ -6015,8 +6029,7 @@ xmlSearchNsByHrefSafe(xmlNodePtr node, const xmlChar *href,
 }
 
 /**
- * Search for a namespace aliasing a given URI. Recurse on the parents
- * until the namespace is found or return NULL otherwise.
+ * Search for a namespace matching `URI` in scope of `node`.
  *
  * @param doc  the document
  * @param node  the current node
@@ -6035,6 +6048,8 @@ xmlSearchNsByHref(xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr node,
 }
 
 /**
+ * Fix up namespace declarations.
+ *
  * This function tries to locate a namespace definition in a tree
  * ancestors, or create a new namespace definition node similar to
  * `ns` trying to reuse the same prefix. However if the given prefix is
@@ -6761,7 +6776,7 @@ xmlNodeIsText(const xmlNode *node) {
 
 /**
  * Checks whether this node is an empty or whitespace-only
- * (and possibly ignorable) text node.
+ * text node.
  *
  * @param node  the node
  * @returns 1 if yes, 0 if no
@@ -7210,6 +7225,7 @@ xmlDOMWrapNSNormAddNsMapItem2(xmlNsPtr **list, int *size, int *number,
 
 /**
  * Unlinks the given node from its owner.
+ *
  * This will substitute ns-references to node->nsDef for
  * ns-references to doc->oldNs, thus ensuring the removed
  * branch to be autark wrt ns-references.
@@ -7722,6 +7738,8 @@ typedef enum {
 } xmlDOMReconcileNSOptions;
 
 /**
+ * Fix up namespaces.
+ *
  * Ensures that ns-references point to ns-decls hold on element-nodes.
  * Ensures that the tree is namespace wellformed by creating additional
  * ns-decls where needed. Note that, since prefixes of already existent
@@ -8254,6 +8272,8 @@ leave_node:
 }
 
 /**
+ * Clone a node and fix namespaces.
+ *
  * References of out-of scope ns-decls are remapped to point to `destDoc`.
  * If `destParent` is given, then nsDef entries on element-nodes are used.
  * If *no* `destParent` is given, then `destDoc->oldNs` entries are used.
@@ -8857,6 +8877,8 @@ xmlDOMWrapAdoptAttr(xmlDOMWrapCtxtPtr ctxt,
 }
 
 /**
+ * Fix up namespaces before moving a node.
+ *
  * References of out-of scope ns-decls are remapped to point to `destDoc`:
  * If `destParent` is given, then nsDef entries on element-nodes are used.
  * If *no* `destParent` is given, then `destDoc->oldNs` entries are used

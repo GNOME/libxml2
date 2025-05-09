@@ -1,11 +1,11 @@
 /**
  * @file
  *
- * @brief interfaces for tree manipulation
+ * @brief Document tree API
  *
- * this module describes the structures found in an tree resulting
- *              from an XML or HTML parsing, as well as the API provided for
- *              various processing on that tree
+ * Data structures and functions to build, modify, query and
+ * serialize XML and HTML document trees. Also contains the
+ * buffer API.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -107,15 +107,6 @@ struct _xmlBuffer {
  */
 typedef struct _xmlBuf xmlBuf;
 typedef xmlBuf *xmlBufPtr;
-
-/*
- * A few public routines for xmlBuf. As those are expected to be used
- * mostly internally the bulk of the routines are internal in buf.h
- */
-XMLPUBFUN xmlChar*       xmlBufContent	(const xmlBuf* buf);
-XMLPUBFUN xmlChar*       xmlBufEnd      (xmlBufPtr buf);
-XMLPUBFUN size_t         xmlBufUse      (const xmlBufPtr buf);
-XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
 
 /*
  * Macro used to express that the API use the new buffers for
@@ -785,67 +776,6 @@ XMLPUBFUN const xmlChar *
 					 int *len);
 
 /*
- * Handling Buffers, the old ones see `xmlBuf` for the new ones.
- */
-
-XML_DEPRECATED
-XMLPUBFUN void
-		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
-XML_DEPRECATED
-XMLPUBFUN xmlBufferAllocationScheme
-		xmlGetBufferAllocationScheme(void);
-
-XMLPUBFUN xmlBufferPtr
-		xmlBufferCreate		(void);
-XMLPUBFUN xmlBufferPtr
-		xmlBufferCreateSize	(size_t size);
-XMLPUBFUN xmlBufferPtr
-		xmlBufferCreateStatic	(void *mem,
-					 size_t size);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlBufferResize		(xmlBufferPtr buf,
-					 unsigned int size);
-XMLPUBFUN void
-		xmlBufferFree		(xmlBufferPtr buf);
-XMLPUBFUN int
-		xmlBufferDump		(FILE *file,
-					 xmlBufferPtr buf);
-XMLPUBFUN int
-		xmlBufferAdd		(xmlBufferPtr buf,
-					 const xmlChar *str,
-					 int len);
-XMLPUBFUN int
-		xmlBufferAddHead	(xmlBufferPtr buf,
-					 const xmlChar *str,
-					 int len);
-XMLPUBFUN int
-		xmlBufferCat		(xmlBufferPtr buf,
-					 const xmlChar *str);
-XMLPUBFUN int
-		xmlBufferCCat		(xmlBufferPtr buf,
-					 const char *str);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlBufferShrink		(xmlBufferPtr buf,
-					 unsigned int len);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlBufferGrow		(xmlBufferPtr buf,
-					 unsigned int len);
-XMLPUBFUN void
-		xmlBufferEmpty		(xmlBufferPtr buf);
-XMLPUBFUN const xmlChar*
-		xmlBufferContent	(const xmlBuffer *buf);
-XMLPUBFUN xmlChar*
-		xmlBufferDetach         (xmlBufferPtr buf);
-XMLPUBFUN void
-		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
-					 xmlBufferAllocationScheme scheme);
-XMLPUBFUN int
-		xmlBufferLength		(const xmlBuffer *buf);
-
-/*
  * Creating/freeing new structures.
  */
 XMLPUBFUN xmlDtdPtr
@@ -1186,19 +1116,6 @@ XMLPUBFUN int
 		xmlUnsetProp		(xmlNodePtr node,
 					 const xmlChar *name);
 
-/*
- * Internal, don't use.
- */
-XMLPUBFUN void
-		xmlBufferWriteCHAR	(xmlBufferPtr buf,
-					 const xmlChar *string);
-XMLPUBFUN void
-		xmlBufferWriteChar	(xmlBufferPtr buf,
-					 const char *string);
-XMLPUBFUN void
-		xmlBufferWriteQuotedString(xmlBufferPtr buf,
-					 const xmlChar *string);
-
 #ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void xmlAttrSerializeTxtContent(xmlBufferPtr buf,
 					 xmlDocPtr doc,
@@ -1379,6 +1296,85 @@ XMLPUBFUN xmlRegisterNodeFunc
 XML_DEPRECATED
 XMLPUBFUN xmlDeregisterNodeFunc
             xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func);
+
+/*
+ * Handling Buffers, the old ones see `xmlBuf` for the new ones.
+ */
+
+XML_DEPRECATED
+XMLPUBFUN void
+		xmlSetBufferAllocationScheme(xmlBufferAllocationScheme scheme);
+XML_DEPRECATED
+XMLPUBFUN xmlBufferAllocationScheme
+		xmlGetBufferAllocationScheme(void);
+
+XMLPUBFUN xmlBufferPtr
+		xmlBufferCreate		(void);
+XMLPUBFUN xmlBufferPtr
+		xmlBufferCreateSize	(size_t size);
+XMLPUBFUN xmlBufferPtr
+		xmlBufferCreateStatic	(void *mem,
+					 size_t size);
+XML_DEPRECATED
+XMLPUBFUN int
+		xmlBufferResize		(xmlBufferPtr buf,
+					 unsigned int size);
+XMLPUBFUN void
+		xmlBufferFree		(xmlBufferPtr buf);
+XMLPUBFUN int
+		xmlBufferDump		(FILE *file,
+					 xmlBufferPtr buf);
+XMLPUBFUN int
+		xmlBufferAdd		(xmlBufferPtr buf,
+					 const xmlChar *str,
+					 int len);
+XMLPUBFUN int
+		xmlBufferAddHead	(xmlBufferPtr buf,
+					 const xmlChar *str,
+					 int len);
+XMLPUBFUN int
+		xmlBufferCat		(xmlBufferPtr buf,
+					 const xmlChar *str);
+XMLPUBFUN int
+		xmlBufferCCat		(xmlBufferPtr buf,
+					 const char *str);
+XML_DEPRECATED
+XMLPUBFUN int
+		xmlBufferShrink		(xmlBufferPtr buf,
+					 unsigned int len);
+XML_DEPRECATED
+XMLPUBFUN int
+		xmlBufferGrow		(xmlBufferPtr buf,
+					 unsigned int len);
+XMLPUBFUN void
+		xmlBufferEmpty		(xmlBufferPtr buf);
+XMLPUBFUN const xmlChar*
+		xmlBufferContent	(const xmlBuffer *buf);
+XMLPUBFUN xmlChar*
+		xmlBufferDetach         (xmlBufferPtr buf);
+XMLPUBFUN void
+		xmlBufferSetAllocationScheme(xmlBufferPtr buf,
+					 xmlBufferAllocationScheme scheme);
+XMLPUBFUN int
+		xmlBufferLength		(const xmlBuffer *buf);
+XMLPUBFUN void
+		xmlBufferWriteCHAR	(xmlBufferPtr buf,
+					 const xmlChar *string);
+XMLPUBFUN void
+		xmlBufferWriteChar	(xmlBufferPtr buf,
+					 const char *string);
+XMLPUBFUN void
+		xmlBufferWriteQuotedString(xmlBufferPtr buf,
+					 const xmlChar *string);
+
+/*
+ * A few public routines for xmlBuf. As those are expected to be used
+ * mostly internally the bulk of the routines are internal in buf.h
+ */
+XMLPUBFUN xmlChar*       xmlBufContent	(const xmlBuf* buf);
+XMLPUBFUN xmlChar*       xmlBufEnd      (xmlBufPtr buf);
+XMLPUBFUN size_t         xmlBufUse      (const xmlBufPtr buf);
+XMLPUBFUN size_t         xmlBufShrink	(xmlBufPtr buf, size_t len);
 
 #ifdef __cplusplus
 }

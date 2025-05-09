@@ -553,34 +553,30 @@ xmlSaveWriteAttributeDecl(xmlSaveCtxtPtr ctxt, xmlAttributePtr attr) {
  */
 static void
 xmlBufDumpEntityContent(xmlOutputBufferPtr buf, const xmlChar *content) {
-    if (xmlStrchr(content, '%')) {
-        const char * base, *cur;
+    const char * base, *cur;
 
-	xmlOutputBufferWrite(buf, 1, "\"");
-	base = cur = (const char *) content;
-	while (*cur != 0) {
-	    if (*cur == '"') {
-		if (base != cur)
-		    xmlOutputBufferWrite(buf, cur - base, base);
-		xmlOutputBufferWrite(buf, 6, "&quot;");
-		cur++;
-		base = cur;
-	    } else if (*cur == '%') {
-		if (base != cur)
-		    xmlOutputBufferWrite(buf, cur - base, base);
-		xmlOutputBufferWrite(buf, 6, "&#x25;");
-		cur++;
-		base = cur;
-	    } else {
-		cur++;
-	    }
-	}
-	if (base != cur)
-	    xmlOutputBufferWrite(buf, cur - base, base);
-	xmlOutputBufferWrite(buf, 1, "\"");
-    } else {
-        xmlOutputBufferWriteQuotedString(buf, content);
+    xmlOutputBufferWrite(buf, 1, "\"");
+    base = cur = (const char *) content;
+    while (*cur != 0) {
+        if (*cur == '"') {
+            if (base != cur)
+                xmlOutputBufferWrite(buf, cur - base, base);
+            xmlOutputBufferWrite(buf, 6, "&quot;");
+            cur++;
+            base = cur;
+        } else if (*cur == '%') {
+            if (base != cur)
+                xmlOutputBufferWrite(buf, cur - base, base);
+            xmlOutputBufferWrite(buf, 6, "&#x25;");
+            cur++;
+            base = cur;
+        } else {
+            cur++;
+        }
     }
+    if (base != cur)
+        xmlOutputBufferWrite(buf, cur - base, base);
+    xmlOutputBufferWrite(buf, 1, "\"");
 }
 
 /**
@@ -624,6 +620,10 @@ xmlBufDumpEntityDecl(xmlOutputBufferPtr buf, xmlEntityPtr ent) {
 
     if ((ent->etype == XML_INTERNAL_GENERAL_ENTITY) ||
         (ent->etype == XML_INTERNAL_PARAMETER_ENTITY)) {
+        /*
+         * We could save the original quote character and avoid
+         * calling xmlOutputBufferWriteQuotedString here.
+         */
         if (ent->orig != NULL)
             xmlOutputBufferWriteQuotedString(buf, ent->orig);
         else
@@ -1274,14 +1274,16 @@ xmlSaveDocInternal(xmlSaveCtxtPtr ctxt, xmlDocPtr cur,
 	 * Save the XML declaration
 	 */
 	if ((ctxt->options & XML_SAVE_NO_DECL) == 0) {
-	    xmlOutputBufferWrite(buf, 14, "<?xml version=");
+	    xmlOutputBufferWrite(buf, 15, "<?xml version=\"");
 	    if (cur->version != NULL)
-		xmlOutputBufferWriteQuotedString(buf, cur->version);
+		xmlOutputBufferWriteString(buf, (char *) cur->version);
 	    else
-		xmlOutputBufferWrite(buf, 5, "\"1.0\"");
+		xmlOutputBufferWrite(buf, 3, "1.0");
+	    xmlOutputBufferWrite(buf, 1, "\"");
 	    if (encoding != NULL) {
-		xmlOutputBufferWrite(buf, 10, " encoding=");
-		xmlOutputBufferWriteQuotedString(buf, (xmlChar *) encoding);
+		xmlOutputBufferWrite(buf, 11, " encoding=\"");
+		xmlOutputBufferWriteString(buf, (char *) encoding);
+	        xmlOutputBufferWrite(buf, 1, "\"");
 	    }
 	    switch (cur->standalone) {
 		case 0:

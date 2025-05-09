@@ -2679,9 +2679,16 @@ xmlOutputBufferWriteString(xmlOutputBufferPtr out, const char *str) {
 }
 
 /**
- * routine which manage and grows an output buffer. This one writes
- * a quoted or double quoted \#xmlChar string, checking first if it holds
- * quote or double-quotes internally
+ * Write a string surrounded by quotes to an output buffer.
+ *
+ * Uses double quotes if the string contains no double quotes.
+ * Otherwise, uses single quotes if the string contains no
+ * single quotes. Otherwise, uses double quotes and escapes
+ * double quotes.
+ *
+ * This should only be used to escape system IDs. Currently,
+ * we also use it for public IDs and original entity values,
+ * as well as HTML attributes.
  *
  * @param buf  output buffer
  * @param string  the string to add

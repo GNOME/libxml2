@@ -837,7 +837,10 @@ xmlSAX2EndDocument(void *ctx)
 #endif /* LIBXML_VALID_ENABLED */
 
     doc = ctxt->myDoc;
-    if ((doc != NULL) && (doc->encoding == NULL)) {
+    if (doc == NULL)
+        return;
+
+    if (doc->encoding == NULL) {
         const xmlChar *encoding = xmlGetActualEncoding(ctxt);
 
         if (encoding != NULL) {
@@ -846,6 +849,18 @@ xmlSAX2EndDocument(void *ctx)
                 xmlSAX2ErrMemory(ctxt);
         }
     }
+
+#ifdef LIBXML_HTML_ENABLED
+    if ((ctxt->html) &&
+        ((ctxt->options & HTML_PARSE_NODEFDTD) == 0) &&
+        (doc->intSubset == NULL)) {
+        doc->intSubset = xmlCreateIntSubset(doc, BAD_CAST "html",
+                BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
+                BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
+        if (doc->intSubset == NULL)
+            xmlSAX2ErrMemory(ctxt);
+    }
+#endif /* LIBXML_HTML_ENABLED */
 }
 
 static void

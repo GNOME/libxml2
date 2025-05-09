@@ -4331,8 +4331,6 @@ htmlCtxtParseContentInternal(htmlParserCtxtPtr ctxt, xmlParserInputPtr input) {
  */
 int
 htmlParseDocument(htmlParserCtxtPtr ctxt) {
-    xmlDtdPtr dtd;
-
     if ((ctxt == NULL) || (ctxt->input == NULL))
 	return(-1);
 
@@ -4429,17 +4427,6 @@ htmlParseDocument(htmlParserCtxtPtr ctxt) {
     if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
         ctxt->sax->endDocument(ctxt->userData);
 
-    if ((!(ctxt->options & HTML_PARSE_NODEFDTD)) && (ctxt->myDoc != NULL)) {
-	dtd = xmlGetIntSubset(ctxt->myDoc);
-	if (dtd == NULL) {
-	    ctxt->myDoc->intSubset =
-		xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "html",
-		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
-		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
-            if (ctxt->myDoc->intSubset == NULL)
-                htmlErrMemory(ctxt);
-        }
-    }
     if (! ctxt->wellFormed) return(-1);
     return(0);
 }
@@ -5157,20 +5144,6 @@ htmlParseChunk(htmlParserCtxtPtr ctxt, const char *chunk, int size,
 
         if ((ctxt->sax) && (ctxt->sax->endDocument != NULL))
             ctxt->sax->endDocument(ctxt->userData);
-
-        if ((!(ctxt->options & HTML_PARSE_NODEFDTD)) &&
-            (ctxt->myDoc != NULL)) {
-            xmlDtdPtr dtd;
-            dtd = xmlGetIntSubset(ctxt->myDoc);
-            if (dtd == NULL) {
-                ctxt->myDoc->intSubset =
-                    xmlCreateIntSubset(ctxt->myDoc, BAD_CAST "html",
-                        BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN",
-                        BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd");
-                if (ctxt->myDoc->intSubset == NULL)
-                    htmlErrMemory(ctxt);
-            }
-        }
 
 	ctxt->instate = XML_PARSER_EOF;
     }

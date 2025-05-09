@@ -667,19 +667,8 @@ xmlEscapeText(const xmlChar *text, int flags) {
             repl = BAD_CAST "&gt;";
             replSize = 4;
 	} else if (c == '&') {
-	    /*
-	     * Special handling of &{...} construct from HTML 4, see
-	     * http://www.w3.org/TR/html401/appendix/notes.html#h-B.7.1
-	     */
-	    if ((flags & XML_ESCAPE_HTML) && (flags & XML_ESCAPE_ATTR) &&
-                (cur[1] == '{') && (end = xmlStrchr(cur, '}'))) {
-                chunkSize = (end - cur) + 1;
-                repl = cur;
-                replSize = chunkSize;
-	    } else {
-                repl = BAD_CAST "&amp;";
-                replSize = 5;
-            }
+            repl = BAD_CAST "&amp;";
+            replSize = 5;
 	} else if ((flags & XML_ESCAPE_QUOT) && (c == '"')) {
             repl = BAD_CAST "&quot;";
             replSize = 6;

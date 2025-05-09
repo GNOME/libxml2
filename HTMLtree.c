@@ -644,13 +644,6 @@ static void
 htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
     xmlChar *value;
 
-    /*
-     * The html output method should not escape a & character
-     * occurring in an attribute value immediately followed by
-     * a { character (see Section B.7.1 of the HTML 4.0 Recommendation).
-     * This is implemented in xmlEscapeText.
-     */
-
     if (cur == NULL) {
 	return;
     }

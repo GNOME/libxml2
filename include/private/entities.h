@@ -35,8 +35,4 @@ xmlSerializeDecCharRef(char *buf, int val);
 XML_HIDDEN xmlChar *
 xmlEscapeText(const xmlChar *text, int flags);
 
-XML_HIDDEN xmlChar *
-xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
-                          unsigned flags);
-
 #endif /* XML_ENTITIES_H_PRIVATE__ */

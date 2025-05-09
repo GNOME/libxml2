@@ -1439,20 +1439,20 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 }
 
 /**
- * @param doc  a document (optional)
  * @param node  a node list
- * @param escMode  escape mode (0 = no, 1 = elem, 2 = attr, 3 = raw)
+ * @param escape  whether to escape characters and keep entity refs
+ * @param flags  escape flags 
  * @returns a pointer to the string.
  */
 static xmlChar *
-xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
+xmlNodeListGetStringInternal(const xmlNode *node, int escape, int flags) {
     xmlBufPtr buf;
     xmlChar *ret;
 
     if (node == NULL)
         return(xmlStrdup(BAD_CAST ""));
 
-    if ((escMode == 0) &&
+    if ((escape == 0) &&
         ((node->type == XML_TEXT_NODE) ||
          (node->type == XML_CDATA_SECTION_NODE)) &&
         (node->next == NULL)) {
@@ -1469,19 +1469,12 @@ xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
         if ((node->type == XML_TEXT_NODE) ||
             (node->type == XML_CDATA_SECTION_NODE)) {
             if (node->content != NULL) {
-                if (escMode == 0) {
+                if (escape == 0) {
                     xmlBufCat(buf, node->content);
                 } else {
                     xmlChar *encoded;
 
-                    if (escMode == 1)
-                        encoded = xmlEncodeEntitiesInternal(doc, node->content,
-                                                            0);
-                    else if (escMode == 2)
-                        encoded = xmlEncodeEntitiesInternal(doc, node->content,
-                                                            XML_ESCAPE_ATTR);
-                    else
-                        encoded = xmlEncodeSpecialChars(doc, node->content);
+                    encoded = xmlEscapeText(node->content, flags);
                     if (encoded == NULL)
                         goto error;
                     xmlBufCat(buf, encoded);
@@ -1489,7 +1482,7 @@ xmlNodeListGetStringInternal(xmlDocPtr doc, const xmlNode *node, int escMode) {
                 }
             }
         } else if (node->type == XML_ENTITY_REF_NODE) {
-            if (escMode == 0) {
+            if (escape == 0) {
                 xmlBufGetNodeContent(buf, node);
             } else {
                 xmlBufAdd(buf, BAD_CAST "&", 1);
@@ -1517,7 +1510,10 @@ error:
  * If `inLine` is true, entity references will be substituted.
  * Otherwise, entity references will be kept and special characters
  * like `&` as well as non-ASCII chars will be escaped. See
- * xmlNodeListGetRawString() for an alternative option.
+ * xmlEncodeEntitiesReentrant() for details. If `list` is the child
+ * of an attribute, escaping rules apply are adjusted.
+ *
+ * See xmlNodeListGetRawString() for an alternative option.
  *
  * @param doc  a document (optional)
  * @param list  a node list of attribute children
@@ -1527,23 +1523,27 @@ error:
 xmlChar *
 xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
 {
-    int escMode;
+    int flags = 0;
+    int escape = 0;
 
     /* backward compatibility */
     if (list == NULL)
         return(NULL);
 
-    if (inLine) {
-        escMode = 0;
-    } else {
+    if (!inLine) {
+        escape = 1;
+
+        if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE))
+            flags |= XML_ESCAPE_HTML;
+        else if ((doc == NULL) || (doc->encoding == NULL))
+            flags |= XML_ESCAPE_NON_ASCII;
+
         if ((list->parent != NULL) &&
             (list->parent->type == XML_ATTRIBUTE_NODE))
-            escMode = 2;
-        else
-            escMode = 1;
+            flags |= XML_ESCAPE_ATTR;
     }
 
-    return(xmlNodeListGetStringInternal(doc, list, escMode));
+    return(xmlNodeListGetStringInternal(list, escape, flags));
 }
 
 /**
@@ -1552,23 +1552,31 @@ xmlNodeListGetString(xmlDocPtr doc, const xmlNode *list, int inLine)
  *
  * If `inLine` is true, entity references will be substituted.
  * Otherwise, entity references will be kept and special characters
- * like `&` will be escaped.
+ * like `&` will be escaped. See xmlEncodeSpecialChars() for
+ * details.
  *
- * @param doc  a document (optional)
+ * @param doc  a document (unused)
  * @param list  a node list of attribute children
  * @param inLine  whether entity references are substituted
  * @returns a string or NULL if a memory allocation failed.
  */
 xmlChar *
-xmlNodeListGetRawString(const xmlDoc *doc, const xmlNode *list, int inLine)
+xmlNodeListGetRawString(const xmlDoc *doc ATTRIBUTE_UNUSED,
+                        const xmlNode *list, int inLine)
 {
-    int escMode = inLine ? 0 : 3;
+    int escape = 0;
+    int flags = 0;
 
     /* backward compatibility */
     if (list == NULL)
         return(NULL);
 
-    return(xmlNodeListGetStringInternal((xmlDocPtr) doc, list, escMode));
+    if (!inLine) {
+        escape = 1;
+        flags = XML_ESCAPE_QUOT | XML_ESCAPE_ALLOW_INVALID;
+    }
+
+    return(xmlNodeListGetStringInternal(list, escape, flags));
 }
 
 static xmlAttrPtr

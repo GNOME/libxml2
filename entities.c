@@ -760,28 +760,6 @@ xmlEscapeText(const xmlChar *text, int flags) {
 }
 
 /**
- * See xmlEncodeEntitiesReentrant(). Allows extra flags.
- *
- * @param doc  the document containing the string (optional)
- * @param input  A string to convert to XML.
- * @param flags  XML_ESCAPE flags
- * @returns a newly allocated string with substitutions.
- */
-xmlChar *
-xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
-                          unsigned flags) {
-    if (input == NULL)
-        return(NULL);
-
-    if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE))
-        flags |= XML_ESCAPE_HTML;
-    else if ((doc == NULL) || (doc->encoding == NULL))
-        flags |= XML_ESCAPE_NON_ASCII;
-
-    return(xmlEscapeText(input, flags));
-}
-
-/**
  * Replace special characters with predefined entities or numeric
  * character references.
  *
@@ -796,13 +774,25 @@ xmlEncodeEntitiesInternal(xmlDocPtr doc, const xmlChar *input,
  * Silently removes some invalid characters like ASCII control
  * codes.
  *
+ * See xmlEncodeSpecialChars() for an alternative.
+ *
  * @param doc  the document containing the string (optional)
  * @param input  A string to convert to XML.
  * @returns a newly allocated string with substitutions.
  */
 xmlChar *
 xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
-    return xmlEncodeEntitiesInternal(doc, input, 0);
+    int flags = 0;
+
+    if (input == NULL)
+        return(NULL);
+
+    if ((doc != NULL) && (doc->type == XML_HTML_DOCUMENT_NODE))
+        flags |= XML_ESCAPE_HTML;
+    else if ((doc == NULL) || (doc->encoding == NULL))
+        flags |= XML_ESCAPE_NON_ASCII;
+
+    return(xmlEscapeText(input, flags));
 }
 
 /**

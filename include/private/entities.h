@@ -25,7 +25,6 @@
 #define XML_ESCAPE_NON_ASCII        (1u << 1)
 #define XML_ESCAPE_HTML             (1u << 2)
 #define XML_ESCAPE_QUOT             (1u << 3)
-#define XML_ESCAPE_ALLOW_INVALID    (1u << 4)
 
 XML_HIDDEN int
 xmlSerializeHexCharRef(char *buf, int val);

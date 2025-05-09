@@ -206,7 +206,7 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
                 val = 0xFFFD;
                 cur += 1;
             } else {
-                if (!IS_CHAR(val))
+                if ((val == 0xFFFE) || (val == 0xFFFF))
                     val = 0xFFFD;
                 cur += len;
             }

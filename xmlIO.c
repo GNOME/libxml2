@@ -2260,7 +2260,7 @@ xmlOutputBufferWriteEscape(xmlOutputBufferPtr out, const xmlChar *str,
     }
 
     if (escaping == NULL) {
-        char *escaped = (char *) xmlEscapeText(str, XML_ESCAPE_ALLOW_INVALID);
+        char *escaped = (char *) xmlEscapeText(str, 0);
 
         if (escaped == NULL) {
             out->error = XML_ERR_NO_MEMORY;

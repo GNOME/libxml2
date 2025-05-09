@@ -601,7 +601,6 @@ static const char xmlEscapeSafe[128] = {
  * - XML_ESCAPE_NON_ASCII: escape non-ASCII chars.
  * - XML_ESCAPE_HTML: for HTML content.
  * - XML_ESCAPE_QUOT: escape double quotes.
- * - XML_ESCAPE_ALLOW_INVALID: allow invalid characters.
  *
  * @returns an escaped string or NULL if a memory allocation failed.
  */
@@ -695,14 +694,13 @@ xmlEscapeText(const xmlChar *text, int flags) {
             if (val < 0) {
                 val = 0xFFFD;
                 chunkSize = 1;
-            } else if (((flags & XML_ESCAPE_ALLOW_INVALID) == 0) &&
-                       (!IS_CHAR(val))) {
+            } else if ((val == 0xFFFE) || (val == 0xFFFF)) {
                 val = 0xFFFD;
             }
 
             replSize = xmlSerializeHexCharRef(buf, val);
             repl = BAD_CAST buf;
-	} else if ((flags & (XML_ESCAPE_ALLOW_INVALID | XML_ESCAPE_HTML)) ||
+	} else if ((flags & XML_ESCAPE_HTML) ||
                    (c >= 0x20) ||
 	           (c == '\n') || (c == '\t') || (c == '\r')) {
 	    /* default case, just copy */
@@ -714,9 +712,8 @@ xmlEscapeText(const xmlChar *text, int flags) {
             repl = BAD_CAST "";
             replSize = 0;
 	} else {
-            /* ignore */
-            repl = BAD_CAST "";
-            replSize = 0;
+            replSize = xmlSerializeHexCharRef(buf, 0xFFFD);
+            repl = BAD_CAST buf;
         }
 
         used = out - buffer;
@@ -812,7 +809,7 @@ xmlEncodeSpecialChars(const xmlDoc *doc ATTRIBUTE_UNUSED,
     if (input == NULL)
         return(NULL);
 
-    return(xmlEscapeText(input, XML_ESCAPE_QUOT | XML_ESCAPE_ALLOW_INVALID));
+    return(xmlEscapeText(input, XML_ESCAPE_QUOT));
 }
 
 /**

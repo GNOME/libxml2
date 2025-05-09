@@ -1573,7 +1573,7 @@ xmlNodeListGetRawString(const xmlDoc *doc ATTRIBUTE_UNUSED,
 
     if (!inLine) {
         escape = 1;
-        flags = XML_ESCAPE_QUOT | XML_ESCAPE_ALLOW_INVALID;
+        flags = XML_ESCAPE_QUOT;
     }
 
     return(xmlNodeListGetStringInternal(list, escape, flags));

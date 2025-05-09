@@ -596,7 +596,9 @@ xmlBufDumpEnumeration(xmlOutputBufferPtr buf, xmlEnumerationPtr cur) {
  * DTD definition
  */
 static void
-xmlBufDumpAttributeDecl(xmlOutputBufferPtr buf, xmlAttributePtr attr) {
+xmlSaveWriteAttributeDecl(xmlSaveCtxtPtr ctxt, xmlAttributePtr attr) {
+    xmlOutputBufferPtr buf = ctxt->buf;
+
     xmlOutputBufferWrite(buf, 10, "<!ATTLIST ");
     xmlOutputBufferWriteString(buf, (const char *) attr->elem);
     xmlOutputBufferWrite(buf, 1, " ");
@@ -662,8 +664,9 @@ xmlBufDumpAttributeDecl(xmlOutputBufferPtr buf, xmlAttributePtr attr) {
     }
 
     if (attr->defaultValue != NULL) {
-	xmlOutputBufferWrite(buf, 1, " ");
-	xmlOutputBufferWriteQuotedString(buf, attr->defaultValue);
+        xmlOutputBufferWrite(buf, 2, " \"");
+        xmlSaveWriteText(ctxt, attr->defaultValue, XML_ESCAPE_ATTR);
+        xmlOutputBufferWrite(buf, 1, "\"");
     }
 
     xmlOutputBufferWrite(buf, 2, ">\n");
@@ -1118,7 +1121,7 @@ xmlNodeDumpOutputInternal(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
             break;
 
         case XML_ATTRIBUTE_DECL:
-            xmlBufDumpAttributeDecl(buf, (xmlAttributePtr) cur);
+            xmlSaveWriteAttributeDecl(ctxt, (xmlAttributePtr) cur);
             break;
 
         case XML_ENTITY_DECL:
@@ -1666,7 +1669,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
 	    break;
 
         case XML_ATTRIBUTE_DECL:
-            xmlBufDumpAttributeDecl(buf, (xmlAttributePtr) cur);
+            xmlSaveWriteAttributeDecl(ctxt, (xmlAttributePtr) cur);
 	    break;
 
         case XML_ENTITY_DECL:

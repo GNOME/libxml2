@@ -265,9 +265,10 @@ hugeMatch(const char * URI) {
 }
 
 /**
- * @param URI  an URI to test
- * @returns a pointer to the huge query handler, in this example simply
+ * Returns a pointer to the huge query handler, in this example simply
  * the current pointer...
+ *
+ * @param URI  an URI to test
  * @returns an Input context or NULL in case or error
  */
 static void *

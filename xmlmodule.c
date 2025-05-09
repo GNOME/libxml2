@@ -180,6 +180,7 @@ xmlModulePlatformClose(void *handle)
 
 /*
  * http://www.opengroup.org/onlinepubs/009695399/functions/dlsym.html
+ *
  * @returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
@@ -219,6 +220,7 @@ xmlModulePlatformClose(void *handle)
 
 /*
  * http://docs.hp.com/en/B2355-90683/shl_load.3X.html
+ *
  * @returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 
@@ -265,6 +267,7 @@ xmlModulePlatformClose(void *handle)
 
 /*
  * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dllproc/base/getprocaddress.asp
+ *
  * @returns 0 on success and the loaded symbol in result, and -1 on error.
  */
 

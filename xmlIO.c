@@ -344,10 +344,8 @@ xmlNormalizeWindowsPath(const xmlChar *path)
  * @deprecated Internal function, don't use.
  *
  * @param path  the path to check
- * @returns 1.  if stat fails, returns 0 (if calling
- * stat on the filename fails, it can't be right).
- * if stat succeeds and the file is a directory,
- * @returns 2.  otherwise returns 1.
+ * @returns 0 if stat fails, 2 if stat succeeds and the file is
+ * a directory, 1 otherwise.
  */
 int
 xmlCheckFilename(const char *path)

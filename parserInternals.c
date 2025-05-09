@@ -207,6 +207,7 @@ xmlCtxtErrMemory(xmlParserCtxtPtr ctxt)
  * If filename is empty, use the one from context input if available.
  *
  * Report an IO error to the parser context.
+ *
  * @param ctxt  parser context
  * @param code  xmlParserErrors code
  * @param uri  filename or URI (optional)
@@ -1425,6 +1426,7 @@ xmlSwitchToEncoding(xmlParserCtxtPtr ctxt, xmlCharEncodingHandlerPtr handler)
  * Handle optional BOM, detect and switch to encoding.
  *
  * Assumes that there are at least four bytes in the input buffer.
+ *
  * @param ctxt  the parser context
  */
 void
@@ -1557,6 +1559,7 @@ xmlDetectEncoding(xmlParserCtxtPtr ctxt) {
  * about encoding mismatches.
  *
  * Takes ownership of 'encoding'.
+ *
  * @param ctxt  the parser context
  * @param encoding  declared encoding
  */

@@ -491,9 +491,8 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
  * Examines if the library has been compiled with a given feature.
  *
  * @param feature  the feature to be examined
- * @returns a non-zero value if the feature exist, otherwise zero.
  * @returns zero (0) if the feature does not exist or an unknown
- * unknown feature is requested, non-zero otherwise.
+ * feature is requested, non-zero otherwise.
  */
 int
 xmlHasFeature(xmlFeature feature)
@@ -902,6 +901,7 @@ encoding_error:
  *
  * This accounts for users modifying struct members of parser context
  * directly.
+ *
  * @param ctxt  an XML parser context
  */
 static void
@@ -4830,6 +4830,7 @@ get_more:
  * parse a CharData section.this is the fallback function
  * of xmlParseCharData() when the parsing requires handling
  * of non-ASCII characters.
+ *
  * @param ctxt  an XML parser context
  * @param partial  whether the input can end with truncated UTF-8
  */
@@ -5294,6 +5295,7 @@ xmlParsePITarget(xmlParserCtxtPtr ctxt) {
  * part of the document before any doctype information
  * This will add the given catalog to the parsing context in order
  * to be used if there is a resolution need further down in the document
+ *
  * @param ctxt  an XML parser context
  * @param catalog  the PI value string
  */
@@ -5358,6 +5360,7 @@ error:
  *     [16] PI ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
  *
  * The processing is transferred to SAX once parsed.
+ *
  * @param ctxt  an XML parser context
  */
 
@@ -5481,6 +5484,7 @@ xmlParsePI(xmlParserCtxtPtr ctxt) {
  *     'SYSTEM' S SystemLiteral
  *
  * See the NOTE on xmlParseExternalID().
+ *
  * @param ctxt  an XML parser context
  */
 
@@ -5562,6 +5566,7 @@ xmlParseNotationDecl(xmlParserCtxtPtr ctxt) {
  *
  * [ VC: Notation Declared ]
  * The Name must match the declared name of a notation.
+ *
  * @param ctxt  an XML parser context
  */
 
@@ -6978,6 +6983,7 @@ error:
  * only where markup declarations can occur, not within markup declarations.
  * (This does not apply to references that occur in external parameter
  * entities or to the external subset.)
+ *
  * @param ctxt  an XML parser context
  */
 void
@@ -7662,6 +7668,7 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
  * [ WFC: In DTD ]
  * Parameter-entity references may only appear in the DTD.
  * NOTE: misleading but this is handled.
+ *
  * @param ctxt  an XML parser context
  */
 void
@@ -7982,6 +7989,7 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  * [ VC: Root Element Type ]
  * The Name in the document type declaration must match the element
  * type of the root element.
+ *
  * @param ctxt  an XML parser context
  */
 
@@ -9721,6 +9729,7 @@ xmlParseElement(xmlParserCtxtPtr ctxt) {
  * opening tag was parsed, 1 if an empty element was parsed.
  *
  * Always consumes '<'.
+ *
  * @param ctxt  an XML parser context
  */
 static int
@@ -12233,6 +12242,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
  * In case recover is set to 1, the nodelist will not be empty even if
  * the parsed chunk is not well balanced, assuming the parsing succeeded to
  * some extent.
+ *
  * @param doc  the document the chunk pertains to (must not be NULL)
  * @param sax  the SAX handler block (possibly NULL)
  * @param user_data  The user data returned on SAX callbacks (possibly NULL)
@@ -13280,6 +13290,7 @@ xmlCtxtUseOptions(xmlParserCtxtPtr ctxt, int options)
  * When working with documents making heavy use of entity expansion, it can
  * be necessary to increase the value. For security reasons, this should only
  * be considered when processing trusted input.
+ *
  * @param ctxt  an XML parser context
  * @param maxAmpl  maximum amplification factor
  */

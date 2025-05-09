@@ -1245,11 +1245,12 @@ xmlSchemaGetNextComponent(xmlSchemaBasicItemPtr item)
 
 
 /**
+ * Returns the given QName in the format "{namespaceName}localName" or
+ * just "localName" if `namespaceName` is NULL.
+ *
  * @param buf  the string buffer
  * @param namespaceName  the namespace name
  * @param localName  the local name
- * @returns the given QName in the format "{namespaceName}localName" or
- * just "localName" if `namespaceName` is NULL.
  * @returns the localName if `namespaceName` is NULL, a formatted
  * string otherwise.
  */
@@ -1551,12 +1552,13 @@ xmlSchemaGetCanonValueHash(xmlSchemaValPtr val,
  * If the itemNode is an attribute node, the name of the attribute
  * will be appended to the result.
  *
+ * Returns a representation of the given item used
+ * for error reports.
+ *
  * @param buf  the string buffer
  * @param itemDes  the designation of the item
  * @param item  the item as an object
  * @param itemNode  the node of the item
- * @returns a representation of the given item used
- * for error reports.
  * @returns the formatted string and sets `buf` to the resulting value.
  */
 static xmlChar*
@@ -9087,6 +9089,7 @@ xmlSchemaParseSimpleType(xmlSchemaParserCtxtPtr ctxt, xmlSchemaPtr schema,
  *
  * We will return a particle component with a qname-component or
  * NULL in case of an error.
+ *
  * @param ctxt  the parser context
  * @param schema  the schema being built
  * @param node  the node
@@ -9745,7 +9748,6 @@ xmlSchemaCreatePCtxtOnVCtxt(xmlSchemaValidCtxtPtr vctxt)
 /**
  * @param pctxt  the schema parser context
  * @param schemaLocation  the URI of the schema document
- * @returns a schema bucket if it was already parsed.
  * @returns a schema bucket if it was already parsed from
  *         `schemaLocation`, NULL otherwise.
  */
@@ -14087,6 +14089,7 @@ xmlSchemaExpandAttributeGroupRefs(xmlSchemaParserCtxtPtr pctxt,
  * strings, so recheck this if we start to hardcode some schemata, since
  * they might not be in the same dict.
  * NOTE: It is allowed to "extend" the xs:anyType type.
+ *
  * @param pctxt  the schema parser context
  * @param type  the complex type definition
  * @returns -1 if an internal error occurs, 0 otherwise.
@@ -14301,8 +14304,8 @@ xmlSchemaTypeFinalContains(xmlSchemaTypePtr type, int final)
 
 /**
  * @param type  the Union Simple Type
- * @returns a list of member types of `type` if existing,
- * @returns NULL otherwise.
+ * @returns  a list of member types of `type` if existing,
+ *           NULL otherwise.
  */
 static xmlSchemaTypeLinkPtr
 xmlSchemaGetUnionSimpleTypeMemberTypes(xmlSchemaTypePtr type)
@@ -18902,6 +18905,7 @@ xmlSchemaExpandAttributeGroupRefs(xmlSchemaParserCtxtPtr pctxt,
  *
  * Substitutes contained attribute group references
  * for their attribute uses. Wildcards are intersected.
+ *
  * @param pctxt  the parser context
  * @param attrGr  the attribute group definition
  */
@@ -19436,6 +19440,7 @@ add_member:
  * xmlSchemaCheckElementDeclComponent
  *
  * Schema Component Constraint: Element Declarations Consistent
+ *
  * @param pctxt  the schema parser context
  * @param ctxtComponent  the context component (an element declaration)
  * @param ctxtParticle  the first particle of the context component
@@ -19555,6 +19560,7 @@ exit:
  *
  * Validates the value constraints of an element declaration.
  * Adds substitution group members.
+ *
  * @param elemDecl  an schema element declaration/particle
  * @param ctxt  a schema parser context
  */

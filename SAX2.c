@@ -934,6 +934,7 @@ xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * Handle an attribute that has been read by the parser.
  *
  * Deprecated SAX1 interface.
+ *
  * @param ctxt  the parser context
  * @param fullname  the attribute name, including namespace prefix
  * @param value  the attribute value
@@ -1380,6 +1381,7 @@ process_external_subset:
  * called when an opening tag has been processed.
  *
  * Deprecated SAX1 interface.
+ *
  * @param ctx  the user data (XML parser context)
  * @param fullname  The element name, including namespace prefix
  * @param atts  An array of name/value attributes pairs, NULL terminated
@@ -1669,6 +1671,7 @@ xmlSAX2StartHtmlElement(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
  * @deprecated Don't call this function directly.
  *
  * Used for HTML and SAX1.
+ *
  * @param ctx  the user data (XML parser context)
  * @param fullname  The element name, including namespace prefix
  * @param atts  An array of name/value attributes pairs, NULL terminated
@@ -1703,6 +1706,7 @@ xmlSAX2StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts) {
  * @deprecated Don't call this function directly.
  *
  * Used for HTML and SAX1.
+ *
  * @param ctx  the user data (XML parser context)
  * @param name  The element name
  */

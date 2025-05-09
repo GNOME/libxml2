@@ -2378,6 +2378,7 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
  *
  * Uses the document's encoding. If the document has no encoding,
  * uses ASCII without an encoding declaration.
+ *
  * @param f  the FILE * for the output
  * @param doc  the document
  * @param cur  the current node
@@ -2420,6 +2421,7 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
  *
  * Note that `format` only works if the document was parsed with
  * XML_PARSE_NOBLANKS.
+ *
  * @param buf  the XML buffer output
  * @param doc  the document
  * @param cur  the current node
@@ -2514,6 +2516,7 @@ xmlDocDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding,
  *
  * Note that `format` only works if the document was parsed with
  * XML_PARSE_NOBLANKS.
+ *
  * @param out_doc  Document to generate XML text from
  * @param doc_txt_ptr  Memory pointer for allocated XML text
  * @param doc_txt_len  Length of the generated XML text

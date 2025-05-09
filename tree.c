@@ -108,7 +108,6 @@ static int xmlCompressMode = 0;
  * @param dtd  A pointer to the DTD to search
  * @param name  The entity name
  * @returns the corresponding entity, if found.
- * @returns A pointer to the entity structure or NULL if not found.
  */
 static xmlEntityPtr
 xmlGetEntityFromDtd(const xmlDtd *dtd, const xmlChar *name) {
@@ -127,7 +126,6 @@ xmlGetEntityFromDtd(const xmlDtd *dtd, const xmlChar *name) {
  * @param dtd  A pointer to the DTD to search
  * @param name  The entity name
  * @returns the corresponding entity, if found.
- * @returns A pointer to the entity structure or NULL if not found.
  */
 static xmlEntityPtr
 xmlGetParameterEntityFromDtd(const xmlDtd *dtd, const xmlChar *name) {
@@ -3542,6 +3540,7 @@ xmlFreeNodeList(xmlNodePtr cur) {
  *
  * This doesn't unlink the node from the tree. Call xmlUnlinkNode() first
  * unless `cur` is a root node.
+ *
  * @param cur  the node
  */
 void
@@ -3608,6 +3607,7 @@ xmlFreeNode(xmlNodePtr cur) {
  *
  * This function only unlinks the node from the tree. It doesn't
  * clear references to DTD nodes.
+ *
  * @param cur  the node
  */
 static void
@@ -3640,6 +3640,7 @@ xmlUnlinkNodeInternal(xmlNodePtr cur) {
  *
  * The node is not freed. Unless it is reinserted, it must be managed
  * manually and freed eventually by calling xmlFreeNode().
+ *
  * @param cur  the node
  */
 void
@@ -6840,6 +6841,7 @@ xmlGetDocCompressMode (const xmlDoc *doc) {
  * Set the compression level of a document, ZLIB based.
  *
  * Correct values: 0 (uncompressed) to 9 (max compression)
+ *
  * @param doc  the document
  * @param mode  the compression ratio
  */
@@ -6870,6 +6872,7 @@ xmlGetCompressMode(void)
  * @deprecated Use xmlSetDocCompressMode()
  *
  * Correct values: 0 (uncompressed) to 9 (max compression)
+ *
  * @param mode  the compression ratio
  */
 void

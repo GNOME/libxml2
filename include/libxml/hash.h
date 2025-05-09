@@ -41,6 +41,7 @@ typedef xmlHashTable *xmlHashTablePtr;
  * \#define XML_CAST_FPTR(fptr) (*(void **)(&fptr))
  * This macro violated ISO C aliasing rules (gcc4 on s390 broke)
  * so it is disabled now
+ *
  * @param fptr  pointer to a function
  */
 

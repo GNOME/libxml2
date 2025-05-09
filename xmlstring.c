@@ -1080,11 +1080,12 @@ xmlUTF8Strsub(const xmlChar *utf, int start, int len) {
 }
 
 /**
- * Replaces the string pointed to by 'msg' with an escaped string.
+ * Replaces a string with an escaped string.
+ *
+ * `msg` must be a heap-allocated buffer created by libxml2 that may be
+ * returned, or that may be freed and replaced.
  *
  * @param msg  a pointer to the string in which to escape '%' characters.
- * Must be a heap-allocated buffer created by libxml2 that may be
- * returned, or that may be freed and replaced.
  * @returns the same string with all '%' characters escaped.
  */
 xmlChar *

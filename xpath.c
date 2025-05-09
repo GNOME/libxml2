@@ -1594,6 +1594,7 @@ xmlXPathContextSetCache(xmlXPathContextPtr ctxt,
  * Wrap the Nodeset `val` in a new xmlXPathObjectPtr
  *
  * In case of error the node set is destroyed and NULL is returned.
+ *
  * @param pctxt  the XPath context
  * @param val  the NodePtr value
  * @returns the created or reused object.
@@ -1980,6 +1981,7 @@ xmlXPathValuePop(xmlXPathParserContextPtr ctxt)
  * a memory error is recorded in the parser context.
  *
  * The object is destroyed in case of error.
+ *
  * @param ctxt  an XPath evaluation context
  * @param value  the XPath object
  * @returns the number of items on the value stack, or -1 in case of error.
@@ -2860,6 +2862,7 @@ xmlXPathNodeSetAddUnique(xmlNodeSetPtr cur, xmlNodePtr val) {
  * if `val1` is NULL, a new set is created and copied from `val2`
  *
  * Frees `val1` in case of error.
+ *
  * @param val1  the first NodeSet or NULL
  * @param val2  the second NodeSet
  * @returns `val1` once extended or NULL in case of error.
@@ -2936,6 +2939,7 @@ error:
  * Checks for duplicate nodes. Clears set2.
  *
  * Frees `set1` in case of error.
+ *
  * @param set1  the first NodeSet or NULL
  * @param set2  the second NodeSet
  * @returns `set1` once extended or NULL in case of error.
@@ -2998,6 +3002,7 @@ error:
  * Doesn't check for duplicate nodes. Clears set2.
  *
  * Frees `set1` in case of error.
+ *
  * @param set1  the first NodeSet or NULL
  * @param set2  the second NodeSet
  * @returns `set1` once extended or NULL in case of error.
@@ -3245,6 +3250,7 @@ xmlXPathNewNodeSetList(xmlNodeSetPtr val)
  * Wrap the Nodeset `val` in a new xmlXPathObjectPtr
  *
  * In case of error the node set is destroyed and NULL is returned.
+ *
  * @param val  the NodePtr value
  * @returns the newly created object.
  */
@@ -4098,6 +4104,7 @@ xmlXPathNewString(const xmlChar *val) {
  * Wraps the `val` string into an XPath object.
  *
  * Frees `val` in case of error.
+ *
  * @param val  the xmlChar * value
  * @returns the newly created object.
  */
@@ -5150,6 +5157,7 @@ xmlXPathCompareNodeSetString(xmlXPathParserContextPtr ctxt, int inf, int strict,
  *
  * Conclusion all nodes need to be converted first to their string value
  * and then the comparison must be done when possible
+ *
  * @param ctxt  XPath parser context
  * @param inf  less than (1) or greater than (0)
  * @param strict  is the comparison strict
@@ -7255,6 +7263,7 @@ xmlXPathNameFunction(xmlXPathParserContextPtr ctxt, int nargs)
  *
  * If the argument is omitted, it defaults to a node-set with the
  * context node as its only member.
+ *
  * @param ctxt  the XPath Parser context
  * @param nargs  the number of arguments
  */
@@ -8638,6 +8647,7 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
  *                    | "'" [^']* "'"
  *
  * TODO: xmlXPathCompLiteral() memory allocation could be improved.
+ *
  * @param ctxt  the XPath Parser context
  */
 static void
@@ -8732,6 +8742,7 @@ xmlXPathIsNodeType(const xmlChar *name) {
  *
  * Compile a function call, the evaluation of all arguments are
  * pushed on the stack
+ *
  * @param ctxt  the XPath Parser context
  */
 static void
@@ -8803,6 +8814,7 @@ xmlXPathCompFunctionCall(xmlXPathParserContextPtr ctxt) {
  *                | FunctionCall
  *
  * Compile a primary expression.
+ *
  * @param ctxt  the XPath Parser context
  */
 static void
@@ -8839,6 +8851,7 @@ xmlXPathCompPrimaryExpr(xmlXPathParserContextPtr ctxt) {
  * be filtered does not evaluate to a node-set. The context node list
  * used for evaluating the expression in square brackets is the node-set
  * to be filtered listed in document order.
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -8910,6 +8923,7 @@ xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
  *               | FilterExpr '//' RelativeLocationPath
  *
  * Compile a path expression.
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -9031,6 +9045,7 @@ xmlXPathCompPathExpr(xmlXPathParserContextPtr ctxt) {
  *               | UnionExpr '|' PathExpr
  *
  * Compile an union expression.
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -9058,6 +9073,7 @@ xmlXPathCompUnionExpr(xmlXPathParserContextPtr ctxt) {
  *                   | '-' UnaryExpr
  *
  * Compile an unary expression.
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -9092,6 +9108,7 @@ xmlXPathCompUnaryExpr(xmlXPathParserContextPtr ctxt) {
  *  [34]   MultiplyOperator ::=   '*'
  *
  * Compile an Additive expression.
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -9130,6 +9147,7 @@ xmlXPathCompMultiplicativeExpr(xmlXPathParserContextPtr ctxt) {
  *                   | AdditiveExpr '-' MultiplicativeExpr
  *
  * Compile an Additive expression.
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -9167,6 +9185,7 @@ xmlXPathCompAdditiveExpr(xmlXPathParserContextPtr ctxt) {
  *
  * Compile a Relational expression, then push the result
  * on the stack
+ *
  * @param ctxt  the XPath Parser context
  */
 
@@ -9258,6 +9277,7 @@ xmlXPathCompAndExpr(xmlXPathParserContextPtr ctxt) {
  *                 | OrExpr 'or' AndExpr
  *
  * Parse and compile an expression
+ *
  * @param ctxt  the XPath Parser context
  * @param sort  whether to sort the resulting node set
  */
@@ -9306,6 +9326,7 @@ xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt, int sort) {
  *  [9]   PredicateExpr ::=   Expr
  *
  * Compile a predicate expression
+ *
  * @param ctxt  the XPath Parser context
  * @param filter  act as a filter
  */
@@ -9559,6 +9580,7 @@ xmlXPathIsAxisName(const xmlChar *name) {
  *                     | 'range-to' '(' Expr ')' Predicate*
  *
  * Compile one step in a Location Path
+ *
  * @param ctxt  the XPath Parser context
  */
 static void
@@ -9647,6 +9669,7 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
  *  [11]  AbbreviatedRelativeLocationPath ::=   RelativeLocationPath '//' Step
  *
  * Compile a relative location path.
+ *
  * @param ctxt  the XPath Parser context
  */
 static void
@@ -9690,6 +9713,7 @@ xmlXPathCompRelativeLocationPath
  *                           '//' RelativeLocationPath
  *
  * Compile a location path
+ *
  * @param ctxt  the XPath Parser context
  */
 static void

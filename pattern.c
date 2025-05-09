@@ -845,6 +845,7 @@ error:
  *
  * [3]    Step    ::=    '.' | NameTest
  * [4]    NameTest    ::=    QName | '*' | NCName ':' '*'
+ *
  * @param ctxt  the compilation context
  */
 
@@ -1065,6 +1066,7 @@ error:
  * form suitable for fast matching.
  *
  * [5]    Path    ::=    ('.//')? ( Step '/' )* ( Step | '@' NameTest )
+ *
  * @param ctxt  the compilation context
  */
 static void
@@ -1162,6 +1164,7 @@ error:
  * form suitable for fast matching.
  *
  * [5]    Path    ::=    ('.//')? ( Step '/' )* ( Step | '@' NameTest )
+ *
  * @param ctxt  the compilation context
  */
 static void

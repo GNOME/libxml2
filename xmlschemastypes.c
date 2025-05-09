@@ -2355,12 +2355,10 @@ static int xmlSchemaParseUInt(const xmlChar **str, xmlSchemaValDecimalPtr val) {
 }
 
 /*
- * xmlSchemaCheckLanguageType
- * @param value  the value to check
- *
  * Check that a value conforms to the lexical space of the language datatype.
  * Must conform to [a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*
  *
+ * @param value  the value to check
  * @returns 1 if this validates, 0 otherwise.
  */
 static int

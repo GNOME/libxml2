@@ -1951,6 +1951,7 @@ xmlFAFinishReduceEpsilonTransitions(xmlRegParserCtxtPtr ctxt, int tonr) {
  * eliminating state 2:
  * State 1 has a transition with an atom to state 2.
  * State 2 is final and has an epsilon transition to state 1.
+ *
  * @param ctxt  a regexp parser context
  */
 static void
@@ -5237,6 +5238,7 @@ xmlFAParsePiece(xmlRegParserCtxtPtr ctxt) {
  * in expressions like (a|b)(c|d)
  *
  * [2]   branch   ::=   piece*
+ *
  * @param ctxt  a regexp parser context
  * @param to  optional target to the end of the branch
  */

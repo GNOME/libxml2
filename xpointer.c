@@ -239,6 +239,7 @@ xmlXPtrGetChildNo(xmlXPathParserContextPtr ctxt, int indx) {
  * string and if the scheme is 'xpointer' it will call the XPath interpreter.
  *
  * TODO: there is no new scheme registration mechanism
+ *
  * @param ctxt  the XPointer Parser context
  * @param name  the preparsed Scheme for the XPtrPart
  */
@@ -399,6 +400,7 @@ xmlXPtrEvalXPtrPart(xmlXPathParserContextPtr ctxt, xmlChar *name) {
  *
  * Parse and evaluate a Full XPtr i.e. possibly a cascade of XPath based
  * expressions or other schemes.
+ *
  * @param ctxt  the XPointer Parser context
  * @param name  the preparsed Scheme for the first XPtrPart
  */
@@ -461,6 +463,7 @@ xmlXPtrEvalFullXPtr(xmlXPathParserContextPtr ctxt, xmlChar *name) {
  *
  * Parse and evaluate a Child Sequence. This routine also handle the
  * case of a Bare Name used to get a document ID.
+ *
  * @param ctxt  the XPointer Parser context
  * @param name  a possible ID name of the child sequence
  */
@@ -511,6 +514,7 @@ xmlXPtrEvalChildSeq(xmlXPathParserContextPtr ctxt, xmlChar *name) {
  *             | FullXPtr
  *
  * Parse and evaluate an XPointer
+ *
  * @param ctxt  the XPointer Parser context
  */
 static void

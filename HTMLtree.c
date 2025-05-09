@@ -603,6 +603,7 @@ htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * Serialize the HTML document's DTD, if any.
  *
  * Ignores `encoding` and uses the encoding of the output buffer.
+ *
  * @param buf  the HTML buffer output
  * @param doc  the document
  * @param encoding  the encoding string (unused)

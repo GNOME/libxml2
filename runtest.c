@@ -3340,9 +3340,10 @@ uripMatch(const char * URI) {
 }
 
 /**
- * @param URI  an URI to test
- * @returns a pointer to the urip: query handler, in this example simply
+ * Returns a pointer to the urip: query handler, in this example simply
  * the urip_current pointer...
+ *
+ * @param URI  an URI to test
  * @returns an Input context or NULL in case or error
  */
 static void *

@@ -4520,6 +4520,7 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
  * @deprecated Use xmlTextReaderSetStructuredErrorHandler().
  *
  * If `f` is NULL, the default error and warning handlers are restored.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param f  	the callback function to call on error and warnings
  * @param arg  a user argument to pass to the callback function
@@ -4576,6 +4577,7 @@ xmlTextReaderSetErrorHandler(xmlTextReaderPtr reader,
  * Register a callback function that will be called on error and warnings.
  *
  * If `f` is NULL, the default error and warning handlers are restored.
+ *
  * @param reader  the xmlTextReaderPtr used
  * @param f  	the callback function to call on error and warnings
  * @param arg  a user argument to pass to the callback function

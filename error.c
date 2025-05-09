@@ -258,6 +258,7 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
  *
  * For multi-threaded applications, this must be set separately for
  * each thread.
+ *
  * @param ctx  the new error handling context
  * @param handler  the new handler function
  */
@@ -298,6 +299,7 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  *
  * For multi-threaded applications, this must be set separately for
  * each thread.
+ *
  * @param ctx  the new error handling context
  * @param handler  the new handler function
  */
@@ -644,6 +646,7 @@ xmlFormatError(const xmlError *err, xmlGenericErrorFunc channel, void *data)
  *
  * This function doesn't make memory allocations which are likely
  * to fail after an OOM error.
+ *
  * @param schannel  the structured callback channel
  * @param channel  the old callback channel
  * @param data  the callback data
@@ -849,6 +852,7 @@ xmlVFormatLegacyError(void *ctx, const char *level,
  *
  * Format an error message with additional detail from the
  * parser context and print to generic error handler.
+ *
  * @param ctx  an XML parser context
  * @param msg  printf-like format string
  * @param ...  arguments to format
@@ -872,6 +876,7 @@ xmlParserError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
  *
  * Format an warning message with additional detail from the
  * parser context and print to generic error handler.
+ *
  * @param ctx  an XML parser context
  * @param msg  printf-like format string
  * @param ...  arguments to format
@@ -895,6 +900,7 @@ xmlParserWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
  *
  * Format an error message with additional detail from the
  * parser context and print to generic error handler.
+ *
  * @param ctx  an XML parser context
  * @param msg  printf-like format string
  * @param ...  arguments to format
@@ -918,6 +924,7 @@ xmlParserValidityError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
  *
  * Format an warning message with additional detail from the
  * parser context and print to generic error handler.
+ *
  * @param ctx  an XML parser context
  * @param msg  printf-like format string
  * @param ...  arguments to format

@@ -833,27 +833,21 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
             if ((info != NULL) && (info->empty)) {
                 xmlOutputBufferWrite(buf, 1, ">");
             } else if (cur->children == NULL) {
-                if ((info != NULL) && (info->saveEndTag != 0) &&
-                    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "html")) &&
-                    (xmlStrcmp(BAD_CAST info->name, BAD_CAST "body"))) {
-                    xmlOutputBufferWrite(buf, 1, ">");
+                if (addMeta) {
+                    xmlOutputBufferWrite(buf, 16, "><meta charset=\"");
+                    /* TODO: Escape */
+                    xmlOutputBufferWriteString(buf, encoding);
+                    xmlOutputBufferWrite(buf, 4, "\"></");
                 } else {
-                    if (addMeta) {
-                        xmlOutputBufferWrite(buf, 16, "><meta charset=\"");
-                        /* TODO: Escape */
-                        xmlOutputBufferWriteString(buf, encoding);
-                        xmlOutputBufferWrite(buf, 4, "\"></");
-                    } else {
-                        xmlOutputBufferWrite(buf, 3, "></");
-                    }
-                    if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
-                        xmlOutputBufferWriteString(buf,
-                                (const char *)cur->ns->prefix);
-                        xmlOutputBufferWrite(buf, 1, ":");
-                    }
-                    xmlOutputBufferWriteString(buf, (const char *)cur->name);
-                    xmlOutputBufferWrite(buf, 1, ">");
+                    xmlOutputBufferWrite(buf, 3, "></");
                 }
+                if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
+                    xmlOutputBufferWriteString(buf,
+                            (const char *)cur->ns->prefix);
+                    xmlOutputBufferWrite(buf, 1, ":");
+                }
+                xmlOutputBufferWriteString(buf, (const char *)cur->name);
+                xmlOutputBufferWrite(buf, 1, ">");
             } else {
                 xmlOutputBufferWrite(buf, 1, ">");
                 if ((format) &&

@@ -59,7 +59,7 @@ struct _htmlElemDesc {
     const char *name;	/* The tag name */
     char startTag;      /* unused */
     char endTag;        /* Whether the end tag can be implied */
-    char saveEndTag;    /* Whether the end tag should be saved */
+    char saveEndTag;    /* unused */
     char empty;         /* Is this an empty element ? */
     char depr;          /* unused */
     char dtd;           /* unused */

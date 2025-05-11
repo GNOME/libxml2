@@ -835,8 +835,8 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
             } else if (cur->children == NULL) {
                 if (addMeta) {
                     xmlOutputBufferWrite(buf, 16, "><meta charset=\"");
-                    /* TODO: Escape */
-                    xmlOutputBufferWriteString(buf, encoding);
+                    xmlSerializeText(buf, BAD_CAST encoding,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
                     xmlOutputBufferWrite(buf, 4, "\"></");
                 } else {
                     xmlOutputBufferWrite(buf, 3, "></");
@@ -861,8 +861,8 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                     xmlOutputBufferWrite(buf, 1, "\n");
                 if (addMeta) {
                     xmlOutputBufferWrite(buf, 15, "<meta charset=\"");
-                    /* TODO: Escape */
-                    xmlOutputBufferWriteString(buf, encoding);
+                    xmlSerializeText(buf, BAD_CAST encoding,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
                     xmlOutputBufferWrite(buf, 2, "\">");
                     if ((format) &&
                         (cur->children->type != HTML_TEXT_NODE) &&

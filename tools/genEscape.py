@@ -62,5 +62,5 @@ gen_tab('xmlEscapeTabAttr', '\t\n\r"&<>', True)
 
 print('#ifdef LIBXML_HTML_ENABLED\n')
 gen_tab('htmlEscapeTab', '&<>', False)
-gen_tab('htmlEscapeTabAttr', '&', False) # TODO: Add '"'
+gen_tab('htmlEscapeTabAttr', '"&', False)
 print('#endif /* LIBXML_HTML_ENABLED */')

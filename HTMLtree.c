@@ -642,59 +642,76 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
  */
 static void
 htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
-    xmlChar *value;
-
-    if (cur == NULL) {
-	return;
-    }
     xmlOutputBufferWrite(buf, 1, " ");
+
     if ((cur->ns != NULL) && (cur->ns->prefix != NULL)) {
         xmlOutputBufferWriteString(buf, (const char *)cur->ns->prefix);
-	xmlOutputBufferWrite(buf, 1, ":");
+        xmlOutputBufferWrite(buf, 1, ":");
     }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
+
     if ((cur->children != NULL) && (!htmlIsBooleanAttr(cur->name))) {
-        int flags = XML_ESCAPE_HTML | XML_ESCAPE_ATTR;
+        xmlNodePtr child;
+        int isUri;
 
-        value = xmlNodeListGetStringInternal(cur->children, /* escape */ 1,
-                                             flags);
-	if (value) {
-	    xmlOutputBufferWrite(buf, 1, "=");
-	    if ((cur->ns == NULL) && (cur->parent != NULL) &&
-		(cur->parent->ns == NULL) &&
-		((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||
-	         (!xmlStrcasecmp(cur->name, BAD_CAST "action")) ||
-		 (!xmlStrcasecmp(cur->name, BAD_CAST "src")) ||
-		 ((!xmlStrcasecmp(cur->name, BAD_CAST "name")) &&
-		  (!xmlStrcasecmp(cur->parent->name, BAD_CAST "a"))))) {
-		xmlChar *escaped;
-		xmlChar *tmp = value;
+        xmlOutputBufferWrite(buf, 2, "=\"");
 
-		while (IS_BLANK_CH(*tmp)) tmp++;
+        isUri = (cur->ns == NULL) && (cur->parent != NULL) &&
+                (cur->parent->ns == NULL) &&
+                ((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||
+                 (!xmlStrcasecmp(cur->name, BAD_CAST "action")) ||
+                 (!xmlStrcasecmp(cur->name, BAD_CAST "src")) ||
+                 ((!xmlStrcasecmp(cur->name, BAD_CAST "name")) &&
+                  (!xmlStrcasecmp(cur->parent->name, BAD_CAST "a"))));
 
-		/*
-                 * Angle brackets are technically illegal in URIs, but they're
-                 * used in server side includes, for example. Curly brackets
-                 * are illegal as well and often used in templates.
-                 * Don't escape non-whitespace, printable ASCII chars for
-                 * improved interoperability. Only escape space, control
-                 * and non-ASCII chars.
-		 */
-		escaped = xmlURIEscapeStr(tmp,
-                        BAD_CAST "\"#$%&+,/:;<=>?@[\\]^`{|}");
-		if (escaped != NULL) {
-		    xmlOutputBufferWriteQuotedString(buf, escaped);
-		    xmlFree(escaped);
-		} else {
-                    buf->error = XML_ERR_NO_MEMORY;
-		}
-	    } else {
-		xmlOutputBufferWriteQuotedString(buf, value);
-	    }
-	    xmlFree(value);
-	} else  {
-            buf->error = XML_ERR_NO_MEMORY;
-	}
+        for (child = cur->children; child != NULL; child = child->next) {
+            if (child->type == XML_TEXT_NODE) {
+                const xmlChar *content = child->content;
+
+                if (content == NULL)
+                    continue;
+
+                if (!isUri) {
+                    xmlSerializeText(buf, content,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
+                } else {
+                    xmlChar *escaped;
+                    const xmlChar *tmp = content;
+
+                    while (IS_WS_HTML(*tmp)) tmp++;
+
+                    /*
+                     * See appendix "B.2.1 Non-ASCII characters in URI
+                     * attribute values" in the HTML 4.01 spec.
+                     *
+                     * Angle brackets are technically illegal in URIs, but
+                     * they're used in server side includes, for example.
+                     * Curly brackets are illegal as well and often used in
+                     * templates.
+                     *
+                     * Don't escape non-whitespace, printable ASCII chars for
+                     * improved interoperability. Only escape space, control
+                     * and non-ASCII chars.
+                     */
+                    escaped = xmlURIEscapeStr(tmp,
+                            BAD_CAST "\"#$%&+,/:;<=>?@[\\]^`{|}");
+                    if (escaped == NULL) {
+                        buf->error = XML_ERR_NO_MEMORY;
+                        break;
+                    }
+                    xmlSerializeText(buf, escaped,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
+                    xmlFree(escaped);
+                }
+            } else if (child->type == XML_ENTITY_REF_NODE) {
+                /* TODO: We should probably expand entity refs */
+                xmlOutputBufferWrite(buf, 1, "&");
+                xmlOutputBufferWriteString(buf, (char *) child->name);
+                xmlOutputBufferWrite(buf, 1, ";");
+            }
+        }
+
+        xmlOutputBufferWrite(buf, 1, "\"");
     }
 }
 
@@ -823,8 +840,10 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                         buf->error = XML_ERR_NO_MEMORY;
                         return;
                     }
-                    xmlOutputBufferWrite(buf, 1, "=");
-                    xmlOutputBufferWriteQuotedString(buf, newVal);
+                    xmlOutputBufferWrite(buf, 2, "=\"");
+                    xmlSerializeText(buf, newVal,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
+                    xmlOutputBufferWrite(buf, 1, "\"");
                     xmlFree(newVal);
                 }
                 attr = attr->next;

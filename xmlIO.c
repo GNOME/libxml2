@@ -220,7 +220,7 @@ static const signed char htmlEscapeTab[128] = {
 static const signed char htmlEscapeTabAttr[128] = {
      0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, 26, -1, -1, -1, 33, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -2687,8 +2687,7 @@ xmlOutputBufferWriteString(xmlOutputBufferPtr out, const char *str) {
  * double quotes.
  *
  * This should only be used to escape system IDs. Currently,
- * we also use it for public IDs and original entity values,
- * as well as HTML attributes.
+ * we also use it for public IDs and original entity values.
  *
  * @param buf  output buffer
  * @param string  the string to add

@@ -351,18 +351,6 @@ htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
 }
 
 /**
- * These are the HTML attributes which will be output
- * in minimized form, i.e. `<option selected="selected">` will be
- * output as `<option selected>`, as per XSLT 1.0 16.2 "HTML Output Method"
- */
-static const char* const htmlBooleanAttrs[] = {
-  "checked", "compact", "declare", "defer", "disabled", "ismap",
-  "multiple", "nohref", "noresize", "noshade", "nowrap", "readonly",
-  "selected", NULL
-};
-
-
-/**
  * Determine if a given attribute is a boolean attribute. This
  * doesn't handle HTML5.
  *
@@ -374,14 +362,82 @@ static const char* const htmlBooleanAttrs[] = {
 int
 htmlIsBooleanAttr(const xmlChar *name)
 {
-    int i = 0;
+    const char *str = NULL;
 
-    while (htmlBooleanAttrs[i] != NULL) {
-        if (xmlStrcasecmp((const xmlChar *)htmlBooleanAttrs[i], name) == 0)
-            return 1;
-        i++;
+    if (name == NULL)
+        return(0);
+
+    /*
+     * These are the HTML attributes which will be output
+     * in minimized form, i.e. `<option selected="selected">` will be
+     * output as `<option selected>`, as per XSLT 1.0 16.2 "HTML Output
+     * Method":
+     *
+     * "checked", "compact", "declare", "defer", "disabled", "ismap",
+     * "multiple", "nohref", "noresize", "noshade", "nowrap", "readonly",
+     * "selected"
+     *
+     * Additional attributes from HTML5 (not implemented yet):
+     *
+     * "allowfullscreen", "alpha", "async", "autofocus", "autoplay",
+     * "controls", "default", "formnovalidate", "inert", "itemscope",
+     * "loop", "muted", "nomodule", "novalidate", "open", "playsinline",
+     * "required", "reversed", "shadowrootdelegatesfocus",
+     * "shadowrootclonable", "shadowrootserializable",
+     * "shadowrootcustomelementregistry", "truespeed"
+     */
+
+    switch (name[0] | 0x20) {
+        case 'c':
+            name += 1;
+            switch (name[0] | 0x20) {
+                case 'h': str = "ecked"; break;
+                case 'o': str = "mpact"; break;
+            }
+            break;
+        case 'd':
+            name += 1;
+            switch (name[0] | 0x20) {
+                case 'e':
+                    name += 1;
+                    switch (name[0] | 0x20) {
+                        case 'c': str = "lare"; break;
+                        case 'f': str = "er"; break;
+                    }
+                    break;
+                case 'i': str = "sabled"; break;
+            }
+            break;
+        case 'i':
+            str = "smap";
+            break;
+        case 'm':
+            str = "ultiple";
+            break;
+        case 'n':
+            name += 1;
+            if ((name[0] | 0x20) != 'o')
+                break;
+            name += 1;
+            switch (name[0] | 0x20) {
+                case 'h': str = "ref"; break;
+                case 'r': str = "esize"; break;
+                case 's': str = "hade"; break;
+                case 'w': str = "rap"; break;
+            }
+            break;
+        case 'r':
+            str = "eadonly";
+            break;
+        case 's':
+            str = "elected";
+            break;
     }
-    return 0;
+
+    if (str == NULL)
+        return(0);
+
+    return(xmlStrcasecmp(name + 1, BAD_CAST str) == 0);
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED

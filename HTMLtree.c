@@ -787,7 +787,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
                 if (isUri) {
                     htmlSerializeUri(buf, content);
                 } else {
-                    xmlSerializeText(buf, content,
+                    xmlSerializeText(buf, content, SIZE_MAX,
                                      XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
                 }
             } else if (child->type == XML_ENTITY_REF_NODE) {
@@ -917,21 +917,18 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                 if ((!isMeta) || (attr != menc.attr)) {
                     htmlAttrDumpOutput(buf, attr);
                 } else {
-                    xmlChar *newVal;
-
                     xmlOutputBufferWrite(buf, 1, " ");
                     xmlOutputBufferWriteString(buf, (char *) attr->name);
 
-                    newVal = htmlUpdateMetaEncoding(&menc, encoding);
-                    if (newVal == NULL) {
-                        buf->error = XML_ERR_NO_MEMORY;
-                        return;
-                    }
                     xmlOutputBufferWrite(buf, 2, "=\"");
-                    xmlSerializeText(buf, newVal,
+                    xmlSerializeText(buf, menc.attrValue, menc.off.start,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
+                    xmlSerializeText(buf, BAD_CAST encoding, SIZE_MAX,
+                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
+                    xmlSerializeText(buf, menc.attrValue + menc.off.end,
+                                     menc.off.size - menc.off.end,
                                      XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
                     xmlOutputBufferWrite(buf, 1, "\"");
-                    xmlFree(newVal);
                 }
                 attr = attr->next;
             }
@@ -941,7 +938,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
             } else if (cur->children == NULL) {
                 if (addMeta) {
                     xmlOutputBufferWrite(buf, 16, "><meta charset=\"");
-                    xmlSerializeText(buf, BAD_CAST encoding,
+                    xmlSerializeText(buf, BAD_CAST encoding, SIZE_MAX,
                                      XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
                     xmlOutputBufferWrite(buf, 4, "\"></");
                 } else {
@@ -967,7 +964,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                     xmlOutputBufferWrite(buf, 1, "\n");
                 if (addMeta) {
                     xmlOutputBufferWrite(buf, 15, "<meta charset=\"");
-                    xmlSerializeText(buf, BAD_CAST encoding,
+                    xmlSerializeText(buf, BAD_CAST encoding, SIZE_MAX,
                                      XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
                     xmlOutputBufferWrite(buf, 2, "\">");
                     if ((format) &&
@@ -1008,7 +1005,7 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
                 (isRaw)) {
                 xmlOutputBufferWriteString(buf, (const char *)cur->content);
             } else {
-                xmlSerializeText(buf, cur->content, XML_ESCAPE_HTML);
+                xmlSerializeText(buf, cur->content, SIZE_MAX, XML_ESCAPE_HTML);
             }
             break;
 

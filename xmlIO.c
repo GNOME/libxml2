@@ -374,9 +374,9 @@ xmlEscapeText(const xmlChar *string, int flags) {
 
 #ifdef LIBXML_OUTPUT_ENABLED
 void
-xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
+xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string, size_t maxSize,
                  unsigned flags) {
-    const char *cur;
+    const xmlChar *cur;
     const signed char *tab;
 
     if (string == NULL)
@@ -400,10 +400,10 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
             tab = xmlEscapeTab;
     }
 
-    cur = (const char *) string;
+    cur = string;
 
-    while (*cur != 0) {
-        const char *base;
+    while (1) {
+        const xmlChar *base;
         int c;
         int offset;
 
@@ -411,6 +411,9 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
         offset = -1;
 
         while (1) {
+            if ((size_t) (cur - string) >= maxSize)
+                break;
+
             c = (unsigned char) *cur;
 
             if (c < 0x80) {
@@ -425,7 +428,10 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
         }
 
         if (cur > base)
-            xmlOutputBufferWrite(buf, cur - base, base);
+            xmlOutputBufferWrite(buf, cur - base, (char *) base);
+
+        if ((size_t) (cur - string) >= maxSize)
+            break;
 
         if (offset >= 0) {
             if (c == 0)
@@ -439,7 +445,7 @@ xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
             int tempSize;
             int val = 0, len = 4;
 
-            val = xmlGetUTF8Char((const xmlChar *) cur, &len);
+            val = xmlGetUTF8Char(cur, &len);
             if (val < 0) {
                 val = 0xFFFD;
                 cur += 1;

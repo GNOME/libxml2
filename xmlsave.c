@@ -227,7 +227,7 @@ xmlSaveWriteText(xmlSaveCtxt *ctxt, const xmlChar *text, unsigned flags) {
     if (ctxt->encoding == NULL)
         flags |= XML_ESCAPE_NON_ASCII;
 
-    xmlSerializeText(ctxt->buf, text, flags);
+    xmlSerializeText(ctxt->buf, text, SIZE_MAX, flags);
 }
 
 /**
@@ -780,7 +780,7 @@ xmlNsDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur, xmlSaveCtxtPtr ctxt) {
 	} else
 	    xmlOutputBufferWrite(buf, 5, "xmlns");
         xmlOutputBufferWrite(buf, 2, "=\"");
-        xmlSerializeText(buf, cur->href, escapeFlags);
+        xmlSerializeText(buf, cur->href, SIZE_MAX, escapeFlags);
         xmlOutputBufferWrite(buf, 1, "\"");
     }
 }
@@ -2137,7 +2137,7 @@ xmlBufAttrSerializeTxtContent(xmlOutputBufferPtr buf, xmlDocPtr doc,
 
     if ((doc == NULL) || (doc->encoding == NULL))
         flags |= XML_ESCAPE_NON_ASCII;
-    xmlSerializeText(buf, string, flags);
+    xmlSerializeText(buf, string, SIZE_MAX, flags);
 }
 
 /**

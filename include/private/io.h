@@ -5,6 +5,10 @@
 #include <libxml/tree.h>
 #include <libxml/xmlversion.h>
 
+#ifndef SIZE_MAX
+  #define SIZE_MAX ((size_t)(-1))
+#endif
+
 /*
  * Initial buffer size should include
  *
@@ -24,7 +28,7 @@ XML_HIDDEN xmlChar *
 xmlEscapeText(const xmlChar *text, int flags);
 #ifdef LIBXML_OUTPUT_ENABLED
 XML_HIDDEN void
-xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string,
+xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string, size_t maxSize,
                  unsigned flags);
 #endif
 

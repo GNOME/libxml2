@@ -690,6 +690,63 @@ htmlDtdDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc,
     xmlOutputBufferWrite(buf, 2, ">\n");
 }
 
+static void
+htmlSerializeUri(xmlOutputBufferPtr buf, const xmlChar *content) {
+    const xmlChar *tmp = content;
+
+    /*
+     * See appendix "B.2.1 Non-ASCII characters in URI attribute
+     * values" in the HTML 4.01 spec.
+     *
+     * Escape space, control and non-ASCII chars.
+     */
+
+    /* Skip over initial whitespace */
+    while (IS_WS_HTML(*tmp)) tmp++;
+    if (tmp > content) {
+        xmlOutputBufferWrite(buf, tmp - content, (char *) content);
+        content = tmp;
+    }
+
+    while (1) {
+        char escbuf[3];
+        const char *repl;
+        int replSize;
+        int c = *tmp;
+
+        while ((c > 0x20) && (c < 0x7F) && (c != '"') && (c != '&')) {
+            tmp += 1;
+            c = *tmp;
+        }
+
+        if (tmp > content)
+            xmlOutputBufferWrite(buf, tmp - content, (char *) content);
+
+        if ((c <= 0x20) || (c >= 0x7F)) {
+            static const char hex[16] = "0123456789ABCDEF";
+
+            if (c == 0)
+                break;
+
+            escbuf[0] = '%';
+            escbuf[1] = hex[(c >> 4) & 0x0F];
+            escbuf[2] = hex[c & 0x0F];
+            repl = escbuf;
+            replSize = 3;
+        } else if (c == '"') {
+            repl = "&quot;";
+            replSize = 6;
+        } else {
+            repl = "&amp;";
+            replSize = 5;
+        }
+
+        xmlOutputBufferWrite(buf, replSize, repl);
+        tmp += 1;
+        content = tmp;
+    }
+}
+
 /**
  * Serialize an HTML attribute.
  *
@@ -727,37 +784,11 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
                 if (content == NULL)
                     continue;
 
-                if (!isUri) {
+                if (isUri) {
+                    htmlSerializeUri(buf, content);
+                } else {
                     xmlSerializeText(buf, content,
                                      XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
-                } else {
-                    xmlChar *escaped;
-                    const xmlChar *tmp = content;
-
-                    while (IS_WS_HTML(*tmp)) tmp++;
-
-                    /*
-                     * See appendix "B.2.1 Non-ASCII characters in URI
-                     * attribute values" in the HTML 4.01 spec.
-                     *
-                     * Angle brackets are technically illegal in URIs, but
-                     * they're used in server side includes, for example.
-                     * Curly brackets are illegal as well and often used in
-                     * templates.
-                     *
-                     * Don't escape non-whitespace, printable ASCII chars for
-                     * improved interoperability. Only escape space, control
-                     * and non-ASCII chars.
-                     */
-                    escaped = xmlURIEscapeStr(tmp,
-                            BAD_CAST "\"#$%&+,/:;<=>?@[\\]^`{|}");
-                    if (escaped == NULL) {
-                        buf->error = XML_ERR_NO_MEMORY;
-                        break;
-                    }
-                    xmlSerializeText(buf, escaped,
-                                     XML_ESCAPE_HTML | XML_ESCAPE_ATTR);
-                    xmlFree(escaped);
                 }
             } else if (child->type == XML_ENTITY_REF_NODE) {
                 /* TODO: We should probably expand entity refs */

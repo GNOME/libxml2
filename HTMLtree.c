@@ -721,7 +721,10 @@ htmlSerializeUri(xmlOutputBufferPtr buf, const xmlChar *content) {
             xmlOutputBufferWrite(buf, tmp - content, (char *) content);
 
         if ((c <= 0x20) || (c >= 0x7F)) {
-            static const char hex[16] = "0123456789ABCDEF";
+            static const char hex[16] = {
+                '0', '1', '2', '3', '4', '5', '6', '7',
+                '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+            };
 
             if (c == 0)
                 break;

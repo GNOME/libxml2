@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-def printHexTable(out, data):
+def printHexTable(out, width, data):
     s = ''
 
     for i in range(len(data)):
@@ -9,23 +9,10 @@ def printHexTable(out, data):
         else:
             s += ' '
 
-        s += f'0x{data[i]:04x},'
+        s += f'0x{data[i]:{f"0{width}x"}},'
 
         if i % 8 == 7:
             out.write(s + '\n')
-            s = ''
-
-def printStringTable(out, data):
-    s = ''
-
-    for i in range(len(data)):
-        if i % 16 == 0:
-            s += '    "'
-
-        s += f'\\x{data[i]:02x}'
-
-        if i % 16 == 15:
-            out.write(s + '"\n')
             s = ''
 
 def genTranscodeTable(out, name, chars):
@@ -75,15 +62,15 @@ def genTranscodeTable(out, name, chars):
 
     out.write('static const unsigned short ')
     out.write(f'xmlunicodetable_{name} [128] = {{\n')
-    printHexTable(out, chars)
+    printHexTable(out, 4, chars)
     out.write('};\n\n')
 
     num_chunks = len(data) // 64
     out.write('static const unsigned char ')
     out.write(f'xmltranscodetable_{name} [48 + {num_chunks} * 64] = {{\n')
-    printStringTable(out, row_ids)
-    printStringTable(out, plane_ids)
-    printStringTable(out, data)
+    printHexTable(out, 2, row_ids)
+    printHexTable(out, 2, plane_ids)
+    printHexTable(out, 2, data)
     out.write('};\n\n')
 
 out = open(f'iso8859x.inc', 'w')

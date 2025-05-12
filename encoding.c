@@ -159,23 +159,25 @@ UTF8ToHtmlWrapper(void *vctxt, unsigned char *out, int *outlen,
 #define UTF8ToHtmlWrapper NULL
 #endif
 
-#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
-    defined(LIBXML_ISO8859X_ENABLED)
-
 #include "iso8859x.inc"
 
 static xmlCharEncError
-ISO8859xToUTF8(void *vctxt, unsigned char* out, int *outlen,
+EightBitToUtf8(void *vctxt, unsigned char* out, int *outlen,
                const unsigned char* in, int *inlen, int flush);
 static xmlCharEncError
-UTF8ToISO8859x(void *vctxt, unsigned char *out, int *outlen,
+Utf8ToEightBit(void *vctxt, unsigned char *out, int *outlen,
                const unsigned char *in, int *inlen, int flush);
 
-#define MAKE_ISO_HANDLER(name, n) \
-    { (char *) name, { ISO8859xToUTF8 }, { UTF8ToISO8859x }, \
-      (void *) xmlunicodetable_ISO8859_##n, \
-      (void *) xmltranscodetable_ISO8859_##n, \
+#define MAKE_8BIT_HANDLER(name, table) \
+    { (char *) name, { EightBitToUtf8 }, { Utf8ToEightBit }, \
+      (void *) xmlunicodetable_##table, \
+      (void *) xmltranscodetable_##table, \
       NULL, XML_HANDLER_STATIC }
+
+#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
+    defined(LIBXML_ISO8859X_ENABLED)
+
+#define MAKE_ISO_HANDLER(name, n) MAKE_8BIT_HANDLER(name, ISO8859_##n)
 
 #else /* LIBXML_ISO8859X_ENABLED */
 
@@ -194,7 +196,7 @@ UTF8ToISO8859x(void *vctxt, unsigned char *out, int *outlen,
  * Names should match the IANA registry if possible:
  * https://www.iana.org/assignments/character-sets/character-sets.xhtml
  */
-static const xmlCharEncodingHandler defaultHandlers[31] = {
+static const xmlCharEncodingHandler defaultHandlers[32] = {
     MAKE_HANDLER(NULL, NULL, NULL), /* NONE */
     MAKE_HANDLER("UTF-8", UTF8ToUTF8, UTF8ToUTF8),
     MAKE_HANDLER("UTF-16LE", UTF16LEToUTF8, UTF8ToUTF16LE),
@@ -226,6 +228,7 @@ static const xmlCharEncodingHandler defaultHandlers[31] = {
     MAKE_ISO_HANDLER("ISO-8859-14", 14),
     MAKE_ISO_HANDLER("ISO-8859-15", 15),
     MAKE_ISO_HANDLER("ISO-8859-16", 16),
+    MAKE_8BIT_HANDLER("windows-1252", windows_1252)
 };
 
 #define NUM_DEFAULT_HANDLERS \
@@ -2697,11 +2700,8 @@ UTF8ToHtmlWrapper(void *vctxt ATTRIBUTE_UNUSED,
 }
 #endif
 
-#if !defined(LIBXML_ICONV_ENABLED) && !defined(LIBXML_ICU_ENABLED) && \
-    defined(LIBXML_ISO8859X_ENABLED)
-
 static xmlCharEncError
-UTF8ToISO8859x(void *vctxt,
+Utf8ToEightBit(void *vctxt,
                unsigned char *out, int *outlen,
                const unsigned char *in, int *inlen,
                int flush ATTRIBUTE_UNUSED) {
@@ -2783,7 +2783,7 @@ done:
 }
 
 static xmlCharEncError
-ISO8859xToUTF8(void *vctxt,
+EightBitToUtf8(void *vctxt,
                unsigned char* out, int *outlen,
                const unsigned char* in, int *inlen,
                int flush ATTRIBUTE_UNUSED) {
@@ -2835,6 +2835,4 @@ done:
     *inlen = in - instart;
     return(ret);
 }
-
-#endif
 

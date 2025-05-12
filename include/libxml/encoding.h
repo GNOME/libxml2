@@ -107,7 +107,9 @@ typedef enum {
     /** ISO-8859-15, available since 2.14 */
     XML_CHAR_ENCODING_8859_15=	29,
     /** ISO-8859-16, available since 2.14 */
-    XML_CHAR_ENCODING_8859_16=	30
+    XML_CHAR_ENCODING_8859_16=	30,
+    /** windows-1252, available since 2.15 */
+    XML_CHAR_ENCODING_WINDOWS_1252 = 31
 } xmlCharEncoding;
 
 /**

@@ -1,6 +1,8 @@
-/************************************************************************
- * Lookup tables for ISO-8859-2..ISO-8859-16 transcoding                *
- ************************************************************************/
+/*
+ * Lookup tables for transcoding of 8-bit character sets.
+ *
+ * Generated with tools/genTranscode.py.
+ */
 
 static const unsigned short xmlunicodetable_ISO8859_2 [128] = {
     0x0080, 0x0081, 0x0082, 0x0083, 0x0084, 0x0085, 0x0086, 0x0087,

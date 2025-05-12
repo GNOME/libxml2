@@ -1104,6 +1104,8 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
                 case XML_CHAR_ENCODING_UTF16:
                     enc = XML_CHAR_ENCODING_UTF16LE;
                     break;
+                default:
+                    break;
             }
         }
 

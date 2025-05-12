@@ -2745,7 +2745,8 @@ htmlParseData(htmlParserCtxtPtr ctxt, htmlAsciiMask mask,
                     guess = htmlFindEncoding(ctxt);
 #endif
                     if (guess == NULL) {
-                        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
+                        xmlSwitchEncoding(ctxt,
+                                XML_CHAR_ENCODING_WINDOWS_1252);
                     } else {
                         xmlSwitchEncodingName(ctxt, (const char *) guess);
                         xmlFree(guess);
@@ -3288,7 +3289,8 @@ htmlParseCharData(htmlParserCtxtPtr ctxt, int partial) {
                     guess = htmlFindEncoding(ctxt);
 #endif
                     if (guess == NULL) {
-                        xmlSwitchEncoding(ctxt, XML_CHAR_ENCODING_8859_1);
+                        xmlSwitchEncoding(ctxt,
+                                XML_CHAR_ENCODING_WINDOWS_1252);
                     } else {
                         xmlSwitchEncodingName(ctxt, (const char *) guess);
                         xmlFree(guess);

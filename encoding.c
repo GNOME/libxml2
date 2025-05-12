@@ -1087,6 +1087,26 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
         return(XML_ERR_OK);
 
     if ((enc > 0) && ((size_t) enc < NUM_DEFAULT_HANDLERS)) {
+        if (flags & XML_ENC_HTML) {
+            /*
+             * TODO: HTML5 only allows a fixed set of charset
+             * labels. We should add an option to enable or
+             * disable this restriction.
+             *
+             * TODO: Map ISO-8859-9 to windows-1254.
+             */
+            switch (enc) {
+                case XML_CHAR_ENCODING_ASCII:
+                case XML_CHAR_ENCODING_8859_1:
+                    enc = XML_CHAR_ENCODING_WINDOWS_1252;
+                    break;
+                case XML_CHAR_ENCODING_UCS2:
+                case XML_CHAR_ENCODING_UTF16:
+                    enc = XML_CHAR_ENCODING_UTF16LE;
+                    break;
+            }
+        }
+
         handler = &defaultHandlers[enc];
         if ((((flags & XML_ENC_INPUT) == 0) || (handler->input.func)) &&
             (((flags & XML_ENC_OUTPUT) == 0) || (handler->output.func))) {

@@ -1229,11 +1229,14 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                            const char *encoding) {
     xmlCharEncodingHandlerPtr handler;
     xmlParserErrors res;
+    xmlCharEncFlags flags = XML_ENC_INPUT;
 
     if (encoding == NULL)
         return(-1);
 
-    res = xmlCreateCharEncodingHandler(encoding, XML_ENC_INPUT,
+    if (ctxt->html)
+        flags |= XML_ENC_HTML;
+    res = xmlCreateCharEncodingHandler(encoding, flags,
             ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res == XML_ERR_UNSUPPORTED_ENCODING) {
         xmlWarningMsg(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
@@ -1569,14 +1572,17 @@ xmlSetDeclaredEncoding(xmlParserCtxtPtr ctxt, xmlChar *encoding) {
         ((ctxt->options & XML_PARSE_IGNORE_ENC) == 0)) {
         xmlCharEncodingHandlerPtr handler;
         xmlParserErrors res;
+        xmlCharEncFlags flags = XML_ENC_INPUT;
 
         /*
          * xmlSwitchEncodingName treats unsupported encodings as
          * warnings, but we want it to be an error in an encoding
          * declaration.
          */
+        if (ctxt->html)
+            flags |= XML_ENC_HTML;
         res = xmlCreateCharEncodingHandler((const char *) encoding,
-                XML_ENC_INPUT, ctxt->convImpl, ctxt->convCtxt, &handler);
+                flags, ctxt->convImpl, ctxt->convCtxt, &handler);
         if (res != XML_ERR_OK) {
             xmlFatalErr(ctxt, res, (const char *) encoding);
             xmlFree(encoding);

@@ -119,7 +119,9 @@ typedef enum {
     /** Create converter for input (conversion to UTF-8) */
     XML_ENC_INPUT = (1 << 0),
     /** Create converter for output (conversion from UTF-8) */
-    XML_ENC_OUTPUT = (1 << 1)
+    XML_ENC_OUTPUT = (1 << 1),
+    /** Use HTML5 mappings */
+    XML_ENC_HTML = (1 << 2)
 } xmlCharEncFlags;
 
 /**

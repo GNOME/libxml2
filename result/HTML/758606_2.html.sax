@@ -1,5 +1,5 @@
 SAX.setDocumentLocator()
 SAX.startDocument()
-SAX.comment(<!dOctYPE
+SAX.comment(‘<!dOctYPE
 )
 SAX.endDocument()

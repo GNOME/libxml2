@@ -277,6 +277,7 @@ xmlEscapeText(const xmlChar *string, int flags) {
     cur = string;
 
     while (*cur != 0) {
+        char tempBuf[12];
         const xmlChar *base;
         const char *repl;
         size_t used;
@@ -315,7 +316,6 @@ xmlEscapeText(const xmlChar *string, int flags) {
                 cur += 1;
             }
         } else {
-            char tempBuf[12];
             int val = 0, len = 4;
 
             val = xmlGetUTF8Char(cur, &len);

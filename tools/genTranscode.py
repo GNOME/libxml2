@@ -38,37 +38,39 @@ def genTranscodeTable(out, name, chars):
 
     o = 0x80
     for cp in chars:
-        if cp < 0x0800:
-            # The lower five bits of the first byte in a
-            # two-byte sequence are used to find the row.
-            i = cp // 64
-            index = row_ids[i]
-            if index == 0:
-                index = len(data) // 64
-                data += [ 0 ] * 64
-                row_ids[i] = index
-        else:
-            # The lower four bits of the first byte in a
-            # three-byte sequence are used to find the plane.
-            i = cp // (64 * 64)
-            index2 = plane_ids[i]
-            if index2 == 0:
-                index2 = len(data) // 64
-                data += [ 0 ] * 64
-                plane_ids[i] = index2
+        if cp != 0:
+            if cp < 0x0800:
+                # The lower five bits of the first byte in a
+                # two-byte sequence are used to find the row.
+                i = cp // 64
+                index = row_ids[i]
+                if index == 0:
+                    index = len(data) // 64
+                    data += [ 0 ] * 64
+                    row_ids[i] = index
+            else:
+                # The lower four bits of the first byte in a
+                # three-byte sequence are used to find the plane.
+                i = cp // (64 * 64)
+                index2 = plane_ids[i]
+                if index2 == 0:
+                    index2 = len(data) // 64
+                    data += [ 0 ] * 64
+                    plane_ids[i] = index2
 
-            # The lower six bits of the second byte in a
-            # three-byte sequence are used to find the row.
-            i = index2 * 64 + cp // 64 % 64
-            index = data[i]
-            if index == 0:
-                index = len(data) // 64
-                data += [ 0 ] * 64
-                data[i] = index
+                # The lower six bits of the second byte in a
+                # three-byte sequence are used to find the row.
+                i = index2 * 64 + cp // 64 % 64
+                index = data[i]
+                if index == 0:
+                    index = len(data) // 64
+                    data += [ 0 ] * 64
+                    data[i] = index
 
-        # The lower six bits in the last byte are
-        # used to lookup the codepoint.
-        data[index * 64 + cp % 64] = o
+            # The lower six bits in the last byte are
+            # used to lookup the codepoint.
+            data[index * 64 + cp % 64] = o
+
         o += 1
 
     out.write('static const unsigned short ')

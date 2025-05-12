@@ -49,7 +49,6 @@ htmlFindFirstChild(htmlNodePtr parent, const char *name) {
 
     for (child = parent->children; child != NULL; child = child->next) {
         if ((child->type == XML_ELEMENT_NODE) &&
-            (child->ns == NULL) &&
             (xmlStrcasecmp(child->name, BAD_CAST name) == 0))
             return(child);
     }
@@ -176,7 +175,6 @@ htmlParseMetaEncoding(htmlNodePtr elem, htmlMetaEncoding *menc) {
     int isContentType;
 
     if ((elem->type != XML_ELEMENT_NODE) ||
-        (elem->ns != NULL) ||
         (xmlStrcasecmp(elem->name, BAD_CAST "meta") != 0))
         return(0);
 
@@ -866,42 +864,40 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
             /*
              * Get specific HTML info for that node.
              */
-            if (cur->ns == NULL) {
+            if (cur->ns == NULL)
                 info = htmlTagLookup(cur->name);
+            else
+                info = NULL;
 
-                if (encoding != NULL) {
-                    isMeta = htmlParseMetaEncoding(cur, &menc);
+            if (encoding != NULL) {
+                isMeta = htmlParseMetaEncoding(cur, &menc);
 
-                    /*
-                     * Don't add meta tag for "HTML" encoding.
-                     */
-                    if ((xmlStrcasecmp(BAD_CAST encoding,
-                                       BAD_CAST "HTML") != 0) &&
-                        (xmlStrcasecmp(cur->name, BAD_CAST "head") == 0) &&
-                        (parent != NULL) &&
-                        (parent->ns == NULL) &&
-                        (xmlStrcasecmp(parent->name, BAD_CAST "html") == 0) &&
-                        (parent->parent != NULL) &&
-                        (parent->parent->parent == NULL) &&
-                        (metaHead == NULL)) {
-                        xmlNodePtr n;
+                /*
+                 * Don't add meta tag for "HTML" encoding.
+                 */
+                if ((xmlStrcasecmp(BAD_CAST encoding,
+                                   BAD_CAST "HTML") != 0) &&
+                    (xmlStrcasecmp(cur->name, BAD_CAST "head") == 0) &&
+                    (parent != NULL) &&
+                    (xmlStrcasecmp(parent->name, BAD_CAST "html") == 0) &&
+                    (parent->parent != NULL) &&
+                    (parent->parent->parent == NULL) &&
+                    (metaHead == NULL)) {
+                    xmlNodePtr n;
 
-                        metaHead = cur;
-                        addMeta = 1;
+                    metaHead = cur;
+                    addMeta = 1;
 
-                        for (n = cur->children; n != NULL; n = n->next) {
-                            int unused;
+                    for (n = cur->children; n != NULL; n = n->next) {
+                        int unused;
 
-                            if (htmlFindMetaEncodingAttr(n, &unused) != NULL) {
-                                metaHead = NULL;
-                                addMeta = 0;
-                                break;
-                            }
+                        if (htmlFindMetaEncodingAttr(n, &unused) != NULL) {
+                            metaHead = NULL;
+                            addMeta = 0;
+                            break;
                         }
                     }
                 }
-            } else {
-                info = NULL;
             }
 
             xmlOutputBufferWrite(buf, 1, "<");

@@ -1229,14 +1229,11 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
                            const char *encoding) {
     xmlCharEncodingHandlerPtr handler;
     xmlParserErrors res;
-    xmlCharEncFlags flags = XML_ENC_INPUT;
 
     if (encoding == NULL)
         return(-1);
 
-    if (ctxt->html)
-        flags |= XML_ENC_HTML;
-    res = xmlCreateCharEncodingHandler(encoding, flags,
+    res = xmlCreateCharEncodingHandler(encoding, XML_ENC_INPUT,
             ctxt->convImpl, ctxt->convCtxt, &handler);
     if (res == XML_ERR_UNSUPPORTED_ENCODING) {
         xmlWarningMsg(ctxt, XML_ERR_UNSUPPORTED_ENCODING,

@@ -975,6 +975,9 @@ testUTF16(void) {
                        utf16BE, sizeof(utf16BE) - 1) != 0)
         ret = -1;
 
+    xmlCharEncCloseFunc(handler16LE);
+    xmlCharEncCloseFunc(handler16BE);
+
     return(ret);
 }
 

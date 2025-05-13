@@ -1112,7 +1112,29 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
         handler = &defaultHandlers[enc];
         if ((((flags & XML_ENC_INPUT) == 0) || (handler->input.func)) &&
             (((flags & XML_ENC_OUTPUT) == 0) || (handler->output.func))) {
-            *out = (xmlCharEncodingHandler *) handler;
+            xmlCharEncodingHandler *ret;
+
+            /*
+             * Return a copy of the handler with the original name.
+             */
+
+            ret = xmlMalloc(sizeof(*ret));
+            if (ret == NULL)
+                return(XML_ERR_NO_MEMORY);
+            memset(ret, 0, sizeof(*ret));
+
+            ret->name = xmlMemStrdup(norig);
+            if (ret->name == NULL) {
+                xmlFree(ret);
+                return(XML_ERR_NO_MEMORY);
+            }
+            ret->input = handler->input;
+            ret->output = handler->output;
+            ret->inputCtxt = handler->inputCtxt;
+            ret->outputCtxt = handler->outputCtxt;
+            ret->ctxtDtor = handler->ctxtDtor;
+
+            *out = ret;
             return(XML_ERR_OK);
         }
     }

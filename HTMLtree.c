@@ -698,9 +698,10 @@ htmlSerializeUri(xmlOutputBufferPtr buf, const xmlChar *content) {
 
     /*
      * See appendix "B.2.1 Non-ASCII characters in URI attribute
-     * values" in the HTML 4.01 spec.
+     * values" in the HTML 4.01 spec. This is also recommended
+     * by the HTML output method of the XSLT 1.0 spec.
      *
-     * Escape space, control and non-ASCII chars.
+     * We also escape space and control chars.
      */
 
     /* Skip over initial whitespace */
@@ -768,12 +769,21 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
     }
     xmlOutputBufferWriteString(buf, (const char *)cur->name);
 
+    /*
+     * The HTML5 spec requires to always serialize empty attribute
+     * values as `=""`. We should probably align with HTML5 at some
+     * point.
+     */
     if ((cur->children != NULL) && (!htmlIsBooleanAttr(cur->name))) {
         xmlNodePtr child;
         int isUri;
 
         xmlOutputBufferWrite(buf, 2, "=\"");
 
+        /*
+         * Special handling of URIs doesn't conform to HTML5 and
+         * should probably be removed at some point.
+         */
         isUri = (cur->ns == NULL) && (cur->parent != NULL) &&
                 (cur->parent->ns == NULL) &&
                 ((!xmlStrcasecmp(cur->name, BAD_CAST "href")) ||

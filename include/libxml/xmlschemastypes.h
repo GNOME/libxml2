@@ -26,6 +26,9 @@
 extern "C" {
 #endif
 
+/**
+ * Schema whitespace value type
+ */
 typedef enum {
     XML_SCHEMA_WHITESPACE_UNKNOWN = 0,
     XML_SCHEMA_WHITESPACE_PRESERVE = 1,

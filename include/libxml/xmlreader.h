@@ -42,7 +42,7 @@ typedef enum {
 
 #ifdef LIBXML_READER_ENABLED
 
-/*
+/**
  * Internal state values for the reader.
  */
 typedef enum {

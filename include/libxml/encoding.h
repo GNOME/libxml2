@@ -21,8 +21,10 @@ extern "C" {
 /*
  * Backward compatibility
  */
+/** @cond ignore */
 #define UTF8Toisolat1 xmlUTF8ToIsolat1
 #define isolat1ToUTF8 xmlIsolat1ToUTF8
+/** @endcond */
 
 /**
  * Encoding conversion errors
@@ -186,13 +188,13 @@ typedef xmlCharEncError
 typedef void
 (*xmlCharEncConvCtxtDtor)(void *vctxt);
 
-/*
- * Block defining the handlers for non UTF-8 encodings.
+typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
+typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
+/**
+ * A character encoding conversion handler for non UTF-8 encodings.
  *
  * This structure will be made private.
  */
-typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
-typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 struct _xmlCharEncodingHandler {
     char *name XML_DEPRECATED_MEMBER;
     union {

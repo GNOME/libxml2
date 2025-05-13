@@ -24,11 +24,21 @@
 extern "C" {
 #endif
 
-/*
- * Backward compatibility
+/**
+ * Push an input on the stack.
+ *
+ * @deprecated Use xmlCtxtPushInput()
  */
 #define inputPush xmlCtxtPushInput
+/**
+ * Pop an input from the stack.
+ *
+ * @deprecated Use xmlCtxtPushInput()
+ */
 #define inputPop xmlCtxtPopInput
+/**
+ * Maximum element nesting depth (without XML_PARSE_HUGE).
+ */
 #define xmlParserMaxDepth 256
 
 /**
@@ -238,10 +248,12 @@ extern "C" {
 /*
  * Global variables used for predefined strings.
  */
+/** @cond ignore */
 XMLPUBVAR const xmlChar xmlStringText[];
 XMLPUBVAR const xmlChar xmlStringTextNoenc[];
 XML_DEPRECATED
 XMLPUBVAR const xmlChar xmlStringComment[];
+/** @endcond */
 
 XML_DEPRECATED
 XMLPUBFUN int                   xmlIsLetter     (int c);
@@ -470,10 +482,12 @@ XMLPUBFUN void
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID);
 
+/** @cond ignore */
 #define XML_SUBSTITUTE_NONE	0
 #define XML_SUBSTITUTE_REF	1
 #define XML_SUBSTITUTE_PEREF	2
 #define XML_SUBSTITUTE_BOTH	3
+/** @endcond */
 XML_DEPRECATED
 XMLPUBFUN xmlChar *
 		xmlStringDecodeEntities		(xmlParserCtxtPtr ctxt,

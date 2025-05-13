@@ -2702,12 +2702,11 @@ done:
     return(ret);
 }
 
-/*
- * @param URI  the URI reference under consideration
- * @param base  the base value
- *
+/**
  * See xmlBuildRelativeURISafe().
  *
+ * @param URI  the URI reference under consideration
+ * @param base  the base value
  * @returns a new URI string (to be freed by the caller) or NULL in case
  * error.
  */

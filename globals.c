@@ -185,40 +185,6 @@ static xmlGlobalState globalState;
  *									*
  ************************************************************************/
 
-/*
- * Memory allocation routines
- */
-
-/**
- * The variable holding the libxml free() implementation
- *
- * @param mem  an already allocated block of memory
- */
-xmlFreeFunc xmlFree = free;
-/**
- * The variable holding the libxml malloc() implementation
- *
- * @param size  the size requested in bytes
- * @returns a pointer to the newly allocated block or NULL in case of error
- */
-xmlMallocFunc xmlMalloc = malloc;
-/**
- * The variable holding the libxml malloc() implementation for atomic
- * data (i.e. blocks not containing pointers), useful when using a
- * garbage collecting allocator.
- *
- * @param size  the size requested in bytes
- * @returns a pointer to the newly allocated block or NULL in case of error
- */
-xmlMallocFunc xmlMallocAtomic = malloc;
-/**
- * The variable holding the libxml realloc() implementation
- *
- * @param mem  an already allocated block of memory
- * @param size  the new size requested in bytes
- * @returns a pointer to the newly reallocated block or NULL in case of error
- */
-xmlReallocFunc xmlRealloc = realloc;
 /**
  * a strdup implementation with a type signature matching POSIX
  *
@@ -229,12 +195,15 @@ static char *
 xmlPosixStrdup(const char *cur) {
     return((char*) xmlCharStrdup(cur));
 }
-/**
- * The variable holding the libxml strdup() implementation
- *
- * @param str  a zero terminated string
- * @returns the copy of the string or NULL in case of error
+
+/*
+ * Memory allocation routines
  */
+
+xmlFreeFunc xmlFree = free;
+xmlMallocFunc xmlMalloc = malloc;
+xmlMallocFunc xmlMallocAtomic = malloc;
+xmlReallocFunc xmlRealloc = realloc;
 xmlStrdupFunc xmlMemStrdup = xmlPosixStrdup;
 
 /*

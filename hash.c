@@ -1095,7 +1095,7 @@ xmlHashScanFull3(xmlHashTablePtr hash, const xmlChar *key,
     }
 }
 
-/*
+/**
  * @param hash  hash table
  * @param copyFunc  copier function for items in the hash
  * @param deallocFunc  deallocation function in case of errors
@@ -1147,7 +1147,7 @@ error:
     return(NULL);
 }
 
-/*
+/**
  * @param hash  hash table
  * @param copy  copier function for items in the hash
  *

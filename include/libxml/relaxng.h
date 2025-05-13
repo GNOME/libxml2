@@ -60,7 +60,7 @@ typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;
 typedef struct _xmlRelaxNGValidCtxt xmlRelaxNGValidCtxt;
 typedef xmlRelaxNGValidCtxt *xmlRelaxNGValidCtxtPtr;
 
-/*
+/**
  * List of possible Relax NG validation errors
  */
 typedef enum {
@@ -106,7 +106,7 @@ typedef enum {
     XML_RELAXNG_ERR_TEXTWRONG
 } xmlRelaxNGValidErr;
 
-/*
+/**
  * List of possible Relax NG Parser flags
  */
 typedef enum {

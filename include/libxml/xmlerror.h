@@ -19,8 +19,10 @@
 extern "C" {
 #endif
 
-/*
- * Backward compatibility
+/**
+ * Set generic error callback.
+ *
+ * @deprecated Use xmlSetGenericErrorFunc()
  */
 #define initGenericErrorDefaultFunc(h) xmlSetGenericErrorFunc(NULL, *(h))
 
@@ -920,13 +922,14 @@ typedef void (*xmlGenericErrorFunc) (void *ctx,
  */
 typedef void (*xmlStructuredErrorFunc) (void *userData, const xmlError *error);
 
+/** @cond ignore */
 XML_DEPRECATED
 XMLPUBFUN const xmlError *__xmlLastError(void);
-
 XMLPUBFUN xmlGenericErrorFunc *__xmlGenericError(void);
 XMLPUBFUN void **__xmlGenericErrorContext(void);
 XMLPUBFUN xmlStructuredErrorFunc *__xmlStructuredError(void);
 XMLPUBFUN void **__xmlStructuredErrorContext(void);
+/** @endcond */
 
 #ifndef XML_GLOBALS_NO_REDEFINITION
   /**
@@ -967,18 +970,19 @@ XMLPUBFUN void **__xmlStructuredErrorContext(void);
 XMLPUBFUN void
     xmlSetGenericErrorFunc	(void *ctx,
 				 xmlGenericErrorFunc handler);
+XMLPUBFUN void
+    xmlSetStructuredErrorFunc	(void *ctx,
+				 xmlStructuredErrorFunc handler);
+
 XML_DEPRECATED
 XMLPUBFUN void
     xmlThrDefSetGenericErrorFunc(void *ctx,
                                  xmlGenericErrorFunc handler);
-
-XMLPUBFUN void
-    xmlSetStructuredErrorFunc	(void *ctx,
-				 xmlStructuredErrorFunc handler);
 XML_DEPRECATED
 XMLPUBFUN void
     xmlThrDefSetStructuredErrorFunc(void *ctx,
                                  xmlStructuredErrorFunc handler);
+
 /*
  * Legacy error handlers.
  */

@@ -22,7 +22,9 @@
 #else /* XML_TREE_INTERNALS */
 
 #ifndef __XML_TREE_H__
+/** @cond ignore */
 #define __XML_TREE_H__
+/** @endcond */
 
 #include <stdio.h>
 #include <limits.h>
@@ -38,11 +40,13 @@ extern "C" {
 /*
  * Backward compatibility
  */
+/** @cond ignore */
 #define xmlBufferAllocScheme XML_BUFFER_ALLOC_EXACT
 #define xmlDefaultBufferSize 4096
 #define XML_GET_CONTENT(n) \
     ((n)->type == XML_ELEMENT_NODE ? NULL : (n)->content)
 #define XML_GET_LINE(n)	xmlGetLineNo(n)
+/** @endcond */
 
 /*
  * Some of the basic types pointer to structures:
@@ -71,7 +75,7 @@ typedef xmlSAXHandler *xmlSAXHandlerPtr;
 typedef struct _xmlEntity xmlEntity;
 typedef xmlEntity *xmlEntityPtr;
 
-/*
+/**
  * Removed, buffers always use XML_BUFFER_ALLOC_IO now.
  */
 typedef enum {
@@ -108,7 +112,7 @@ struct _xmlBuffer {
 typedef struct _xmlBuf xmlBuf;
 typedef xmlBuf *xmlBufPtr;
 
-/*
+/**
  * Macro used to express that the API use the new buffers for
  * xmlParserInputBuffer and xmlOutputBuffer. The change was
  * introduced in 2.9.0.
@@ -199,7 +203,7 @@ struct _xmlNotation {
     const xmlChar               *SystemID;
 };
 
-/*
+/**
  * A DTD Attribute type definition.
  */
 typedef enum {
@@ -215,7 +219,7 @@ typedef enum {
     XML_ATTRIBUTE_NOTATION
 } xmlAttributeType;
 
-/*
+/**
  * A DTD Attribute default definition.
  */
 typedef enum {
@@ -276,7 +280,7 @@ struct _xmlAttribute {
     const xmlChar          *elem;
 };
 
-/*
+/**
  * Possible definitions of element content types.
  */
 typedef enum {
@@ -286,7 +290,7 @@ typedef enum {
     XML_ELEMENT_CONTENT_OR
 } xmlElementContentType;
 
-/*
+/**
  * Possible definitions of element content occurrences.
  */
 typedef enum {
@@ -319,7 +323,7 @@ struct _xmlElementContent {
     const xmlChar             *prefix;
 };
 
-/*
+/**
  * The different possibilities for an element content type.
  */
 typedef enum {
@@ -486,7 +490,7 @@ struct _xmlAttr {
 
 typedef struct _xmlID xmlID;
 typedef xmlID *xmlIDPtr;
-/*
+/**
  * An XML ID instance.
  */
 struct _xmlID {
@@ -504,6 +508,7 @@ struct _xmlID {
     struct _xmlDoc   *doc;
 };
 
+/** @cond ignore */
 typedef struct _xmlRef xmlRef;
 typedef xmlRef *xmlRefPtr;
 /*
@@ -516,6 +521,7 @@ struct _xmlRef {
     const xmlChar    *name;	/* The attribute if attr is not available */
     int               lineno;	/* The line number if attr is not available */
 };
+/** @endcond */
 
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
@@ -679,7 +685,7 @@ typedef xmlNsPtr (*xmlDOMWrapAcquireNsFunction) (xmlDOMWrapCtxtPtr ctxt,
 						 const xmlChar *nsName,
 						 const xmlChar *nsPrefix);
 
-/*
+/**
  * Context for DOM wrapper-operations.
  */
 struct _xmlDOMWrapCtxt {
@@ -734,6 +740,8 @@ typedef void (*xmlDeregisterNodeFunc) (xmlNodePtr node);
  * Variables.
  */
 
+/** @cond ignore */
+
 XML_DEPRECATED
 XMLPUBFUN xmlRegisterNodeFunc *__xmlRegisterNodeDefaultValue(void);
 XML_DEPRECATED
@@ -745,6 +753,8 @@ XMLPUBFUN xmlDeregisterNodeFunc *__xmlDeregisterNodeDefaultValue(void);
   #define xmlDeregisterNodeDefaultValue \
     (*__xmlDeregisterNodeDefaultValue())
 #endif
+
+/** @endcond */
 
 /*
  * Some helper functions

@@ -1697,6 +1697,21 @@ xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
     return(ret);
 }
 
+/**
+ * Create a buffered parser input for the progressive parsing of a file
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * by default if found at compile-time.
+ * Do an encoding check if enc == XML_CHAR_ENCODING_NONE
+ *
+ * Internal implementation, never uses the callback installed with
+ * xmlParserInputBufferCreateFilenameDefault().
+ *
+ * @deprecated Use xmlNewInputFromUrl().
+ *
+ * @param URI  a C string containing the URI or filename
+ * @param enc  the charset encoding if known
+ * @returns the new parser input or NULL
+ */
 xmlParserInputBufferPtr
 __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
     xmlParserInputBufferPtr ret;
@@ -1710,6 +1725,9 @@ __xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
  * Automatic support for ZLIB/Compress compressed document is provided
  * by default if found at compile-time.
  * Do an encoding check if enc == XML_CHAR_ENCODING_NONE
+ *
+ * Allows the actual function to be overridden with
+ * xmlParserInputBufferCreateFilenameDefault().
  *
  * @deprecated Use xmlNewInputFromUrl().
  *
@@ -1743,6 +1761,22 @@ xmlParserInputBufferCreateFilename(const char *URI, xmlCharEncoding enc) {
 }
 
 #ifdef LIBXML_OUTPUT_ENABLED
+/**
+ * Create a buffered  output for the progressive saving of a file
+ * If filename is `"-"` then we use stdout as the output.
+ * Automatic support for ZLIB/Compress compressed document is provided
+ * by default if found at compile-time.
+ *
+ * Consumes `encoder` but not in error case.
+ *
+ * Internal implementation, never uses the callback installed with
+ * xmlOutputBufferCreateFilenameDefault().
+ *
+ * @param URI  a C string containing the URI or filename
+ * @param encoder  the encoding converter or NULL
+ * @param compression  the compression ration (0 none, 9 max).
+ * @returns the new output or NULL
+ */
 xmlOutputBufferPtr
 __xmlOutputBufferCreateFilename(const char *URI,
                               xmlCharEncodingHandlerPtr encoder,
@@ -1823,6 +1857,9 @@ error:
  * by default if found at compile-time.
  *
  * Consumes `encoder` but not in error case.
+ *
+ * Allows the actual function to be overridden with
+ * xmlOutputBufferCreateFilenameDefault().
  *
  * @param URI  a C string containing the URI or filename
  * @param encoder  the encoding converter or NULL

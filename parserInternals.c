@@ -433,7 +433,7 @@ xmlCtxtErr(xmlParserCtxtPtr ctxt, xmlNodePtr node, xmlErrorDomain domain,
  * @returns a bitmask of XML_STATUS_* flags ORed together.
  */
 xmlParserStatus
-xmlCtxtGetStatus(xmlParserCtxt *ctxt) {
+xmlCtxtGetStatus(xmlParserCtxtPtr ctxt) {
     xmlParserStatus bits = 0;
 
     if (xmlCtxtIsCatastrophicError(ctxt)) {
@@ -3372,11 +3372,6 @@ xmlLineNumbersDefault(int val) {
 
 /**
  * Set and return the previous value for default entity support.
- * Initially the parser always keep entity references instead of substituting
- * entity values in the output. This function has to be used to change the
- * default parser behavior
- * SAX::substituteEntities() has to be used for changing that on a file by
- * file basis.
  *
  * @deprecated Use the modern options API with XML_PARSE_NOENT.
  *
@@ -3394,21 +3389,6 @@ xmlSubstituteEntitiesDefault(int val) {
 
 /**
  * Set and return the previous value for default blanks text nodes support.
- * The 1.x version of the parser used an heuristic to try to detect
- * ignorable white spaces. As a result the SAX callback was generating
- * xmlSAX2IgnorableWhitespace() callbacks instead of characters() one, and when
- * using the DOM output text nodes containing those blanks were not generated.
- * The 2.x and later version will switch to the XML standard way and
- * ignorableWhitespace() are only generated when running the parser in
- * validating mode and when the current element doesn't allow CDATA or
- * mixed content.
- * This function is provided as a way to force the standard behavior
- * on 1.X libs and to switch back to the old mode for compatibility when
- * running 1.X client code on 2.X . Upgrade of 1.X code should be done
- * by using xmlIsBlankNode() commodity function to detect the "empty"
- * nodes generated.
- * This value also affect autogeneration of indentation when saving code
- * if blanks sections are kept, indentation is not generated.
  *
  * @deprecated Use the modern options API with XML_PARSE_NOBLANKS.
  *

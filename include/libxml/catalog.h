@@ -43,6 +43,8 @@ extern "C" {
 #define XML_CATALOG_PI						\
     (const xmlChar *) "oasis-xml-catalog"
 
+/** @cond ignore */
+
 /*
  * The API is voluntarily limited to general cataloging.
  */
@@ -58,6 +60,8 @@ typedef enum {
     XML_CATA_ALLOW_DOCUMENT = 2,
     XML_CATA_ALLOW_ALL = 3
 } xmlCatalogAllow;
+
+/** @endcond */
 
 typedef struct _xmlCatalog xmlCatalog;
 typedef xmlCatalog *xmlCatalogPtr;

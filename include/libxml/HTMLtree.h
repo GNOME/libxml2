@@ -26,11 +26,13 @@ extern "C" {
 #endif
 
 /* Deprecated */
+/** @cond ignore */
 #define HTML_TEXT_NODE		XML_TEXT_NODE
 #define HTML_ENTITY_REF_NODE	XML_ENTITY_REF_NODE
 #define HTML_COMMENT_NODE	XML_COMMENT_NODE
 #define HTML_PRESERVE_NODE	XML_CDATA_SECTION_NODE
 #define HTML_PI_NODE		XML_PI_NODE
+/** @endcond */
 
 XMLPUBFUN htmlDocPtr
 		htmlNewDoc		(const xmlChar *URI,

@@ -27,6 +27,8 @@
 extern "C" {
 #endif
 
+/** @cond ignore */
+
 /*
  * Backward compatibility
  */
@@ -92,6 +94,8 @@ XML_DEPRECATED
 XMLPUBVAR const xmlSAXHandlerV1 htmlDefaultSAXHandler;
 
 #endif /* LIBXML_SAX1_ENABLED */
+
+/** @endcond */
 
 /*
  * There is only few public functions.
@@ -358,7 +362,8 @@ XMLPUBFUN htmlDocPtr
 					 const char *encoding,
 					 int options);
 
-/* deprecated content model
+/**
+ * deprecated content model
  */
 typedef enum {
   HTML_NA = 0 ,		/* something we don't check at all */

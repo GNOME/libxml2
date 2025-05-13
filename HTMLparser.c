@@ -5623,7 +5623,7 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
  *         in case of error.
  */
 int
-htmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options)
+htmlCtxtSetOptions(htmlParserCtxtPtr ctxt, int options)
 {
     return(htmlCtxtSetOptionsInternal(ctxt, options, 0));
 }
@@ -5906,7 +5906,7 @@ htmlReadIO(xmlInputReadCallback ioread, xmlInputCloseCallback ioclose,
  * @returns the resulting document tree
  */
 htmlDocPtr
-htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
+htmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar *str,
                 const char *URL, const char *encoding, int options)
 {
     xmlParserInputPtr input;
@@ -5938,7 +5938,7 @@ htmlCtxtReadDoc(htmlParserCtxtPtr ctxt, const xmlChar *str,
  * @returns the resulting document tree
  */
 htmlDocPtr
-htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
+htmlCtxtReadFile(xmlParserCtxtPtr ctxt, const char *filename,
                 const char *encoding, int options)
 {
     xmlParserInputPtr input;
@@ -5971,7 +5971,7 @@ htmlCtxtReadFile(htmlParserCtxtPtr ctxt, const char *filename,
  * @returns the resulting document tree
  */
 htmlDocPtr
-htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
+htmlCtxtReadMemory(xmlParserCtxtPtr ctxt, const char *buffer, int size,
                   const char *URL, const char *encoding, int options)
 {
     xmlParserInputPtr input;
@@ -6006,7 +6006,7 @@ htmlCtxtReadMemory(htmlParserCtxtPtr ctxt, const char *buffer, int size,
  * @returns the resulting document tree
  */
 htmlDocPtr
-htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
+htmlCtxtReadFd(xmlParserCtxtPtr ctxt, int fd,
               const char *URL, const char *encoding, int options)
 {
     xmlParserInputPtr input;
@@ -6039,7 +6039,7 @@ htmlCtxtReadFd(htmlParserCtxtPtr ctxt, int fd,
  * @returns the resulting document tree
  */
 htmlDocPtr
-htmlCtxtReadIO(htmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
+htmlCtxtReadIO(xmlParserCtxtPtr ctxt, xmlInputReadCallback ioread,
               xmlInputCloseCallback ioclose, void *ioctx,
 	      const char *URL,
               const char *encoding, int options)

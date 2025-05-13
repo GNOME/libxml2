@@ -25,10 +25,17 @@
 extern "C" {
 #endif
 
-/*
- * Backward compatibility
+/**
+ * Push a value on the stack
+ *
+ * @deprecated Use xmlXPathValuePush()
  */
 #define valuePush xmlXPathValuePush
+/**
+ * Pop a value from the stack
+ *
+ * @deprecated Use xmlXPathValuePop()
+ */
 #define valuePop xmlXPathValuePop
 
 /************************************************************************

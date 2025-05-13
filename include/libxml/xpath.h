@@ -87,17 +87,15 @@ struct _xmlNodeSet {
     xmlNodePtr *nodeTab;
 };
 
-/*
+/**
  * An expression is evaluated to yield an object, which
  * has one of the following four basic types:
+ *
  *   - node-set
  *   - boolean
  *   - number
  *   - string
- *
- * @@ XPointer will add more types !
  */
-
 typedef enum {
     XPATH_UNDEFINED = 0,
     XPATH_NODESET = 1,
@@ -136,6 +134,7 @@ struct _xmlXPathObject {
     int index2;
 };
 
+/** @cond ignore */
 
 /*
  * unused
@@ -181,6 +180,8 @@ struct _xmlXPathAxis {
     const xmlChar      *name;		/* the axis name */
     xmlXPathAxisFunc func;		/* the search function */
 };
+
+/** @endcond */
 
 /**
  * An XPath function.
@@ -403,6 +404,8 @@ struct _xmlXPathParserContext {
  * Objects and Nodesets handling
  */
 
+/** @cond ignore */
+
 XML_DEPRECATED
 XMLPUBVAR double xmlXPathNAN;
 XML_DEPRECATED
@@ -440,6 +443,7 @@ XMLPUBVAR double xmlXPathNINF;
 #define xmlXPathNodeSetIsEmpty(ns)                                      \
     (((ns) == NULL) || ((ns)->nodeNr == 0) || ((ns)->nodeTab == NULL))
 
+/** @endcond */
 
 XMLPUBFUN void
 		    xmlXPathFreeObject		(xmlXPathObjectPtr obj);

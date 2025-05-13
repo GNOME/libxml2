@@ -117,8 +117,10 @@ typedef xmlOutputBufferPtr
 (*xmlOutputBufferCreateFilenameFunc)(const char *URI,
         xmlCharEncodingHandlerPtr encoder, int compression);
 
-/*
- * This struct and all related functions should be ultimately
+/**
+ * Parser input buffer
+ *
+ * This struct and all related functions should ultimately
  * be removed from the public interface.
  */
 struct _xmlParserInputBuffer {
@@ -154,6 +156,8 @@ struct _xmlOutputBuffer {
 };
 #endif /* LIBXML_OUTPUT_ENABLED */
 
+/** @cond ignore */
+
 XML_DEPRECATED
 XMLPUBFUN xmlParserInputBufferCreateFilenameFunc *
 __xmlParserInputBufferCreateFilenameValue(void);
@@ -167,6 +171,8 @@ __xmlOutputBufferCreateFilenameValue(void);
   #define xmlOutputBufferCreateFilenameValue \
     (*__xmlOutputBufferCreateFilenameValue())
 #endif
+
+/** @endcond */
 
 /*
  * Interfaces for input

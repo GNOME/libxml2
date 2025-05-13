@@ -22,16 +22,18 @@
 extern "C" {
 #endif
 
+typedef struct _xmlURI xmlURI;
+typedef xmlURI *xmlURIPtr;
 /**
- * A parsed URI reference. This is a struct containing the various fields
+ * A parsed URI reference.
+ *
+ * This is a struct containing the various fields
  * as described in RFC 2396 but separated for further processing.
  *
  * Note: query is a deprecated field which is incorrectly unescaped.
  * query_raw takes precedence over query if the former is set.
  * See: http://mail.gnome.org/archives/xml/2007-April/thread.html\#00127
  */
-typedef struct _xmlURI xmlURI;
-typedef xmlURI *xmlURIPtr;
 struct _xmlURI {
     char *scheme;	/* the URI scheme */
     char *opaque;	/* opaque part */

@@ -22,6 +22,8 @@
 extern "C" {
 #endif
 
+/** @cond ignore */
+
 /**
  * Various defines for the various Link properties.
  *
@@ -55,6 +57,8 @@ typedef enum {
     XLINK_ACTUATE_AUTO,
     XLINK_ACTUATE_ONREQUEST
 } xlinkActuate;
+
+/** @endcond */
 
 /**
  * This is the prototype for the link detection routine.
@@ -140,14 +144,14 @@ typedef void
 				 const xlinkTitle *titles,
 				 const xmlChar **langs);
 
+typedef struct _xlinkHandler xlinkHandler;
+typedef xlinkHandler *xlinkHandlerPtr;
 /**
  * This is the structure containing a set of Links detection callbacks.
  *
  * There is no default xlink callbacks, if one want to get link
  * recognition activated, those call backs must be provided before parsing.
  */
-typedef struct _xlinkHandler xlinkHandler;
-typedef xlinkHandler *xlinkHandlerPtr;
 struct _xlinkHandler {
     xlinkSimpleLinkFunk simple;
     xlinkExtendedLinkFunk extended;

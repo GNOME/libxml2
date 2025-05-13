@@ -67,7 +67,6 @@ typedef char *(*xmlStrdupFunc)(const char *str);
  */
 #ifdef LIBXML_THREAD_ALLOC_ENABLED
 
-/** @cond IGNORE */
 XMLPUBFUN xmlMallocFunc *__xmlMalloc(void);
 XMLPUBFUN xmlMallocFunc *__xmlMallocAtomic(void);
 XMLPUBFUN xmlReallocFunc *__xmlRealloc(void);
@@ -81,14 +80,34 @@ XMLPUBFUN xmlStrdupFunc *__xmlMemStrdup(void);
   #define xmlFree (*__xmlFree())
   #define xmlMemStrdup (*__xmlMemStrdup())
 #endif
-/** @endcond */
 
 #else
-  XMLPUBVAR xmlMallocFunc xmlMalloc;
-  XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
-  XMLPUBVAR xmlReallocFunc xmlRealloc;
-  XMLPUBVAR xmlFreeFunc xmlFree;
-  XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
+
+/**
+ * The variable holding the libxml malloc() implementation
+ */
+XMLPUBVAR xmlMallocFunc xmlMalloc;
+/**
+ * The variable holding the libxml malloc() implementation for atomic
+ * data (i.e. blocks not containing pointers), useful when using a
+ * garbage collecting allocator.
+ *
+ * @deprecated Use xmlMalloc()
+ */
+XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
+/**
+ * The variable holding the libxml realloc() implementation
+ */
+XMLPUBVAR xmlReallocFunc xmlRealloc;
+/**
+ * The variable holding the libxml free() implementation
+ */
+XMLPUBVAR xmlFreeFunc xmlFree;
+/**
+ * The variable holding the libxml strdup() implementation
+ */
+XMLPUBVAR xmlStrdupFunc xmlMemStrdup;
+
 #endif
 
 /*

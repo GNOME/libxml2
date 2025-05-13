@@ -14,7 +14,9 @@
 #define __XML_PARSER_H__
 
 #include <libxml/xmlversion.h>
+/** @cond ignore */
 #define XML_TREE_INTERNALS
+/** @endcond */
 #include <libxml/tree.h>
 #undef XML_TREE_INTERNALS
 #include <libxml/dict.h>
@@ -131,6 +133,8 @@ struct _xmlParserInput {
     xmlEntityPtr entity XML_DEPRECATED_MEMBER;
 };
 
+/** @cond ignore */
+
 /*
  * The parser can be asked to collect Node information, i.e. at what
  * place in the file they were detected.
@@ -205,6 +209,8 @@ typedef struct _xmlStartTag xmlStartTag;
 typedef struct _xmlParserNsData xmlParserNsData;
 typedef struct _xmlAttrHashBucket xmlAttrHashBucket;
 
+/** @endcond */
+
 /**
  * Callback for custom resource loaders.
  *
@@ -230,32 +236,66 @@ typedef xmlParserErrors
  * Parser context
  */
 struct _xmlParserCtxt {
-    /* The SAX handler */
+    /**
+     * @deprecated Use xmlCtxtGetSaxHandler() and
+     * xmlCtxtSetSaxHandler().
+     *
+     * the SAX handler
+     */
     struct _xmlSAXHandler *sax;
-    /* For SAX interface only, used by DOM build */
+    /**
+     * user data for SAX interface, defaults to the context itself
+     */
     void *userData;
-    /* the document being built */
+    /**
+     * @deprecated Use xmlCtxtGetDocument()
+     *
+     * the document being built
+     */
     xmlDocPtr myDoc;
-    /* is the document well formed */
+    /**
+     * @deprecated Use xmlCtxtGetStatus()
+     *
+     * is the document well formed?
+     */
     int wellFormed;
-    /* shall we replace entities ? */
+    /**
+     * @deprecated Use xmlParserOption XML_PARSE_NOENT
+     *
+     * shall we replace entities?
+     */
     int replaceEntities XML_DEPRECATED_MEMBER;
-    /* the XML version string */
+    /**
+     * @deprecated Use xmlCtxtGetVersion()
+     *
+     * the XML version string
+     */
     const xmlChar *version;
-    /* the declared encoding, if any */
+    /**
+     * @deprecated Use xmlCtxtGetDeclaredEncoding()
+     *
+     * the declared encoding, if any
+     */
     const xmlChar *encoding;
-    /* standalone document */
+    /**
+     * @deprecated Use xmlCtxtGetStandalone()
+     *
+     * standalone document
+     */
     int standalone;
 
-    /* an HTML(1) document
-     * 3 is HTML after <head>
-     * 10 is HTML after <body>
+    /**
+     * @deprecated Use xmlCtxtIsHtml()
+     *
+     * non-zero for HTML documents, actually an htmlInsertMode
      */
     int html;
 
     /* Input stream stack */
 
-    /* Current input stream */
+    /**
+     * Current input stream
+     */
     xmlParserInputPtr input;
     /* Number of current input streams */
     int inputNr;
@@ -280,7 +320,11 @@ struct _xmlParserCtxt {
     /* info about each node parsed */
     xmlParserNodeInfoSeq node_seq XML_DEPRECATED_MEMBER;
 
-    /* error code */
+    /**
+     * @deprecated Use xmlCtxtGetLastError()
+     *
+     * error code
+     */
     int errNo;
 
     /* reference and external subset */
@@ -290,11 +334,23 @@ struct _xmlParserCtxt {
     /* unused */
     int external XML_DEPRECATED_MEMBER;
 
-    /* is the document valid */
+    /**
+     * @deprecated Use xmlCtxtGetStatus()
+     *
+     * is the document valid
+     */
     int valid;
-    /* shall we try to validate ? */
+    /**
+     * @deprecated Use xmlParserOption XML_PARSE_DTDVALID
+     *
+     * shall we try to validate?
+     */
     int validate XML_DEPRECATED_MEMBER;
-    /* The validity context */
+    /**
+     * @deprecated Use xmlCtxtGetValidCtxt()
+     *
+     * The validity context
+     */
     xmlValidCtxt vctxt;
 
     /* push parser state */
@@ -320,9 +376,17 @@ struct _xmlParserCtxt {
     long nbChars XML_DEPRECATED_MEMBER;
     /* used by progressive parsing lookup */
     long checkIndex XML_DEPRECATED_MEMBER;
-    /* ugly but ... */
+    /**
+     * @deprecated Use inverted xmlParserOption XML_PARSE_NOBLANKS
+     *
+     * ugly but ...
+     */
     int keepBlanks XML_DEPRECATED_MEMBER;
-    /* SAX callbacks are disabled */
+    /**
+     * @deprecated Use xmlCtxtIsStopped()
+     *
+     * SAX callbacks are disabled
+     */
     int disableSAX XML_DEPRECATED_MEMBER;
     /* Parsing is in int 1/ext 2 subset */
     int inSubset;
@@ -350,26 +414,48 @@ struct _xmlParserCtxt {
     xmlParserInputPtr entity XML_DEPRECATED_MEMBER;
     /* unused */
     int charset XML_DEPRECATED_MEMBER;
-    /* Those two fields are there to */
+    /* Those two fields are there to speed up large node parsing */
     int nodelen XML_DEPRECATED_MEMBER;
-    /* Speed up large node parsing */
     int nodemem XML_DEPRECATED_MEMBER;
-    /* signal pedantic warnings */
+    /**
+     * @deprecated Use xmlParserOption XML_PARSE_PEDANTIC
+     *
+     * signal pedantic warnings
+     */
     int pedantic XML_DEPRECATED_MEMBER;
-    /* For user data, libxml won't touch it */
+    /**
+     * @deprecated Use xmlCtxtGetPrivate() and xmlCtxtSetPrivate()
+     *
+     * For user data, libxml won't touch it
+     */
     void *_private;
-
-    /* should the external subset be loaded */
+    /**
+     * @deprecated Use xmlParserOption XML_PARSE_DTDLOAD or
+     * XML_PARSE_DTD_ATTR
+     *
+     * should the external subset be loaded
+     */
     int loadsubset;
     /* set line number in element content */
     int linenumbers XML_DEPRECATED_MEMBER;
-    /* document's own catalog */
+    /**
+     * @deprecated Use xmlCtxtGetCatalogs() and xmlCtxtSetCatalogs()
+     *
+     * document's own catalog
+     */
     void *catalogs XML_DEPRECATED_MEMBER;
-    /* run in recovery mode */
+    /**
+     * @deprecated Use xmlParserOption XML_PARSE_RECOVER
+     * run in recovery mode
+     */
     int recovery XML_DEPRECATED_MEMBER;
     /* unused */
     int progressive XML_DEPRECATED_MEMBER;
-    /* dictionary for the parser */
+    /**
+     * @deprecated Use xmlCtxtGetDict() and xmlCtxtSetDict()
+     *
+     * dictionary for the parser
+     */
     xmlDictPtr dict;
     /* array for the attributes callbacks */
     const xmlChar **atts XML_DEPRECATED_MEMBER;
@@ -405,16 +491,29 @@ struct _xmlParserCtxt {
     xmlHashTablePtr attsDefault XML_DEPRECATED_MEMBER;
     /* non-CDATA attributes if any */
     xmlHashTablePtr attsSpecial XML_DEPRECATED_MEMBER;
-    /* is the document XML Namespace okay */
+
+    /**
+     * @deprecated Use xmlCtxtGetStatus()
+     *
+     * is the document XML Namespace okay
+     */
     int nsWellFormed;
-    /* Extra options */
+    /**
+     * @deprecated Use xmlCtxtGetOptions()
+     *
+     * Extra options
+     */
     int options;
 
     /*
      * Those fields are needed only for streaming parsing so far
      */
 
-    /* Use dictionary names for the tree */
+    /**
+     * @deprecated Use inverted xmlParserOption XML_PARSE_NODICT
+     *
+     * Use dictionary names for the tree
+     */
     int dictNames XML_DEPRECATED_MEMBER;
     /* number of freed element nodes */
     int freeElemsNr XML_DEPRECATED_MEMBER;
@@ -425,7 +524,9 @@ struct _xmlParserCtxt {
     /* List of freed attributes nodes */
     xmlAttrPtr freeAttrs XML_DEPRECATED_MEMBER;
 
-    /*
+    /**
+     * @deprecated Use xmlCtxtGetLastError()
+     *
      * the complete error information for the last error.
      */
     xmlError lastError XML_DEPRECATED_MEMBER;
@@ -477,7 +578,7 @@ struct _xmlParserCtxt {
     void *convCtxt XML_DEPRECATED_MEMBER;
 };
 
-/*
+/**
  * A SAX Locator.
  */
 struct _xmlSAXLocator {
@@ -941,11 +1042,11 @@ struct _xmlSAXHandler {
     xmlStructuredErrorFunc serror;
 };
 
-/*
- * SAX Version 1
- */
 typedef struct _xmlSAXHandlerV1 xmlSAXHandlerV1;
 typedef xmlSAXHandlerV1 *xmlSAXHandlerV1Ptr;
+/**
+ * SAX Version 1
+ */
 struct _xmlSAXHandlerV1 {
     internalSubsetSAXFunc internalSubset;
     isStandaloneSAXFunc isStandalone;
@@ -994,7 +1095,12 @@ typedef xmlParserInputPtr (*xmlExternalEntityLoader) (const char *URL,
  * Variables
  */
 
+/**
+ * Run-time version string.
+ */
 XMLPUBVAR const char *const xmlParserVersion;
+
+/** @cond ignore */
 
 XML_DEPRECATED
 XMLPUBVAR const xmlSAXLocator xmlDefaultSAXLocator;
@@ -1026,6 +1132,8 @@ XMLPUBFUN const char **__xmlTreeIndentString(void);
 XML_DEPRECATED
 XMLPUBFUN int *__xmlSaveNoEmptyTags(void);
 #endif
+
+/** @endcond */
 
 #ifndef XML_GLOBALS_NO_REDEFINITION
   /**
@@ -1148,14 +1256,8 @@ XMLPUBFUN xmlDocPtr
 XML_DEPRECATED
 XMLPUBFUN int
 		xmlSubstituteEntitiesDefault(int val);
-XML_DEPRECATED
-XMLPUBFUN int
-                xmlThrDefSubstituteEntitiesDefaultValue(int v);
 XMLPUBFUN int
 		xmlKeepBlanksDefault	(int val);
-XML_DEPRECATED
-XMLPUBFUN int
-		xmlThrDefKeepBlanksDefaultValue(int v);
 XMLPUBFUN void
 		xmlStopParser		(xmlParserCtxtPtr ctxt);
 XML_DEPRECATED
@@ -1163,10 +1265,17 @@ XMLPUBFUN int
 		xmlPedanticParserDefault(int val);
 XML_DEPRECATED
 XMLPUBFUN int
-                xmlThrDefPedanticParserDefaultValue(int v);
+		xmlLineNumbersDefault	(int val);
+
 XML_DEPRECATED
 XMLPUBFUN int
-		xmlLineNumbersDefault	(int val);
+                xmlThrDefSubstituteEntitiesDefaultValue(int v);
+XML_DEPRECATED
+XMLPUBFUN int
+		xmlThrDefKeepBlanksDefaultValue(int v);
+XML_DEPRECATED
+XMLPUBFUN int
+                xmlThrDefPedanticParserDefaultValue(int v);
 XML_DEPRECATED
 XMLPUBFUN int
                 xmlThrDefLineNumbersDefaultValue(int v);

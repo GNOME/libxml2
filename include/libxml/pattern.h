@@ -30,7 +30,7 @@ extern "C" {
 typedef struct _xmlPattern xmlPattern;
 typedef xmlPattern *xmlPatternPtr;
 
-/*
+/**
  * Internal type. This is the set of options affecting the behaviour
  * of pattern matching with this module.
  */

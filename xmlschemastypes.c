@@ -514,8 +514,7 @@ xmlSchemaCleanupTypesInternal(void) {
     /* Note that the xmlSchemaType*Def pointers aren't set to NULL. */
 }
 
-/*
- *
+/**
  * Initialize the default XML Schemas type library
  *
  * @returns 0 on success, -1 on error.

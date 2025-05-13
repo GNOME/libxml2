@@ -983,7 +983,7 @@ xmlFindExtraHandler(const char *norig, const char *name, xmlCharEncFlags flags,
  */
 xmlParserErrors
 xmlLookupCharEncodingHandler(xmlCharEncoding enc,
-                             xmlCharEncodingHandler **out) {
+                             xmlCharEncodingHandlerPtr *out) {
     const xmlCharEncodingHandler *handler;
 
     if (out == NULL)
@@ -1063,7 +1063,7 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
 xmlParserErrors
 xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
                              xmlCharEncConvImpl impl, void *implCtxt,
-                             xmlCharEncodingHandler **out) {
+                             xmlCharEncodingHandlerPtr *out) {
     const xmlCharEncodingHandler *handler;
     const char *norig, *nalias;
     xmlCharEncoding enc;
@@ -1166,7 +1166,7 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
  */
 xmlParserErrors
 xmlOpenCharEncodingHandler(const char *name, int output,
-                           xmlCharEncodingHandler **out) {
+                           xmlCharEncodingHandlerPtr *out) {
     xmlCharEncFlags flags = output ? XML_ENC_OUTPUT : XML_ENC_INPUT;
 
     return(xmlCreateCharEncodingHandler(name, flags, NULL, NULL, out));
@@ -1773,8 +1773,8 @@ xmlEncOutputChunk(xmlCharEncodingHandler *handler, unsigned char *out,
  * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
-xmlCharEncFirstLine(xmlCharEncodingHandler *handler, xmlBufferPtr out,
-                    xmlBufferPtr in) {
+xmlCharEncFirstLine(xmlCharEncodingHandler *handler, struct _xmlBuffer *out,
+                    struct _xmlBuffer *in) {
     return(xmlCharEncInFunc(handler, out, in));
 }
 
@@ -1889,8 +1889,8 @@ xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut, int flush)
  * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
-xmlCharEncInFunc(xmlCharEncodingHandler * handler, xmlBufferPtr out,
-                 xmlBufferPtr in)
+xmlCharEncInFunc(xmlCharEncodingHandler * handler, struct _xmlBuffer *out,
+                 struct _xmlBuffer *in)
 {
     int ret;
     int written;
@@ -2096,8 +2096,8 @@ error:
  * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
-xmlCharEncOutFunc(xmlCharEncodingHandler *handler, xmlBufferPtr out,
-                  xmlBufferPtr in) {
+xmlCharEncOutFunc(xmlCharEncodingHandler *handler, struct _xmlBuffer *out,
+                  struct _xmlBuffer *in) {
     int ret;
     int written;
     int writtentot = 0;

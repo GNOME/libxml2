@@ -1988,22 +1988,22 @@ xmlStreamPushNode(xmlStreamCtxtPtr stream,
 }
 
 /**
-* xmlStreamPushAttr:
+ * Push new attribute data onto the stream.
  *
-* @stream: the stream context
-* @name: the current name
-* @ns: the namespace name
-*
-* Push new attribute data onto the stream. NOTE: if the call xmlPatterncompile()
-* indicated a dictionary, then strings for name and ns will be expected
-* to come from the dictionary.
-* Both @name and @ns being NULL means the / i.e. the root of the document.
-* This can also act as a reset.
-* Otherwise the function will act as if it has been given an attribute-node.
-*
-* Returns: -1 in case of error, 1 if the current state in the stream is a
-*    match and 0 otherwise.
-*/
+ * NOTE: If the call to xmlPatterncompile() indicated a dictionary,
+ * then strings for `name` and `ns` will be expected to come from
+ * the dictionary.
+ *
+ * Both `name` and `ns` being NULL means the root of the document.
+ * This can also act as a reset. Otherwise the function will act as
+ * if it has been given an attribute-node.
+ *
+ * @param stream  the stream context
+ * @param name  the current name
+ * @param ns  the namespace name
+ * @returns -1 in case of error, 1 if the current state in the stream
+ * is a match and 0 otherwise.
+ */
 int
 xmlStreamPushAttr(xmlStreamCtxtPtr stream,
 		  const xmlChar *name, const xmlChar *ns) {

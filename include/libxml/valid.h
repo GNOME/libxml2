@@ -56,11 +56,11 @@ typedef void (*xmlValidityWarningFunc) (void *ctx,
 			       const char *msg,
 			       ...) LIBXML_ATTR_FORMAT(2,3);
 
-/*
- * An xmlValidCtxt is used for error reporting when validating.
- */
 typedef struct _xmlValidCtxt xmlValidCtxt;
 typedef xmlValidCtxt *xmlValidCtxtPtr;
+/**
+ * An xmlValidCtxt is used for error reporting when validating.
+ */
 struct _xmlValidCtxt {
     void *userData;			/* user specific data block */
     xmlValidityErrorFunc error;		/* the callback in case of errors */

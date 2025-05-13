@@ -325,7 +325,7 @@ xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
  */
 
 void
-xmlParserPrintFileInfo(xmlParserInputPtr input) {
+xmlParserPrintFileInfo(struct _xmlParserInput *input) {
     if (input != NULL) {
 	if (input->filename)
 	    xmlGenericError(xmlGenericErrorContext,
@@ -419,7 +419,7 @@ xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
  * @param input  an xmlParserInputPtr input
  */
 void
-xmlParserPrintFileContext(xmlParserInputPtr input) {
+xmlParserPrintFileContext(struct _xmlParserInput *input) {
    xmlParserPrintFileContextInternal(input, xmlGenericError,
                                      xmlGenericErrorContext);
 }

@@ -559,8 +559,10 @@ htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc ATTRIBUTE_UNUSED,
     if (htmlFindOutputEncoder(encoding, &handler) != XML_ERR_OK)
         return(-1);
     buf = xmlOutputBufferCreateFile(out, handler);
-    if (buf == NULL)
+    if (buf == NULL) {
+        xmlCharEncCloseFunc(handler);
         return(-1);
+    }
 
     htmlNodeDumpInternal(buf, cur, NULL, format);
 
@@ -613,8 +615,10 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
     if (htmlFindOutputEncoder((char *) cur->encoding, &handler) != XML_ERR_OK)
         return;
     buf = xmlAllocOutputBuffer(handler);
-    if (buf == NULL)
+    if (buf == NULL) {
+        xmlCharEncCloseFunc(handler);
 	return;
+    }
 
     htmlDocContentDumpFormatOutput(buf, cur, NULL, format);
 
@@ -1202,8 +1206,10 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
     if (htmlFindOutputEncoder((char *) cur->encoding, &handler) != XML_ERR_OK)
         return(-1);
     buf = xmlOutputBufferCreateFile(f, handler);
-    if (buf == NULL)
+    if (buf == NULL) {
+        xmlCharEncCloseFunc(handler);
         return(-1);
+    }
     htmlDocContentDumpOutput(buf, cur, NULL);
 
     ret = xmlOutputBufferClose(buf);
@@ -1265,8 +1271,10 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
      * save the content to a temp buffer.
      */
     buf = xmlOutputBufferCreateFilename(filename, handler, cur->compression);
-    if (buf == NULL)
+    if (buf == NULL) {
+        xmlCharEncCloseFunc(handler);
         return(0);
+    }
 
     htmlDocContentDumpFormatOutput(buf, cur, encoding, format);
 

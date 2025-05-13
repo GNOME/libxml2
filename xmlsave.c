@@ -1973,6 +1973,7 @@ xmlSaveToFd(int fd, const char *encoding, int options)
     if (ret == NULL) return(NULL);
     ret->buf = xmlOutputBufferCreateFd(fd, ret->handler);
     if (ret->buf == NULL) {
+        xmlCharEncCloseFunc(ret->handler);
 	xmlFreeSaveCtxt(ret);
 	return(NULL);
     }
@@ -2002,6 +2003,7 @@ xmlSaveToFilename(const char *filename, const char *encoding, int options)
     ret->buf = xmlOutputBufferCreateFilename(filename, ret->handler,
                                              compression);
     if (ret->buf == NULL) {
+        xmlCharEncCloseFunc(ret->handler);
 	xmlFreeSaveCtxt(ret);
 	return(NULL);
     }
@@ -2029,6 +2031,7 @@ xmlSaveToBuffer(xmlBufferPtr buffer, const char *encoding, int options)
     if (ret == NULL) return(NULL);
     ret->buf = xmlOutputBufferCreateBuffer(buffer, ret->handler);
     if (ret->buf == NULL) {
+        xmlCharEncCloseFunc(ret->handler);
 	xmlFreeSaveCtxt(ret);
 	return(NULL);
     }
@@ -2059,6 +2062,7 @@ xmlSaveToIO(xmlOutputWriteCallback iowrite,
     if (ret == NULL) return(NULL);
     ret->buf = xmlOutputBufferCreateIO(iowrite, ioclose, ioctx, ret->handler);
     if (ret->buf == NULL) {
+        xmlCharEncCloseFunc(ret->handler);
 	xmlFreeSaveCtxt(ret);
 	return(NULL);
     }

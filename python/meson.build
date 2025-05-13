@@ -20,8 +20,6 @@ if py.found() == true
             'libxml2class.txt',
         ],
         command: [py, '@INPUT@', meson.current_build_dir()],
-        install: true,
-        install_dir: [ false, false, false, py.get_install_dir(), false ],
     )
     pygenerated_dep = declare_dependency(
         sources : [pygenerated[0]],

@@ -3288,7 +3288,7 @@ xmlSchemaNewSchema(xmlSchemaParserCtxtPtr ctxt)
  *
  * @returns the newly allocated structure or NULL in case or error
  */
-xmlSchemaFacetPtr
+xmlSchemaFacet *
 xmlSchemaNewFacet(void)
 {
     xmlSchemaFacetPtr ret;
@@ -3748,7 +3748,7 @@ xmlSchemaFreeWildcardNsSet(xmlSchemaWildcardNsPtr set)
  * @param wildcard  a wildcard structure
  */
 void
-xmlSchemaFreeWildcard(xmlSchemaWildcardPtr wildcard)
+xmlSchemaFreeWildcard(xmlSchemaWildcard *wildcard)
 {
     if (wildcard == NULL)
         return;
@@ -3880,7 +3880,7 @@ xmlSchemaFreeElement(xmlSchemaElementPtr elem)
  * @param facet  a schema facet structure
  */
 void
-xmlSchemaFreeFacet(xmlSchemaFacetPtr facet)
+xmlSchemaFreeFacet(xmlSchemaFacet *facet)
 {
     if (facet == NULL)
         return;
@@ -3899,7 +3899,7 @@ xmlSchemaFreeFacet(xmlSchemaFacetPtr facet)
  * @param type  a schema type structure
  */
 void
-xmlSchemaFreeType(xmlSchemaTypePtr type)
+xmlSchemaFreeType(xmlSchemaType *type)
 {
     if (type == NULL)
         return;
@@ -4040,7 +4040,7 @@ xmlSchemaComponentListFree(xmlSchemaItemListPtr list)
  * @param schema  a schema structure
  */
 void
-xmlSchemaFree(xmlSchemaPtr schema)
+xmlSchemaFree(xmlSchema *schema)
 {
     if (schema == NULL)
         return;
@@ -4434,7 +4434,7 @@ xmlSchemaTypeDumpEntry(void *type, void *output,
  * @param schema  a schema structure
  */
 void
-xmlSchemaDump(FILE * output, xmlSchemaPtr schema)
+xmlSchemaDump(FILE * output, xmlSchema *schema)
 {
     if (output == NULL)
         return;
@@ -12163,7 +12163,7 @@ xmlSchemaParserCtxtGetOptions(xmlSchemaParserCtxtPtr ctxt)
  * @param URL  the location of the schema
  * @returns the parser context or NULL in case of error
  */
-xmlSchemaParserCtxtPtr
+xmlSchemaParserCtxt *
 xmlSchemaNewParserCtxt(const char *URL)
 {
     xmlSchemaParserCtxtPtr ret;
@@ -12187,7 +12187,7 @@ xmlSchemaNewParserCtxt(const char *URL)
  * @param size  the size of the array
  * @returns the parser context or NULL in case of error
  */
-xmlSchemaParserCtxtPtr
+xmlSchemaParserCtxt *
 xmlSchemaNewMemParserCtxt(const char *buffer, int size)
 {
     xmlSchemaParserCtxtPtr ret;
@@ -12210,8 +12210,8 @@ xmlSchemaNewMemParserCtxt(const char *buffer, int size)
  * @param doc  a preparsed document tree
  * @returns the parser context or NULL in case of error
  */
-xmlSchemaParserCtxtPtr
-xmlSchemaNewDocParserCtxt(xmlDocPtr doc)
+xmlSchemaParserCtxt *
+xmlSchemaNewDocParserCtxt(xmlDoc *doc)
 {
     xmlSchemaParserCtxtPtr ret;
 
@@ -12234,7 +12234,7 @@ xmlSchemaNewDocParserCtxt(xmlDocPtr doc)
  * @param ctxt  the schema parser context
  */
 void
-xmlSchemaFreeParserCtxt(xmlSchemaParserCtxtPtr ctxt)
+xmlSchemaFreeParserCtxt(xmlSchemaParserCtxt *ctxt)
 {
     if (ctxt == NULL)
         return;
@@ -18225,9 +18225,9 @@ xmlSchemaTypeFixup(xmlSchemaTypePtr type,
  *         -1 in case of an internal or API error.
  */
 int
-xmlSchemaCheckFacet(xmlSchemaFacetPtr facet,
-                    xmlSchemaTypePtr typeDecl,
-                    xmlSchemaParserCtxtPtr pctxt,
+xmlSchemaCheckFacet(xmlSchemaFacet *facet,
+                    xmlSchemaType *typeDecl,
+                    xmlSchemaParserCtxt *pctxt,
 		    const xmlChar * name ATTRIBUTE_UNUSED)
 {
     int ret = 0, ctxtGiven;
@@ -20856,8 +20856,8 @@ exit:
  * @returns the internal XML Schema structure built from the resource or
  *         NULL in case of error
  */
-xmlSchemaPtr
-xmlSchemaParse(xmlSchemaParserCtxtPtr ctxt)
+xmlSchema *
+xmlSchemaParse(xmlSchemaParserCtxt *ctxt)
 {
     xmlSchemaPtr mainSchema = NULL;
     xmlSchemaBucketPtr bucket = NULL;
@@ -20982,7 +20982,7 @@ exit_failure:
  * @param ctx  contextual data for the callbacks
  */
 void
-xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaSetParserErrors(xmlSchemaParserCtxt *ctxt,
                          xmlSchemaValidityErrorFunc err,
                          xmlSchemaValidityWarningFunc warn, void *ctx)
 {
@@ -21003,7 +21003,7 @@ xmlSchemaSetParserErrors(xmlSchemaParserCtxtPtr ctxt,
  * @param ctx  the functions context
  */
 void
-xmlSchemaSetParserStructuredErrors(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaSetParserStructuredErrors(xmlSchemaParserCtxt *ctxt,
 				   xmlStructuredErrorFunc serror,
 				   void *ctx)
 {
@@ -21025,7 +21025,7 @@ xmlSchemaSetParserStructuredErrors(xmlSchemaParserCtxtPtr ctxt,
  * @returns -1 in case of failure, 0 otherwise
  */
 int
-xmlSchemaGetParserErrors(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaGetParserErrors(xmlSchemaParserCtxt *ctxt,
 			 xmlSchemaValidityErrorFunc * err,
 			 xmlSchemaValidityWarningFunc * warn, void **ctx)
 {
@@ -21050,7 +21050,7 @@ xmlSchemaGetParserErrors(xmlSchemaParserCtxtPtr ctxt,
  * @param data  user data which will be passed to the loader
  */
 void
-xmlSchemaSetResourceLoader(xmlSchemaParserCtxtPtr ctxt,
+xmlSchemaSetResourceLoader(xmlSchemaParserCtxt *ctxt,
                            xmlResourceLoader loader, void *data) {
     if (ctxt == NULL)
         return;
@@ -27024,8 +27024,8 @@ internal_error:
  * @param schema  a precompiled XML Schemas
  * @returns the validation context or NULL in case of error
  */
-xmlSchemaValidCtxtPtr
-xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
+xmlSchemaValidCtxt *
+xmlSchemaNewValidCtxt(xmlSchema *schema)
 {
     xmlSchemaValidCtxtPtr ret;
 
@@ -27058,7 +27058,7 @@ xmlSchemaNewValidCtxt(xmlSchemaPtr schema)
  * @param filename  the file name
  */
 void
-xmlSchemaValidateSetFilename(xmlSchemaValidCtxtPtr vctxt, const char *filename) {
+xmlSchemaValidateSetFilename(xmlSchemaValidCtxt *vctxt, const char *filename) {
     if (vctxt == NULL)
         return;
     if (vctxt->filename != NULL)
@@ -27199,7 +27199,7 @@ xmlSchemaClearValidCtxt(xmlSchemaValidCtxtPtr vctxt)
  * @param ctxt  the schema validation context
  */
 void
-xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
+xmlSchemaFreeValidCtxt(xmlSchemaValidCtxt *ctxt)
 {
     if (ctxt == NULL)
         return;
@@ -27288,7 +27288,7 @@ xmlSchemaFreeValidCtxt(xmlSchemaValidCtxtPtr ctxt)
  *         of internal error.
  */
 int
-xmlSchemaIsValid(xmlSchemaValidCtxtPtr ctxt)
+xmlSchemaIsValid(xmlSchemaValidCtxt *ctxt)
 {
     if (ctxt == NULL)
         return(-1);
@@ -27306,7 +27306,7 @@ xmlSchemaIsValid(xmlSchemaValidCtxtPtr ctxt)
  * @param ctx  the functions context
  */
 void
-xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaSetValidErrors(xmlSchemaValidCtxt *ctxt,
                         xmlSchemaValidityErrorFunc err,
                         xmlSchemaValidityWarningFunc warn, void *ctx)
 {
@@ -27327,7 +27327,7 @@ xmlSchemaSetValidErrors(xmlSchemaValidCtxtPtr ctxt,
  * @param ctx  the functions context
  */
 void
-xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxt *ctxt,
 				  xmlStructuredErrorFunc serror, void *ctx)
 {
     if (ctxt == NULL)
@@ -27350,7 +27350,7 @@ xmlSchemaSetValidStructuredErrors(xmlSchemaValidCtxtPtr ctxt,
  * @returns -1 in case of error and 0 otherwise
  */
 int
-xmlSchemaGetValidErrors(xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaGetValidErrors(xmlSchemaValidCtxt *ctxt,
 			xmlSchemaValidityErrorFunc * err,
 			xmlSchemaValidityWarningFunc * warn, void **ctx)
 {
@@ -27375,7 +27375,7 @@ xmlSchemaGetValidErrors(xmlSchemaValidCtxtPtr ctxt,
  * API error.
  */
 int
-xmlSchemaSetValidOptions(xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaSetValidOptions(xmlSchemaValidCtxt *ctxt,
 			 int options)
 
 {
@@ -27404,7 +27404,7 @@ xmlSchemaSetValidOptions(xmlSchemaValidCtxtPtr ctxt,
  * @returns the option combination or -1 on error.
  */
 int
-xmlSchemaValidCtxtGetOptions(xmlSchemaValidCtxtPtr ctxt)
+xmlSchemaValidCtxtGetOptions(xmlSchemaValidCtxt *ctxt)
 
 {
     if (ctxt == NULL)
@@ -27705,7 +27705,7 @@ xmlSchemaVStart(xmlSchemaValidCtxtPtr vctxt)
  * code number otherwise and -1 in case of an internal or API error.
  */
 int
-xmlSchemaValidateOneElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem)
+xmlSchemaValidateOneElement(xmlSchemaValidCtxt *ctxt, xmlNode *elem)
 {
     if ((ctxt == NULL) || (elem == NULL) || (elem->type != XML_ELEMENT_NODE))
 	return (-1);
@@ -27728,7 +27728,7 @@ xmlSchemaValidateOneElement(xmlSchemaValidCtxtPtr ctxt, xmlNodePtr elem)
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateDoc(xmlSchemaValidCtxtPtr ctxt, xmlDocPtr doc)
+xmlSchemaValidateDoc(xmlSchemaValidCtxt *ctxt, xmlDoc *doc)
 {
     if ((ctxt == NULL) || (doc == NULL))
         return (-1);
@@ -28098,9 +28098,9 @@ endElementNsSplit(void *ctx, const xmlChar * localname,
  * @returns a pointer to a data structure needed to unplug the validation layer
  *         or NULL in case of errors.
  */
-xmlSchemaSAXPlugPtr
-xmlSchemaSAXPlug(xmlSchemaValidCtxtPtr ctxt,
-		 xmlSAXHandlerPtr *sax, void **user_data)
+xmlSchemaSAXPlugStruct *
+xmlSchemaSAXPlug(xmlSchemaValidCtxt *ctxt,
+		 xmlSAXHandler **sax, void **user_data)
 {
     xmlSchemaSAXPlugPtr ret;
     xmlSAXHandlerPtr old_sax;
@@ -28239,7 +28239,7 @@ xmlSchemaSAXPlug(xmlSchemaValidCtxtPtr ctxt,
  * @returns 0 in case of success and -1 in case of failure.
  */
 int
-xmlSchemaSAXUnplug(xmlSchemaSAXPlugPtr plug)
+xmlSchemaSAXUnplug(xmlSchemaSAXPlugStruct *plug)
 {
     xmlSAXHandlerPtr *sax;
     void **user_data;
@@ -28274,7 +28274,7 @@ xmlSchemaSAXUnplug(xmlSchemaSAXPlugPtr plug)
  */
 
 void
-xmlSchemaValidateSetLocator(xmlSchemaValidCtxtPtr vctxt,
+xmlSchemaValidateSetLocator(xmlSchemaValidCtxt *vctxt,
                             xmlSchemaValidityLocatorFunc f,
 			    void *ctxt)
 {
@@ -28377,8 +28377,8 @@ done:
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateStream(xmlSchemaValidCtxtPtr ctxt,
-                        xmlParserInputBufferPtr input, xmlCharEncoding enc,
+xmlSchemaValidateStream(xmlSchemaValidCtxt *ctxt,
+                        xmlParserInputBuffer *input, xmlCharEncoding enc,
                         const xmlSAXHandler *sax, void *user_data)
 {
     xmlParserCtxtPtr pctxt = NULL;
@@ -28442,7 +28442,7 @@ done:
  *     number otherwise and -1 in case of an internal or API error.
  */
 int
-xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
+xmlSchemaValidateFile(xmlSchemaValidCtxt *ctxt,
                       const char * filename,
 		      int options ATTRIBUTE_UNUSED)
 {
@@ -28470,8 +28470,8 @@ xmlSchemaValidateFile(xmlSchemaValidCtxtPtr ctxt,
  * @returns the parser context of the schema validation context or NULL
  *         in case of error.
  */
-xmlParserCtxtPtr
-xmlSchemaValidCtxtGetParserCtxt(xmlSchemaValidCtxtPtr ctxt)
+xmlParserCtxt *
+xmlSchemaValidCtxtGetParserCtxt(xmlSchemaValidCtxt *ctxt)
 {
     if (ctxt == NULL)
         return(NULL);

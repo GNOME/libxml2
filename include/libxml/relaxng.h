@@ -124,93 +124,93 @@ XMLPUBFUN void
 /*
  * Interfaces for parsing.
  */
-XMLPUBFUN xmlRelaxNGParserCtxtPtr
+XMLPUBFUN xmlRelaxNGParserCtxt *
 		    xmlRelaxNGNewParserCtxt	(const char *URL);
-XMLPUBFUN xmlRelaxNGParserCtxtPtr
+XMLPUBFUN xmlRelaxNGParserCtxt *
 		    xmlRelaxNGNewMemParserCtxt	(const char *buffer,
 						 int size);
-XMLPUBFUN xmlRelaxNGParserCtxtPtr
-		    xmlRelaxNGNewDocParserCtxt	(xmlDocPtr doc);
+XMLPUBFUN xmlRelaxNGParserCtxt *
+		    xmlRelaxNGNewDocParserCtxt	(xmlDoc *doc);
 
 XMLPUBFUN int
-		    xmlRelaxParserSetFlag	(xmlRelaxNGParserCtxtPtr ctxt,
+		    xmlRelaxParserSetFlag	(xmlRelaxNGParserCtxt *ctxt,
 						 int flag);
 
 XMLPUBFUN void
-		    xmlRelaxNGFreeParserCtxt	(xmlRelaxNGParserCtxtPtr ctxt);
+		    xmlRelaxNGFreeParserCtxt	(xmlRelaxNGParserCtxt *ctxt);
 XMLPUBFUN void
-		    xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
+		    xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxt *ctxt,
 					 xmlRelaxNGValidityErrorFunc err,
 					 xmlRelaxNGValidityWarningFunc warn,
 					 void *ctx);
 XMLPUBFUN int
-		    xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
+		    xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxt *ctxt,
 					 xmlRelaxNGValidityErrorFunc *err,
 					 xmlRelaxNGValidityWarningFunc *warn,
 					 void **ctx);
 XMLPUBFUN void
 		    xmlRelaxNGSetParserStructuredErrors(
-					 xmlRelaxNGParserCtxtPtr ctxt,
+					 xmlRelaxNGParserCtxt *ctxt,
 					 xmlStructuredErrorFunc serror,
 					 void *ctx);
 XMLPUBFUN void
-		    xmlRelaxNGSetResourceLoader	(xmlRelaxNGParserCtxtPtr ctxt,
+		    xmlRelaxNGSetResourceLoader	(xmlRelaxNGParserCtxt *ctxt,
 						 xmlResourceLoader loader,
 						 void *vctxt);
-XMLPUBFUN xmlRelaxNGPtr
-		    xmlRelaxNGParse		(xmlRelaxNGParserCtxtPtr ctxt);
+XMLPUBFUN xmlRelaxNG *
+		    xmlRelaxNGParse		(xmlRelaxNGParserCtxt *ctxt);
 XMLPUBFUN void
-		    xmlRelaxNGFree		(xmlRelaxNGPtr schema);
+		    xmlRelaxNGFree		(xmlRelaxNG *schema);
 #ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void
 		    xmlRelaxNGDump		(FILE *output,
-					 xmlRelaxNGPtr schema);
+					 xmlRelaxNG *schema);
 XMLPUBFUN void
 		    xmlRelaxNGDumpTree	(FILE * output,
-					 xmlRelaxNGPtr schema);
+					 xmlRelaxNG *schema);
 #endif /* LIBXML_OUTPUT_ENABLED */
 /*
  * Interfaces for validating
  */
 XMLPUBFUN void
-		    xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
+		    xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxt *ctxt,
 					 xmlRelaxNGValidityErrorFunc err,
 					 xmlRelaxNGValidityWarningFunc warn,
 					 void *ctx);
 XMLPUBFUN int
-		    xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
+		    xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxt *ctxt,
 					 xmlRelaxNGValidityErrorFunc *err,
 					 xmlRelaxNGValidityWarningFunc *warn,
 					 void **ctx);
 XMLPUBFUN void
-			xmlRelaxNGSetValidStructuredErrors(xmlRelaxNGValidCtxtPtr ctxt,
+			xmlRelaxNGSetValidStructuredErrors(xmlRelaxNGValidCtxt *ctxt,
 					  xmlStructuredErrorFunc serror, void *ctx);
-XMLPUBFUN xmlRelaxNGValidCtxtPtr
-		    xmlRelaxNGNewValidCtxt	(xmlRelaxNGPtr schema);
+XMLPUBFUN xmlRelaxNGValidCtxt *
+		    xmlRelaxNGNewValidCtxt	(xmlRelaxNG *schema);
 XMLPUBFUN void
-		    xmlRelaxNGFreeValidCtxt	(xmlRelaxNGValidCtxtPtr ctxt);
+		    xmlRelaxNGFreeValidCtxt	(xmlRelaxNGValidCtxt *ctxt);
 XMLPUBFUN int
-		    xmlRelaxNGValidateDoc	(xmlRelaxNGValidCtxtPtr ctxt,
-						 xmlDocPtr doc);
+		    xmlRelaxNGValidateDoc	(xmlRelaxNGValidCtxt *ctxt,
+						 xmlDoc *doc);
 /*
  * Interfaces for progressive validation when possible
  */
 XMLPUBFUN int
-		    xmlRelaxNGValidatePushElement	(xmlRelaxNGValidCtxtPtr ctxt,
-					 xmlDocPtr doc,
-					 xmlNodePtr elem);
+		    xmlRelaxNGValidatePushElement	(xmlRelaxNGValidCtxt *ctxt,
+					 xmlDoc *doc,
+					 xmlNode *elem);
 XMLPUBFUN int
-		    xmlRelaxNGValidatePushCData	(xmlRelaxNGValidCtxtPtr ctxt,
+		    xmlRelaxNGValidatePushCData	(xmlRelaxNGValidCtxt *ctxt,
 					 const xmlChar *data,
 					 int len);
 XMLPUBFUN int
-		    xmlRelaxNGValidatePopElement	(xmlRelaxNGValidCtxtPtr ctxt,
-					 xmlDocPtr doc,
-					 xmlNodePtr elem);
+		    xmlRelaxNGValidatePopElement	(xmlRelaxNGValidCtxt *ctxt,
+					 xmlDoc *doc,
+					 xmlNode *elem);
 XMLPUBFUN int
-		    xmlRelaxNGValidateFullElement	(xmlRelaxNGValidCtxtPtr ctxt,
-					 xmlDocPtr doc,
-					 xmlNodePtr elem);
+		    xmlRelaxNGValidateFullElement	(xmlRelaxNGValidCtxt *ctxt,
+					 xmlDoc *doc,
+					 xmlNode *elem);
 
 #ifdef __cplusplus
 }

@@ -1024,10 +1024,10 @@ XMLPUBFUN const xmlError *
 XMLPUBFUN void
     xmlCtxtResetLastError	(void *ctx);
 XMLPUBFUN void
-    xmlResetError		(xmlErrorPtr err);
+    xmlResetError		(xmlError *err);
 XMLPUBFUN int
     xmlCopyError		(const xmlError *from,
-				 xmlErrorPtr to);
+				 xmlError *to);
 
 #ifdef __cplusplus
 }

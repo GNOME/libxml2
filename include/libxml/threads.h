@@ -35,23 +35,23 @@ typedef xmlRMutex *xmlRMutexPtr;
 XMLPUBFUN int
 			xmlCheckThreadLocalStorage(void);
 
-XMLPUBFUN xmlMutexPtr
+XMLPUBFUN xmlMutex *
 			xmlNewMutex	(void);
 XMLPUBFUN void
-			xmlMutexLock	(xmlMutexPtr tok);
+			xmlMutexLock	(xmlMutex *tok);
 XMLPUBFUN void
-			xmlMutexUnlock	(xmlMutexPtr tok);
+			xmlMutexUnlock	(xmlMutex *tok);
 XMLPUBFUN void
-			xmlFreeMutex	(xmlMutexPtr tok);
+			xmlFreeMutex	(xmlMutex *tok);
 
-XMLPUBFUN xmlRMutexPtr
+XMLPUBFUN xmlRMutex *
 			xmlNewRMutex	(void);
 XMLPUBFUN void
-			xmlRMutexLock	(xmlRMutexPtr tok);
+			xmlRMutexLock	(xmlRMutex *tok);
 XMLPUBFUN void
-			xmlRMutexUnlock	(xmlRMutexPtr tok);
+			xmlRMutexUnlock	(xmlRMutex *tok);
 XMLPUBFUN void
-			xmlFreeRMutex	(xmlRMutexPtr tok);
+			xmlFreeRMutex	(xmlRMutex *tok);
 
 /*
  * Library wide APIs.

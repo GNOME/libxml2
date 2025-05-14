@@ -91,68 +91,68 @@ struct _xmlEntity {
 typedef struct _xmlHashTable xmlEntitiesTable;
 typedef xmlEntitiesTable *xmlEntitiesTablePtr;
 
-XMLPUBFUN xmlEntityPtr
-			xmlNewEntity		(xmlDocPtr doc,
+XMLPUBFUN xmlEntity *
+			xmlNewEntity		(xmlDoc *doc,
 						 const xmlChar *name,
 						 int type,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID,
 						 const xmlChar *content);
 XMLPUBFUN void
-			xmlFreeEntity		(xmlEntityPtr entity);
+			xmlFreeEntity		(xmlEntity *entity);
 XMLPUBFUN int
-			xmlAddEntity		(xmlDocPtr doc,
+			xmlAddEntity		(xmlDoc *doc,
 						 int extSubset,
 						 const xmlChar *name,
 						 int type,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID,
 						 const xmlChar *content,
-						 xmlEntityPtr *out);
-XMLPUBFUN xmlEntityPtr
-			xmlAddDocEntity		(xmlDocPtr doc,
+						 xmlEntity **out);
+XMLPUBFUN xmlEntity *
+			xmlAddDocEntity		(xmlDoc *doc,
 						 const xmlChar *name,
 						 int type,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID,
 						 const xmlChar *content);
-XMLPUBFUN xmlEntityPtr
-			xmlAddDtdEntity		(xmlDocPtr doc,
+XMLPUBFUN xmlEntity *
+			xmlAddDtdEntity		(xmlDoc *doc,
 						 const xmlChar *name,
 						 int type,
 						 const xmlChar *ExternalID,
 						 const xmlChar *SystemID,
 						 const xmlChar *content);
-XMLPUBFUN xmlEntityPtr
+XMLPUBFUN xmlEntity *
 			xmlGetPredefinedEntity	(const xmlChar *name);
-XMLPUBFUN xmlEntityPtr
+XMLPUBFUN xmlEntity *
 			xmlGetDocEntity		(const xmlDoc *doc,
 						 const xmlChar *name);
-XMLPUBFUN xmlEntityPtr
-			xmlGetDtdEntity		(xmlDocPtr doc,
+XMLPUBFUN xmlEntity *
+			xmlGetDtdEntity		(xmlDoc *doc,
 						 const xmlChar *name);
-XMLPUBFUN xmlEntityPtr
-			xmlGetParameterEntity	(xmlDocPtr doc,
+XMLPUBFUN xmlEntity *
+			xmlGetParameterEntity	(xmlDoc *doc,
 						 const xmlChar *name);
 XMLPUBFUN xmlChar *
-			xmlEncodeEntitiesReentrant(xmlDocPtr doc,
+			xmlEncodeEntitiesReentrant(xmlDoc *doc,
 						 const xmlChar *input);
 XMLPUBFUN xmlChar *
 			xmlEncodeSpecialChars	(const xmlDoc *doc,
 						 const xmlChar *input);
-XMLPUBFUN xmlEntitiesTablePtr
+XMLPUBFUN xmlEntitiesTable *
 			xmlCreateEntitiesTable	(void);
-XMLPUBFUN xmlEntitiesTablePtr
-			xmlCopyEntitiesTable	(xmlEntitiesTablePtr table);
+XMLPUBFUN xmlEntitiesTable *
+			xmlCopyEntitiesTable	(xmlEntitiesTable *table);
 XMLPUBFUN void
-			xmlFreeEntitiesTable	(xmlEntitiesTablePtr table);
+			xmlFreeEntitiesTable	(xmlEntitiesTable *table);
 #ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void
-			xmlDumpEntitiesTable	(xmlBufferPtr buf,
-						 xmlEntitiesTablePtr table);
+			xmlDumpEntitiesTable	(xmlBuffer *buf,
+						 xmlEntitiesTable *table);
 XMLPUBFUN void
-			xmlDumpEntityDecl	(xmlBufferPtr buf,
-						 xmlEntityPtr ent);
+			xmlDumpEntityDecl	(xmlBuffer *buf,
+						 xmlEntity *ent);
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef __cplusplus

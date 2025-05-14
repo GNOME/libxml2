@@ -53,7 +53,7 @@ static xmlRMutex xmlLibraryLock;
  * @param mutex  the mutex
  */
 void
-xmlInitMutex(xmlMutexPtr mutex)
+xmlInitMutex(xmlMutex *mutex)
 {
 #ifdef HAVE_POSIX_THREADS
     pthread_mutex_init(&mutex->lock, NULL);
@@ -70,7 +70,7 @@ xmlInitMutex(xmlMutexPtr mutex)
  *
  * @returns a new simple mutex pointer or NULL in case of error
  */
-xmlMutexPtr
+xmlMutex *
 xmlNewMutex(void)
 {
     xmlMutexPtr tok;
@@ -88,7 +88,7 @@ xmlNewMutex(void)
  * @param mutex  the simple mutex
  */
 void
-xmlCleanupMutex(xmlMutexPtr mutex)
+xmlCleanupMutex(xmlMutex *mutex)
 {
 #ifdef HAVE_POSIX_THREADS
     pthread_mutex_destroy(&mutex->lock);
@@ -105,7 +105,7 @@ xmlCleanupMutex(xmlMutexPtr mutex)
  * @param tok  the simple mutex
  */
 void
-xmlFreeMutex(xmlMutexPtr tok)
+xmlFreeMutex(xmlMutex *tok)
 {
     if (tok == NULL)
         return;
@@ -120,7 +120,7 @@ xmlFreeMutex(xmlMutexPtr tok)
  * @param tok  the simple mutex
  */
 void
-xmlMutexLock(xmlMutexPtr tok)
+xmlMutexLock(xmlMutex *tok)
 {
     if (tok == NULL)
         return;
@@ -142,7 +142,7 @@ xmlMutexLock(xmlMutexPtr tok)
  * @param tok  the simple mutex
  */
 void
-xmlMutexUnlock(xmlMutexPtr tok)
+xmlMutexUnlock(xmlMutex *tok)
 {
     if (tok == NULL)
         return;
@@ -159,7 +159,7 @@ xmlMutexUnlock(xmlMutexPtr tok)
  * @param tok  mutex
  */
 void
-xmlInitRMutex(xmlRMutexPtr tok) {
+xmlInitRMutex(xmlRMutex *tok) {
     (void) tok;
 
 #ifdef HAVE_POSIX_THREADS
@@ -180,7 +180,7 @@ xmlInitRMutex(xmlRMutexPtr tok) {
  *
  * @returns the new reentrant mutex pointer or NULL in case of error
  */
-xmlRMutexPtr
+xmlRMutex *
 xmlNewRMutex(void)
 {
     xmlRMutexPtr tok;
@@ -198,7 +198,7 @@ xmlNewRMutex(void)
  * @param tok  mutex
  */
 void
-xmlCleanupRMutex(xmlRMutexPtr tok) {
+xmlCleanupRMutex(xmlRMutex *tok) {
     (void) tok;
 
 #ifdef HAVE_POSIX_THREADS
@@ -216,7 +216,7 @@ xmlCleanupRMutex(xmlRMutexPtr tok) {
  * @param tok  the reentrant mutex
  */
 void
-xmlFreeRMutex(xmlRMutexPtr tok)
+xmlFreeRMutex(xmlRMutex *tok)
 {
     if (tok == NULL)
         return;
@@ -230,7 +230,7 @@ xmlFreeRMutex(xmlRMutexPtr tok)
  * @param tok  the reentrant mutex
  */
 void
-xmlRMutexLock(xmlRMutexPtr tok)
+xmlRMutexLock(xmlRMutex *tok)
 {
     if (tok == NULL)
         return;
@@ -262,7 +262,7 @@ xmlRMutexLock(xmlRMutexPtr tok)
  * @param tok  the reentrant mutex
  */
 void
-xmlRMutexUnlock(xmlRMutexPtr tok ATTRIBUTE_UNUSED)
+xmlRMutexUnlock(xmlRMutex *tok ATTRIBUTE_UNUSED)
 {
     if (tok == NULL)
         return;

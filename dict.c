@@ -249,7 +249,7 @@ found_pool:
  *
  * @returns the newly created dictionary, or NULL if an error occurred.
  */
-xmlDictPtr
+xmlDict *
 xmlDictCreate(void) {
     xmlDictPtr dict;
 
@@ -282,8 +282,8 @@ xmlDictCreate(void) {
  * @param sub  an existing dictionary
  * @returns the newly created dictionary, or NULL if an error occurred.
  */
-xmlDictPtr
-xmlDictCreateSub(xmlDictPtr sub) {
+xmlDict *
+xmlDictCreateSub(xmlDict *sub) {
     xmlDictPtr dict = xmlDictCreate();
 
     if ((dict != NULL) && (sub != NULL)) {
@@ -301,7 +301,7 @@ xmlDictCreateSub(xmlDictPtr sub) {
  * @returns 0 in case of success and -1 in case of error
  */
 int
-xmlDictReference(xmlDictPtr dict) {
+xmlDictReference(xmlDict *dict) {
     if (dict == NULL) return -1;
     xmlMutexLock(&xmlDictMutex);
     dict->ref_counter++;
@@ -316,7 +316,7 @@ xmlDictReference(xmlDictPtr dict) {
  * @param dict  the dictionary
  */
 void
-xmlDictFree(xmlDictPtr dict) {
+xmlDictFree(xmlDict *dict) {
     xmlDictStringsPtr pool, nextp;
 
     if (dict == NULL)
@@ -357,7 +357,7 @@ xmlDictFree(xmlDictPtr dict) {
  * -1 in case of error
  */
 int
-xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
+xmlDictOwns(xmlDict *dict, const xmlChar *str) {
     xmlDictStringsPtr pool;
 
     if ((dict == NULL) || (str == NULL))
@@ -381,7 +381,7 @@ xmlDictOwns(xmlDictPtr dict, const xmlChar *str) {
  * -1 in case of error
  */
 int
-xmlDictSize(xmlDictPtr dict) {
+xmlDictSize(xmlDict *dict) {
     if (dict == NULL)
 	return(-1);
     if (dict->subdict)
@@ -398,7 +398,7 @@ xmlDictSize(xmlDictPtr dict) {
  * @returns the previous limit of the dictionary or 0
  */
 size_t
-xmlDictSetLimit(xmlDictPtr dict, size_t limit) {
+xmlDictSetLimit(xmlDict *dict, size_t limit) {
     size_t ret;
 
     if (dict == NULL)
@@ -416,7 +416,7 @@ xmlDictSetLimit(xmlDictPtr dict, size_t limit) {
  * @returns the amount of strings allocated
  */
 size_t
-xmlDictGetUsage(xmlDictPtr dict) {
+xmlDictGetUsage(xmlDict *dict) {
     xmlDictStringsPtr pool;
     size_t limit = 0;
 
@@ -663,7 +663,7 @@ done:
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 static const xmlDictEntry *
-xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
+xmlDictLookupInternal(xmlDict *dict, const xmlChar *prefix,
                       const xmlChar *name, int maybeLen, int update) {
     xmlDictEntry *entry = NULL;
     const xmlChar *ret;
@@ -811,7 +811,7 @@ xmlDictLookupInternal(xmlDictPtr dict, const xmlChar *prefix,
  * failed.
  */
 const xmlChar *
-xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
+xmlDictLookup(xmlDict *dict, const xmlChar *name, int len) {
     const xmlDictEntry *entry;
 
     entry = xmlDictLookupInternal(dict, NULL, name, len, 1);
@@ -830,7 +830,7 @@ xmlDictLookup(xmlDictPtr dict, const xmlChar *name, int len) {
  * @returns the dictionary entry.
  */
 xmlHashedString
-xmlDictLookupHashed(xmlDictPtr dict, const xmlChar *name, int len) {
+xmlDictLookupHashed(xmlDict *dict, const xmlChar *name, int len) {
     const xmlDictEntry *entry;
     xmlHashedString ret;
 
@@ -855,7 +855,7 @@ xmlDictLookupHashed(xmlDictPtr dict, const xmlChar *name, int len) {
  * @returns the internal copy of the name or NULL if not found.
  */
 const xmlChar *
-xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
+xmlDictExists(xmlDict *dict, const xmlChar *name, int len) {
     const xmlDictEntry *entry;
 
     entry = xmlDictLookupInternal(dict, NULL, name, len, 0);
@@ -875,7 +875,7 @@ xmlDictExists(xmlDictPtr dict, const xmlChar *name, int len) {
  * failed.
  */
 const xmlChar *
-xmlDictQLookup(xmlDictPtr dict, const xmlChar *prefix, const xmlChar *name) {
+xmlDictQLookup(xmlDict *dict, const xmlChar *prefix, const xmlChar *name) {
     const xmlDictEntry *entry;
 
     entry = xmlDictLookupInternal(dict, prefix, name, -1, 1);

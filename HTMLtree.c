@@ -261,7 +261,7 @@ htmlUpdateMetaEncoding(htmlMetaEncoding *menc, const char *encoding) {
  * @returns the encoding ot NULL if not found.
  */
 const xmlChar *
-htmlGetMetaEncoding(htmlDocPtr doc) {
+htmlGetMetaEncoding(xmlDoc *doc) {
     htmlNodePtr head, node;
 
     head = htmlFindHead(doc);
@@ -296,7 +296,7 @@ htmlGetMetaEncoding(htmlDocPtr doc) {
  * arguments are invalid and -1 if memory allocation failed.
  */
 int
-htmlSetMetaEncoding(htmlDocPtr doc, const xmlChar *encoding) {
+htmlSetMetaEncoding(xmlDoc *doc, const xmlChar *encoding) {
     htmlNodePtr head, meta;
     int found = 0;
 
@@ -508,7 +508,7 @@ htmlBufNodeDumpFormat(xmlBufPtr buf, xmlDocPtr doc ATTRIBUTE_UNUSED,
  * @returns the number of bytes written or -1 in case of error
  */
 int
-htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
+htmlNodeDump(xmlBuffer *buf, xmlDoc *doc, xmlNode *cur) {
     xmlBufPtr buffer;
     size_t ret1;
     int ret2;
@@ -545,8 +545,8 @@ htmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc ATTRIBUTE_UNUSED,
-	               xmlNodePtr cur, const char *encoding, int format) {
+htmlNodeDumpFileFormat(FILE *out, xmlDoc *doc ATTRIBUTE_UNUSED,
+	               xmlNode *cur, const char *encoding, int format) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler;
     int ret;
@@ -580,7 +580,7 @@ htmlNodeDumpFileFormat(FILE *out, xmlDocPtr doc ATTRIBUTE_UNUSED,
  * @param cur  the current node
  */
 void
-htmlNodeDumpFile(FILE *out, xmlDocPtr doc, xmlNodePtr cur) {
+htmlNodeDumpFile(FILE *out, xmlDoc *doc, xmlNode *cur) {
     htmlNodeDumpFileFormat(out, doc, cur, NULL, 1);
 }
 
@@ -599,7 +599,7 @@ htmlNodeDumpFile(FILE *out, xmlDocPtr doc, xmlNodePtr cur) {
  * @param format  should formatting newlines been added
  */
 void
-htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
+htmlDocDumpMemoryFormat(xmlDoc *cur, xmlChar**mem, int *size, int format) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
 
@@ -648,7 +648,7 @@ htmlDocDumpMemoryFormat(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
  * @param size  OUT: the memory length
  */
 void
-htmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
+htmlDocDumpMemory(xmlDoc *cur, xmlChar**mem, int *size) {
     htmlDocDumpMemoryFormat(cur, mem, size, 1);
 }
 
@@ -829,7 +829,7 @@ htmlAttrDumpOutput(xmlOutputBufferPtr buf, xmlAttrPtr cur) {
  * @param format  should formatting newlines been added
  */
 void
-htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
+htmlNodeDumpInternal(xmlOutputBuffer *buf, xmlNode *cur,
                      const char *encoding, int format) {
     xmlNodePtr root, parent, metaHead = NULL;
     xmlAttrPtr attr;
@@ -1125,8 +1125,8 @@ htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
  * @param format  should formatting newlines been added
  */
 void
-htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf,
-                         xmlDocPtr doc ATTRIBUTE_UNUSED, xmlNodePtr cur,
+htmlNodeDumpFormatOutput(xmlOutputBuffer *buf,
+                         xmlDoc *doc ATTRIBUTE_UNUSED, xmlNode *cur,
                          const char *encoding ATTRIBUTE_UNUSED, int format) {
     htmlNodeDumpInternal(buf, cur, NULL, format);
 }
@@ -1142,8 +1142,8 @@ htmlNodeDumpFormatOutput(xmlOutputBufferPtr buf,
  * @param encoding  the encoding string (unused)
  */
 void
-htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc ATTRIBUTE_UNUSED,
-                   xmlNodePtr cur, const char *encoding ATTRIBUTE_UNUSED) {
+htmlNodeDumpOutput(xmlOutputBuffer *buf, xmlDoc *doc ATTRIBUTE_UNUSED,
+                   xmlNode *cur, const char *encoding ATTRIBUTE_UNUSED) {
     htmlNodeDumpInternal(buf, cur, NULL, 1);
 }
 
@@ -1156,7 +1156,7 @@ htmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc ATTRIBUTE_UNUSED,
  * @param format  should formatting newlines been added
  */
 void
-htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
+htmlDocContentDumpFormatOutput(xmlOutputBuffer *buf, xmlDoc *cur,
 	                       const char *encoding ATTRIBUTE_UNUSED,
                                int format) {
     htmlNodeDumpInternal(buf, (xmlNodePtr) cur, NULL, format);
@@ -1172,7 +1172,7 @@ htmlDocContentDumpFormatOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
  * @param encoding  the encoding string (unused)
  */
 void
-htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
+htmlDocContentDumpOutput(xmlOutputBuffer *buf, xmlDoc *cur,
 	                 const char *encoding ATTRIBUTE_UNUSED) {
     htmlNodeDumpInternal(buf, (xmlNodePtr) cur, NULL, 1);
 }
@@ -1202,7 +1202,7 @@ htmlDocContentDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr cur,
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-htmlDocDump(FILE *f, xmlDocPtr cur) {
+htmlDocDump(FILE *f, xmlDoc *cur) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
     int ret;
@@ -1240,7 +1240,7 @@ htmlDocDump(FILE *f, xmlDocPtr cur) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-htmlSaveFile(const char *filename, xmlDocPtr cur) {
+htmlSaveFile(const char *filename, xmlDoc *cur) {
     return(htmlSaveFileFormat(filename, cur, NULL, 1));
 }
 
@@ -1263,7 +1263,7 @@ htmlSaveFile(const char *filename, xmlDocPtr cur) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
+htmlSaveFileFormat(const char *filename, xmlDoc *cur,
 	           const char *encoding, int format) {
     xmlOutputBufferPtr buf;
     xmlCharEncodingHandlerPtr handler = NULL;
@@ -1305,7 +1305,7 @@ htmlSaveFileFormat(const char *filename, xmlDocPtr cur,
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-htmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
+htmlSaveFileEnc(const char *filename, xmlDoc *cur, const char *encoding) {
     return(htmlSaveFileFormat(filename, cur, encoding, 1));
 }
 

@@ -542,7 +542,7 @@ typedef int (*xmlRelaxNGTypeHave) (void *data, const xmlChar * type);
  */
 typedef int (*xmlRelaxNGTypeCheck) (void *data, const xmlChar * type,
                                     const xmlChar * value, void **result,
-                                    xmlNodePtr node);
+                                    xmlNode *node);
 
 /**
  * Function provided by a type library to check a value facet
@@ -580,10 +580,10 @@ typedef void (*xmlRelaxNGTypeFree) (void *data, void *result);
  */
 typedef int (*xmlRelaxNGTypeCompare) (void *data, const xmlChar * type,
                                       const xmlChar * value1,
-                                      xmlNodePtr ctxt1,
+                                      xmlNode *ctxt1,
                                       void *comp1,
                                       const xmlChar * value2,
-                                      xmlNodePtr ctxt2);
+                                      xmlNode *ctxt2);
 typedef struct _xmlRelaxNGTypeLibrary xmlRelaxNGTypeLibrary;
 typedef xmlRelaxNGTypeLibrary *xmlRelaxNGTypeLibraryPtr;
 struct _xmlRelaxNGTypeLibrary {
@@ -737,7 +737,7 @@ xmlRelaxNGFreeInnerSchema(xmlRelaxNGPtr schema)
  * @param schema  a schema structure
  */
 void
-xmlRelaxNGFree(xmlRelaxNGPtr schema)
+xmlRelaxNGFree(xmlRelaxNG *schema)
 {
     if (schema == NULL)
         return;
@@ -1326,7 +1326,7 @@ xmlRelaxNGFreeValidState(xmlRelaxNGValidCtxtPtr ctxt,
  * @returns 0 if success and -1 in case of error
  */
 int
-xmlRelaxParserSetFlag(xmlRelaxNGParserCtxtPtr ctxt, int flags)
+xmlRelaxParserSetFlag(xmlRelaxNGParserCtxt *ctxt, int flags)
 {
     if (ctxt == NULL) return(-1);
     if (flags & XML_RELAXNGP_FREE_DOC) {
@@ -6460,7 +6460,7 @@ xmlRelaxNGParseDocument(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
  * @param URL  the location of the schema
  * @returns the parser context or NULL in case of error
  */
-xmlRelaxNGParserCtxtPtr
+xmlRelaxNGParserCtxt *
 xmlRelaxNGNewParserCtxt(const char *URL)
 {
     xmlRelaxNGParserCtxtPtr ret;
@@ -6487,7 +6487,7 @@ xmlRelaxNGNewParserCtxt(const char *URL)
  * @param size  the size of the array
  * @returns the parser context or NULL in case of error
  */
-xmlRelaxNGParserCtxtPtr
+xmlRelaxNGParserCtxt *
 xmlRelaxNGNewMemParserCtxt(const char *buffer, int size)
 {
     xmlRelaxNGParserCtxtPtr ret;
@@ -6515,8 +6515,8 @@ xmlRelaxNGNewMemParserCtxt(const char *buffer, int size)
  * @param doc  a preparsed document tree
  * @returns the parser context or NULL in case of error
  */
-xmlRelaxNGParserCtxtPtr
-xmlRelaxNGNewDocParserCtxt(xmlDocPtr doc)
+xmlRelaxNGParserCtxt *
+xmlRelaxNGNewDocParserCtxt(xmlDoc *doc)
 {
     xmlRelaxNGParserCtxtPtr ret;
     xmlDocPtr copy;
@@ -6547,7 +6547,7 @@ xmlRelaxNGNewDocParserCtxt(xmlDocPtr doc)
  * @param ctxt  the schema parser context
  */
 void
-xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxtPtr ctxt)
+xmlRelaxNGFreeParserCtxt(xmlRelaxNGParserCtxt *ctxt)
 {
     if (ctxt == NULL)
         return;
@@ -7188,8 +7188,8 @@ xmlRelaxNGCleanupDoc(xmlRelaxNGParserCtxtPtr ctxt, xmlDocPtr doc)
  * @returns the internal XML RelaxNG structure built from the resource or
  *         NULL in case of error
  */
-xmlRelaxNGPtr
-xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
+xmlRelaxNG *
+xmlRelaxNGParse(xmlRelaxNGParserCtxt *ctxt)
 {
     xmlRelaxNGPtr ret = NULL;
     xmlDocPtr doc;
@@ -7327,7 +7327,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxtPtr ctxt)
  * @param ctx  contextual data for the callbacks
  */
 void
-xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
+xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxt *ctxt,
                           xmlRelaxNGValidityErrorFunc err,
                           xmlRelaxNGValidityWarningFunc warn, void *ctx)
 {
@@ -7349,7 +7349,7 @@ xmlRelaxNGSetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
  * @returns -1 in case of failure, 0 otherwise.
  */
 int
-xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
+xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxt *ctxt,
                           xmlRelaxNGValidityErrorFunc * err,
                           xmlRelaxNGValidityWarningFunc * warn, void **ctx)
 {
@@ -7372,7 +7372,7 @@ xmlRelaxNGGetParserErrors(xmlRelaxNGParserCtxtPtr ctxt,
  * @param ctx  contextual data for the callbacks
  */
 void
-xmlRelaxNGSetParserStructuredErrors(xmlRelaxNGParserCtxtPtr ctxt,
+xmlRelaxNGSetParserStructuredErrors(xmlRelaxNGParserCtxt *ctxt,
 				    xmlStructuredErrorFunc serror,
 				    void *ctx)
 {
@@ -7392,7 +7392,7 @@ xmlRelaxNGSetParserStructuredErrors(xmlRelaxNGParserCtxtPtr ctxt,
  * @param vctxt  contextual data for the callbacks
  */
 void
-xmlRelaxNGSetResourceLoader(xmlRelaxNGParserCtxtPtr ctxt,
+xmlRelaxNGSetResourceLoader(xmlRelaxNGParserCtxt *ctxt,
                             xmlResourceLoader loader, void *vctxt) {
     if (ctxt == NULL)
         return;
@@ -7589,7 +7589,7 @@ xmlRelaxNGDumpGrammar(FILE * output, xmlRelaxNGGrammarPtr grammar, int top)
  * @param schema  a schema structure
  */
 void
-xmlRelaxNGDump(FILE * output, xmlRelaxNGPtr schema)
+xmlRelaxNGDump(FILE * output, xmlRelaxNG *schema)
 {
     if (output == NULL)
         return;
@@ -7619,7 +7619,7 @@ xmlRelaxNGDump(FILE * output, xmlRelaxNGPtr schema)
  * @param schema  a schema structure
  */
 void
-xmlRelaxNGDumpTree(FILE * output, xmlRelaxNGPtr schema)
+xmlRelaxNGDumpTree(FILE * output, xmlRelaxNG *schema)
 {
     if (output == NULL)
         return;
@@ -7983,9 +7983,9 @@ xmlRelaxNGValidateProgressiveCallback(xmlRegExecCtxtPtr exec
  *         element requires a full node, and -1 in case of error.
  */
 int
-xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxtPtr ctxt,
-                              xmlDocPtr doc ATTRIBUTE_UNUSED,
-                              xmlNodePtr elem)
+xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxt *ctxt,
+                              xmlDoc *doc ATTRIBUTE_UNUSED,
+                              xmlNode *elem)
 {
     int ret = 1;
 
@@ -8052,7 +8052,7 @@ xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxtPtr ctxt,
  * @returns 1 if no validation problem was found or -1 otherwise
  */
 int
-xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxtPtr ctxt,
+xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxt *ctxt,
                             const xmlChar * data, int len ATTRIBUTE_UNUSED)
 {
     int ret = 1;
@@ -8086,9 +8086,9 @@ xmlRelaxNGValidatePushCData(xmlRelaxNGValidCtxtPtr ctxt,
  * @returns 1 if no validation problem was found or 0 otherwise
  */
 int
-xmlRelaxNGValidatePopElement(xmlRelaxNGValidCtxtPtr ctxt,
-                             xmlDocPtr doc ATTRIBUTE_UNUSED,
-                             xmlNodePtr elem)
+xmlRelaxNGValidatePopElement(xmlRelaxNGValidCtxt *ctxt,
+                             xmlDoc *doc ATTRIBUTE_UNUSED,
+                             xmlNode *elem)
 {
     int ret;
     xmlRegExecCtxtPtr exec;
@@ -8125,9 +8125,9 @@ xmlRelaxNGValidatePopElement(xmlRelaxNGValidCtxtPtr ctxt,
  * @returns 1 if no validation problem was found or -1 in case of error.
  */
 int
-xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxtPtr ctxt,
-                              xmlDocPtr doc ATTRIBUTE_UNUSED,
-                              xmlNodePtr elem)
+xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxt *ctxt,
+                              xmlDoc *doc ATTRIBUTE_UNUSED,
+                              xmlNode *elem)
 {
     int ret;
     xmlRelaxNGValidStatePtr state;
@@ -10439,8 +10439,8 @@ xmlRelaxNGCleanPSVI(xmlNodePtr node) {
  * @param schema  a precompiled XML RelaxNGs
  * @returns the validation context or NULL in case of error
  */
-xmlRelaxNGValidCtxtPtr
-xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema)
+xmlRelaxNGValidCtxt *
+xmlRelaxNGNewValidCtxt(xmlRelaxNG *schema)
 {
     xmlRelaxNGValidCtxtPtr ret;
 
@@ -10470,7 +10470,7 @@ xmlRelaxNGNewValidCtxt(xmlRelaxNGPtr schema)
  * @param ctxt  the schema validation context
  */
 void
-xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt)
+xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxt *ctxt)
 {
     int k;
 
@@ -10516,7 +10516,7 @@ xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxtPtr ctxt)
  * @param ctx  the functions context
  */
 void
-xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
+xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxt *ctxt,
                          xmlRelaxNGValidityErrorFunc err,
                          xmlRelaxNGValidityWarningFunc warn, void *ctx)
 {
@@ -10536,7 +10536,7 @@ xmlRelaxNGSetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
  * @param ctx  the functions context
  */
 void
-xmlRelaxNGSetValidStructuredErrors(xmlRelaxNGValidCtxtPtr ctxt,
+xmlRelaxNGSetValidStructuredErrors(xmlRelaxNGValidCtxt *ctxt,
                                    xmlStructuredErrorFunc serror, void *ctx)
 {
     if (ctxt == NULL)
@@ -10557,7 +10557,7 @@ xmlRelaxNGSetValidStructuredErrors(xmlRelaxNGValidCtxtPtr ctxt,
  * @returns -1 in case of error and 0 otherwise
  */
 int
-xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
+xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxt *ctxt,
                          xmlRelaxNGValidityErrorFunc * err,
                          xmlRelaxNGValidityWarningFunc * warn, void **ctx)
 {
@@ -10581,7 +10581,7 @@ xmlRelaxNGGetValidErrors(xmlRelaxNGValidCtxtPtr ctxt,
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlRelaxNGValidateDoc(xmlRelaxNGValidCtxtPtr ctxt, xmlDocPtr doc)
+xmlRelaxNGValidateDoc(xmlRelaxNGValidCtxt *ctxt, xmlDoc *doc)
 {
     int ret;
 

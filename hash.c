@@ -154,7 +154,7 @@ xmlHashQNameValue(unsigned seed,
  * @param size  initial size of the hash table
  * @returns the newly created object, or NULL if a memory allocation failed.
  */
-xmlHashTablePtr
+xmlHashTable *
 xmlHashCreate(int size) {
     xmlHashTablePtr hash;
 
@@ -201,8 +201,8 @@ xmlHashCreate(int size) {
  * @param dict  a dictionary to use for the hash
  * @returns the newly created object, or NULL if a memory allocation failed.
  */
-xmlHashTablePtr
-xmlHashCreateDict(int size, xmlDictPtr dict) {
+xmlHashTable *
+xmlHashCreateDict(int size, xmlDict *dict) {
     xmlHashTablePtr hash;
 
     hash = xmlHashCreate(size);
@@ -221,7 +221,7 @@ xmlHashCreateDict(int size, xmlDictPtr dict) {
  * @param dealloc  deallocator function or NULL
  */
 void
-xmlHashFree(xmlHashTablePtr hash, xmlHashDeallocator dealloc) {
+xmlHashFree(xmlHashTable *hash, xmlHashDeallocator dealloc) {
     if (hash == NULL)
         return;
 
@@ -412,7 +412,7 @@ done:
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 static int
-xmlHashUpdateInternal(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashUpdateInternal(xmlHashTable *hash, const xmlChar *key,
                       const xmlChar *key2, const xmlChar *key3,
                       void *payload, xmlHashDeallocator dealloc, int update) {
     xmlChar *copy, *copy2, *copy3;
@@ -607,7 +607,7 @@ xmlHashDefaultDeallocator(void *entry, const xmlChar *key ATTRIBUTE_UNUSED) {
  * @returns 1 on success, 0 if an entry exists and -1 in case of error.
  */
 int
-xmlHashAdd(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
+xmlHashAdd(xmlHashTable *hash, const xmlChar *key, void *payload) {
     return(xmlHashUpdateInternal(hash, key, NULL, NULL, payload, NULL, 0));
 }
 
@@ -625,7 +625,7 @@ xmlHashAdd(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
  * @returns 1 on success, 0 if an entry exists and -1 in case of error.
  */
 int
-xmlHashAdd2(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashAdd2(xmlHashTable *hash, const xmlChar *key,
                  const xmlChar *key2, void *payload) {
     return(xmlHashUpdateInternal(hash, key, key2, NULL, payload, NULL, 0));
 }
@@ -645,7 +645,7 @@ xmlHashAdd2(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 1 on success, 0 if an entry exists and -1 in case of error.
  */
 int
-xmlHashAdd3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashAdd3(xmlHashTable *hash, const xmlChar *key,
                  const xmlChar *key2, const xmlChar *key3,
                  void *payload) {
     return(xmlHashUpdateInternal(hash, key, key2, key3, payload, NULL, 0));
@@ -666,7 +666,7 @@ xmlHashAdd3(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 0 on success and -1 in case of error.
  */
 int
-xmlHashAddEntry(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
+xmlHashAddEntry(xmlHashTable *hash, const xmlChar *key, void *payload) {
     int res = xmlHashUpdateInternal(hash, key, NULL, NULL, payload, NULL, 0);
 
     if (res == 0)
@@ -689,7 +689,7 @@ xmlHashAddEntry(xmlHashTablePtr hash, const xmlChar *key, void *payload) {
  * @returns 0 on success and -1 in case of error.
  */
 int
-xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashAddEntry2(xmlHashTable *hash, const xmlChar *key,
                  const xmlChar *key2, void *payload) {
     int res = xmlHashUpdateInternal(hash, key, key2, NULL, payload, NULL, 0);
 
@@ -714,7 +714,7 @@ xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 0 on success and -1 in case of error.
  */
 int
-xmlHashAddEntry3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashAddEntry3(xmlHashTable *hash, const xmlChar *key,
                  const xmlChar *key2, const xmlChar *key3,
                  void *payload) {
     int res = xmlHashUpdateInternal(hash, key, key2, key3, payload, NULL, 0);
@@ -738,7 +738,7 @@ xmlHashAddEntry3(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 0 in case of success, -1 if a memory allocation failed.
  */
 int
-xmlHashUpdateEntry(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashUpdateEntry(xmlHashTable *hash, const xmlChar *key,
                    void *payload, xmlHashDeallocator dealloc) {
     int res = xmlHashUpdateInternal(hash, key, NULL, NULL, payload,
                                     dealloc, 1);
@@ -762,7 +762,7 @@ xmlHashUpdateEntry(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 0 on success and -1 in case of error.
  */
 int
-xmlHashUpdateEntry2(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashUpdateEntry2(xmlHashTable *hash, const xmlChar *key,
                    const xmlChar *key2, void *payload,
                    xmlHashDeallocator dealloc) {
     int res = xmlHashUpdateInternal(hash, key, key2, NULL, payload,
@@ -788,7 +788,7 @@ xmlHashUpdateEntry2(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 0 on success and -1 in case of error.
  */
 int
-xmlHashUpdateEntry3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashUpdateEntry3(xmlHashTable *hash, const xmlChar *key,
                    const xmlChar *key2, const xmlChar *key3,
                    void *payload, xmlHashDeallocator dealloc) {
     int res = xmlHashUpdateInternal(hash, key, key2, key3, payload,
@@ -808,7 +808,7 @@ xmlHashUpdateEntry3(xmlHashTablePtr hash, const xmlChar *key,
  * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
-xmlHashLookup(xmlHashTablePtr hash, const xmlChar *key) {
+xmlHashLookup(xmlHashTable *hash, const xmlChar *key) {
     return(xmlHashLookup3(hash, key, NULL, NULL));
 }
 
@@ -821,7 +821,7 @@ xmlHashLookup(xmlHashTablePtr hash, const xmlChar *key) {
  * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
-xmlHashLookup2(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashLookup2(xmlHashTable *hash, const xmlChar *key,
               const xmlChar *key2) {
     return(xmlHashLookup3(hash, key, key2, NULL));
 }
@@ -835,7 +835,7 @@ xmlHashLookup2(xmlHashTablePtr hash, const xmlChar *key,
  * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
-xmlHashQLookup(xmlHashTablePtr hash, const xmlChar *prefix,
+xmlHashQLookup(xmlHashTable *hash, const xmlChar *prefix,
                const xmlChar *name) {
     return(xmlHashQLookup3(hash, prefix, name, NULL, NULL, NULL, NULL));
 }
@@ -851,7 +851,7 @@ xmlHashQLookup(xmlHashTablePtr hash, const xmlChar *prefix,
  * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
-xmlHashQLookup2(xmlHashTablePtr hash, const xmlChar *prefix,
+xmlHashQLookup2(xmlHashTable *hash, const xmlChar *prefix,
                 const xmlChar *name, const xmlChar *prefix2,
                 const xmlChar *name2) {
     return(xmlHashQLookup3(hash, prefix, name, prefix2, name2, NULL, NULL));
@@ -867,7 +867,7 @@ xmlHashQLookup2(xmlHashTablePtr hash, const xmlChar *prefix,
  * @returns a pointer to the payload or NULL if no entry was found.
  */
 void *
-xmlHashLookup3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashLookup3(xmlHashTable *hash, const xmlChar *key,
                const xmlChar *key2, const xmlChar *key3) {
     const xmlHashEntry *entry;
     unsigned hashValue;
@@ -896,7 +896,7 @@ xmlHashLookup3(xmlHashTablePtr hash, const xmlChar *key,
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 void *
-xmlHashQLookup3(xmlHashTablePtr hash,
+xmlHashQLookup3(xmlHashTable *hash,
                 const xmlChar *prefix, const xmlChar *name,
                 const xmlChar *prefix2, const xmlChar *name2,
                 const xmlChar *prefix3, const xmlChar *name3) {
@@ -956,7 +956,7 @@ stubHashScannerFull(void *payload, void *data, const xmlChar *key,
  * @param data  extra data passed to `scan`
  */
 void
-xmlHashScan(xmlHashTablePtr hash, xmlHashScanner scan, void *data) {
+xmlHashScan(xmlHashTable *hash, xmlHashScanner scan, void *data) {
     stubData sdata;
     sdata.data = data;
     sdata.scan = scan;
@@ -971,7 +971,7 @@ xmlHashScan(xmlHashTablePtr hash, xmlHashScanner scan, void *data) {
  * @param data  extra data passed to `scan`
  */
 void
-xmlHashScanFull(xmlHashTablePtr hash, xmlHashScannerFull scan, void *data) {
+xmlHashScanFull(xmlHashTable *hash, xmlHashScannerFull scan, void *data) {
     const xmlHashEntry *entry, *end;
     xmlHashEntry old;
     unsigned i;
@@ -1025,7 +1025,7 @@ xmlHashScanFull(xmlHashTablePtr hash, xmlHashScannerFull scan, void *data) {
  * @param data  extra data passed to `scan`
  */
 void
-xmlHashScan3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashScan3(xmlHashTable *hash, const xmlChar *key,
              const xmlChar *key2, const xmlChar *key3,
              xmlHashScanner scan, void *data) {
     stubData sdata;
@@ -1047,7 +1047,7 @@ xmlHashScan3(xmlHashTablePtr hash, const xmlChar *key,
  * @param data  extra data passed to `scan`
  */
 void
-xmlHashScanFull3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashScanFull3(xmlHashTable *hash, const xmlChar *key,
                  const xmlChar *key2, const xmlChar *key3,
                  xmlHashScannerFull scan, void *data) {
     const xmlHashEntry *entry, *end;
@@ -1106,8 +1106,8 @@ xmlHashScanFull3(xmlHashTablePtr hash, const xmlChar *key,
  *
  * @returns the new table or NULL if a memory allocation failed.
  */
-xmlHashTablePtr
-xmlHashCopySafe(xmlHashTablePtr hash, xmlHashCopier copyFunc,
+xmlHashTable *
+xmlHashCopySafe(xmlHashTable *hash, xmlHashCopier copyFunc,
                 xmlHashDeallocator deallocFunc) {
     const xmlHashEntry *entry, *end;
     xmlHashTablePtr ret;
@@ -1157,8 +1157,8 @@ error:
  *
  * @returns the new table or NULL if a memory allocation failed.
  */
-xmlHashTablePtr
-xmlHashCopy(xmlHashTablePtr hash, xmlHashCopier copy) {
+xmlHashTable *
+xmlHashCopy(xmlHashTable *hash, xmlHashCopier copy) {
     return(xmlHashCopySafe(hash, copy, NULL));
 }
 
@@ -1170,7 +1170,7 @@ xmlHashCopy(xmlHashTablePtr hash, xmlHashCopier copy) {
  * -1 in case of error.
  */
 int
-xmlHashSize(xmlHashTablePtr hash) {
+xmlHashSize(xmlHashTable *hash) {
     if (hash == NULL)
         return(-1);
     return(hash->nbElems);
@@ -1185,7 +1185,7 @@ xmlHashSize(xmlHashTablePtr hash) {
  * @param dealloc  deallocator function for removed item or NULL
  * @returns 0 on success and -1 if no entry was found.
  */
-int xmlHashRemoveEntry(xmlHashTablePtr hash, const xmlChar *key,
+int xmlHashRemoveEntry(xmlHashTable *hash, const xmlChar *key,
                        xmlHashDeallocator dealloc) {
     return(xmlHashRemoveEntry3(hash, key, NULL, NULL, dealloc));
 }
@@ -1202,7 +1202,7 @@ int xmlHashRemoveEntry(xmlHashTablePtr hash, const xmlChar *key,
  * @returns 0 on success and -1 in case of error.
  */
 int
-xmlHashRemoveEntry2(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashRemoveEntry2(xmlHashTable *hash, const xmlChar *key,
                     const xmlChar *key2, xmlHashDeallocator dealloc) {
     return(xmlHashRemoveEntry3(hash, key, key2, NULL, dealloc));
 }
@@ -1221,7 +1221,7 @@ xmlHashRemoveEntry2(xmlHashTablePtr hash, const xmlChar *key,
  */
 ATTRIBUTE_NO_SANITIZE_INTEGER
 int
-xmlHashRemoveEntry3(xmlHashTablePtr hash, const xmlChar *key,
+xmlHashRemoveEntry3(xmlHashTable *hash, const xmlChar *key,
                     const xmlChar *key2, const xmlChar *key3,
                     xmlHashDeallocator dealloc) {
     xmlHashEntry *entry, *cur, *next;

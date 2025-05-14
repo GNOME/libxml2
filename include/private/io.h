@@ -28,7 +28,7 @@ XML_HIDDEN xmlChar *
 xmlEscapeText(const xmlChar *text, int flags);
 #ifdef LIBXML_OUTPUT_ENABLED
 XML_HIDDEN void
-xmlSerializeText(xmlOutputBufferPtr buf, const xmlChar *string, size_t maxSize,
+xmlSerializeText(xmlOutputBuffer *buf, const xmlChar *string, size_t maxSize,
                  unsigned flags);
 #endif
 
@@ -41,20 +41,20 @@ xmlNoNetExists(const char *filename);
 XML_HIDDEN xmlParserErrors
 xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
                               xmlParserInputFlags flags,
-                              xmlParserInputBufferPtr *out);
+                              xmlParserInputBuffer **out);
 
-XML_HIDDEN xmlParserInputBufferPtr
+XML_HIDDEN xmlParserInputBuffer *
 xmlNewInputBufferString(const char *str, xmlParserInputFlags flags);
-XML_HIDDEN xmlParserInputBufferPtr
+XML_HIDDEN xmlParserInputBuffer *
 xmlNewInputBufferMemory(const void *mem, size_t size,
                         xmlParserInputFlags flags, xmlCharEncoding enc);
 
 XML_HIDDEN xmlParserErrors
-xmlInputFromFd(xmlParserInputBufferPtr buf, int fd, xmlParserInputFlags flags);
+xmlInputFromFd(xmlParserInputBuffer *buf, int fd, xmlParserInputFlags flags);
 
 #ifdef LIBXML_OUTPUT_ENABLED
 XML_HIDDEN void
-xmlOutputBufferWriteQuotedString(xmlOutputBufferPtr buf,
+xmlOutputBufferWriteQuotedString(xmlOutputBuffer *buf,
                                  const xmlChar *string);
 #endif
 

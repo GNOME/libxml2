@@ -967,7 +967,7 @@ xmlGetLastError(void)
  * @param err  pointer to the error
  */
 void
-xmlResetError(xmlErrorPtr err)
+xmlResetError(xmlError *err)
 {
     if (err == NULL)
         return;
@@ -1007,7 +1007,7 @@ xmlResetLastError(void)
  * @returns 0 in case of success and -1 in case of error.
  */
 int
-xmlCopyError(const xmlError *from, xmlErrorPtr to) {
+xmlCopyError(const xmlError *from, xmlError *to) {
     const char *fmt = NULL;
 
     if ((from == NULL) || (to == NULL))

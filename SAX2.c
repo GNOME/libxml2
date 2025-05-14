@@ -370,7 +370,7 @@ error:
  * @param systemId  The system ID of the entity
  * @returns a parser input.
  */
-xmlParserInputPtr
+xmlParserInput *
 xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
                      const xmlChar *systemId)
 {
@@ -429,7 +429,7 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
  * @param name  The entity name
  * @returns the xmlEntityPtr if found.
  */
-xmlEntityPtr
+xmlEntity *
 xmlSAX2GetEntity(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -473,7 +473,7 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
  * @param name  The entity name
  * @returns the xmlEntityPtr if found.
  */
-xmlEntityPtr
+xmlEntity *
 xmlSAX2GetParameterEntity(void *ctx, const xmlChar *name)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
@@ -593,7 +593,7 @@ xmlSAX2EntityDecl(void *ctx, const xmlChar *name, int type,
 void
 xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
               int type, int def, const xmlChar *defaultValue,
-	      xmlEnumerationPtr tree)
+	      xmlEnumeration *tree)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlAttributePtr attr;
@@ -658,7 +658,7 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
  */
 void
 xmlSAX2ElementDecl(void *ctx, const xmlChar * name, int type,
-            xmlElementContentPtr content)
+            xmlElementContent *content)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlElementPtr elem = NULL;
@@ -764,7 +764,7 @@ xmlSAX2UnparsedEntityDecl(void *ctx, const xmlChar *name,
  * @param loc  A SAX Locator
  */
 void
-xmlSAX2SetDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocatorPtr loc ATTRIBUTE_UNUSED)
+xmlSAX2SetDocumentLocator(void *ctx ATTRIBUTE_UNUSED, xmlSAXLocator *loc ATTRIBUTE_UNUSED)
 {
 }
 

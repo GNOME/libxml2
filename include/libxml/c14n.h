@@ -58,24 +58,24 @@ typedef enum {
 } xmlC14NMode;
 
 XMLPUBFUN int
-		xmlC14NDocSaveTo	(xmlDocPtr doc,
-					 xmlNodeSetPtr nodes,
+		xmlC14NDocSaveTo	(xmlDoc *doc,
+					 xmlNodeSet *nodes,
 					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
-					 xmlOutputBufferPtr buf);
+					 xmlOutputBuffer *buf);
 
 XMLPUBFUN int
-		xmlC14NDocDumpMemory	(xmlDocPtr doc,
-					 xmlNodeSetPtr nodes,
+		xmlC14NDocDumpMemory	(xmlDoc *doc,
+					 xmlNodeSet *nodes,
 					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
 					 xmlChar **doc_txt_ptr);
 
 XMLPUBFUN int
-		xmlC14NDocSave		(xmlDocPtr doc,
-					 xmlNodeSetPtr nodes,
+		xmlC14NDocSave		(xmlDoc *doc,
+					 xmlNodeSet *nodes,
 					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
@@ -95,17 +95,17 @@ XMLPUBFUN int
  * @returns 1 if the node should be included
  */
 typedef int (*xmlC14NIsVisibleCallback)	(void* user_data,
-					 xmlNodePtr node,
-					 xmlNodePtr parent);
+					 xmlNode *node,
+					 xmlNode *parent);
 
 XMLPUBFUN int
-		xmlC14NExecute		(xmlDocPtr doc,
+		xmlC14NExecute		(xmlDoc *doc,
 					 xmlC14NIsVisibleCallback is_visible_callback,
 					 void* user_data,
 					 int mode, /* a xmlC14NMode */
 					 xmlChar **inclusive_ns_prefixes,
 					 int with_comments,
-					 xmlOutputBufferPtr buf);
+					 xmlOutputBuffer *buf);
 
 #ifdef __cplusplus
 }

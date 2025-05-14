@@ -89,21 +89,21 @@ typedef enum {
 typedef struct _xmlSaveCtxt xmlSaveCtxt;
 typedef xmlSaveCtxt *xmlSaveCtxtPtr;
 
-XMLPUBFUN xmlSaveCtxtPtr
+XMLPUBFUN xmlSaveCtxt *
 		xmlSaveToFd		(int fd,
 					 const char *encoding,
 					 int options);
-XMLPUBFUN xmlSaveCtxtPtr
+XMLPUBFUN xmlSaveCtxt *
 		xmlSaveToFilename	(const char *filename,
 					 const char *encoding,
 					 int options);
 
-XMLPUBFUN xmlSaveCtxtPtr
-		xmlSaveToBuffer		(xmlBufferPtr buffer,
+XMLPUBFUN xmlSaveCtxt *
+		xmlSaveToBuffer		(xmlBuffer *buffer,
 					 const char *encoding,
 					 int options);
 
-XMLPUBFUN xmlSaveCtxtPtr
+XMLPUBFUN xmlSaveCtxt *
 		xmlSaveToIO		(xmlOutputWriteCallback iowrite,
 					 xmlOutputCloseCallback ioclose,
 					 void *ioctx,
@@ -111,28 +111,28 @@ XMLPUBFUN xmlSaveCtxtPtr
 					 int options);
 
 XMLPUBFUN long
-		xmlSaveDoc		(xmlSaveCtxtPtr ctxt,
-					 xmlDocPtr doc);
+		xmlSaveDoc		(xmlSaveCtxt *ctxt,
+					 xmlDoc *doc);
 XMLPUBFUN long
-		xmlSaveTree		(xmlSaveCtxtPtr ctxt,
-					 xmlNodePtr node);
+		xmlSaveTree		(xmlSaveCtxt *ctxt,
+					 xmlNode *node);
 
 XMLPUBFUN int
-		xmlSaveFlush		(xmlSaveCtxtPtr ctxt);
+		xmlSaveFlush		(xmlSaveCtxt *ctxt);
 XMLPUBFUN int
-		xmlSaveClose		(xmlSaveCtxtPtr ctxt);
+		xmlSaveClose		(xmlSaveCtxt *ctxt);
 XMLPUBFUN xmlParserErrors
-		xmlSaveFinish		(xmlSaveCtxtPtr ctxt);
+		xmlSaveFinish		(xmlSaveCtxt *ctxt);
 XMLPUBFUN int
-		xmlSaveSetIndentString	(xmlSaveCtxtPtr ctxt,
+		xmlSaveSetIndentString	(xmlSaveCtxt *ctxt,
 					 const char *indent);
 XML_DEPRECATED
 XMLPUBFUN int
-		xmlSaveSetEscape	(xmlSaveCtxtPtr ctxt,
+		xmlSaveSetEscape	(xmlSaveCtxt *ctxt,
 					 xmlCharEncodingOutputFunc escape);
 XML_DEPRECATED
 XMLPUBFUN int
-		xmlSaveSetAttrEscape	(xmlSaveCtxtPtr ctxt,
+		xmlSaveSetAttrEscape	(xmlSaveCtxt *ctxt,
 					 xmlCharEncodingOutputFunc escape);
 
 XML_DEPRECATED

@@ -49,13 +49,13 @@ struct _xmlRMutex {
 };
 
 XML_HIDDEN void
-xmlInitMutex(xmlMutexPtr mutex);
+xmlInitMutex(xmlMutex *mutex);
 XML_HIDDEN void
-xmlCleanupMutex(xmlMutexPtr mutex);
+xmlCleanupMutex(xmlMutex *mutex);
 
 XML_HIDDEN void
-xmlInitRMutex(xmlRMutexPtr mutex);
+xmlInitRMutex(xmlRMutex *mutex);
 XML_HIDDEN void
-xmlCleanupRMutex(xmlRMutexPtr mutex);
+xmlCleanupRMutex(xmlRMutex *mutex);
 
 #endif /* XML_THREADS_H_PRIVATE__ */

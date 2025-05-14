@@ -53,7 +53,7 @@ static int xmlModulePlatformSymbol(void *handle, const char *name, void **result
  * @param options  a set of xmlModuleOption
  * @returns a handle for the module or NULL in case of error
  */
-xmlModulePtr
+xmlModule *
 xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
 {
     xmlModulePtr module;
@@ -88,7 +88,7 @@ xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
  * @returns 0 if the symbol was found, or -1 in case of error
  */
 int
-xmlModuleSymbol(xmlModulePtr module, const char *name, void **symbol)
+xmlModuleSymbol(xmlModule *module, const char *name, void **symbol)
 {
     int rc = -1;
 
@@ -112,7 +112,7 @@ xmlModuleSymbol(xmlModulePtr module, const char *name, void **symbol)
  *         if the module could not be closed/unloaded.
  */
 int
-xmlModuleClose(xmlModulePtr module)
+xmlModuleClose(xmlModule *module)
 {
     int rc;
 
@@ -137,7 +137,7 @@ xmlModuleClose(xmlModulePtr module)
  * @returns 0 in case of success, -1 in case of argument error
  */
 int
-xmlModuleFree(xmlModulePtr module)
+xmlModuleFree(xmlModule *module)
 {
     if (NULL == module)
         return -1;

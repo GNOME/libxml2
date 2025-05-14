@@ -1325,7 +1325,7 @@ xmlDebugDumpString(FILE * output, const xmlChar * str)
  * @param depth  the indentation level.
  */
 void
-xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
+xmlDebugDumpAttr(FILE *output, xmlAttr *attr, int depth) {
     xmlDebugCtxt ctxt;
 
     if (output == NULL) return;
@@ -1344,7 +1344,7 @@ xmlDebugDumpAttr(FILE *output, xmlAttrPtr attr, int depth) {
  * @param doc  the document
  */
 void
-xmlDebugDumpEntities(FILE * output, xmlDocPtr doc)
+xmlDebugDumpEntities(FILE * output, xmlDoc *doc)
 {
     xmlDebugCtxt ctxt;
 
@@ -1363,7 +1363,7 @@ xmlDebugDumpEntities(FILE * output, xmlDocPtr doc)
  * @param depth  the indentation level.
  */
 void
-xmlDebugDumpAttrList(FILE * output, xmlAttrPtr attr, int depth)
+xmlDebugDumpAttrList(FILE * output, xmlAttr *attr, int depth)
 {
     xmlDebugCtxt ctxt;
 
@@ -1383,7 +1383,7 @@ xmlDebugDumpAttrList(FILE * output, xmlAttrPtr attr, int depth)
  * @param depth  the indentation level.
  */
 void
-xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
+xmlDebugDumpOneNode(FILE * output, xmlNode *node, int depth)
 {
     xmlDebugCtxt ctxt;
 
@@ -1403,7 +1403,7 @@ xmlDebugDumpOneNode(FILE * output, xmlNodePtr node, int depth)
  * @param depth  the indentation level.
  */
 void
-xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
+xmlDebugDumpNode(FILE * output, xmlNode *node, int depth)
 {
     xmlDebugCtxt ctxt;
 
@@ -1424,7 +1424,7 @@ xmlDebugDumpNode(FILE * output, xmlNodePtr node, int depth)
  * @param depth  the indentation level.
  */
 void
-xmlDebugDumpNodeList(FILE * output, xmlNodePtr node, int depth)
+xmlDebugDumpNodeList(FILE * output, xmlNode *node, int depth)
 {
     xmlDebugCtxt ctxt;
 
@@ -1444,7 +1444,7 @@ xmlDebugDumpNodeList(FILE * output, xmlNodePtr node, int depth)
  * @param doc  the document
  */
 void
-xmlDebugDumpDocumentHead(FILE * output, xmlDocPtr doc)
+xmlDebugDumpDocumentHead(FILE * output, xmlDoc *doc)
 {
     xmlDebugCtxt ctxt;
 
@@ -1464,7 +1464,7 @@ xmlDebugDumpDocumentHead(FILE * output, xmlDocPtr doc)
  * @param doc  the document
  */
 void
-xmlDebugDumpDocument(FILE * output, xmlDocPtr doc)
+xmlDebugDumpDocument(FILE * output, xmlDoc *doc)
 {
     xmlDebugCtxt ctxt;
 
@@ -1484,7 +1484,7 @@ xmlDebugDumpDocument(FILE * output, xmlDocPtr doc)
  * @param dtd  the DTD
  */
 void
-xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
+xmlDebugDumpDTD(FILE * output, xmlDtd *dtd)
 {
     xmlDebugCtxt ctxt;
 
@@ -1512,7 +1512,7 @@ xmlDebugDumpDTD(FILE * output, xmlDtdPtr dtd)
  * @returns the number of errors found
  */
 int
-xmlDebugCheckDocument(FILE * output, xmlDocPtr doc)
+xmlDebugCheckDocument(FILE * output, xmlDoc *doc)
 {
     xmlDebugCtxt ctxt;
 

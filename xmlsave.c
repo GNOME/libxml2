@@ -123,7 +123,7 @@ xmlSaveErr(xmlOutputBufferPtr out, int code, xmlNodePtr node,
  * @returns 0 on success, -1 if the string is NULL, empty or too long.
  */
 int
-xmlSaveSetIndentString(xmlSaveCtxtPtr ctxt, const char *indent) {
+xmlSaveSetIndentString(xmlSaveCtxt *ctxt, const char *indent) {
     size_t len;
     int i;
 
@@ -810,7 +810,7 @@ xmlNsListDumpOutputCtxt(xmlSaveCtxtPtr ctxt, xmlNsPtr cur) {
  * @param cur  the first namespace
  */
 void
-xmlNsListDumpOutput(xmlOutputBufferPtr buf, xmlNsPtr cur) {
+xmlNsListDumpOutput(xmlOutputBuffer *buf, xmlNs *cur) {
     while (cur != NULL) {
         xmlNsDumpOutput(buf, cur, NULL);
 	cur = cur->next;
@@ -1827,7 +1827,7 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
  * @param options  a set of xmlSaveOptions
  * @returns a new serialization context or NULL in case of error.
  */
-xmlSaveCtxtPtr
+xmlSaveCtxt *
 xmlSaveToFd(int fd, const char *encoding, int options)
 {
     xmlSaveCtxtPtr ret;
@@ -1858,7 +1858,7 @@ xmlSaveToFd(int fd, const char *encoding, int options)
  * @param options  a set of xmlSaveOptions
  * @returns a new serialization context or NULL in case of error.
  */
-xmlSaveCtxtPtr
+xmlSaveCtxt *
 xmlSaveToFilename(const char *filename, const char *encoding, int options)
 {
     xmlSaveCtxtPtr ret;
@@ -1892,8 +1892,8 @@ xmlSaveToFilename(const char *filename, const char *encoding, int options)
  * @returns a new serialization context or NULL in case of error.
  */
 
-xmlSaveCtxtPtr
-xmlSaveToBuffer(xmlBufferPtr buffer, const char *encoding, int options)
+xmlSaveCtxt *
+xmlSaveToBuffer(xmlBuffer *buffer, const char *encoding, int options)
 {
     xmlSaveCtxtPtr ret;
 
@@ -1925,7 +1925,7 @@ xmlSaveToBuffer(xmlBufferPtr buffer, const char *encoding, int options)
  * @param options  a set of xmlSaveOptions
  * @returns a new serialization context or NULL in case of error.
  */
-xmlSaveCtxtPtr
+xmlSaveCtxt *
 xmlSaveToIO(xmlOutputWriteCallback iowrite,
             xmlOutputCloseCallback ioclose,
             void *ioctx, const char *encoding, int options)
@@ -1955,7 +1955,7 @@ xmlSaveToIO(xmlOutputWriteCallback iowrite,
  * @returns 0 on success or -1 in case of error.
  */
 long
-xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
+xmlSaveDoc(xmlSaveCtxt *ctxt, xmlDoc *doc)
 {
     long ret = 0;
 
@@ -1975,7 +1975,7 @@ xmlSaveDoc(xmlSaveCtxtPtr ctxt, xmlDocPtr doc)
  * @returns 0 on success or -1 in case of error.
  */
 long
-xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr cur)
+xmlSaveTree(xmlSaveCtxt *ctxt, xmlNode *cur)
 {
     long ret = 0;
 
@@ -2005,7 +2005,7 @@ xmlSaveTree(xmlSaveCtxtPtr ctxt, xmlNodePtr cur)
  * @returns 0 on succes, -1 on error.
  */
 int
-xmlSaveNotationDecl(xmlSaveCtxtPtr ctxt, xmlNotationPtr cur) {
+xmlSaveNotationDecl(xmlSaveCtxt *ctxt, xmlNotation *cur) {
     if (ctxt == NULL)
         return(-1);
     xmlBufDumpNotationDecl(ctxt->buf, cur);
@@ -2020,7 +2020,7 @@ xmlSaveNotationDecl(xmlSaveCtxtPtr ctxt, xmlNotationPtr cur) {
  * @returns 0 on succes, -1 on error.
  */
 int
-xmlSaveNotationTable(xmlSaveCtxtPtr ctxt, xmlNotationTablePtr cur) {
+xmlSaveNotationTable(xmlSaveCtxt *ctxt, xmlNotationTable *cur) {
     if (ctxt == NULL)
         return(-1);
     xmlBufDumpNotationTable(ctxt->buf, cur);
@@ -2035,7 +2035,7 @@ xmlSaveNotationTable(xmlSaveCtxtPtr ctxt, xmlNotationTablePtr cur) {
  * @returns the number of bytes written or -1 in case of error.
  */
 int
-xmlSaveFlush(xmlSaveCtxtPtr ctxt)
+xmlSaveFlush(xmlSaveCtxt *ctxt)
 {
     if (ctxt == NULL) return(-1);
     if (ctxt->buf == NULL) return(-1);
@@ -2050,7 +2050,7 @@ xmlSaveFlush(xmlSaveCtxtPtr ctxt)
  * @returns the number of bytes written or -1 in case of error.
  */
 int
-xmlSaveClose(xmlSaveCtxtPtr ctxt)
+xmlSaveClose(xmlSaveCtxt *ctxt)
 {
     int ret;
 
@@ -2070,7 +2070,7 @@ xmlSaveClose(xmlSaveCtxtPtr ctxt)
  * @returns an xmlParserErrors code.
  */
 xmlParserErrors
-xmlSaveFinish(xmlSaveCtxtPtr ctxt)
+xmlSaveFinish(xmlSaveCtxt *ctxt)
 {
     int ret;
 
@@ -2099,7 +2099,7 @@ xmlSaveFinish(xmlSaveCtxtPtr ctxt)
  * @returns 0 if successful or -1 in case of error.
  */
 int
-xmlSaveSetEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
+xmlSaveSetEscape(xmlSaveCtxt *ctxt, xmlCharEncodingOutputFunc escape)
 {
     if (ctxt == NULL) return(-1);
     ctxt->escape = escape;
@@ -2116,7 +2116,7 @@ xmlSaveSetEscape(xmlSaveCtxtPtr ctxt, xmlCharEncodingOutputFunc escape)
  * @returns 0 if successful or -1 in case of error.
  */
 int
-xmlSaveSetAttrEscape(xmlSaveCtxtPtr ctxt,
+xmlSaveSetAttrEscape(xmlSaveCtxt *ctxt,
                      xmlCharEncodingOutputFunc escape ATTRIBUTE_UNUSED)
 {
     if (ctxt == NULL) return(-1);
@@ -2137,7 +2137,7 @@ xmlSaveSetAttrEscape(xmlSaveCtxtPtr ctxt,
  * @param string  the text content
  */
 void
-xmlBufAttrSerializeTxtContent(xmlOutputBufferPtr buf, xmlDocPtr doc,
+xmlBufAttrSerializeTxtContent(xmlOutputBuffer *buf, xmlDoc *doc,
                               const xmlChar *string)
 {
     int flags = XML_ESCAPE_ATTR;
@@ -2156,8 +2156,8 @@ xmlBufAttrSerializeTxtContent(xmlOutputBufferPtr buf, xmlDocPtr doc,
  * @param string  the text content
  */
 void
-xmlAttrSerializeTxtContent(xmlBufferPtr buf, xmlDocPtr doc,
-                           xmlAttrPtr attr ATTRIBUTE_UNUSED,
+xmlAttrSerializeTxtContent(xmlBuffer *buf, xmlDoc *doc,
+                           xmlAttr *attr ATTRIBUTE_UNUSED,
                            const xmlChar *string)
 {
     xmlOutputBufferPtr out;
@@ -2192,7 +2192,7 @@ xmlAttrSerializeTxtContent(xmlBufferPtr buf, xmlDocPtr doc,
  * @returns the number of bytes written to the buffer or -1 in case of error
  */
 int
-xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
+xmlNodeDump(xmlBuffer *buf, xmlDoc *doc, xmlNode *cur, int level,
             int format)
 {
     xmlBufPtr buffer;
@@ -2234,7 +2234,7 @@ xmlNodeDump(xmlBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
  */
 
 size_t
-xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
+xmlBufNodeDump(xmlBuf *buf, xmlDoc *doc, xmlNode *cur, int level,
             int format)
 {
     size_t use;
@@ -2283,7 +2283,7 @@ xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level,
  * @param cur  the current node
  */
 void
-xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
+xmlElemDump(FILE * f, xmlDoc *doc, xmlNode *cur)
 {
     xmlOutputBufferPtr outbuf;
 
@@ -2329,7 +2329,7 @@ xmlElemDump(FILE * f, xmlDocPtr doc, xmlNodePtr cur)
  * @param encoding  an optional encoding string
  */
 void
-xmlNodeDumpOutput(xmlOutputBufferPtr buf, xmlDocPtr doc, xmlNodePtr cur,
+xmlNodeDumpOutput(xmlOutputBuffer *buf, xmlDoc *doc, xmlNode *cur,
                   int level, int format, const char *encoding)
 {
     xmlSaveCtxt ctxt;
@@ -2424,7 +2424,7 @@ xmlDocDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding,
  */
 
 void
-xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
+xmlDocDumpFormatMemoryEnc(xmlDoc *out_doc, xmlChar **doc_txt_ptr,
 		int * doc_txt_len, const char * txt_encoding,
 		int format) {
     xmlOutputBufferPtr buf = NULL;
@@ -2467,7 +2467,7 @@ xmlDocDumpFormatMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  * @param size  OUT: the memory length
  */
 void
-xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
+xmlDocDumpMemory(xmlDoc *cur, xmlChar**mem, int *size) {
     xmlDocDumpFormatMemoryEnc(cur, mem, size, NULL, 0);
 }
 
@@ -2481,7 +2481,7 @@ xmlDocDumpMemory(xmlDocPtr cur, xmlChar**mem, int *size) {
  * @param format  should formatting spaces been added
  */
 void
-xmlDocDumpFormatMemory(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
+xmlDocDumpFormatMemory(xmlDoc *cur, xmlChar**mem, int *size, int format) {
     xmlDocDumpFormatMemoryEnc(cur, mem, size, NULL, format);
 }
 
@@ -2495,7 +2495,7 @@ xmlDocDumpFormatMemory(xmlDocPtr cur, xmlChar**mem, int *size, int format) {
  */
 
 void
-xmlDocDumpMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
+xmlDocDumpMemoryEnc(xmlDoc *out_doc, xmlChar **doc_txt_ptr,
 	            int * doc_txt_len, const char * txt_encoding) {
     xmlDocDumpFormatMemoryEnc(out_doc, doc_txt_ptr, doc_txt_len,
 	                      txt_encoding, 0);
@@ -2516,7 +2516,7 @@ xmlDocDumpMemoryEnc(xmlDocPtr out_doc, xmlChar **doc_txt_ptr,
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
+xmlDocFormatDump(FILE *f, xmlDoc *cur, int format) {
     xmlOutputBufferPtr buf;
 
     if (cur == NULL) {
@@ -2542,7 +2542,7 @@ xmlDocFormatDump(FILE *f, xmlDocPtr cur, int format) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlDocDump(FILE *f, xmlDocPtr cur) {
+xmlDocDump(FILE *f, xmlDoc *cur) {
     return(xmlDocFormatDump (f, cur, 0));
 }
 
@@ -2557,7 +2557,7 @@ xmlDocDump(FILE *f, xmlDocPtr cur) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
+xmlSaveFileTo(xmlOutputBuffer *buf, xmlDoc *cur, const char *encoding) {
     return(xmlSaveFormatFileTo(buf, cur, encoding, 0));
 }
 
@@ -2581,7 +2581,7 @@ xmlSaveFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur, const char *encoding) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
+xmlSaveFormatFileTo(xmlOutputBuffer *buf, xmlDoc *cur,
                     const char *encoding, int format)
 {
     if (buf == NULL) return(-1);
@@ -2616,7 +2616,7 @@ xmlSaveFormatFileTo(xmlOutputBufferPtr buf, xmlDocPtr cur,
  * @returns the number of bytes written or -1 in case of error.
  */
 int
-xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
+xmlSaveFormatFileEnc( const char * filename, xmlDoc *cur,
 			const char * encoding, int format ) {
     xmlOutputBufferPtr buf;
 
@@ -2647,7 +2647,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDocPtr cur,
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
+xmlSaveFileEnc(const char *filename, xmlDoc *cur, const char *encoding) {
     return ( xmlSaveFormatFileEnc( filename, cur, encoding, 0 ) );
 }
 
@@ -2660,7 +2660,7 @@ xmlSaveFileEnc(const char *filename, xmlDocPtr cur, const char *encoding) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
+xmlSaveFormatFile(const char *filename, xmlDoc *cur, int format) {
     return ( xmlSaveFormatFileEnc( filename, cur, NULL, format ) );
 }
 
@@ -2673,7 +2673,7 @@ xmlSaveFormatFile(const char *filename, xmlDocPtr cur, int format) {
  * @returns the number of bytes written or -1 in case of failure.
  */
 int
-xmlSaveFile(const char *filename, xmlDocPtr cur) {
+xmlSaveFile(const char *filename, xmlDoc *cur) {
     return(xmlSaveFormatFileEnc(filename, cur, NULL, 0));
 }
 

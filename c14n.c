@@ -1815,9 +1815,9 @@ xmlC14NNewCtx(xmlDocPtr doc,
  * @returns non-negative value on success or a negative value on fail
  */
 int
-xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
+xmlC14NExecute(xmlDoc *doc, xmlC14NIsVisibleCallback is_visible_callback,
 	 void* user_data, int mode, xmlChar **inclusive_ns_prefixes,
-	 int with_comments, xmlOutputBufferPtr buf) {
+	 int with_comments, xmlOutputBuffer *buf) {
 
     xmlC14NCtxPtr ctx;
     xmlC14NMode c14n_mode = XML_C14N_1_0;
@@ -1914,9 +1914,9 @@ xmlC14NExecute(xmlDocPtr doc, xmlC14NIsVisibleCallback is_visible_callback,
  * @returns non-negative value on success or a negative value on fail
  */
 int
-xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
+xmlC14NDocSaveTo(xmlDoc *doc, xmlNodeSet *nodes,
                  int mode, xmlChar ** inclusive_ns_prefixes,
-                 int with_comments, xmlOutputBufferPtr buf) {
+                 int with_comments, xmlOutputBuffer *buf) {
     return(xmlC14NExecute(doc,
 			xmlC14NIsNodeInNodeset,
 			nodes,
@@ -1947,7 +1947,7 @@ xmlC14NDocSaveTo(xmlDocPtr doc, xmlNodeSetPtr nodes,
  * @returns the number of bytes written on success or a negative value on fail
  */
 int
-xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
+xmlC14NDocDumpMemory(xmlDoc *doc, xmlNodeSet *nodes,
                      int mode, xmlChar ** inclusive_ns_prefixes,
                      int with_comments, xmlChar ** doc_txt_ptr)
 {
@@ -2015,7 +2015,7 @@ xmlC14NDocDumpMemory(xmlDocPtr doc, xmlNodeSetPtr nodes,
  * @returns the number of bytes written success or a negative value on fail
  */
 int
-xmlC14NDocSave(xmlDocPtr doc, xmlNodeSetPtr nodes,
+xmlC14NDocSave(xmlDoc *doc, xmlNodeSet *nodes,
                int mode, xmlChar ** inclusive_ns_prefixes,
                int with_comments, const char *filename, int compression)
 {

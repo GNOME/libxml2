@@ -37,19 +37,19 @@ typedef enum {
 } xmlModuleOption;
 
 XML_DEPRECATED
-XMLPUBFUN xmlModulePtr xmlModuleOpen	(const char *filename,
+XMLPUBFUN xmlModule *xmlModuleOpen	(const char *filename,
 						 int options);
 
 XML_DEPRECATED
-XMLPUBFUN int xmlModuleSymbol		(xmlModulePtr module,
+XMLPUBFUN int xmlModuleSymbol		(xmlModule *module,
 						 const char* name,
 						 void **result);
 
 XML_DEPRECATED
-XMLPUBFUN int xmlModuleClose		(xmlModulePtr module);
+XMLPUBFUN int xmlModuleClose		(xmlModule *module);
 
 XML_DEPRECATED
-XMLPUBFUN int xmlModuleFree		(xmlModulePtr module);
+XMLPUBFUN int xmlModuleFree		(xmlModule *module);
 
 #ifdef __cplusplus
 }

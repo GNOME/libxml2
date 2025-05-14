@@ -239,26 +239,26 @@ XMLPUBFUN void
 	xmlCleanupCharEncodingHandlers	(void);
 XML_DEPRECATED
 XMLPUBFUN void
-	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandlerPtr handler);
+	xmlRegisterCharEncodingHandler	(xmlCharEncodingHandler *handler);
 XMLPUBFUN xmlParserErrors
 	xmlLookupCharEncodingHandler	(xmlCharEncoding enc,
-					 xmlCharEncodingHandlerPtr *out);
+					 xmlCharEncodingHandler **out);
 XMLPUBFUN xmlParserErrors
 	xmlOpenCharEncodingHandler	(const char *name,
 					 int output,
-					 xmlCharEncodingHandlerPtr *out);
+					 xmlCharEncodingHandler **out);
 XMLPUBFUN xmlParserErrors
 	xmlCreateCharEncodingHandler	(const char *name,
 					 xmlCharEncFlags flags,
 					 xmlCharEncConvImpl impl,
 					 void *implCtxt,
-					 xmlCharEncodingHandlerPtr *out);
-XMLPUBFUN xmlCharEncodingHandlerPtr
+					 xmlCharEncodingHandler **out);
+XMLPUBFUN xmlCharEncodingHandler *
 	xmlGetCharEncodingHandler	(xmlCharEncoding enc);
-XMLPUBFUN xmlCharEncodingHandlerPtr
+XMLPUBFUN xmlCharEncodingHandler *
 	xmlFindCharEncodingHandler	(const char *name);
 XML_DEPRECATED
-XMLPUBFUN xmlCharEncodingHandlerPtr
+XMLPUBFUN xmlCharEncodingHandler *
 	xmlNewCharEncodingHandler	(const char *name,
 					 xmlCharEncodingInputFunc input,
 					 xmlCharEncodingOutputFunc output);

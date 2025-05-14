@@ -254,8 +254,8 @@ xmlXIncludeFreeRef(xmlXIncludeRefPtr ref) {
  * @param doc  an XML Document
  * @returns the new set
  */
-xmlXIncludeCtxtPtr
-xmlXIncludeNewContext(xmlDocPtr doc) {
+xmlXIncludeCtxt *
+xmlXIncludeNewContext(xmlDoc *doc) {
     xmlXIncludeCtxtPtr ret;
 
     if (doc == NULL)
@@ -278,7 +278,7 @@ xmlXIncludeNewContext(xmlDocPtr doc) {
  * @param ctxt  the XInclude context
  */
 void
-xmlXIncludeFreeContext(xmlXIncludeCtxtPtr ctxt) {
+xmlXIncludeFreeContext(xmlXIncludeCtxt *ctxt) {
     int i;
 
     if (ctxt == NULL)
@@ -1972,7 +1972,7 @@ xmlXIncludeDoProcessRoot(xmlXIncludeCtxtPtr ctxt, xmlNodePtr tree) {
  * @returns the last error code.
  */
 int
-xmlXIncludeGetLastError(xmlXIncludeCtxtPtr ctxt) {
+xmlXIncludeGetLastError(xmlXIncludeCtxt *ctxt) {
     if (ctxt == NULL)
         return(XML_ERR_ARGUMENT);
     return(ctxt->errNo);
@@ -1988,7 +1988,7 @@ xmlXIncludeGetLastError(xmlXIncludeCtxtPtr ctxt) {
  * @param data  user data which will be passed to the handler
  */
 void
-xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,
+xmlXIncludeSetErrorHandler(xmlXIncludeCtxt *ctxt,
                            xmlStructuredErrorFunc handler, void *data) {
     if (ctxt == NULL)
         return;
@@ -2006,7 +2006,7 @@ xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,
  * @param data  user data which will be passed to the loader
  */
 void
-xmlXIncludeSetResourceLoader(xmlXIncludeCtxtPtr ctxt,
+xmlXIncludeSetResourceLoader(xmlXIncludeCtxt *ctxt,
                              xmlResourceLoader loader, void *data) {
     if (ctxt == NULL)
         return;
@@ -2022,7 +2022,7 @@ xmlXIncludeSetResourceLoader(xmlXIncludeCtxtPtr ctxt,
  * @returns 0 in case of success and -1 in case of error.
  */
 int
-xmlXIncludeSetFlags(xmlXIncludeCtxtPtr ctxt, int flags) {
+xmlXIncludeSetFlags(xmlXIncludeCtxt *ctxt, int flags) {
     if (ctxt == NULL)
         return(-1);
     ctxt->parseFlags = flags;
@@ -2037,7 +2037,7 @@ xmlXIncludeSetFlags(xmlXIncludeCtxtPtr ctxt, int flags) {
  * @returns 0 in case of success and -1 in case of error.
  */
 int
-xmlXIncludeSetStreamingMode(xmlXIncludeCtxtPtr ctxt, int mode) {
+xmlXIncludeSetStreamingMode(xmlXIncludeCtxt *ctxt, int mode) {
     if (ctxt == NULL)
         return(-1);
     ctxt->isStream = !!mode;
@@ -2056,7 +2056,7 @@ xmlXIncludeSetStreamingMode(xmlXIncludeCtxtPtr ctxt, int mode) {
  */
 
 int
-xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree, int flags, void *data) {
+xmlXIncludeProcessTreeFlagsData(xmlNode *tree, int flags, void *data) {
     xmlXIncludeCtxtPtr ctxt;
     int ret = 0;
 
@@ -2088,7 +2088,7 @@ xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree, int flags, void *data) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcessFlagsData(xmlDocPtr doc, int flags, void *data) {
+xmlXIncludeProcessFlagsData(xmlDoc *doc, int flags, void *data) {
     xmlNodePtr tree;
 
     if (doc == NULL)
@@ -2108,7 +2108,7 @@ xmlXIncludeProcessFlagsData(xmlDocPtr doc, int flags, void *data) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
+xmlXIncludeProcessFlags(xmlDoc *doc, int flags) {
     return xmlXIncludeProcessFlagsData(doc, flags, NULL);
 }
 
@@ -2120,7 +2120,7 @@ xmlXIncludeProcessFlags(xmlDocPtr doc, int flags) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcess(xmlDocPtr doc) {
+xmlXIncludeProcess(xmlDoc *doc) {
     return(xmlXIncludeProcessFlags(doc, 0));
 }
 
@@ -2133,7 +2133,7 @@ xmlXIncludeProcess(xmlDocPtr doc) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcessTreeFlags(xmlNodePtr tree, int flags) {
+xmlXIncludeProcessTreeFlags(xmlNode *tree, int flags) {
     xmlXIncludeCtxtPtr ctxt;
     int ret = 0;
 
@@ -2160,7 +2160,7 @@ xmlXIncludeProcessTreeFlags(xmlNodePtr tree, int flags) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcessTree(xmlNodePtr tree) {
+xmlXIncludeProcessTree(xmlNode *tree) {
     return(xmlXIncludeProcessTreeFlags(tree, 0));
 }
 
@@ -2174,7 +2174,7 @@ xmlXIncludeProcessTree(xmlNodePtr tree) {
  *    or the number of substitutions done.
  */
 int
-xmlXIncludeProcessNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
+xmlXIncludeProcessNode(xmlXIncludeCtxt *ctxt, xmlNode *node) {
     int ret = 0;
 
     if ((node == NULL) || (node->type == XML_NAMESPACE_DECL) ||

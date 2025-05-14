@@ -571,8 +571,8 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
  *           the link, or NULL.
  * @returns the xmlXPathContext just allocated.
  */
-xmlXPathContextPtr
-xmlXPtrNewContext(xmlDocPtr doc, xmlNodePtr here, xmlNodePtr origin) {
+xmlXPathContext *
+xmlXPtrNewContext(xmlDoc *doc, xmlNode *here, xmlNode *origin) {
     xmlXPathContextPtr ret;
     (void) here;
     (void) origin;
@@ -592,8 +592,8 @@ xmlXPtrNewContext(xmlDocPtr doc, xmlNodePtr here, xmlNodePtr origin) {
  * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
-xmlXPathObjectPtr
-xmlXPtrEval(const xmlChar *str, xmlXPathContextPtr ctx) {
+xmlXPathObject *
+xmlXPtrEval(const xmlChar *str, xmlXPathContext *ctx) {
     xmlXPathParserContextPtr ctxt;
     xmlXPathObjectPtr res = NULL, tmp;
     xmlXPathObjectPtr init = NULL;

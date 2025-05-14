@@ -697,7 +697,7 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
  * @param output  the xmlCharEncodingOutputFunc to write that encoding
  * @returns the xmlCharEncodingHandlerPtr created (or NULL in case of error).
  */
-xmlCharEncodingHandlerPtr
+xmlCharEncodingHandler *
 xmlNewCharEncodingHandler(const char *name,
                           xmlCharEncodingInputFunc input,
                           xmlCharEncodingOutputFunc output) {
@@ -867,7 +867,7 @@ xmlCleanupCharEncodingHandlers(void) {
  * @param handler  the xmlCharEncodingHandlerPtr handler block
  */
 void
-xmlRegisterCharEncodingHandler(xmlCharEncodingHandlerPtr handler) {
+xmlRegisterCharEncodingHandler(xmlCharEncodingHandler *handler) {
     if (handler == NULL)
         return;
     if (globalHandlers == NULL) {
@@ -983,7 +983,7 @@ xmlFindExtraHandler(const char *norig, const char *name, xmlCharEncFlags flags,
  */
 xmlParserErrors
 xmlLookupCharEncodingHandler(xmlCharEncoding enc,
-                             xmlCharEncodingHandlerPtr *out) {
+                             xmlCharEncodingHandler **out) {
     const xmlCharEncodingHandler *handler;
 
     if (out == NULL)
@@ -1025,7 +1025,7 @@ xmlLookupCharEncodingHandler(xmlCharEncoding enc,
  * @returns the handler or NULL if no handler was found or an error
  * occurred.
  */
-xmlCharEncodingHandlerPtr
+xmlCharEncodingHandler *
 xmlGetCharEncodingHandler(xmlCharEncoding enc) {
     xmlCharEncodingHandler *ret;
 
@@ -1063,7 +1063,7 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
 xmlParserErrors
 xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
                              xmlCharEncConvImpl impl, void *implCtxt,
-                             xmlCharEncodingHandlerPtr *out) {
+                             xmlCharEncodingHandler **out) {
     const xmlCharEncodingHandler *handler;
     const char *norig, *nalias;
     xmlCharEncoding enc;
@@ -1166,7 +1166,7 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
  */
 xmlParserErrors
 xmlOpenCharEncodingHandler(const char *name, int output,
-                           xmlCharEncodingHandlerPtr *out) {
+                           xmlCharEncodingHandler **out) {
     xmlCharEncFlags flags = output ? XML_ENC_OUTPUT : XML_ENC_INPUT;
 
     return(xmlCreateCharEncodingHandler(name, flags, NULL, NULL, out));
@@ -1183,7 +1183,7 @@ xmlOpenCharEncodingHandler(const char *name, int output,
  * @returns the handler or NULL if no handler was found or an error
  * occurred.
  */
-xmlCharEncodingHandlerPtr
+xmlCharEncodingHandler *
 xmlFindCharEncodingHandler(const char *name) {
     xmlCharEncodingHandler *ret;
     xmlCharEncFlags flags;
@@ -1790,7 +1790,7 @@ xmlCharEncFirstLine(xmlCharEncodingHandler *handler, struct _xmlBuffer *out,
  * @returns an xmlCharEncError code.
  */
 xmlCharEncError
-xmlCharEncInput(xmlParserInputBufferPtr input, size_t *sizeOut, int flush)
+xmlCharEncInput(xmlParserInputBuffer *input, size_t *sizeOut, int flush)
 {
     xmlBufPtr out, in;
     const xmlChar *dataIn;
@@ -1973,7 +1973,7 @@ xmlSerializeDecCharRef(char *buf, int val) {
  * @returns the number of bytes written or an xmlCharEncError code.
  */
 int
-xmlCharEncOutput(xmlOutputBufferPtr output, int init)
+xmlCharEncOutput(xmlOutputBuffer *output, int init)
 {
     int ret;
     size_t written;
@@ -2219,7 +2219,7 @@ xmlCharEncCloseFunc(xmlCharEncodingHandler *handler) {
  *         in case the index could not be computed.
  */
 long
-xmlByteConsumed(xmlParserCtxtPtr ctxt) {
+xmlByteConsumed(xmlParserCtxt *ctxt) {
     xmlParserInputPtr in;
 
     if (ctxt == NULL)

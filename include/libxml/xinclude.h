@@ -75,46 +75,46 @@ typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;
  * standalone processing
  */
 XMLPUBFUN int
-		xmlXIncludeProcess	(xmlDocPtr doc);
+		xmlXIncludeProcess	(xmlDoc *doc);
 XMLPUBFUN int
-		xmlXIncludeProcessFlags	(xmlDocPtr doc,
+		xmlXIncludeProcessFlags	(xmlDoc *doc,
 					 int flags);
 XMLPUBFUN int
-		xmlXIncludeProcessFlagsData(xmlDocPtr doc,
+		xmlXIncludeProcessFlagsData(xmlDoc *doc,
 					 int flags,
 					 void *data);
 XMLPUBFUN int
-                xmlXIncludeProcessTreeFlagsData(xmlNodePtr tree,
+                xmlXIncludeProcessTreeFlagsData(xmlNode *tree,
                                          int flags,
                                          void *data);
 XMLPUBFUN int
-		xmlXIncludeProcessTree	(xmlNodePtr tree);
+		xmlXIncludeProcessTree	(xmlNode *tree);
 XMLPUBFUN int
-		xmlXIncludeProcessTreeFlags(xmlNodePtr tree,
+		xmlXIncludeProcessTreeFlags(xmlNode *tree,
 					 int flags);
 /*
  * contextual processing
  */
-XMLPUBFUN xmlXIncludeCtxtPtr
-		xmlXIncludeNewContext	(xmlDocPtr doc);
+XMLPUBFUN xmlXIncludeCtxt *
+		xmlXIncludeNewContext	(xmlDoc *doc);
 XMLPUBFUN int
-		xmlXIncludeSetFlags	(xmlXIncludeCtxtPtr ctxt,
+		xmlXIncludeSetFlags	(xmlXIncludeCtxt *ctxt,
 					 int flags);
 XMLPUBFUN void
-		xmlXIncludeSetErrorHandler(xmlXIncludeCtxtPtr ctxt,
+		xmlXIncludeSetErrorHandler(xmlXIncludeCtxt *ctxt,
 					 xmlStructuredErrorFunc handler,
 					 void *data);
 XMLPUBFUN void
-		xmlXIncludeSetResourceLoader(xmlXIncludeCtxtPtr ctxt,
+		xmlXIncludeSetResourceLoader(xmlXIncludeCtxt *ctxt,
 					 xmlResourceLoader loader,
 					 void *data);
 XMLPUBFUN int
-		xmlXIncludeGetLastError	(xmlXIncludeCtxtPtr ctxt);
+		xmlXIncludeGetLastError	(xmlXIncludeCtxt *ctxt);
 XMLPUBFUN void
-		xmlXIncludeFreeContext	(xmlXIncludeCtxtPtr ctxt);
+		xmlXIncludeFreeContext	(xmlXIncludeCtxt *ctxt);
 XMLPUBFUN int
-		xmlXIncludeProcessNode	(xmlXIncludeCtxtPtr ctxt,
-					 xmlNodePtr tree);
+		xmlXIncludeProcessNode	(xmlXIncludeCtxt *ctxt,
+					 xmlNode *tree);
 #ifdef __cplusplus
 }
 #endif

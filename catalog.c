@@ -410,7 +410,7 @@ xmlCreateNewCatalog(xmlCatalogType type, xmlCatalogPrefer prefer) {
  * @param catal  a Catalog
  */
 void
-xmlFreeCatalog(xmlCatalogPtr catal) {
+xmlFreeCatalog(xmlCatalog *catal) {
     if (catal == NULL)
 	return;
     if (catal->xml != NULL)
@@ -765,7 +765,7 @@ xmlCatalogConvertEntry(void *payload, void *data,
  * @returns the number of entries converted if successful, -1 otherwise
  */
 int
-xmlConvertSGMLCatalog(xmlCatalogPtr catal) {
+xmlConvertSGMLCatalog(xmlCatalog *catal) {
 
     if ((catal == NULL) || (catal->type != XML_SGML_CATALOG_TYPE))
 	return(-1);
@@ -857,7 +857,7 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
  * @returns the resulting document tree or NULL in case of error
  */
 
-xmlDocPtr
+xmlDoc *
 xmlParseCatalogFile(const char *filename) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
@@ -2544,7 +2544,7 @@ xmlCatalogSGMLResolve(xmlCatalogPtr catal, const xmlChar *pubID,
  * @param filename  a file path
  * @returns the catalog parsed or NULL in case of error
  */
-xmlCatalogPtr
+xmlCatalog *
 xmlLoadSGMLSuperCatalog(const char *filename)
 {
     xmlChar *content;
@@ -2579,7 +2579,7 @@ xmlLoadSGMLSuperCatalog(const char *filename)
  * @param filename  a file path
  * @returns the catalog parsed or NULL in case of error
  */
-xmlCatalogPtr
+xmlCatalog *
 xmlLoadACatalog(const char *filename)
 {
     xmlChar *content;
@@ -2679,7 +2679,7 @@ xmlExpandCatalog(xmlCatalogPtr catal, const char *filename)
  *      must be freed by the caller.
  */
 xmlChar *
-xmlACatalogResolveSystem(xmlCatalogPtr catal, const xmlChar *sysID) {
+xmlACatalogResolveSystem(xmlCatalog *catal, const xmlChar *sysID) {
     xmlChar *ret = NULL;
 
     if ((sysID == NULL) || (catal == NULL))
@@ -2712,7 +2712,7 @@ xmlACatalogResolveSystem(xmlCatalogPtr catal, const xmlChar *sysID) {
  *      must be freed by the caller.
  */
 xmlChar *
-xmlACatalogResolvePublic(xmlCatalogPtr catal, const xmlChar *pubID) {
+xmlACatalogResolvePublic(xmlCatalog *catal, const xmlChar *pubID) {
     xmlChar *ret = NULL;
 
     if ((pubID == NULL) || (catal == NULL))
@@ -2746,7 +2746,7 @@ xmlACatalogResolvePublic(xmlCatalogPtr catal, const xmlChar *pubID) {
  *      by the caller.
  */
 xmlChar *
-xmlACatalogResolve(xmlCatalogPtr catal, const xmlChar * pubID,
+xmlACatalogResolve(xmlCatalog *catal, const xmlChar * pubID,
                    const xmlChar * sysID)
 {
     xmlChar *ret = NULL;
@@ -2790,7 +2790,7 @@ xmlACatalogResolve(xmlCatalogPtr catal, const xmlChar * pubID,
  *      by the caller.
  */
 xmlChar *
-xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
+xmlACatalogResolveURI(xmlCatalog *catal, const xmlChar *URI) {
     xmlChar *ret = NULL;
 
     if ((URI == NULL) || (catal == NULL))
@@ -2822,7 +2822,7 @@ xmlACatalogResolveURI(xmlCatalogPtr catal, const xmlChar *URI) {
  * @param out  the file.
  */
 void
-xmlACatalogDump(xmlCatalogPtr catal, FILE *out) {
+xmlACatalogDump(xmlCatalog *catal, FILE *out) {
     if ((out == NULL) || (catal == NULL))
 	return;
 
@@ -2845,7 +2845,7 @@ xmlACatalogDump(xmlCatalogPtr catal, FILE *out) {
  * @returns 0 if successful, -1 otherwise
  */
 int
-xmlACatalogAdd(xmlCatalogPtr catal, const xmlChar * type,
+xmlACatalogAdd(xmlCatalog *catal, const xmlChar * type,
               const xmlChar * orig, const xmlChar * replace)
 {
     int res = -1;
@@ -2882,7 +2882,7 @@ xmlACatalogAdd(xmlCatalogPtr catal, const xmlChar * type,
  * @returns the number of entries removed if successful, -1 otherwise
  */
 int
-xmlACatalogRemove(xmlCatalogPtr catal, const xmlChar *value) {
+xmlACatalogRemove(xmlCatalog *catal, const xmlChar *value) {
     int res = -1;
 
     if ((catal == NULL) || (value == NULL))
@@ -2904,7 +2904,7 @@ xmlACatalogRemove(xmlCatalogPtr catal, const xmlChar *value) {
  * @param sgml  should this create an SGML catalog
  * @returns the xmlCatalogPtr or NULL in case of error
  */
-xmlCatalogPtr
+xmlCatalog *
 xmlNewCatalog(int sgml) {
     xmlCatalogPtr catal = NULL;
 
@@ -2926,7 +2926,7 @@ xmlNewCatalog(int sgml) {
  * @returns 1 if the catalog is empty, 0 if not, amd -1 in case of error.
  */
 int
-xmlCatalogIsEmpty(xmlCatalogPtr catal) {
+xmlCatalogIsEmpty(xmlCatalog *catal) {
     if (catal == NULL)
 	return(-1);
 

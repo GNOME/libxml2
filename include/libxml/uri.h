@@ -48,12 +48,7 @@ struct _xmlURI {
     char *query_raw;	/* the query string (as it appears in the URI) */
 };
 
-/*
- * This function is in tree.h:
- * xmlChar *	xmlNodeGetBase	(xmlDocPtr doc,
- *                               xmlNodePtr cur);
- */
-XMLPUBFUN xmlURIPtr
+XMLPUBFUN xmlURI *
 		xmlCreateURI		(void);
 XMLPUBFUN int
 		xmlBuildURISafe		(const xmlChar *URI,
@@ -69,22 +64,22 @@ XMLPUBFUN int
 XMLPUBFUN xmlChar *
 		xmlBuildRelativeURI	(const xmlChar *URI,
 					 const xmlChar *base);
-XMLPUBFUN xmlURIPtr
+XMLPUBFUN xmlURI *
 		xmlParseURI		(const char *str);
 XMLPUBFUN int
 		xmlParseURISafe		(const char *str,
-					 xmlURIPtr *uri);
-XMLPUBFUN xmlURIPtr
+					 xmlURI **uri);
+XMLPUBFUN xmlURI *
 		xmlParseURIRaw		(const char *str,
 					 int raw);
 XMLPUBFUN int
-		xmlParseURIReference	(xmlURIPtr uri,
+		xmlParseURIReference	(xmlURI *uri,
 					 const char *str);
 XMLPUBFUN xmlChar *
-		xmlSaveUri		(xmlURIPtr uri);
+		xmlSaveUri		(xmlURI *uri);
 XMLPUBFUN void
 		xmlPrintURI		(FILE *stream,
-					 xmlURIPtr uri);
+					 xmlURI *uri);
 XMLPUBFUN xmlChar *
 		xmlURIEscapeStr         (const xmlChar *str,
 					 const xmlChar *list);
@@ -97,7 +92,7 @@ XMLPUBFUN int
 XMLPUBFUN xmlChar *
 		xmlURIEscape		(const xmlChar *str);
 XMLPUBFUN void
-		xmlFreeURI		(xmlURIPtr uri);
+		xmlFreeURI		(xmlURI *uri);
 XMLPUBFUN xmlChar*
 		xmlCanonicPath		(const xmlChar *path);
 XMLPUBFUN xmlChar*

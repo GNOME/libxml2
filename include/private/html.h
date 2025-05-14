@@ -22,14 +22,14 @@ typedef struct {
     size_t size;
 } htmlMetaEncodingOffsets;
 
-XML_HIDDEN xmlNodePtr
-htmlCtxtParseContentInternal(xmlParserCtxtPtr ctxt, xmlParserInputPtr input);
+XML_HIDDEN xmlNode *
+htmlCtxtParseContentInternal(xmlParserCtxt *ctxt, xmlParserInput *input);
 
 XML_HIDDEN int
 htmlParseContentType(const xmlChar *val, htmlMetaEncodingOffsets *off);
 
 XML_HIDDEN void
-htmlNodeDumpInternal(xmlOutputBufferPtr buf, xmlNodePtr cur,
+htmlNodeDumpInternal(xmlOutputBuffer *buf, xmlNode *cur,
                      const char *encoding, int format);
 
 #endif /* LIBXML_HTML_ENABLED */

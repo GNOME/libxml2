@@ -80,7 +80,7 @@ static xmlEntity xmlEntityApos = {
  * @param entity  an entity
  */
 void
-xmlFreeEntity(xmlEntityPtr entity)
+xmlFreeEntity(xmlEntity *entity)
 {
     xmlDictPtr dict = NULL;
 
@@ -182,9 +182,9 @@ error:
  * @returns an xmlParserErrors error code.
  */
 int
-xmlAddEntity(xmlDocPtr doc, int extSubset, const xmlChar *name, int type,
+xmlAddEntity(xmlDoc *doc, int extSubset, const xmlChar *name, int type,
 	  const xmlChar *ExternalID, const xmlChar *SystemID,
-	  const xmlChar *content, xmlEntityPtr *out) {
+	  const xmlChar *content, xmlEntity **out) {
     xmlDtdPtr dtd;
     xmlDictPtr dict = NULL;
     xmlEntitiesTablePtr table = NULL;
@@ -301,7 +301,7 @@ xmlAddEntity(xmlDocPtr doc, int extSubset, const xmlChar *name, int type,
  * @param name  the entity name
  * @returns the entity, or NULL if not found.
  */
-xmlEntityPtr
+xmlEntity *
 xmlGetPredefinedEntity(const xmlChar *name) {
     if (name == NULL) return(NULL);
     switch (name[0]) {
@@ -342,8 +342,8 @@ xmlGetPredefinedEntity(const xmlChar *name) {
  * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
-xmlEntityPtr
-xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
+xmlEntity *
+xmlAddDtdEntity(xmlDoc *doc, const xmlChar *name, int type,
 	        const xmlChar *ExternalID, const xmlChar *SystemID,
 		const xmlChar *content) {
     xmlEntityPtr ret;
@@ -365,8 +365,8 @@ xmlAddDtdEntity(xmlDocPtr doc, const xmlChar *name, int type,
  * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
-xmlEntityPtr
-xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
+xmlEntity *
+xmlAddDocEntity(xmlDoc *doc, const xmlChar *name, int type,
 	        const xmlChar *ExternalID, const xmlChar *SystemID,
 	        const xmlChar *content) {
     xmlEntityPtr ret;
@@ -391,8 +391,8 @@ xmlAddDocEntity(xmlDocPtr doc, const xmlChar *name, int type,
  * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
-xmlEntityPtr
-xmlNewEntity(xmlDocPtr doc, const xmlChar *name, int type,
+xmlEntity *
+xmlNewEntity(xmlDoc *doc, const xmlChar *name, int type,
 	     const xmlChar *ExternalID, const xmlChar *SystemID,
 	     const xmlChar *content) {
     if ((doc != NULL) && (doc->intSubset != NULL)) {
@@ -423,8 +423,8 @@ xmlGetEntityFromTable(xmlEntitiesTablePtr table, const xmlChar *name) {
  * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
-xmlEntityPtr
-xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
+xmlEntity *
+xmlGetParameterEntity(xmlDoc *doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
     xmlEntityPtr ret;
 
@@ -450,8 +450,8 @@ xmlGetParameterEntity(xmlDocPtr doc, const xmlChar *name) {
  * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
-xmlEntityPtr
-xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
+xmlEntity *
+xmlGetDtdEntity(xmlDoc *doc, const xmlChar *name) {
     xmlEntitiesTablePtr table;
 
     if (doc == NULL)
@@ -471,7 +471,7 @@ xmlGetDtdEntity(xmlDocPtr doc, const xmlChar *name) {
  * @param name  the entity name
  * @returns a pointer to the entity or NULL if not found.
  */
-xmlEntityPtr
+xmlEntity *
 xmlGetDocEntity(const xmlDoc *doc, const xmlChar *name) {
     xmlEntityPtr cur;
     xmlEntitiesTablePtr table;
@@ -518,7 +518,7 @@ xmlGetDocEntity(const xmlDoc *doc, const xmlChar *name) {
  * @returns a newly allocated string with substitutions.
  */
 xmlChar *
-xmlEncodeEntitiesReentrant(xmlDocPtr doc, const xmlChar *input) {
+xmlEncodeEntitiesReentrant(xmlDoc *doc, const xmlChar *input) {
     int flags = 0;
 
     if (input == NULL)
@@ -557,7 +557,7 @@ xmlEncodeSpecialChars(const xmlDoc *doc ATTRIBUTE_UNUSED,
  *
  * @returns the xmlEntitiesTablePtr just created or NULL in case of error.
  */
-xmlEntitiesTablePtr
+xmlEntitiesTable *
 xmlCreateEntitiesTable(void) {
     return((xmlEntitiesTablePtr) xmlHashCreate(0));
 }
@@ -580,7 +580,7 @@ xmlFreeEntityWrapper(void *entity, const xmlChar *name ATTRIBUTE_UNUSED) {
  * @param table  An entity table
  */
 void
-xmlFreeEntitiesTable(xmlEntitiesTablePtr table) {
+xmlFreeEntitiesTable(xmlEntitiesTable *table) {
     xmlHashFree(table, xmlFreeEntityWrapper);
 }
 
@@ -646,8 +646,8 @@ error:
  * @param table  An entity table
  * @returns the new xmlEntitiesTablePtr or NULL in case of error.
  */
-xmlEntitiesTablePtr
-xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
+xmlEntitiesTable *
+xmlCopyEntitiesTable(xmlEntitiesTable *table) {
     return(xmlHashCopySafe(table, xmlCopyEntity, xmlFreeEntityWrapper));
 }
 
@@ -661,7 +661,7 @@ xmlCopyEntitiesTable(xmlEntitiesTablePtr table) {
  * @param ent  An entity table
  */
 void
-xmlDumpEntityDecl(xmlBufferPtr buf, xmlEntityPtr ent) {
+xmlDumpEntityDecl(xmlBuffer *buf, xmlEntity *ent) {
     xmlSaveCtxtPtr save;
 
     if ((buf == NULL) || (ent == NULL))
@@ -695,7 +695,7 @@ xmlDumpEntityDeclScan(void *ent, void *save,
  * @param table  An entity table
  */
 void
-xmlDumpEntitiesTable(xmlBufferPtr buf, xmlEntitiesTablePtr table) {
+xmlDumpEntitiesTable(xmlBuffer *buf, xmlEntitiesTable *table) {
     xmlSaveCtxtPtr save;
 
     if ((buf == NULL) || (table == NULL))

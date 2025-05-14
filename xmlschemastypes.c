@@ -885,7 +885,7 @@ xmlSchemaCleanupTypes(void) {
  * 0 otherwise and -1 in case the type is not a built-in type.
  */
 int
-xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, int facetType)
+xmlSchemaIsBuiltInTypeFacet(xmlSchemaType *type, int facetType)
 {
     if (type == NULL)
 	return (-1);
@@ -960,7 +960,7 @@ xmlSchemaIsBuiltInTypeFacet(xmlSchemaTypePtr type, int facetType)
  * @param type  the type of the built in type
  * @returns the type if found, NULL otherwise.
  */
-xmlSchemaTypePtr
+xmlSchemaType *
 xmlSchemaGetBuiltInType(xmlSchemaValType type)
 {
     if ((xmlSchemaTypesInitialized == 0) &&
@@ -1073,7 +1073,7 @@ xmlSchemaGetBuiltInType(xmlSchemaValType type)
  * @returns 0 if succeeded and -1 on API errors.
  */
 int
-xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
+xmlSchemaValueAppend(xmlSchemaVal *prev, xmlSchemaVal *cur) {
 
     if ((prev == NULL) || (cur == NULL))
 	return (-1);
@@ -1088,8 +1088,8 @@ xmlSchemaValueAppend(xmlSchemaValPtr prev, xmlSchemaValPtr cur) {
  * @returns the next value or NULL if there was none, or on
  *         API errors.
  */
-xmlSchemaValPtr
-xmlSchemaValueGetNext(xmlSchemaValPtr cur) {
+xmlSchemaVal *
+xmlSchemaValueGetNext(xmlSchemaVal *cur) {
 
     if (cur == NULL)
 	return (NULL);
@@ -1104,7 +1104,7 @@ xmlSchemaValueGetNext(xmlSchemaValPtr cur) {
  *         API errors.
  */
 const xmlChar *
-xmlSchemaValueGetAsString(xmlSchemaValPtr val)
+xmlSchemaValueGetAsString(xmlSchemaVal *val)
 {
     if (val == NULL)
 	return (NULL);
@@ -1135,7 +1135,7 @@ xmlSchemaValueGetAsString(xmlSchemaValPtr val)
  * @returns 1 if true and 0 if false, or in case of an error. Hmm.
  */
 int
-xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
+xmlSchemaValueGetAsBoolean(xmlSchemaVal *val)
 {
     if ((val == NULL) || (val->type != XML_SCHEMAS_BOOLEAN))
 	return (0);
@@ -1153,7 +1153,7 @@ xmlSchemaValueGetAsBoolean(xmlSchemaValPtr val)
  * @param value  the value
  * @returns a pointer to the new value or NULL in case of error
  */
-xmlSchemaValPtr
+xmlSchemaVal *
 xmlSchemaNewStringValue(xmlSchemaValType type,
 			const xmlChar *value)
 {
@@ -1179,7 +1179,7 @@ xmlSchemaNewStringValue(xmlSchemaValType type,
  * @param ns  the notation namespace name or NULL
  * @returns a pointer to the new value or NULL in case of error
  */
-xmlSchemaValPtr
+xmlSchemaVal *
 xmlSchemaNewNOTATIONValue(const xmlChar *name,
 			  const xmlChar *ns)
 {
@@ -1203,7 +1203,7 @@ xmlSchemaNewNOTATIONValue(const xmlChar *name,
  * @param localName  the local name
  * @returns a pointer to the new value or NULL in case of an error.
  */
-xmlSchemaValPtr
+xmlSchemaVal *
 xmlSchemaNewQNameValue(const xmlChar *namespaceName,
 		       const xmlChar *localName)
 {
@@ -1224,7 +1224,7 @@ xmlSchemaNewQNameValue(const xmlChar *namespaceName,
  * @param value  the value to free
  */
 void
-xmlSchemaFreeValue(xmlSchemaValPtr value) {
+xmlSchemaFreeValue(xmlSchemaVal *value) {
     xmlSchemaValPtr prev;
 
     while (value != NULL) {
@@ -1295,7 +1295,7 @@ xmlSchemaFreeValue(xmlSchemaValPtr value) {
  * @param ns  the URI of the namespace usually "http://www.w3.org/2001/XMLSchema"
  * @returns the type if found, NULL otherwise
  */
-xmlSchemaTypePtr
+xmlSchemaType *
 xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
     if ((xmlSchemaTypesInitialized == 0) &&
 	(xmlSchemaInitTypes() < 0))
@@ -1312,8 +1312,8 @@ xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
  * @returns the item type of `type` as defined by the built-in datatype
  * hierarchy of XML Schema Part 2: Datatypes, or NULL in case of an error.
  */
-xmlSchemaTypePtr
-xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaTypePtr type)
+xmlSchemaType *
+xmlSchemaGetBuiltInListSimpleTypeItemType(xmlSchemaType *type)
 {
     if ((type == NULL) || (type->type != XML_SCHEMA_TYPE_BASIC))
 	return (NULL);
@@ -3586,8 +3586,8 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
  *         and -1 in case of internal or API error.
  */
 int
-xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
-	                   xmlSchemaValPtr *val, xmlNodePtr node) {
+xmlSchemaValPredefTypeNode(xmlSchemaType *type, const xmlChar *value,
+	                   xmlSchemaVal **val, xmlNode *node) {
     return(xmlSchemaValAtomicType(type, value, val, node, 0,
 	XML_SCHEMA_WHITESPACE_UNKNOWN, 1, 1, 0));
 }
@@ -3605,8 +3605,8 @@ xmlSchemaValPredefTypeNode(xmlSchemaTypePtr type, const xmlChar *value,
  *         and -1 in case of internal or API error.
  */
 int
-xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, const xmlChar *value,
-				 xmlSchemaValPtr *val, xmlNodePtr node) {
+xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaType *type, const xmlChar *value,
+				 xmlSchemaVal **val, xmlNode *node) {
     return(xmlSchemaValAtomicType(type, value, val, node, 1,
 	XML_SCHEMA_WHITESPACE_UNKNOWN, 1, 0, 1));
 }
@@ -3622,8 +3622,8 @@ xmlSchemaValPredefTypeNodeNoNorm(xmlSchemaTypePtr type, const xmlChar *value,
  *         and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidatePredefinedType(xmlSchemaTypePtr type, const xmlChar *value,
-	                        xmlSchemaValPtr *val) {
+xmlSchemaValidatePredefinedType(xmlSchemaType *type, const xmlChar *value,
+	                        xmlSchemaVal **val) {
     return(xmlSchemaValPredefTypeNode(type, value, val, NULL));
 }
 
@@ -3774,8 +3774,8 @@ xmlSchemaDupVal (xmlSchemaValPtr v)
  * @param val  the precomputed value to be copied
  * @returns the copy or NULL if a copy for a data-type is not implemented.
  */
-xmlSchemaValPtr
-xmlSchemaCopyValue(xmlSchemaValPtr val)
+xmlSchemaVal *
+xmlSchemaCopyValue(xmlSchemaVal *val)
 {
     xmlSchemaValPtr ret = NULL, prev = NULL, cur;
 
@@ -5057,7 +5057,7 @@ xmlSchemaCompareValuesInternal(xmlSchemaValType xtype,
  * case of error
  */
 int
-xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
+xmlSchemaCompareValues(xmlSchemaVal *x, xmlSchemaVal *y) {
     xmlSchemaWhitespaceValueType xws, yws;
 
     if ((x == NULL) || (y == NULL))
@@ -5091,9 +5091,9 @@ xmlSchemaCompareValues(xmlSchemaValPtr x, xmlSchemaValPtr y) {
  * case of error
  */
 int
-xmlSchemaCompareValuesWhtsp(xmlSchemaValPtr x,
+xmlSchemaCompareValuesWhtsp(xmlSchemaVal *x,
 			    xmlSchemaWhitespaceValueType xws,
-			    xmlSchemaValPtr y,
+			    xmlSchemaVal *y,
 			    xmlSchemaWhitespaceValueType yws)
 {
     if ((x == NULL) || (y == NULL))
@@ -5181,7 +5181,7 @@ xmlSchemaNormLen(const xmlChar *value) {
  * @returns the value as a long
  */
 unsigned long
-xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
+xmlSchemaGetFacetValueAsULong(xmlSchemaFacet *facet)
 {
     /*
     * TODO: Check if this is a decimal.
@@ -5203,7 +5203,7 @@ xmlSchemaGetFacetValueAsULong(xmlSchemaFacetPtr facet)
  * number otherwise and -1 in case of an internal error.
  */
 int
-xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacetPtr facet,
+xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacet *facet,
 				     const xmlChar *value,
 				     unsigned long actualLen,
 				     unsigned long *expectedLen)
@@ -5370,10 +5370,10 @@ xmlSchemaValidateLengthFacetInternal(xmlSchemaFacetPtr facet,
  * otherwise and -1 in case of an internal or API error.
  */
 int
-xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type,
-			     xmlSchemaFacetPtr facet,
+xmlSchemaValidateLengthFacet(xmlSchemaType *type,
+			     xmlSchemaFacet *facet,
 			     const xmlChar *value,
-			     xmlSchemaValPtr val,
+			     xmlSchemaVal *val,
 			     unsigned long *length)
 {
     if (type == NULL)
@@ -5397,10 +5397,10 @@ xmlSchemaValidateLengthFacet(xmlSchemaTypePtr type,
  * otherwise and -1 in case of an internal or API error.
  */
 int
-xmlSchemaValidateLengthFacetWhtsp(xmlSchemaFacetPtr facet,
+xmlSchemaValidateLengthFacetWhtsp(xmlSchemaFacet *facet,
 				  xmlSchemaValType valType,
 				  const xmlChar *value,
-				  xmlSchemaValPtr val,
+				  xmlSchemaVal *val,
 				  unsigned long *length,
 				  xmlSchemaWhitespaceValueType ws)
 {
@@ -5653,10 +5653,10 @@ xmlSchemaValidateFacetInternal(xmlSchemaFacetPtr facet,
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateFacet(xmlSchemaTypePtr base,
-	               xmlSchemaFacetPtr facet,
+xmlSchemaValidateFacet(xmlSchemaType *base,
+	               xmlSchemaFacet *facet,
 	               const xmlChar *value,
-		       xmlSchemaValPtr val)
+		       xmlSchemaVal *val)
 {
     /*
     * This tries to ensure API compatibility regarding the old
@@ -5690,11 +5690,11 @@ xmlSchemaValidateFacet(xmlSchemaTypePtr base,
  *     number otherwise and -1 in case of internal or API error.
  */
 int
-xmlSchemaValidateFacetWhtsp(xmlSchemaFacetPtr facet,
+xmlSchemaValidateFacetWhtsp(xmlSchemaFacet *facet,
 			    xmlSchemaWhitespaceValueType fws,
 			    xmlSchemaValType valType,
 			    const xmlChar *value,
-			    xmlSchemaValPtr val,
+			    xmlSchemaVal *val,
 			    xmlSchemaWhitespaceValueType ws)
 {
      return(xmlSchemaValidateFacetInternal(facet, fws, valType,
@@ -5719,7 +5719,7 @@ xmlSchemaValidateFacetWhtsp(xmlSchemaFacetPtr facet,
  * not supported yet and -1 in case of API errors.
  */
 int
-xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
+xmlSchemaGetCanonValue(xmlSchemaVal *val, const xmlChar **retValue)
 {
     if ((retValue == NULL) || (val == NULL))
 	return (-1);
@@ -6049,7 +6049,7 @@ xmlSchemaGetCanonValue(xmlSchemaValPtr val, const xmlChar **retValue)
  * not supported yet and -1 in case of API errors.
  */
 int
-xmlSchemaGetCanonValueWhtsp(xmlSchemaValPtr val,
+xmlSchemaGetCanonValueWhtsp(xmlSchemaVal *val,
 			    const xmlChar **retValue,
 			    xmlSchemaWhitespaceValueType ws)
 {
@@ -6096,7 +6096,7 @@ xmlSchemaGetCanonValueWhtsp(xmlSchemaValPtr val,
  * @returns the xmlSchemaValType of the value
  */
 xmlSchemaValType
-xmlSchemaGetValType(xmlSchemaValPtr val)
+xmlSchemaGetValType(xmlSchemaVal *val)
 {
     if (val == NULL)
         return(XML_SCHEMAS_UNKNOWN);

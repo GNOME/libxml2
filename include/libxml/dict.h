@@ -37,40 +37,40 @@ XMLPUBFUN int  xmlInitializeDict(void);
 /*
  * Constructor and destructor.
  */
-XMLPUBFUN xmlDictPtr
+XMLPUBFUN xmlDict *
 			xmlDictCreate	(void);
 XMLPUBFUN size_t
-			xmlDictSetLimit	(xmlDictPtr dict,
+			xmlDictSetLimit	(xmlDict *dict,
                                          size_t limit);
 XMLPUBFUN size_t
-			xmlDictGetUsage (xmlDictPtr dict);
-XMLPUBFUN xmlDictPtr
-			xmlDictCreateSub(xmlDictPtr sub);
+			xmlDictGetUsage (xmlDict *dict);
+XMLPUBFUN xmlDict *
+			xmlDictCreateSub(xmlDict *sub);
 XMLPUBFUN int
-			xmlDictReference(xmlDictPtr dict);
+			xmlDictReference(xmlDict *dict);
 XMLPUBFUN void
-			xmlDictFree	(xmlDictPtr dict);
+			xmlDictFree	(xmlDict *dict);
 
 /*
  * Lookup of entry in the dictionary.
  */
 XMLPUBFUN const xmlChar *
-			xmlDictLookup	(xmlDictPtr dict,
+			xmlDictLookup	(xmlDict *dict,
 		                         const xmlChar *name,
 		                         int len);
 XMLPUBFUN const xmlChar *
-			xmlDictExists	(xmlDictPtr dict,
+			xmlDictExists	(xmlDict *dict,
 		                         const xmlChar *name,
 		                         int len);
 XMLPUBFUN const xmlChar *
-			xmlDictQLookup	(xmlDictPtr dict,
+			xmlDictQLookup	(xmlDict *dict,
 		                         const xmlChar *prefix,
 		                         const xmlChar *name);
 XMLPUBFUN int
-			xmlDictOwns	(xmlDictPtr dict,
+			xmlDictOwns	(xmlDict *dict,
 					 const xmlChar *str);
 XMLPUBFUN int
-			xmlDictSize	(xmlDictPtr dict);
+			xmlDictSize	(xmlDict *dict);
 
 /*
  * Cleanup function

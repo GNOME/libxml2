@@ -1065,7 +1065,7 @@ xmllintShellReadline(char *prompt) {
  * @param output  the output FILE*, defaults to stdout if NULL
  */
 void
-xmllintShell(xmlDocPtr doc, const char *filename, FILE * output)
+xmllintShell(xmlDoc *doc, const char *filename, FILE * output)
 {
     char prompt[500] = "/ > ";
     char *cmdline = NULL, *cur;

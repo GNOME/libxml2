@@ -959,7 +959,7 @@ xmlParse3986URIReference(xmlURIPtr uri, const char *str) {
  * or -1 if a memory allocation failed.
  */
 int
-xmlParseURISafe(const char *str, xmlURIPtr *uriOut) {
+xmlParseURISafe(const char *str, xmlURI **uriOut) {
     xmlURIPtr uri;
     int ret;
 
@@ -991,7 +991,7 @@ xmlParseURISafe(const char *str, xmlURIPtr *uriOut) {
  * @param str  the URI string to analyze
  * @returns a newly built xmlURIPtr or NULL in case of error
  */
-xmlURIPtr
+xmlURI *
 xmlParseURI(const char *str) {
     xmlURIPtr uri;
     xmlParseURISafe(str, &uri);
@@ -1009,7 +1009,7 @@ xmlParseURI(const char *str) {
  * @returns 0 or the error code
  */
 int
-xmlParseURIReference(xmlURIPtr uri, const char *str) {
+xmlParseURIReference(xmlURI *uri, const char *str) {
     return(xmlParse3986URIReference(uri, str));
 }
 
@@ -1022,7 +1022,7 @@ xmlParseURIReference(xmlURIPtr uri, const char *str) {
  * @param raw  if 1 unescaping of URI pieces are disabled
  * @returns a newly built xmlURIPtr or NULL in case of error
  */
-xmlURIPtr
+xmlURI *
 xmlParseURIRaw(const char *str, int raw) {
     xmlURIPtr uri;
     int ret;
@@ -1054,7 +1054,7 @@ xmlParseURIRaw(const char *str, int raw) {
  *
  * @returns the new structure or NULL in case of error
  */
-xmlURIPtr
+xmlURI *
 xmlCreateURI(void) {
     xmlURIPtr ret;
 
@@ -1092,7 +1092,7 @@ xmlSaveUriRealloc(xmlChar *ret, int *max) {
  * @returns a new string (to be deallocated by caller)
  */
 xmlChar *
-xmlSaveUri(xmlURIPtr uri) {
+xmlSaveUri(xmlURI *uri) {
     xmlChar *ret = NULL;
     xmlChar *temp;
     const char *p;
@@ -1364,7 +1364,7 @@ mem_error:
  * @param uri  pointer to an xmlURI
  */
 void
-xmlPrintURI(FILE *stream, xmlURIPtr uri) {
+xmlPrintURI(FILE *stream, xmlURI *uri) {
     xmlChar *out;
 
     out = xmlSaveUri(uri);
@@ -1409,7 +1409,7 @@ xmlCleanURI(xmlURIPtr uri) {
  * @param uri  pointer to an xmlURI
  */
 void
-xmlFreeURI(xmlURIPtr uri) {
+xmlFreeURI(xmlURI *uri) {
     if (uri == NULL) return;
 
     if (uri->scheme != NULL) xmlFree(uri->scheme);

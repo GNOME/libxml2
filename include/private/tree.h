@@ -5,17 +5,17 @@ XML_HIDDEN extern int
 xmlRegisterCallbacks;
 
 XML_HIDDEN int
-xmlSearchNsSafe(xmlNodePtr node, const xmlChar *href, xmlNsPtr *out);
+xmlSearchNsSafe(xmlNode *node, const xmlChar *href, xmlNs **out);
 XML_HIDDEN int
-xmlSearchNsByHrefSafe(xmlNodePtr node, const xmlChar *href, xmlNsPtr *out);
+xmlSearchNsByHrefSafe(xmlNode *node, const xmlChar *href, xmlNs **out);
 
 XML_HIDDEN int
-xmlNodeParseContent(xmlNodePtr node, const xmlChar *content, int len);
-XML_HIDDEN xmlNodePtr
-xmlStaticCopyNode(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent,
+xmlNodeParseContent(xmlNode *node, const xmlChar *content, int len);
+XML_HIDDEN xmlNode *
+xmlStaticCopyNode(xmlNode *node, xmlDoc *doc, xmlNode *parent,
                   int extended);
-XML_HIDDEN xmlNodePtr
-xmlStaticCopyNodeList(xmlNodePtr node, xmlDocPtr doc, xmlNodePtr parent);
+XML_HIDDEN xmlNode *
+xmlStaticCopyNodeList(xmlNode *node, xmlDoc *doc, xmlNode *parent);
 XML_HIDDEN const xmlChar *
 xmlSplitQName4(const xmlChar *name, xmlChar **prefixPtr);
 

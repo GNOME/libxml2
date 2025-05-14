@@ -40,7 +40,7 @@ static xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
  *
  * @returns the current xlinkHandlerPtr value.
  */
-xlinkHandlerPtr
+xlinkHandler *
 xlinkGetDefaultHandler(void) {
     return(xlinkDefaultHandler);
 }
@@ -54,7 +54,7 @@ xlinkGetDefaultHandler(void) {
  * @param handler  the new value for the xlink handler block
  */
 void
-xlinkSetDefaultHandler(xlinkHandlerPtr handler) {
+xlinkSetDefaultHandler(xlinkHandler *handler) {
     xlinkDefaultHandler = handler;
 }
 
@@ -104,7 +104,7 @@ xlinkSetDefaultDetect	(xlinkNodeDetectFunc func) {
  *         link detected.
  */
 xlinkType
-xlinkIsLink	(xmlDocPtr doc, xmlNodePtr node) {
+xlinkIsLink	(xmlDoc *doc, xmlNode *node) {
     xmlChar *type = NULL, *role = NULL;
     xlinkType ret = XLINK_TYPE_NONE;
 

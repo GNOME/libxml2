@@ -46,21 +46,21 @@ DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.x
 	$(XSLTPROC) --nonet --novalid -o $@ $(DOCBOOK_HTML) $<
 
 install-data-local:
-	$(MKDIR_P) $(DESTDIR)$(docdir)/html/search
+	$(MKDIR_P) "$(DESTDIR)$(docdir)/html/search"
 	$(INSTALL_DATA) \
 	    html/*.css \
 	    html/*.html \
 	    html/*.js \
 	    html/*.png \
 	    html/*.svg \
-	    $(DESTDIR)$(docdir)/html
+	    "$(DESTDIR)$(docdir)/html"
 	$(INSTALL_DATA) \
 	    html/search/*.css \
 	    html/search/*.js \
 	    html/search/*.svg \
-	    $(DESTDIR)$(docdir)/html/search
+	    "$(DESTDIR)$(docdir)/html/search"
 
 uninstall-local:
-	-rm -rf $(DESTDIR)$(docdir)/html
+	-rm -rf "$(DESTDIR)$(docdir)/html"
 
 endif

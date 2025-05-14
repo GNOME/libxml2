@@ -695,7 +695,7 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
  * @param name  the encoding name, in UTF-8 format (ASCII actually)
  * @param input  the xmlCharEncodingInputFunc to read that encoding
  * @param output  the xmlCharEncodingOutputFunc to write that encoding
- * @returns the xmlCharEncodingHandlerPtr created (or NULL in case of error).
+ * @returns the xmlCharEncodingHandler created (or NULL in case of error).
  */
 xmlCharEncodingHandler *
 xmlNewCharEncodingHandler(const char *name,
@@ -864,7 +864,7 @@ xmlCleanupCharEncodingHandlers(void) {
  * @deprecated This function modifies global state and is not
  * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
  *
- * @param handler  the xmlCharEncodingHandlerPtr handler block
+ * @param handler  the xmlCharEncodingHandler handler block
  */
 void
 xmlRegisterCharEncodingHandler(xmlCharEncodingHandler *handler) {

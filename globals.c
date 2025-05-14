@@ -464,7 +464,7 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
  * hold all data for use by a thread when supporting backwards compatibility
  * of libxml2 to pre-thread-safe behaviour.
  *
- * @returns the newly allocated xmlGlobalStatePtr or NULL in case of error
+ * @returns the newly allocated xmlGlobalState or NULL in case of error
  */
 static xmlGlobalStatePtr
 xmlNewGlobalState(int allowFailure)

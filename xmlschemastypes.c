@@ -3753,8 +3753,8 @@ xmlSchemaCompareDurations(xmlSchemaValPtr x, xmlSchemaValPtr y)
  * Makes a copy of `v`. The calling program is responsible for freeing
  * the returned value.
  *
- * @param v  the \#xmlSchemaValPtr value to duplicate
- * @returns a pointer to a duplicated \#xmlSchemaValPtr or NULL if error.
+ * @param v  the \#xmlSchemaVal value to duplicate
+ * @returns a pointer to a duplicated \#xmlSchemaVal or NULL if error.
  */
 static xmlSchemaValPtr
 xmlSchemaDupVal (xmlSchemaValPtr v)
@@ -3880,9 +3880,9 @@ error:
  * or \#XML_SCHEMAS_GYEAR. The returned \#xmlSchemaVal is the same type as
  * `dt`. The calling program is responsible for freeing the returned value.
  *
- * @param dt  an \#xmlSchemaValPtr
- * @param dur  an \#xmlSchemaValPtr of type \#XS_DURATION
- * @returns a pointer to a new \#xmlSchemaVal or NULL if error.
+ * @param dt  an xmlSchemaVal
+ * @param dur  an xmlSchemaVal of type \#XS_DURATION
+ * @returns a pointer to a new xmlSchemaVal or NULL if error.
  */
 static xmlSchemaValPtr
 _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
@@ -4031,7 +4031,7 @@ _xmlSchemaDateAdd (xmlSchemaValPtr dt, xmlSchemaValPtr dur)
  * Normalize `dt` to GMT time. The `offset` parameter is subtracted from
  * the return value is a time-zone offset is present on `dt`.
  *
- * @param dt  an \#xmlSchemaValPtr of a date/time type value.
+ * @param dt  an \#xmlSchemaVal of a date/time type value.
  * @param offset  number of seconds to adjust `dt` by.
  * @returns a normalized copy of `dt` or NULL if error.
  */
@@ -4071,7 +4071,7 @@ xmlSchemaDateNormalize (xmlSchemaValPtr dt, double offset)
  * years. This is a function  because negative
  * years must be handled a little differently and there is no zero year.
  *
- * @param dt  an \#xmlSchemaValPtr
+ * @param dt  an xmlSchemaVal
  * @returns number of days.
  */
 static long
@@ -4100,7 +4100,7 @@ _xmlSchemaDateCastYMToDays (const xmlSchemaValPtr dt)
 /**
  * Calculates the number of seconds in the time portion of `dt`.
  *
- * @param dt  an \#xmlSchemaValPtr
+ * @param dt  an xmlSchemaVal
  * @returns seconds.
  */
 #define TIME_TO_NUMBER(dt)                              \
@@ -5234,7 +5234,7 @@ xmlSchemaValidateListSimpleTypeFacet(xmlSchemaFacet *facet,
 	}
     } else
 	/*
-	* NOTE: That we can pass NULL as xmlSchemaValPtr to
+	* NOTE: That we can pass NULL as xmlSchemaVal to
 	* xmlSchemaValidateFacet, since the remaining facet types
 	* are: XML_SCHEMA_FACET_PATTERN, XML_SCHEMA_FACET_ENUMERATION.
 	*/

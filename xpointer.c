@@ -589,7 +589,7 @@ xmlXPtrNewContext(xmlDoc *doc, xmlNode *here, xmlNode *origin) {
  *
  * @param str  the XPointer expression
  * @param ctx  the XPointer context
- * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * @returns the xmlXPathObject resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathObject *

@@ -1697,7 +1697,7 @@ xmlGetActualEncoding(xmlParserCtxt *ctxt) {
 /**
  * Free up an input stream.
  *
- * @param input  an xmlParserInputPtr
+ * @param input  an xmlParserInput
  */
 void
 xmlFreeInputStream(xmlParserInput *input) {
@@ -2147,7 +2147,7 @@ xmlNewIOInputStream(xmlParserCtxt *ctxt, xmlParserInputBuffer *buf,
 }
 
 /**
- * Create a new input stream based on an xmlEntityPtr
+ * Create a new input stream based on an xmlEntity
  *
  * @deprecated Internal function, do not use.
  *
@@ -2405,7 +2405,7 @@ xmlNewInputFromFile(xmlParserCtxt *ctxt, const char *filename) {
  * @param url  the URL for the entity to load
  * @param ID  the System ID for the entity to load
  * @param ctxt  the context in which the entity is called or NULL
- * @returns a new allocated xmlParserInputPtr, or NULL.
+ * @returns a new allocated xmlParserInput, or NULL.
  */
 static xmlParserInputPtr
 xmlDefaultExternalEntityLoader(const char *url, const char *ID,
@@ -2451,7 +2451,7 @@ xmlDefaultExternalEntityLoader(const char *url, const char *ID,
  * @param URL  the URL for the entity to load
  * @param ID  the System ID for the entity to load
  * @param ctxt  the context in which the entity is called or NULL
- * @returns a new allocated xmlParserInputPtr, or NULL.
+ * @returns a new allocated xmlParserInput, or NULL.
  */
 xmlParserInput *
 xmlNoNetExternalEntityLoader(const char *URL, const char *ID,
@@ -2528,7 +2528,7 @@ xmlCtxtSetResourceLoader(xmlParserCtxt *ctxt, xmlResourceLoader loader,
  * @param url  the URL for the entity to load
  * @param publicId  the Public ID for the entity to load
  * @param type  resource type
- * @returns the xmlParserInputPtr or NULL in case of error.
+ * @returns the xmlParserInput or NULL in case of error.
  */
 xmlParserInput *
 xmlLoadResource(xmlParserCtxt *ctxt, const char *url, const char *publicId,
@@ -2605,7 +2605,7 @@ xmlLoadResource(xmlParserCtxt *ctxt, const char *url, const char *publicId,
  * @param URL  the URL for the entity to load
  * @param ID  the Public ID for the entity to load
  * @param ctxt  the context in which the entity is called or NULL
- * @returns the xmlParserInputPtr or NULL
+ * @returns the xmlParserInput or NULL
  */
 xmlParserInput *
 xmlLoadExternalEntity(const char *URL, const char *ID,
@@ -2894,7 +2894,7 @@ xmlFreeParserCtxt(xmlParserCtxt *ctxt)
 /**
  * Allocate and initialize a new parser context.
  *
- * @returns the xmlParserCtxtPtr or NULL
+ * @returns the xmlParserCtxt or NULL
  */
 
 xmlParserCtxt *
@@ -2915,7 +2915,7 @@ xmlNewParserCtxt(void)
  *
  * @param sax  SAX handler
  * @param userData  user data
- * @returns the xmlParserCtxtPtr or NULL if memory allocation failed.
+ * @returns the xmlParserCtxt or NULL if memory allocation failed.
  */
 
 xmlParserCtxt *

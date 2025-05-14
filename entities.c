@@ -555,7 +555,7 @@ xmlEncodeSpecialChars(const xmlDoc *doc ATTRIBUTE_UNUSED,
 /**
  * Create and initialize an empty entities hash table.
  *
- * @returns the xmlEntitiesTablePtr just created or NULL in case of error.
+ * @returns the xmlEntitiesTable just created or NULL in case of error.
  */
 xmlEntitiesTable *
 xmlCreateEntitiesTable(void) {
@@ -589,7 +589,7 @@ xmlFreeEntitiesTable(xmlEntitiesTable *table) {
  *
  * @param payload  An entity
  * @param name  unused
- * @returns the new xmlEntitiesPtr or NULL in case of error.
+ * @returns the new xmlEntities or NULL in case of error.
  */
 static void *
 xmlCopyEntity(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
@@ -644,7 +644,7 @@ error:
  * Build a copy of an entity table.
  *
  * @param table  An entity table
- * @returns the new xmlEntitiesTablePtr or NULL in case of error.
+ * @returns the new xmlEntitiesTable or NULL in case of error.
  */
 xmlEntitiesTable *
 xmlCopyEntitiesTable(xmlEntitiesTable *table) {

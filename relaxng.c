@@ -1522,7 +1522,7 @@ xmlRelaxNGRemoveRedefine(xmlRelaxNGParserCtxtPtr ctxt,
  * @param URL  the normalized URL
  * @param node  the include node.
  * @param ns  the namespace passed from the context.
- * @returns the xmlRelaxNGIncludePtr or NULL in case of error
+ * @returns the xmlRelaxNGInclude or NULL in case of error
  */
 static xmlRelaxNGIncludePtr
 xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar * URL,
@@ -1843,7 +1843,7 @@ xmlRelaxNGDocumentPop(xmlRelaxNGParserCtxtPtr ctxt)
  * @param ctxt  the parser context
  * @param URL  the normalized URL
  * @param ns  the inherited ns if any
- * @returns the xmlRelaxNGDocumentPtr or NULL in case of error
+ * @returns the xmlRelaxNGDocument or NULL in case of error
  */
 static xmlRelaxNGDocumentPtr
 xmlRelaxNGLoadExternalRef(xmlRelaxNGParserCtxtPtr ctxt,
@@ -4507,7 +4507,7 @@ xmlRelaxNGParseImportRefs(xmlRelaxNGParserCtxtPtr ctxt,
  *
  * @param ctxt  the parser context
  * @param node  the externalRef node
- * @returns the xmlRelaxNGDefinePtr or NULL in case of error
+ * @returns the xmlRelaxNGDefine or NULL in case of error
  */
 static xmlRelaxNGDefinePtr
 xmlRelaxNGProcessExternalRef(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
@@ -6309,7 +6309,7 @@ xmlRelaxNGCheckRules(xmlRelaxNGParserCtxtPtr ctxt,
  *
  * @param ctxt  a Relax-NG parser context
  * @param nodes  grammar children nodes
- * @returns the internal xmlRelaxNGGrammarPtr built or
+ * @returns the internal xmlRelaxNGGrammar built or
  *         NULL in case of error
  */
 static xmlRelaxNGGrammarPtr
@@ -6719,7 +6719,7 @@ xmlRelaxNGCleanupAttributes(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
  * Include and externalRef lookups.
  *
  * @param ctxt  a Relax-NG parser context
- * @param root  an xmlNodePtr subtree
+ * @param root  an xmlNode subtree
  */
 static void
 xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
@@ -7159,7 +7159,7 @@ xmlRelaxNGCleanupTree(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr root)
  * Include and externalRef lookups.
  *
  * @param ctxt  a Relax-NG parser context
- * @param doc  an xmldocPtr document pointer
+ * @param doc  an xmldoc document pointer
  * @returns the cleaned up document or NULL in case of error
  */
 static xmlDocPtr

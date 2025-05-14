@@ -427,7 +427,7 @@ xmlSAX2ResolveEntity(void *ctx, const xmlChar *publicId,
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
- * @returns the xmlEntityPtr if found.
+ * @returns the xmlEntity if found.
  */
 xmlEntity *
 xmlSAX2GetEntity(void *ctx, const xmlChar *name)
@@ -471,7 +471,7 @@ xmlSAX2GetEntity(void *ctx, const xmlChar *name)
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
- * @returns the xmlEntityPtr if found.
+ * @returns the xmlEntity if found.
  */
 xmlEntity *
 xmlSAX2GetParameterEntity(void *ctx, const xmlChar *name)

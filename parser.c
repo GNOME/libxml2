@@ -6237,7 +6237,7 @@ xmlParseAttributeListDecl(xmlParserCtxt *ctxt) {
  *
  * @param ctxt  an XML parser context
  * @param inputchk  the input used for the current entity, needed for boundary checks
- * @returns the list of the xmlElementContentPtr describing the element choices
+ * @returns the list of the xmlElementContent describing the element choices
  */
 xmlElementContent *
 xmlParseElementMixedContentDecl(xmlParserCtxt *ctxt, int inputchk) {
@@ -6358,7 +6358,7 @@ mem_error:
  * @param ctxt  an XML parser context
  * @param inputchk  the input used for the current entity, needed for boundary checks
  * @param depth  the level of recursion
- * @returns the tree of xmlElementContentPtr describing the element
+ * @returns the tree of xmlElementContent describing the element
  *          hierarchy.
  */
 static xmlElementContentPtr
@@ -6663,7 +6663,7 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
  *
  * @param ctxt  an XML parser context
  * @param inputchk  the input used for the current entity, needed for boundary checks
- * @returns the tree of xmlElementContentPtr describing the element
+ * @returns the tree of xmlElementContent describing the element
  *          hierarchy.
  */
 xmlElementContent *
@@ -7562,7 +7562,7 @@ xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt) {
  * @deprecated Internal function, don't use.
  *
  * @param ctxt  an XML parser context
- * @returns the xmlEntityPtr if found, or NULL otherwise.
+ * @returns the xmlEntity if found, or NULL otherwise.
  */
 xmlEntity *
 xmlParseEntityRef(xmlParserCtxt *ctxt) {
@@ -7604,7 +7604,7 @@ xmlParseEntityRef(xmlParserCtxt *ctxt) {
  *
  * @param ctxt  an XML parser context
  * @param str  a pointer to an index in the string
- * @returns the xmlEntityPtr if found, or NULL otherwise. The str pointer
+ * @returns the xmlEntity if found, or NULL otherwise. The str pointer
  * is updated to the current location in the string.
  */
 static xmlChar *
@@ -11494,7 +11494,7 @@ xmlCreateIOParserCtxt(xmlSAXHandler *sax, void *user_data,
  * @param input  a parser input
  * @param publicId  public ID of the DTD (optional)
  * @param systemId  system ID of the DTD (optional)
- * @returns the resulting xmlDtdPtr or NULL in case of error.
+ * @returns the resulting xmlDtd or NULL in case of error.
  * `input` will be freed by the function in any case.
  */
 xmlDtd *
@@ -11567,7 +11567,7 @@ error:
  * @param sax  the SAX handler block or NULL
  * @param input  an Input Buffer
  * @param enc  the charset encoding if known
- * @returns the resulting xmlDtdPtr or NULL in case of error.
+ * @returns the resulting xmlDtd or NULL in case of error.
  * `input` will be freed by the function in any case.
  */
 
@@ -11617,7 +11617,7 @@ xmlIOParseDTD(xmlSAXHandler *sax, xmlParserInputBuffer *input,
  * @param sax  the SAX handler block
  * @param ExternalID  a NAME* containing the External ID of the DTD
  * @param SystemID  a NAME* containing the URL to the DTD
- * @returns the resulting xmlDtdPtr or NULL in case of error.
+ * @returns the resulting xmlDtd or NULL in case of error.
  */
 
 xmlDtd *
@@ -11676,7 +11676,7 @@ xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *ExternalID,
  *
  * @param ExternalID  a NAME* containing the External ID of the DTD
  * @param SystemID  a NAME* containing the URL to the DTD
- * @returns the resulting xmlDtdPtr or NULL in case of error.
+ * @returns the resulting xmlDtd or NULL in case of error.
  */
 
 xmlDtd *

@@ -1259,7 +1259,7 @@ htmlCompareTags(const void *key, const void *member) {
  * @deprecated Only supports HTML 4.
  *
  * @param tag  The tag name in lowercase
- * @returns the related htmlElemDescPtr or NULL if not found.
+ * @returns the related htmlElemDesc or NULL if not found.
  */
 const htmlElemDesc *
 htmlTagLookup(const xmlChar *tag) {
@@ -1888,7 +1888,7 @@ static const htmlEntityDesc  html40EntitiesTable[] = {
  * TODO: the linear scan is really ugly, an hash table is really needed.
  *
  * @param name  the entity name
- * @returns the associated htmlEntityDescPtr if found, NULL otherwise.
+ * @returns the associated htmlEntityDesc if found, NULL otherwise.
  */
 const htmlEntityDesc *
 htmlEntityLookup(const xmlChar *name) {
@@ -1919,7 +1919,7 @@ htmlCompareEntityDesc(const void *vkey, const void *vdesc) {
  * TODO: the linear scan is really ugly, an hash table is really needed.
  *
  * @param value  the entity's unicode value
- * @returns the associated htmlEntityDescPtr if found, NULL otherwise.
+ * @returns the associated htmlEntityDesc if found, NULL otherwise.
  */
 const htmlEntityDesc *
 htmlEntityValueLookup(unsigned int value) {
@@ -4566,7 +4566,7 @@ htmlFreeParserCtxt(htmlParserCtxt *ctxt)
  *
  * See htmlNewSAXParserCtxt() for custom SAX parsers.
  *
- * @returns the htmlParserCtxtPtr or NULL in case of allocation error
+ * @returns the htmlParserCtxt or NULL in case of allocation error
  */
 htmlParserCtxt *
 htmlNewParserCtxt(void)
@@ -4587,7 +4587,7 @@ htmlNewParserCtxt(void)
  *
  * @param sax  SAX handler
  * @param userData  user data
- * @returns the htmlParserCtxtPtr or NULL in case of allocation error
+ * @returns the htmlParserCtxt or NULL in case of allocation error
  */
 htmlParserCtxt *
 htmlNewSAXParserCtxt(const htmlSAXHandler *sax, void *userData)
@@ -5433,7 +5433,7 @@ htmlAttrAllowed(const htmlElemDesc* elt ATTRIBUTE_UNUSED,
 /**
  * @deprecated Don't use.
  *
- * @param node  an htmlNodePtr in a tree
+ * @param node  an xmlNode in a tree
  * @param legacy  whether to allow deprecated elements (YES is faster here
  *	for Element nodes)
  * @returns HTML_VALID

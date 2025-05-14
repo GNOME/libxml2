@@ -194,7 +194,7 @@ struct _xmlPatParserContext {
 /**
  * Create a new XSLT Pattern
  *
- * @returns the newly allocated xmlPatternPtr or NULL in case of error
+ * @returns the newly allocated xmlPattern or NULL in case of error
  */
 static xmlPatternPtr
 xmlNewPattern(void) {
@@ -276,7 +276,7 @@ xmlFreePatternList(xmlPattern *comp) {
  * @param dict  the inherited dictionary or NULL
  * @param namespaces  the prefix definitions, array of [URI, prefix] terminated
  *              with [NULL, NULL] or NULL if no namespace is used
- * @returns the newly allocated xmlPatParserContextPtr or NULL in case of error
+ * @returns the newly allocated xmlPatParserContext or NULL in case of error
  */
 static xmlPatParserContextPtr
 xmlNewPatParserContext(const xmlChar *pattern, xmlDictPtr dict,

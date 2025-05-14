@@ -38,7 +38,7 @@ static xlinkNodeDetectFunc	xlinkDefaultDetect = NULL;
  *
  * @deprecated Don't use.
  *
- * @returns the current xlinkHandlerPtr value.
+ * @returns the current xlinkHandler value.
  */
 xlinkHandler *
 xlinkGetDefaultHandler(void) {

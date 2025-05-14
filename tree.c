@@ -1442,7 +1442,7 @@ xmlStringGetNodeList(const xmlDoc *doc, const xmlChar *value) {
 /**
  * @param node  a node list
  * @param escape  whether to escape characters and keep entity refs
- * @param flags  escape flags 
+ * @param flags  escape flags
  * @returns a pointer to the string.
  */
 xmlChar *
@@ -5370,7 +5370,7 @@ xmlBufGetChildContent(xmlBufPtr buf, const xmlNode *tree) {
  *
  * Entity references are substituted.
  *
- * @param buf  a buffer xmlBufPtr
+ * @param buf  a buffer xmlBuf
  * @param cur  the node being read
  * @returns 0 in case of success and -1 in case of error.
  */
@@ -7087,7 +7087,7 @@ xmlDOMWrapStoreNs(xmlDocPtr doc,
 /**
  * Allocates and initializes a new DOM-wrapper context.
  *
- * @returns the xmlDOMWrapCtxtPtr or NULL in case of an internal error.
+ * @returns the xmlDOMWrapCtxt or NULL in case of an internal error.
  */
 xmlDOMWrapCtxt *
 xmlDOMWrapNewCtxt(void)

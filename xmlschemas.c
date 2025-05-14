@@ -28093,7 +28093,7 @@ endElementNsSplit(void *ctx, const xmlChar * localname,
  * but the calls to the original will be maintained.
  *
  * @param ctxt  a schema validation context
- * @param sax  a pointer to the original xmlSAXHandlerPtr
+ * @param sax  a pointer to the original xmlSAXHandler
  * @param user_data  a pointer to the original SAX user data pointer
  * @returns a pointer to a data structure needed to unplug the validation layer
  *         or NULL in case of errors.
@@ -28286,7 +28286,7 @@ xmlSchemaValidateSetLocator(xmlSchemaValidCtxt *vctxt,
 /**
  * Internal locator function for the readers
  *
- * @param ctx  the xmlTextReaderPtr used
+ * @param ctx  the xmlTextReader used
  * @param file  returned file information
  * @param line  returned line information
  * @returns 0 in case the Schema validation could be (de)activated and

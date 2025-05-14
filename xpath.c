@@ -918,7 +918,7 @@ xmlXPathFreeObjectEntry(void *obj, const xmlChar *name);
 /**
  * Create a new Xpath component
  *
- * @returns the newly allocated xmlXPathCompExprPtr or NULL in case of error
+ * @returns the newly allocated xmlXPathCompExpr or NULL in case of error
  */
 static xmlXPathCompExprPtr
 xmlXPathNewCompExpr(void) {
@@ -1591,7 +1591,7 @@ xmlXPathContextSetCache(xmlXPathContext *ctxt,
 
 /**
  * This is the cached version of xmlXPathWrapNodeSet().
- * Wrap the Nodeset `val` in a new xmlXPathObjectPtr
+ * Wrap the Nodeset `val` in a new xmlXPathObject
  *
  * In case of error the node set is destroyed and NULL is returned.
  *
@@ -1661,7 +1661,7 @@ xmlXPathCacheWrapString(xmlXPathParserContextPtr pctxt, xmlChar *val)
 
 /**
  * This is the cached version of xmlXPathNewNodeSet().
- * Acquire an xmlXPathObjectPtr of type NodeSet and initialize
+ * Acquire an xmlXPathObject of type NodeSet and initialize
  * it with the single Node `val`
  *
  * @param pctxt  the XPath context
@@ -1729,7 +1729,7 @@ xmlXPathCacheNewNodeSet(xmlXPathParserContextPtr pctxt, xmlNodePtr val)
 
 /**
  * This is the cached version of xmlXPathNewString().
- * Acquire an xmlXPathObjectPtr of type string and of value `val`
+ * Acquire an xmlXPathObject of type string and of value `val`
  *
  * @param pctxt  the XPath context
  * @param val  the xmlChar * value
@@ -1772,7 +1772,7 @@ xmlXPathCacheNewString(xmlXPathParserContextPtr pctxt, const xmlChar *val)
 
 /**
  * This is the cached version of xmlXPathNewCString().
- * Acquire an xmlXPathObjectPtr of type string and of value `val`
+ * Acquire an xmlXPathObject of type string and of value `val`
  *
  * @param pctxt  the XPath context
  * @param val  the char * value
@@ -1786,7 +1786,7 @@ xmlXPathCacheNewCString(xmlXPathParserContextPtr pctxt, const char *val)
 
 /**
  * This is the cached version of xmlXPathNewBoolean().
- * Acquires an xmlXPathObjectPtr of type boolean and of value `val`
+ * Acquires an xmlXPathObject of type boolean and of value `val`
  *
  * @param pctxt  the XPath context
  * @param val  the boolean value
@@ -1820,7 +1820,7 @@ xmlXPathCacheNewBoolean(xmlXPathParserContextPtr pctxt, int val)
 
 /**
  * This is the cached version of xmlXPathNewFloat().
- * Acquires an xmlXPathObjectPtr of type double and of value `val`
+ * Acquires an xmlXPathObject of type double and of value `val`
  *
  * @param pctxt  the XPath context
  * @param val  the double value
@@ -2649,9 +2649,9 @@ xmlXPathNodeSetFreeNs(xmlNs *ns) {
 }
 
 /**
- * Create a new xmlNodeSetPtr of type double and of value `val`
+ * Create a new xmlNodeSet of type double and of value `val`
  *
- * @param val  an initial xmlNodePtr, or NULL
+ * @param val  an initial xmlNode, or NULL
  * @returns the newly created object.
  */
 xmlNodeSet *
@@ -2785,10 +2785,10 @@ xmlXPathNodeSetAddNs(xmlNodeSet *cur, xmlNode *node, xmlNs *ns) {
 }
 
 /**
- * add a new xmlNodePtr to an existing NodeSet
+ * add a new xmlNode to an existing NodeSet
  *
  * @param cur  the initial node set
- * @param val  a new xmlNodePtr
+ * @param val  a new xmlNode
  * @returns 0 in case of success, and -1 in case of error
  */
 int
@@ -2825,11 +2825,11 @@ xmlXPathNodeSetAdd(xmlNodeSet *cur, xmlNode *val) {
 }
 
 /**
- * add a new xmlNodePtr to an existing NodeSet, optimized version
+ * add a new xmlNode to an existing NodeSet, optimized version
  * when we are sure the node is not already in the set.
  *
  * @param cur  the initial node set
- * @param val  a new xmlNodePtr
+ * @param val  a new xmlNode
  * @returns 0 in case of success and -1 in case of failure
  */
 int
@@ -3034,10 +3034,10 @@ error:
 }
 
 /**
- * Removes an xmlNodePtr from an existing NodeSet
+ * Removes an xmlNode from an existing NodeSet
  *
  * @param cur  the initial node set
- * @param val  an xmlNodePtr
+ * @param val  an xmlNode
  */
 void
 xmlXPathNodeSetDel(xmlNodeSet *cur, xmlNode *val) {
@@ -3086,7 +3086,7 @@ xmlXPathNodeSetRemove(xmlNodeSet *cur, int val) {
 /**
  * Free the NodeSet compound (not the actual nodes !).
  *
- * @param obj  the xmlNodeSetPtr to free
+ * @param obj  the xmlNodeSet to free
  */
 void
 xmlXPathFreeNodeSet(xmlNodeSet *obj) {
@@ -3172,7 +3172,7 @@ xmlXPathNodeSetKeepLast(xmlNodeSetPtr set)
 }
 
 /**
- * Create a new xmlXPathObjectPtr of type NodeSet and initialize
+ * Create a new xmlXPathObject of type NodeSet and initialize
  * it with the single Node `val`
  *
  * @param val  the NodePtr value
@@ -3198,7 +3198,7 @@ xmlXPathNewNodeSet(xmlNode *val) {
 }
 
 /**
- * Create a new xmlXPathObjectPtr of type Value Tree (XSLT) and initialize
+ * Create a new xmlXPathObject of type Value Tree (XSLT) and initialize
  * it with the tree root `val`
  *
  * @param val  the NodePtr value
@@ -3217,7 +3217,7 @@ xmlXPathNewValueTree(xmlNode *val) {
 }
 
 /**
- * Create a new xmlXPathObjectPtr of type NodeSet and initialize
+ * Create a new xmlXPathObject of type NodeSet and initialize
  * it with the Nodeset `val`
  *
  * @param val  an existing NodeSet
@@ -3247,7 +3247,7 @@ xmlXPathNewNodeSetList(xmlNodeSet *val)
 }
 
 /**
- * Wrap the Nodeset `val` in a new xmlXPathObjectPtr
+ * Wrap the Nodeset `val` in a new xmlXPathObject
  *
  * In case of error the node set is destroyed and NULL is returned.
  *
@@ -3270,7 +3270,7 @@ xmlXPathWrapNodeSet(xmlNodeSet *val) {
 }
 
 /**
- * Free up the xmlXPathObjectPtr `obj` but don't deallocate the objects in
+ * Free up the xmlXPathObject `obj` but don't deallocate the objects in
  * the list contrary to xmlXPathFreeObject().
  *
  * @param obj  an existing NodeSetList object
@@ -4038,7 +4038,7 @@ xmlXPathRegisteredNsCleanup(xmlXPathContext *ctxt) {
 /* Allocations are terrible, one needs to optimize all this !!! */
 
 /**
- * Create a new xmlXPathObjectPtr of type double and of value `val`
+ * Create a new xmlXPathObject of type double and of value `val`
  *
  * @param val  the double value
  * @returns the newly created object.
@@ -4057,7 +4057,7 @@ xmlXPathNewFloat(double val) {
 }
 
 /**
- * Create a new xmlXPathObjectPtr of type boolean and of value `val`
+ * Create a new xmlXPathObject of type boolean and of value `val`
  *
  * @param val  the boolean value
  * @returns the newly created object.
@@ -4076,7 +4076,7 @@ xmlXPathNewBoolean(int val) {
 }
 
 /**
- * Create a new xmlXPathObjectPtr of type string and of value `val`
+ * Create a new xmlXPathObject of type string and of value `val`
  *
  * @param val  the xmlChar * value
  * @returns the newly created object.
@@ -4124,7 +4124,7 @@ xmlXPathWrapString (xmlChar *val) {
 }
 
 /**
- * Create a new xmlXPathObjectPtr of type string and of value `val`
+ * Create a new xmlXPathObject of type string and of value `val`
  *
  * @param val  the char * value
  * @returns the newly created object.
@@ -4214,7 +4214,7 @@ xmlXPathObjectCopy(xmlXPathObject *val) {
 }
 
 /**
- * Free up an xmlXPathObjectPtr object.
+ * Free up an xmlXPathObject object.
  *
  * @param obj  the object to free
  */
@@ -4241,7 +4241,7 @@ xmlXPathFreeObjectEntry(void *obj, const xmlChar *name ATTRIBUTE_UNUSED) {
  * XPath object or stores it in the cache.
  *
  * @param ctxt  XPath context
- * @param obj  the xmlXPathObjectPtr to free or to cache
+ * @param obj  the xmlXPathObject to free or to cache
  */
 static void
 xmlXPathReleaseObject(xmlXPathContextPtr ctxt, xmlXPathObjectPtr obj)
@@ -11987,7 +11987,7 @@ xmlXPathOptimizeExpression(xmlXPathParserContextPtr pctxt,
  *
  * @param ctxt  an XPath context
  * @param str  the XPath expression
- * @returns the xmlXPathCompExprPtr resulting from the compilation or NULL.
+ * @returns the xmlXPathCompExpr resulting from the compilation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathCompExpr *
@@ -12071,7 +12071,7 @@ xmlXPathCtxtCompile(xmlXPathContext *ctxt, const xmlChar *str) {
  * Compile an XPath expression
  *
  * @param str  the XPath expression
- * @returns the xmlXPathCompExprPtr resulting from the compilation or NULL.
+ * @returns the xmlXPathCompExpr resulting from the compilation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathCompExpr *
@@ -12087,7 +12087,7 @@ xmlXPathCompile(const xmlChar *str) {
  * @param ctxt  the XPath context
  * @param resObjPtr  the resulting XPath object or NULL
  * @param toBool  1 if only a boolean result is requested
- * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * @returns the xmlXPathObject resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 static int
@@ -12134,7 +12134,7 @@ xmlXPathCompiledEvalInternal(xmlXPathCompExprPtr comp,
  *
  * @param comp  the compiled XPath expression
  * @param ctx  the XPath context
- * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * @returns the xmlXPathObject resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathObject *
@@ -12225,7 +12225,7 @@ xmlXPathEvalExpr(xmlXPathParserContext *ctxt) {
  *
  * @param str  the XPath expression
  * @param ctx  the XPath context
- * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * @returns the xmlXPathObject resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathObject *
@@ -12285,7 +12285,7 @@ xmlXPathSetContextNode(xmlNode *node, xmlXPathContext *ctx) {
  * @param node  the node to to use as the context node
  * @param str  the XPath expression
  * @param ctx  the XPath context
- * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * @returns the xmlXPathObject resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathObject *
@@ -12302,7 +12302,7 @@ xmlXPathNodeEval(xmlNode *node, const xmlChar *str, xmlXPathContext *ctx) {
  *
  * @param str  the XPath expression
  * @param ctxt  the XPath context
- * @returns the xmlXPathObjectPtr resulting from the evaluation or NULL.
+ * @returns the xmlXPathObject resulting from the evaluation or NULL.
  *         the caller has to free the object.
  */
 xmlXPathObject *

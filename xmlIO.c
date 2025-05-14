@@ -1941,7 +1941,7 @@ xmlOutputBufferCreateFile(FILE *file, xmlCharEncodingHandler *encoder) {
  *
  * Consumes `encoder` but not in error case.
  *
- * @param buffer  a xmlBufferPtr
+ * @param buffer  a xmlBuffer
  * @param encoder  the encoding converter or NULL
  * @returns the new parser output or NULL
  */
@@ -1963,7 +1963,7 @@ xmlOutputBufferCreateBuffer(xmlBuffer *buffer,
 /**
  * Gives a pointer to the data currently held in the output buffer
  *
- * @param out  an xmlOutputBufferPtr
+ * @param out  an xmlOutputBuffer
  * @returns a pointer to the data or NULL in case of error
  */
 const xmlChar *
@@ -1977,7 +1977,7 @@ xmlOutputBufferGetContent(xmlOutputBuffer *out) {
 /**
  * Gives the length of the data currently held in the output buffer
  *
- * @param out  an xmlOutputBufferPtr
+ * @param out  an xmlOutputBuffer
  * @returns 0 in case or error or no data is held, the size otherwise
  */
 size_t

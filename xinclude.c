@@ -819,7 +819,7 @@ error:
  * @param ctxt  the XInclude context
  * @param obj  the XPointer result from the evaluation.
  * @param targetBase  the xml:base of the target node
- * @returns an xmlNodePtr list or NULL.
+ * @returns an xmlNode list or NULL.
  *         the caller has to free the node tree.
  */
 static xmlNodePtr
@@ -1566,7 +1566,7 @@ xmlXIncludeLoadFallback(xmlXIncludeCtxtPtr ctxt, xmlNodePtr fallback,
  *
  * @param ctxt  an XInclude context
  * @param node  an XInclude node
- * @returns the new or existing xmlXIncludeRefPtr, or NULL in case of error.
+ * @returns the new or existing xmlXIncludeRef, or NULL in case of error.
  */
 static xmlXIncludeRefPtr
 xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
@@ -1634,7 +1634,7 @@ xmlXIncludeExpandNode(xmlXIncludeCtxtPtr ctxt, xmlNodePtr node) {
  * Find and load the infoset replacement for the given node.
  *
  * @param ctxt  an XInclude context
- * @param ref  an xmlXIncludeRefPtr
+ * @param ref  an xmlXIncludeRef
  * @returns 0 if substitution succeeded, -1 if some processing failed
  */
 static int
@@ -1687,7 +1687,7 @@ xmlXIncludeLoadNode(xmlXIncludeCtxtPtr ctxt, xmlXIncludeRefPtr ref) {
  * Implement the infoset replacement for the given node
  *
  * @param ctxt  an XInclude context
- * @param ref  an xmlXIncludeRefPtr
+ * @param ref  an xmlXIncludeRef
  * @returns 0 if substitution succeeded, -1 if some processing failed
  */
 static int

@@ -321,7 +321,7 @@ xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
  *
  * @deprecated Use xmlFormatError().
  *
- * @param input  an xmlParserInputPtr input
+ * @param input  an xmlParserInput input
  */
 
 void
@@ -341,7 +341,7 @@ xmlParserPrintFileInfo(struct _xmlParserInput *input) {
  * Displays current context within the input content for
  * error reporting.
  *
- * @param input  an xmlParserInputPtr input
+ * @param input  an xmlParserInput input
  * @param channel  output callback
  * @param data  user data for output callback
  */
@@ -416,7 +416,7 @@ xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
  *
  * @deprecated Use xmlFormatError().
  *
- * @param input  an xmlParserInputPtr input
+ * @param input  an xmlParserInput input
  */
 void
 xmlParserPrintFileContext(struct _xmlParserInput *input) {

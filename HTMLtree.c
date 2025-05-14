@@ -459,7 +459,7 @@ htmlFindOutputEncoder(const char *encoding, xmlCharEncodingHandler **out) {
 /**
  * Serialize an HTML document to an xmlBuf.
  *
- * @param buf  the xmlBufPtr output
+ * @param buf  the xmlBuf output
  * @param doc  the document (unused)
  * @param cur  the current node
  * @param format  should formatting newlines been added

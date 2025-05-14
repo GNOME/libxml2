@@ -245,7 +245,7 @@ xmlCatalogPrintDebug(const char *fmt, ...) {
  * @param URL  URL of the entry
  * @param prefer  the PUBLIC vs. SYSTEM current preference value
  * @param group  for members of a group, the group entry
- * @returns the xmlCatalogEntryPtr or NULL in case of error
+ * @returns the xmlCatalogEntry or NULL in case of error
  */
 static xmlCatalogEntryPtr
 xmlNewCatalogEntry(xmlCatalogEntryType type, const xmlChar *name,
@@ -383,7 +383,7 @@ xmlFreeCatalogHashEntryList(void *payload,
  *
  * @param type  type of catalog
  * @param prefer  the PUBLIC vs. SYSTEM current preference value
- * @returns the xmlCatalogPtr or NULL in case of error
+ * @returns the xmlCatalog or NULL in case of error
  */
 static xmlCatalogPtr
 xmlCreateNewCatalog(xmlCatalogType type, xmlCatalogPrefer prefer) {
@@ -2902,7 +2902,7 @@ xmlACatalogRemove(xmlCatalog *catal, const xmlChar *value) {
  * create a new Catalog.
  *
  * @param sgml  should this create an SGML catalog
- * @returns the xmlCatalogPtr or NULL in case of error
+ * @returns the xmlCatalog or NULL in case of error
  */
 xmlCatalog *
 xmlNewCatalog(int sgml) {

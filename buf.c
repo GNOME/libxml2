@@ -4,7 +4,7 @@
  * new buffer structures and entry points to simplify the maintenance
  * of libxml2 and ensure we keep good control over memory allocations
  * and stay 64 bits clean.
- * The new entry point use the xmlBufPtr opaque structure and
+ * The new entry point use the xmlBuf opaque structure and
  * xmlBuf...() counterparts to the old xmlBuf...() functions
  *
  * See Copyright for the status of this software.
@@ -545,12 +545,12 @@ xmlBufCat(xmlBuf *buf, const xmlChar *str) {
 
 /**
  * Helper routine to switch from the old buffer structures in use
- * in various APIs. It creates a wrapper xmlBufPtr which will be
+ * in various APIs. It creates a wrapper xmlBuf which will be
  * used for internal processing until the xmlBufBackToBuffer() is
  * issued.
  *
  * @param buffer  incoming old buffer to convert to a new one
- * @returns  a new xmlBufPtr unless the call failed and NULL is returned
+ * @returns  a new xmlBuf unless the call failed and NULL is returned
  */
 xmlBuf *
 xmlBufFromBuffer(xmlBuffer *buffer) {
@@ -593,7 +593,7 @@ xmlBufFromBuffer(xmlBuffer *buffer) {
  * update back the buffer provided by the user. This can lead to
  * a failure in case the size accumulated in the xmlBuf is larger
  * than what an xmlBuffer can support on 64 bits (INT_MAX)
- * The xmlBufPtr `buf` wrapper is deallocated by this call in any case.
+ * The xmlBuf `buf` wrapper is deallocated by this call in any case.
  *
  * @param buf  new buffer wrapping the old one
  * @param ret  old buffer

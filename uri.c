@@ -989,7 +989,7 @@ xmlParseURISafe(const char *str, xmlURI **uriOut) {
  * URI-reference = [ absoluteURI | relativeURI ] [ "\#" fragment ]
  *
  * @param str  the URI string to analyze
- * @returns a newly built xmlURIPtr or NULL in case of error
+ * @returns a newly built xmlURI or NULL in case of error
  */
 xmlURI *
 xmlParseURI(const char *str) {
@@ -1020,7 +1020,7 @@ xmlParseURIReference(xmlURI *uri, const char *str) {
  *
  * @param str  the URI string to analyze
  * @param raw  if 1 unescaping of URI pieces are disabled
- * @returns a newly built xmlURIPtr or NULL in case of error
+ * @returns a newly built xmlURI or NULL in case of error
  */
 xmlURI *
 xmlParseURIRaw(const char *str, int raw) {

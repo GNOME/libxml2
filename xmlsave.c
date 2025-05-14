@@ -303,7 +303,7 @@ xmlBufDumpNotationDeclScan(void *nota, void *buf,
 /**
  * This will dump the content of the notation table as an XML DTD definition
  *
- * @param buf  an xmlBufPtr output
+ * @param buf  an xmlBuf output
  * @param table  A notation table
  */
 static void
@@ -410,7 +410,7 @@ xmlBufDumpElementContent(xmlOutputBufferPtr buf,
  * This will dump the content of the element declaration as an XML
  * DTD definition
  *
- * @param buf  an xmlBufPtr output
+ * @param buf  an xmlBuf output
  * @param elem  An element table
  */
 static void
@@ -585,7 +585,7 @@ xmlBufDumpEntityContent(xmlOutputBufferPtr buf, const xmlChar *content) {
 /**
  * This will dump the content of the entity table as an XML DTD definition
  *
- * @param buf  an xmlBufPtr output
+ * @param buf  an xmlBuf output
  * @param ent  An entity table
  */
 static void

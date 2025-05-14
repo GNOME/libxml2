@@ -1754,7 +1754,7 @@ xmlC14NNewCtx(xmlDocPtr doc,
     }
 
     /*
-     * Allocate a new xmlC14NCtxPtr and fill the fields.
+     * Allocate a new xmlC14NCtx and fill the fields.
      */
     ctx = (xmlC14NCtxPtr) xmlMalloc(sizeof(xmlC14NCtx));
     if (ctx == NULL) {

@@ -783,7 +783,7 @@ xmlNewElementContent(const xmlChar *name, xmlElementContentType type) {
  *
  * @param doc  the document owning the element declaration
  * @param cur  An element content pointer.
- * @returns the new xmlElementContentPtr or NULL in case of error.
+ * @returns the new xmlElementContent or NULL in case of error.
  */
 xmlElementContent *
 xmlCopyDocElementContent(xmlDoc *doc, xmlElementContent *cur) {
@@ -877,7 +877,7 @@ error:
  * @deprecated Internal function, don't use.
  *
  * @param cur  An element content pointer.
- * @returns the new xmlElementContentPtr or NULL in case of error.
+ * @returns the new xmlElementContent or NULL in case of error.
  */
 xmlElementContent *
 xmlCopyElementContent(xmlElementContent *cur) {
@@ -1342,7 +1342,7 @@ xmlFreeElementTable(xmlElementTable *table) {
  *
  * @param payload  an element
  * @param name  unused
- * @returns the new xmlElementPtr or NULL in case of error.
+ * @returns the new xmlElement or NULL in case of error.
  */
 static void *
 xmlCopyElement(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
@@ -1385,7 +1385,7 @@ error:
  * @deprecated Internal function, don't use.
  *
  * @param table  An element table
- * @returns the new xmlElementTablePtr or NULL in case of error.
+ * @returns the new xmlElementTable or NULL in case of error.
  */
 xmlElementTable *
 xmlCopyElementTable(xmlElementTable *table) {
@@ -1458,7 +1458,7 @@ xmlDumpElementTable(xmlBuffer *buf, xmlElementTable *table) {
  * @deprecated Internal function, don't use.
  *
  * @param name  the enumeration name or NULL
- * @returns the xmlEnumerationPtr just created or NULL in case
+ * @returns the xmlEnumeration just created or NULL in case
  * of error.
  */
 xmlEnumeration *
@@ -1504,7 +1504,7 @@ xmlFreeEnumeration(xmlEnumeration *cur) {
  * @deprecated Internal function, don't use.
  *
  * @param cur  the tree to copy.
- * @returns the xmlEnumerationPtr just created or NULL in case
+ * @returns the xmlEnumeration just created or NULL in case
  * of error.
  */
 xmlEnumeration *
@@ -1871,7 +1871,7 @@ xmlFreeAttributeTable(xmlAttributeTable *table) {
  *
  * @param payload  an attribute declaration
  * @param name  unused
- * @returns the new xmlAttributePtr or NULL in case of error.
+ * @returns the new xmlAttribute or NULL in case of error.
  */
 static void *
 xmlCopyAttribute(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
@@ -1923,7 +1923,7 @@ error:
  * @deprecated Internal function, don't use.
  *
  * @param table  An attribute table
- * @returns the new xmlAttributeTablePtr or NULL in case of error.
+ * @returns the new xmlAttributeTable or NULL in case of error.
  */
 xmlAttributeTable *
 xmlCopyAttributeTable(xmlAttributeTable *table) {
@@ -2126,7 +2126,7 @@ xmlFreeNotationTable(xmlNotationTable *table) {
  *
  * @param payload  a notation
  * @param name  unused
- * @returns the new xmlNotationPtr or NULL in case of error.
+ * @returns the new xmlNotation or NULL in case of error.
  */
 static void *
 xmlCopyNotation(void *payload, const xmlChar *name ATTRIBUTE_UNUSED) {
@@ -2165,7 +2165,7 @@ error:
  * @deprecated Internal function, don't use.
  *
  * @param table  A notation table
- * @returns the new xmlNotationTablePtr or NULL in case of error.
+ * @returns the new xmlNotationTable or NULL in case of error.
  */
 xmlNotationTable *
 xmlCopyNotationTable(xmlNotationTable *table) {
@@ -2372,7 +2372,7 @@ xmlAddIDSafe(xmlAttr *attr, const xmlChar *value) {
  * @param doc  pointer to the document, must equal `attr->doc`
  * @param value  the attribute (ID) value
  * @param attr  the attribute holding the ID
- * @returns the new xmlIDPtr or NULL on error.
+ * @returns the new xmlID or NULL on error.
  */
 xmlID *
 xmlAddID(xmlValidCtxt *ctxt, xmlDoc *doc, const xmlChar *value,
@@ -2645,7 +2645,7 @@ xmlDummyCompare(const void *data0 ATTRIBUTE_UNUSED,
  * @param doc  pointer to the document
  * @param value  the value name
  * @param attr  the attribute holding the Ref
- * @returns the new xmlRefPtr or NULL o error.
+ * @returns the new xmlRef or NULL o error.
  */
 xmlRef *
 xmlAddRef(xmlValidCtxt *ctxt, xmlDoc *doc, const xmlChar *value,
@@ -2894,7 +2894,7 @@ xmlGetRefs(xmlDoc *doc, const xmlChar *ID) {
  *
  * @param dtd  a pointer to the DtD to search
  * @param name  the element name
- * @returns the xmlElementPtr or NULL if not found.
+ * @returns the xmlElement or NULL if not found.
  */
 
 xmlElement *
@@ -2927,7 +2927,7 @@ xmlGetDtdElementDesc(xmlDtd *dtd, const xmlChar *name) {
  * @param ctxt  a validation context
  * @param dtd  a pointer to the DtD to search
  * @param name  the element name
- * @returns the xmlElementPtr or NULL if not found.
+ * @returns the xmlElement or NULL if not found.
  */
 
 static xmlElementPtr
@@ -2997,7 +2997,7 @@ mem_error:
  * @param dtd  a pointer to the DtD to search
  * @param name  the element name
  * @param prefix  the element namespace prefix
- * @returns the xmlElementPtr or NULL if not found.
+ * @returns the xmlElement or NULL if not found.
  */
 
 xmlElement *
@@ -3019,7 +3019,7 @@ xmlGetDtdQElementDesc(xmlDtd *dtd, const xmlChar *name,
  * @param dtd  a pointer to the DtD to search
  * @param elem  the element name
  * @param name  the attribute name
- * @returns the xmlAttributePtr or NULL if not found.
+ * @returns the xmlAttribute or NULL if not found.
  */
 
 xmlAttribute *
@@ -3054,7 +3054,7 @@ xmlGetDtdAttrDesc(xmlDtd *dtd, const xmlChar *elem, const xmlChar *name) {
  * @param elem  the element name
  * @param name  the attribute name
  * @param prefix  the attribute namespace prefix
- * @returns the xmlAttributePtr or NULL if not found.
+ * @returns the xmlAttribute or NULL if not found.
  */
 
 xmlAttribute *
@@ -3074,7 +3074,7 @@ xmlGetDtdQAttrDesc(xmlDtd *dtd, const xmlChar *elem, const xmlChar *name,
  *
  * @param dtd  a pointer to the DtD to search
  * @param name  the notation name
- * @returns the xmlNotationPtr or NULL if not found.
+ * @returns the xmlNotation or NULL if not found.
  */
 
 xmlNotation *

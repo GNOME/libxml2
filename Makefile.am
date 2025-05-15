@@ -202,16 +202,17 @@ CLEANFILES = missing.lst runsuite.log runxmlconf.log test.out \
 EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     libxml.h \
 	     codegen/charset.inc \
-	     codegen/chvalid.def \
 	     codegen/escape.inc \
 	     codegen/genCharset.py \
-	     codegen/genChRanges.py \
+	     codegen/genRanges.py \
 	     codegen/genEscape.py \
 	     codegen/genHtml5Ent.py \
 	     codegen/genHtml5LibTests.py \
 	     codegen/genTestApi.py \
 	     codegen/genUnicode.py \
 	     codegen/html5ent.inc \
+	     codegen/ranges.def \
+	     codegen/ranges.inc \
 	     codegen/xmlmod.py \
 	     timsort.h \
 	     README.zOS README.md \

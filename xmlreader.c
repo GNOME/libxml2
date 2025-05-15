@@ -2060,7 +2060,6 @@ xmlNewTextReader(xmlParserInputBuffer *input, const char *URI) {
     }
     ret->ctxt->parseMode = XML_PARSE_READER;
     ret->ctxt->_private = ret;
-    ret->ctxt->linenumbers = 1;
     ret->ctxt->dictNames = 1;
     ret->allocs = XML_TEXTREADER_CTXT;
     /*
@@ -4838,7 +4837,6 @@ xmlTextReaderSetup(xmlTextReader *reader,
         reader->dict = reader->ctxt->dict;
     }
     reader->ctxt->_private = reader;
-    reader->ctxt->linenumbers = 1;
     reader->ctxt->dictNames = 1;
     /*
      * use the parser dictionary to allocate all elements and attributes names

@@ -2749,7 +2749,6 @@ xmlInitSAXParserCtxt(xmlParserCtxtPtr ctxt, const xmlSAXHandler *sax,
     if (ctxt->pedantic) {
         ctxt->options |= XML_PARSE_PEDANTIC;
     }
-    ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     if (ctxt->keepBlanks == 0) {
 	ctxt->sax->ignorableWhitespace = xmlSAX2IgnorableWhitespace;
@@ -3353,21 +3352,17 @@ xmlPedanticParserDefault(int val) {
 }
 
 /**
- * Set and return the previous value for enabling line numbers in elements
- * contents. This may break on old application and is turned off by default.
+ * Has no effect.
  *
- * @deprecated The modern options API always enables line numbers.
+ * @deprecated Line numbers are always enabled.
  *
  * @param val  int 0 or 1
- * @returns the last value for 0 for no substitution, 1 for substitution.
+ * @returns 1
  */
 
 int
-xmlLineNumbersDefault(int val) {
-    int old = xmlLineNumbersDefaultValue;
-
-    xmlLineNumbersDefaultValue = val;
-    return(old);
+xmlLineNumbersDefault(int val ATTRIBUTE_UNUSED) {
+    return(1);
 }
 
 /**

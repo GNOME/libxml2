@@ -4527,7 +4527,6 @@ htmlInitParserCtxt(htmlParserCtxtPtr ctxt, const htmlSAXHandler *sax,
     ctxt->myDoc = NULL;
     ctxt->wellFormed = 1;
     ctxt->replaceEntities = 0;
-    ctxt->linenumbers = xmlLineNumbersDefaultValue;
     ctxt->keepBlanks = xmlKeepBlanksDefaultValue;
     ctxt->html = INSERT_INITIAL;
     ctxt->vctxt.flags = XML_VCTXT_USE_PCTXT;
@@ -5600,8 +5599,6 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
      * It would be useful to allow this feature.
      */
     ctxt->dictNames = 0;
-
-    ctxt->linenumbers = 1;
 
     /*
      * Allow XML_PARSE_NOENT which many users set on the HTML parser.

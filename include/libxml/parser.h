@@ -436,7 +436,7 @@ struct _xmlParserCtxt {
      * should the external subset be loaded
      */
     int loadsubset;
-    /* set line number in element content */
+    /* unused */
     int linenumbers XML_DEPRECATED_MEMBER;
     /**
      * @deprecated Use xmlCtxtGetCatalogs() and xmlCtxtSetCatalogs()

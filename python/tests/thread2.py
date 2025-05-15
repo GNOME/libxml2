@@ -27,19 +27,19 @@ class ErrorHandler:
         self.errors.append(str)
         self.lock.release()
 
-def getLineNumbersDefault():
-    old = libxml2.lineNumbersDefault(0)
-    libxml2.lineNumbersDefault(old)
+def getPedanticParserDefault():
+    old = libxml2.pedanticParserDefault(0)
+    libxml2.pedanticParserDefault(old)
     return old
 
-def test(expectedLineNumbersDefault):
+def test(expectedPedanticParserDefault):
     time.sleep(1)
     global failed
     # check a per thread-global
-    if expectedLineNumbersDefault != getLineNumbersDefault():
+    if expectedPedanticParserDefault != getPedanticParserDefault():
         failed = 1
         print("FAILED to obtain correct value for " \
-              "lineNumbersDefault in thread %d" % get_ident())
+              "pedanticParserDefault in thread %d" % get_ident())
     # check the global error handler 
     # (which is NOT per-thread in the python bindings)
     try:
@@ -54,7 +54,7 @@ eh = ErrorHandler()
 libxml2.registerErrorHandler(eh.handler,"")
 
 # set on the main thread only
-libxml2.lineNumbersDefault(1) 
+libxml2.pedanticParserDefault(1)
 test(1)
 ec = len(eh.errors)
 if ec == 0:
@@ -63,7 +63,7 @@ if ec == 0:
 
 ts = []
 for i in range(THREADS_COUNT):
-    # expect 0 for lineNumbersDefault because
+    # expect 0 for pedanticParserDefault because
     # the new value has been set on the main thread only
     ts.append(Thread(target=test,args=(0,)))
 for t in ts:
@@ -75,11 +75,11 @@ if len(eh.errors) != ec+THREADS_COUNT*ec:
     print("FAILED: did not obtain the correct number of errors")
     sys.exit(1)
 
-# set lineNumbersDefault for future new threads
-libxml2.thrDefLineNumbersDefaultValue(1)
+# set pedanticParserDefault for future new threads
+libxml2.thrDefPedanticParserDefaultValue(1)
 ts = []
 for i in range(THREADS_COUNT):
-    # expect 1 for lineNumbersDefault
+    # expect 1 for pedanticParserDefault
     ts.append(Thread(target=test,args=(1,)))
 for t in ts:
     t.start()

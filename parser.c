@@ -12449,7 +12449,6 @@ xmlCreateURLParserCtxt(const char *filename, int options)
     options |= XML_PARSE_UNZIP;
 
     xmlCtxtUseOptions(ctxt, options);
-    ctxt->linenumbers = 1;
 
     input = xmlLoadResource(ctxt, filename, NULL, XML_RESOURCE_MAIN_DOCUMENT);
     if (input == NULL) {
@@ -13184,8 +13183,6 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
         if (ctxt->dict != NULL)
             xmlDictSetLimit(ctxt->dict, 0);
     }
-
-    ctxt->linenumbers = 1;
 
     return(options & ~allMask);
 }

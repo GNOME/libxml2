@@ -903,7 +903,6 @@ xmlSAX2AppendChild(xmlParserCtxtPtr ctxt, xmlNodePtr node) {
     node->parent = parent;
 
     if ((node->type != XML_TEXT_NODE) &&
-        (ctxt->linenumbers) &&
 	(ctxt->input != NULL)) {
         if ((unsigned) ctxt->input->line < (unsigned) USHRT_MAX)
             node->line = ctxt->input->line;
@@ -2537,7 +2536,6 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
 
     if ((lastChild != NULL) &&
         (type == XML_TEXT_NODE) &&
-        (ctxt->linenumbers) &&
         (ctxt->input != NULL)) {
         if ((unsigned) ctxt->input->line < (unsigned) USHRT_MAX)
             lastChild->line = ctxt->input->line;

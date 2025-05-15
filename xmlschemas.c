@@ -28328,7 +28328,6 @@ xmlSchemaValidateStreamInternal(xmlSchemaValidCtxtPtr ctxt,
     xmlSchemaSAXPlugPtr plug = NULL;
     int ret;
 
-    pctxt->linenumbers = 1;
     xmlSchemaValidateSetLocator(ctxt, xmlSchemaValidateStreamLocator, pctxt);
 
     ctxt->parserCtxt = pctxt;

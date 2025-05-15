@@ -92,7 +92,7 @@ functions = {
     'xmlParserSetLineNumbers': (
         'Switch on the generation of line number for elements nodes.',
         ['void', None, None],
-        [['ctxt', 'xmlParserCtxt *', 'the parser context'], ['linenumbers', 'int', '1 to save line numbers']],
+        [['ctxt', 'xmlParserCtxt *', 'the parser context'], ['linenumbers', 'int', 'unused']],
         'python_accessor', None),
     'xmlDebugMemory': (
         'Switch on the generation of line number for elements nodes. Also returns the number of bytes allocated and not freed by libxml2 since memory debugging was switched on.',

@@ -214,7 +214,6 @@ static int xmlDoValidityCheckingDefaultValueThrDef = 0;
 static int xmlGetWarningsDefaultValueThrDef = 1;
 static int xmlLoadExtDtdDefaultValueThrDef = 0;
 static int xmlPedanticParserDefaultValueThrDef = 0;
-static int xmlLineNumbersDefaultValueThrDef = 0;
 static int xmlKeepBlanksDefaultValueThrDef = 1;
 static int xmlSubstituteEntitiesDefaultValueThrDef = 0;
 
@@ -554,7 +553,6 @@ xmlInitGlobalState(xmlGlobalStatePtr gs) {
          xmlDoValidityCheckingDefaultValueThrDef;
     gs->getWarningsDefaultValue = xmlGetWarningsDefaultValueThrDef;
     gs->keepBlanksDefaultValue = xmlKeepBlanksDefaultValueThrDef;
-    gs->lineNumbersDefaultValue = xmlLineNumbersDefaultValueThrDef;
     gs->loadExtDtdDefaultValue = xmlLoadExtDtdDefaultValueThrDef;
     gs->pedanticParserDefaultValue = xmlPedanticParserDefaultValueThrDef;
     gs->substituteEntitiesDefaultValue =
@@ -900,13 +898,13 @@ int xmlThrDefKeepBlanksDefaultValue(int v) {
     return ret;
 }
 
-int xmlThrDefLineNumbersDefaultValue(int v) {
-    int ret;
-    xmlMutexLock(&xmlThrDefMutex);
-    ret = xmlLineNumbersDefaultValueThrDef;
-    xmlLineNumbersDefaultValueThrDef = v;
-    xmlMutexUnlock(&xmlThrDefMutex);
-    return ret;
+/**
+ * Set per-thread default value.
+ *
+ * @deprecated Has no effect.
+ */
+int xmlThrDefLineNumbersDefaultValue(int v ATTRIBUTE_UNUSED) {
+    return 1;
 }
 
 int xmlThrDefLoadExtDtdDefaultValue(int v) {

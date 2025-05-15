@@ -11,10 +11,8 @@
 #
 import sys
 import string
-import time
 
 webpage = "http://www.unicode.org/Public/4.0-Update1/UCD-4.0.1.html"
-sources = "Blocks-4.0.1.txt UnicodeData-4.0.1.txt"
 
 #
 # blockAliases is a small hack - it is used for mapping block names which
@@ -31,7 +29,8 @@ blockAliases.append("PrivateUse:PrivateUseArea,SupplementaryPrivateUseArea-A," +
 # number, inline comparisons are generated
 minTableSize = 8
 
-(blockfile, catfile) = sources.split()
+blockfile = "Blocks-4.0.1.txt"
+catfile = "UnicodeData-4.0.1.txt"
 
 
 #
@@ -197,8 +196,6 @@ except:
     print("Failed to open xmlunicode.c")
     sys.exit(1)
 
-date = time.asctime(time.localtime(time.time()))
-
 output.write(
 """/*
  * xmlunicode.c: this module implements the Unicode character APIs
@@ -207,9 +204,6 @@ output.write(
  * UCS description files of the Unicode Character Database
  * %s
  * using the genUnicode.py Python script.
- *
- * Generation date: %s
- * Sources: %s
  */
 
 #define IN_LIBXML
@@ -238,7 +232,7 @@ typedef struct {
 
 static xmlIntFunc *xmlUnicodeLookup(const xmlUnicodeNameTable *tptr, const char *tname);
 
-""" % (webpage, date, sources));
+""" % webpage);
 
 #
 # For any categories with more than minTableSize ranges we generate
@@ -281,13 +275,11 @@ for name in ckeys:
 
 output.write(
 """/**
- * xmlUnicodeLookup:
- * @tptr: pointer to the name table
- * @tname: name to be found
- *
  * binary table lookup for user-supplied name
  *
- * Returns pointer to range function if found, otherwise NULL
+ * @param tptr  pointer to the name table
+ * @param tname  name to be found
+ * @returns pointer to range function if found, otherwise NULL
  */
 static xmlIntFunc
 *xmlUnicodeLookup(const xmlUnicodeNameTable *tptr, const char *tname) {
@@ -316,10 +308,10 @@ static xmlIntFunc
 
 for block in bkeys:
     name = block.replace('-', '')
-    output.write("/**\n * xmlUCSIs%s:\n * @code: UCS code point\n" % (name))
-    output.write(" *\n * Check whether the character is part of %s UCS Block\n"%
+    output.write("/**\n * Check whether the character is part of %s UCS Block\n"%
                  (block))
-    output.write(" *\n * Returns 1 if true 0 otherwise\n */\n");
+    output.write(" *\n * @param code  UCS code point\n")
+    output.write(" * @returns 1 if true 0 otherwise\n */\n");
     output.write("static int\nxmlUCSIs%s(int code) {\n    return(" % name)
     flag = 0
     for (start, end) in BlockNames[block]:
@@ -332,10 +324,10 @@ for block in bkeys:
 
 for name in ckeys:
     ranges = Categories[name]
-    output.write("/**\n * xmlUCSIsCat%s:\n * @code: UCS code point\n" % (name))
-    output.write(" *\n * Check whether the character is part of %s UCS Category\n"%
+    output.write("/**\n * Check whether the character is part of %s UCS Category\n"%
                  (name))
-    output.write(" *\n * Returns 1 if true 0 otherwise\n */\n");
+    output.write(" *\n * @param code  UCS code point\n")
+    output.write(" * @returns 1 if true 0 otherwise\n */\n");
     output.write("int\nxmlUCSIsCat%s(int code) {\n" % name)
     if len(Categories[name]) > minTableSize:
         output.write("    return(xmlCharInRange((unsigned int)code, &xml%sG)"
@@ -385,13 +377,11 @@ static const xmlUnicodeNameTable xmlUnicodeBlockTbl = {xmlUnicodeBlocks, %s};
 static const xmlUnicodeNameTable xmlUnicodeCatTbl = {xmlUnicodeCats, %s};
 
 /**
- * xmlUCSIsBlock:
- * @code: UCS code point
- * @block: UCS block name
- *
  * Check whether the character is part of the UCS Block
  *
- * Returns 1 if true, 0 if false and -1 on unknown block
+ * @param code  UCS code point
+ * @param block  UCS block name
+ * @returns 1 if true, 0 if false and -1 on unknown block
  */
 int
 xmlUCSIsBlock(int code, const char *block) {
@@ -404,13 +394,11 @@ xmlUCSIsBlock(int code, const char *block) {
 }
 
 /**
- * xmlUCSIsCat:
- * @code: UCS code point
- * @cat: UCS Category name
- *
  * Check whether the character is part of the UCS Category
  *
- * Returns 1 if true, 0 if false and -1 on unknown category
+ * @param code  UCS code point
+ * @param cat  UCS Category name
+ * @returns 1 if true, 0 if false and -1 on unknown category
  */
 int
 xmlUCSIsCat(int code, const char *cat) {

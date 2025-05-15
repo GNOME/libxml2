@@ -350,7 +350,7 @@ skipped_types = {
 import os
 import xml.etree.ElementTree as etree
 
-sys.path.append(srcPref + '/../tools')
+sys.path.append(srcPref + '/../codegen')
 import xmlmod
 
 xmlDocDir = dstPref + '/../doc/xml'

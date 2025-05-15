@@ -279,7 +279,7 @@ UTF8ToHtmlWrapper(void *vctxt, unsigned char *out, int *outlen,
 #define UTF8ToHtmlWrapper NULL
 #endif
 
-#include "iso8859x.inc"
+#include "codegen/charset.inc"
 
 static xmlCharEncError
 EightBitToUtf8(void *vctxt, unsigned char* out, int *outlen,

@@ -154,7 +154,7 @@ testdso_la_LDFLAGS = $(AM_LDFLAGS) \
 		     -module -no-undefined -avoid-version -rpath $(libdir)
 
 rebuild_testapi:
-	cd $(srcdir) && python3 tools/gentest.py $(abs_builddir)
+	cd $(srcdir) && python3 codegen/genTestApi.py $(abs_builddir)
 
 testapi_SOURCES=testapi.c
 testapi_DEPENDENCIES = $(DEPS)
@@ -201,9 +201,18 @@ CLEANFILES = missing.lst runsuite.log runxmlconf.log test.out \
 
 EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     libxml.h \
-	     html5ent.inc iso8859x.inc \
-	     tools/gentest.py tools/xmlmod.py \
-	     tools/genChRanges.py tools/genEscape.py tools/genUnicode.py \
+	     codegen/charset.inc \
+	     codegen/chvalid.def \
+	     codegen/escape.inc \
+	     codegen/genCharset.py \
+	     codegen/genChRanges.py \
+	     codegen/genEscape.py \
+	     codegen/genHtml5Ent.py \
+	     codegen/genHtml5LibTests.py \
+	     codegen/genTestApi.py \
+	     codegen/genUnicode.py \
+	     codegen/html5ent.inc \
+	     codegen/xmlmod.py \
 	     timsort.h \
 	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in \

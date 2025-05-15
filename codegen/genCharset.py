@@ -73,7 +73,7 @@ def genTranscodeTable(out, name, chars):
     printHexTable(out, 2, data)
     out.write('};\n\n')
 
-out = open(f'iso8859x.inc', 'w')
+out = open(f'codegen/charset.inc', 'w')
 
 out.write('''/*
  * Lookup tables for transcoding of 8-bit character sets.

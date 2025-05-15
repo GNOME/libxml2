@@ -162,8 +162,9 @@ def gen_table(ctype, cname, values, fmt, elems_per_line):
         else: r += ' '
         r += fmt % values[i]
 
-    return f'static const {ctype} {cname}[{count}] = {{{r}\n}};\n'
+    return f'static const {ctype} {cname}[{count}] = {{{r}\n}};\n\n'
 
-print(gen_table('unsigned char', 'htmlEntAlpha', alpha, '%3d', 15))
-print(gen_table('unsigned short', 'htmlEntValues', values, '%5d', 10))
-print(gen_table('unsigned char', 'htmlEntStrings', strings, '%3s', 15))
+with open('codegen/html5ent.inc', 'w') as out:
+    out.write(gen_table('unsigned char', 'htmlEntAlpha', alpha, '%3d', 15))
+    out.write(gen_table('unsigned short', 'htmlEntValues', values, '%5d', 10))
+    out.write(gen_table('unsigned char', 'htmlEntStrings', strings, '%3s', 15))

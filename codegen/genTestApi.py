@@ -13,40 +13,40 @@ import xmlmod
 # Globals
 
 dtors = {
-    'htmlDocPtr': 'xmlFreeDoc',
-    'htmlParserCtxtPtr': 'htmlFreeParserCtxt',
-    'xmlAutomataPtr': 'xmlFreeAutomata',
-    'xmlBufferPtr': 'xmlBufferFree',
-    'xmlCatalogPtr': 'xmlFreeCatalog',
+    'htmlDoc *': 'xmlFreeDoc',
+    'htmlParserCtxt *': 'htmlFreeParserCtxt',
+    'xmlAutomata *': 'xmlFreeAutomata',
+    'xmlBuffer *': 'xmlBufferFree',
+    'xmlCatalog *': 'xmlFreeCatalog',
     'xmlChar *': 'xmlFree',
-    'xmlDOMWrapCtxtPtr': 'xmlDOMWrapFreeCtxt',
-    'xmlDictPtr': 'xmlDictFree',
-    'xmlDocPtr': 'xmlFreeDoc',
-    'xmlDtdPtr': 'xmlFreeDtd',
-    'xmlEntitiesTablePtr': 'xmlFreeEntitiesTable',
-    'xmlEnumerationPtr': 'xmlFreeEnumeration',
-    'xmlListPtr': 'xmlListDelete',
-    'xmlModulePtr': 'xmlModuleFree',
-    'xmlMutexPtr': 'xmlFreeMutex',
-    'xmlNodePtr': 'xmlFreeNode',
-    'xmlNodeSetPtr': 'xmlXPathFreeNodeSet',
-    'xmlNsPtr': 'xmlFreeNs',
-    'xmlOutputBufferPtr': 'xmlOutputBufferClose',
-    'xmlParserCtxtPtr': 'xmlFreeParserCtxt',
-    'xmlParserInputBufferPtr': 'xmlFreeParserInputBuffer',
-    'xmlParserInputPtr': 'xmlFreeInputStream',
-    'xmlRMutexPtr': 'xmlFreeRMutex',
-    'xmlRelaxNGValidCtxtPtr': 'xmlRelaxNGFreeValidCtxt',
-    'xmlSaveCtxtPtr': 'xmlSaveClose',
-    'xmlSchemaFacetPtr': 'xmlSchemaFreeFacet',
-    'xmlSchemaValPtr': 'xmlSchemaFreeValue',
-    'xmlSchemaValidCtxtPtr': 'xmlSchemaFreeValidCtxt',
-    'xmlTextWriterPtr': 'xmlFreeTextWriter',
-    'xmlURIPtr': 'xmlFreeURI',
-    'xmlValidCtxtPtr': 'xmlFreeValidCtxt',
-    'xmlXPathContextPtr': 'xmlXPathFreeContext',
-    'xmlXPathParserContextPtr': 'xmlXPathFreeParserContext',
-    'xmlXPathObjectPtr': 'xmlXPathFreeObject',
+    'xmlDOMWrapCtxt *': 'xmlDOMWrapFreeCtxt',
+    'xmlDict *': 'xmlDictFree',
+    'xmlDoc *': 'xmlFreeDoc',
+    'xmlDtd *': 'xmlFreeDtd',
+    'xmlEntitiesTable *': 'xmlFreeEntitiesTable',
+    'xmlEnumeration *': 'xmlFreeEnumeration',
+    'xmlList *': 'xmlListDelete',
+    'xmlModule *': 'xmlModuleFree',
+    'xmlMutex *': 'xmlFreeMutex',
+    'xmlNode *': 'xmlFreeNode',
+    'xmlNodeSet *': 'xmlXPathFreeNodeSet',
+    'xmlNs *': 'xmlFreeNs',
+    'xmlOutputBuffer *': 'xmlOutputBufferClose',
+    'xmlParserCtxt *': 'xmlFreeParserCtxt',
+    'xmlParserInputBuffer *': 'xmlFreeParserInputBuffer',
+    'xmlParserInput *': 'xmlFreeInputStream',
+    'xmlRMutex *': 'xmlFreeRMutex',
+    'xmlRelaxNGValidCtxt *': 'xmlRelaxNGFreeValidCtxt',
+    'xmlSaveCtxt *': 'xmlSaveClose',
+    'xmlSchemaFacet *': 'xmlSchemaFreeFacet',
+    'xmlSchemaVal *': 'xmlSchemaFreeValue',
+    'xmlSchemaValidCtxt *': 'xmlSchemaFreeValidCtxt',
+    'xmlTextWriter *': 'xmlFreeTextWriter',
+    'xmlURI *': 'xmlFreeURI',
+    'xmlValidCtxt *': 'xmlFreeValidCtxt',
+    'xmlXPathContext *': 'xmlXPathFreeContext',
+    'xmlXPathParserContext *': 'xmlXPathFreeParserContext',
+    'xmlXPathObject *': 'xmlXPathFreeObject',
 }
 
 blockList = {
@@ -194,7 +194,7 @@ for file in os.listdir(xmlDocDir):
             dtor = dtors.get(rtype)
             if dtor is not None:
                 code = f'{dtor}({code})'
-            elif rtype == 'xmlHashTablePtr':
+            elif rtype == 'xmlHashTable *':
                 code = f'xmlHashFree({code}, NULL)'
 
             mmfunc[name] = f'    {code};\n'

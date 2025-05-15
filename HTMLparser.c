@@ -2432,7 +2432,7 @@ htmlCodePointToUtf8(int c, xmlChar *out, int *osize) {
     return(out);
 }
 
-#include "html5ent.inc"
+#include "codegen/html5ent.inc"
 
 #define ENT_F_SEMICOLON 0x80u
 #define ENT_F_SUBTABLE  0x40u

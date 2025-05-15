@@ -95,7 +95,6 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlCharEncInFunc(NULL, NULL, NULL);
     xmlCharEncNewCustomHandler(NULL, 0, 0, 0, NULL, NULL, NULL);
     xmlCharEncOutFunc(NULL, NULL, NULL);
-    xmlCharInRange(0, NULL);
     xmlFree(xmlCharStrdup(NULL));
     xmlFree(xmlCharStrndup(NULL, 0));
     xmlCheckFilename(NULL);

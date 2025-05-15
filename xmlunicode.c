@@ -5,9 +5,6 @@
  * UCS description files of the Unicode Character Database
  * http://www.unicode.org/Public/4.0-Update1/UCD-4.0.1.html
  * using the genUnicode.py Python script.
- *
- * Generation date: Tue Mar  4 16:29:31 2025
- * Sources: Blocks-4.0.1.txt UnicodeData-4.0.1.txt
  */
 
 #define IN_LIBXML

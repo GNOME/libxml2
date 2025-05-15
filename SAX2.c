@@ -1737,6 +1737,7 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
 
 /*
  * @param ctxt  the parser context
+ * @param doc  the document
  * @param str  the input string
  * @param len  the string length
  *
@@ -1745,7 +1746,8 @@ xmlSAX2EndElement(void *ctx, const xmlChar *name ATTRIBUTE_UNUSED)
  * @returns the newly allocated string or NULL if not needed or error
  */
 static xmlNodePtr
-xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
+xmlSAX2TextNode(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const xmlChar *str,
+                int len) {
     xmlNodePtr ret;
     const xmlChar *intern = NULL;
 
@@ -1803,6 +1805,7 @@ xmlSAX2TextNode(xmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
     }
 skip:
     ret->type = XML_TEXT_NODE;
+    ret->doc = doc;
 
     ret->name = xmlStringText;
     if (intern == NULL) {
@@ -1939,11 +1942,10 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	 * otherwise with ' or "
 	 */
 	if (*valueend != 0) {
-	    tmp = xmlSAX2TextNode(ctxt, value, valueend - value);
+	    tmp = xmlSAX2TextNode(ctxt, ret->doc, value, valueend - value);
 	    ret->children = tmp;
 	    ret->last = tmp;
 	    if (tmp != NULL) {
-		tmp->doc = ret->doc;
 		tmp->parent = (xmlNodePtr) ret;
 	    }
 	} else if (valueend > value) {
@@ -1954,11 +1956,10 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
     } else if (value != NULL) {
 	xmlNodePtr tmp;
 
-	tmp = xmlSAX2TextNode(ctxt, value, valueend - value);
+	tmp = xmlSAX2TextNode(ctxt, ret->doc, value, valueend - value);
 	ret->children = tmp;
 	ret->last = tmp;
 	if (tmp != NULL) {
-	    tmp->doc = ret->doc;
 	    tmp->parent = (xmlNodePtr) ret;
 	}
     }
@@ -2424,118 +2425,114 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
             xmlElementType type)
 {
     xmlNodePtr lastChild;
+    xmlNodePtr parent;
 
-    if (ctxt == NULL) return;
-    /*
-     * Handle the data if any. If there is no child
-     * add it as content, otherwise if the last child is text,
-     * concatenate it, else create a new node of type text.
-     */
-
-    if (ctxt->node == NULL) {
+    if (ctxt == NULL)
         return;
-    }
-    lastChild = ctxt->node->last;
+
+    parent = ctxt->node;
+    if (parent == NULL)
+        return;
+    lastChild = parent->last;
 
     /*
-     * Here we needed an accelerator mechanism in case of very large
-     * elements. Use an attribute in the structure !!!
+     * Try to merge with previous text node using size and capacity
+     * stored in the parser context to avoid naive concatenation.
+     *
+     * Don't merge CDATA sections. In HTML mode, CDATA is used for
+     * raw text which should be merged.
      */
-    if (lastChild == NULL) {
+    if ((lastChild == NULL) ||
+        (lastChild->type != type) ||
+        ((!ctxt->html) && (type != XML_TEXT_NODE))) {
+        xmlNode *node;
+
         if (type == XML_TEXT_NODE)
-            lastChild = xmlSAX2TextNode(ctxt, ch, len);
+            node = xmlSAX2TextNode(ctxt, parent->doc, ch, len);
         else
-            lastChild = xmlNewCDataBlock(ctxt->myDoc, ch, len);
-	if (lastChild != NULL) {
-	    ctxt->node->children = lastChild;
-	    ctxt->node->last = lastChild;
-	    lastChild->parent = ctxt->node;
-	    lastChild->doc = ctxt->node->doc;
-	    ctxt->nodelen = len;
-	    ctxt->nodemem = len + 1;
-	} else {
+            node = xmlNewCDataBlock(parent->doc, ch, len);
+	if (node == NULL) {
 	    xmlSAX2ErrMemory(ctxt);
 	    return;
 	}
+
+        if (lastChild == NULL) {
+            parent->children = node;
+            parent->last = node;
+            node->parent = parent;
+        } else {
+            xmlSAX2AppendChild(ctxt, node);
+        }
+
+        ctxt->nodelen = len;
+        ctxt->nodemem = len + 1;
+        lastChild = node;
     } else {
-	int coalesceText = (lastChild != NULL) &&
-	    (lastChild->type == type) &&
-	    (((ctxt->html) && (type != XML_TEXT_NODE)) ||
-             (lastChild->name == xmlStringText));
-	if ((coalesceText) && (ctxt->nodemem > 0)) {
-            int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
-                            XML_MAX_HUGE_LENGTH :
-                            XML_MAX_TEXT_LENGTH;
+        xmlChar *content;
+        int oldSize, newSize, capacity;
+        int maxSize = (ctxt->options & XML_PARSE_HUGE) ?
+                      XML_MAX_HUGE_LENGTH :
+                      XML_MAX_TEXT_LENGTH;
 
-	    /*
-	     * The whole point of maintaining nodelen and nodemem,
-	     * xmlTextConcat is too costly, i.e. compute length,
-	     * reallocate a new buffer, move data, append ch. Here
-	     * We try to minimize realloc() uses and avoid copying
-	     * and recomputing length over and over.
-	     */
-	    if (lastChild->content == (xmlChar *)&(lastChild->properties)) {
-		lastChild->content = xmlStrdup(lastChild->content);
-		lastChild->properties = NULL;
-	    } else if ((ctxt->nodemem == ctxt->nodelen + 1) &&
-	               (xmlDictOwns(ctxt->dict, lastChild->content))) {
-		lastChild->content = xmlStrdup(lastChild->content);
-	    }
-	    if (lastChild->content == NULL) {
-		xmlSAX2ErrMemory(ctxt);
-		return;
- 	    }
-            if ((len > maxLength) || (ctxt->nodelen > maxLength - len)) {
-                xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
-                            "Text node too long, try XML_PARSE_HUGE");
-                xmlHaltParser(ctxt);
-                return;
-            }
-	    if (ctxt->nodelen + len >= ctxt->nodemem) {
-		xmlChar *newbuf;
-		int size;
+        content = lastChild->content;
+        oldSize = ctxt->nodelen;
+        capacity = ctxt->nodemem;
 
-		size = ctxt->nodemem > INT_MAX - len ?
-                       INT_MAX :
-                       ctxt->nodemem + len;
-		size = size > INT_MAX / 2 ? INT_MAX : size * 2;
-                newbuf = (xmlChar *) xmlRealloc(lastChild->content,size);
-		if (newbuf == NULL) {
-		    xmlSAX2ErrMemory(ctxt);
-		    return;
-		}
-		ctxt->nodemem = size;
-		lastChild->content = newbuf;
-	    }
-	    memcpy(&lastChild->content[ctxt->nodelen], ch, len);
-	    ctxt->nodelen += len;
-	    lastChild->content[ctxt->nodelen] = 0;
-	} else if (coalesceText) {
-	    if (xmlTextConcat(lastChild, ch, len)) {
-		xmlSAX2ErrMemory(ctxt);
-	    }
-	    if (ctxt->node->children != NULL) {
-		ctxt->nodelen = xmlStrlen(lastChild->content);
-		ctxt->nodemem = ctxt->nodelen + 1;
-	    }
-	} else {
-	    /* Mixed content, first time */
-            if (type == XML_TEXT_NODE) {
-                lastChild = xmlSAX2TextNode(ctxt, ch, len);
-                if (lastChild != NULL)
-                    lastChild->doc = ctxt->myDoc;
-            } else
-                lastChild = xmlNewCDataBlock(ctxt->myDoc, ch, len);
-	    if (lastChild == NULL) {
-                xmlSAX2ErrMemory(ctxt);
+        /* Shouldn't happen */
+        if ((content == NULL) || (capacity <= 0)) {
+            xmlFatalErr(ctxt, XML_ERR_INTERNAL_ERROR,
+                        "xmlSAX2Text: no content");
+            return;
+        }
+
+        if ((len > maxSize) || (oldSize > maxSize - len)) {
+            xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
+                        "Text node too long, try XML_PARSE_HUGE");
+            xmlHaltParser(ctxt);
+            return;
+        }
+
+        newSize = oldSize + len;
+
+        if (newSize >= capacity) {
+            if (newSize <= 20)
+                capacity = 40;
+            else
+                capacity = newSize > INT_MAX / 2 ? INT_MAX : newSize * 2;
+
+            /*
+             * If the content was stored in properties or in
+             * the dictionary, don't realloc.
+             */
+            if ((content == (xmlChar *) &lastChild->properties) ||
+                ((ctxt->nodemem == oldSize + 1) &&
+                 (xmlDictOwns(ctxt->dict, content)))) {
+                xmlChar *newContent;
+
+                newContent = xmlMalloc(capacity);
+                if (newContent == NULL) {
+                    xmlSAX2ErrMemory(ctxt);
+                    return;
+                }
+
+                memcpy(newContent, content, oldSize);
+                lastChild->properties = NULL;
+                content = newContent;
             } else {
-		xmlSAX2AppendChild(ctxt, lastChild);
-		if (ctxt->node->children != NULL) {
-		    ctxt->nodelen = len;
-		    ctxt->nodemem = len + 1;
-		}
-	    }
-	}
+                content = xmlRealloc(content, capacity);
+                if (content == NULL) {
+                    xmlSAX2ErrMemory(ctxt);
+                    return;
+                }
+            }
+
+            ctxt->nodemem = capacity;
+            lastChild->content = content;
+        }
+
+        memcpy(&content[oldSize], ch, len);
+        content[newSize] = 0;
+        ctxt->nodelen = newSize;
     }
 
     if ((lastChild != NULL) &&

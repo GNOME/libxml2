@@ -60,7 +60,7 @@ The following options disable or enable code modules and relevant symbols:
     --with-output           serialization support (on)
     --with-pattern          xmlPattern selection interface (on)
     --with-push             push parser interfaces (on)
-    --with-python           Python bindings (on)
+    --with-python           Python bindings (off)
     --with-reader           xmlReader parsing interface (on)
     --with-regexps          regular expressions support (on)
     --with-relaxng          RELAX NG support (on)
@@ -78,6 +78,7 @@ The following options disable or enable code modules and relevant symbols:
 
 Other options:
 
+    --prefix=DIR            set installation prefix
     --with-minimum          build a minimally sized library (off)
     --with-legacy           maximum ABI compatibility (off)
 
@@ -115,7 +116,6 @@ Common CMake options include:
     -D CMAKE_BUILD_TYPE=Release         # specify build type
     -D CMAKE_INSTALL_PREFIX=/usr/local  # specify the install path
     -D LIBXML2_WITH_ICONV=OFF           # disable iconv
-    -D LIBXML2_WITH_PYTHON=OFF          # disable Python
     -D LIBXML2_WITH_ZLIB=ON             # enable zlib
 
 You can also open the libxml source directory with its CMakeLists.txt

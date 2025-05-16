@@ -2,6 +2,10 @@
 
 doxygen = find_program('doxygen')
 
+# TODO: To make the xml directory work as dependency of the
+# Python target, we must make sure that its timestamp changes
+# whenever the docs are rebuilt. Either delete the directory
+# before generating, or touch it afterward?
 doxygen_docs = custom_target(
     'Doxygen documentation',
     input: [

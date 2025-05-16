@@ -204,15 +204,16 @@ EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     codegen/charset.inc \
 	     codegen/escape.inc \
 	     codegen/genCharset.py \
-	     codegen/genRanges.py \
 	     codegen/genEscape.py \
 	     codegen/genHtml5Ent.py \
 	     codegen/genHtml5LibTests.py \
+	     codegen/genRanges.py \
 	     codegen/genTestApi.py \
 	     codegen/genUnicode.py \
 	     codegen/html5ent.inc \
 	     codegen/ranges.def \
 	     codegen/ranges.inc \
+	     codegen/rangetab.py \
 	     codegen/unicode.inc \
 	     codegen/xmlmod.py \
 	     timsort.h \

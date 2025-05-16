@@ -11,6 +11,7 @@
 #
 import sys
 import string
+import rangetab
 
 #
 # blockAliases is a small hack - it is used for mapping block names which
@@ -199,38 +200,12 @@ except:
 # a range table suitable for xmlCharInRange
 #
 for name in ckeys:
-  if len(Categories[name]) > minTableSize and name != 'Cs':
-    numshort = 0
-    numlong = 0
+    if len(Categories[name]) <= minTableSize or name == 'Cs':
+        continue
     ranges = Categories[name]
-    sptr = "NULL"
-    lptr = "NULL"
-    for range in ranges:
-      (low, high) = range
-      if high < 0x10000:
-        if numshort == 0:
-          pline = "static const xmlChSRange xml%sS[] = {" % name
-          sptr = "xml%sS" % name
-        else:
-          pline += ","
-        numshort += 1
-      else:
-        if numlong == 0:
-          if numshort > 0:
-            output.write(pline + "};\n")
-          pline = "static const xmlChLRange xml%sL[] = {" % name
-          lptr = "xml%sL" % name
-        else:
-          pline += ","
-        numlong += 1
-      if len(pline) > 60:
-        output.write(pline + "\n")
-        pline = "    "
-      elif pline[-1:] == ",":
-        pline += " "
-      pline += "{%s, %s}" % (hex(low), hex(high))
-    output.write(pline + "};\nstatic const xmlChRangeGroup xml%sG = {%s,%s,%s,%s};\n\n"
-         % (name, numshort, numlong, sptr, lptr))
+    group = rangetab.gen_range_tables(output, 'xml' + name, 'S', 'L', ranges)
+    output.write("static const xmlChRangeGroup xml%sG = %s;\n\n" %
+                 (name, group))
 
 for name in ckeys:
     if name == 'Cs':
@@ -261,45 +236,14 @@ for name in ckeys:
 #
 
 blockGroups = ''
-flag = 0
 for block in bkeys:
     name = block.replace('-', '')
-    numshort = 0
-    numlong = 0
     ranges = BlockNames[block]
-    sptr = "NULL"
-    lptr = "NULL"
-    for range in ranges:
-        (low, high) = range
-        if high < 0x10000:
-            if numshort == 0:
-                pline = "static const xmlChSRange xml%sS[] = {" % name
-                sptr = "xml%sS" % name
-            else:
-                pline += ","
-            numshort += 1
-        else:
-            if numlong == 0:
-                if numshort > 0:
-                    output.write(pline + "};\n")
-                pline = "static const xmlChLRange xml%sL[] = {" % name
-                lptr = "xml%sL" % name
-            else:
-                pline += ","
-            numlong += 1
-        if len(pline) > 60:
-            output.write(pline + "\n")
-            pline = "    "
-        elif pline[-1:] == ",":
-            pline += " "
-        pline += "{%s, %s}" % (hex(low), hex(high))
-    output.write(pline + "};\n\n")
-    if flag == 0:
-        flag = 1
-    else:
+    group = rangetab.gen_range_tables(output, 'xml' + name, 'S', 'L', ranges)
+    output.write("\n")
+    if blockGroups != '':
         blockGroups += ",\n"
-    blockGroups += '  {"%s",\n   {%s,%s,%s,%s}}' % (block, numshort, numlong,
-                                                    sptr, lptr)
+    blockGroups += '  {"%s",\n   %s}' % (block, group)
 
 output.write("static const xmlUnicodeRange xmlUnicodeBlocks[] = {\n")
 output.write(blockGroups)

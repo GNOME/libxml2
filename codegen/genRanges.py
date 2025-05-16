@@ -16,6 +16,7 @@
 #
 
 import sys
+import rangetab
 
 #
 # A routine to take a list of yes/no (1, 0) values and turn it
@@ -211,46 +212,11 @@ for f in fkeys:
     if len(Functs[f][1]) > 0:   # only generate if unicode ranges present
         rangeTable = Functs[f][1]
         rangeTable.sort()       # ascending tuple sequence
-        numShort = 0
-        numLong  = 0
-        for rg in rangeTable:
-            if rg[1] < 0x10000: # if short value
-                if numShort == 0:       # first occurrence
-                    pline = "static const xmlChSRange %s_srng[] = {" % f
-                else:
-                    pline += ","
-                numShort += 1
-                if len(pline) > 60:
-                    output.write(pline + "\n")
-                    pline = "    "
-                else:
-                    pline += " "
-                pline += "{0x%x, 0x%x}" % (rg[0], rg[1])
-            else:               # if long value
-                if numLong == 0:        # first occurrence
-                    if numShort > 0:    # if there were shorts, finish them off
-                        output.write(pline + "};\n")
-                    pline = "static const xmlChLRange %s_lrng[] = { " % f
-                else:
-                    pline += ", "
-                numLong += 1
-                if len(pline) > 60:
-                    output.write(pline + "\n")
-                    pline = "    "
-                pline += "{0x%x, 0x%x}" % (rg[0], rg[1])
-        output.write(pline + "};\n")    # finish off last group
+        group = rangetab.gen_range_tables(output, f, '_srng', '_lrng',
+                                          rangeTable)
 
-        pline = "const xmlChRangeGroup %sGroup =\n\t{%d, %d, " % (f, numShort, numLong)
-        if numShort > 0:
-            pline += "%s_srng" % f
-        else:
-            pline += "(xmlChSRangePtr)0"
-        if numLong > 0:
-            pline += ", %s_lrng" % f
-        else:
-            pline += ", (xmlChLRangePtr)0"
-
-        output.write(pline + "};\n\n")
+        output.write("const xmlChRangeGroup %sGroup =\n\t%s;\n\n" %
+                     (f, group))
 
 output.close()
 

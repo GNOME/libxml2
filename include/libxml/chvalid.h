@@ -187,20 +187,28 @@ XMLPUBFUN int
 #define xmlIsPubidCharQ(c)	(((c) < 0x100) ? \
 				 xmlIsPubidChar_ch((c)) : 0)
 
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsBaseChar(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsBlank(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsChar(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsCombining(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsDigit(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsExtender(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsIdeographic(unsigned int ch);
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsPubidChar(unsigned int ch);
 

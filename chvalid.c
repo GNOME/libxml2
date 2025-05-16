@@ -78,8 +78,7 @@ xmlCharInRange (unsigned int val, const xmlChRangeGroup *rptr) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsBaseChar_ch() or xmlIsBaseCharQ() instead
+ * @deprecated Use xmlIsBaseChar_ch() or xmlIsBaseCharQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -91,8 +90,7 @@ xmlIsBaseChar(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsBlank_ch() or xmlIsBlankQ() instead
+ * @deprecated Use xmlIsBlank_ch() or xmlIsBlankQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -104,8 +102,7 @@ xmlIsBlank(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsChar_ch() or xmlIsCharQ() instead
+ * @deprecated Use xmlIsChar_ch() or xmlIsCharQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -117,8 +114,7 @@ xmlIsChar(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsCombiningQ() instead
+ * @deprecated Use xmlIsCombiningQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -130,8 +126,7 @@ xmlIsCombining(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsDigit_ch() or xmlIsDigitQ() instead
+ * @deprecated Use xmlIsDigit_ch() or xmlIsDigitQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -143,8 +138,7 @@ xmlIsDigit(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsExtender_ch() or xmlIsExtenderQ() instead
+ * @deprecated Use xmlIsExtender_ch() or xmlIsExtenderQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -156,8 +150,7 @@ xmlIsExtender(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsIdeographicQ() instead
+ * @deprecated Use xmlIsIdeographicQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -169,8 +162,7 @@ xmlIsIdeographic(unsigned int ch) {
 
 
 /**
- * This function is DEPRECATED.
- * Use xmlIsPubidChar_ch() or xmlIsPubidCharQ() instead
+ * @deprecated Use xmlIsPubidChar_ch() or xmlIsPubidCharQ().
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise

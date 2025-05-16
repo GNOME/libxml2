@@ -1,10 +1,10 @@
 /**
  * @file
  * 
- * @brief regular expressions handling
+ * @brief Regular expressions
  * 
- * basic API for libxml regular expressions handling used
- *              for XML Schemas and validation.
+ * A regular expression engine used for DTD and XML Schema
+ * validation.
  *
  * @copyright See Copyright for the status of this software.
  *
@@ -25,8 +25,7 @@ extern "C" {
 #endif
 
 /**
- * A libxml regular expression, they can actually be far more complex
- * thank the POSIX regex expressions.
+ * A libxml regular expression
  */
 typedef struct _xmlRegexp xmlRegexp;
 typedef xmlRegexp *xmlRegexpPtr;

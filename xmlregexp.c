@@ -3596,6 +3596,8 @@ error:
 /**
  * Build a context used for progressive evaluation of a regexp.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param comp  a precompiled regular expression
  * @param callback  a callback function used for handling progresses in the
  *            automata matching phase
@@ -3656,6 +3658,8 @@ xmlRegNewExecCtxt(xmlRegexp *comp, xmlRegExecCallbacks callback, void *data) {
 
 /**
  * Free the structures associated to a regular expression evaluation context.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param exec  a regular expression evaluation context
  */
@@ -4173,6 +4177,8 @@ progress:
 /**
  * Push one input token in the execution context
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param exec  a regexp execution context or NULL to indicate the end
  * @param value  a string token input
  * @param data  data associated to the token to reuse in callbacks
@@ -4187,6 +4193,8 @@ xmlRegExecPushString(xmlRegExecCtxt *exec, const xmlChar *value,
 
 /**
  * Push one input token in the execution context
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param exec  a regexp execution context or NULL to indicate the end
  * @param value  the first string token input
@@ -4240,7 +4248,7 @@ xmlRegExecPushString2(xmlRegExecCtxt *exec, const xmlChar *value,
 }
 
 /**
- * Extract information from the regexp execution, internal routine to
+ * Extract information from the regexp execution. Internal routine to
  * implement xmlRegExecNextValues() and xmlRegExecErrInfo()
  *
  * @param exec  a regexp execution context
@@ -4396,12 +4404,14 @@ xmlRegExecGetValues(xmlRegExecCtxtPtr exec, int err,
 }
 
 /**
- * Extract information from the regexp execution,
- * the parameter `values` must point to an array of `nbval` string pointers
+ * Extract information from the regexp execution.
+ * The parameter `values` must point to an array of `nbval` string pointers
  * on return nbval will contain the number of possible strings in that
  * state and the `values` array will be updated with them. The string values
  * returned will be freed with the `exec` context and don't need to be
  * deallocated.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param exec  a regexp execution context
  * @param nbval  pointer to the number of accepted values IN/OUT
@@ -4417,13 +4427,15 @@ xmlRegExecNextValues(xmlRegExecCtxt *exec, int *nbval, int *nbneg,
 }
 
 /**
- * Extract error information from the regexp execution, the parameter
+ * Extract error information from the regexp execution. The parameter
  * `string` will be updated with the value pushed and not accepted,
  * the parameter `values` must point to an array of `nbval` string pointers
  * on return nbval will contain the number of possible strings in that
  * state and the `values` array will be updated with them. The string values
  * returned will be freed with the `exec` context and don't need to be
  * deallocated.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param exec  a regexp execution context generating an error
  * @param string  return value for the error string
@@ -5394,9 +5406,11 @@ xmlRegexpPrint(FILE *output ATTRIBUTE_UNUSED,
 }
 
 /**
+ * Parses an XML Schemas regular expression.
+ *
  * Parses a regular expression conforming to XML Schemas Part 2 Datatype
  * Appendix F and builds an automata suitable for testing strings against
- * that regular expression
+ * that regular expression.
  *
  * @param regexp  a regular expression string
  * @returns the compiled expression or NULL in case of error
@@ -5445,7 +5459,7 @@ error:
 }
 
 /**
- * Check if the regular expression generates the value
+ * Check if the regular expression matches a string.
  *
  * @param comp  the compiled regular expression
  * @param content  the value to check against the regular expression
@@ -5459,10 +5473,19 @@ xmlRegexpExec(xmlRegexp *comp, const xmlChar *content) {
 }
 
 /**
- * Check if the regular expression is determinist
+ * Check if the regular expression is deterministic.
+ *
+ * DTD and XML Schemas require a deterministic content model,
+ * so the automaton compiled from the regex must be a DFA.
+ *
+ * The runtime of this function is quadratic in the number of
+ * outgoing edges, causing serious worst-case performance issues.
+ *
+ * @deprecated: Internal function, don't use.
  *
  * @param comp  the compiled regular expression
- * @returns 1 if it yes, 0 if not and a negative value in case of error
+ * @returns 1 if it yes, 0 if not and a negative value in case
+ * of error
  */
 int
 xmlRegexpIsDeterminist(xmlRegexp *comp) {
@@ -5499,7 +5522,7 @@ xmlRegexpIsDeterminist(xmlRegexp *comp) {
 }
 
 /**
- * Free a regexp
+ * Free a regexp.
  *
  * @param regexp  the regexp
  */

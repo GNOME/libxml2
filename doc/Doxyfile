@@ -47,7 +47,6 @@ INPUT                  = $(SOURCE_ROOT)doc/mainpage.md \
                          $(SOURCE_ROOT)include/libxml/xmlschemas.h \
                          $(SOURCE_ROOT)include/libxml/xmlschemastypes.h \
                          $(SOURCE_ROOT)include/libxml/xmlstring.h \
-                         $(SOURCE_ROOT)include/libxml/xmlunicode.h \
                          $(BUILD_ROOT)include/libxml/xmlversion.h \
                          $(SOURCE_ROOT)include/libxml/xmlwriter.h \
                          $(SOURCE_ROOT)include/libxml/xpath.h \

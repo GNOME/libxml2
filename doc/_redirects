@@ -12,13 +12,10 @@
 /libxml2/devhelp/libxml2-dict.html /libxml2/html/dict_8h.html
 /libxml2/devhelp/libxml2-encoding.html /libxml2/html/encoding_8h.html
 /libxml2/devhelp/libxml2-entities.html /libxml2/html/entities_8h.html
-/libxml2/devhelp/libxml2-globals.html /libxml2/html/globals_8h.html
 /libxml2/devhelp/libxml2-hash.html /libxml2/html/hash_8h.html
 /libxml2/devhelp/libxml2-HTMLparser.html /libxml2/html/HTMLparser_8h.html
 /libxml2/devhelp/libxml2-HTMLtree.html /libxml2/html/HTMLtree_8h.html
 /libxml2/devhelp/libxml2-list.html /libxml2/html/list_8h.html
-/libxml2/devhelp/libxml2-nanoftp.html /libxml2/html/nanoftp_8h.html
-/libxml2/devhelp/libxml2-nanohttp.html /libxml2/html/nanohttp_8h.html
 /libxml2/devhelp/libxml2-parser.html /libxml2/html/parser_8h.html
 /libxml2/devhelp/libxml2-parserInternals.html /libxml2/html/parserInternals_8h.html
 /libxml2/devhelp/libxml2-pattern.html /libxml2/html/pattern_8h.html
@@ -43,7 +40,6 @@
 /libxml2/devhelp/libxml2-xmlschemas.html /libxml2/html/xmlschemas_8h.html
 /libxml2/devhelp/libxml2-xmlschemastypes.html /libxml2/html/xmlschemastypes_8h.html
 /libxml2/devhelp/libxml2-xmlstring.html /libxml2/html/xmlstring_8h.html
-/libxml2/devhelp/libxml2-xmlunicode.html /libxml2/html/xmlunicode_8h.html
 /libxml2/devhelp/libxml2-xmlversion.html /libxml2/html/xmlversion_8h.html
 /libxml2/devhelp/libxml2-xmlwriter.html /libxml2/html/xmlwriter_8h.html
 /libxml2/devhelp/libxml2-xpath.html /libxml2/html/xpath_8h.html

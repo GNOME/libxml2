@@ -335,20 +335,10 @@ parseXml(xmllintState *lint, const char *filename) {
             xmlParseChunk(ctxt, chars, res, 0);
         }
         xmlParseChunk(ctxt, chars, 0, 1);
+        doc = xmlCtxtGetDocument(ctxt);
 
-        doc = ctxt->myDoc;
-        ctxt->myDoc = NULL;
         if (f != stdin)
             fclose(f);
-
-        /*
-         * The push parser leaves non-wellformed documents
-         * in ctxt->myDoc.
-         */
-        if (!ctxt->wellFormed) {
-            xmlFreeDoc(doc);
-            doc = NULL;
-        }
 
         return(doc);
     }
@@ -407,8 +397,8 @@ parseHtml(xmllintState *lint, const char *filename) {
             htmlParseChunk(ctxt, chars, res, 0);
         }
         htmlParseChunk(ctxt, chars, 0, 1);
-        doc = ctxt->myDoc;
-        ctxt->myDoc = NULL;
+        doc = xmlCtxtGetDocument(ctxt);
+
         if (f != stdin)
             fclose(f);
 

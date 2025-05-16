@@ -84,7 +84,7 @@ if WITH_READER_SOURCES
 libxml2_la_SOURCES += xmlreader.c
 endif
 if WITH_REGEXPS_SOURCES
-libxml2_la_SOURCES += xmlregexp.c xmlunicode.c
+libxml2_la_SOURCES += xmlregexp.c
 endif
 if WITH_RELAXNG_SOURCES
 libxml2_la_SOURCES += relaxng.c
@@ -213,6 +213,7 @@ EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     codegen/html5ent.inc \
 	     codegen/ranges.def \
 	     codegen/ranges.inc \
+	     codegen/unicode.inc \
 	     codegen/xmlmod.py \
 	     timsort.h \
 	     README.zOS README.md \

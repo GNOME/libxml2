@@ -31,7 +31,6 @@
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/regexp.h"
-#include "private/unicode.h"
 
 #ifndef SIZE_MAX
 #define SIZE_MAX ((size_t) -1)
@@ -58,6 +57,67 @@
  * when it's guaranteed that cur is not at the beginning of ctxt->string!
  */
 #define PREV (ctxt->cur[-1])
+
+/************************************************************************
+ *									*
+ *			Unicode support					*
+ *									*
+ ************************************************************************/
+
+typedef struct {
+    const char *rangename;
+    const xmlChRangeGroup group;
+} xmlUnicodeRange;
+
+#include "codegen/unicode.inc"
+
+/**
+ * binary table lookup for user-supplied name
+ *
+ * @param sptr  a table of xmlUnicodeRange structs
+ * @param numentries  number of table entries
+ * @param tname  name to be found
+ * @returns pointer to range function if found, otherwise NULL
+ */
+static const xmlChRangeGroup *
+xmlUnicodeLookup(const xmlUnicodeRange *sptr, int numentries,
+                 const char *tname) {
+    int low, high, mid, cmp;
+
+    if (tname == NULL) return(NULL);
+
+    low = 0;
+    high = numentries - 1;
+    while (low <= high) {
+	mid = (low + high) / 2;
+	cmp = strcmp(tname, sptr[mid].rangename);
+	if (cmp == 0)
+	    return (&sptr[mid].group);
+	if (cmp < 0)
+	    high = mid - 1;
+	else
+	    low = mid + 1;
+    }
+    return (NULL);
+}
+
+/**
+ * Check whether the character is part of the UCS Block
+ *
+ * @param code  UCS code point
+ * @param block  UCS block name
+ * @returns 1 if true, 0 if false and -1 on unknown block
+ */
+static int
+xmlUCSIsBlock(int code, const char *block) {
+    const xmlChRangeGroup *group;
+
+    group = xmlUnicodeLookup(xmlUnicodeBlocks,
+            sizeof(xmlUnicodeBlocks) / sizeof(xmlUnicodeBlocks[0]), block);
+    if (group == NULL)
+	return (-1);
+    return (xmlCharInRange(code, group));
+}
 
 /************************************************************************
  *									*

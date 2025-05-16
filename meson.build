@@ -428,7 +428,7 @@ xml_opt_src = [
     [want_output, ['xmlsave.c']],
     [want_pattern, ['pattern.c']],
     [want_reader, ['xmlreader.c']],
-    [want_regexps, ['xmlregexp.c', 'xmlunicode.c']],
+    [want_regexps, ['xmlregexp.c']],
     [want_relaxng, ['relaxng.c']],
     [want_schemas, ['xmlschemas.c', 'xmlschemastypes.c']],
     [want_schematron, ['schematron.c']],

@@ -275,7 +275,7 @@ struct _xmlParserCtxt {
     /* Node analysis stack only used for DOM building */
 
     /* Current parsed Node */
-    xmlNodePtr node XML_DEPRECATED_MEMBER;
+    xmlNodePtr node;
     /* Depth of the parsing stack */
     int nodeNr XML_DEPRECATED_MEMBER;
     /* Max depth of the parsing stack */
@@ -331,7 +331,7 @@ struct _xmlParserCtxt {
     /* ugly but ... */
     int keepBlanks XML_DEPRECATED_MEMBER;
     /* SAX callbacks are disabled */
-    int disableSAX XML_DEPRECATED_MEMBER;
+    int disableSAX;
     /* Parsing is in int 1/ext 2 subset */
     int inSubset;
     /* name of subset */

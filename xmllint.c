@@ -86,11 +86,6 @@
   #define PATH_SEPARATOR ':'
 #endif
 
-#define HTML_BUF_SIZE 50000
-
-/* Internal parser option */
-#define XML_PARSE_UNZIP     (1 << 24)
-
 typedef enum {
     XMLLINT_RETURN_OK = 0,	    /* No error */
     XMLLINT_ERR_UNCLASS = 1,	    /* Unclassified */

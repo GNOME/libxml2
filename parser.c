@@ -4913,7 +4913,7 @@ xmlParseCharData(xmlParserCtxt *ctxt, ATTRIBUTE_UNUSED int cdata) {
  *     [83] PublicID ::= 'PUBLIC' S PubidLiteral
  *
  * @param ctxt  an XML parser context
- * @param publicID  a xmlChar** receiving PubidLiteral
+ * @param publicId  a xmlChar** receiving PubidLiteral
  * @param strict  indicate whether we should restrict parsing to only
  *          production [75], see NOTE below
  * @returns the function returns SystemLiteral and in the second
@@ -4922,10 +4922,10 @@ xmlParseCharData(xmlParserCtxt *ctxt, ATTRIBUTE_UNUSED int cdata) {
  */
 
 xmlChar *
-xmlParseExternalID(xmlParserCtxt *ctxt, xmlChar **publicID, int strict) {
+xmlParseExternalID(xmlParserCtxt *ctxt, xmlChar **publicId, int strict) {
     xmlChar *URI = NULL;
 
-    *publicID = NULL;
+    *publicId = NULL;
     if (CMP6(CUR_PTR, 'S', 'Y', 'S', 'T', 'E', 'M')) {
         SKIP(6);
 	if (SKIP_BLANKS == 0) {
@@ -4942,8 +4942,8 @@ xmlParseExternalID(xmlParserCtxt *ctxt, xmlChar **publicID, int strict) {
 	    xmlFatalErrMsg(ctxt, XML_ERR_SPACE_REQUIRED,
 		    "Space required after 'PUBLIC'\n");
 	}
-	*publicID = xmlParsePubidLiteral(ctxt);
-	if (*publicID == NULL) {
+	*publicId = xmlParsePubidLiteral(ctxt);
+	if (*publicId == NULL) {
 	    xmlFatalErr(ctxt, XML_ERR_PUBID_REQUIRED, NULL);
 	}
 	if (strict) {
@@ -7104,12 +7104,12 @@ xmlParseTextDecl(xmlParserCtxt *ctxt) {
  *     [31] extSubsetDecl ::= (markupdecl | conditionalSect |
  *                             PEReference | S) *
  * @param ctxt  an XML parser context
- * @param ExternalID  the external identifier
- * @param SystemID  the system identifier (or URL)
+ * @param publicId  the public identifier
+ * @param systemId  the system identifier (URL)
  */
 void
-xmlParseExternalSubset(xmlParserCtxt *ctxt, const xmlChar *ExternalID,
-                       const xmlChar *SystemID) {
+xmlParseExternalSubset(xmlParserCtxt *ctxt, const xmlChar *publicId,
+                       const xmlChar *systemId) {
     int oldInputNr;
 
     xmlCtxtInitializeLate(ctxt);
@@ -7128,7 +7128,7 @@ xmlParseExternalSubset(xmlParserCtxt *ctxt, const xmlChar *ExternalID,
 	ctxt->myDoc->properties = XML_DOC_INTERNAL;
     }
     if ((ctxt->myDoc != NULL) && (ctxt->myDoc->intSubset == NULL) &&
-        (xmlCreateIntSubset(ctxt->myDoc, NULL, ExternalID, SystemID) == NULL)) {
+        (xmlCreateIntSubset(ctxt->myDoc, NULL, publicId, systemId) == NULL)) {
         xmlErrMemory(ctxt);
     }
 
@@ -7996,7 +7996,7 @@ xmlParseStringPEReference(xmlParserCtxtPtr ctxt, const xmlChar **str) {
 void
 xmlParseDocTypeDecl(xmlParserCtxt *ctxt) {
     const xmlChar *name = NULL;
-    xmlChar *ExternalID = NULL;
+    xmlChar *publicId = NULL;
     xmlChar *URI = NULL;
 
     /*
@@ -8022,15 +8022,15 @@ xmlParseDocTypeDecl(xmlParserCtxt *ctxt) {
     SKIP_BLANKS;
 
     /*
-     * Check for SystemID and ExternalID
+     * Check for public and system identifier (URI)
      */
-    URI = xmlParseExternalID(ctxt, &ExternalID, 1);
+    URI = xmlParseExternalID(ctxt, &publicId, 1);
 
-    if ((URI != NULL) || (ExternalID != NULL)) {
+    if ((URI != NULL) || (publicId != NULL)) {
         ctxt->hasExternalSubset = 1;
     }
     ctxt->extSubURI = URI;
-    ctxt->extSubSystem = ExternalID;
+    ctxt->extSubSystem = publicId;
 
     SKIP_BLANKS;
 
@@ -8039,7 +8039,7 @@ xmlParseDocTypeDecl(xmlParserCtxt *ctxt) {
      */
     if ((ctxt->sax != NULL) && (ctxt->sax->internalSubset != NULL) &&
 	(!ctxt->disableSAX))
-	ctxt->sax->internalSubset(ctxt->userData, name, ExternalID, URI);
+	ctxt->sax->internalSubset(ctxt->userData, name, publicId, URI);
 
     if ((RAW != '[') && (RAW != '>')) {
 	xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, NULL);
@@ -11262,6 +11262,9 @@ done:
  * ctxt->myDoc. So ctxt->myDoc should be set to NULL after extracting
  * the document.
  *
+ * Since 2.14.0, xmlCtxtGetDocument() can be used to retrieve the
+ * result document.
+ *
  * @param ctxt  an XML parser context
  * @param chunk  chunk of memory
  * @param size  size of chunk in bytes
@@ -11615,20 +11618,20 @@ xmlIOParseDTD(xmlSAXHandler *sax, xmlParserInputBuffer *input,
  * @deprecated Use xmlCtxtParseDtd().
  *
  * @param sax  the SAX handler block
- * @param ExternalID  a NAME* containing the External ID of the DTD
- * @param SystemID  a NAME* containing the URL to the DTD
+ * @param publicId  public identifier of the DTD (optional)
+ * @param systemId  system identifier (URL) of the DTD
  * @returns the resulting xmlDtd or NULL in case of error.
  */
 
 xmlDtd *
-xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *ExternalID,
-                          const xmlChar *SystemID) {
+xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *publicId,
+               const xmlChar *systemId) {
     xmlDtdPtr ret = NULL;
     xmlParserCtxtPtr ctxt;
     xmlParserInputPtr input = NULL;
     xmlChar* systemIdCanonic;
 
-    if ((ExternalID == NULL) && (SystemID == NULL)) return(NULL);
+    if ((publicId == NULL) && (systemId == NULL)) return(NULL);
 
     ctxt = xmlNewSAXParserCtxt(sax, NULL);
     if (ctxt == NULL) {
@@ -11639,8 +11642,8 @@ xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *ExternalID,
     /*
      * Canonicalise the system ID
      */
-    systemIdCanonic = xmlCanonicPath(SystemID);
-    if ((SystemID != NULL) && (systemIdCanonic == NULL)) {
+    systemIdCanonic = xmlCanonicPath(systemId);
+    if ((systemId != NULL) && (systemIdCanonic == NULL)) {
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }
@@ -11650,7 +11653,7 @@ xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *ExternalID,
      */
 
     if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
-	input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID,
+	input = ctxt->sax->resolveEntity(ctxt->userData, publicId,
 	                                 systemIdCanonic);
     if (input == NULL) {
 	xmlFreeParserCtxt(ctxt);
@@ -11664,7 +11667,7 @@ xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *ExternalID,
     else
 	xmlFree(systemIdCanonic);
 
-    ret = xmlCtxtParseDtd(ctxt, input, ExternalID, SystemID);
+    ret = xmlCtxtParseDtd(ctxt, input, publicId, systemId);
 
     xmlFreeParserCtxt(ctxt);
     return(ret);
@@ -11674,14 +11677,14 @@ xmlSAXParseDTD(xmlSAXHandler *sax, const xmlChar *ExternalID,
 /**
  * Load and parse an external subset.
  *
- * @param ExternalID  a NAME* containing the External ID of the DTD
- * @param SystemID  a NAME* containing the URL to the DTD
+ * @param publicId  public identifier of the DTD (optional)
+ * @param systemId  system identifier (URL) of the DTD
  * @returns the resulting xmlDtd or NULL in case of error.
  */
 
 xmlDtd *
-xmlParseDTD(const xmlChar *ExternalID, const xmlChar *SystemID) {
-    return(xmlSAXParseDTD(NULL, ExternalID, SystemID));
+xmlParseDTD(const xmlChar *publicId, const xmlChar *systemId) {
+    return(xmlSAXParseDTD(NULL, publicId, systemId));
 }
 #endif /* LIBXML_VALID_ENABLED */
 

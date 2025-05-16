@@ -246,6 +246,7 @@ struct _xmlParserCtxt {
     /**
      * user data for SAX interface, defaults to the context itself
      */
+    /* TODO: Add accessor */
     void *userData;
     /**
      * @deprecated Use xmlCtxtGetDocument()
@@ -296,6 +297,7 @@ struct _xmlParserCtxt {
     /**
      * Current input stream
      */
+    /* TODO: Add accessors, see issue #762 */
     xmlParserInput *input;
     /* Number of current input streams */
     int inputNr;
@@ -306,8 +308,18 @@ struct _xmlParserCtxt {
 
     /* Node analysis stack only used for DOM building */
 
-    /* Current parsed Node */
-    xmlNode *node XML_DEPRECATED_MEMBER;
+    /**
+     * The current element.
+     *
+     * This is only valid and useful if the default SAX callbacks
+     * which build a document tree are intercepted. This mode of
+     * operation is fragile and discouraged.
+     *
+     * Contains the current element whose content is being parsed,
+     * or NULL if the parser is in top-level or DTD content.
+     */
+    /* TODO: Add accessor */
+    xmlNode *node;
     /* Depth of the parsing stack */
     int nodeNr XML_DEPRECATED_MEMBER;
     /* Max depth of the parsing stack */
@@ -358,7 +370,11 @@ struct _xmlParserCtxt {
     /* unused */
     int token XML_DEPRECATED_MEMBER;
 
-    /* unused internally, still used downstream */
+    /**
+     * The main document URI, if available, with its last
+     * component stripped.
+     */
+    /* TODO: Add accessor */
     char *directory;
 
     /* Node name stack */
@@ -388,13 +404,39 @@ struct _xmlParserCtxt {
      * SAX callbacks are disabled
      */
     int disableSAX XML_DEPRECATED_MEMBER;
-    /* Parsing is in int 1/ext 2 subset */
+    /**
+     * Set if DTD content is parsed.
+     *
+     * - 0: not in DTD
+     * - 1: in internal DTD subset
+     * - 2: in external DTD subset
+     */
+    /* TODO: Add accessor */
     int inSubset;
-    /* name of subset */
+    /**
+     * @deprecated Use the `name` argument of the
+     * `internalSubset` SAX callback.
+     *
+     * Name of the internal subset (root element type).
+     */
+    /* TODO: Add accessor */
     const xmlChar *intSubName;
-    /* URI of external subset */
+    /**
+     * @deprecated Use the `systemId` argument of the
+     * `internalSubset` SAX callback.
+     *
+     * System identifier (URI) of external the subset.
+     */
+    /* TODO: Add accessor */
     xmlChar *extSubURI;
-    /* SYSTEM ID of external subset */
+    /**
+     * @deprecated Use the `publicId` argument of the
+     * `internalSubset` SAX callback.
+     *
+     * This member is MISNAMED. It contains the *public* identifier
+     * of the external subset.
+     */
+    /* TODO: Add accessor */
     xmlChar *extSubSystem;
 
     /* xml:space values */
@@ -431,10 +473,18 @@ struct _xmlParserCtxt {
     void *_private;
     /**
      * @deprecated Use xmlParserOption XML_PARSE_DTDLOAD or
-     * XML_PARSE_DTD_ATTR
+     * XML_PARSE_DTDATTR
      *
-     * should the external subset be loaded
+     * Control loading of the external subset. Other options like
+     * `validate` can override this value.
+     *
+     * - 0: Don't load external subset.
+     * - XML_DETECT_IDS: Load external subset and store IDs.
+     * - XML_COMPLETE_ATTRS: Load external subset, store IDs and
+     *   process default attributes.
+     * - XML_SKIP_IDS: Load external subset and ignore IDs.
      */
+    /* TODO: See issue #873 */
     int loadsubset;
     /* unused */
     int linenumbers XML_DEPRECATED_MEMBER;
@@ -505,16 +555,17 @@ struct _xmlParserCtxt {
      */
     int options;
 
-    /*
-     * Those fields are needed only for streaming parsing so far
-     */
-
     /**
      * @deprecated Use inverted xmlParserOption XML_PARSE_NODICT
      *
      * Use dictionary names for the tree
      */
     int dictNames XML_DEPRECATED_MEMBER;
+
+    /*
+     * Those fields are needed only for streaming parsing so far
+     */
+
     /* number of freed element nodes */
     int freeElemsNr XML_DEPRECATED_MEMBER;
     /* List of freed element nodes */
@@ -589,47 +640,45 @@ struct _xmlSAXLocator {
 };
 
 /**
- * Callback:
- * The entity loader, to control the loading of external entities,
- * the application can either:
- *    - override this resolveEntity() callback in the SAX block
- *    - or better use the xmlSetExternalEntityLoader() function to
- *      set up it's own entity resolution routine
+ * SAX callback to resolve external entities.
+ *
+ * This is only used to load DTDs. The preferred way to install
+ * custom resolvers is xmlCtxtSetResourceLoader().
  *
  * @param ctx  the user data (XML parser context)
- * @param publicId  The public ID of the entity
- * @param systemId  The system ID of the entity
+ * @param publicId  The public identifier of the entity
+ * @param systemId  The system identifier of the entity (URL)
  * @returns the xmlParserInput if inlined or NULL for DOM behaviour.
  */
 typedef xmlParserInput *(*resolveEntitySAXFunc) (void *ctx,
 				const xmlChar *publicId,
 				const xmlChar *systemId);
 /**
- * Callback on internal subset declaration.
+ * SAX callback for the internal subset.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  the root element name
- * @param ExternalID  the external ID
- * @param SystemID  the SYSTEM ID (e.g. filename or URL)
+ * @param publicId  the public identifier
+ * @param systemId  the system identifier (e.g. filename or URL)
  */
 typedef void (*internalSubsetSAXFunc) (void *ctx,
 				const xmlChar *name,
-				const xmlChar *ExternalID,
-				const xmlChar *SystemID);
+				const xmlChar *publicId,
+				const xmlChar *systemId);
 /**
- * Callback on external subset declaration.
+ * SAX callback for the external subset.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  the root element name
- * @param ExternalID  the external ID
- * @param SystemID  the SYSTEM ID (e.g. filename or URL)
+ * @param publicId  the public identifier
+ * @param systemId  the system identifier (e.g. filename or URL)
  */
 typedef void (*externalSubsetSAXFunc) (void *ctx,
 				const xmlChar *name,
-				const xmlChar *ExternalID,
-				const xmlChar *SystemID);
+				const xmlChar *publicId,
+				const xmlChar *systemId);
 /**
- * Get an entity by name.
+ * SAX callback to look up a general entity by name.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
@@ -638,7 +687,7 @@ typedef void (*externalSubsetSAXFunc) (void *ctx,
 typedef xmlEntity *(*getEntitySAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * Get a parameter entity by name.
+ * SAX callback to look up a parameter entity by name.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
@@ -647,7 +696,7 @@ typedef xmlEntity *(*getEntitySAXFunc) (void *ctx,
 typedef xmlEntity *(*getParameterEntitySAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * An entity definition has been parsed.
+ * SAX callback for entity declarations.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  the entity name
@@ -663,19 +712,19 @@ typedef void (*entityDeclSAXFunc) (void *ctx,
 				const xmlChar *systemId,
 				xmlChar *content);
 /**
- * What to do when a notation declaration has been parsed.
+ * SAX callback for notation declarations.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The name of the notation
- * @param publicId  The public ID of the entity
- * @param systemId  The system ID of the entity
+ * @param publicId  The public ID of the notation
+ * @param systemId  The system ID of the notation
  */
 typedef void (*notationDeclSAXFunc)(void *ctx,
 				const xmlChar *name,
 				const xmlChar *publicId,
 				const xmlChar *systemId);
 /**
- * An attribute definition has been parsed.
+ * SAX callback for attribute declarations.
  *
  * @param ctx  the user data (XML parser context)
  * @param elem  the name of the element
@@ -693,7 +742,7 @@ typedef void (*attributeDeclSAXFunc)(void *ctx,
 				const xmlChar *defaultValue,
 				xmlEnumeration *tree);
 /**
- * An element definition has been parsed.
+ * SAX callback for element declarations.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  the element name
@@ -705,7 +754,7 @@ typedef void (*elementDeclSAXFunc)(void *ctx,
 				int type,
 				xmlElementContent *content);
 /**
- * What to do when an unparsed entity declaration is parsed.
+ * SAX callback for unparsed entity declarations.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The name of the entity
@@ -719,8 +768,11 @@ typedef void (*unparsedEntityDeclSAXFunc)(void *ctx,
 				const xmlChar *systemId,
 				const xmlChar *notationName);
 /**
- * Receive the document locator at startup, actually xmlDefaultSAXLocator.
- * Everything is available on the context, so this is useless in our case.
+ * This callback receives the "document locator" at startup,
+ * which is always the global xmlDefaultSAXLocator.
+ *
+ * Everything is available on the context, so this is useless in
+ * our case.
  *
  * @param ctx  the user data (XML parser context)
  * @param loc  A SAX Locator
@@ -728,19 +780,19 @@ typedef void (*unparsedEntityDeclSAXFunc)(void *ctx,
 typedef void (*setDocumentLocatorSAXFunc) (void *ctx,
 				xmlSAXLocator *loc);
 /**
- * Called when the document start being processed.
+ * SAX callback for start of document.
  *
  * @param ctx  the user data (XML parser context)
  */
 typedef void (*startDocumentSAXFunc) (void *ctx);
 /**
- * Called when the document end has been detected.
+ * SAX callback for end of document.
  *
  * @param ctx  the user data (XML parser context)
  */
 typedef void (*endDocumentSAXFunc) (void *ctx);
 /**
- * Called when an opening tag has been processed.
+ * SAX callback for start tags.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The element name, including namespace prefix
@@ -750,7 +802,7 @@ typedef void (*startElementSAXFunc) (void *ctx,
 				const xmlChar *name,
 				const xmlChar **atts);
 /**
- * Called when the end of an element has been detected.
+ * SAX callback for end tags.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The element name
@@ -758,10 +810,9 @@ typedef void (*startElementSAXFunc) (void *ctx,
 typedef void (*endElementSAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * Handle an attribute that has been read by the parser.
- * The default handling is to convert the attribute into an
- * DOM subtree and past it in a new xmlAttr element added to
- * the element.
+ * Callback for attributes.
+ *
+ * @deprecated This typedef is unused.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The attribute name, including namespace prefix
@@ -771,7 +822,7 @@ typedef void (*attributeSAXFunc) (void *ctx,
 				const xmlChar *name,
 				const xmlChar *value);
 /**
- * Called when an entity reference is detected.
+ * SAX callback for entity references.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
@@ -779,7 +830,7 @@ typedef void (*attributeSAXFunc) (void *ctx,
 typedef void (*referenceSAXFunc) (void *ctx,
 				const xmlChar *name);
 /**
- * Receiving some chars from the parser.
+ * SAX callback for character data.
  *
  * @param ctx  the user data (XML parser context)
  * @param ch  a xmlChar string
@@ -789,8 +840,7 @@ typedef void (*charactersSAXFunc) (void *ctx,
 				const xmlChar *ch,
 				int len);
 /**
- * Receiving some ignorable whitespaces from the parser.
- * UNUSED: by default the DOM building will use characters.
+ * SAX callback for "ignorable" whitespace.
  *
  * @param ctx  the user data (XML parser context)
  * @param ch  a xmlChar string
@@ -800,7 +850,7 @@ typedef void (*ignorableWhitespaceSAXFunc) (void *ctx,
 				const xmlChar *ch,
 				int len);
 /**
- * A processing instruction has been parsed.
+ * SAX callback for processing instructions.
  *
  * @param ctx  the user data (XML parser context)
  * @param target  the target name
@@ -810,7 +860,7 @@ typedef void (*processingInstructionSAXFunc) (void *ctx,
 				const xmlChar *target,
 				const xmlChar *data);
 /**
- * A comment has been parsed.
+ * SAX callback for comments.
  *
  * @param ctx  the user data (XML parser context)
  * @param value  the comment content
@@ -818,7 +868,7 @@ typedef void (*processingInstructionSAXFunc) (void *ctx,
 typedef void (*commentSAXFunc) (void *ctx,
 				const xmlChar *value);
 /**
- * Called when a pcdata block has been parsed.
+ * SAX callback for CDATA sections.
  *
  * @param ctx  the user data (XML parser context)
  * @param value  The pcdata content
@@ -829,7 +879,7 @@ typedef void (*cdataBlockSAXFunc) (
 				const xmlChar *value,
 				int len);
 /**
- * Display and format a warning messages, callback.
+ * SAX callback for warning messages.
  *
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
@@ -838,7 +888,7 @@ typedef void (*cdataBlockSAXFunc) (
 typedef void (*warningSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * Display and format an error messages, callback.
+ * SAX callback for error messages.
  *
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
@@ -847,10 +897,7 @@ typedef void (*warningSAXFunc) (void *ctx,
 typedef void (*errorSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * Display and format fatal error messages, callback.
- * Note: so far fatalError() SAX callbacks are not used, error()
- *       get all the callbacks for errors.
- *
+ * SAX callback for fatal error messages.
  *
  * @param ctx  an XML parser context
  * @param msg  the message to display/transmit
@@ -859,14 +906,14 @@ typedef void (*errorSAXFunc) (void *ctx,
 typedef void (*fatalErrorSAXFunc) (void *ctx,
 				const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 /**
- * Is this document tagged standalone?
+ * SAX callback to get standalone status.
  *
  * @param ctx  the user data (XML parser context)
  * @returns 1 if true
  */
 typedef int (*isStandaloneSAXFunc) (void *ctx);
 /**
- * Does this document has an internal subset.
+ * SAX callback to get internal subset status.
  *
  * @param ctx  the user data (XML parser context)
  * @returns 1 if true
@@ -874,7 +921,7 @@ typedef int (*isStandaloneSAXFunc) (void *ctx);
 typedef int (*hasInternalSubsetSAXFunc) (void *ctx);
 
 /**
- * Does this document has an external subset?
+ * SAX callback to get external subset status.
  *
  * @param ctx  the user data (XML parser context)
  * @returns 1 if true
@@ -887,12 +934,13 @@ typedef int (*hasExternalSubsetSAXFunc) (void *ctx);
  *									*
  ************************************************************************/
 /**
- * Special constant found in SAX2 blocks initialized fields
+ * Special constant required for SAX2 handlers.
  */
 #define XML_SAX2_MAGIC 0xDEEDBEAF
 
 /**
- * SAX2 callback when an element start has been detected by the parser.
+ * SAX2 callback for start tags.
+ *
  * It provides the namespace information for the element, as well as
  * the new namespace declarations on the element.
  *
@@ -920,7 +968,8 @@ typedef void (*startElementNsSAX2Func) (void *ctx,
 					const xmlChar **attributes);
 
 /**
- * SAX2 callback when an element end has been detected by the parser.
+ * SAX2 callback for end tags.
+ *
  * It provides the namespace information for the element.
  *
  * @param ctx  the user data (XML parser context)
@@ -942,38 +991,89 @@ typedef void (*endElementNsSAX2Func)   (void *ctx,
  * ignored.
  */
 struct _xmlSAXHandler {
-    /** DTD */
+    /**
+     * Called after the start of the document type declaration
+     * was parsed.
+     *
+     * Should typically not be modified.
+     */
     internalSubsetSAXFunc internalSubset;
-    /** unused */
+    /**
+     * Standalone status. Not invoked by the parser. Not supposed
+     * to be changed by applications.
+     */
     isStandaloneSAXFunc isStandalone;
-    /** DTD */
+    /**
+     * Internal subset availability. Not invoked by the parser.
+     * Not supposed to be changed by applications.
+     */
     hasInternalSubsetSAXFunc hasInternalSubset;
-    /** DTD */
+    /**
+     * External subset availability. Not invoked by the parser.
+     * Not supposed to be changed by applications.
+     */
     hasExternalSubsetSAXFunc hasExternalSubset;
-    /** DTD */
+    /**
+     * Only called when loading external DTDs. Not called to load
+     * external entities.
+     *
+     * Should typically not be modified.
+     */
     resolveEntitySAXFunc resolveEntity;
-    /** DTD */
+    /**
+     * Called when looking up general entities.
+     *
+     * Should typically not be modified.
+     */
     getEntitySAXFunc getEntity;
-    /** DTD */
+    /**
+     * Called after an entity declaration was parsed.
+     *
+     * Should typically not be modified.
+     */
     entityDeclSAXFunc entityDecl;
-    /** DTD */
+    /**
+     * Called after a notation declaration was parsed.
+     *
+     * Should typically not be modified.
+     */
     notationDeclSAXFunc notationDecl;
-    /** DTD */
+    /**
+     * Called after an attribute declaration was parsed.
+     *
+     * Should typically not be modified.
+     */
     attributeDeclSAXFunc attributeDecl;
-    /** DTD */
+    /**
+     * Called after an element declaration was parsed.
+     *
+     * Should typically not be modified.
+     */
     elementDeclSAXFunc elementDecl;
-    /** DTD */
+    /**
+     * Called after an unparsed entity declaration was parsed.
+     *
+     * Should typically not be modified.
+     */
     unparsedEntityDeclSAXFunc unparsedEntityDecl;
-    /** useless */
+    /**
+     * This callback receives the "document locator" at startup,
+     * which is always the global xmlDefaultSAXLocator.
+     *
+     * Everything is available on the context, so this is useless in
+     * our case.
+     */
     setDocumentLocatorSAXFunc setDocumentLocator;
     /**
-     * Called at the start of a document
+     * Called after the XML declaration was parsed.
      *
      * Use xmlCtxtGetVersion(), xmlCtxtGetDeclaredEncoding() and
      * xmlCtxtGetStandalone() to get data from the XML declaration.
      */
     startDocumentSAXFunc startDocument;
-    /** End of document */
+    /**
+     * Called at the end of the document.
+     */
     endDocumentSAXFunc endDocument;
     /**
      * Legacy start tag handler
@@ -991,34 +1091,61 @@ struct _xmlSAXHandler {
      * together with custom SAX callbacks.
      */
     startElementSAXFunc startElement;
-    /** See _xmlSAXHandler.startElement */
+    /**
+     * See _xmlSAXHandler.startElement
+     */
     endElementSAXFunc endElement;
-    /** Entity reference */
+    /**
+     * Called after an entity reference was parsed.
+     */
     referenceSAXFunc reference;
-    /** Text */
+    /**
+     * Called after a character data was parsed.
+     */
     charactersSAXFunc characters;
     /**
-     * Ignorable whitespace
+     * Called after "ignorable" whitespace was parsed.
      *
      * `ignorableWhitespace` should always be set to the same value
      * as `characters`. Otherwise, the parser will try to detect
      * whitespace which is unreliable.
      */
     ignorableWhitespaceSAXFunc ignorableWhitespace;
-    /** Processing instruction */
+    /**
+     * Called after a processing instruction was parsed.
+     */
     processingInstructionSAXFunc processingInstruction;
-    /** Comment */
+    /**
+     * Called after a comment was parsed.
+     */
     commentSAXFunc comment;
-    /** Warning message */
+    /**
+     * Callback for warning messages.
+     */
     warningSAXFunc warning;
-    /** Error message */
+    /**
+     * Callback for error messages.
+     */
     errorSAXFunc error;
-    /** Unused, all errors go to `error`. */
+    /**
+     * Unused, all errors go to `error`.
+     */
     fatalErrorSAXFunc fatalError;
-    /** DTD */
+    /**
+     * Called when looking up parameter entities.
+     *
+     * Should typically not be modified.
+     */
     getParameterEntitySAXFunc getParameterEntity;
+    /**
+     * Called after a CDATA section was parsed.
+     */
     cdataBlockSAXFunc cdataBlock;
-    /** DTD */
+    /**
+     * Called to parse the external subset.
+     *
+     * Should typically not be modified.
+     */
     externalSubsetSAXFunc externalSubset;
     /**
      * Legacy magic value
@@ -1027,11 +1154,17 @@ struct _xmlSAXHandler {
      * enable the modern SAX2 interface.
      */
     unsigned int initialized;
-    /** Application data */
+    /**
+     * Application data
+     */
     void *_private;
-    /** Start tag */
+    /**
+     * Called after a start tag was parsed.
+     */
     startElementNsSAX2Func startElementNs;
-    /** End tag */
+    /**
+     * Called after an end tag was parsed.
+     */
     endElementNsSAX2Func endElementNs;
     /**
      * Structured error handler.
@@ -1045,7 +1178,9 @@ struct _xmlSAXHandler {
 typedef struct _xmlSAXHandlerV1 xmlSAXHandlerV1;
 typedef xmlSAXHandlerV1 *xmlSAXHandlerV1Ptr;
 /**
- * SAX Version 1
+ * SAX handler, version 1.
+ *
+ * @deprecated Use version 2 handlers.
  */
 struct _xmlSAXHandlerV1 {
     internalSubsetSAXFunc internalSubset;
@@ -1080,7 +1215,7 @@ struct _xmlSAXHandlerV1 {
 
 
 /**
- * External entity loaders types.
+ * External entity loader.
  *
  * @param URL  The System ID of the resource requested
  * @param ID  The Public ID of the resource requested
@@ -1367,8 +1502,8 @@ XMLPUBFUN xmlDoc *
 XMLPUBFUN xmlDtd *
 		xmlCtxtParseDtd		(xmlParserCtxt *ctxt,
 					 xmlParserInput *input,
-					 const xmlChar *ExternalID,
-					 const xmlChar *SystemID);
+					 const xmlChar *publicId,
+					 const xmlChar *systemId);
 XMLPUBFUN int
 		xmlCtxtValidateDocument	(xmlParserCtxt *ctxt,
 					 xmlDoc *doc);
@@ -1379,11 +1514,11 @@ XMLPUBFUN int
 XML_DEPRECATED
 XMLPUBFUN xmlDtd *
 		xmlSAXParseDTD		(xmlSAXHandler *sax,
-					 const xmlChar *ExternalID,
-					 const xmlChar *SystemID);
+					 const xmlChar *publicId,
+					 const xmlChar *systemId);
 XMLPUBFUN xmlDtd *
-		xmlParseDTD		(const xmlChar *ExternalID,
-					 const xmlChar *SystemID);
+		xmlParseDTD		(const xmlChar *publicId,
+					 const xmlChar *systemId);
 XMLPUBFUN xmlDtd *
 		xmlIOParseDTD		(xmlSAXHandler *sax,
 					 xmlParserInputBuffer *input,

@@ -2022,14 +2022,13 @@ xmlFreeNotation(xmlNotationPtr nota) {
  * @param dtd  pointer to the DTD
  * @param ctxt  the validation context
  * @param name  the entity name
- * @param PublicID  the public identifier or NULL
- * @param SystemID  the system identifier or NULL
+ * @param publicId  the public identifier or NULL
+ * @param systemId  the system identifier or NULL
  * @returns the notation or NULL on error.
  */
 xmlNotation *
-xmlAddNotationDecl(xmlValidCtxt *ctxt, xmlDtd *dtd,
-	           const xmlChar *name,
-                   const xmlChar *PublicID, const xmlChar *SystemID) {
+xmlAddNotationDecl(xmlValidCtxt *ctxt, xmlDtd *dtd, const xmlChar *name,
+                   const xmlChar *publicId, const xmlChar *systemId) {
     xmlNotationPtr ret = NULL;
     xmlNotationTablePtr table;
     int res;
@@ -2040,7 +2039,7 @@ xmlAddNotationDecl(xmlValidCtxt *ctxt, xmlDtd *dtd,
     if (name == NULL) {
 	return(NULL);
     }
-    if ((PublicID == NULL) && (SystemID == NULL)) {
+    if ((publicId == NULL) && (systemId == NULL)) {
 	return(NULL);
     }
 
@@ -2069,13 +2068,13 @@ xmlAddNotationDecl(xmlValidCtxt *ctxt, xmlDtd *dtd,
     ret->name = xmlStrdup(name);
     if (ret->name == NULL)
         goto mem_error;
-    if (SystemID != NULL) {
-        ret->SystemID = xmlStrdup(SystemID);
+    if (systemId != NULL) {
+        ret->SystemID = xmlStrdup(systemId);
         if (ret->SystemID == NULL)
             goto mem_error;
     }
-    if (PublicID != NULL) {
-        ret->PublicID = xmlStrdup(PublicID);
+    if (publicId != NULL) {
+        ret->PublicID = xmlStrdup(publicId);
         if (ret->PublicID == NULL)
             goto mem_error;
     }

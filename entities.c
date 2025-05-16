@@ -115,7 +115,7 @@ xmlFreeEntity(xmlEntity *entity)
  */
 static xmlEntityPtr
 xmlCreateEntity(xmlDocPtr doc, const xmlChar *name, int type,
-	        const xmlChar *ExternalID, const xmlChar *SystemID,
+	        const xmlChar *publicId, const xmlChar *systemId,
 	        const xmlChar *content) {
     xmlEntityPtr ret;
 
@@ -136,13 +136,13 @@ xmlCreateEntity(xmlDocPtr doc, const xmlChar *name, int type,
         ret->name = xmlDictLookup(doc->dict, name, -1);
     if (ret->name == NULL)
         goto error;
-    if (ExternalID != NULL) {
-        ret->ExternalID = xmlStrdup(ExternalID);
+    if (publicId != NULL) {
+        ret->ExternalID = xmlStrdup(publicId);
         if (ret->ExternalID == NULL)
             goto error;
     }
-    if (SystemID != NULL) {
-        ret->SystemID = xmlStrdup(SystemID);
+    if (systemId != NULL) {
+        ret->SystemID = xmlStrdup(systemId);
         if (ret->SystemID == NULL)
             goto error;
     }
@@ -175,15 +175,15 @@ error:
  * @param extSubset  add to the external or internal subset
  * @param name  the entity name
  * @param type  an xmlEntityType value
- * @param ExternalID  the entity external ID (optional)
- * @param SystemID  the entity system ID (optional)
+ * @param publicId  the publid identifier (optional)
+ * @param systemId  the system identifier (URL) (optional)
  * @param content  the entity content
  * @param out  pointer to resulting entity (optional)
  * @returns an xmlParserErrors error code.
  */
 int
 xmlAddEntity(xmlDoc *doc, int extSubset, const xmlChar *name, int type,
-	  const xmlChar *ExternalID, const xmlChar *SystemID,
+	  const xmlChar *publicId, const xmlChar *systemId,
 	  const xmlChar *content, xmlEntity **out) {
     xmlDtdPtr dtd;
     xmlDictPtr dict = NULL;
@@ -261,7 +261,7 @@ xmlAddEntity(xmlDoc *doc, int extSubset, const xmlChar *name, int type,
         default:
 	    return(XML_ERR_ARGUMENT);
     }
-    ret = xmlCreateEntity(dtd->doc, name, type, ExternalID, SystemID, content);
+    ret = xmlCreateEntity(dtd->doc, name, type, publicId, systemId, content);
     if (ret == NULL)
         return(XML_ERR_NO_MEMORY);
 
@@ -337,18 +337,18 @@ xmlGetPredefinedEntity(const xmlChar *name) {
  * @param doc  the document
  * @param name  the entity name
  * @param type  an xmlEntityType value
- * @param ExternalID  the entity external ID (optional)
- * @param SystemID  the entity system ID (optional)
+ * @param publicId  the publid identifier (optional)
+ * @param systemId  the system identifier (URL) (optional)
  * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
 xmlEntity *
 xmlAddDtdEntity(xmlDoc *doc, const xmlChar *name, int type,
-	        const xmlChar *ExternalID, const xmlChar *SystemID,
+	        const xmlChar *publicId, const xmlChar *systemId,
 		const xmlChar *content) {
     xmlEntityPtr ret;
 
-    xmlAddEntity(doc, 1, name, type, ExternalID, SystemID, content, &ret);
+    xmlAddEntity(doc, 1, name, type, publicId, systemId, content, &ret);
     return(ret);
 }
 
@@ -360,18 +360,18 @@ xmlAddDtdEntity(xmlDoc *doc, const xmlChar *name, int type,
  * @param doc  the document
  * @param name  the entity name
  * @param type  an xmlEntityType value
- * @param ExternalID  the entity external ID (optional)
- * @param SystemID  the entity system ID (optional)
+ * @param publicId  the publid identifier (optional)
+ * @param systemId  the system identifier (URL) (optional)
  * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
 xmlEntity *
 xmlAddDocEntity(xmlDoc *doc, const xmlChar *name, int type,
-	        const xmlChar *ExternalID, const xmlChar *SystemID,
+	        const xmlChar *publicId, const xmlChar *systemId,
 	        const xmlChar *content) {
     xmlEntityPtr ret;
 
-    xmlAddEntity(doc, 0, name, type, ExternalID, SystemID, content, &ret);
+    xmlAddEntity(doc, 0, name, type, publicId, systemId, content, &ret);
     return(ret);
 }
 
@@ -386,21 +386,21 @@ xmlAddDocEntity(xmlDoc *doc, const xmlChar *name, int type,
  * @param doc  the document (optional)
  * @param name  the entity name
  * @param type  an xmlEntityType value
- * @param ExternalID  the entity external ID (optional)
- * @param SystemID  the entity system ID (optional)
+ * @param publicId  the publid identifier (optional)
+ * @param systemId  the system identifier (URL) (optional)
  * @param content  the entity content
  * @returns a pointer to the entity or NULL in case of error
  */
 xmlEntity *
 xmlNewEntity(xmlDoc *doc, const xmlChar *name, int type,
-	     const xmlChar *ExternalID, const xmlChar *SystemID,
+	     const xmlChar *publicId, const xmlChar *systemId,
 	     const xmlChar *content) {
     if ((doc != NULL) && (doc->intSubset != NULL)) {
-	return(xmlAddDocEntity(doc, name, type, ExternalID, SystemID, content));
+	return(xmlAddDocEntity(doc, name, type, publicId, systemId, content));
     }
     if (name == NULL)
         return(NULL);
-    return(xmlCreateEntity(doc, name, type, ExternalID, SystemID, content));
+    return(xmlCreateEntity(doc, name, type, publicId, systemId, content));
 }
 
 /**

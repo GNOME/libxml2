@@ -211,12 +211,12 @@ xmlSAX2HasExternalSubset(void *ctx)
  *
  * @param ctx  the user data (XML parser context)
  * @param name  the root element name
- * @param ExternalID  the external ID
- * @param SystemID  the SYSTEM ID (e.g. filename or URL)
+ * @param publicId  public identifier of the DTD (optional)
+ * @param systemId  system identifier (URL) of the DTD
  */
 void
 xmlSAX2InternalSubset(void *ctx, const xmlChar *name,
-	       const xmlChar *ExternalID, const xmlChar *SystemID)
+	       const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     xmlDtdPtr dtd;
@@ -233,7 +233,7 @@ xmlSAX2InternalSubset(void *ctx, const xmlChar *name,
 	ctxt->myDoc->intSubset = NULL;
     }
     ctxt->myDoc->intSubset =
-	xmlCreateIntSubset(ctxt->myDoc, name, ExternalID, SystemID);
+	xmlCreateIntSubset(ctxt->myDoc, name, publicId, systemId);
     if (ctxt->myDoc->intSubset == NULL)
         xmlSAX2ErrMemory(ctxt);
 }
@@ -243,16 +243,16 @@ xmlSAX2InternalSubset(void *ctx, const xmlChar *name,
  *
  * @param ctx  the user data (XML parser context)
  * @param name  the root element name
- * @param ExternalID  the external ID
- * @param SystemID  the SYSTEM ID (e.g. filename or URL)
+ * @param publicId  public identifier of the DTD (optional)
+ * @param systemId  system identifier (URL) of the DTD
  */
 void
 xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
-	       const xmlChar *ExternalID, const xmlChar *SystemID)
+	       const xmlChar *publicId, const xmlChar *systemId)
 {
     xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
     if (ctx == NULL) return;
-    if ((SystemID != NULL) &&
+    if ((systemId != NULL) &&
         ((ctxt->options & XML_PARSE_NO_XXE) == 0) &&
         (((ctxt->validate) || (ctxt->loadsubset)) &&
 	 (ctxt->wellFormed && ctxt->myDoc))) {
@@ -277,13 +277,13 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	 * Ask the Entity resolver to load the damn thing
 	 */
 	if ((ctxt->sax != NULL) && (ctxt->sax->resolveEntity != NULL))
-	    input = ctxt->sax->resolveEntity(ctxt->userData, ExternalID,
-	                                        SystemID);
+	    input = ctxt->sax->resolveEntity(ctxt->userData, publicId,
+	                                     systemId);
 	if (input == NULL) {
 	    return;
 	}
 
-	if (xmlNewDtd(ctxt->myDoc, name, ExternalID, SystemID) == NULL) {
+	if (xmlNewDtd(ctxt->myDoc, name, publicId, systemId) == NULL) {
             xmlSAX2ErrMemory(ctxt);
             xmlFreeInputStream(input);
             return;
@@ -311,7 +311,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
             goto error;
 
 	if (input->filename == NULL)
-	    input->filename = (char *) xmlCanonicPath(SystemID);
+	    input->filename = (char *) xmlCanonicPath(systemId);
 	input->line = 1;
 	input->col = 1;
 	input->base = ctxt->input->cur;
@@ -321,7 +321,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
 	/*
 	 * let's parse that entity knowing it's an external subset.
 	 */
-	xmlParseExternalSubset(ctxt, ExternalID, SystemID);
+	xmlParseExternalSubset(ctxt, publicId, systemId);
 
         /*
 	 * Free up the external entities
@@ -367,7 +367,7 @@ error:
  *
  * @param ctx  the user data (XML parser context)
  * @param publicId  The public ID of the entity
- * @param systemId  The system ID of the entity
+ * @param systemId  The system ID (URL) of the entity
  * @returns a parser input.
  */
 xmlParserInput *

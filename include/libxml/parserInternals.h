@@ -358,7 +358,7 @@ XMLPUBFUN void
 XML_DEPRECATED
 XMLPUBFUN xmlChar *
 			xmlParseExternalID	(xmlParserCtxt *ctxt,
-						 xmlChar **publicID,
+						 xmlChar **publicId,
 						 int strict);
 XML_DEPRECATED
 XMLPUBFUN void
@@ -479,8 +479,8 @@ XMLPUBFUN void
 XML_DEPRECATED
 XMLPUBFUN void
 			xmlParseExternalSubset	(xmlParserCtxt *ctxt,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID);
+						 const xmlChar *publicId,
+						 const xmlChar *systemId);
 
 /** @cond ignore */
 #define XML_SUBSTITUTE_NONE	0

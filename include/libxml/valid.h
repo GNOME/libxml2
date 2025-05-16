@@ -112,8 +112,8 @@ XMLPUBFUN xmlNotation *
 		xmlAddNotationDecl	(xmlValidCtxt *ctxt,
 					 xmlDtd *dtd,
 					 const xmlChar *name,
-					 const xmlChar *PublicID,
-					 const xmlChar *SystemID);
+					 const xmlChar *publicId,
+					 const xmlChar *systemId);
 XML_DEPRECATED
 XMLPUBFUN xmlNotationTable *
 		xmlCopyNotationTable	(xmlNotationTable *table);

@@ -780,14 +780,14 @@ xmlFreeNsList(xmlNs *cur) {
  *
  * @param doc  the document pointer (optional)
  * @param name  the DTD name (optional)
- * @param ExternalID  the external ID (optional)
- * @param SystemID  the system ID (optional)
+ * @param publicId  public identifier of the DTD (optional)
+ * @param systemId  system identifier (URL) of the DTD (optional)
  * @returns a pointer to the new DTD object or NULL if arguments are
  * invalid or a memory allocation failed.
  */
 xmlDtd *
-xmlNewDtd(xmlDoc *doc, const xmlChar *name,
-                    const xmlChar *ExternalID, const xmlChar *SystemID) {
+xmlNewDtd(xmlDoc *doc, const xmlChar *name, const xmlChar *publicId,
+          const xmlChar *systemId) {
     xmlDtdPtr cur;
 
     if ((doc != NULL) && (doc->extSubset != NULL)) {
@@ -808,13 +808,13 @@ xmlNewDtd(xmlDoc *doc, const xmlChar *name,
         if (cur->name == NULL)
             goto error;
     }
-    if (ExternalID != NULL) {
-	cur->ExternalID = xmlStrdup(ExternalID);
+    if (publicId != NULL) {
+	cur->ExternalID = xmlStrdup(publicId);
         if (cur->ExternalID == NULL)
             goto error;
     }
-    if (SystemID != NULL) {
-	cur->SystemID = xmlStrdup(SystemID);
+    if (systemId != NULL) {
+	cur->SystemID = xmlStrdup(systemId);
         if (cur->SystemID == NULL)
             goto error;
     }
@@ -862,14 +862,14 @@ xmlGetIntSubset(const xmlDoc *doc) {
  *
  * @param doc  the document pointer (optional)
  * @param name  the DTD name (optional)
- * @param ExternalID  the external (PUBLIC) ID (optional)
- * @param SystemID  the system ID (optional)
+ * @param publicId  public identifier of the DTD (optional)
+ * @param systemId  system identifier (URL) of the DTD (optional)
  * @returns a pointer to the new or existing DTD object or NULL if
  * arguments are invalid or a memory allocation failed.
  */
 xmlDtd *
-xmlCreateIntSubset(xmlDoc *doc, const xmlChar *name,
-                   const xmlChar *ExternalID, const xmlChar *SystemID) {
+xmlCreateIntSubset(xmlDoc *doc, const xmlChar *name, const xmlChar *publicId,
+                   const xmlChar *systemId) {
     xmlDtdPtr cur;
 
     if (doc != NULL) {
@@ -892,13 +892,13 @@ xmlCreateIntSubset(xmlDoc *doc, const xmlChar *name,
 	if (cur->name == NULL)
             goto error;
     }
-    if (ExternalID != NULL) {
-	cur->ExternalID = xmlStrdup(ExternalID);
+    if (publicId != NULL) {
+	cur->ExternalID = xmlStrdup(publicId);
 	if (cur->ExternalID  == NULL)
             goto error;
     }
-    if (SystemID != NULL) {
-	cur->SystemID = xmlStrdup(SystemID);
+    if (systemId != NULL) {
+	cur->SystemID = xmlStrdup(systemId);
 	if (cur->SystemID == NULL)
             goto error;
     }

@@ -44,13 +44,13 @@ XMLPUBFUN int
 XMLPUBFUN void
 		xmlSAX2InternalSubset		(void *ctx,
 						 const xmlChar *name,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID);
+						 const xmlChar *publicId,
+						 const xmlChar *systemId);
 XMLPUBFUN void
 		xmlSAX2ExternalSubset		(void *ctx,
 						 const xmlChar *name,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID);
+						 const xmlChar *publicId,
+						 const xmlChar *systemId);
 XMLPUBFUN xmlEntity *
 		xmlSAX2GetEntity		(void *ctx,
 						 const xmlChar *name);

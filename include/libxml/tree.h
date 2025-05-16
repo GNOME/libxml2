@@ -791,13 +791,13 @@ XMLPUBFUN const xmlChar *
 XMLPUBFUN xmlDtd *
 		xmlCreateIntSubset	(xmlDoc *doc,
 					 const xmlChar *name,
-					 const xmlChar *ExternalID,
-					 const xmlChar *SystemID);
+					 const xmlChar *publicId,
+					 const xmlChar *systemId);
 XMLPUBFUN xmlDtd *
 		xmlNewDtd		(xmlDoc *doc,
 					 const xmlChar *name,
-					 const xmlChar *ExternalID,
-					 const xmlChar *SystemID);
+					 const xmlChar *publicId,
+					 const xmlChar *systemId);
 XMLPUBFUN xmlDtd *
 		xmlGetIntSubset		(const xmlDoc *doc);
 XMLPUBFUN void

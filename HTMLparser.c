@@ -2218,15 +2218,15 @@ static int areBlanks(htmlParserCtxtPtr ctxt, const xmlChar *str, int len) {
 }
 
 /**
- * Creates a new HTML document without a DTD node if `URI` and `ExternalID`
+ * Creates a new HTML document without a DTD node if `URI` and `publicId`
  * are NULL
  *
- * @param URI  URI for the dtd, or NULL
- * @param ExternalID  the external ID of the DTD, or NULL
+ * @param URI  system ID (URI) of the DTD (optional)
+ * @param publicId  public ID of the DTD (optional)
  * @returns a new document, do not initialize the DTD if not provided
  */
 xmlDoc *
-htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
+htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *publicId) {
     xmlDocPtr cur;
 
     /*
@@ -2253,11 +2253,11 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
     cur->_private = NULL;
     cur->charset = XML_CHAR_ENCODING_UTF8;
     cur->properties = XML_DOC_HTML | XML_DOC_USERBUILT;
-    if ((ExternalID != NULL) ||
+    if ((publicId != NULL) ||
 	(URI != NULL)) {
         xmlDtdPtr intSubset;
 
-	intSubset = xmlCreateIntSubset(cur, BAD_CAST "html", ExternalID, URI);
+	intSubset = xmlCreateIntSubset(cur, BAD_CAST "html", publicId, URI);
         if (intSubset == NULL) {
             xmlFree(cur);
             return(NULL);
@@ -2271,18 +2271,18 @@ htmlNewDocNoDtD(const xmlChar *URI, const xmlChar *ExternalID) {
 /**
  * Creates a new HTML document
  *
- * @param URI  URI for the dtd, or NULL
- * @param ExternalID  the external ID of the DTD, or NULL
+ * @param URI  system ID (URI) of the DTD (optional)
+ * @param publicId  public ID of the DTD (optional)
  * @returns a new document
  */
 xmlDoc *
-htmlNewDoc(const xmlChar *URI, const xmlChar *ExternalID) {
-    if ((URI == NULL) && (ExternalID == NULL))
+htmlNewDoc(const xmlChar *URI, const xmlChar *publicId) {
+    if ((URI == NULL) && (publicId == NULL))
 	return(htmlNewDocNoDtD(
 		    BAD_CAST "http://www.w3.org/TR/REC-html40/loose.dtd",
 		    BAD_CAST "-//W3C//DTD HTML 4.0 Transitional//EN"));
 
-    return(htmlNewDocNoDtD(URI, ExternalID));
+    return(htmlNewDocNoDtD(URI, publicId));
 }
 
 
@@ -5114,6 +5114,9 @@ htmlParseTryOrFinish(htmlParserCtxtPtr ctxt, int terminate) {
  * be freed by the library.
  *
  * If the document isn't well-formed, `ctxt->myDoc` is set to NULL.
+ *
+ * Since 2.14.0, xmlCtxtGetDocument() can be used to retrieve the
+ * result document.
  *
  * @param ctxt  an HTML parser context
  * @param chunk  chunk of memory

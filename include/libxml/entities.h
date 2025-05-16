@@ -95,8 +95,8 @@ XMLPUBFUN xmlEntity *
 			xmlNewEntity		(xmlDoc *doc,
 						 const xmlChar *name,
 						 int type,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID,
+						 const xmlChar *publicId,
+						 const xmlChar *systemId,
 						 const xmlChar *content);
 XMLPUBFUN void
 			xmlFreeEntity		(xmlEntity *entity);
@@ -105,23 +105,23 @@ XMLPUBFUN int
 						 int extSubset,
 						 const xmlChar *name,
 						 int type,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID,
+						 const xmlChar *publicId,
+						 const xmlChar *systemId,
 						 const xmlChar *content,
 						 xmlEntity **out);
 XMLPUBFUN xmlEntity *
 			xmlAddDocEntity		(xmlDoc *doc,
 						 const xmlChar *name,
 						 int type,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID,
+						 const xmlChar *publicId,
+						 const xmlChar *systemId,
 						 const xmlChar *content);
 XMLPUBFUN xmlEntity *
 			xmlAddDtdEntity		(xmlDoc *doc,
 						 const xmlChar *name,
 						 int type,
-						 const xmlChar *ExternalID,
-						 const xmlChar *SystemID,
+						 const xmlChar *publicId,
+						 const xmlChar *systemId,
 						 const xmlChar *content);
 XMLPUBFUN xmlEntity *
 			xmlGetPredefinedEntity	(const xmlChar *name);

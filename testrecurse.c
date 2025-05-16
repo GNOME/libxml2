@@ -99,13 +99,13 @@ static int glob(const char *pattern, ATTRIBUTE_UNUSED int flags,
     if (hFind == INVALID_HANDLE_VALUE)
         return(0);
     nb_paths = 20;
-    ret->gl_pathv = (char **) malloc(nb_paths * sizeof(char *));
+    ret->gl_pathv = (char **) xmlMalloc(nb_paths * sizeof(char *));
     if (ret->gl_pathv == NULL) {
 	FindClose(hFind);
         return(-1);
     }
     strncpy(directory + len, FindFileData.cFileName, 499 - len);
-    ret->gl_pathv[ret->gl_pathc] = strdup(directory);
+    ret->gl_pathv[ret->gl_pathc] = xmlMemStrdup(directory);
     if (ret->gl_pathv[ret->gl_pathc] == NULL)
         goto done;
     ret->gl_pathc++;
@@ -113,14 +113,14 @@ static int glob(const char *pattern, ATTRIBUTE_UNUSED int flags,
         if (FindFileData.cFileName[0] == '.')
 	    continue;
         if (ret->gl_pathc + 2 > nb_paths) {
-            char **tmp = realloc(ret->gl_pathv, nb_paths * 2 * sizeof(char *));
+            char **tmp = xmlRealloc(ret->gl_pathv, nb_paths * 2 * sizeof(char *));
             if (tmp == NULL)
                 break;
             ret->gl_pathv = tmp;
             nb_paths *= 2;
 	}
 	strncpy(directory + len, FindFileData.cFileName, 499 - len);
-	ret->gl_pathv[ret->gl_pathc] = strdup(directory);
+	ret->gl_pathv[ret->gl_pathc] = xmlMemStrdup(directory);
         if (ret->gl_pathv[ret->gl_pathc] == NULL)
             break;
         ret->gl_pathc++;
@@ -141,7 +141,7 @@ static void globfree(glob_t *pglob) {
 
     for (i = 0;i < pglob->gl_pathc;i++) {
          if (pglob->gl_pathv[i] != NULL)
-             free(pglob->gl_pathv[i]);
+             xmlFree(pglob->gl_pathv[i]);
     }
 }
 
@@ -430,7 +430,7 @@ static char *resultFilename(const char *filename, const char *out,
 
     if (snprintf(res, 499, "%s%s%s", out, base, suffixbuff) >= 499)
         res[499] = 0;
-    return(strdup(res));
+    return(xmlMemStrdup(res));
 }
 
 static int checkTestFile(const char *filename) {
@@ -846,9 +846,9 @@ launchTests(testDescPtr tst) {
 		}
 	    }
 	    if (result)
-		free(result);
+		xmlFree(result);
 	    if (error)
-		free(error);
+		xmlFree(error);
 	}
 	globfree(&globbuf);
     } else {

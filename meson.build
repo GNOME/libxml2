@@ -582,6 +582,8 @@ config_cmake.set('INSTALL_BINDIR', dir_bin)
 config_cmake.set('INSTALL_INCLUDEDIR', dir_include)
 config_cmake.set('INSTALL_LIBDIR', dir_lib)
 config_cmake.set('VERSION', meson.project_version())
+config_cmake.set10('BUILD_SHARED_LIBS',
+                   get_option('default_library') != 'static')
 config_cmake.set('WITH_ICONV', want_iconv.to_int().to_string())
 config_cmake.set('WITH_ICU', want_icu.to_int().to_string())
 config_cmake.set('WITH_LZMA', want_lzma.to_int().to_string())

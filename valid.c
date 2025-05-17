@@ -3188,104 +3188,21 @@ xmlValidNormalizeString(xmlChar *str) {
     *dst = 0;
 }
 
-static int
-xmlIsDocNameStartChar(xmlDocPtr doc, int c) {
-    if ((doc == NULL) || (doc->properties & XML_DOC_OLD10) == 0) {
-        /*
-	 * Use the new checks of production [4] [4a] amd [5] of the
-	 * Update 5 of XML-1.0
-	 */
-	if (((c >= 'a') && (c <= 'z')) ||
-	    ((c >= 'A') && (c <= 'Z')) ||
-	    (c == '_') || (c == ':') ||
-	    ((c >= 0xC0) && (c <= 0xD6)) ||
-	    ((c >= 0xD8) && (c <= 0xF6)) ||
-	    ((c >= 0xF8) && (c <= 0x2FF)) ||
-	    ((c >= 0x370) && (c <= 0x37D)) ||
-	    ((c >= 0x37F) && (c <= 0x1FFF)) ||
-	    ((c >= 0x200C) && (c <= 0x200D)) ||
-	    ((c >= 0x2070) && (c <= 0x218F)) ||
-	    ((c >= 0x2C00) && (c <= 0x2FEF)) ||
-	    ((c >= 0x3001) && (c <= 0xD7FF)) ||
-	    ((c >= 0xF900) && (c <= 0xFDCF)) ||
-	    ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
-	    ((c >= 0x10000) && (c <= 0xEFFFF)))
-	    return(1);
-    } else {
-        if (IS_LETTER(c) || (c == '_') || (c == ':'))
-	    return(1);
-    }
-    return(0);
-}
-
-static int
-xmlIsDocNameChar(xmlDocPtr doc, int c) {
-    if ((doc == NULL) || (doc->properties & XML_DOC_OLD10) == 0) {
-        /*
-	 * Use the new checks of production [4] [4a] amd [5] of the
-	 * Update 5 of XML-1.0
-	 */
-	if (((c >= 'a') && (c <= 'z')) ||
-	    ((c >= 'A') && (c <= 'Z')) ||
-	    ((c >= '0') && (c <= '9')) || /* !start */
-	    (c == '_') || (c == ':') ||
-	    (c == '-') || (c == '.') || (c == 0xB7) || /* !start */
-	    ((c >= 0xC0) && (c <= 0xD6)) ||
-	    ((c >= 0xD8) && (c <= 0xF6)) ||
-	    ((c >= 0xF8) && (c <= 0x2FF)) ||
-	    ((c >= 0x300) && (c <= 0x36F)) || /* !start */
-	    ((c >= 0x370) && (c <= 0x37D)) ||
-	    ((c >= 0x37F) && (c <= 0x1FFF)) ||
-	    ((c >= 0x200C) && (c <= 0x200D)) ||
-	    ((c >= 0x203F) && (c <= 0x2040)) || /* !start */
-	    ((c >= 0x2070) && (c <= 0x218F)) ||
-	    ((c >= 0x2C00) && (c <= 0x2FEF)) ||
-	    ((c >= 0x3001) && (c <= 0xD7FF)) ||
-	    ((c >= 0xF900) && (c <= 0xFDCF)) ||
-	    ((c >= 0xFDF0) && (c <= 0xFFFD)) ||
-	    ((c >= 0x10000) && (c <= 0xEFFFF)))
-	     return(1);
-    } else {
-        if ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') ||
-	    (c == '_') || (c == ':') ||
-	    (IS_COMBINING(c)) ||
-	    (IS_EXTENDER(c)))
-	    return(1);
-    }
-    return(0);
-}
-
 /**
  * Validate that the given value matches the Name production.
  *
- * @param doc  pointer to the document or NULL
  * @param value  an Name value
+ * @param flags  scan flags
  * @returns 1 if valid or 0 otherwise.
  */
 
 static int
-xmlValidateNameValueInternal(xmlDocPtr doc, const xmlChar *value) {
-    const xmlChar *cur;
-    int val, len;
+xmlValidateNameValueInternal(const xmlChar *value, int flags) {
+    if ((value == NULL) || (value[0] == 0))
+        return(0);
 
-    if (value == NULL) return(0);
-    cur = value;
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
-    if (!xmlIsDocNameStartChar(doc, val))
-	return(0);
-
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
-    while (xmlIsDocNameChar(doc, val)) {
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-    }
-
-    if (val != 0) return(0);
-
-    return(1);
+    value = xmlScanName(value, SIZE_MAX, flags);
+    return((value != NULL) && (*value == 0));
 }
 
 /**
@@ -3297,59 +3214,40 @@ xmlValidateNameValueInternal(xmlDocPtr doc, const xmlChar *value) {
 
 int
 xmlValidateNameValue(const xmlChar *value) {
-    return(xmlValidateNameValueInternal(NULL, value));
+    return(xmlValidateNameValueInternal(value, 0));
 }
 
 /**
  * Validate that the given value matches the Names production.
  *
- * @param doc  pointer to the document or NULL
  * @param value  an Names value
+ * @param flags  scan flags
  * @returns 1 if valid or 0 otherwise.
  */
 
 static int
-xmlValidateNamesValueInternal(xmlDocPtr doc, const xmlChar *value) {
+xmlValidateNamesValueInternal(const xmlChar *value, int flags) {
     const xmlChar *cur;
-    int val, len;
 
-    if (value == NULL) return(0);
-    cur = value;
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
+    if (value == NULL)
+        return(0);
 
-    if (!xmlIsDocNameStartChar(doc, val))
-	return(0);
-
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
-    while (xmlIsDocNameChar(doc, val)) {
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-    }
+    cur = xmlScanName(value, SIZE_MAX, flags);
+    if ((cur == NULL) || (cur == value))
+        return(0);
 
     /* Should not test IS_BLANK(val) here -- see erratum E20*/
-    while (val == 0x20) {
-	while (val == 0x20) {
-	    val = xmlStringCurrentChar(NULL, cur, &len);
-	    cur += len;
-	}
+    while (*cur == 0x20) {
+	while (*cur == 0x20)
+	    cur += 1;
 
-	if (!xmlIsDocNameStartChar(doc, val))
-	    return(0);
-
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-
-	while (xmlIsDocNameChar(doc, val)) {
-	    val = xmlStringCurrentChar(NULL, cur, &len);
-	    cur += len;
-	}
+        value = cur;
+        cur = xmlScanName(value, SIZE_MAX, flags);
+        if ((cur == NULL) || (cur == value))
+            return(0);
     }
 
-    if (val != 0) return(0);
-
-    return(1);
+    return(*cur == 0);
 }
 
 /**
@@ -3361,7 +3259,7 @@ xmlValidateNamesValueInternal(xmlDocPtr doc, const xmlChar *value) {
 
 int
 xmlValidateNamesValue(const xmlChar *value) {
-    return(xmlValidateNamesValueInternal(NULL, value));
+    return(xmlValidateNamesValueInternal(value, 0));
 }
 
 /**
@@ -3369,34 +3267,18 @@ xmlValidateNamesValue(const xmlChar *value) {
  *
  * [ VC: Name Token ]
  *
- * @param doc  pointer to the document or NULL
  * @param value  an Nmtoken value
+ * @param flags  scan flags
  * @returns 1 if valid or 0 otherwise.
  */
 
 static int
-xmlValidateNmtokenValueInternal(xmlDocPtr doc, const xmlChar *value) {
-    const xmlChar *cur;
-    int val, len;
+xmlValidateNmtokenValueInternal(const xmlChar *value, int flags) {
+    if ((value == NULL) || (value[0] == 0))
+        return(0);
 
-    if (value == NULL) return(0);
-    cur = value;
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
-
-    if (!xmlIsDocNameChar(doc, val))
-	return(0);
-
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
-    while (xmlIsDocNameChar(doc, val)) {
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-    }
-
-    if (val != 0) return(0);
-
-    return(1);
+    value = xmlScanName(value, SIZE_MAX, flags | XML_SCAN_NMTOKEN);
+    return((value != NULL) && (*value == 0));
 }
 
 /**
@@ -3410,7 +3292,7 @@ xmlValidateNmtokenValueInternal(xmlDocPtr doc, const xmlChar *value) {
 
 int
 xmlValidateNmtokenValue(const xmlChar *value) {
-    return(xmlValidateNmtokenValueInternal(NULL, value));
+    return(xmlValidateNmtokenValueInternal(value, 0));
 }
 
 /**
@@ -3418,57 +3300,41 @@ xmlValidateNmtokenValue(const xmlChar *value) {
  *
  * [ VC: Name Token ]
  *
- * @param doc  pointer to the document or NULL
  * @param value  an Nmtokens value
+ * @param flags  scan flags
  * @returns 1 if valid or 0 otherwise.
  */
 
 static int
-xmlValidateNmtokensValueInternal(xmlDocPtr doc, const xmlChar *value) {
+xmlValidateNmtokensValueInternal(const xmlChar *value, int flags) {
     const xmlChar *cur;
-    int val, len;
 
-    if (value == NULL) return(0);
+    if (value == NULL)
+        return(0);
+
     cur = value;
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    cur += len;
+    while (IS_BLANK_CH(*cur))
+	cur += 1;
 
-    while (IS_BLANK(val)) {
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-    }
-
-    if (!xmlIsDocNameChar(doc, val))
-	return(0);
-
-    while (xmlIsDocNameChar(doc, val)) {
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-    }
+    value = cur;
+    cur = xmlScanName(value, SIZE_MAX, flags | XML_SCAN_NMTOKEN);
+    if ((cur == NULL) || (cur == value))
+        return(0);
 
     /* Should not test IS_BLANK(val) here -- see erratum E20*/
-    while (val == 0x20) {
-	while (val == 0x20) {
-	    val = xmlStringCurrentChar(NULL, cur, &len);
-	    cur += len;
-	}
-	if (val == 0) return(1);
+    while (*cur == 0x20) {
+	while (*cur == 0x20)
+	    cur += 1;
+        if (*cur == 0)
+            return(1);
 
-	if (!xmlIsDocNameChar(doc, val))
-	    return(0);
-
-	val = xmlStringCurrentChar(NULL, cur, &len);
-	cur += len;
-
-	while (xmlIsDocNameChar(doc, val)) {
-	    val = xmlStringCurrentChar(NULL, cur, &len);
-	    cur += len;
-	}
+        value = cur;
+        cur = xmlScanName(value, SIZE_MAX, flags | XML_SCAN_NMTOKEN);
+        if ((cur == NULL) || (cur == value))
+            return(0);
     }
 
-    if (val != 0) return(0);
-
-    return(1);
+    return(*cur == 0);
 }
 
 /**
@@ -3482,7 +3348,7 @@ xmlValidateNmtokensValueInternal(xmlDocPtr doc, const xmlChar *value) {
 
 int
 xmlValidateNmtokensValue(const xmlChar *value) {
-    return(xmlValidateNmtokensValueInternal(NULL, value));
+    return(xmlValidateNmtokensValueInternal(value, 0));
 }
 
 /**
@@ -3519,20 +3385,25 @@ xmlValidateNotationDecl(xmlValidCtxt *ctxt ATTRIBUTE_UNUSED, xmlDoc *doc ATTRIBU
 static int
 xmlValidateAttributeValueInternal(xmlDocPtr doc, xmlAttributeType type,
                                   const xmlChar *value) {
+    int flags = 0;
+
+    if ((doc != NULL) && (doc->properties & XML_DOC_OLD10))
+        flags |= XML_SCAN_OLD10;
+
     switch (type) {
 	case XML_ATTRIBUTE_ENTITIES:
 	case XML_ATTRIBUTE_IDREFS:
-	    return(xmlValidateNamesValueInternal(doc, value));
+	    return(xmlValidateNamesValueInternal(value, flags));
 	case XML_ATTRIBUTE_ENTITY:
 	case XML_ATTRIBUTE_IDREF:
 	case XML_ATTRIBUTE_ID:
 	case XML_ATTRIBUTE_NOTATION:
-	    return(xmlValidateNameValueInternal(doc, value));
+	    return(xmlValidateNameValueInternal(value, flags));
 	case XML_ATTRIBUTE_NMTOKENS:
 	case XML_ATTRIBUTE_ENUMERATION:
-	    return(xmlValidateNmtokensValueInternal(doc, value));
+	    return(xmlValidateNmtokensValueInternal(value, flags));
 	case XML_ATTRIBUTE_NMTOKEN:
-	    return(xmlValidateNmtokenValueInternal(doc, value));
+	    return(xmlValidateNmtokenValueInternal(value, flags));
         case XML_ATTRIBUTE_CDATA:
 	    break;
     }

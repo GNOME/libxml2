@@ -55,6 +55,13 @@ struct _xmlAttrHashBucket {
     int index;
 };
 
+#define XML_SCAN_NC         1
+#define XML_SCAN_NMTOKEN    2
+#define XML_SCAN_OLD10      4
+
+XML_HIDDEN const xmlChar *
+xmlScanName(const xmlChar *buf, size_t maxSize, int flags);
+
 XML_HIDDEN void
 xmlCtxtVErr(xmlParserCtxt *ctxt, xmlNode *node, xmlErrorDomain domain,
             xmlParserErrors code, xmlErrorLevel level,

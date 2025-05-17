@@ -75,6 +75,7 @@
 #include "private/io.h"
 #include "private/memory.h"
 #include "private/parser.h"
+#include "private/tree.h"
 
 #define NS_INDEX_EMPTY  INT_MAX
 #define NS_INDEX_XML    (INT_MAX - 1)
@@ -2220,7 +2221,6 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
  *   NEXT    Skip to the next character, this does the proper decoding
  *           in UTF-8 mode. It also pop-up unfinished entities on the fly.
  *   NEXTL(l) Skip the current unicode character of l xmlChars long.
- *   CUR_SCHAR  same but operate on a string instead of the context
  *   COPY_BUF  copy the current unicode char to the target buffer, increment
  *            the index
  *   GROW, SHRINK  handling of input buffers
@@ -2296,8 +2296,6 @@ static int spacePop(xmlParserCtxtPtr ctxt) {
     } else ctxt->input->col++;						\
     ctxt->input->cur += l;				\
   } while (0)
-
-#define CUR_SCHAR(s, l) xmlStringCurrentChar(ctxt, s, &l)
 
 #define COPY_BUF(b, i, v)						\
     if (v < 0x80) b[i++] = v;						\
@@ -2892,12 +2890,6 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
  *
  * @deprecated Don't use.
  *
- *     [NS 5] QName ::= (Prefix ':')? LocalPart
- *
- *     [NS 6] Prefix ::= NCName
- *
- *     [NS 7] LocalPart ::= NCName
- *
  * @param ctxt  an XML parser context
  * @param name  an XML parser context
  * @param prefixOut  a xmlChar **
@@ -2907,175 +2899,19 @@ static int areBlanks(xmlParserCtxtPtr ctxt, const xmlChar *str, int len,
 
 xmlChar *
 xmlSplitQName(xmlParserCtxt *ctxt, const xmlChar *name, xmlChar **prefixOut) {
-    xmlChar buf[XML_MAX_NAMELEN + 5];
-    xmlChar *buffer = NULL;
-    int len = 0;
-    int max = XML_MAX_NAMELEN;
-    xmlChar *ret = NULL;
-    xmlChar *prefix;
-    const xmlChar *cur = name;
-    int c;
+    xmlChar *ret;
+    const xmlChar *localname;
 
-    if (prefixOut == NULL) return(NULL);
-    *prefixOut = NULL;
-
-    if (cur == NULL) return(NULL);
-
-    /* nasty but well=formed */
-    if (cur[0] == ':')
-	return(xmlStrdup(name));
-
-    c = *cur++;
-    while ((c != 0) && (c != ':') && (len < max)) { /* tested bigname.xml */
-	buf[len++] = c;
-	c = *cur++;
-    }
-    if (len >= max) {
-	/*
-	 * Okay someone managed to make a huge name, so he's ready to pay
-	 * for the processing speed.
-	 */
-	max = len * 2;
-
-	buffer = xmlMalloc(max);
-	if (buffer == NULL) {
-	    xmlErrMemory(ctxt);
-	    return(NULL);
-	}
-	memcpy(buffer, buf, len);
-	while ((c != 0) && (c != ':')) { /* tested bigname.xml */
-	    if (len + 10 > max) {
-	        xmlChar *tmp;
-                int newSize;
-
-                newSize = xmlGrowCapacity(max, 1, 1, XML_MAX_ITEMS);
-                if (newSize < 0) {
-		    xmlErrMemory(ctxt);
-		    xmlFree(buffer);
-		    return(NULL);
-                }
-		tmp = xmlRealloc(buffer, newSize);
-		if (tmp == NULL) {
-		    xmlErrMemory(ctxt);
-		    xmlFree(buffer);
-		    return(NULL);
-		}
-		buffer = tmp;
-		max = newSize;
-	    }
-	    buffer[len++] = c;
-	    c = *cur++;
-	}
-	buffer[len] = 0;
+    localname = xmlSplitQName4(name, prefixOut);
+    if (localname == NULL) {
+        xmlCtxtErrMemory(ctxt);
+        return(NULL);
     }
 
-    if ((c == ':') && (*cur == 0)) {
-        if (buffer != NULL)
-	    xmlFree(buffer);
-	return(xmlStrdup(name));
-    }
-
-    if (buffer == NULL) {
-	ret = xmlStrndup(buf, len);
-        if (ret == NULL) {
-	    xmlErrMemory(ctxt);
-	    return(NULL);
-        }
-    } else {
-	ret = buffer;
-	buffer = NULL;
-	max = XML_MAX_NAMELEN;
-    }
-
-
-    if (c == ':') {
-	c = *cur;
-        prefix = ret;
-	if (c == 0) {
-	    ret = xmlStrndup(BAD_CAST "", 0);
-            if (ret == NULL) {
-                xmlFree(prefix);
-                return(NULL);
-            }
-            *prefixOut = prefix;
-            return(ret);
-	}
-	len = 0;
-
-	/*
-	 * Check that the first character is proper to start
-	 * a new name
-	 */
-	if (!(((c >= 0x61) && (c <= 0x7A)) ||
-	      ((c >= 0x41) && (c <= 0x5A)) ||
-	      (c == '_') || (c == ':'))) {
-	    int l;
-	    int first = CUR_SCHAR(cur, l);
-
-	    if (!IS_LETTER(first) && (first != '_')) {
-		xmlFatalErrMsgStr(ctxt, XML_NS_ERR_QNAME,
-			    "Name %s is not XML Namespace compliant\n",
-				  name);
-	    }
-	}
-	cur++;
-
-	while ((c != 0) && (len < max)) { /* tested bigname2.xml */
-	    buf[len++] = c;
-	    c = *cur++;
-	}
-	if (len >= max) {
-	    /*
-	     * Okay someone managed to make a huge name, so he's ready to pay
-	     * for the processing speed.
-	     */
-	    max = len * 2;
-
-	    buffer = xmlMalloc(max);
-	    if (buffer == NULL) {
-	        xmlErrMemory(ctxt);
-                xmlFree(prefix);
-		return(NULL);
-	    }
-	    memcpy(buffer, buf, len);
-	    while (c != 0) { /* tested bigname2.xml */
-		if (len + 10 > max) {
-		    xmlChar *tmp;
-                    int newSize;
-
-                    newSize = xmlGrowCapacity(max, 1, 1, XML_MAX_ITEMS);
-                    if (newSize < 0) {
-                        xmlErrMemory(ctxt);
-                        xmlFree(buffer);
-                        return(NULL);
-                    }
-		    tmp = xmlRealloc(buffer, newSize);
-		    if (tmp == NULL) {
-			xmlErrMemory(ctxt);
-                        xmlFree(prefix);
-			xmlFree(buffer);
-			return(NULL);
-		    }
-		    buffer = tmp;
-                    max = newSize;
-		}
-		buffer[len++] = c;
-		c = *cur++;
-	    }
-	    buffer[len] = 0;
-	}
-
-	if (buffer == NULL) {
-	    ret = xmlStrndup(buf, len);
-            if (ret == NULL) {
-                xmlFree(prefix);
-                return(NULL);
-            }
-	} else {
-	    ret = buffer;
-	}
-
-        *prefixOut = prefix;
+    ret = xmlStrdup(localname);
+    if (ret == NULL) {
+        xmlCtxtErrMemory(ctxt);
+        xmlFree(*prefixOut);
     }
 
     return(ret);
@@ -3182,19 +3018,66 @@ xmlIsNameCharOld(int c) {
 }
 
 static int
-xmlIsNameStartChar(xmlParserCtxtPtr ctxt, int c) {
-    if ((ctxt->options & XML_PARSE_OLD10) == 0)
+xmlIsNameStartChar(int c, int old10) {
+    if (!old10)
         return(xmlIsNameStartCharNew(c));
     else
         return(xmlIsNameStartCharOld(c));
 }
 
 static int
-xmlIsNameChar(xmlParserCtxtPtr ctxt, int c) {
-    if ((ctxt->options & XML_PARSE_OLD10) == 0)
+xmlIsNameChar(int c, int old10) {
+    if (!old10)
         return(xmlIsNameCharNew(c));
     else
         return(xmlIsNameCharOld(c));
+}
+
+/*
+ * Scan an XML Name, NCName or Nmtoken.
+ *
+ * Returns a pointer to the end of the name on success. If the
+ * name is invalid, returns `ptr`. If the name is longer than
+ * `maxSize` bytes, returns NULL.
+ *
+ * @param ptr  pointer to the start of the name
+ * @param maxSize  maximum size in bytes
+ * @param flags  XML_SCAN_* flags
+ * @returns a pointer to the end of the name or NULL
+ */
+const xmlChar *
+xmlScanName(const xmlChar *ptr, size_t maxSize, int flags) {
+    int stop = flags & XML_SCAN_NC ? ':' : 0;
+    int old10 = flags & XML_SCAN_OLD10 ? 1 : 0;
+
+    while (1) {
+        int c, len;
+
+        c = *ptr;
+        if (c < 0x80) {
+            if (c == stop)
+                break;
+            len = 1;
+        } else {
+            len = 4;
+            c = xmlGetUTF8Char(ptr, &len);
+            if (c < 0)
+                break;
+        }
+
+        if (flags & XML_SCAN_NMTOKEN ?
+                !xmlIsNameChar(c, old10) :
+                !xmlIsNameStartChar(c, old10))
+            break;
+
+        if ((size_t) len > maxSize)
+            return(NULL);
+        ptr += len;
+        maxSize -= len;
+        flags |= XML_SCAN_NMTOKEN;
+    }
+
+    return(ptr);
 }
 
 static const xmlChar *
@@ -3205,40 +3088,22 @@ xmlParseNameComplex(xmlParserCtxtPtr ctxt) {
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
+    int old10 = (ctxt->options & XML_PARSE_OLD10) ? 1 : 0;
 
     /*
      * Handler for more complex cases
      */
     c = xmlCurrentChar(ctxt, &l);
-    if ((ctxt->options & XML_PARSE_OLD10) == 0) {
-        /*
-	 * Use the new checks of production [4] [4a] amd [5] of the
-	 * Update 5 of XML-1.0
-	 */
-	if (!xmlIsNameStartCharNew(c))
-	    return(NULL);
-	len += l;
-	NEXTL(l);
-	c = xmlCurrentChar(ctxt, &l);
-	while (xmlIsNameCharNew(c)) {
-            if (len <= INT_MAX - l)
-	        len += l;
-	    NEXTL(l);
-	    c = xmlCurrentChar(ctxt, &l);
-	}
-    } else {
-	if (!xmlIsNameStartCharOld(c))
-	    return(NULL);
-	len += l;
-	NEXTL(l);
-	c = xmlCurrentChar(ctxt, &l);
-
-	while (xmlIsNameCharOld(c)) {
-            if (len <= INT_MAX - l)
-	        len += l;
-	    NEXTL(l);
-	    c = xmlCurrentChar(ctxt, &l);
-	}
+    if (!xmlIsNameStartChar(c, old10))
+        return(NULL);
+    len += l;
+    NEXTL(l);
+    c = xmlCurrentChar(ctxt, &l);
+    while (xmlIsNameChar(c, old10)) {
+        if (len <= INT_MAX - l)
+            len += l;
+        NEXTL(l);
+        c = xmlCurrentChar(ctxt, &l);
     }
     if (len > maxLength) {
         xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "Name");
@@ -3330,6 +3195,7 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
+    int old10 = (ctxt->options & XML_PARSE_OLD10) ? 1 : 0;
     size_t startPosition = 0;
 
     ret.name = NULL;
@@ -3341,12 +3207,12 @@ xmlParseNCNameComplex(xmlParserCtxtPtr ctxt) {
     startPosition = CUR_PTR - BASE_PTR;
     c = xmlCurrentChar(ctxt, &l);
     if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-	(!xmlIsNameStartChar(ctxt, c) || (c == ':'))) {
+	(!xmlIsNameStartChar(c, old10) || (c == ':'))) {
 	return(ret);
     }
 
     while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   (xmlIsNameChar(ctxt, c) && (c != ':'))) {
+	   (xmlIsNameChar(c, old10) && (c != ':'))) {
         if (len <= INT_MAX - l)
 	    len += l;
 	NEXTL(l);
@@ -3460,14 +3326,7 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
 }
 
 /**
- * parse an XML name.
- *
- *     [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                      CombiningChar | Extender
- *
- *     [5] Name ::= (Letter | '_' | ':') (NameChar)*
- *
- *     [6] Names ::= Name (#x20 Name)*
+ * Parse an XML name.
  *
  * @param ctxt  an XML parser context
  * @param str  a pointer to the string pointer (IN/OUT)
@@ -3477,78 +3336,28 @@ xmlParseNameAndCompare(xmlParserCtxtPtr ctxt, xmlChar const *other) {
 
 static xmlChar *
 xmlParseStringName(xmlParserCtxtPtr ctxt, const xmlChar** str) {
-    xmlChar buf[XML_MAX_NAMELEN + 5];
     xmlChar *ret;
     const xmlChar *cur = *str;
-    int len = 0, l;
-    int c;
+    int flags = 0;
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
 
-    c = CUR_SCHAR(cur, l);
-    if (!xmlIsNameStartChar(ctxt, c)) {
-	return(NULL);
-    }
+    if (ctxt->options & XML_PARSE_OLD10)
+        flags |= XML_SCAN_OLD10;
 
-    COPY_BUF(buf, len, c);
-    cur += l;
-    c = CUR_SCHAR(cur, l);
-    while (xmlIsNameChar(ctxt, c)) {
-	COPY_BUF(buf, len, c);
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-	if (len >= XML_MAX_NAMELEN) { /* test bigentname.xml */
-	    /*
-	     * Okay someone managed to make a huge name, so he's ready to pay
-	     * for the processing speed.
-	     */
-	    xmlChar *buffer;
-	    int max = len * 2;
-
-	    buffer = xmlMalloc(max);
-	    if (buffer == NULL) {
-	        xmlErrMemory(ctxt);
-		return(NULL);
-	    }
-	    memcpy(buffer, buf, len);
-	    while (xmlIsNameChar(ctxt, c)) {
-		if (len + 10 > max) {
-		    xmlChar *tmp;
-                    int newSize;
-
-                    newSize = xmlGrowCapacity(max, 1, 1, maxLength);
-                    if (newSize < 0) {
-                        xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
-                        xmlFree(buffer);
-                        return(NULL);
-                    }
-		    tmp = xmlRealloc(buffer, newSize);
-		    if (tmp == NULL) {
-			xmlErrMemory(ctxt);
-			xmlFree(buffer);
-			return(NULL);
-		    }
-		    buffer = tmp;
-                    max = newSize;
-		}
-		COPY_BUF(buffer, len, c);
-		cur += l;
-		c = CUR_SCHAR(cur, l);
-	    }
-	    buffer[len] = 0;
-	    *str = cur;
-	    return(buffer);
-	}
-    }
-    if (len > maxLength) {
+    cur = xmlScanName(*str, maxLength, flags);
+    if (cur == NULL) {
         xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "NCName");
         return(NULL);
     }
-    *str = cur;
-    ret = xmlStrndup(buf, len);
+    if (cur == *str)
+        return(NULL);
+
+    ret = xmlStrndup(*str, cur - *str);
     if (ret == NULL)
         xmlErrMemory(ctxt);
+    *str = cur;
     return(ret);
 }
 
@@ -3574,10 +3383,11 @@ xmlParseNmtoken(xmlParserCtxt *ctxt) {
     int maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                     XML_MAX_TEXT_LENGTH :
                     XML_MAX_NAME_LENGTH;
+    int old10 = (ctxt->options & XML_PARSE_OLD10) ? 1 : 0;
 
     c = xmlCurrentChar(ctxt, &l);
 
-    while (xmlIsNameChar(ctxt, c)) {
+    while (xmlIsNameChar(c, old10)) {
 	COPY_BUF(buf, len, c);
 	NEXTL(l);
 	c = xmlCurrentChar(ctxt, &l);
@@ -3595,7 +3405,7 @@ xmlParseNmtoken(xmlParserCtxt *ctxt) {
 		return(NULL);
 	    }
 	    memcpy(buffer, buf, len);
-	    while (xmlIsNameChar(ctxt, c)) {
+	    while (xmlIsNameChar(c, old10)) {
 		if (len + 10 > max) {
 		    xmlChar *tmp;
                     int newSize;

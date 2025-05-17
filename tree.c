@@ -44,6 +44,7 @@
 #include "private/error.h"
 #include "private/memory.h"
 #include "private/io.h"
+#include "private/parser.h"
 #include "private/tree.h"
 
 /*
@@ -336,8 +337,6 @@ xmlSplitQName4(const xmlChar *name, xmlChar **prefixPtr) {
  *									*
  ************************************************************************/
 
-#define CUR_SCHAR(s, l) xmlStringCurrentChar(NULL, s, &l)
-
 /**
  * Check that a value conforms to the lexical space of NCName
  *
@@ -348,64 +347,29 @@ xmlSplitQName4(const xmlChar *name, xmlChar **prefixPtr) {
  */
 int
 xmlValidateNCName(const xmlChar *value, int space) {
-    const xmlChar *cur = value;
-    int c,l;
+    const xmlChar *cur;
 
     if (value == NULL)
         return(-1);
 
-    /*
-     * First quick algorithm for ASCII range
-     */
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
-	(*cur == '_'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.'))
-	cur++;
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
-
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
     cur = value;
-    c = CUR_SCHAR(cur, l);
-    if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
-    }
-    if ((!IS_LETTER(c)) && (c != '_'))
-	return(1);
-    cur += l;
-    c = CUR_SCHAR(cur, l);
-    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') ||
-	   (c == '-') || (c == '_') || IS_COMBINING(c) ||
-	   IS_EXTENDER(c)) {
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-    }
-    if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
-    }
-    if (c != 0)
-	return(1);
 
-    return(0);
+    if (space) {
+	while (IS_BLANK_CH(*cur))
+            cur++;
+    }
+
+    value = cur;
+    cur = xmlScanName(value, SIZE_MAX, XML_SCAN_NC);
+    if ((cur == NULL) || (cur == value))
+        return(1);
+
+    if (space) {
+	while (IS_BLANK_CH(*cur))
+            cur++;
+    }
+
+    return(*cur != 0);
 }
 
 /**
@@ -418,90 +382,37 @@ try_complex:
  */
 int
 xmlValidateQName(const xmlChar *value, int space) {
-    const xmlChar *cur = value;
-    int c,l;
+    const xmlChar *cur;
 
     if (value == NULL)
         return(-1);
-    /*
-     * First quick algorithm for ASCII range
-     */
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
-	(*cur == '_'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.'))
-	cur++;
-    if (*cur == ':') {
-	cur++;
-	if (((*cur >= 'a') && (*cur <= 'z')) ||
-	    ((*cur >= 'A') && (*cur <= 'Z')) ||
-	    (*cur == '_'))
-	    cur++;
-	else
-	    goto try_complex;
-	while (((*cur >= 'a') && (*cur <= 'z')) ||
-	       ((*cur >= 'A') && (*cur <= 'Z')) ||
-	       ((*cur >= '0') && (*cur <= '9')) ||
-	       (*cur == '_') || (*cur == '-') || (*cur == '.'))
-	    cur++;
-    }
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
 
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
     cur = value;
-    c = CUR_SCHAR(cur, l);
+
     if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
+	while (IS_BLANK_CH(*cur))
+            cur++;
     }
-    if ((!IS_LETTER(c)) && (c != '_'))
-	return(1);
-    cur += l;
-    c = CUR_SCHAR(cur, l);
-    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') ||
-	   (c == '-') || (c == '_') || IS_COMBINING(c) ||
-	   IS_EXTENDER(c)) {
-	cur += l;
-	c = CUR_SCHAR(cur, l);
+
+    value = cur;
+    cur = xmlScanName(value, SIZE_MAX, XML_SCAN_NC);
+    if ((cur == NULL) || (cur == value))
+        return(1);
+
+    if (*cur == ':') {
+        cur += 1;
+        value = cur;
+        cur = xmlScanName(value, SIZE_MAX, XML_SCAN_NC);
+        if ((cur == NULL) || (cur == value))
+            return(1);
     }
-    if (c == ':') {
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-	if ((!IS_LETTER(c)) && (c != '_'))
-	    return(1);
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-	while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') ||
-	       (c == '-') || (c == '_') || IS_COMBINING(c) ||
-	       IS_EXTENDER(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
-    }
+
     if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
+	while (IS_BLANK_CH(*cur))
+            cur++;
     }
-    if (c != 0)
-	return(1);
-    return(0);
+
+    return(*cur != 0);
 }
 
 /**
@@ -514,61 +425,29 @@ try_complex:
  */
 int
 xmlValidateName(const xmlChar *value, int space) {
-    const xmlChar *cur = value;
-    int c,l;
+    const xmlChar *cur;
 
     if (value == NULL)
         return(-1);
-    /*
-     * First quick algorithm for ASCII range
-     */
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) || ((*cur >= 'A') && (*cur <= 'Z')) ||
-	(*cur == '_') || (*cur == ':'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
-	cur++;
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
 
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
     cur = value;
-    c = CUR_SCHAR(cur, l);
+
     if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
+	while (IS_BLANK_CH(*cur))
+            cur++;
     }
-    if ((!IS_LETTER(c)) && (c != '_') && (c != ':'))
-	return(1);
-    cur += l;
-    c = CUR_SCHAR(cur, l);
-    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') || (c == ':') ||
-	   (c == '-') || (c == '_') || IS_COMBINING(c) || IS_EXTENDER(c)) {
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-    }
+
+    value = cur;
+    cur = xmlScanName(value, SIZE_MAX, 0);
+    if ((cur == NULL) || (cur == value))
+        return(1);
+
     if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
+	while (IS_BLANK_CH(*cur))
+            cur++;
     }
-    if (c != 0)
-	return(1);
-    return(0);
+
+    return(*cur != 0);
 }
 
 /**
@@ -581,64 +460,29 @@ try_complex:
  */
 int
 xmlValidateNMToken(const xmlChar *value, int space) {
-    const xmlChar *cur = value;
-    int c,l;
+    const xmlChar *cur;
 
     if (value == NULL)
         return(-1);
-    /*
-     * First quick algorithm for ASCII range
-     */
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (((*cur >= 'a') && (*cur <= 'z')) ||
-        ((*cur >= 'A') && (*cur <= 'Z')) ||
-        ((*cur >= '0') && (*cur <= '9')) ||
-        (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
-	cur++;
-    else
-	goto try_complex;
-    while (((*cur >= 'a') && (*cur <= 'z')) ||
-	   ((*cur >= 'A') && (*cur <= 'Z')) ||
-	   ((*cur >= '0') && (*cur <= '9')) ||
-	   (*cur == '_') || (*cur == '-') || (*cur == '.') || (*cur == ':'))
-	cur++;
-    if (space)
-	while (IS_BLANK_CH(*cur)) cur++;
-    if (*cur == 0)
-	return(0);
 
-try_complex:
-    /*
-     * Second check for chars outside the ASCII range
-     */
     cur = value;
-    c = CUR_SCHAR(cur, l);
+
     if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
+	while (IS_BLANK_CH(*cur))
+            cur++;
     }
-    if (!(IS_LETTER(c) || IS_DIGIT(c) || (c == '.') || (c == ':') ||
-        (c == '-') || (c == '_') || IS_COMBINING(c) || IS_EXTENDER(c)))
-	return(1);
-    cur += l;
-    c = CUR_SCHAR(cur, l);
-    while (IS_LETTER(c) || IS_DIGIT(c) || (c == '.') || (c == ':') ||
-	   (c == '-') || (c == '_') || IS_COMBINING(c) || IS_EXTENDER(c)) {
-	cur += l;
-	c = CUR_SCHAR(cur, l);
-    }
+
+    value = cur;
+    cur = xmlScanName(value, SIZE_MAX, XML_SCAN_NMTOKEN);
+    if ((cur == NULL) || (cur == value))
+        return(1);
+
     if (space) {
-	while (IS_BLANK(c)) {
-	    cur += l;
-	    c = CUR_SCHAR(cur, l);
-	}
+	while (IS_BLANK_CH(*cur))
+            cur++;
     }
-    if (c != 0)
-	return(1);
-    return(0);
+
+    return(*cur != 0);
 }
 
 /************************************************************************

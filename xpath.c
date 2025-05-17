@@ -46,6 +46,7 @@
 #include "private/buf.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/parser.h"
 #include "private/xpath.h"
 
 /* Disabled for now */
@@ -2178,13 +2179,6 @@ xmlXPathPopExternal (xmlXPathParserContext *ctxt) {
 #define SKIP(val) ctxt->cur += (val)
 #define NXT(val) ctxt->cur[(val)]
 #define CUR_PTR ctxt->cur
-#define CUR_CHAR(l) xmlXPathCurrentChar(ctxt, &l)
-
-#define COPY_BUF(b, i, v)						\
-    if (v < 0x80) b[i++] = v;						\
-    else i += xmlCopyCharMultiByte(&b[i],v)
-
-#define NEXTL(l)  ctxt->cur += l
 
 #define SKIP_BLANKS							\
     while (IS_BLANK_CH(*(ctxt->cur))) NEXT
@@ -8094,149 +8088,38 @@ static void xmlXPathCompileExpr(xmlXPathParserContextPtr ctxt, int sort);
 static void xmlXPathCompPredicate(xmlXPathParserContextPtr ctxt, int filter);
 static void xmlXPathCompLocationPath(xmlXPathParserContextPtr ctxt);
 static void xmlXPathCompRelativeLocationPath(xmlXPathParserContextPtr ctxt);
-static xmlChar * xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt,
-	                                  int qualified);
 
 /**
- * The current char value, if using UTF-8 this may actually span multiple
- * bytes in the input buffer.
- *
- * @param ctxt  the XPath parser context
- * @param len  pointer to the length of the char read
- * @returns the current char value and its length
- */
-
-static int
-xmlXPathCurrentChar(xmlXPathParserContextPtr ctxt, int *len) {
-    unsigned char c;
-    unsigned int val;
-    const xmlChar *cur;
-
-    if (ctxt == NULL)
-	return(0);
-    cur = ctxt->cur;
-
-    /*
-     * We are supposed to handle UTF8, check it's valid
-     * From rfc2044: encoding of the Unicode values on UTF-8:
-     *
-     * UCS-4 range (hex.)           UTF-8 octet sequence (binary)
-     * 0000 0000-0000 007F   0xxxxxxx
-     * 0000 0080-0000 07FF   110xxxxx 10xxxxxx
-     * 0000 0800-0000 FFFF   1110xxxx 10xxxxxx 10xxxxxx
-     *
-     * Check for the 0x110000 limit too
-     */
-    c = *cur;
-    if (c & 0x80) {
-	if ((cur[1] & 0xc0) != 0x80)
-	    goto encoding_error;
-	if ((c & 0xe0) == 0xe0) {
-
-	    if ((cur[2] & 0xc0) != 0x80)
-		goto encoding_error;
-	    if ((c & 0xf0) == 0xf0) {
-		if (((c & 0xf8) != 0xf0) ||
-		    ((cur[3] & 0xc0) != 0x80))
-		    goto encoding_error;
-		/* 4-byte code */
-		*len = 4;
-		val = (cur[0] & 0x7) << 18;
-		val |= (cur[1] & 0x3f) << 12;
-		val |= (cur[2] & 0x3f) << 6;
-		val |= cur[3] & 0x3f;
-	    } else {
-	      /* 3-byte code */
-		*len = 3;
-		val = (cur[0] & 0xf) << 12;
-		val |= (cur[1] & 0x3f) << 6;
-		val |= cur[2] & 0x3f;
-	    }
-	} else {
-	  /* 2-byte code */
-	    *len = 2;
-	    val = (cur[0] & 0x1f) << 6;
-	    val |= cur[1] & 0x3f;
-	}
-	if (!IS_CHAR(val)) {
-	    XP_ERROR0(XPATH_INVALID_CHAR_ERROR);
-	}
-	return(val);
-    } else {
-	/* 1-byte code */
-	*len = 1;
-	return(*cur);
-    }
-encoding_error:
-    /*
-     * If we detect an UTF8 error that probably means that the
-     * input encoding didn't get properly advertised in the
-     * declaration header. Report the error and switch the encoding
-     * to ISO-Latin-1 (if you don't like this policy, just declare the
-     * encoding !)
-     */
-    *len = 0;
-    XP_ERROR0(XPATH_ENCODING_ERROR);
-}
-
-/**
- * parse an XML namespace non qualified name.
- *
- * [NS 3] NCName ::= (Letter | '_') (NCNameChar)*
- *
- * [NS 4] NCNameChar ::= Letter | Digit | '.' | '-' | '_' |
- *                       CombiningChar | Extender
+ * Parse an XML non-colonized name.
  *
  * @param ctxt  the XPath Parser context
- * @returns the namespace name or NULL
+ * @returns the nc name or NULL
  */
 
 xmlChar *
 xmlXPathParseNCName(xmlXPathParserContext *ctxt) {
-    const xmlChar *in;
+    const xmlChar *end;
     xmlChar *ret;
-    int count = 0;
 
     if ((ctxt == NULL) || (ctxt->cur == NULL)) return(NULL);
-    /*
-     * Accelerator for simple ASCII names
-     */
-    in = ctxt->cur;
-    if (((*in >= 0x61) && (*in <= 0x7A)) ||
-	((*in >= 0x41) && (*in <= 0x5A)) ||
-	(*in == '_')) {
-	in++;
-	while (((*in >= 0x61) && (*in <= 0x7A)) ||
-	       ((*in >= 0x41) && (*in <= 0x5A)) ||
-	       ((*in >= 0x30) && (*in <= 0x39)) ||
-	       (*in == '_') || (*in == '.') ||
-	       (*in == '-'))
-	    in++;
-	if ((*in == ' ') || (*in == '>') || (*in == '/') ||
-            (*in == '[') || (*in == ']') || (*in == ':') ||
-            (*in == '@') || (*in == '*')) {
-	    count = in - ctxt->cur;
-	    if (count == 0)
-		return(NULL);
-	    ret = xmlStrndup(ctxt->cur, count);
-            if (ret == NULL)
-                xmlXPathPErrMemory(ctxt);
-	    ctxt->cur = in;
-	    return(ret);
-	}
+
+    end = xmlScanName(ctxt->cur, XML_MAX_NAME_LENGTH, XML_SCAN_NC);
+    if (end == NULL) {
+        XP_ERRORNULL(XPATH_EXPR_ERROR);
     }
-    return(xmlXPathParseNameComplex(ctxt, 0));
+    if (end == ctxt->cur)
+        return(NULL);
+
+    ret = xmlStrndup(ctxt->cur, end - ctxt->cur);
+    if (ret == NULL)
+        xmlXPathPErrMemory(ctxt);
+    ctxt->cur = end;
+    return(ret);
 }
 
 
 /**
- * parse an XML qualified name
- *
- * [NS 5] QName ::= (Prefix ':')? LocalPart
- *
- * [NS 6] Prefix ::= NCName
- *
- * [NS 7] LocalPart ::= NCName
+ * Parse an XML qualified name
  *
  * @param ctxt  the XPath Parser context
  * @param prefix  a xmlChar **
@@ -8261,134 +8144,28 @@ xmlXPathParseQName(xmlXPathParserContextPtr ctxt, xmlChar **prefix) {
 /**
  * parse an XML name
  *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
- *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
- *
  * @param ctxt  the XPath Parser context
- * @returns the namespace name or NULL
+ * @returns the name or NULL
  */
 
 xmlChar *
 xmlXPathParseName(xmlXPathParserContext *ctxt) {
-    const xmlChar *in;
+    const xmlChar *end;
     xmlChar *ret;
-    size_t count = 0;
 
     if ((ctxt == NULL) || (ctxt->cur == NULL)) return(NULL);
-    /*
-     * Accelerator for simple ASCII names
-     */
-    in = ctxt->cur;
-    if (((*in >= 0x61) && (*in <= 0x7A)) ||
-	((*in >= 0x41) && (*in <= 0x5A)) ||
-	(*in == '_') || (*in == ':')) {
-	in++;
-	while (((*in >= 0x61) && (*in <= 0x7A)) ||
-	       ((*in >= 0x41) && (*in <= 0x5A)) ||
-	       ((*in >= 0x30) && (*in <= 0x39)) ||
-	       (*in == '_') || (*in == '-') ||
-	       (*in == ':') || (*in == '.'))
-	    in++;
-	if ((*in > 0) && (*in < 0x80)) {
-	    count = in - ctxt->cur;
-            if (count > XML_MAX_NAME_LENGTH) {
-                ctxt->cur = in;
-                XP_ERRORNULL(XPATH_EXPR_ERROR);
-            }
-	    ret = xmlStrndup(ctxt->cur, count);
-            if (ret == NULL)
-                xmlXPathPErrMemory(ctxt);
-	    ctxt->cur = in;
-	    return(ret);
-	}
+
+    end = xmlScanName(ctxt->cur, XML_MAX_NAME_LENGTH, 0);
+    if (end == NULL) {
+        XP_ERRORNULL(XPATH_EXPR_ERROR);
     }
-    return(xmlXPathParseNameComplex(ctxt, 1));
-}
+    if (end == ctxt->cur)
+        return(NULL);
 
-static xmlChar *
-xmlXPathParseNameComplex(xmlXPathParserContextPtr ctxt, int qualified) {
-    xmlChar *ret;
-    xmlChar buf[XML_MAX_NAMELEN + 5];
-    int len = 0, l;
-    int c;
-
-    /*
-     * Handler for more complex cases
-     */
-    c = CUR_CHAR(l);
-    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-        (c == '[') || (c == ']') || (c == '@') || /* accelerators */
-        (c == '*') || /* accelerators */
-	(!IS_LETTER(c) && (c != '_') &&
-         ((!qualified) || (c != ':')))) {
-	return(NULL);
-    }
-
-    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') ||
-	    (c == '_') || ((qualified) && (c == ':')) ||
-	    (IS_COMBINING(c)) ||
-	    (IS_EXTENDER(c)))) {
-	COPY_BUF(buf,len,c);
-	NEXTL(l);
-	c = CUR_CHAR(l);
-	if (len >= XML_MAX_NAMELEN) {
-	    /*
-	     * Okay someone managed to make a huge name, so he's ready to pay
-	     * for the processing speed.
-	     */
-	    xmlChar *buffer;
-	    int max = len * 2;
-
-            if (len > XML_MAX_NAME_LENGTH) {
-                XP_ERRORNULL(XPATH_EXPR_ERROR);
-            }
-	    buffer = xmlMalloc(max);
-	    if (buffer == NULL) {
-                xmlXPathPErrMemory(ctxt);
-                return(NULL);
-	    }
-	    memcpy(buffer, buf, len);
-	    while ((IS_LETTER(c)) || (IS_DIGIT(c)) || /* test bigname.xml */
-		   (c == '.') || (c == '-') ||
-		   (c == '_') || ((qualified) && (c == ':')) ||
-		   (IS_COMBINING(c)) ||
-		   (IS_EXTENDER(c))) {
-		if (len + 10 > max) {
-                    xmlChar *tmp;
-                    int newSize;
-
-                    newSize = xmlGrowCapacity(max, 1, 1, XML_MAX_NAME_LENGTH);
-                    if (newSize < 0) {
-                        xmlFree(buffer);
-                        xmlXPathErr(ctxt, XPATH_EXPR_ERROR);
-                        return(NULL);
-                    }
-		    tmp = xmlRealloc(buffer, newSize);
-		    if (tmp == NULL) {
-                        xmlFree(buffer);
-                        xmlXPathPErrMemory(ctxt);
-                        return(NULL);
-		    }
-                    buffer = tmp;
-		    max = newSize;
-		}
-		COPY_BUF(buffer,len,c);
-		NEXTL(l);
-		c = CUR_CHAR(l);
-	    }
-	    buffer[len] = 0;
-	    return(buffer);
-	}
-    }
-    if (len == 0)
-	return(NULL);
-    ret = xmlStrndup(buf, len);
+    ret = xmlStrndup(ctxt->cur, end - ctxt->cur);
     if (ret == NULL)
         xmlXPathPErrMemory(ctxt);
+    ctxt->cur = end;
     return(ret);
 }
 
@@ -8873,46 +8650,25 @@ xmlXPathCompFilterExpr(xmlXPathParserContextPtr ctxt) {
  * Trickery: parse an XML name but without consuming the input flow
  * Needed to avoid insanity in the parser state.
  *
- * [4] NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' |
- *                  CombiningChar | Extender
- *
- * [5] Name ::= (Letter | '_' | ':') (NameChar)*
- *
- * [6] Names ::= Name (S Name)*
- *
  * @param ctxt  the XPath Parser context
  * @returns the Name parsed or NULL
  */
 
 static xmlChar *
 xmlXPathScanName(xmlXPathParserContextPtr ctxt) {
-    int l;
-    int c;
-    const xmlChar *cur;
+    const xmlChar *end;
     xmlChar *ret;
 
-    cur = ctxt->cur;
-
-    c = CUR_CHAR(l);
-    if ((c == ' ') || (c == '>') || (c == '/') || /* accelerators */
-	(!IS_LETTER(c) && (c != '_') &&
-         (c != ':'))) {
-	return(NULL);
+    end = xmlScanName(ctxt->cur, XML_MAX_NAME_LENGTH, 0);
+    if (end == NULL) {
+        XP_ERRORNULL(XPATH_EXPR_ERROR);
     }
+    if (end == ctxt->cur)
+        return(NULL);
 
-    while ((c != ' ') && (c != '>') && (c != '/') && /* test bigname.xml */
-	   ((IS_LETTER(c)) || (IS_DIGIT(c)) ||
-            (c == '.') || (c == '-') ||
-	    (c == '_') || (c == ':') ||
-	    (IS_COMBINING(c)) ||
-	    (IS_EXTENDER(c)))) {
-	NEXTL(l);
-	c = CUR_CHAR(l);
-    }
-    ret = xmlStrndup(cur, ctxt->cur - cur);
+    ret = xmlStrndup(ctxt->cur, end - ctxt->cur);
     if (ret == NULL)
         xmlXPathPErrMemory(ctxt);
-    ctxt->cur = cur;
     return(ret);
 }
 

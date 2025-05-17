@@ -35,6 +35,7 @@
 #include <libxml/parserInternals.h>
 
 #include "private/memory.h"
+#include "private/parser.h"
 
 #ifdef LIBXML_PATTERN_ENABLED
 
@@ -686,23 +687,13 @@ static xmlChar *
 xmlPatScanName(xmlPatParserContextPtr ctxt) {
     const xmlChar *q, *cur;
     xmlChar *ret = NULL;
-    int val, len;
 
     SKIP_BLANKS;
 
-    cur = q = CUR_PTR;
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    if (!IS_LETTER(val) && (val != '_') && (val != ':'))
-	return(NULL);
-
-    while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
-           (val == '.') || (val == '-') ||
-	   (val == '_') ||
-	   (IS_COMBINING(val)) ||
-	   (IS_EXTENDER(val))) {
-	cur += len;
-	val = xmlStringCurrentChar(NULL, cur, &len);
-    }
+    q = CUR_PTR;
+    cur = xmlScanName(q, XML_MAX_NAME_LENGTH, 0);
+    if ((cur == NULL) || (cur == q))
+        return(NULL);
     if (ctxt->dict)
 	ret = (xmlChar *) xmlDictLookup(ctxt->dict, q, cur - q);
     else
@@ -722,23 +713,13 @@ static xmlChar *
 xmlPatScanNCName(xmlPatParserContextPtr ctxt) {
     const xmlChar *q, *cur;
     xmlChar *ret = NULL;
-    int val, len;
 
     SKIP_BLANKS;
 
-    cur = q = CUR_PTR;
-    val = xmlStringCurrentChar(NULL, cur, &len);
-    if (!IS_LETTER(val) && (val != '_'))
-	return(NULL);
-
-    while ((IS_LETTER(val)) || (IS_DIGIT(val)) ||
-           (val == '.') || (val == '-') ||
-	   (val == '_') ||
-	   (IS_COMBINING(val)) ||
-	   (IS_EXTENDER(val))) {
-	cur += len;
-	val = xmlStringCurrentChar(NULL, cur, &len);
-    }
+    q = CUR_PTR;
+    cur = xmlScanName(q, XML_MAX_NAME_LENGTH, XML_SCAN_NC);
+    if ((cur == NULL) || (cur == q))
+        return(NULL);
     if (ctxt->dict)
 	ret = (xmlChar *) xmlDictLookup(ctxt->dict, q, cur - q);
     else

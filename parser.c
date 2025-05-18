@@ -5674,18 +5674,23 @@ xmlParseNotationType(xmlParserCtxt *ctxt) {
             xmlFreeEnumeration(ret);
 	    return(NULL);
 	}
-	tmp = ret;
-	while (tmp != NULL) {
-	    if (xmlStrEqual(name, tmp->name)) {
-		xmlValidityError(ctxt, XML_DTD_DUP_TOKEN,
-	  "standalone: attribute notation value token %s duplicated\n",
-				 name, NULL);
-		if (!xmlDictOwns(ctxt->dict, name))
-		    xmlFree((xmlChar *) name);
-		break;
-	    }
-	    tmp = tmp->next;
-	}
+        tmp = NULL;
+#ifdef LIBXML_VALID_ENABLED
+        if (ctxt->validate) {
+            tmp = ret;
+            while (tmp != NULL) {
+                if (xmlStrEqual(name, tmp->name)) {
+                    xmlValidityError(ctxt, XML_DTD_DUP_TOKEN,
+              "standalone: attribute notation value token %s duplicated\n",
+                                     name, NULL);
+                    if (!xmlDictOwns(ctxt->dict, name))
+                        xmlFree((xmlChar *) name);
+                    break;
+                }
+                tmp = tmp->next;
+            }
+        }
+#endif /* LIBXML_VALID_ENABLED */
 	if (tmp == NULL) {
 	    cur = xmlCreateEnumeration(name);
 	    if (cur == NULL) {
@@ -5742,18 +5747,23 @@ xmlParseEnumerationType(xmlParserCtxt *ctxt) {
 	    xmlFatalErr(ctxt, XML_ERR_NMTOKEN_REQUIRED, NULL);
 	    return(ret);
 	}
-	tmp = ret;
-	while (tmp != NULL) {
-	    if (xmlStrEqual(name, tmp->name)) {
-		xmlValidityError(ctxt, XML_DTD_DUP_TOKEN,
-	  "standalone: attribute enumeration value token %s duplicated\n",
-				 name, NULL);
-		if (!xmlDictOwns(ctxt->dict, name))
-		    xmlFree(name);
-		break;
-	    }
-	    tmp = tmp->next;
-	}
+        tmp = NULL;
+#ifdef LIBXML_VALID_ENABLED
+        if (ctxt->validate) {
+            tmp = ret;
+            while (tmp != NULL) {
+                if (xmlStrEqual(name, tmp->name)) {
+                    xmlValidityError(ctxt, XML_DTD_DUP_TOKEN,
+              "standalone: attribute enumeration value token %s duplicated\n",
+                                     name, NULL);
+                    if (!xmlDictOwns(ctxt->dict, name))
+                        xmlFree(name);
+                    break;
+                }
+                tmp = tmp->next;
+            }
+        }
+#endif /* LIBXML_VALID_ENABLED */
 	if (tmp == NULL) {
 	    cur = xmlCreateEnumeration(name);
 	    if (!xmlDictOwns(ctxt->dict, name))

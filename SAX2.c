@@ -39,6 +39,7 @@ xmlSAX2ErrMemory(xmlParserCtxtPtr ctxt) {
     xmlCtxtErrMemory(ctxt);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * Handle a validation error
  *
@@ -57,6 +58,7 @@ xmlErrValid(xmlParserCtxtPtr ctxt, xmlParserErrors error,
     if (ctxt != NULL)
 	ctxt->valid = 0;
 }
+#endif /* LIBXML_VALID_ENABLED */
 
 /**
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
@@ -1255,10 +1257,15 @@ process_external_subset:
 
     if (elemDecl != NULL) {
 	xmlAttributePtr attr = elemDecl->attributes;
-	/*
-	 * Check against defaulted attributes from the external subset
-	 * if the document is stamped as standalone
-	 */
+
+#ifdef LIBXML_VALID_ENABLED
+        /*
+         * Check against defaulted attributes from the external subset
+         * if the document is stamped as standalone.
+         *
+         * This should be moved to valid.c, but we don't keep track
+         * whether an attribute was defaulted.
+         */
 	if ((ctxt->myDoc->standalone == 1) &&
 	    (ctxt->myDoc->extSubset != NULL) &&
 	    (ctxt->validate)) {
@@ -1312,6 +1319,7 @@ process_external_subset:
 		attr = attr->nexth;
 	    }
 	}
+#endif
 
 	/*
 	 * Actually insert defaulted values when needed
@@ -1411,6 +1419,7 @@ xmlSAX1StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 
     if ((ctx == NULL) || (fullname == NULL) || (ctxt->myDoc == NULL)) return;
 
+#ifdef LIBXML_VALID_ENABLED
     /*
      * First check on validity:
      */
@@ -1424,6 +1433,7 @@ xmlSAX1StartElement(void *ctx, const xmlChar *fullname, const xmlChar **atts)
 	  "Validation failed: no DTD found !", NULL, NULL);
 	ctxt->validate = 0;
     }
+#endif
 
     /*
      * Split the full name into a namespace prefix and the tag name
@@ -2127,6 +2137,8 @@ xmlSAX2StartElementNs(void *ctx,
     int i, j;
 
     if (ctx == NULL) return;
+
+#ifdef LIBXML_VALID_ENABLED
     /*
      * First check on validity:
      */
@@ -2142,6 +2154,7 @@ xmlSAX2StartElementNs(void *ctx,
 	  "Validation failed: no DTD found !", NULL, NULL);
 	ctxt->validate = 0;
     }
+#endif /* LIBXML_VALID_ENABLED */
 
     /*
      * Take care of the rare case of an undefined namespace prefix

@@ -268,6 +268,7 @@ xmlWarningMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                str1, str2, NULL, 0, msg, str1, str2);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * Handle a validity error.
  *
@@ -286,6 +287,7 @@ xmlValidityError(xmlParserCtxtPtr ctxt, xmlParserErrors error,
     xmlCtxtErr(ctxt, NULL, XML_FROM_DTD, error, XML_ERR_ERROR,
                str1, str2, NULL, 0, msg, str1, str2);
 }
+#endif
 
 /**
  * Handle a fatal parser error, i.e. violating Well-Formedness constraints
@@ -7234,6 +7236,7 @@ xmlHandleUndeclaredEntity(xmlParserCtxtPtr ctxt, const xmlChar *name) {
          (ctxt->hasPErefs == 0))) {
         xmlFatalErrMsgStr(ctxt, XML_ERR_UNDECLARED_ENTITY,
                           "Entity '%s' not defined\n", name);
+#ifdef LIBXML_VALID_ENABLED
     } else if (ctxt->validate) {
         /*
          * [ VC: Entity Declared ]
@@ -7244,6 +7247,7 @@ xmlHandleUndeclaredEntity(xmlParserCtxtPtr ctxt, const xmlChar *name) {
          */
         xmlValidityError(ctxt, XML_ERR_UNDECLARED_ENTITY,
                          "Entity '%s' not defined\n", name, NULL);
+#endif
     } else if ((ctxt->loadsubset & ~XML_SKIP_IDS) ||
                ((ctxt->replaceEntities) &&
                 ((ctxt->options & XML_PARSE_NO_XXE) == 0))) {
@@ -9092,12 +9096,21 @@ next_attr:
                 atts[nbatts++] = XML_INT_TO_PTR(nsIndex);
                 atts[nbatts++] = attr->value.name;
                 atts[nbatts++] = attr->valueEnd;
-                if ((ctxt->standalone == 1) && (attr->external != 0)) {
+
+#ifdef LIBXML_VALID_ENABLED
+                /*
+                 * This should be moved to valid.c, but we don't keep track
+                 * whether an attribute was defaulted.
+                 */
+                if ((ctxt->validate) &&
+                    (ctxt->standalone == 1) &&
+                    (attr->external != 0)) {
                     xmlValidityError(ctxt, XML_DTD_STANDALONE_DEFAULTED,
                             "standalone: attribute %s on %s defaulted "
                             "from external subset\n",
                             attname, localname);
                 }
+#endif
                 nbdef++;
 	    }
 	}

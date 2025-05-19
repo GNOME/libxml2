@@ -1212,6 +1212,7 @@ pythonAttributeDecl(void *user_data,
     PyObject *result;
     int count;
 
+XML_IGNORE_DEPRECATION_WARNINGS
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "attributeDecl")) {
         count = 0;
@@ -1234,6 +1235,7 @@ pythonAttributeDecl(void *user_data,
         Py_XDECREF(nameList);
         Py_XDECREF(result);
     }
+XML_POP_WARNINGS
 }
 
 static void

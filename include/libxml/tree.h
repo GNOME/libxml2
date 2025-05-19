@@ -193,14 +193,17 @@ typedef struct _xmlNotation xmlNotation;
 typedef xmlNotation *xmlNotationPtr;
 /**
  * A DTD Notation definition.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlNotation {
     /** Notation name */
-    const xmlChar               *name;
+    const xmlChar               *name XML_DEPRECATED_MEMBER;
     /** Public identifier, if any */
-    const xmlChar               *PublicID;
+    const xmlChar               *PublicID XML_DEPRECATED_MEMBER;
     /** System identifier, if any */
-    const xmlChar               *SystemID;
+    const xmlChar               *SystemID XML_DEPRECATED_MEMBER;
 };
 
 /**
@@ -233,16 +236,24 @@ typedef struct _xmlEnumeration xmlEnumeration;
 typedef xmlEnumeration *xmlEnumerationPtr;
 /**
  * List structure used when there is an enumeration in DTDs.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlEnumeration {
-    struct _xmlEnumeration    *next;	/* next one */
-    const xmlChar            *name;	/* Enumeration name */
+    /** next enumeration */
+    struct _xmlEnumeration    *next XML_DEPRECATED_MEMBER;
+    /** value */
+    const xmlChar            *name XML_DEPRECATED_MEMBER;
 };
 
 typedef struct _xmlAttribute xmlAttribute;
 typedef xmlAttribute *xmlAttributePtr;
 /**
  * An Attribute declaration in a DTD.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlAttribute {
     /** application data */
@@ -265,19 +276,19 @@ struct _xmlAttribute {
     struct _xmlDoc          *doc;
 
     /** next in hash table */
-    struct _xmlAttribute  *nexth;
+    struct _xmlAttribute  *nexth XML_DEPRECATED_MEMBER;
     /** attribute type */
-    xmlAttributeType       atype;
+    xmlAttributeType       atype XML_DEPRECATED_MEMBER;
     /** attribute default */
-    xmlAttributeDefault      def;
+    xmlAttributeDefault      def XML_DEPRECATED_MEMBER;
     /** default value */
-    const xmlChar  *defaultValue;
+    const xmlChar  *defaultValue XML_DEPRECATED_MEMBER;
     /** enumeration tree if any */
-    xmlEnumeration         *tree;
+    xmlEnumeration         *tree XML_DEPRECATED_MEMBER;
     /** namespace prefix if any */
-    const xmlChar        *prefix;
+    const xmlChar        *prefix XML_DEPRECATED_MEMBER;
     /** element name */
-    const xmlChar          *elem;
+    const xmlChar          *elem XML_DEPRECATED_MEMBER;
 };
 
 /**
@@ -305,22 +316,25 @@ typedef xmlElementContent *xmlElementContentPtr;
 /**
  * An XML Element content as stored after parsing an element definition
  * in a DTD.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlElementContent {
     /** PCDATA, ELEMENT, SEQ or OR */
-    xmlElementContentType     type;
+    xmlElementContentType     type XML_DEPRECATED_MEMBER;
     /** ONCE, OPT, MULT or PLUS */
-    xmlElementContentOccur    ocur;
+    xmlElementContentOccur    ocur XML_DEPRECATED_MEMBER;
     /** element name */
-    const xmlChar             *name;
+    const xmlChar             *name XML_DEPRECATED_MEMBER;
     /** first child */
-    struct _xmlElementContent *c1;
+    struct _xmlElementContent *c1 XML_DEPRECATED_MEMBER;
     /** second child */
-    struct _xmlElementContent *c2;
+    struct _xmlElementContent *c2 XML_DEPRECATED_MEMBER;
     /** parent */
-    struct _xmlElementContent *parent;
+    struct _xmlElementContent *parent XML_DEPRECATED_MEMBER;
     /** namespace prefix */
-    const xmlChar             *prefix;
+    const xmlChar             *prefix XML_DEPRECATED_MEMBER;
 };
 
 /**
@@ -338,6 +352,9 @@ typedef struct _xmlElement xmlElement;
 typedef xmlElement *xmlElementPtr;
 /**
  * An XML Element declaration from a DTD.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlElement {
     /** application data */
@@ -360,18 +377,18 @@ struct _xmlElement {
     struct _xmlDoc          *doc;
 
     /** element type */
-    xmlElementTypeVal      etype;
+    xmlElementTypeVal      etype XML_DEPRECATED_MEMBER;
     /** allowed element content */
-    xmlElementContent *content;
+    xmlElementContent *content XML_DEPRECATED_MEMBER;
     /** list of declared attributes */
-    xmlAttribute     *attributes;
+    xmlAttribute     *attributes XML_DEPRECATED_MEMBER;
     /** namespace prefix if any */
-    const xmlChar        *prefix;
+    const xmlChar        *prefix XML_DEPRECATED_MEMBER;
 #ifdef LIBXML_REGEXP_ENABLED
     /** validating regexp */
-    xmlRegexp         *contModel;
+    xmlRegexp         *contModel XML_DEPRECATED_MEMBER;
 #else
-    void	      *contModel;
+    void	      *contModel XML_DEPRECATED_MEMBER;
 #endif
 };
 
@@ -407,7 +424,7 @@ struct _xmlNs {
     /** application data */
     void           *_private;
     /** normally an xmlDoc */
-    struct _xmlDoc *context;
+    struct _xmlDoc *context XML_DEPRECATED_MEMBER;
 };
 
 typedef struct _xmlDtd xmlDtd;
@@ -415,6 +432,9 @@ typedef xmlDtd *xmlDtdPtr;
 /**
  * An XML DTD, as defined by <!DOCTYPE ... There is actually one for
  * the internal subset and for the external subset.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlDtd {
     /** application data */
@@ -439,19 +459,19 @@ struct _xmlDtd {
     /* End of common part */
 
     /** hash table for notations if any */
-    void          *notations;
+    void          *notations XML_DEPRECATED_MEMBER;
     /** hash table for elements if any */
-    void          *elements;
+    void          *elements XML_DEPRECATED_MEMBER;
     /** hash table for attributes if any */
-    void          *attributes;
+    void          *attributes XML_DEPRECATED_MEMBER;
     /** hash table for entities if any */
-    void          *entities;
+    void          *entities XML_DEPRECATED_MEMBER;
     /** public identifier */
-    const xmlChar *ExternalID;
+    const xmlChar *ExternalID XML_DEPRECATED_MEMBER;
     /** system identifier */
-    const xmlChar *SystemID;
+    const xmlChar *SystemID XML_DEPRECATED_MEMBER;
     /** hash table for parameter entities if any */
-    void          *pentities;
+    void          *pentities XML_DEPRECATED_MEMBER;
 };
 
 typedef struct _xmlAttr xmlAttr;
@@ -485,27 +505,30 @@ struct _xmlAttr {
     /** for type/PSVI information */
     void            *psvi;
     /** ID struct if any */
-    struct _xmlID   *id;
+    struct _xmlID   *id XML_DEPRECATED_MEMBER;
 };
 
 typedef struct _xmlID xmlID;
 typedef xmlID *xmlIDPtr;
 /**
  * An XML ID instance.
+ *
+ * Should be treated as opaque. Accessing members directly
+ * is deprecated.
  */
 struct _xmlID {
     /* next ID */
-    struct _xmlID    *next;
+    struct _xmlID    *next XML_DEPRECATED_MEMBER;
     /* The ID name */
-    const xmlChar    *value;
+    const xmlChar    *value XML_DEPRECATED_MEMBER;
     /* The attribute holding it */
-    xmlAttr          *attr;
+    xmlAttr          *attr XML_DEPRECATED_MEMBER;
     /* The attribute if attr is not available */
-    const xmlChar    *name;
+    const xmlChar    *name XML_DEPRECATED_MEMBER;
     /* The line number if attr is not available */
-    int               lineno;
+    int               lineno XML_DEPRECATED_MEMBER;
     /* The document holding the ID */
-    struct _xmlDoc   *doc;
+    struct _xmlDoc   *doc XML_DEPRECATED_MEMBER;
 };
 
 /** @cond ignore */
@@ -515,11 +538,16 @@ typedef xmlRef *xmlRefPtr;
  * An XML IDREF instance.
  */
 struct _xmlRef {
-    struct _xmlRef    *next;	/* next Ref */
-    const xmlChar     *value;	/* The Ref name */
-    xmlAttr          *attr;	/* The attribute holding it */
-    const xmlChar    *name;	/* The attribute if attr is not available */
-    int               lineno;	/* The line number if attr is not available */
+    /* next Ref */
+    struct _xmlRef    *next XML_DEPRECATED_MEMBER;
+    /* The Ref name */
+    const xmlChar     *value XML_DEPRECATED_MEMBER;
+    /* The attribute holding it */
+    xmlAttr          *attr XML_DEPRECATED_MEMBER;
+    /* The attribute if attr is not available */
+    const xmlChar    *name XML_DEPRECATED_MEMBER;
+    /* The line number if attr is not available */
+    int               lineno XML_DEPRECATED_MEMBER;
 };
 /** @endcond */
 
@@ -628,7 +656,7 @@ struct _xmlDoc {
     /* End of common part */
 
     /** level of zlib compression */
-    int             compression;
+    int             compression XML_DEPRECATED_MEMBER;
     /**
      * standalone document (no external refs)
      *
@@ -644,19 +672,19 @@ struct _xmlDoc {
     /** external subset */
     struct _xmlDtd  *extSubset;
     /** used to hold the XML namespace if needed */
-    struct _xmlNs   *oldNs;
+    struct _xmlNs   *oldNs XML_DEPRECATED_MEMBER;
     /** version string from XML declaration */
     const xmlChar  *version;
     /** actual encoding if any */
     const xmlChar  *encoding;
     /** hash table for ID attributes if any */
-    void           *ids;
+    void           *ids XML_DEPRECATED_MEMBER;
     /** hash table for IDREFs attributes if any */
-    void           *refs;
+    void           *refs XML_DEPRECATED_MEMBER;
     /** URI of the document */
     const xmlChar  *URL;
     /** unused */
-    int             charset;
+    int             charset XML_DEPRECATED_MEMBER;
     /** dict used to allocate names if any */
     struct _xmlDict *dict;
     /** for type/PSVI information */

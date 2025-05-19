@@ -49,23 +49,23 @@ typedef enum {
     XML_FROM_NONE = 0,
     /** The XML parser */
     XML_FROM_PARSER,
-    /** The tree module */
+    /** The tree module (unused) */
     XML_FROM_TREE,
     /** The XML Namespace module */
     XML_FROM_NAMESPACE,
-    /** The XML DTD validation with parser context*/
+    /** The XML DTD validation with parser context */
     XML_FROM_DTD,
     /** The HTML parser */
     XML_FROM_HTML,
-    /** The memory allocator */
+    /** The memory allocator (unused) */
     XML_FROM_MEMORY,
     /** The serialization code */
     XML_FROM_OUTPUT,
     /** The Input/Output stack */
     XML_FROM_IO,
-    /** The FTP module */
+    /** The FTP module (unused) */
     XML_FROM_FTP,
-    /** The HTTP module */
+    /** The HTTP module (unused) */
     XML_FROM_HTTP,
     /** The XInclude processing */
     XML_FROM_XINCLUDE,
@@ -89,23 +89,23 @@ typedef enum {
     XML_FROM_CATALOG,
     /** The Canonicalization module */
     XML_FROM_C14N,
-    /** The XSLT engine from libxslt */
+    /** The XSLT engine from libxslt (unused) */
     XML_FROM_XSLT,
     /** The XML DTD validation with valid context */
     XML_FROM_VALID,
-    /** The error checking module */
+    /** The error checking module (unused) */
     XML_FROM_CHECK,
     /** The xmlwriter module */
     XML_FROM_WRITER,
-    /** The dynamically loaded module module*/
+    /** The dynamically loaded module module (unused) */
     XML_FROM_MODULE,
-    /** The module handling character conversion */
+    /** The module handling character conversion (unused) */
     XML_FROM_I18N,
     /** The Schematron validator module */
     XML_FROM_SCHEMATRONV,
-    /** The buffers module */
+    /** The buffers module (unused) */
     XML_FROM_BUFFER,
-    /** The URI module */
+    /** The URI module (unused) */
     XML_FROM_URI
 } xmlErrorDomain;
 

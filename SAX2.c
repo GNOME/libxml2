@@ -76,6 +76,22 @@ xmlFatalErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
 }
 
 /**
+ * Handle an xml:id error
+ *
+ * @param ctxt  an XML validation parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param str1  extra data
+ */
+static void LIBXML_ATTR_FORMAT(3,0)
+xmlErrId(xmlParserCtxtPtr ctxt, xmlParserErrors error, const char *msg,
+         const xmlChar *str1)
+{
+    xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, error, XML_ERR_ERROR,
+               str1, NULL, NULL, 0, msg, str1);
+}
+
+/**
  * Handle a parser warning
  *
  * @param ctxt  an XML parser context
@@ -608,13 +624,8 @@ xmlSAX2AttributeDecl(void *ctx, const xmlChar *elem, const xmlChar *fullname,
 
     if ((xmlStrEqual(fullname, BAD_CAST "xml:id")) &&
         (type != XML_ATTRIBUTE_ID)) {
-	/*
-	 * Raise the error but keep the validity flag
-	 */
-	int tmp = ctxt->valid;
-	xmlErrValid(ctxt, XML_DTD_XMLID_TYPE,
-	      "xml:id : attribute type should be ID\n", NULL, NULL);
-	ctxt->valid = tmp;
+	xmlErrId(ctxt, XML_DTD_XMLID_TYPE,
+	      "xml:id : attribute type should be ID\n", NULL);
     }
     name = xmlSplitQName4(fullname, &prefix);
     if (name == NULL)
@@ -1198,9 +1209,9 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
 	     * Open issue: normalization of the value.
 	     */
 	    if (xmlValidateNCName(content, 1) != 0) {
-	        xmlErrValid(ctxt, XML_DTD_XMLID_VALUE,
-		            "xml:id : attribute value %s is not an NCName\n",
-		            content, NULL);
+	        xmlErrId(ctxt, XML_DTD_XMLID_VALUE,
+		         "xml:id : attribute value %s is not an NCName\n",
+		         content);
 	    }
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, content, ret);
 	} else {
@@ -2059,9 +2070,9 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 	     * Open issue: normalization of the value.
 	     */
 	    if (xmlValidateNCName(content, 1) != 0) {
-	        xmlErrValid(ctxt, XML_DTD_XMLID_VALUE,
-                            "xml:id : attribute value %s is not an NCName\n",
-                            content, NULL);
+	        xmlErrId(ctxt, XML_DTD_XMLID_VALUE,
+                         "xml:id : attribute value %s is not an NCName\n",
+                         content);
 	    }
 	    xmlAddID(&ctxt->vctxt, ctxt->myDoc, content, ret);
 	} else {

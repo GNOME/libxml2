@@ -6284,42 +6284,11 @@ xmlValidateAttributeCallback(void *payload, void *data,
 	                     const xmlChar *name ATTRIBUTE_UNUSED) {
     xmlAttributePtr cur = (xmlAttributePtr) payload;
     xmlValidCtxtPtr ctxt = (xmlValidCtxtPtr) data;
-    int ret;
     xmlDocPtr doc;
     xmlElementPtr elem = NULL;
 
     if (cur == NULL)
 	return;
-    switch (cur->atype) {
-	case XML_ATTRIBUTE_CDATA:
-	case XML_ATTRIBUTE_ID:
-	case XML_ATTRIBUTE_IDREF	:
-	case XML_ATTRIBUTE_IDREFS:
-	case XML_ATTRIBUTE_NMTOKEN:
-	case XML_ATTRIBUTE_NMTOKENS:
-	case XML_ATTRIBUTE_ENUMERATION:
-	    break;
-	case XML_ATTRIBUTE_ENTITY:
-	case XML_ATTRIBUTE_ENTITIES:
-	case XML_ATTRIBUTE_NOTATION:
-	    if (cur->defaultValue != NULL) {
-
-		ret = xmlValidateAttributeValue2(ctxt, ctxt->doc, cur->name,
-			                         cur->atype, cur->defaultValue);
-		if ((ret == 0) && (ctxt->valid == 1))
-		    ctxt->valid = 0;
-	    }
-	    if (cur->tree != NULL) {
-		xmlEnumerationPtr tree = cur->tree;
-		while (tree != NULL) {
-		    ret = xmlValidateAttributeValue2(ctxt, ctxt->doc,
-				    cur->name, cur->atype, tree->name);
-		    if ((ret == 0) && (ctxt->valid == 1))
-			ctxt->valid = 0;
-		    tree = tree->next;
-		}
-	    }
-    }
     if (cur->atype == XML_ATTRIBUTE_NOTATION) {
         const xmlChar *elemLocalName;
         xmlChar *elemPrefix;

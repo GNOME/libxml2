@@ -5691,47 +5691,6 @@ child_ok:
 		   "Element %s required attribute %s:%s has different prefix\n",
 		       elem->name, attr->prefix, attr->name);
 	    }
-	} else if (attr->def == XML_ATTRIBUTE_FIXED) {
-	    /*
-	     * Special tests checking #FIXED namespace declarations
-	     * have the right value since this is not done as an
-	     * attribute checking
-	     */
-	    if ((attr->prefix == NULL) &&
-		(xmlStrEqual(attr->name, BAD_CAST "xmlns"))) {
-		xmlNsPtr ns;
-
-		ns = elem->nsDef;
-		while (ns != NULL) {
-		    if (ns->prefix == NULL) {
-			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
-			    xmlErrValidNode(ctxt, elem,
-			           XML_DTD_ELEM_DEFAULT_NAMESPACE,
-   "Element %s namespace name for default namespace does not match the DTD\n",
-				   elem->name, NULL, NULL);
-			    ret = 0;
-			}
-			goto found;
-		    }
-		    ns = ns->next;
-		}
-	    } else if (xmlStrEqual(attr->prefix, BAD_CAST "xmlns")) {
-		xmlNsPtr ns;
-
-		ns = elem->nsDef;
-		while (ns != NULL) {
-		    if (xmlStrEqual(attr->name, ns->prefix)) {
-			if (!xmlStrEqual(attr->defaultValue, ns->href)) {
-			    xmlErrValidNode(ctxt, elem, XML_DTD_ELEM_NAMESPACE,
-		   "Element %s namespace name for %s does not match the DTD\n",
-				   elem->name, ns->prefix, NULL);
-			    ret = 0;
-			}
-			goto found;
-		    }
-		    ns = ns->next;
-		}
-	    }
 	}
 found:
         attr = attr->nexth;

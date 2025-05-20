@@ -204,6 +204,9 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent);
 static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity);
 
+static void
+xmlParsePERefInternal(xmlParserCtxt *ctxt, int markupDecl);
+
 /************************************************************************
  *									*
  *		Some factorized error routines				*
@@ -2440,12 +2443,20 @@ xmlSkipBlankCharsPE(xmlParserCtxtPtr ctxt) {
              * even consume the whole entity and pop it. We might
              * even pop multiple PEs in this loop.
              */
-            xmlParsePEReference(ctxt);
+            xmlParsePERefInternal(ctxt, 0);
 
             inParam = PARSER_IN_PE(ctxt);
             expandParam = PARSER_EXTERNAL(ctxt);
         } else if (CUR == 0) {
             if (inParam == 0)
+                break;
+
+            /*
+             * Don't pop parameter entities that start a markup
+             * declaration to detect Well-formedness constraint:
+             * PE Between Declarations.
+             */
+            if (ctxt->input->flags & XML_INPUT_MARKUP_DECL)
                 break;
 
             xmlPopPE(ctxt);
@@ -2747,7 +2758,7 @@ xmlParseStringCharRef(xmlParserCtxtPtr ctxt, const xmlChar **str) {
  */
 void
 xmlParserHandlePEReference(xmlParserCtxt *ctxt) {
-    xmlParsePEReference(ctxt);
+    xmlParsePERefInternal(ctxt, 0);
 }
 
 /**
@@ -6648,20 +6659,31 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
     int *inputIds = NULL;
     size_t inputIdsSize = 0;
     size_t depth = 0;
+    int isFreshPE = 0;
+    int oldInputNr = ctxt->inputNr;
+    int declInputNr = ctxt->inputNr;
 
-    while (PARSER_STOPPED(ctxt) == 0) {
-        if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
+    while (!PARSER_STOPPED(ctxt)) {
+        if (ctxt->input->cur >= ctxt->input->end) {
+            if (ctxt->inputNr <= oldInputNr) {
+                xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
+                goto error;
+            }
+
+            xmlPopPE(ctxt);
+            declInputNr = ctxt->inputNr;
+        } else if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
             int id = ctxt->input->id;
-
             SKIP(3);
             SKIP_BLANKS_PE;
+
+            isFreshPE = 0;
 
             if (CMP7(CUR_PTR, 'I', 'N', 'C', 'L', 'U', 'D', 'E')) {
                 SKIP(7);
                 SKIP_BLANKS_PE;
                 if (RAW != '[') {
                     xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
-                    xmlHaltParser(ctxt);
                     goto error;
                 }
                 if (ctxt->input->id != id) {
@@ -6700,7 +6722,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 SKIP_BLANKS_PE;
                 if (RAW != '[') {
                     xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
-                    xmlHaltParser(ctxt);
                     goto error;
                 }
                 if (ctxt->input->id != id) {
@@ -6741,11 +6762,17 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 }
             } else {
                 xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID_KEYWORD, NULL);
-                xmlHaltParser(ctxt);
                 goto error;
             }
         } else if ((depth > 0) &&
                    (RAW == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
+            if (isFreshPE) {
+                xmlFatalErrMsg(ctxt, XML_ERR_CONDSEC_INVALID,
+                               "Parameter entity must match "
+                               "extSubsetDecl\n");
+                goto error;
+            }
+
             depth--;
             if (ctxt->input->id != inputIds[depth]) {
                 xmlFatalErrMsg(ctxt, XML_ERR_ENTITY_BOUNDARY,
@@ -6754,17 +6781,23 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
             }
             SKIP(3);
         } else if ((RAW == '<') && ((NXT(1) == '!') || (NXT(1) == '?'))) {
+            isFreshPE = 0;
             xmlParseMarkupDecl(ctxt);
+        } else if (RAW == '%') {
+            xmlParsePERefInternal(ctxt, 1);
+            if (ctxt->inputNr > declInputNr) {
+                isFreshPE = 1;
+                declInputNr = ctxt->inputNr;
+            }
         } else {
             xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-            xmlHaltParser(ctxt);
             goto error;
         }
 
         if (depth == 0)
             break;
 
-        SKIP_BLANKS_PE;
+        SKIP_BLANKS;
         SHRINK;
         GROW;
     }
@@ -6937,7 +6970,7 @@ xmlParseExternalSubset(xmlParserCtxt *ctxt, const xmlChar *publicId,
 	}
 	ctxt->myDoc->properties = XML_DOC_INTERNAL;
     }
-    if ((ctxt->myDoc != NULL) && (ctxt->myDoc->intSubset == NULL) &&
+    if ((ctxt->myDoc->intSubset == NULL) &&
         (xmlCreateIntSubset(ctxt->myDoc, NULL, publicId, systemId) == NULL)) {
         xmlErrMemory(ctxt);
     }
@@ -6945,27 +6978,32 @@ xmlParseExternalSubset(xmlParserCtxt *ctxt, const xmlChar *publicId,
     ctxt->inSubset = 2;
     oldInputNr = ctxt->inputNr;
 
-    SKIP_BLANKS_PE;
-    while (((RAW != 0) || (ctxt->inputNr > oldInputNr)) &&
-           (!PARSER_STOPPED(ctxt))) {
-	GROW;
-        if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
+    SKIP_BLANKS;
+    while (!PARSER_STOPPED(ctxt)) {
+        if (ctxt->input->cur >= ctxt->input->end) {
+            if (ctxt->inputNr <= oldInputNr) {
+                xmlParserCheckEOF(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED);
+                break;
+            }
+
+            xmlPopPE(ctxt);
+        } else if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
             xmlParseConditionalSections(ctxt);
         } else if ((RAW == '<') && ((NXT(1) == '!') || (NXT(1) == '?'))) {
             xmlParseMarkupDecl(ctxt);
+        } else if (RAW == '%') {
+            xmlParsePERefInternal(ctxt, 1);
         } else {
             xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-            xmlHaltParser(ctxt);
-            return;
+
+            while (ctxt->inputNr > oldInputNr)
+                xmlPopPE(ctxt);
+            break;
         }
-        SKIP_BLANKS_PE;
+        SKIP_BLANKS;
         SHRINK;
+        GROW;
     }
-
-    while (ctxt->inputNr > oldInputNr)
-        xmlPopPE(ctxt);
-
-    xmlParserCheckEOF(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED);
 }
 
 /**
@@ -7455,8 +7493,6 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
 /**
  * Parse a parameter entity reference. Always consumes '%'.
  *
- * @deprecated Internal function, don't use.
- *
  * The entity content is handled directly by pushing it's content as
  * a new input stream.
  *
@@ -7482,10 +7518,10 @@ xmlParseStringEntityRef(xmlParserCtxtPtr ctxt, const xmlChar ** str) {
  * NOTE: misleading but this is handled.
  *
  * @param ctxt  an XML parser context
+ * @param markupDecl  whether the PERef starts a markup declaration
  */
-void
-xmlParsePEReference(xmlParserCtxt *ctxt)
-{
+static void
+xmlParsePERefInternal(xmlParserCtxt *ctxt, int markupDecl) {
     const xmlChar *name;
     xmlEntityPtr entity = NULL;
     xmlParserInputPtr input;
@@ -7548,6 +7584,9 @@ xmlParsePEReference(xmlParserCtxt *ctxt)
 
             entity->flags |= XML_ENT_EXPANDING;
 
+            if (markupDecl)
+                input->flags |= XML_INPUT_MARKUP_DECL;
+
             GROW;
 
 	    if (entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) {
@@ -7560,6 +7599,18 @@ xmlParsePEReference(xmlParserCtxt *ctxt)
             }
 	}
     }
+}
+
+/**
+ * Parse a parameter entity reference.
+ *
+ * @deprecated Internal function, don't use.
+ *
+ * @param ctxt  an XML parser context
+ */
+void
+xmlParsePEReference(xmlParserCtxt *ctxt) {
+    xmlParsePERefInternal(ctxt, 0);
 }
 
 /**
@@ -7880,44 +7931,49 @@ xmlParseInternalSubset(xmlParserCtxtPtr ctxt) {
 	 * Subsequence (markupdecl | PEReference | S)*
 	 */
 	SKIP_BLANKS;
-	while (((RAW != ']') || (ctxt->inputNr > oldInputNr)) &&
-               (PARSER_STOPPED(ctxt) == 0)) {
-
-            /*
-             * Conditional sections are allowed from external entities included
-             * by PE References in the internal subset.
-             */
-            if ((PARSER_EXTERNAL(ctxt)) &&
-                (RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
+        while (1) {
+            if (PARSER_STOPPED(ctxt)) {
+                return;
+            } else if (ctxt->input->cur >= ctxt->input->end) {
+                if (ctxt->inputNr <= oldInputNr) {
+                xmlFatalErr(ctxt, XML_ERR_INT_SUBSET_NOT_FINISHED, NULL);
+                    return;
+                }
+                xmlPopPE(ctxt);
+            } else if ((RAW == ']') && (ctxt->inputNr <= oldInputNr)) {
+                NEXT;
+                SKIP_BLANKS;
+                break;
+            } else if ((PARSER_EXTERNAL(ctxt)) &&
+                       (RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
+                /*
+                 * Conditional sections are allowed in external entities
+                 * included by PE References in the internal subset.
+                 */
                 xmlParseConditionalSections(ctxt);
             } else if ((RAW == '<') && ((NXT(1) == '!') || (NXT(1) == '?'))) {
-	        xmlParseMarkupDecl(ctxt);
+                xmlParseMarkupDecl(ctxt);
             } else if (RAW == '%') {
-	        xmlParsePEReference(ctxt);
+                xmlParsePERefInternal(ctxt, 1);
             } else {
-		xmlFatalErr(ctxt, XML_ERR_INT_SUBSET_NOT_FINISHED, NULL);
-                break;
+                xmlFatalErr(ctxt, XML_ERR_INT_SUBSET_NOT_FINISHED, NULL);
+
+                while (ctxt->inputNr > oldInputNr)
+                    xmlPopPE(ctxt);
+                return;
             }
-	    SKIP_BLANKS_PE;
+            SKIP_BLANKS;
             SHRINK;
             GROW;
-	}
-
-        while (ctxt->inputNr > oldInputNr)
-            xmlPopPE(ctxt);
-
-	if (RAW == ']') {
-	    NEXT;
-	    SKIP_BLANKS;
-	}
+        }
     }
 
     /*
      * We should be at the end of the DOCTYPE declaration.
      */
-    if ((ctxt->wellFormed) && (RAW != '>')) {
-	xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, NULL);
-	return;
+    if (RAW != '>') {
+        xmlFatalErr(ctxt, XML_ERR_DOCTYPE_NOT_FINISHED, NULL);
+        return;
     }
     NEXT;
 }

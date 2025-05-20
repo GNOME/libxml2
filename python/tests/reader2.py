@@ -47,14 +47,17 @@ value
 ^
 """.format(dir_prefix),
     'cond_sect2':
-"""{0}/dtds/cond_sect2.dtd:15: parser error : All markup of the conditional section is not in the same entity
+"""{0}/dtds/cond_sect2.dtd:15: parser error : Parameter entity must match extSubsetDecl
     %ent;
          ^
 Entity: line 1: 
 ]]>
 ^
-{0}/dtds/cond_sect2.dtd:17: parser error : Content error in the external subset
-
+{0}/dtds/cond_sect2.dtd:15: parser error : Content error in the external subset
+    %ent;
+         ^
+Entity: line 1: 
+]]>
 ^
 """.format(dir_prefix),
     'rss':

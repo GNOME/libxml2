@@ -19,13 +19,13 @@ Entity: line 1:
 ./test/errors/759573-2.xml:6: parser error : Content error in the internal subset
 %xx;
     ^
-Entity: line 2: 
+Entity: line 1: 
 <![INCLUDE[
 ^
 ./test/errors/759573-2.xml:6: parser error : Content error in the internal subset
 %xx;
     ^
-Entity: line 2: 
+Entity: line 1: 
 <![INCLUDE[
   ^
 ./test/errors/759573-2.xml : failed to parse

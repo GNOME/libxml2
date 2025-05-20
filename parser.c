@@ -92,6 +92,12 @@
 
 #define XML_MAX_ATTRS 100000000 /* 100 million */
 
+#define XML_SPECIAL_EXTERNAL    (1 << 20)
+#define XML_SPECIAL_TYPE_MASK   (XML_SPECIAL_EXTERNAL - 1)
+
+#define XML_ATTVAL_ALLOC        (1 << 0)
+#define XML_ATTVAL_NORM_CHANGE  (1 << 1)
+
 struct _xmlStartTag {
     const xmlChar *prefix;
     const xmlChar *URI;
@@ -1173,6 +1179,9 @@ xmlAddSpecialAttr(xmlParserCtxtPtr ctxt,
 	if (ctxt->attsSpecial == NULL)
 	    goto mem_error;
     }
+
+    if (PARSER_EXTERNAL(ctxt))
+        type |= XML_SPECIAL_EXTERNAL;
 
     if (xmlHashAdd2(ctxt->attsSpecial, fullname, fullattr,
                     XML_INT_TO_PTR(type)) < 0)
@@ -3814,34 +3823,36 @@ done:
  * @param inSpace  whitespace state
  * @param depth  nesting depth
  * @param check  whether to check for amplification
+ * @returns  whether there was a normalization change
  */
-static void
+static int
 xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                           const xmlChar *str, xmlEntityPtr pent, int normalize,
                           int *inSpace, int depth, int check) {
     int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 40 : 20;
     int c, chunkSize;
+    int normChange = 0;
 
     if (str == NULL)
-        return;
+        return(0);
 
     depth += 1;
     if (depth > maxDepth) {
 	xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity nesting depth exceeded");
-	return;
+	return(0);
     }
 
     if (pent != NULL) {
         if (pent->flags & XML_ENT_EXPANDING) {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
             xmlHaltParser(ctxt);
-            return;
+            return(0);
         }
 
         if (check) {
             if (xmlParserEntityCheck(ctxt, pent->length))
-                return;
+                return(0);
         }
     }
 
@@ -3877,6 +3888,7 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
                         xmlSBufAddString(buf, str - chunkSize, chunkSize);
                         chunkSize = 0;
                     }
+                    normChange = 1;
                 } else if (c < 0x20) {
                     if (chunkSize > 0) {
                         xmlSBufAddString(buf, str - chunkSize, chunkSize);
@@ -3911,7 +3923,9 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
             }
 
             if (val == ' ') {
-                if ((!normalize) || (!*inSpace))
+                if ((normalize) && (*inSpace))
+                    normChange = 1;
+                else
                     xmlSBufAddCString(buf, " ", 1);
                 *inSpace = 1;
             } else {
@@ -3951,8 +3965,8 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
 	    } else if ((ent != NULL) && (ent->content != NULL)) {
                 if (pent != NULL)
                     pent->flags |= XML_ENT_EXPANDING;
-		xmlExpandEntityInAttValue(ctxt, buf, ent->content, ent,
-                                          normalize, inSpace, depth, check);
+		normChange |= xmlExpandEntityInAttValue(ctxt, buf,
+                        ent->content, ent, normalize, inSpace, depth, check);
                 if (pent != NULL)
                     pent->flags &= ~XML_ENT_EXPANDING;
 	    }
@@ -3961,6 +3975,8 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
 
     if (chunkSize > 0)
         xmlSBufAddString(buf, str - chunkSize, chunkSize);
+
+    return(normChange);
 }
 
 /**
@@ -4022,23 +4038,25 @@ xmlExpandEntitiesInAttValue(xmlParserCtxt *ctxt, const xmlChar *str,
  *
  * @param ctxt  an XML parser context
  * @param attlen  attribute len result
- * @param alloc  whether the attribute was reallocated as a new string
- * @param normalize  if 1 then further non-CDATA normalization must be done
+ * @param outFlags  resulting XML_ATTVAL_* flags
+ * @param special  value from attsSpecial
  * @param isNamespace  whether this is a namespace declaration
  * @returns the AttValue parsed or NULL. The value has to be freed by the
  *     caller if it was copied, this can be detected by val[*len] == 0.
  */
 static xmlChar *
-xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
-                         int normalize, int isNamespace) {
+xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *outFlags,
+                         int special, int isNamespace) {
     unsigned maxLength = (ctxt->options & XML_PARSE_HUGE) ?
                          XML_MAX_HUGE_LENGTH :
                          XML_MAX_TEXT_LENGTH;
     xmlSBuf buf;
     xmlChar *ret;
-    int c, l, quote, flags, chunkSize;
+    int c, l, quote, entFlags, chunkSize;
     int inSpace = 1;
     int replaceEntities;
+    int normalize = (special & XML_SPECIAL_TYPE_MASK) != 0;
+    int attvalFlags = 0;
 
     /* Always expand namespace URIs */
     replaceEntities = (ctxt->replaceEntities) || (isNamespace);
@@ -4055,9 +4073,9 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
     NEXTL(1);
 
     if (ctxt->inSubset == 0)
-        flags = XML_ENT_CHECKED | XML_ENT_VALIDATED;
+        entFlags = XML_ENT_CHECKED | XML_ENT_VALIDATED;
     else
-        flags = XML_ENT_VALIDATED;
+        entFlags = XML_ENT_VALIDATED;
 
     inSpace = 1;
     chunkSize = 0;
@@ -4123,6 +4141,7 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
                         xmlSBufAddString(&buf, CUR_PTR - chunkSize, chunkSize);
                         chunkSize = 0;
                     }
+                    attvalFlags |= XML_ATTVAL_NORM_CHANGE;
                 } else if (c < 0x20) {
                     /* Convert to space */
                     if (chunkSize > 0) {
@@ -4162,7 +4181,9 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
                 xmlSBufAddCString(&buf, "&#38;", 5);
                 inSpace = 0;
             } else if (val == ' ') {
-                if ((!normalize) || (!inSpace))
+                if ((normalize) && (inSpace))
+                    attvalFlags |= XML_ATTVAL_NORM_CHANGE;
+                else
                     xmlSBufAddCString(&buf, " ", 1);
                 inSpace = 1;
             } else {
@@ -4198,11 +4219,12 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
                     xmlSBufAddString(&buf, ent->content, ent->length);
                 inSpace = 0;
             } else if (replaceEntities) {
-                xmlExpandEntityInAttValue(ctxt, &buf, ent->content, ent,
-                                          normalize, &inSpace, ctxt->inputNr,
-                                          /* check */ 1);
+                if (xmlExpandEntityInAttValue(ctxt, &buf,
+                        ent->content, ent, normalize, &inSpace, ctxt->inputNr,
+                        /* check */ 1) > 0)
+                    attvalFlags |= XML_ATTVAL_NORM_CHANGE;
             } else {
-                if ((ent->flags & flags) != flags)
+                if ((ent->flags & entFlags) != entFlags)
                     xmlCheckEntityInAttValue(ctxt, ent, ctxt->inputNr);
 
                 if (xmlParserEntityCheck(ctxt, ent->expandedSize)) {
@@ -4222,14 +4244,15 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
 	}
     }
 
-    if ((buf.mem == NULL) && (alloc != NULL)) {
+    if ((buf.mem == NULL) && (outFlags != NULL)) {
         ret = (xmlChar *) CUR_PTR - chunkSize;
 
         if (attlen != NULL)
             *attlen = chunkSize;
-        if ((normalize) && (inSpace) && (chunkSize > 0))
+        if ((normalize) && (inSpace) && (chunkSize > 0)) {
+            attvalFlags |= XML_ATTVAL_NORM_CHANGE;
             *attlen -= 1;
-        *alloc = 0;
+        }
 
         /* Report potential error */
         xmlSBufCleanup(&buf, ctxt, "AttValue length too long");
@@ -4237,18 +4260,22 @@ xmlParseAttValueInternal(xmlParserCtxtPtr ctxt, int *attlen, int *alloc,
         if (chunkSize > 0)
             xmlSBufAddString(&buf, CUR_PTR - chunkSize, chunkSize);
 
-        if ((normalize) && (inSpace) && (buf.size > 0))
+        if ((normalize) && (inSpace) && (buf.size > 0)) {
+            attvalFlags |= XML_ATTVAL_NORM_CHANGE;
             buf.size--;
+        }
 
         ret = xmlSBufFinish(&buf, attlen, ctxt, "AttValue length too long");
+        attvalFlags |= XML_ATTVAL_ALLOC;
 
         if (ret != NULL) {
             if (attlen != NULL)
                 *attlen = buf.size;
-            if (alloc != NULL)
-                *alloc = 1;
         }
     }
+
+    if (outFlags != NULL)
+        *outFlags = attvalFlags;
 
     NEXTL(1);
 
@@ -8505,8 +8532,9 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
     xmlHashedString hname;
     const xmlChar *prefix, *name;
     xmlChar *val = NULL, *internal_val = NULL;
-    int normalize = 0;
+    int special = 0;
     int isNamespace;
+    int flags;
 
     *value = NULL;
     GROW;
@@ -8523,33 +8551,45 @@ xmlParseAttribute2(xmlParserCtxtPtr ctxt,
      * get the type if needed
      */
     if (ctxt->attsSpecial != NULL) {
-        int type;
-
-        type = XML_PTR_TO_INT(xmlHashQLookup2(ctxt->attsSpecial, pref, elem,
+        special = XML_PTR_TO_INT(xmlHashQLookup2(ctxt->attsSpecial, pref, elem,
                                               prefix, name));
-        if (type != 0)
-            normalize = 1;
     }
 
     /*
      * read the value
      */
     SKIP_BLANKS;
-    if (RAW == '=') {
-        NEXT;
-        SKIP_BLANKS;
-        isNamespace = (((prefix == NULL) && (name == ctxt->str_xmlns)) ||
-                       (prefix == ctxt->str_xmlns));
-        val = xmlParseAttValueInternal(ctxt, len, alloc, normalize,
-                                       isNamespace);
-        if (val == NULL)
-            goto error;
-    } else {
+    if (RAW != '=') {
         xmlFatalErrMsgStr(ctxt, XML_ERR_ATTRIBUTE_WITHOUT_VALUE,
                           "Specification mandates value for attribute %s\n",
                           name);
         goto error;
     }
+
+
+    NEXT;
+    SKIP_BLANKS;
+    flags = 0;
+    isNamespace = (((prefix == NULL) && (name == ctxt->str_xmlns)) ||
+                   (prefix == ctxt->str_xmlns));
+    val = xmlParseAttValueInternal(ctxt, len, &flags, special,
+                                   isNamespace);
+    if (val == NULL)
+        goto error;
+
+    *alloc = (flags & XML_ATTVAL_ALLOC) != 0;
+
+#ifdef LIBXML_VALID_ENABLED
+    if ((ctxt->validate) &&
+        (ctxt->standalone) &&
+        (special & XML_SPECIAL_EXTERNAL) &&
+        (flags & XML_ATTVAL_NORM_CHANGE)) {
+        xmlValidityError(ctxt, XML_DTD_NOT_STANDALONE,
+                         "standalone: normalization of attribute %s on %s "
+                         "by external subset declaration\n",
+                         name, elem);
+    }
+#endif
 
     if (prefix == ctxt->str_xml) {
         /*

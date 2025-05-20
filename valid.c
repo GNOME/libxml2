@@ -5641,8 +5641,6 @@ child_ok:
 			if (attr->prefix != NULL) {
 			    xmlNsPtr nameSpace = attrib->ns;
 
-			    if (nameSpace == NULL)
-				nameSpace = elem->ns;
 			    /*
 			     * qualified names handling is problematic, having a
 			     * different prefix should be possible but DTDs don't

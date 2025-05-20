@@ -178,6 +178,8 @@ xmlconfTestInvalid(const char *id, const char *filename, int options) {
     if (doc == NULL) {
         test_log("test %s : %s invalid document turned not well-formed too\n",
 	         id, filename);
+        nb_errors++;
+        ret = 0;
     } else {
     /* invalidity should be reported both in the context and in the document */
         if ((ctxt->valid != 0) || (doc->properties & XML_DOC_DTDVALID)) {

@@ -6582,6 +6582,8 @@ xmlParseElementDecl(xmlParserCtxt *ctxt) {
 	    ret = XML_ELEMENT_TYPE_ANY;
 	} else if (RAW == '(') {
 	    ret = xmlParseElementContentDecl(ctxt, name, &content);
+            if (ret <= 0)
+                return(-1);
 	} else {
 	    /*
 	     * [ WFC: PEs in Internal Subset ] error handling.

@@ -103,22 +103,6 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
 }
 
 /**
- * Handle a validation error
- *
- * @param ctxt  an XML validation parser context
- * @param error  the error number
- * @param msg  the error message
- * @param extra  extra information
- */
-static void LIBXML_ATTR_FORMAT(3,0)
-xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
-            const char *msg, const char *extra)
-{
-    xmlDoErrValid(ctxt, NULL, error, XML_ERR_ERROR, (const xmlChar *) extra,
-                  NULL, NULL, 0, msg, extra);
-}
-
-/**
  * Handle a validation error, provide contextual information
  *
  * @param ctxt  an XML validation parser context
@@ -140,6 +124,22 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
 }
 
 #ifdef LIBXML_VALID_ENABLED
+/**
+ * Handle a validation error
+ *
+ * @param ctxt  an XML validation parser context
+ * @param error  the error number
+ * @param msg  the error message
+ * @param extra  extra information
+ */
+static void LIBXML_ATTR_FORMAT(3,0)
+xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
+            const char *msg, const char *extra)
+{
+    xmlDoErrValid(ctxt, NULL, error, XML_ERR_ERROR, (const xmlChar *) extra,
+                  NULL, NULL, 0, msg, extra);
+}
+
 /**
  * Handle a validation error, provide contextual information
  *
@@ -701,29 +701,6 @@ xmlNewDocElementContent(xmlDoc *doc, const xmlChar *name,
     if (doc != NULL)
         dict = doc->dict;
 
-    switch(type) {
-	case XML_ELEMENT_CONTENT_ELEMENT:
-	    if (name == NULL) {
-	        xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
-			"xmlNewElementContent : name == NULL !\n",
-			NULL);
-	    }
-	    break;
-        case XML_ELEMENT_CONTENT_PCDATA:
-	case XML_ELEMENT_CONTENT_SEQ:
-	case XML_ELEMENT_CONTENT_OR:
-	    if (name != NULL) {
-	        xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
-			"xmlNewElementContent : name != NULL !\n",
-			NULL);
-	    }
-	    break;
-	default:
-	    xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
-		    "Internal: ELEMENT content corrupted invalid type\n",
-		    NULL);
-	    return(NULL);
-    }
     ret = (xmlElementContentPtr) xmlMalloc(sizeof(xmlElementContent));
     if (ret == NULL)
 	return(NULL);
@@ -911,18 +888,6 @@ xmlFreeDocElementContent(xmlDoc *doc, xmlElementContent *cur) {
             depth += 1;
         }
 
-	switch (cur->type) {
-	    case XML_ELEMENT_CONTENT_PCDATA:
-	    case XML_ELEMENT_CONTENT_ELEMENT:
-	    case XML_ELEMENT_CONTENT_SEQ:
-	    case XML_ELEMENT_CONTENT_OR:
-		break;
-	    default:
-		xmlErrValid(NULL, XML_ERR_INTERNAL_ERROR,
-			"Internal: ELEMENT content corrupted invalid type\n",
-			NULL);
-		return;
-	}
 	if (dict) {
 	    if ((cur->name != NULL) && (!xmlDictOwns(dict, cur->name)))
 	        xmlFree((xmlChar *) cur->name);
@@ -1142,49 +1107,6 @@ xmlAddElementDecl(xmlValidCtxt *ctxt,
     if (name == NULL) {
 	return(NULL);
     }
-
-#ifdef LIBXML_VALID_ENABLED
-    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE)) {
-        switch (type) {
-            case XML_ELEMENT_TYPE_EMPTY:
-                if (content != NULL) {
-                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-                            "xmlAddElementDecl: content != NULL for EMPTY\n",
-                            NULL);
-                    return(NULL);
-                }
-                break;
-            case XML_ELEMENT_TYPE_ANY:
-                if (content != NULL) {
-                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-                            "xmlAddElementDecl: content != NULL for ANY\n",
-                            NULL);
-                    return(NULL);
-                }
-                break;
-            case XML_ELEMENT_TYPE_MIXED:
-                if (content == NULL) {
-                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-                            "xmlAddElementDecl: content == NULL for MIXED\n",
-                            NULL);
-                    return(NULL);
-                }
-                break;
-            case XML_ELEMENT_TYPE_ELEMENT:
-                if (content == NULL) {
-                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-                            "xmlAddElementDecl: content == NULL for ELEMENT\n",
-                            NULL);
-                    return(NULL);
-                }
-                break;
-            default:
-                xmlErrValid(ctxt, XML_ERR_ARGUMENT,
-                        "xmlAddElementDecl: invalid type\n", NULL);
-                return(NULL);
-        }
-    }
-#endif /* LIBXML_VALID_ENABLED */
 
     /*
      * check if name is a QName
@@ -1655,36 +1577,6 @@ xmlAddAttributeDecl(xmlValidCtxt *ctxt,
 	dict = dtd->doc->dict;
 
 #ifdef LIBXML_VALID_ENABLED
-    /*
-     * Check the type and possibly the default value.
-     */
-    switch (type) {
-        case XML_ATTRIBUTE_CDATA:
-	    break;
-        case XML_ATTRIBUTE_ID:
-	    break;
-        case XML_ATTRIBUTE_IDREF:
-	    break;
-        case XML_ATTRIBUTE_IDREFS:
-	    break;
-        case XML_ATTRIBUTE_ENTITY:
-	    break;
-        case XML_ATTRIBUTE_ENTITIES:
-	    break;
-        case XML_ATTRIBUTE_NMTOKEN:
-	    break;
-        case XML_ATTRIBUTE_NMTOKENS:
-	    break;
-        case XML_ATTRIBUTE_ENUMERATION:
-	    break;
-        case XML_ATTRIBUTE_NOTATION:
-	    break;
-	default:
-	    xmlErrValid(ctxt, XML_ERR_ARGUMENT,
-		    "xmlAddAttributeDecl: invalid type\n", NULL);
-	    xmlFreeEnumeration(tree);
-	    return(NULL);
-    }
     if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE) &&
         (defaultValue != NULL) &&
         (!xmlValidateAttributeValueInternal(dtd->doc, type, defaultValue))) {
@@ -5213,7 +5105,7 @@ xmlValidateCheckMixed(xmlValidCtxtPtr ctxt,
 	    } else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
 		(cont->c1 == NULL) ||
 		(cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
-		xmlErrValid(NULL, XML_DTD_MIXED_CORRUPT,
+		xmlErrValid(ctxt, XML_DTD_MIXED_CORRUPT,
 			"Internal: MIXED struct corrupted\n",
 			NULL);
 		break;
@@ -5660,7 +5552,7 @@ xmlValidateOneElement(xmlValidCtxt *ctxt, xmlDoc *doc,
 			    } else if ((cont->type != XML_ELEMENT_CONTENT_OR) ||
 				(cont->c1 == NULL) ||
 				(cont->c1->type != XML_ELEMENT_CONTENT_PCDATA)){
-				xmlErrValid(NULL, XML_DTD_MIXED_CORRUPT,
+				xmlErrValid(ctxt, XML_DTD_MIXED_CORRUPT,
 					"Internal: MIXED struct corrupted\n",
 					NULL);
 				break;

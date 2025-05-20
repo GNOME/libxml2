@@ -970,28 +970,6 @@ xmlCtxtInitializeLate(xmlParserCtxtPtr ctxt) {
 #endif /* LIBXML_VALID_ENABLED */
 }
 
-typedef struct {
-    xmlHashedString prefix;
-    xmlHashedString name;
-    xmlHashedString value;
-    const xmlChar *valueEnd;
-    int external;
-    int expandedSize;
-} xmlDefAttr;
-
-typedef struct _xmlDefAttrs xmlDefAttrs;
-typedef xmlDefAttrs *xmlDefAttrsPtr;
-struct _xmlDefAttrs {
-    int nbAttrs;	/* number of defaulted attributes on that element */
-    int maxAttrs;       /* the size of the array */
-#if __STDC_VERSION__ >= 199901L
-    /* Using a C99 flexible array member avoids UBSan errors. */
-    xmlDefAttr attrs[] ATTRIBUTE_COUNTED_BY(maxAttrs);
-#else
-    xmlDefAttr attrs[1];
-#endif
-};
-
 /**
  * Normalize the space in non CDATA attribute values:
  * If the attribute type is not CDATA, then the XML processor MUST further
@@ -6057,7 +6035,7 @@ xmlParseAttributeListDecl(xmlParserCtxt *ctxt) {
 	    else if (tree != NULL)
 		xmlFreeEnumeration(tree);
 
-	    if ((ctxt->sax2) && (defaultValue != NULL) &&
+	    if ((defaultValue != NULL) &&
 	        (def != XML_ATTRIBUTE_IMPLIED) &&
 		(def != XML_ATTRIBUTE_REQUIRED)) {
 		xmlAddDefAttrs(ctxt, elemName, attrName, defaultValue);

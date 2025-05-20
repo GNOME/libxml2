@@ -1686,22 +1686,6 @@ xmlAddAttributeDecl(xmlValidCtxt *ctxt,
     }
 
     /*
-     * Validity Check:
-     * Multiple ID per element
-     */
-#ifdef LIBXML_VALID_ENABLED
-    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE) &&
-        (type == XML_ATTRIBUTE_ID) &&
-        (xmlScanIDAttributeDecl(ctxt, elemDef, 1) != 0)) {
-        xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
-       "Element %s has too may ID attributes defined : %s\n",
-               elem, name, NULL);
-        if (ctxt != NULL)
-            ctxt->valid = 0;
-    }
-#endif /* LIBXML_VALID_ENABLED */
-
-    /*
      * Insert namespace default def first they need to be
      * processed first.
      */
@@ -3864,12 +3848,6 @@ xmlValidateElementDecl(xmlValidCtxt *ctxt, xmlDoc *doc,
             ret = 0;
         }
     }
-
-    /* One ID per Element Type
-     * already done when registering the attribute
-    if (xmlScanIDAttributeDecl(ctxt, elem) > 1) {
-	ret = 0;
-    } */
 
     xmlFree(prefix);
     return(ret);

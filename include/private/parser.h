@@ -16,6 +16,10 @@
  * Set if the validation context is part of a parser context.
  */
 #define XML_VCTXT_USE_PCTXT (1u << 1)
+/**
+ * Set if the validation is enabled.
+ */
+#define XML_VCTXT_VALIDATE (1u << 2)
 
 /*
  * TODO: Rename to avoid confusion with xmlParserInputFlags

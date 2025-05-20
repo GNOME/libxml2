@@ -658,6 +658,7 @@ xmlValidCtxt *xmlNewValidCtxt(void) {
 	return (NULL);
 
     (void) memset(ret, 0, sizeof (xmlValidCtxt));
+    ret->flags |= XML_VCTXT_VALIDATE;
 
     return (ret);
 }
@@ -1142,44 +1143,48 @@ xmlAddElementDecl(xmlValidCtxt *ctxt,
 	return(NULL);
     }
 
-    switch (type) {
-        case XML_ELEMENT_TYPE_EMPTY:
-	    if (content != NULL) {
-		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-		        "xmlAddElementDecl: content != NULL for EMPTY\n",
-			NULL);
-		return(NULL);
-	    }
-	    break;
-	case XML_ELEMENT_TYPE_ANY:
-	    if (content != NULL) {
-		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-		        "xmlAddElementDecl: content != NULL for ANY\n",
-			NULL);
-		return(NULL);
-	    }
-	    break;
-	case XML_ELEMENT_TYPE_MIXED:
-	    if (content == NULL) {
-		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-		        "xmlAddElementDecl: content == NULL for MIXED\n",
-			NULL);
-		return(NULL);
-	    }
-	    break;
-	case XML_ELEMENT_TYPE_ELEMENT:
-	    if (content == NULL) {
-		xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
-		        "xmlAddElementDecl: content == NULL for ELEMENT\n",
-			NULL);
-		return(NULL);
-	    }
-	    break;
-	default:
-	    xmlErrValid(ctxt, XML_ERR_ARGUMENT,
-		    "xmlAddElementDecl: invalid type\n", NULL);
-	    return(NULL);
+#ifdef LIBXML_VALID_ENABLED
+    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE)) {
+        switch (type) {
+            case XML_ELEMENT_TYPE_EMPTY:
+                if (content != NULL) {
+                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
+                            "xmlAddElementDecl: content != NULL for EMPTY\n",
+                            NULL);
+                    return(NULL);
+                }
+                break;
+            case XML_ELEMENT_TYPE_ANY:
+                if (content != NULL) {
+                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
+                            "xmlAddElementDecl: content != NULL for ANY\n",
+                            NULL);
+                    return(NULL);
+                }
+                break;
+            case XML_ELEMENT_TYPE_MIXED:
+                if (content == NULL) {
+                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
+                            "xmlAddElementDecl: content == NULL for MIXED\n",
+                            NULL);
+                    return(NULL);
+                }
+                break;
+            case XML_ELEMENT_TYPE_ELEMENT:
+                if (content == NULL) {
+                    xmlErrValid(ctxt, XML_DTD_CONTENT_ERROR,
+                            "xmlAddElementDecl: content == NULL for ELEMENT\n",
+                            NULL);
+                    return(NULL);
+                }
+                break;
+            default:
+                xmlErrValid(ctxt, XML_ERR_ARGUMENT,
+                        "xmlAddElementDecl: invalid type\n", NULL);
+                return(NULL);
+        }
     }
+#endif /* LIBXML_VALID_ENABLED */
 
     /*
      * check if name is a QName
@@ -1229,9 +1234,10 @@ xmlAddElementDecl(xmlValidCtxt *ctxt,
 	    /*
 	     * The element is already defined in this DTD.
 	     */
-	    xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_ELEM_REDEFINED,
-	                    "Redefinition of element %s\n",
-			    name, NULL, NULL);
+            if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE))
+                xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_ELEM_REDEFINED,
+                                "Redefinition of element %s\n",
+                                name, NULL, NULL);
 #endif /* LIBXML_VALID_ENABLED */
             if (prefix != NULL)
 	        xmlFree(prefix);
@@ -1679,7 +1685,8 @@ xmlAddAttributeDecl(xmlValidCtxt *ctxt,
 	    xmlFreeEnumeration(tree);
 	    return(NULL);
     }
-    if ((defaultValue != NULL) &&
+    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE) &&
+        (defaultValue != NULL) &&
         (!xmlValidateAttributeValueInternal(dtd->doc, type, defaultValue))) {
 	xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_ATTRIBUTE_DEFAULT,
 	                "Attribute %s of %s: invalid default value\n",
@@ -1776,10 +1783,11 @@ xmlAddAttributeDecl(xmlValidCtxt *ctxt,
         /*
          * The attribute is already defined in this DTD.
          */
-        xmlErrValidWarning(ctxt, (xmlNodePtr) dtd,
-                XML_DTD_ATTRIBUTE_REDEFINED,
-                "Attribute %s of element %s: already defined\n",
-                name, elem, NULL);
+        if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE))
+            xmlErrValidWarning(ctxt, (xmlNodePtr) dtd,
+                    XML_DTD_ATTRIBUTE_REDEFINED,
+                    "Attribute %s of element %s: already defined\n",
+                    name, elem, NULL);
 #endif /* LIBXML_VALID_ENABLED */
 	xmlFreeAttribute(ret);
 	return(NULL);
@@ -1790,7 +1798,8 @@ xmlAddAttributeDecl(xmlValidCtxt *ctxt,
      * Multiple ID per element
      */
 #ifdef LIBXML_VALID_ENABLED
-    if ((type == XML_ATTRIBUTE_ID) &&
+    if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE) &&
+        (type == XML_ATTRIBUTE_ID) &&
         (xmlScanIDAttributeDecl(ctxt, elemDef, 1) != 0)) {
         xmlErrValidNode(ctxt, (xmlNodePtr) dtd, XML_DTD_MULTIPLE_ID,
        "Element %s has too may ID attributes defined : %s\n",
@@ -2088,9 +2097,10 @@ xmlAddNotationDecl(xmlValidCtxt *ctxt, xmlDtd *dtd, const xmlChar *name,
         if (res < 0)
             goto mem_error;
 #ifdef LIBXML_VALID_ENABLED
-        xmlErrValid(ctxt, XML_DTD_NOTATION_REDEFINED,
-                    "xmlAddNotationDecl: %s already defined\n",
-                    (const char *) name);
+        if ((ctxt != NULL) && (ctxt->flags & XML_VCTXT_VALIDATE))
+            xmlErrValid(ctxt, XML_DTD_NOTATION_REDEFINED,
+                        "xmlAddNotationDecl: %s already defined\n",
+                        (const char *) name);
 #endif /* LIBXML_VALID_ENABLED */
 	xmlFreeNotation(ret);
 	return(NULL);

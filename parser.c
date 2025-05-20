@@ -952,6 +952,13 @@ xmlCtxtInitializeLate(xmlParserCtxtPtr ctxt) {
                     (ctxt->options & XML_PARSE_HUGE) ?
                         0 :
                         XML_MAX_DICTIONARY_LIMIT);
+
+#ifdef LIBXML_VALID_ENABLED
+    if (ctxt->validate)
+        ctxt->vctxt.flags |= XML_VCTXT_VALIDATE;
+    else
+        ctxt->vctxt.flags &= ~XML_VCTXT_VALIDATE;
+#endif /* LIBXML_VALID_ENABLED */
 }
 
 typedef struct {

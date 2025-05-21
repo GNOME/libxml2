@@ -5314,7 +5314,7 @@ xmlParseNotationDecl(xmlParserCtxt *ctxt) {
 
     if (CMP8(CUR_PTR, 'N', 'O', 'T', 'A', 'T', 'I', 'O', 'N')) {
 #ifdef LIBXML_VALID_ENABLED
-	int inputid = ctxt->input->id;
+	int oldInputNr = ctxt->inputNr;
 #endif
 
 	SKIP(8);
@@ -5348,7 +5348,7 @@ xmlParseNotationDecl(xmlParserCtxt *ctxt) {
 
 	if (RAW == '>') {
 #ifdef LIBXML_VALID_ENABLED
-	    if ((ctxt->validate) && (inputid != ctxt->input->id)) {
+	    if ((ctxt->validate) && (ctxt->inputNr > oldInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
 	                         "Notation declaration doesn't start and stop"
                                  " in the same entity\n",
@@ -5406,7 +5406,7 @@ xmlParseEntityDecl(xmlParserCtxt *ctxt) {
     /* GROW; done in the caller */
     if (CMP6(CUR_PTR, 'E', 'N', 'T', 'I', 'T', 'Y')) {
 #ifdef LIBXML_VALID_ENABLED
-	int inputid = ctxt->input->id;
+	int oldInputNr = ctxt->inputNr;
 #endif
 
 	SKIP(6);
@@ -5573,7 +5573,7 @@ xmlParseEntityDecl(xmlParserCtxt *ctxt) {
 	    xmlHaltParser(ctxt);
 	} else {
 #ifdef LIBXML_VALID_ENABLED
-	    if ((ctxt->validate) && (inputid != ctxt->input->id)) {
+	    if ((ctxt->validate) && (ctxt->inputNr > oldInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
 	                         "Entity declaration doesn't start and stop in"
                                  " the same entity\n",
@@ -5955,7 +5955,7 @@ xmlParseAttributeListDecl(xmlParserCtxt *ctxt) {
 
     if (CMP7(CUR_PTR, 'A', 'T', 'T', 'L', 'I', 'S', 'T')) {
 #ifdef LIBXML_VALID_ENABLED
-	int inputid = ctxt->input->id;
+	int oldInputNr = ctxt->inputNr;
 #endif
 
 	SKIP(7);
@@ -6049,7 +6049,7 @@ xmlParseAttributeListDecl(xmlParserCtxt *ctxt) {
 	}
 	if (RAW == '>') {
 #ifdef LIBXML_VALID_ENABLED
-	    if ((ctxt->validate) && (inputid != ctxt->input->id)) {
+	    if ((ctxt->validate) && (ctxt->inputNr > oldInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                  "Attribute list declaration doesn't start and"
                                  " stop in the same entity\n",
@@ -6596,7 +6596,7 @@ xmlParseElementDecl(xmlParserCtxt *ctxt) {
     /* GROW; done in the caller */
     if (CMP7(CUR_PTR, 'E', 'L', 'E', 'M', 'E', 'N', 'T')) {
 #ifdef LIBXML_VALID_ENABLED
-	int inputid = ctxt->input->id;
+	int oldInputNr = ctxt->inputNr;
 #endif
 
 	SKIP(7);
@@ -6650,7 +6650,7 @@ xmlParseElementDecl(xmlParserCtxt *ctxt) {
 	    }
 	} else {
 #ifdef LIBXML_VALID_ENABLED
-	    if ((ctxt->validate) && (inputid != ctxt->input->id)) {
+	    if ((ctxt->validate) && (ctxt->inputNr > oldInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                  "Element declaration doesn't start and stop in"
                                  " the same entity\n",
@@ -6696,8 +6696,6 @@ xmlParseElementDecl(xmlParserCtxt *ctxt) {
 
 static void
 xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
-    int *inputIds = NULL;
-    size_t inputIdsSize = 0;
     size_t depth = 0;
     int isFreshPE = 0;
     int oldInputNr = ctxt->inputNr;
@@ -6707,14 +6705,12 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
         if (ctxt->input->cur >= ctxt->input->end) {
             if (ctxt->inputNr <= oldInputNr) {
                 xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-                goto error;
+                return;
             }
 
             xmlPopPE(ctxt);
             declInputNr = ctxt->inputNr;
         } else if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
-            int id = ctxt->input->id;
-
             SKIP(3);
             SKIP_BLANKS_PE;
 
@@ -6725,10 +6721,10 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 SKIP_BLANKS_PE;
                 if (RAW != '[') {
                     xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
-                    goto error;
+                    return;
                 }
 #ifdef LIBXML_VALID_ENABLED
-                if ((ctxt->validate) && (id != ctxt->input->id)) {
+                if ((ctxt->validate) && (ctxt->inputNr > declInputNr)) {
 		    xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                      "All markup of the conditional section is"
                                      " not in the same entity\n",
@@ -6737,27 +6733,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 #endif
                 NEXT;
 
-                if (inputIdsSize <= depth) {
-                    int *tmp;
-                    int newSize;
-
-                    newSize = xmlGrowCapacity(inputIdsSize, sizeof(tmp[0]),
-                                              4, 1000);
-                    if (newSize < 0) {
-                        xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
-                                       "Maximum conditional section nesting"
-                                       " depth exceeded\n");
-                        goto error;
-                    }
-                    tmp = xmlRealloc(inputIds, newSize * sizeof(tmp[0]));
-                    if (tmp == NULL) {
-                        xmlErrMemory(ctxt);
-                        goto error;
-                    }
-                    inputIds = tmp;
-                    inputIdsSize = newSize;
-                }
-                inputIds[depth] = id;
                 depth++;
             } else if (CMP6(CUR_PTR, 'I', 'G', 'N', 'O', 'R', 'E')) {
                 size_t ignoreDepth = 0;
@@ -6766,10 +6741,10 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 SKIP_BLANKS_PE;
                 if (RAW != '[') {
                     xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID, NULL);
-                    goto error;
+                    return;
                 }
 #ifdef LIBXML_VALID_ENABLED
-                if ((ctxt->validate) && (id != ctxt->input->id)) {
+                if ((ctxt->validate) && (ctxt->inputNr > declInputNr)) {
 		    xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                      "All markup of the conditional section is"
                                      " not in the same entity\n",
@@ -6781,7 +6756,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 while (PARSER_STOPPED(ctxt) == 0) {
                     if (RAW == 0) {
                         xmlFatalErr(ctxt, XML_ERR_CONDSEC_NOT_FINISHED, NULL);
-                        goto error;
+                        return;
                     }
                     if ((RAW == '<') && (NXT(1) == '!') && (NXT(2) == '[')) {
                         SKIP(3);
@@ -6789,7 +6764,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                         /* Check for integer overflow */
                         if (ignoreDepth == 0) {
                             xmlErrMemory(ctxt);
-                            goto error;
+                            return;
                         }
                     } else if ((RAW == ']') && (NXT(1) == ']') &&
                                (NXT(2) == '>')) {
@@ -6803,7 +6778,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 }
 
 #ifdef LIBXML_VALID_ENABLED
-                if ((ctxt->validate) && (id != ctxt->input->id)) {
+                if ((ctxt->validate) && (ctxt->inputNr > declInputNr)) {
 		    xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                      "All markup of the conditional section is"
                                      " not in the same entity\n",
@@ -6812,7 +6787,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
 #endif
             } else {
                 xmlFatalErr(ctxt, XML_ERR_CONDSEC_INVALID_KEYWORD, NULL);
-                goto error;
+                return;
             }
         } else if ((depth > 0) &&
                    (RAW == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
@@ -6820,12 +6795,12 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
                 xmlFatalErrMsg(ctxt, XML_ERR_CONDSEC_INVALID,
                                "Parameter entity must match "
                                "extSubsetDecl\n");
-                goto error;
+                return;
             }
 
             depth--;
 #ifdef LIBXML_VALID_ENABLED
-            if ((ctxt->validate) && (ctxt->input->id != inputIds[depth])) {
+            if ((ctxt->validate) && (ctxt->inputNr > declInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                  "All markup of the conditional section is not"
                                  " in the same entity\n",
@@ -6844,7 +6819,7 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
             }
         } else {
             xmlFatalErr(ctxt, XML_ERR_EXT_SUBSET_NOT_FINISHED, NULL);
-            goto error;
+            return;
         }
 
         if (depth == 0)
@@ -6854,9 +6829,6 @@ xmlParseConditionalSections(xmlParserCtxtPtr ctxt) {
         SHRINK;
         GROW;
     }
-
-error:
-    xmlFree(inputIds);
 }
 
 /**

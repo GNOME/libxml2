@@ -1943,9 +1943,9 @@ xmlCtxtPushInput(xmlParserCtxt *ctxt, xmlParserInput *value)
     }
 
     /*
-     * Internally, the input ID is only used to detect parameter entity
-     * boundaries. But there are entity loaders in downstream code that
-     * detect the main document by checking for "input_id == 1".
+     * The input ID is unused internally, but there are entity
+     * loaders in downstream code that detect the main document
+     * by checking for "input_id == 1".
      */
     value->id = ctxt->input_id++;
 
@@ -6062,6 +6062,48 @@ xmlParseAttributeListDecl(xmlParserCtxt *ctxt) {
 }
 
 /**
+ * Handle PEs and check that we don't pop the entity that started
+ * a balanced group.
+ *
+ * @param ctxt  parser context
+ * @param openInputNr  input nr of the entity with opening '('
+ */
+static void
+xmlSkipBlankCharsPEBalanced(xmlParserCtxt *ctxt, int openInputNr) {
+    SKIP_BLANKS;
+    GROW;
+
+    (void) openInputNr;
+
+    if (!PARSER_EXTERNAL(ctxt) && !PARSER_IN_PE(ctxt))
+        return;
+
+    while (1) {
+        if (ctxt->input->cur >= ctxt->input->end) {
+#ifdef LIBXML_VALID_ENABLED
+            if ((ctxt->validate) && (ctxt->inputNr <= openInputNr)) {
+                xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
+                                 "Element content declaration doesn't start "
+                                 "and stop in the same entity\n",
+                                 NULL, NULL);
+            }
+#endif
+            if (PARSER_IN_PE(ctxt))
+                xmlPopPE(ctxt);
+            else
+                break;
+        } else if (RAW == '%') {
+            xmlParsePERefInternal(ctxt, 0);
+        } else {
+            break;
+        }
+
+        SKIP_BLANKS;
+        GROW;
+    }
+}
+
+/**
  * parse the declaration for a Mixed Element content
  * The leading '(' and spaces have been skipped in xmlParseElementContentDecl()
  *
@@ -6077,23 +6119,22 @@ xmlParseAttributeListDecl(xmlParserCtxt *ctxt) {
  * mixed-content declaration.
  *
  * @param ctxt  an XML parser context
- * @param inputchk  the input used for the current entity, needed for boundary checks
+ * @param openInputNr  the input used for the current entity, needed for
+ * boundary checks
  * @returns the list of the xmlElementContent describing the element choices
  */
 xmlElementContent *
-xmlParseElementMixedContentDecl(xmlParserCtxt *ctxt, int inputchk) {
+xmlParseElementMixedContentDecl(xmlParserCtxt *ctxt, int openInputNr) {
     xmlElementContentPtr ret = NULL, cur = NULL, n;
     const xmlChar *elem = NULL;
-
-    (void) inputchk;
 
     GROW;
     if (CMP7(CUR_PTR, '#', 'P', 'C', 'D', 'A', 'T', 'A')) {
 	SKIP(7);
-	SKIP_BLANKS_PE;
+        xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
 	if (RAW == ')') {
 #ifdef LIBXML_VALID_ENABLED
-	    if ((ctxt->validate) && (inputchk != ctxt->input->id)) {
+	    if ((ctxt->validate) && (ctxt->inputNr > openInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                  "Element content declaration doesn't start "
                                  "and stop in the same entity\n",
@@ -6134,7 +6175,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxt *ctxt, int inputchk) {
 		n->c1->parent = n;
 		cur = n;
 	    }
-	    SKIP_BLANKS_PE;
+            xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
 	    elem = xmlParseName(ctxt);
 	    if (elem == NULL) {
 		xmlFatalErrMsg(ctxt, XML_ERR_NAME_REQUIRED,
@@ -6142,8 +6183,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxt *ctxt, int inputchk) {
 		xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
 	    }
-	    SKIP_BLANKS_PE;
-	    GROW;
+            xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
 	}
 	if ((RAW == ')') && (NXT(1) == '*')) {
 	    if (elem != NULL) {
@@ -6156,7 +6196,7 @@ xmlParseElementMixedContentDecl(xmlParserCtxt *ctxt, int inputchk) {
             if (ret != NULL)
                 ret->ocur = XML_ELEMENT_CONTENT_MULT;
 #ifdef LIBXML_VALID_ENABLED
-	    if ((ctxt->validate) && (inputchk != ctxt->input->id)) {
+	    if ((ctxt->validate) && (ctxt->inputNr > openInputNr)) {
 		xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                                  "Element content declaration doesn't start "
                                  "and stop in the same entity\n",
@@ -6205,20 +6245,19 @@ mem_error:
  *	the replacement text should be a connector (| or ,).
  *
  * @param ctxt  an XML parser context
- * @param inputchk  the input used for the current entity, needed for boundary checks
+ * @param openInputNr  the input used for the current entity, needed for
+ * boundary checks
  * @param depth  the level of recursion
  * @returns the tree of xmlElementContent describing the element
  *          hierarchy.
  */
 static xmlElementContentPtr
-xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
+xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int openInputNr,
                                        int depth) {
     int maxDepth = (ctxt->options & XML_PARSE_HUGE) ? 2048 : 256;
     xmlElementContentPtr ret = NULL, cur = NULL, last = NULL, op = NULL;
     const xmlChar *elem;
     xmlChar type = 0;
-
-    (void) inputchk;
 
     if (depth > maxDepth) {
         xmlFatalErrMsgInt(ctxt, XML_ERR_RESOURCE_LIMIT,
@@ -6226,20 +6265,16 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
                 "use XML_PARSE_HUGE\n", depth);
 	return(NULL);
     }
-    SKIP_BLANKS_PE;
-    GROW;
+    xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
     if (RAW == '(') {
-	int inputid = ctxt->input->id;
+        int newInputNr = ctxt->inputNr;
 
         /* Recurse on first child */
 	NEXT;
-	SKIP_BLANKS_PE;
-        cur = ret = xmlParseElementChildrenContentDeclPriv(ctxt, inputid,
+        cur = ret = xmlParseElementChildrenContentDeclPriv(ctxt, newInputNr,
                                                            depth + 1);
         if (cur == NULL)
             return(NULL);
-	SKIP_BLANKS_PE;
-	GROW;
     } else {
 	elem = xmlParseName(ctxt);
 	if (elem == NULL) {
@@ -6266,8 +6301,10 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
 	}
 	GROW;
     }
-    SKIP_BLANKS_PE;
-    while ((RAW != ')') && (PARSER_STOPPED(ctxt) == 0)) {
+    while (!PARSER_STOPPED(ctxt)) {
+        xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
+        if (RAW == ')')
+            break;
         /*
 	 * Each loop we parse one separator and one element.
 	 */
@@ -6362,22 +6399,19 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
 		xmlFreeDocElementContent(ctxt->myDoc, ret);
 	    return(NULL);
 	}
-	GROW;
-	SKIP_BLANKS_PE;
-	GROW;
-	if (RAW == '(') {
-	    int inputid = ctxt->input->id;
+        xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
+        if (RAW == '(') {
+            int newInputNr = ctxt->inputNr;
+
 	    /* Recurse on second child */
 	    NEXT;
-	    SKIP_BLANKS_PE;
-	    last = xmlParseElementChildrenContentDeclPriv(ctxt, inputid,
+	    last = xmlParseElementChildrenContentDeclPriv(ctxt, newInputNr,
                                                           depth + 1);
             if (last == NULL) {
 		if (ret != NULL)
 		    xmlFreeDocElementContent(ctxt->myDoc, ret);
 		return(NULL);
             }
-	    SKIP_BLANKS_PE;
 	} else {
 	    elem = xmlParseName(ctxt);
 	    if (elem == NULL) {
@@ -6406,8 +6440,6 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
 		last->ocur = XML_ELEMENT_CONTENT_ONCE;
 	    }
 	}
-	SKIP_BLANKS_PE;
-	GROW;
     }
     if ((cur != NULL) && (last != NULL)) {
         cur->c2 = last;
@@ -6415,7 +6447,7 @@ xmlParseElementChildrenContentDeclPriv(xmlParserCtxtPtr ctxt, int inputchk,
 	    last->parent = cur;
     }
 #ifdef LIBXML_VALID_ENABLED
-    if ((ctxt->validate) && (inputchk != ctxt->input->id)) {
+    if ((ctxt->validate) && (ctxt->inputNr > openInputNr)) {
         xmlValidityError(ctxt, XML_ERR_ENTITY_BOUNDARY,
                          "Element content declaration doesn't start "
                          "and stop in the same entity\n",
@@ -6545,7 +6577,7 @@ xmlParseElementContentDecl(xmlParserCtxt *ctxt, const xmlChar *name,
                            xmlElementContent **result) {
 
     xmlElementContentPtr tree = NULL;
-    int inputid = ctxt->input->id;
+    int openInputNr = ctxt->inputNr;
     int res;
 
     *result = NULL;
@@ -6556,13 +6588,12 @@ xmlParseElementContentDecl(xmlParserCtxt *ctxt, const xmlChar *name,
 	return(-1);
     }
     NEXT;
-    GROW;
-    SKIP_BLANKS_PE;
+    xmlSkipBlankCharsPEBalanced(ctxt, openInputNr);
     if (CMP7(CUR_PTR, '#', 'P', 'C', 'D', 'A', 'T', 'A')) {
-        tree = xmlParseElementMixedContentDecl(ctxt, inputid);
+        tree = xmlParseElementMixedContentDecl(ctxt, openInputNr);
 	res = XML_ELEMENT_TYPE_MIXED;
     } else {
-        tree = xmlParseElementChildrenContentDeclPriv(ctxt, inputid, 1);
+        tree = xmlParseElementChildrenContentDeclPriv(ctxt, openInputNr, 1);
 	res = XML_ELEMENT_TYPE_ELEMENT;
     }
     SKIP_BLANKS_PE;

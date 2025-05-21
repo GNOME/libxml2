@@ -125,7 +125,7 @@ struct _xmlParserInput {
     const xmlChar *version XML_DEPRECATED_MEMBER;
     /* Flags */
     int flags XML_DEPRECATED_MEMBER;
-    /* an unique identifier for the entity */
+    /* an unique identifier for the entity, unused internally */
     int id XML_DEPRECATED_MEMBER;
     /* unused */
     unsigned long parentConsumed XML_DEPRECATED_MEMBER;

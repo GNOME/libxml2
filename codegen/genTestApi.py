@@ -24,6 +24,7 @@ dtors = {
     'xmlDoc *': 'xmlFreeDoc',
     'xmlDtd *': 'xmlFreeDtd',
     'xmlEntitiesTable *': 'xmlFreeEntitiesTable',
+    'xmlElementContent *': 'xmlFreeElementContent',
     'xmlEnumeration *': 'xmlFreeEnumeration',
     'xmlList *': 'xmlListDelete',
     'xmlModule *': 'xmlModuleFree',

@@ -889,7 +889,7 @@ def print_function_wrapper(name, output, export, include):
     include.write("PyObject * ")
     include.write("libxml_%s(PyObject *self, PyObject *args);\n" % (name))
 
-    export.write("    { (char *)\"%s\", libxml_%s, METH_VARARGS, NULL },\n" %
+    export.write("    { \"%s\", libxml_%s, METH_VARARGS, NULL },\n" %
                  (name, name))
 
     if file == "python":
@@ -926,7 +926,7 @@ def print_function_wrapper(name, output, export, include):
                      name)
         output.write("        return(NULL);\n")
     if format != "":
-        output.write("\n    if (!PyArg_ParseTuple(args, (char *)\"%s\"%s))\n" %
+        output.write("\n    if (!PyArg_ParseTuple(args, \"%s\"%s))\n" %
                      (format, format_args))
         output.write("        return(NULL);\n")
     if c_convert != "":

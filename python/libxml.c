@@ -1060,15 +1060,14 @@ pythonWarning(void *user_data, const char *msg, ...)
 {
     PyObject *handler;
     PyObject *result;
-    va_list args;
+    va_list ap;
     char buf[1024];
 
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "warning")) {
-        va_start(args, msg);
-        vsnprintf(buf, 1023, msg, args);
-        va_end(args);
-        buf[1023] = 0;
+        va_start(ap, msg);
+        vsnprintf(buf, sizeof(buf), msg, ap);
+        va_end(ap);
         result = PyObject_CallMethod(handler, "warning", "s", buf);
         if (PyErr_Occurred())
             PyErr_Print();
@@ -1081,15 +1080,14 @@ pythonError(void *user_data, const char *msg, ...)
 {
     PyObject *handler;
     PyObject *result;
-    va_list args;
+    va_list ap;
     char buf[1024];
 
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "error")) {
-        va_start(args, msg);
-        vsnprintf(buf, 1023, msg, args);
-        va_end(args);
-        buf[1023] = 0;
+        va_start(ap, msg);
+        vsnprintf(buf, sizeof(buf), msg, ap);
+        va_end(ap);
         result = PyObject_CallMethod(handler, "error", "s", buf);
         if (PyErr_Occurred())
             PyErr_Print();
@@ -1102,15 +1100,14 @@ pythonFatalError(void *user_data, const char *msg, ...)
 {
     PyObject *handler;
     PyObject *result;
-    va_list args;
+    va_list ap;
     char buf[1024];
 
     handler = (PyObject *) user_data;
     if (PyObject_HasAttrString(handler, "fatalError")) {
-        va_start(args, msg);
-        vsnprintf(buf, 1023, msg, args);
-        va_end(args);
-        buf[1023] = 0;
+        va_start(ap, msg);
+        vsnprintf(buf, sizeof(buf), msg, ap);
+        va_end(ap);
         result = PyObject_CallMethod(handler, "fatalError", "s", buf);
         if (PyErr_Occurred())
             PyErr_Print();
@@ -1477,16 +1474,14 @@ static PyObject *libxml_xmlPythonErrorFuncCtxt = NULL;
 static char *
 libxml_buildMessage(const char *msg, va_list ap)
 {
-    int chars;
+    size_t len = 1024;
     char *str;
 
-    str = (char *) xmlMalloc(1000);
+    str = xmlMalloc(len);
     if (str == NULL)
         return NULL;
 
-    chars = vsnprintf(str, 999, msg, ap);
-    if (chars >= 998)
-        str[999] = 0;
+    vsnprintf(str, len, msg, ap);
 
     return str;
 }
@@ -1499,7 +1494,7 @@ libxml_xmlErrorFuncHandler(ATTRIBUTE_UNUSED void *ctx, const char *msg,
     PyObject *list;
     PyObject *message;
     PyObject *result;
-    char str[1000];
+    char str[1024];
 
     if (libxml_xmlPythonErrorFuncHandler == NULL) {
         va_start(ap, msg);
@@ -1507,8 +1502,7 @@ libxml_xmlErrorFuncHandler(ATTRIBUTE_UNUSED void *ctx, const char *msg,
         va_end(ap);
     } else {
         va_start(ap, msg);
-        if (vsnprintf(str, 999, msg, ap) >= 998)
-	    str[999] = 0;
+        vsnprintf(str, sizeof(str), msg, ap);
         va_end(ap);
 
         list = PyTuple_New(2);

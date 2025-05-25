@@ -118,7 +118,6 @@ xmlErrValid(xmlValidCtxtPtr ctxt, xmlParserErrors error,
                   NULL, NULL, 0, msg, extra);
 }
 
-#ifdef LIBXML_VALID_ENABLED
 /**
  * Handle a validation error, provide contextual information
  *
@@ -140,6 +139,7 @@ xmlErrValidNode(xmlValidCtxtPtr ctxt,
                   msg, str1, str2, str3);
 }
 
+#ifdef LIBXML_VALID_ENABLED
 /**
  * Handle a validation error, provide contextual information
  *
@@ -2396,7 +2396,6 @@ xmlAddID(xmlValidCtxt *ctxt, xmlDoc *doc, const xmlChar *value,
     if (res < 0) {
         xmlVErrMemory(ctxt);
     }
-#ifdef LIBXML_VALID_ENABLED
     else if (res == 0) {
         if (ctxt != NULL) {
             /*
@@ -2406,7 +2405,6 @@ xmlAddID(xmlValidCtxt *ctxt, xmlDoc *doc, const xmlChar *value,
                             "ID %s already defined\n", value, NULL, NULL);
         }
     }
-#endif /* LIBXML_VALID_ENABLED */
 
     return(id);
 }

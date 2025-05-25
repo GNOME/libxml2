@@ -113,7 +113,8 @@ Example commands:
 Common CMake options include:
 
     -D BUILD_SHARED_LIBS=OFF            # build static libraries
-    -D CMAKE_BUILD_TYPE=Release         # specify build type
+    -D CMAKE_BUILD_TYPE=Release         # specify build type (single-config)
+    --config Release                    # specify build type (multi-config)
     -D CMAKE_INSTALL_PREFIX=/usr/local  # specify the install path
     -D LIBXML2_WITH_ICONV=OFF           # disable iconv
     -D LIBXML2_WITH_ZLIB=ON             # enable zlib

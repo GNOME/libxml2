@@ -1301,32 +1301,6 @@ xmlInputFromFd(xmlParserInputBuffer *buf, int fd,
     return(XML_ERR_OK);
 }
 
-/**
- * @param buf  input buffer to be filled
- * @param filename  filename or URI
- * @param flags  XML_INPUT flags
- * @returns an xmlParserErrors code.
- */
-static xmlParserErrors
-xmlInputDefaultOpen(xmlParserInputBufferPtr buf, const char *filename,
-                    xmlParserInputFlags flags) {
-    xmlParserErrors ret;
-    int fd;
-
-    if (!xmlFileMatch(filename))
-        return(XML_IO_ENOENT);
-
-    ret = xmlFdOpen(filename, 0, &fd);
-    if (ret != XML_ERR_OK)
-        return(ret);
-
-    ret = xmlInputFromFd(buf, fd, flags);
-
-    close(fd);
-
-    return(ret);
-}
-
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
  * @param buf  input buffer to be filled
@@ -1603,10 +1577,17 @@ xmlParserInputBufferCreateUrl(const char *URI, xmlCharEncoding enc,
         xmlInputCallback *cb = &xmlInputCallbackTable[i];
 
         if (cb->matchcallback == xmlIODefaultMatch) {
-            ret = xmlInputDefaultOpen(buf, URI, flags);
+            int fd;
 
-            if ((ret == XML_ERR_OK) || (ret != XML_IO_ENOENT))
+            ret = xmlFdOpen(URI, 0, &fd);
+
+            if (ret == XML_ERR_OK) {
+                ret = xmlInputFromFd(buf, fd, flags);
+                close(fd);
                 break;
+            } else if (ret != XML_IO_ENOENT) {
+                break;
+            }
         } else if ((cb->matchcallback != NULL) &&
                    (cb->matchcallback(URI) != 0)) {
             buf->context = cb->opencallback(URI);

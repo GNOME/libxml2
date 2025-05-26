@@ -791,34 +791,34 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
         ATTRIBUTE_UNUSED LPVOID lpvReserved)
 #endif
 {
-    switch (fdwReason) {
-        case DLL_THREAD_DETACH:
+    if ((fdwReason == DLL_THREAD_DETACH) ||
+        (fdwReason == DLL_PROCESS_DETACH)) {
 #ifdef USE_TLS
-            xmlFreeGlobalState(&globalState);
+        xmlFreeGlobalState(&globalState);
 #else
-            if (globalkey != TLS_OUT_OF_INDEXES) {
-                xmlGlobalState *globalval;
+        if (globalkey != TLS_OUT_OF_INDEXES) {
+            xmlGlobalState *globalval;
 
-                globalval = (xmlGlobalState *) TlsGetValue(globalkey);
-                if (globalval) {
-                    xmlFreeGlobalState(globalval);
-                    TlsSetValue(globalkey, NULL);
-                }
+            globalval = (xmlGlobalState *) TlsGetValue(globalkey);
+            if (globalval) {
+                xmlFreeGlobalState(globalval);
+                TlsSetValue(globalkey, NULL);
             }
-#endif
-            break;
-
-#ifndef LIBXML_THREAD_ALLOC_ENABLED
-        case DLL_PROCESS_DETACH:
-            if (xmlFree == free)
-                xmlCleanupParser();
-            if (globalkey != TLS_OUT_OF_INDEXES) {
-                TlsFree(globalkey);
-                globalkey = TLS_OUT_OF_INDEXES;
-            }
-            break;
+        }
 #endif
     }
+
+#ifndef LIBXML_THREAD_ALLOC_ENABLED
+    if (fdwReason == DLL_PROCESS_DETACH) {
+        if (xmlFree == free)
+            xmlCleanupParser();
+        if (globalkey != TLS_OUT_OF_INDEXES) {
+            TlsFree(globalkey);
+            globalkey = TLS_OUT_OF_INDEXES;
+        }
+    }
+#endif
+
     return TRUE;
 }
 #endif /* USE_DLL_MAIN */

@@ -727,7 +727,7 @@ xmlVRaiseError(xmlStructuredErrorFunc schannel,
         return(0);
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
     if (code == XML_ERR_INTERNAL_ERROR)
-        xmlAbort("Unexpected error: %d\n", code);
+        xmlAbort("Unexpected internal error: %s\n", msg);
 #endif
     if ((xmlGetWarningsDefaultValue == 0) && (level == XML_ERR_WARNING))
         return(0);

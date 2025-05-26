@@ -6569,7 +6569,7 @@ xmlParseElementChildrenContentDecl(xmlParserCtxt *ctxt, int inputchk) {
  * @param ctxt  an XML parser context
  * @param name  the name of the element being defined.
  * @param result  the Element Content pointer will be stored here if any
- * @returns the type of element content XML_ELEMENT_TYPE_xxx
+ * @returns an xmlElementTypeVal value or -1 on error
  */
 
 int
@@ -6596,6 +6596,8 @@ xmlParseElementContentDecl(xmlParserCtxt *ctxt, const xmlChar *name,
         tree = xmlParseElementChildrenContentDeclPriv(ctxt, openInputNr, 1);
 	res = XML_ELEMENT_TYPE_ELEMENT;
     }
+    if (tree == NULL)
+        return(-1);
     SKIP_BLANKS_PE;
     *result = tree;
     return(res);

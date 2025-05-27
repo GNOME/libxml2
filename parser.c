@@ -4540,7 +4540,6 @@ xmlCharacters(xmlParserCtxtPtr ctxt, const xmlChar *buf, int size,
 static void
 xmlParseCharDataInternal(xmlParserCtxtPtr ctxt, int partial) {
     const xmlChar *in;
-    int nbchar = 0;
     int line = ctxt->input->line;
     int col = ctxt->input->col;
     int ccol;
@@ -4562,10 +4561,13 @@ get_more_space:
             goto get_more_space;
         }
         if (*in == '<') {
-            nbchar = in - ctxt->input->cur;
-            if (nbchar > 0) {
+            while (in > ctxt->input->cur) {
                 const xmlChar *tmp = ctxt->input->cur;
-                ctxt->input->cur = in;
+                size_t nbchar = in - tmp;
+
+                if (nbchar > XML_MAX_ITEMS)
+                    nbchar = XML_MAX_ITEMS;
+                ctxt->input->cur += nbchar;
 
                 xmlCharacters(ctxt, tmp, nbchar, 1);
             }
@@ -4598,10 +4600,13 @@ get_more:
                 goto get_more;
             }
         }
-        nbchar = in - ctxt->input->cur;
-        if (nbchar > 0) {
+        while (in > ctxt->input->cur) {
             const xmlChar *tmp = ctxt->input->cur;
-            ctxt->input->cur = in;
+            size_t nbchar = in - tmp;
+
+            if (nbchar > XML_MAX_ITEMS)
+                nbchar = XML_MAX_ITEMS;
+            ctxt->input->cur += nbchar;
 
             xmlCharacters(ctxt, tmp, nbchar, 0);
 

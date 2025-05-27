@@ -38,6 +38,9 @@
 #ifndef XML_DEPRECATED
   #define XML_DEPRECATED
 #endif
+#ifndef XML_DEPRECATED_MEMBER
+  #define XML_DEPRECATED_MEMBER
+#endif
 
 #include <libxml/catalog.h>
 #include <libxml/HTMLtree.h>
@@ -2649,7 +2652,7 @@ LLVMFuzzerTestOneInput(const char *data, size_t size) {
                     oomReport = 0;
                 /*
                  * Don't reference XML_ELEMENT_TYPE_UNDEFINED dummy
-                 * declarations.
+                 * declarations which can be freed by xmlAddElementDecl.
                  */
                 if (elem != NULL && elem->parent == NULL)
                     elem = NULL;

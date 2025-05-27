@@ -1101,12 +1101,9 @@ xmlAddElementDecl(xmlValidCtxt *ctxt,
     const xmlChar *localName;
     xmlChar *prefix = NULL;
 
-    if (dtd == NULL) {
+    if ((dtd == NULL) || (name == NULL) ||
+        (type < XML_ELEMENT_TYPE_EMPTY) || (type > XML_ELEMENT_TYPE_ELEMENT))
 	return(NULL);
-    }
-    if (name == NULL) {
-	return(NULL);
-    }
 
     /*
      * check if name is a QName

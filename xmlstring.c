@@ -669,7 +669,7 @@ xmlStrVASPrintf(xmlChar **out, int maxSize, const char *msg, va_list ap) {
 }
 
 /**
- * See #xmlStrVASPrintf.
+ * See xmlStrVASPrintf.
  *
  * @param out  pointer to the resulting string
  * @param maxSize  maximum size of the output buffer

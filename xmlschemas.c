@@ -12977,7 +12977,7 @@ xmlSchemaResolveElementReferences(xmlSchemaElementPtr elemDecl,
 /**
  * Checks and builds the "member type definitions" property of the union
  * simple type. This handles part (1), part (2) is done in
- * #xmlSchemaFinishMemberTypeDefinitionsProperty
+ * xmlSchemaFinishMemberTypeDefinitionsProperty
  *
  * @param ctxt  the schema parser context
  * @param type  the schema simple type definition

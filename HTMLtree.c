@@ -1163,7 +1163,7 @@ htmlDocContentDumpFormatOutput(xmlOutputBuffer *buf, xmlDoc *cur,
 }
 
 /**
- * Same as #htmlDocContentDumpFormatDump with `format` set to 1
+ * Same as #htmlDocContentDumpFormatOutput with `format` set to 1
  * which is typically undesired. Use of this function is DISCOURAGED
  * in favor of #htmlDocContentDumpFormatOutput.
  *

@@ -426,7 +426,7 @@ xmlSaturatedAddSizeT(unsigned long *dst, unsigned long val) {
 /**
  * Check for non-linear entity expansion behaviour.
  *
- * In some cases like #xmlExpandEntityInAttValue, this function is called
+ * In some cases like xmlExpandEntityInAttValue, this function is called
  * for each, possibly nested entity and its unexpanded content length.
  *
  * In other cases like #xmlParseReference, it's only called for each
@@ -1558,7 +1558,7 @@ xmlParserNsLookupUri(xmlParserCtxtPtr ctxt, const xmlHashedString *prefix) {
 
 /**
  * Lookup extra data for the given prefix. This returns data stored
- * with #xmlParserNsUdpateSax.
+ * with xmlParserNsUdpateSax.
  *
  * @param ctxt  parser context
  * @param prefix  namespace prefix
@@ -1586,7 +1586,7 @@ xmlParserNsLookupSax(xmlParserCtxt *ctxt, const xmlChar *prefix) {
 
 /**
  * Sets or updates extra data for the given prefix. This value will be
- * returned by #xmlParserNsLookupSax as long as the namespace with the
+ * returned by xmlParserNsLookupSax as long as the namespace with the
  * given prefix is in scope.
  *
  * @param ctxt  parser context

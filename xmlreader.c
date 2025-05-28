@@ -4922,9 +4922,9 @@ xmlTextReaderGetLastError(xmlTextReader *reader)
 /**
  * This function provides the current index of the parser used
  * by the reader, relative to the start of the current entity.
- * This function actually just wraps a call to #xmlBytesConsumed
+ * This function actually just wraps a call to #xmlByteConsumed
  * for the parser context associated with the reader.
- * See #xmlBytesConsumed for more information.
+ * See #xmlByteConsumed for more information.
  *
  * @deprecated The returned value is mostly random and useless.
  * It reflects the parser reading ahead and is in no way related to

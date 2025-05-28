@@ -2059,7 +2059,7 @@ xmlC14NDocSave(xmlDoc *doc, xmlNodeSet *nodes,
 
 /**
  * Converts a string to a canonical (normalized) format. The code is stolen
- * from #xmlEscapeText. Added normalization of `\x09`, `\x0a`,
+ * from xmlEscapeText. Added normalization of `\x09`, `\x0a`,
  * `\x0A` and the `mode` parameter.
  *
  * @param input  		the input string

@@ -504,7 +504,7 @@ xmlCatalogDumpEntry(void *payload, void *data,
 }
 
 /**
- * Serializes a Catalog entry, called by #xmlDumpXMLCatalog and recursively
+ * Serializes a Catalog entry, called by xmlDumpXMLCatalog and recursively
  * for group entries
  *
  * @param catal  top catalog entry

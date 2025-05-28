@@ -493,7 +493,7 @@ xmlBufCat(xmlBuf *buf, const xmlChar *str) {
 /**
  * Helper routine to switch from the old buffer structures in use
  * in various APIs. It creates a wrapper xmlBuf which will be
- * used for internal processing until the #xmlBufBackToBuffer is
+ * used for internal processing until xmlBufBackToBuffer is
  * issued.
  *
  * @param buffer  incoming old buffer to convert to a new one

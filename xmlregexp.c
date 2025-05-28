@@ -2364,7 +2364,7 @@ xmlFACompareRanges(xmlRegRangePtr range1, xmlRegRangePtr range2) {
 
 /**
  * Compares two atoms type to check whether they intersect in some ways,
- * this is used by #xmlFACompareAtoms only
+ * this is used by xmlFACompareAtoms only
  *
  * @param type1  an atom type
  * @param type2  an atom type
@@ -2606,7 +2606,7 @@ xmlFAEqualAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2, int deep) {
 
 /**
  * Compares two atoms to check whether they intersect in some ways,
- * this is used by #xmlFAComputesDeterminism and #xmlFARecurseDeterminism only
+ * this is used by xmlFAComputesDeterminism and xmlFARecurseDeterminism only
  *
  * @param atom1  an atom
  * @param atom2  an atom
@@ -2703,7 +2703,7 @@ not_determinist:
 
 /**
  * Check whether the associated regexp is determinist,
- * should be called after #xmlFAEliminateEpsilonTransitions
+ * should be called after xmlFAEliminateEpsilonTransitions
  *
  * @param ctxt  a regexp parser context
  * @param state  regexp state
@@ -2788,7 +2788,7 @@ xmlFAFinishRecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
 
 /**
  * Check whether the associated regexp is determinist,
- * should be called after #xmlFAEliminateEpsilonTransitions
+ * should be called after xmlFAEliminateEpsilonTransitions
  *
  * @param ctxt  a regexp parser context
  */

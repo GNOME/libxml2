@@ -4118,7 +4118,7 @@ htmlParseEndTag(htmlParserCtxtPtr ctxt)
 
 /**
  * Parse a content: comment, sub-element, reference or text.
- * New version for non recursive #htmlParseElementInternal
+ * New version for non recursive htmlParseElementInternal
  *
  * @param ctxt  an HTML parser context
  */

@@ -173,7 +173,7 @@ xmlInitRMutex(xmlRMutex *tok) {
 }
 
 /**
- * #xmlRNewMutex is used to allocate a reentrant mutex for use in
+ * Used to allocate a reentrant mutex for use in
  * synchronizing access to data. token_r is a re-entrant lock and thus useful
  * for synchronizing access to data structures that may be manipulated in a
  * recursive fashion.
@@ -210,7 +210,7 @@ xmlCleanupRMutex(xmlRMutex *tok) {
 }
 
 /**
- * #xmlRFreeMutex is used to reclaim resources associated with a
+ * Used to reclaim resources associated with a
  * reentrant mutex.
  *
  * @param tok  the reentrant mutex

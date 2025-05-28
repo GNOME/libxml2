@@ -958,7 +958,7 @@ xmlFreeDoc(xmlDoc *cur) {
 }
 
 /**
- * See #xmlNodeParseContent.
+ * See xmlNodeParseContent.
  *
  * @param doc  a document (optional)
  * @param parent  an element or attribute (optional)

@@ -459,7 +459,7 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
 
 #ifndef USE_TLS
 /**
- * #xmlNewGlobalState allocates a global state. This structure is used to
+ * Allocates a global state. This structure is used to
  * hold all data for use by a thread when supporting backwards compatibility
  * of libxml2 to pre-thread-safe behaviour.
  *

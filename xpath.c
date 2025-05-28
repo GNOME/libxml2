@@ -8423,7 +8423,7 @@ xmlXPathParseLiteral(xmlXPathParserContextPtr ctxt) {
  *  [29]   Literal ::=   '"' [^"]* '"'
  *                    | "'" [^']* "'"
  *
- * TODO: #xmlXPathCompLiteral memory allocation could be improved.
+ * TODO: Memory allocation could be improved.
  *
  * @param ctxt  the XPath Parser context
  */

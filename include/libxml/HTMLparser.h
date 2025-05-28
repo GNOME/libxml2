@@ -212,7 +212,7 @@ XMLPUBFUN void
 
 /**
  * This is the set of HTML parser options that can be passed to
- * htmlReadDoc(), htmlCtxtSetOptions() and other functions.
+ * #htmlReadDoc, #htmlCtxtSetOptions and other functions.
  */
 typedef enum {
     /**

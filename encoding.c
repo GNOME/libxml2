@@ -439,7 +439,7 @@ xmlDetectCharEncoding(const unsigned char* in, int len)
  * Unregisters all aliases.
  *
  * @deprecated This function modifies global state and is not
- * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
+ * thread-safe. See #xmlCtxtSetCharEncConvImpl for an alternative.
  *
  */
 void
@@ -502,7 +502,7 @@ xmlGetEncodingAlias(const char *alias) {
  * aliases will be overwritten.
  *
  * @deprecated This function modifies global state and is not
- * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
+ * thread-safe. See #xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * @param name  the encoding name as parsed, in UTF-8 format (ASCII actually)
  * @param alias  the alias name as parsed, in UTF-8 format (ASCII actually)
@@ -575,7 +575,7 @@ xmlAddEncodingAlias(const char *name, const char *alias) {
  * Unregisters an encoding alias.
  *
  * @deprecated This function modifies global state and is not
- * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
+ * thread-safe. See #xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * @param alias  the alias name as parsed, in UTF-8 format (ASCII actually)
  * @returns 0 in case of success, -1 in case of error.
@@ -690,7 +690,7 @@ xmlGetCharEncodingName(xmlCharEncoding enc) {
  * Create and registers an xmlCharEncodingHandler.
  *
  * @deprecated This function modifies global state and is not
- * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
+ * thread-safe. See #xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * @param name  the encoding name, in UTF-8 format (ASCII actually)
  * @param input  the xmlCharEncodingInputFunc to read that encoding
@@ -807,7 +807,7 @@ error:
 }
 
 /**
- * @deprecated Alias for xmlInitParser().
+ * @deprecated Alias for #xmlInitParser.
  */
 void
 xmlInitCharEncodingHandlers(void) {
@@ -830,8 +830,8 @@ xmlInitEncodingInternal(void) {
  * Cleanup the memory allocated for the char encoding support, it
  * unregisters all the encoding handlers and the aliases.
  *
- * @deprecated This function will be made private. Call xmlCleanupParser()
- * to free global state but see the warnings there. xmlCleanupParser()
+ * @deprecated This function will be made private. Call #xmlCleanupParser
+ * to free global state but see the warnings there. #xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  *
@@ -862,7 +862,7 @@ xmlCleanupCharEncodingHandlers(void) {
  * Register the char encoding handler.
  *
  * @deprecated This function modifies global state and is not
- * thread-safe. See xmlCtxtSetCharEncConvImpl() for an alternative.
+ * thread-safe. See #xmlCtxtSetCharEncConvImpl for an alternative.
  *
  * @param handler  the xmlCharEncodingHandler handler block
  */
@@ -969,7 +969,7 @@ xmlFindExtraHandler(const char *norig, const char *name, xmlCharEncFlags flags,
  * - iconv if enabled
  * - ICU if enabled
  *
- * The handler must be closed with xmlCharEncCloseFunc().
+ * The handler must be closed with #xmlCharEncCloseFunc.
  *
  * If the encoding is UTF-8, a NULL handler and no error code will
  * be returned.
@@ -1018,7 +1018,7 @@ xmlLookupCharEncodingHandler(xmlCharEncoding enc,
 }
 
 /**
- * @deprecated Use xmlLookupCharEncodingHandler() which has better error
+ * @deprecated Use #xmlLookupCharEncodingHandler which has better error
  * reporting.
  *
  * @param enc  an xmlCharEncoding value.
@@ -1043,7 +1043,7 @@ xmlGetCharEncodingHandler(xmlCharEncoding enc) {
  * - iconv if enabled
  * - ICU if enabled
  *
- * The handler must be closed with xmlCharEncCloseFunc().
+ * The handler must be closed with #xmlCharEncCloseFunc.
  *
  * If the encoding is UTF-8, a NULL handler and no error code will
  * be returned.
@@ -1151,7 +1151,7 @@ xmlCreateCharEncodingHandler(const char *name, xmlCharEncFlags flags,
  * - iconv if enabled
  * - ICU if enabled
  *
- * The handler must be closed with xmlCharEncCloseFunc().
+ * The handler must be closed with #xmlCharEncCloseFunc.
  *
  * If the encoding is UTF-8, a NULL handler and no error code will
  * be returned.
@@ -1176,7 +1176,7 @@ xmlOpenCharEncodingHandler(const char *name, int output,
  * If the encoding is UTF-8, this will return a no-op handler that
  * shouldn't be used.
  *
- * @deprecated Use xmlOpenCharEncodingHandler() which has better error
+ * @deprecated Use #xmlOpenCharEncodingHandler which has better error
  * reporting.
  *
  * @param name  a string describing the char encoding.

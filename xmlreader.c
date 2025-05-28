@@ -426,7 +426,7 @@ xmlTextReaderFreeNodeList(xmlTextReaderPtr reader, xmlNodePtr cur) {
 
 /**
  * Free a node, this is a recursive behaviour, all the children are freed too.
- * This doesn't unlink the child from the list, use xmlUnlinkNode() first.
+ * This doesn't unlink the child from the list, use #xmlUnlinkNode first.
  *
  * @param reader  the xmlTextReader used
  * @param cur  the node
@@ -1563,10 +1563,10 @@ xmlTextReaderReadState(xmlTextReader *reader) {
 
 /**
  * Reads the contents of the current node and the full subtree. It then makes
- * the subtree available until the next xmlTextReaderRead() call
+ * the subtree available until the next #xmlTextReaderRead call
  *
  * @param reader  the xmlTextReader used
- * @returns a node pointer valid until the next xmlTextReaderRead() call
+ * @returns a node pointer valid until the next #xmlTextReaderRead call
  *         or NULL in case of error.
  */
 xmlNode *
@@ -3447,7 +3447,7 @@ xmlTextReaderHasValue(xmlTextReader *reader) {
  *
  * @param reader  the xmlTextReader used
  * @returns the string or NULL if not available. The result must be deallocated
- *     with xmlFree()
+ *     with #xmlFree
  */
 xmlChar *
 xmlTextReaderValue(xmlTextReader *reader) {
@@ -3806,7 +3806,7 @@ xmlTextReaderCurrentNode(xmlTextReader *reader) {
 
 /**
  * This tells the XML Reader to preserve the current node.
- * The caller must also use xmlTextReaderCurrentDoc() to
+ * The caller must also use #xmlTextReaderCurrentDoc to
  * keep an handle on the resulting document once parsing has finished
  *
  * @param reader  the xmlTextReader used
@@ -3841,7 +3841,7 @@ xmlTextReaderPreserve(xmlTextReader *reader) {
 #ifdef LIBXML_PATTERN_ENABLED
 /**
  * This tells the XML Reader to preserve all nodes matched by the
- * pattern. The caller must also use xmlTextReaderCurrentDoc() to
+ * pattern. The caller must also use #xmlTextReaderCurrentDoc to
  * keep an handle on the resulting document once parsing has finished
  *
  * @param reader  the xmlTextReader used
@@ -3889,7 +3889,7 @@ xmlTextReaderPreservePattern(xmlTextReader *reader, const xmlChar *pattern,
  * Hacking interface allowing to get the xmlDoc corresponding to the
  * current document being accessed by the xmlTextReader.
  * NOTE: as a result of this call, the reader will not destroy the
- *       associated XML document and calling xmlFreeDoc() on the result
+ *       associated XML document and calling #xmlFreeDoc on the result
  *       is needed once the reader parsing has finished.
  *
  * @param reader  the xmlTextReader used
@@ -4516,7 +4516,7 @@ xmlTextReaderLocatorBaseURI(xmlTextReaderLocatorPtr locator) {
 /**
  * Register a callback function that will be called on error and warnings.
  *
- * @deprecated Use xmlTextReaderSetStructuredErrorHandler().
+ * @deprecated Use #xmlTextReaderSetStructuredErrorHandler.
  *
  * If `f` is NULL, the default error and warning handlers are restored.
  *
@@ -4892,7 +4892,7 @@ xmlTextReaderSetup(xmlTextReader *reader,
 }
 
 /**
- * Set the maximum amplification factor. See xmlCtxtSetMaxAmplification().
+ * Set the maximum amplification factor. See #xmlCtxtSetMaxAmplification.
  *
  * @param reader  an XML reader
  * @param maxAmpl  maximum amplification factor
@@ -4922,9 +4922,9 @@ xmlTextReaderGetLastError(xmlTextReader *reader)
 /**
  * This function provides the current index of the parser used
  * by the reader, relative to the start of the current entity.
- * This function actually just wraps a call to xmlBytesConsumed()
+ * This function actually just wraps a call to #xmlBytesConsumed
  * for the parser context associated with the reader.
- * See xmlBytesConsumed() for more information.
+ * See #xmlBytesConsumed for more information.
  *
  * @deprecated The returned value is mostly random and useless.
  * It reflects the parser reading ahead and is in no way related to

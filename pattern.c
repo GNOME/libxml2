@@ -14,7 +14,7 @@
 /*
  * TODO:
  * - compilation flags to check for specific syntaxes
- *   using flags of xmlPatterncompile()
+ *   using flags of #xmlPatterncompile
  * - making clear how pattern starting with / or . need to be handled,
  *   currently push(NULL, NULL) means a reset of the streaming context
  *   and indicating we are on / (the document node), probably need
@@ -1601,7 +1601,7 @@ xmlStreamCtxtAddState(xmlStreamCtxtPtr comp, int idx, int level) {
 }
 
 /**
- * Push new data onto the stream. NOTE: if the call xmlPatterncompile()
+ * Push new data onto the stream. NOTE: if the call #xmlPatterncompile
  * indicated a dictionary, then strings for name and ns will be expected
  * to come from the dictionary.
  * Both `name` and `ns` being NULL means the / i.e. the root of the document.
@@ -1923,7 +1923,7 @@ stream_next:
 }
 
 /**
- * Push new data onto the stream. NOTE: if the call xmlPatterncompile()
+ * Push new data onto the stream. NOTE: if the call #xmlPatterncompile
  * indicated a dictionary, then strings for name and ns will be expected
  * to come from the dictionary.
  * Both `name` and `ns` being NULL means the / i.e. the root of the document.
@@ -1943,12 +1943,12 @@ xmlStreamPush(xmlStreamCtxt *stream,
 }
 
 /**
- * Push new data onto the stream. NOTE: if the call xmlPatterncompile()
+ * Push new data onto the stream. NOTE: if the call #xmlPatterncompile
  * indicated a dictionary, then strings for name and ns will be expected
  * to come from the dictionary.
  * Both `name` and `ns` being NULL means the / i.e. the root of the document.
  * This can also act as a reset.
- * Different from xmlStreamPush() this function can be fed with nodes of type:
+ * Different from #xmlStreamPush this function can be fed with nodes of type:
  * element-, attribute-, text-, cdata-section-, comment- and
  * processing-instruction-node.
  *
@@ -1971,7 +1971,7 @@ xmlStreamPushNode(xmlStreamCtxt *stream,
 /**
  * Push new attribute data onto the stream.
  *
- * NOTE: If the call to xmlPatterncompile() indicated a dictionary,
+ * NOTE: If the call to #xmlPatterncompile indicated a dictionary,
  * then strings for `name` and `ns` will be expected to come from
  * the dictionary.
  *
@@ -2233,7 +2233,7 @@ xmlPatternMatch(xmlPattern *comp, xmlNode *node)
 
 /**
  * Get a streaming context for that pattern
- * Use xmlFreeStreamCtxt() to free the context.
+ * Use #xmlFreeStreamCtxt to free the context.
  *
  * @param comp  the precompiled pattern
  * @returns a pointer to the context or NULL in case of failure
@@ -2268,7 +2268,7 @@ failed:
 }
 
 /**
- * Check if the pattern is streamable i.e. xmlPatternGetStreamCtxt()
+ * Check if the pattern is streamable i.e. #xmlPatternGetStreamCtxt
  * should work.
  *
  * @param comp  the precompiled pattern

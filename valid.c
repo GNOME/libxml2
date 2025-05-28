@@ -740,7 +740,7 @@ error:
 
 /**
  * Allocate an element content structure.
- * Deprecated in favor of xmlNewDocElementContent()
+ * Deprecated in favor of #xmlNewDocElementContent
  *
  * @deprecated Internal function, don't use.
  *
@@ -850,7 +850,7 @@ error:
 
 /**
  * Build a copy of an element content description.
- * Deprecated, use xmlCopyDocElementContent() instead
+ * Deprecated, use #xmlCopyDocElementContent instead
  *
  * @deprecated Internal function, don't use.
  *
@@ -919,7 +919,7 @@ xmlFreeDocElementContent(xmlDoc *doc, xmlElementContent *cur) {
 
 /**
  * Free an element content structure. The whole subtree is removed.
- * Deprecated, use xmlFreeDocElementContent() instead
+ * Deprecated, use #xmlFreeDocElementContent instead
  *
  * @deprecated Internal function, don't use.
  *
@@ -932,7 +932,7 @@ xmlFreeElementContent(xmlElementContent *cur) {
 
 #ifdef LIBXML_OUTPUT_ENABLED
 /**
- * Deprecated, unsafe, use xmlSnprintfElementContent()
+ * Deprecated, unsafe, use #xmlSnprintfElementContent
  *
  * @deprecated Internal function, don't use.
  *
@@ -1322,7 +1322,7 @@ xmlCopyElementTable(xmlElementTable *table) {
  * This will dump the content of the element declaration as an XML
  * DTD definition.
  *
- * @deprecated Use xmlSaveTree().
+ * @deprecated Use #xmlSaveTree.
  *
  * @param buf  the XML buffer output
  * @param elem  An element table
@@ -1818,7 +1818,7 @@ xmlCopyAttributeTable(xmlAttributeTable *table) {
  * This will dump the content of the attribute declaration as an XML
  * DTD definition.
  *
- * @deprecated Use xmlSaveTree().
+ * @deprecated Use #xmlSaveTree.
  *
  * @param buf  the XML buffer output
  * @param attr  An attribute declaration
@@ -5415,7 +5415,7 @@ xmlValidatePopElement(xmlValidCtxt *ctxt, xmlDoc *doc ATTRIBUTE_UNUSED,
  * - [ VC: Element Valid ]
  * - [ VC: Required Attribute ]
  *
- * Then calls xmlValidateOneAttribute() for each attribute present.
+ * Then calls #xmlValidateOneAttribute for each attribute present.
  *
  * ID/IDREF checks are handled separately.
  *
@@ -6071,7 +6071,7 @@ xmlValidateDtd(xmlValidCtxt *ctxt, xmlDoc *doc, xmlDtd *dtd) {
 /**
  * Validate a document against a DTD.
  *
- * Like xmlValidateDtd() but uses the parser context's error handler.
+ * Like #xmlValidateDtd but uses the parser context's error handler.
  *
  * @since 2.14.0
  *
@@ -6313,7 +6313,7 @@ xmlValidateDocumentInternal(xmlParserCtxtPtr ctxt, xmlValidCtxtPtr vctxt,
  * Try to validate the document instance.
  *
  * @deprecated This function can't report malloc or other failures.
- * Use xmlCtxtValidateDocument().
+ * Use #xmlCtxtValidateDocument.
  *
  * Performs the all the checks described by the XML Rec,
  * i.e. validates the internal and external subset (if present)
@@ -6331,7 +6331,7 @@ xmlValidateDocument(xmlValidCtxt *vctxt, xmlDoc *doc) {
 /**
  * Validate a document.
  *
- * Like xmlValidateDocument() but uses the parser context's error handler.
+ * Like #xmlValidateDocument but uses the parser context's error handler.
  *
  * Option XML_PARSE_DTDLOAD should be enabled in the parser context
  * to make external entities work.

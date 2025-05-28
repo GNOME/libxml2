@@ -332,7 +332,7 @@ xmlGetPredefinedEntity(const xmlChar *name) {
 /**
  * Add a new entity to the document's external subset.
  *
- * xmlAddEntity() offers better error handling.
+ * #xmlAddEntity offers better error handling.
  *
  * @param doc  the document
  * @param name  the entity name
@@ -355,7 +355,7 @@ xmlAddDtdEntity(xmlDoc *doc, const xmlChar *name, int type,
 /**
  * Add a new entity to the document's internal subset.
  *
- * xmlAddEntity() offers better error handling.
+ * #xmlAddEntity offers better error handling.
  *
  * @param doc  the document
  * @param name  the entity name
@@ -378,7 +378,7 @@ xmlAddDocEntity(xmlDoc *doc, const xmlChar *name, int type,
 /**
  * Create a new entity.
  *
- * Like xmlAddDocEntity(), but if `doc` is NULL or has no internal
+ * Like #xmlAddDocEntity, but if `doc` is NULL or has no internal
  * subset defined, an unlinked entity will be returned. It is then
  * the responsibility of the caller to link it to the document later
  * or free it when not needed anymore.
@@ -511,7 +511,7 @@ xmlGetDocEntity(const xmlDoc *doc, const xmlChar *name) {
  * Silently removes some invalid characters like ASCII control
  * codes.
  *
- * See xmlEncodeSpecialChars() for an alternative.
+ * See #xmlEncodeSpecialChars for an alternative.
  *
  * @param doc  the document containing the string (optional)
  * @param input  A string to convert to XML.

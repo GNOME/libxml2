@@ -648,7 +648,7 @@ struct _xmlSAXLocator {
  * SAX callback to resolve external entities.
  *
  * This is only used to load DTDs. The preferred way to install
- * custom resolvers is xmlCtxtSetResourceLoader().
+ * custom resolvers is #xmlCtxtSetResourceLoader.
  *
  * @param ctx  the user data (XML parser context)
  * @param publicId  The public identifier of the entity
@@ -1676,7 +1676,7 @@ XMLPUBFUN long
 
 /**
  * This is the set of XML parser options that can be passed to
- * xmlReadDoc(), xmlCtxtSetOptions() and other functions.
+ * #xmlReadDoc, #xmlCtxtSetOptions and other functions.
  */
 typedef enum {
     /**

@@ -169,7 +169,7 @@ static xmlCatalogPtr xmlDefaultCatalog = NULL;
  * A mutex for modifying the shared global catalog(s)
  * xmlDefaultCatalog tree.
  * It also protects xmlCatalogXMLFiles
- * The core of this readers/writer scheme is in xmlFetchXMLCatalogFile()
+ * The core of this readers/writer scheme is in #xmlFetchXMLCatalogFile
  */
 static xmlRMutex xmlCatalogMutex;
 
@@ -504,7 +504,7 @@ xmlCatalogDumpEntry(void *payload, void *data,
 }
 
 /**
- * Serializes a Catalog entry, called by xmlDumpXMLCatalog() and recursively
+ * Serializes a Catalog entry, called by #xmlDumpXMLCatalog and recursively
  * for group entries
  *
  * @param catal  top catalog entry
@@ -848,7 +848,7 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
 }
 
 /**
- * parse an XML file and build a tree. It's like xmlParseFile()
+ * parse an XML file and build a tree. It's like #xmlParseFile
  * except it bypass all catalog lookups.
  *
  * @deprecated Use XML_PARSE_NO_SYS_CATALOG.
@@ -3233,7 +3233,7 @@ xmlCatalogDump(FILE *out) {
  * Add an entry in the catalog, it may overwrite existing but
  * different entries.
  * If called before any other catalog routine, allows to override the
- * default shared catalog put in place by xmlInitializeCatalog();
+ * default shared catalog put in place by #xmlInitializeCatalog;
  *
  * @param type  the type of record to add to the catalog
  * @param orig  the system, public or prefix to match
@@ -3548,7 +3548,7 @@ xmlCatalogLocalResolveURI(void *catalogs, const xmlChar *URI) {
 /**
  * Try to lookup the catalog reference associated to a system ID
  *
- * @deprecated use xmlCatalogResolveSystem()
+ * @deprecated use #xmlCatalogResolveSystem
  *
  * @param sysID  the system ID string
  * @returns the resource if found or NULL otherwise.
@@ -3591,7 +3591,7 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
 /**
  * Try to lookup the catalog reference associated to a public ID
  *
- * @deprecated use xmlCatalogResolvePublic()
+ * @deprecated use #xmlCatalogResolvePublic
  *
  * @param pubID  the public ID string
  * @returns the resource if found or NULL otherwise.

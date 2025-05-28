@@ -614,7 +614,7 @@ xmlHashAdd(xmlHashTable *hash, const xmlChar *key, void *payload) {
 /**
  * Add a hash table entry with two strings as key.
  *
- * See xmlHashAdd().
+ * See #xmlHashAdd.
  *
  * @since 2.13.0
  *
@@ -633,7 +633,7 @@ xmlHashAdd2(xmlHashTable *hash, const xmlChar *key,
 /**
  * Add a hash table entry with three strings as key.
  *
- * See xmlHashAdd().
+ * See #xmlHashAdd.
  *
  * @since 2.13.0
  *
@@ -658,7 +658,7 @@ xmlHashAdd3(xmlHashTable *hash, const xmlChar *key,
  * should be used with care.
  *
  * NOTE: This function doesn't allow to distinguish malloc failures from
- *       existing entries. Use xmlHashAdd() instead.
+ *       existing entries. Use #xmlHashAdd instead.
  *
  * @param hash  hash table
  * @param key  string key
@@ -680,7 +680,7 @@ xmlHashAddEntry(xmlHashTable *hash, const xmlChar *key, void *payload) {
 /**
  * Add a hash table entry with two strings as key.
  *
- * See xmlHashAddEntry().
+ * See #xmlHashAddEntry.
  *
  * @param hash  hash table
  * @param key  first string key
@@ -704,7 +704,7 @@ xmlHashAddEntry2(xmlHashTable *hash, const xmlChar *key,
 /**
  * Add a hash table entry with three strings as key.
  *
- * See xmlHashAddEntry().
+ * See #xmlHashAddEntry.
  *
  * @param hash  hash table
  * @param key  first string key
@@ -752,7 +752,7 @@ xmlHashUpdateEntry(xmlHashTable *hash, const xmlChar *key,
 /**
  * Add a hash table entry with two strings as key.
  *
- * See xmlHashUpdateEntry().
+ * See #xmlHashUpdateEntry.
  *
  * @param hash  hash table
  * @param key  first string key
@@ -777,7 +777,7 @@ xmlHashUpdateEntry2(xmlHashTable *hash, const xmlChar *key,
 /**
  * Add a hash table entry with three strings as key.
  *
- * See xmlHashUpdateEntry().
+ * See #xmlHashUpdateEntry.
  *
  * @param hash  hash table
  * @param key  first string key
@@ -1193,7 +1193,7 @@ int xmlHashRemoveEntry(xmlHashTable *hash, const xmlChar *key,
 /**
  * Remove an entry with two strings as key.
  *
- * See xmlHashRemoveEntry().
+ * See #xmlHashRemoveEntry.
  *
  * @param hash  hash table
  * @param key  first string key
@@ -1210,7 +1210,7 @@ xmlHashRemoveEntry2(xmlHashTable *hash, const xmlChar *key,
 /**
  * Remove an entry with three strings as key.
  *
- * See xmlHashRemoveEntry().
+ * See #xmlHashRemoveEntry.
  *
  * @param hash  hash table
  * @param key  first string key

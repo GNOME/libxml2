@@ -245,7 +245,7 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
  * of error messages which should be concatenated or printed to a
  * stream.
  *
- * @deprecated See xmlSetStructuredErrorFunc() for alternatives.
+ * @deprecated See #xmlSetStructuredErrorFunc for alternatives.
  *
  * If handler is NULL, use the built-in default handler which prints
  * to stderr.
@@ -276,14 +276,14 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  *
  * @deprecated Use a per-context error handler.
  *
- * - xmlCtxtSetErrorHandler() (since 2.13.0)
- * - xmlTextReaderSetStructuredErrorHandler()
- * - xmlXPathSetErrorHandler() (since 2.13.0)
- * - xmlXIncludeSetErrorHandler() (since 2.13.0)
- * - xmlSchemaSetParserStructuredErrors()
- * - xmlSchemaSetValidStructuredErrors()
- * - xmlRelaxNGSetParserStructuredErrors()
- * - xmlRelaxNGSetValidStructuredErrors()
+ * - #xmlCtxtSetErrorHandler (since 2.13.0)
+ * - #xmlTextReaderSetStructuredErrorHandler
+ * - #xmlXPathSetErrorHandler (since 2.13.0)
+ * - #xmlXIncludeSetErrorHandler (since 2.13.0)
+ * - #xmlSchemaSetParserStructuredErrors
+ * - #xmlSchemaSetValidStructuredErrors
+ * - #xmlRelaxNGSetParserStructuredErrors
+ * - #xmlRelaxNGSetValidStructuredErrors
  *
  * Set the thread-local "structured" handler and context for error
  * messages. If handler is NULL, the error handler is deactivated.
@@ -319,7 +319,7 @@ xmlSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
  * Displays the associated file and line information for the
  * current input.
  *
- * @deprecated Use xmlFormatError().
+ * @deprecated Use #xmlFormatError.
  *
  * @param input  an xmlParserInput input
  */
@@ -414,7 +414,7 @@ xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
  * Displays current context within the input content for
  * error reporting.
  *
- * @deprecated Use xmlFormatError().
+ * @deprecated Use #xmlFormatError.
  *
  * @param input  an xmlParserInput input
  */
@@ -852,7 +852,7 @@ xmlVFormatLegacyError(void *ctx, const char *level,
 /**
  * This is the default SAX error handler, but it will never be
  * called. If it isn't replaced by the user, errors will be
- * handled by xmlFormatError().
+ * handled by #xmlFormatError.
  *
  * @deprecated Do not call directly.
  *
@@ -876,7 +876,7 @@ xmlParserError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 /**
  * This is the default SAX warning handler, but it will never be
  * called. If it isn't replaced by the user, warnings will be
- * handled by xmlFormatError().
+ * handled by #xmlFormatError.
  *
  * @deprecated Do not call directly.
  *
@@ -900,7 +900,7 @@ xmlParserWarning(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 /**
  * This is the default validity error handler, but it will never be
  * called. If it isn't replaced by the user, errors will be
- * handled by xmlFormatError().
+ * handled by #xmlFormatError.
  *
  * @deprecated Do not call directly.
  *
@@ -924,7 +924,7 @@ xmlParserValidityError(void *ctx, const char *msg ATTRIBUTE_UNUSED, ...)
 /**
  * This is the default validity warning handler, but it will never
  * be called. If it isn't replaced by the user, warnings will be
- * handled by xmlFormatError().
+ * handled by #xmlFormatError.
  *
  * @deprecated Do not call directly.
  *

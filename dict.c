@@ -81,7 +81,7 @@ struct _xmlDict {
 static xmlMutex xmlDictMutex;
 
 /**
- * @deprecated Alias for xmlInitParser().
+ * @deprecated Alias for #xmlInitParser.
  *
  * @returns 0.
  */
@@ -100,8 +100,8 @@ xmlInitDictInternal(void) {
 }
 
 /**
- * @deprecated This function is a no-op. Call xmlCleanupParser()
- * to free global state but see the warnings there. xmlCleanupParser()
+ * @deprecated This function is a no-op. Call #xmlCleanupParser
+ * to free global state but see the warnings there. #xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  */

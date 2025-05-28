@@ -41,7 +41,7 @@ typedef void (*xmlListDeallocator) (xmlLink *lk);
  */
 typedef int  (*xmlListDataCompare) (const void *data0, const void *data1);
 /**
- * Callback function used when walking a list with xmlListWalk().
+ * Callback function used when walking a list with #xmlListWalk.
  *
  * @param data  the data found in the list
  * @param user  extra user provided data to the walker

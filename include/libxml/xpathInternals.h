@@ -28,13 +28,13 @@ extern "C" {
 /**
  * Push a value on the stack
  *
- * @deprecated Use xmlXPathValuePush()
+ * @deprecated Use #xmlXPathValuePush
  */
 #define valuePush xmlXPathValuePush
 /**
  * Pop a value from the stack
  *
- * @deprecated Use xmlXPathValuePop()
+ * @deprecated Use #xmlXPathValuePop
  */
 #define valuePop xmlXPathValuePop
 

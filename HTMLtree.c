@@ -571,9 +571,9 @@ htmlNodeDumpFileFormat(FILE *out, xmlDoc *doc ATTRIBUTE_UNUSED,
 }
 
 /**
- * Same as htmlNodeDumpFileFormat() with `format` set to 1 which is
+ * Same as #htmlNodeDumpFileFormat with `format` set to 1 which is
  * typically undesired. Use of this function is DISCOURAGED in favor
- * of htmlNodeDumpFileFormat().
+ * of #htmlNodeDumpFileFormat.
  *
  * @param out  the FILE pointer
  * @param doc  the document
@@ -638,10 +638,10 @@ htmlDocDumpMemoryFormat(xmlDoc *cur, xmlChar**mem, int *size, int format) {
 }
 
 /**
- * Same as htmlDocDumpMemoryFormat() with `format` set to 1 which
+ * Same as #htmlDocDumpMemoryFormat with `format` set to 1 which
  * is typically undesired. Also see the warnings there. Use of
  * this function is DISCOURAGED in favor of
- * htmlDocContentDumpFormatOutput().
+ * #htmlDocContentDumpFormatOutput.
  *
  * @param cur  the document
  * @param mem  OUT: the memory pointer
@@ -1132,9 +1132,9 @@ htmlNodeDumpFormatOutput(xmlOutputBuffer *buf,
 }
 
 /**
- * Same as htmlNodeDumpFormatOutput() with `format` set to 1 which is
+ * Same as #htmlNodeDumpFormatOutput with `format` set to 1 which is
  * typically undesired. Use of this function is DISCOURAGED in favor
- * of htmlNodeDumpFormatOutput().
+ * of #htmlNodeDumpFormatOutput.
  *
  * @param buf  the HTML buffer output
  * @param doc  the document (unused)
@@ -1163,9 +1163,9 @@ htmlDocContentDumpFormatOutput(xmlOutputBuffer *buf, xmlDoc *cur,
 }
 
 /**
- * Same as htmlDocContentDumpFormatDump() with `format` set to 1
+ * Same as #htmlDocContentDumpFormatDump with `format` set to 1
  * which is typically undesired. Use of this function is DISCOURAGED
- * in favor of htmlDocContentDumpFormatOutput().
+ * in favor of #htmlDocContentDumpFormatOutput.
  *
  * @param buf  the HTML buffer output
  * @param cur  the document
@@ -1195,7 +1195,7 @@ htmlDocContentDumpOutput(xmlOutputBuffer *buf, xmlDoc *cur,
  * undesired.
  *
  * Use of this function is DISCOURAGED in favor of
- * htmlNodeDumpFileFormat().
+ * #htmlNodeDumpFileFormat.
  *
  * @param f  the FILE*
  * @param cur  the document
@@ -1229,11 +1229,11 @@ htmlDocDump(FILE *f, xmlDoc *cur) {
 /**
  * Serialize an HTML document to a file.
  *
- * Same as htmlSaveFileFormat() with `encoding` set to NULL and
+ * Same as #htmlSaveFileFormat with `encoding` set to NULL and
  * `format` set to 1 which is typically undesired.
  *
  * Use of this function is DISCOURAGED in favor of
- * htmlSaveFileFormat().
+ * #htmlSaveFileFormat.
  *
  * @param filename  the filename (or URL)
  * @param cur  the document
@@ -1295,9 +1295,9 @@ htmlSaveFileFormat(const char *filename, xmlDoc *cur,
 /**
  * Serialize an HTML document to a file.
  *
- * Same as htmlSaveFileFormat() with `format` set to 1 which is
+ * Same as #htmlSaveFileFormat with `format` set to 1 which is
  * typically undesired. Also see the warnings there. Use of this
- * function is DISCOURAGED in favor of htmlSaveFileFormat().
+ * function is DISCOURAGED in favor of #htmlSaveFileFormat.
  *
  * @param filename  the filename
  * @param cur  the document

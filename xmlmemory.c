@@ -351,7 +351,7 @@ xmlMemoryDump(void)
  ****************************************************************/
 
 /**
- * @deprecated Alias for xmlInitParser().
+ * @deprecated Alias for #xmlInitParser.
  *
  * @returns 0.
  */
@@ -370,8 +370,8 @@ xmlInitMemoryInternal(void) {
 }
 
 /**
- * @deprecated This function is a no-op. Call xmlCleanupParser()
- * to free global state but see the warnings there. xmlCleanupParser()
+ * @deprecated This function is a no-op. Call #xmlCleanupParser
+ * to free global state but see the warnings there. #xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  */
@@ -454,7 +454,7 @@ xmlMemGet(xmlFreeFunc *freeFunc, xmlMallocFunc *mallocFunc,
  * The mallocAtomicFunc is specialized for atomic block
  * allocations (i.e. of areas  useful for garbage collected memory allocators
  *
- * @deprecated Use xmlMemSetup().
+ * @deprecated Use #xmlMemSetup.
  *
  * Should this be blocked if there was already some allocations
  * done ?
@@ -493,7 +493,7 @@ xmlGcMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
  * The mallocAtomicFunc is specialized for atomic block
  * allocations (i.e. of areas  useful for garbage collected memory allocators
  *
- * @deprecated xmlMemGet().
+ * @deprecated #xmlMemGet.
  *
  * @param freeFunc  place to save the free() function in use
  * @param mallocFunc  place to save the malloc() function in use

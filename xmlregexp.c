@@ -1318,7 +1318,7 @@ xmlRegPrintStateCompact(FILE* output, xmlRegexpPtr regexp, int state)
  * @param regexp  the regexp instance
  * 
  * Print the compact representation of a regexp, in the same fashion as the
- * public xmlRegexpPrint() function.
+ * public #xmlRegexpPrint function.
  */
 static void
 xmlRegPrintCompact(FILE* output, xmlRegexpPtr regexp)
@@ -2364,7 +2364,7 @@ xmlFACompareRanges(xmlRegRangePtr range1, xmlRegRangePtr range2) {
 
 /**
  * Compares two atoms type to check whether they intersect in some ways,
- * this is used by xmlFACompareAtoms() only
+ * this is used by #xmlFACompareAtoms only
  *
  * @param type1  an atom type
  * @param type2  an atom type
@@ -2606,7 +2606,7 @@ xmlFAEqualAtoms(xmlRegAtomPtr atom1, xmlRegAtomPtr atom2, int deep) {
 
 /**
  * Compares two atoms to check whether they intersect in some ways,
- * this is used by xmlFAComputesDeterminism() and xmlFARecurseDeterminism() only
+ * this is used by #xmlFAComputesDeterminism and #xmlFARecurseDeterminism only
  *
  * @param atom1  an atom
  * @param atom2  an atom
@@ -2703,7 +2703,7 @@ not_determinist:
 
 /**
  * Check whether the associated regexp is determinist,
- * should be called after xmlFAEliminateEpsilonTransitions()
+ * should be called after #xmlFAEliminateEpsilonTransitions
  *
  * @param ctxt  a regexp parser context
  * @param state  regexp state
@@ -2788,7 +2788,7 @@ xmlFAFinishRecurseDeterminism(xmlRegParserCtxtPtr ctxt, xmlRegStatePtr state) {
 
 /**
  * Check whether the associated regexp is determinist,
- * should be called after xmlFAEliminateEpsilonTransitions()
+ * should be called after #xmlFAEliminateEpsilonTransitions
  *
  * @param ctxt  a regexp parser context
  */
@@ -4249,7 +4249,7 @@ xmlRegExecPushString2(xmlRegExecCtxt *exec, const xmlChar *value,
 
 /**
  * Extract information from the regexp execution. Internal routine to
- * implement xmlRegExecNextValues() and xmlRegExecErrInfo()
+ * implement #xmlRegExecNextValues and #xmlRegExecErrInfo
  *
  * @param exec  a regexp execution context
  * @param err  error extraction or normal one
@@ -6921,7 +6921,7 @@ xmlExpNewAtom(xmlExpCtxt *ctxt, const xmlChar *name, int len) {
 /**
  * Get the atom associated to the choice `left` | `right`
  * Note that `left` and `right` are consumed in the operation, to keep
- * an handle on them use xmlExpRef() and use xmlExpFree() to release them,
+ * an handle on them use #xmlExpRef and use #xmlExpFree to release them,
  * this is true even in case of failure (unless ctxt == NULL).
  *
  * @param ctxt  the expression context
@@ -6944,7 +6944,7 @@ xmlExpNewOr(xmlExpCtxt *ctxt, xmlExpNode *left, xmlExpNode *right) {
 /**
  * Get the atom associated to the sequence `left` , `right`
  * Note that `left` and `right` are consumed in the operation, to keep
- * an handle on them use xmlExpRef() and use xmlExpFree() to release them,
+ * an handle on them use #xmlExpRef and use #xmlExpFree to release them,
  * this is true even in case of failure (unless ctxt == NULL).
  *
  * @param ctxt  the expression context
@@ -6967,7 +6967,7 @@ xmlExpNewSeq(xmlExpCtxt *ctxt, xmlExpNode *left, xmlExpNode *right) {
 /**
  * Get the atom associated to the range (`subset`){`min`, `max`}
  * Note that `subset` is consumed in the operation, to keep
- * an handle on it use xmlExpRef() and use xmlExpFree() to release it,
+ * an handle on it use #xmlExpRef and use #xmlExpFree to release it,
  * this is true even in case of failure (unless ctxt == NULL).
  *
  * @param ctxt  the expression context

@@ -37,9 +37,9 @@
  *   All Group Limited (cos-all-limited)
  *   Status: complete
  *   (1.2)
- *     In xmlSchemaGroupDefReferenceTermFixup() and
+ *     In #xmlSchemaGroupDefReferenceTermFixup and
  *   (2)
- *     In xmlSchemaParseModelGroup()
+ *     In #xmlSchemaParseModelGroup
  *     TODO: Actually this should go to component-level checks,
  *     but is done here due to performance. Move it to an other layer
  *     is schema construction via an API is implemented.
@@ -12977,7 +12977,7 @@ xmlSchemaResolveElementReferences(xmlSchemaElementPtr elemDecl,
 /**
  * Checks and builds the "member type definitions" property of the union
  * simple type. This handles part (1), part (2) is done in
- * xmlSchemaFinishMemberTypeDefinitionsProperty()
+ * #xmlSchemaFinishMemberTypeDefinitionsProperty
  *
  * @param ctxt  the schema parser context
  * @param type  the schema simple type definition

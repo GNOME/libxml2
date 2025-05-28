@@ -340,7 +340,7 @@ xmlInitGlobalState(xmlGlobalStatePtr gs);
  ************************************************************************/
 
 /**
- * @deprecated Alias for xmlInitParser().
+ * @deprecated Alias for #xmlInitParser.
  */
 void xmlInitGlobals(void) {
     xmlInitParser();
@@ -365,8 +365,8 @@ void xmlInitGlobalsInternal(void) {
 }
 
 /**
- * @deprecated This function is a no-op. Call xmlCleanupParser()
- * to free global state but see the warnings there. xmlCleanupParser()
+ * @deprecated This function is a no-op. Call #xmlCleanupParser
+ * to free global state but see the warnings there. #xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  */
@@ -459,7 +459,7 @@ xmlRegisterGlobalStateDtor(xmlGlobalState *gs) {
 
 #ifndef USE_TLS
 /**
- * xmlNewGlobalState() allocates a global state. This structure is used to
+ * #xmlNewGlobalState allocates a global state. This structure is used to
  * hold all data for use by a thread when supporting backwards compatibility
  * of libxml2 to pre-thread-safe behaviour.
  *
@@ -826,7 +826,7 @@ DllMain(ATTRIBUTE_UNUSED HINSTANCE hinstDLL, DWORD fdwReason,
 /**
  * Set per-thread default value.
  *
- * @deprecated Call xmlSetGenericErrorFunc() in each thread.
+ * @deprecated Call #xmlSetGenericErrorFunc in each thread.
  */
 void
 xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
@@ -842,7 +842,7 @@ xmlThrDefSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
 /**
  * Set per-thread default value.
  *
- * @deprecated Call xmlSetStructuredErrorFunc() in each thread.
+ * @deprecated Call #xmlSetStructuredErrorFunc in each thread.
  */
 void
 xmlThrDefSetStructuredErrorFunc(void *ctx, xmlStructuredErrorFunc handler) {
@@ -899,7 +899,7 @@ int xmlThrDefIndentTreeOutput(int v) {
 /**
  * Set per-thread default value.
  *
- * @deprecated Use the xmlsave.h API and xmlSaveSetIndentString().
+ * @deprecated Use the xmlsave.h API and #xmlSaveSetIndentString.
  */
 const char * xmlThrDefTreeIndentString(const char * v) {
     const char * ret;
@@ -1034,7 +1034,7 @@ xmlThrDefDeregisterNodeDefault(xmlDeregisterNodeFunc func)
 /**
  * Set per-thread default value.
  *
- * @deprecated Call xmlParserInputBufferCreateFilenameDefault()
+ * @deprecated Call #xmlParserInputBufferCreateFilenameDefault
  * in each thread.
  */
 xmlParserInputBufferCreateFilenameFunc
@@ -1057,7 +1057,7 @@ xmlThrDefParserInputBufferCreateFilenameDefault(xmlParserInputBufferCreateFilena
 /**
  * Set per-thread default value.
  *
- * @deprecated Call xmlOutputBufferCreateFilenameDefault()
+ * @deprecated Call #xmlOutputBufferCreateFilenameDefault
  * in each thread.
  */
 xmlOutputBufferCreateFilenameFunc

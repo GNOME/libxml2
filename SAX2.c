@@ -381,7 +381,7 @@ error:
 
 /**
  * This is only used to load DTDs. The preferred way to install
- * custom resolvers is xmlCtxtSetResourceLoader().
+ * custom resolvers is #xmlCtxtSetResourceLoader.
  *
  * @param ctx  the user data (XML parser context)
  * @param publicId  The public ID of the entity
@@ -2325,7 +2325,7 @@ xmlSAX2EndElementNs(void *ctx,
 }
 
 /**
- * called when an entity xmlSAX2Reference() is detected.
+ * called when an entity #xmlSAX2Reference is detected.
  *
  * @param ctx  the user data (XML parser context)
  * @param name  The entity name
@@ -2497,7 +2497,7 @@ xmlSAX2Characters(void *ctx, const xmlChar *ch, int len)
 
 /**
  * receiving some ignorable whitespaces from the parser.
- * UNUSED: by default the DOM building will use xmlSAX2Characters()
+ * UNUSED: by default the DOM building will use #xmlSAX2Characters
  *
  * @param ctx  the user data (XML parser context)
  * @param ch  a xmlChar string
@@ -2534,10 +2534,10 @@ xmlSAX2ProcessingInstruction(void *ctx, const xmlChar *target,
 }
 
 /**
- * A xmlSAX2Comment() has been parsed.
+ * A #xmlSAX2Comment has been parsed.
  *
  * @param ctx  the user data (XML parser context)
- * @param value  the xmlSAX2Comment() content
+ * @param value  the #xmlSAX2Comment content
  */
 void
 xmlSAX2Comment(void *ctx, const xmlChar *value)
@@ -2665,7 +2665,7 @@ xmlSAX2InitDefaultSAXHandler(xmlSAXHandler *hdlr, int warning)
 /**
  * Initialize the default SAX2 handler
  *
- * @deprecated This function is a no-op. Call xmlInitParser() to
+ * @deprecated This function is a no-op. Call #xmlInitParser to
  * initialize the library.
  *
  */
@@ -2719,7 +2719,7 @@ xmlSAX2InitHtmlDefaultSAXHandler(xmlSAXHandler *hdlr)
 }
 
 /**
- * @deprecated This function is a no-op. Call xmlInitParser() to
+ * @deprecated This function is a no-op. Call #xmlInitParser to
  * initialize the library.
  */
 void

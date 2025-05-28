@@ -55,7 +55,7 @@ typedef enum {
 } xmlTextReaderMode;
 
 /**
- * Some common options to use with xmlTextReaderSetParserProp(), but it
+ * Some common options to use with #xmlTextReaderSetParserProp, but it
  * is better to use xmlParserOption and the xmlReaderNewxxx and
  * xmlReaderForxxx APIs now.
  */

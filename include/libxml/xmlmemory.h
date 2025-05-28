@@ -92,7 +92,7 @@ XMLPUBVAR xmlMallocFunc xmlMalloc;
  * data (i.e. blocks not containing pointers), useful when using a
  * garbage collecting allocator.
  *
- * @deprecated Use xmlMalloc()
+ * @deprecated Use #xmlMalloc
  */
 XMLPUBVAR xmlMallocFunc xmlMallocAtomic;
 /**

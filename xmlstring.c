@@ -146,7 +146,7 @@ xmlStrcmp(const xmlChar *str1, const xmlChar *str2) {
 
 /**
  * Check if both strings are equal of have same content.
- * Should be a bit more readable and faster than xmlStrcmp()
+ * Should be a bit more readable and faster than #xmlStrcmp
  *
  * @param str1  the first xmlChar *
  * @param str2  the second xmlChar *
@@ -445,7 +445,7 @@ xmlStrncat(xmlChar *cur, const xmlChar *add, int len) {
 }
 
 /**
- * same as xmlStrncat(), but creates a new string.  The original
+ * same as #xmlStrncat, but creates a new string.  The original
  * two strings are not freed. If `len` is < 0 then the length
  * will be calculated automatically.
  *
@@ -669,7 +669,7 @@ xmlStrVASPrintf(xmlChar **out, int maxSize, const char *msg, va_list ap) {
 }
 
 /**
- * See xmlStrVASPrintf().
+ * See #xmlStrVASPrintf.
  *
  * @param out  pointer to the resulting string
  * @param maxSize  maximum size of the output buffer
@@ -739,7 +739,7 @@ xmlUTF8Size(const xmlChar *utf) {
  *
  * @param utf1  pointer to first UTF8 char
  * @param utf2  pointer to second UTF8 char
- * @returns result of the compare as with xmlStrncmp()
+ * @returns result of the compare as with #xmlStrncmp
  */
 int
 xmlUTF8Charcmp(const xmlChar *utf1, const xmlChar *utf2) {

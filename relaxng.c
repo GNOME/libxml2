@@ -2709,8 +2709,8 @@ xmlRelaxNGInitTypes(void)
 /**
  * Cleanup the default Schemas type library associated to RelaxNG
  *
- * @deprecated This function will be made private. Call xmlCleanupParser()
- * to free global state but see the warnings there. xmlCleanupParser()
+ * @deprecated This function will be made private. Call #xmlCleanupParser
+ * to free global state but see the warnings there. #xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
  * have call cleanup functions at all.
  *
@@ -7319,7 +7319,7 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxt *ctxt)
 /**
  * Set the callback functions used to handle errors for a validation context
  *
- * @deprecated Use xmlRelaxNGSetParserStructuredErrors().
+ * @deprecated Use #xmlRelaxNGSetParserStructuredErrors.
  *
  * @param ctxt  a Relax-NG validation context
  * @param err  the error callback
@@ -8116,7 +8116,7 @@ xmlRelaxNGValidatePopElement(xmlRelaxNGValidCtxt *ctxt,
 }
 
 /**
- * Validate a full subtree when xmlRelaxNGValidatePushElement() returned
+ * Validate a full subtree when #xmlRelaxNGValidatePushElement returned
  * 0 and the content of the node has been expanded.
  *
  * @param ctxt  the validation context
@@ -10508,7 +10508,7 @@ xmlRelaxNGFreeValidCtxt(xmlRelaxNGValidCtxt *ctxt)
 /**
  * Set the error and warning callback information
  *
- * @deprecated Use xmlRelaxNGSetValidStructuredErrors().
+ * @deprecated Use #xmlRelaxNGSetValidStructuredErrors.
  *
  * @param ctxt  a Relax-NG validation context
  * @param err  the error function

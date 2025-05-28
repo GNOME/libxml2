@@ -271,7 +271,7 @@ extern "C" {
                              const xmlChar * content);
 
 /**
- * This macro maps to xmlTextWriterWritePI()
+ * This macro maps to #xmlTextWriterWritePI
  */
 #define xmlTextWriterWriteProcessingInstruction xmlTextWriterWritePI
 
@@ -331,7 +331,7 @@ extern "C" {
                               const xmlChar * subset);
 
 /**
- * this macro maps to xmlTextWriterWriteDTD()
+ * this macro maps to #xmlTextWriterWriteDTD
  */
 #define xmlTextWriterWriteDocType xmlTextWriterWriteDTD
 

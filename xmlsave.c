@@ -1816,8 +1816,8 @@ xhtmlNodeDumpOutput(xmlSaveCtxtPtr ctxt, xmlNodePtr cur) {
  * Create a document saving context serializing to a file descriptor
  * with the encoding and the options given.
  *
- * If `encoding` is NULL, xmlSaveDoc() uses the document's
- * encoding and xmlSaveTree() uses UTF-8.
+ * If `encoding` is NULL, #xmlSaveDoc uses the document's
+ * encoding and #xmlSaveTree uses UTF-8.
  *
  * This function doesn't allow to distinguish unsupported
  * encoding errors from failed memory allocations.
@@ -1847,8 +1847,8 @@ xmlSaveToFd(int fd, const char *encoding, int options)
  * Create a document saving context serializing to a filename
  * with the encoding and the options given.
  *
- * If `encoding` is NULL, xmlSaveDoc() uses the document's
- * encoding and xmlSaveTree() uses UTF-8.
+ * If `encoding` is NULL, #xmlSaveDoc uses the document's
+ * encoding and #xmlSaveTree uses UTF-8.
  *
  * This function doesn't allow to distinguish unsupported
  * encoding errors from failed memory allocations.
@@ -1880,8 +1880,8 @@ xmlSaveToFilename(const char *filename, const char *encoding, int options)
  * Create a document saving context serializing to a buffer
  * with the encoding and the options given.
  *
- * If `encoding` is NULL, xmlSaveDoc() uses the document's
- * encoding and xmlSaveTree() uses UTF-8.
+ * If `encoding` is NULL, #xmlSaveDoc uses the document's
+ * encoding and #xmlSaveTree uses UTF-8.
  *
  * This function doesn't allow to distinguish unsupported
  * encoding errors from failed memory allocations.
@@ -1912,8 +1912,8 @@ xmlSaveToBuffer(xmlBuffer *buffer, const char *encoding, int options)
  * Create a document saving context serializing to a file descriptor
  * with the encoding and the options given
  *
- * If `encoding` is NULL, xmlSaveDoc() uses the document's
- * encoding and xmlSaveTree() uses UTF-8.
+ * If `encoding` is NULL, #xmlSaveDoc uses the document's
+ * encoding and #xmlSaveTree uses UTF-8.
  *
  * This function doesn't allow to distinguish unsupported
  * encoding errors from failed memory allocations.
@@ -2182,7 +2182,7 @@ xmlAttrSerializeTxtContent(xmlBuffer *buf, xmlDoc *doc,
  * XML_PARSE_NOBLANKS.
  *
  * Since this is using xmlBuffer structures it is limited to 2GB and
- * somewhat deprecated, use xmlNodeDumpOutput() instead.
+ * somewhat deprecated, use #xmlNodeDumpOutput instead.
  *
  * @param buf  the XML buffer output
  * @param doc  the document
@@ -2411,7 +2411,7 @@ xmlDocDumpInternal(xmlOutputBufferPtr buf, xmlDocPtr doc, const char *encoding,
  * encoding declaration.
  *
  * It is up to the caller of this function to free the returned
- * memory with xmlFree().
+ * memory with #xmlFree.
  *
  * Note that `format` only works if the document was parsed with
  * XML_PARSE_NOBLANKS.
@@ -2459,7 +2459,7 @@ xmlDocDumpFormatMemoryEnc(xmlDoc *out_doc, xmlChar **doc_txt_ptr,
 }
 
 /**
- * Same as xmlDocDumpFormatMemoryEnc() with `encoding` set to
+ * Same as #xmlDocDumpFormatMemoryEnc with `encoding` set to
  * NULL and `format` set to 0.
  *
  * @param cur  the document
@@ -2472,7 +2472,7 @@ xmlDocDumpMemory(xmlDoc *cur, xmlChar**mem, int *size) {
 }
 
 /**
- * Same as xmlDocDumpFormatMemoryEnc() with `encoding` set to
+ * Same as #xmlDocDumpFormatMemoryEnc with `encoding` set to
  * NULL.
  *
  * @param cur  the document
@@ -2486,7 +2486,7 @@ xmlDocDumpFormatMemory(xmlDoc *cur, xmlChar**mem, int *size, int format) {
 }
 
 /**
- * Same as xmlDocDumpFormatMemoryEnc() with `format` set to 0.
+ * Same as #xmlDocDumpFormatMemoryEnc with `format` set to 0.
  *
  * @param out_doc  Document to generate XML text from
  * @param doc_txt_ptr  Memory pointer for allocated XML text
@@ -2547,9 +2547,9 @@ xmlDocDump(FILE *f, xmlDoc *cur) {
 }
 
 /**
- * Same as xmlSaveFormatFileTo() with `format` set to 0.
+ * Same as #xmlSaveFormatFileTo with `format` set to 0.
  *
- * WARNING: This calls xmlOutputBufferClose() and frees `buf`.
+ * WARNING: This calls #xmlOutputBufferClose and frees `buf`.
  *
  * @param buf  an output I/O buffer
  * @param cur  the document
@@ -2572,7 +2572,7 @@ xmlSaveFileTo(xmlOutputBuffer *buf, xmlDoc *cur, const char *encoding) {
  * Note that `format` only works if the document was parsed with
  * XML_PARSE_NOBLANKS.
  *
- * WARNING: This calls xmlOutputBufferClose() and frees `buf`.
+ * WARNING: This calls #xmlOutputBufferClose and frees `buf`.
  *
  * @param buf  an output I/O buffer
  * @param cur  the document
@@ -2639,7 +2639,7 @@ xmlSaveFormatFileEnc( const char * filename, xmlDoc *cur,
 
 
 /**
- * Same as xmlSaveFormatFileEnc() with `format` set to 0.
+ * Same as #xmlSaveFormatFileEnc with `format` set to 0.
  *
  * @param filename  the filename (or URL)
  * @param cur  the document
@@ -2652,7 +2652,7 @@ xmlSaveFileEnc(const char *filename, xmlDoc *cur, const char *encoding) {
 }
 
 /**
- * Same as xmlSaveFormatFileEnc() with `encoding` set to NULL.
+ * Same as #xmlSaveFormatFileEnc with `encoding` set to NULL.
  *
  * @param filename  the filename (or URL)
  * @param cur  the document
@@ -2665,7 +2665,7 @@ xmlSaveFormatFile(const char *filename, xmlDoc *cur, int format) {
 }
 
 /**
- * Same as xmlSaveFormatFileEnc() with `encoding` set to NULL
+ * Same as #xmlSaveFormatFileEnc with `encoding` set to NULL
  * and `format` set to 0.
  *
  * @param filename  the filename (or URL)

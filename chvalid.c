@@ -78,7 +78,7 @@ xmlCharInRange (unsigned int val, const xmlChRangeGroup *rptr) {
 
 
 /**
- * @deprecated Use xmlIsBaseChar_ch() or xmlIsBaseCharQ().
+ * @deprecated Use #xmlIsBaseChar_ch or #xmlIsBaseCharQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -90,7 +90,7 @@ xmlIsBaseChar(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsBlank_ch() or xmlIsBlankQ().
+ * @deprecated Use #xmlIsBlank_ch or #xmlIsBlankQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -102,7 +102,7 @@ xmlIsBlank(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsChar_ch() or xmlIsCharQ().
+ * @deprecated Use #xmlIsChar_ch or #xmlIsCharQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -114,7 +114,7 @@ xmlIsChar(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsCombiningQ().
+ * @deprecated Use #xmlIsCombiningQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -126,7 +126,7 @@ xmlIsCombining(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsDigit_ch() or xmlIsDigitQ().
+ * @deprecated Use #xmlIsDigit_ch or #xmlIsDigitQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -138,7 +138,7 @@ xmlIsDigit(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsExtender_ch() or xmlIsExtenderQ().
+ * @deprecated Use #xmlIsExtender_ch or #xmlIsExtenderQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -150,7 +150,7 @@ xmlIsExtender(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsIdeographicQ().
+ * @deprecated Use #xmlIsIdeographicQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise
@@ -162,7 +162,7 @@ xmlIsIdeographic(unsigned int ch) {
 
 
 /**
- * @deprecated Use xmlIsPubidChar_ch() or xmlIsPubidCharQ().
+ * @deprecated Use #xmlIsPubidChar_ch or #xmlIsPubidCharQ.
  *
  * @param ch  character to validate
  * @returns true if argument valid, false otherwise

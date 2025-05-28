@@ -29,7 +29,7 @@ typedef struct _xmlModule xmlModule;
 typedef xmlModule *xmlModulePtr;
 
 /**
- * enumeration of options that can be passed down to xmlModuleOpen()
+ * enumeration of options that can be passed down to #xmlModuleOpen
  */
 typedef enum {
     XML_MODULE_LAZY = 1,	/* lazy binding */

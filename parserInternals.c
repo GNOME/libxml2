@@ -101,11 +101,11 @@ xmlCheckVersion(int version) {
  * takes precedence over all other error reporting mechanisms.
  * These are (in order of precedence):
  *
- * - per-context structured handler (xmlCtxtSetErrorHandler())
+ * - per-context structured handler (#xmlCtxtSetErrorHandler)
  * - per-context structured "serror" SAX handler
- * - global structured handler (xmlSetStructuredErrorFunc())
+ * - global structured handler (#xmlSetStructuredErrorFunc)
  * - per-context generic "error" and "warning" SAX handlers
- * - global generic handler (xmlSetGenericErrorFunc())
+ * - global generic handler (#xmlSetGenericErrorFunc)
  * - print to stderr
  *
  * @since 2.13.0
@@ -1188,7 +1188,7 @@ done:
  * the encoding found in the XML declaration.
  *
  * This function can also be used to override the encoding of chunks
- * passed to xmlParseChunk().
+ * passed to #xmlParseChunk.
  *
  * @param ctxt  the parser context
  * @param enc  the encoding value (number)
@@ -1259,7 +1259,7 @@ xmlSwitchInputEncodingName(xmlParserCtxtPtr ctxt, xmlParserInputPtr input,
  * encoding found in the XML declaration.
  *
  * This function can also be used to override the encoding of chunks
- * passed to xmlParseChunk().
+ * passed to #xmlParseChunk.
  *
  * @since 2.13.0
  *
@@ -1400,7 +1400,7 @@ xmlSwitchInputEncoding(xmlParserCtxt *ctxt, xmlParserInput *input,
  * Use encoding handler to decode input data.
  *
  * This function can be used to enforce the encoding of chunks passed
- * to xmlParseChunk().
+ * to #xmlParseChunk.
  *
  * @param ctxt  the parser context
  * @param handler  the encoding handler
@@ -1716,7 +1716,7 @@ xmlFreeInputStream(xmlParserInput *input) {
 /**
  * Create a new input stream structure.
  *
- * @deprecated Use xmlNewInputFromUrl() or similar functions.
+ * @deprecated Use #xmlNewInputFromUrl or similar functions.
  *
  * @param ctxt  an XML parser context
  * @returns the new input stream or NULL
@@ -2191,7 +2191,7 @@ xmlNewEntityInputStream(xmlParserCtxt *ctxt, xmlEntity *ent) {
 /**
  * Create a new input stream based on a memory buffer.
  *
- * @deprecated Use xmlNewInputFromString().
+ * @deprecated Use #xmlNewInputFromString.
  *
  * @param ctxt  an XML parser context
  * @param buffer  an memory buffer
@@ -2363,11 +2363,11 @@ xmlCheckHTTPInput(xmlParserCtxt *ctxt ATTRIBUTE_UNUSED,
  * The following resource loaders will be called if they were
  * registered (in order of precedence):
  *
- * - the per-thread xmlParserInputBufferCreateFilenameFunc() set with
- *   xmlParserInputBufferCreateFilenameDefault() (deprecated)
+ * - the per-thread #xmlParserInputBufferCreateFilenameFunc set with
+ *   #xmlParserInputBufferCreateFilenameDefault (deprecated)
  * - the default loader which will return
  *   - the result from a matching global input callback set with
- *     xmlRegisterInputCallbacks() (deprecated)
+ *     #xmlRegisterInputCallbacks (deprecated)
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *
@@ -2431,7 +2431,7 @@ xmlNewInputFromUrl(const char *url, xmlParserInputFlags flags,
  * Unlike the default external entity loader, this function
  * doesn't use XML catalogs.
  *
- * @deprecated Use xmlNewInputFromUrl().
+ * @deprecated Use #xmlNewInputFromUrl.
  *
  * @param ctxt  an XML parser context
  * @param filename  the filename to use as entity
@@ -2544,7 +2544,7 @@ xmlCurrentExternalEntityLoader = xmlDefaultExternalEntityLoader;
  * application.
  *
  * @deprecated This is a global setting and not thread-safe. Use
- * xmlCtxtSetResourceLoader() or similar functions.
+ * #xmlCtxtSetResourceLoader or similar functions.
  *
  * @param f  the new entity resolver function
  */
@@ -2556,9 +2556,9 @@ xmlSetExternalEntityLoader(xmlExternalEntityLoader f) {
 /**
  * Get the default external entity resolver function for the application
  *
- * @deprecated See xmlSetExternalEntityLoader().
+ * @deprecated See #xmlSetExternalEntityLoader.
  *
- * @returns the xmlExternalEntityLoader() function pointer
+ * @returns the #xmlExternalEntityLoader function pointer
  */
 xmlExternalEntityLoader
 xmlGetExternalEntityLoader(void) {
@@ -2658,15 +2658,15 @@ xmlLoadResource(xmlParserCtxt *ctxt, const char *url, const char *publicId,
  * result. Then the following resource loaders will be called if
  * they were registered (in order of precedence):
  *
- * - the resource loader set with xmlCtxtSetResourceLoader()
+ * - the resource loader set with #xmlCtxtSetResourceLoader
  * - the global external entity loader set with
- *   xmlSetExternalEntityLoader() (without catalog resolution,
+ *   #xmlSetExternalEntityLoader (without catalog resolution,
  *   deprecated)
- * - the per-thread xmlParserInputBufferCreateFilenameFunc() set with
- *   xmlParserInputBufferCreateFilenameDefault() (deprecated)
+ * - the per-thread #xmlParserInputBufferCreateFilenameFunc set with
+ *   #xmlParserInputBufferCreateFilenameDefault (deprecated)
  * - the default loader which will return
  *   - the result from a matching global input callback set with
- *     xmlRegisterInputCallbacks() (deprecated)
+ *     #xmlRegisterInputCallbacks (deprecated)
  *   - a file opened from the filesystem, with automatic detection
  *     of compressed files if support is compiled in.
  *
@@ -2977,7 +2977,7 @@ xmlNewParserCtxt(void)
  * @since 2.11.0
  *
  * If you want support older versions,
- * it's best to invoke xmlNewParserCtxt() and set ctxt->sax with
+ * it's best to invoke #xmlNewParserCtxt and set ctxt->sax with
  * struct assignment.
  *
  * @param sax  SAX handler
@@ -3221,9 +3221,9 @@ xmlCtxtGetValidCtxt(xmlParserCtxt *ctxt) {
  ************************************************************************/
 
 /**
- * Same as xmlCtxtReset()
+ * Same as #xmlCtxtReset
  *
- * @deprecated Use xmlCtxtReset()
+ * @deprecated Use #xmlCtxtReset
  *
  * @param ctxt  an XML parser context
  */

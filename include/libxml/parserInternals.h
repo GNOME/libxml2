@@ -27,13 +27,13 @@ extern "C" {
 /**
  * Push an input on the stack.
  *
- * @deprecated Use xmlCtxtPushInput()
+ * @deprecated Use #xmlCtxtPushInput
  */
 #define inputPush xmlCtxtPushInput
 /**
  * Pop an input from the stack.
  *
- * @deprecated Use xmlCtxtPushInput()
+ * @deprecated Use #xmlCtxtPushInput
  */
 #define inputPop xmlCtxtPopInput
 /**

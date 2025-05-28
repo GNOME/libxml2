@@ -228,7 +228,7 @@ xmlBufEmpty(xmlBuf *buf) {
 /**
  * Discard bytes at the start of a buffer.
  *
- * NOTE that the return value differs from xmlBufferShrink()
+ * NOTE that the return value differs from #xmlBufferShrink
  * as it will return 0 on error instead of -1 due to size_t being
  * used as the return type.
  *
@@ -493,7 +493,7 @@ xmlBufCat(xmlBuf *buf, const xmlChar *str) {
 /**
  * Helper routine to switch from the old buffer structures in use
  * in various APIs. It creates a wrapper xmlBuf which will be
- * used for internal processing until the xmlBufBackToBuffer() is
+ * used for internal processing until the #xmlBufBackToBuffer is
  * issued.
  *
  * @param buffer  incoming old buffer to convert to a new one
@@ -1097,7 +1097,7 @@ xmlBufferWriteCHAR(xmlBuffer *buf, const xmlChar *string) {
 /**
  * Append a zero-terminated C string to a buffer.
  *
- * Same as xmlBufferCCat().
+ * Same as #xmlBufferCCat.
  *
  * @param buf  the buffer
  * @param string  the string to add

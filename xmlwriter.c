@@ -3751,7 +3751,7 @@ xmlTextWriterWriteDTDInternalEntity(xmlTextWriter *writer,
 }
 
 /**
- * Write a DTD external entity. The entity must have been started with xmlTextWriterStartDTDEntity()
+ * Write a DTD external entity. The entity must have been started with #xmlTextWriterStartDTDEntity
  *
  * @param writer  the xmlTextWriter
  * @param pe  TRUE if this is a parameter entity, FALSE if not

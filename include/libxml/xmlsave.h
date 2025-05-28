@@ -25,7 +25,7 @@ extern "C" {
 
 /**
  * This is the set of XML save options that can be passed down
- * to the xmlSaveToFd() and similar calls.
+ * to the #xmlSaveToFd and similar calls.
  */
 typedef enum {
     /**

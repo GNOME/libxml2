@@ -6083,7 +6083,7 @@ xmlSkipBlankCharsPEBalanced(xmlParserCtxt *ctxt, int openInputNr) {
     if (!PARSER_EXTERNAL(ctxt) && !PARSER_IN_PE(ctxt))
         return;
 
-    while (1) {
+    while (!PARSER_STOPPED(ctxt)) {
         if (ctxt->input->cur >= ctxt->input->end) {
 #ifdef LIBXML_VALID_ENABLED
             if ((ctxt->validate) && (ctxt->inputNr <= openInputNr)) {

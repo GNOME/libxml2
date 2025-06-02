@@ -5568,6 +5568,8 @@ xmlRegFreeRegexp(xmlRegexp *regexp) {
 /**
  * Create a new automata
  *
+ * @deprecated Internal function, don't use.
+ *
  * @returns the new object or NULL in case of failure
  */
 xmlAutomata *
@@ -5596,6 +5598,8 @@ xmlNewAutomata(void) {
 /**
  * Free an automata
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  */
 void
@@ -5607,6 +5611,8 @@ xmlFreeAutomata(xmlAutomata *am) {
 
 /**
  * Set some flags on the automata
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param flags  a set of internal flags
@@ -5621,6 +5627,8 @@ xmlAutomataSetFlags(xmlAutomata *am, int flags) {
 /**
  * Initial state lookup
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @returns the initial state of the automata
  */
@@ -5633,6 +5641,8 @@ xmlAutomataGetInitState(xmlAutomata *am) {
 
 /**
  * Makes that state a final state
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param state  a state in this automata
@@ -5647,9 +5657,13 @@ xmlAutomataSetFinalState(xmlAutomata *am, xmlAutomataState *state) {
 }
 
 /**
+ * Add a transition.
+ *
  * If `to` is NULL, this creates first a new target state in the automata
  * and then adds a transition from the `from` state to the target state
  * activated by the value of `token`
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param from  the starting point of the transition
@@ -5690,6 +5704,8 @@ xmlAutomataNewTransition(xmlAutomata *am, xmlAutomataState *from,
  * If `to` is NULL, this creates first a new target state in the automata
  * and then adds a transition from the `from` state to the target state
  * activated by the value of `token`
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param from  the starting point of the transition
@@ -5748,6 +5764,8 @@ xmlAutomataNewTransition2(xmlAutomata *am, xmlAutomataState *from,
  * activated by any value except (`token`,`token2`)
  * Note that if `token2` is not NULL, then (X, NULL) won't match to follow
  * the semantic of XSD \#\#other
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param from  the starting point of the transition
@@ -5811,6 +5829,8 @@ xmlAutomataNewNegTrans(xmlAutomata *am, xmlAutomataState *from,
  * and then adds a transition from the `from` state to the target state
  * activated by a succession of input of value `token` and `token2` and
  * whose number is between `min` and `max`
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param from  the starting point of the transition
@@ -5906,6 +5926,8 @@ error:
  * activated by a succession of input of value `token` and whose number
  * is between `min` and `max`
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @param from  the starting point of the transition
  * @param to  the target point of the transition or NULL
@@ -5980,6 +6002,8 @@ error:
  * activated by a succession of input of value `token` and `token2` and whose
  * number is between `min` and `max`, moreover that transition can only be
  * crossed once.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param from  the starting point of the transition
@@ -6068,6 +6092,8 @@ error:
  * is between `min` and `max`, moreover that transition can only be crossed
  * once.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @param from  the starting point of the transition
  * @param to  the target point of the transition or NULL
@@ -6127,6 +6153,8 @@ error:
 /**
  * Create a new disconnected state in the automata
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @returns the new state or NULL in case of error
  */
@@ -6141,6 +6169,8 @@ xmlAutomataNewState(xmlAutomata *am) {
  * If `to` is NULL, this creates first a new target state in the automata
  * and then adds an epsilon transition from the `from` state to the
  * target state
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param from  the starting point of the transition
@@ -6164,6 +6194,8 @@ xmlAutomataNewEpsilon(xmlAutomata *am, xmlAutomataState *from,
  * target state. That transition is an epsilon transition allowed only when
  * all transitions from the `from` node have been activated.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @param from  the starting point of the transition
  * @param to  the target point of the transition or NULL
@@ -6183,6 +6215,8 @@ xmlAutomataNewAllTrans(xmlAutomata *am, xmlAutomataState *from,
 
 /**
  * Create a new counter
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @param min  the minimal value on the counter
@@ -6209,6 +6243,8 @@ xmlAutomataNewCounter(xmlAutomata *am, int min, int max) {
  * and then adds an epsilon transition from the `from` state to the target state
  * which will increment the counter provided
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @param from  the starting point of the transition
  * @param to  the target point of the transition or NULL
@@ -6231,6 +6267,8 @@ xmlAutomataNewCountedTrans(xmlAutomata *am, xmlAutomataState *from,
  * and then adds an epsilon transition from the `from` state to the target state
  * which will be allowed only if the counter is within the right range.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @param from  the starting point of the transition
  * @param to  the target point of the transition or NULL
@@ -6252,6 +6290,8 @@ xmlAutomataNewCounterTrans(xmlAutomata *am, xmlAutomataState *from,
  * Compile the automata into a Reg Exp ready for being executed.
  * The automata should be free after this point.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param am  an automata
  * @returns the compiled regexp or NULL in case of error
  */
@@ -6271,6 +6311,8 @@ xmlAutomataCompile(xmlAutomata *am) {
 
 /**
  * Checks if an automata is determinist.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param am  an automata
  * @returns 1 if true, 0 if not, and -1 in case of error

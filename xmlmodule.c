@@ -43,6 +43,9 @@ static int xmlModulePlatformSymbol(void *handle, const char *name, void **result
 
 /**
  * Opens a module/shared library given its name or path
+ *
+ * @deprecated Will be removed.
+ *
  * NOTE: that due to portability issues, behaviour can only be
  * guaranteed with `name` using ASCII. We cannot guarantee that
  * an UTF-8 string would work, which is why name is a const char *
@@ -77,6 +80,9 @@ xmlModuleOpen(const char *name, int options ATTRIBUTE_UNUSED)
 
 /**
  * Lookup for a symbol address in the given module
+ *
+ * @deprecated Will be removed.
+ *
  * NOTE: that due to portability issues, behaviour can only be
  * guaranteed with `name` using ASCII. We cannot guarantee that
  * an UTF-8 string would work, which is why name is a const char *
@@ -107,6 +113,8 @@ xmlModuleSymbol(xmlModule *module, const char *name, void **symbol)
  * The close operations unload the associated module and free the
  * data associated to the module.
  *
+ * @deprecated Will be removed.
+ *
  * @param module  the module handle
  * @returns 0 in case of success, -1 in case of argument error and -2
  *         if the module could not be closed/unloaded.
@@ -132,6 +140,8 @@ xmlModuleClose(xmlModule *module)
  * The free operations free the data associated to the module
  * but does not unload the associated shared library which may still
  * be in use.
+ *
+ * @deprecated Will be removed.
  *
  * @param module  the module handle
  * @returns 0 in case of success, -1 in case of argument error

@@ -1,10 +1,10 @@
 /**
  * @file
- * 
- * @brief dynamic module loading
- * 
- * basic API for dynamic module loading, used by
- *              libexslt added in 2.6.17
+ *
+ * @brief Dynamic module loading
+ *
+ * API for dynamic module loading. Only used by old libxslt versions
+ * and subject to removal.
  *
  * @copyright See Copyright for the status of this software.
  *

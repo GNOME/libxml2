@@ -1,12 +1,9 @@
 /**
  * @file
- * 
- * @brief implementation of XInclude
- * 
- * API to handle XInclude processing,
- * implements the
- * World Wide Web Consortium Last Call Working Draft 10 November 2003
- * http://www.w3.org/TR/2003/WD-xinclude-20031110
+ *
+ * @brief Implementation of XInclude 1.0
+ *
+ * API to process XML Inclusions.
  *
  * @copyright See Copyright for the status of this software.
  *

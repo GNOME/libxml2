@@ -3,7 +3,7 @@
  * 
  * @brief API to build regexp automata
  * 
- * the API to build regexp automata
+ * These are internal functions and shouldn't be used.
  *
  * @copyright See Copyright for the status of this software.
  *

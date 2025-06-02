@@ -3020,6 +3020,8 @@ xmlValidateNotationUse(xmlValidCtxt *ctxt, xmlDoc *doc,
  * Search in the DTDs whether an element accepts mixed content
  * or ANY (basically if it is supposed to accept text children).
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param doc  the document
  * @param name  the element name
  * @returns 0 if no, 1 if yes, and -1 if no element description
@@ -6375,6 +6377,8 @@ xmlCtxtValidateDocument(xmlParserCtxt *ctxt, xmlDoc *doc) {
 /**
  * Build/extend a list of  potential children allowed by the content tree
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param ctree  an element content tree
  * @param names  an array to store the list of child names
  * @param len  a pointer to the number of element in the list
@@ -6436,6 +6440,8 @@ static void xmlNoValidityErr(void *ctx ATTRIBUTE_UNUSED,
  *
  * pointers to the element names are inserted at the beginning of the array
  * and do not need to be freed.
+ *
+ * @deprecated This feature will be removed.
  *
  * @param prev  an element to insert after
  * @param next  an element to insert next

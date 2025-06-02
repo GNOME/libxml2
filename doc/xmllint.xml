@@ -585,7 +585,10 @@
         <varlistentry>
             <term><option>--insert</option></term>
             <listitem>
-                <para>Test for valid insertions.</para>
+                <para>
+                    Test for valid insertions. DEPRECATED: This feature
+                    will be removed.
+                </para>
             </listitem>
         </varlistentry>
 

@@ -605,6 +605,7 @@ deprecated_funcs = {
     'xmlIsExtender': True,
     'xmlIsIdeographic': True,
     'xmlIsLetter': True,
+    'xmlIsMixedElement': True,
     'xmlIsPubidChar': True,
     'xmlIsRef': True,
     'xmlKeepBlanksDefault': True,

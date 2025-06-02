@@ -372,6 +372,7 @@ XMLPUBFUN int
 					 const xmlChar *notationName);
 #endif /* LIBXML_VALID_ENABLED */
 
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlIsMixedElement	(xmlDoc *doc,
 					 const xmlChar *name);
@@ -397,12 +398,14 @@ XMLPUBFUN xmlElement *
 
 #ifdef LIBXML_VALID_ENABLED
 
+XML_DEPRECATED
 XMLPUBFUN int
 		xmlValidGetPotentialChildren(xmlElementContent *ctree,
 					 const xmlChar **names,
 					 int *len,
 					 int max);
 
+/* only needed for `xmllint --insert` */
 XMLPUBFUN int
 		xmlValidGetValidElements(xmlNode *prev,
 					 xmlNode *next,

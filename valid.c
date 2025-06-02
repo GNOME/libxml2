@@ -1101,9 +1101,23 @@ xmlAddElementDecl(xmlValidCtxt *ctxt,
     const xmlChar *localName;
     xmlChar *prefix = NULL;
 
-    if ((dtd == NULL) || (name == NULL) ||
-        (type < XML_ELEMENT_TYPE_EMPTY) || (type > XML_ELEMENT_TYPE_ELEMENT))
+    if ((dtd == NULL) || (name == NULL))
 	return(NULL);
+
+    switch (type) {
+        case XML_ELEMENT_TYPE_EMPTY:
+        case XML_ELEMENT_TYPE_ANY:
+            if (content != NULL)
+                return(NULL);
+            break;
+        case XML_ELEMENT_TYPE_MIXED:
+        case XML_ELEMENT_TYPE_ELEMENT:
+            if (content == NULL)
+                return(NULL);
+            break;
+        default:
+            return(NULL);
+    }
 
     /*
      * check if name is a QName

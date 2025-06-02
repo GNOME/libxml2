@@ -2223,17 +2223,15 @@ static void showVersion(FILE *errStream, const char *name) {
     fprintf(errStream, "%s: using libxml version %s\n", name, xmlParserVersion);
     fprintf(errStream, "   compiled with: ");
     if (xmlHasFeature(XML_WITH_THREAD)) fprintf(errStream, "Threads ");
-    if (xmlHasFeature(XML_WITH_TREE)) fprintf(errStream, "Tree ");
+    fprintf(errStream, "Tree ");
     if (xmlHasFeature(XML_WITH_OUTPUT)) fprintf(errStream, "Output ");
     if (xmlHasFeature(XML_WITH_PUSH)) fprintf(errStream, "Push ");
     if (xmlHasFeature(XML_WITH_READER)) fprintf(errStream, "Reader ");
     if (xmlHasFeature(XML_WITH_PATTERN)) fprintf(errStream, "Patterns ");
     if (xmlHasFeature(XML_WITH_WRITER)) fprintf(errStream, "Writer ");
     if (xmlHasFeature(XML_WITH_SAX1)) fprintf(errStream, "SAXv1 ");
-    if (xmlHasFeature(XML_WITH_HTTP)) fprintf(errStream, "HTTP ");
     if (xmlHasFeature(XML_WITH_VALID)) fprintf(errStream, "DTDValid ");
     if (xmlHasFeature(XML_WITH_HTML)) fprintf(errStream, "HTML ");
-    if (xmlHasFeature(XML_WITH_LEGACY)) fprintf(errStream, "Legacy ");
     if (xmlHasFeature(XML_WITH_C14N)) fprintf(errStream, "C14N ");
     if (xmlHasFeature(XML_WITH_CATALOG)) fprintf(errStream, "Catalog ");
     if (xmlHasFeature(XML_WITH_XPATH)) fprintf(errStream, "XPath ");
@@ -2242,10 +2240,8 @@ static void showVersion(FILE *errStream, const char *name) {
     if (xmlHasFeature(XML_WITH_ICONV)) fprintf(errStream, "Iconv ");
     if (xmlHasFeature(XML_WITH_ICU)) fprintf(errStream, "ICU ");
     if (xmlHasFeature(XML_WITH_ISO8859X)) fprintf(errStream, "ISO8859X ");
-    if (xmlHasFeature(XML_WITH_UNICODE)) fprintf(errStream, "Unicode ");
-    if (xmlHasFeature(XML_WITH_REGEXP)) fprintf(errStream, "Regexps ");
-    if (xmlHasFeature(XML_WITH_AUTOMATA)) fprintf(errStream, "Automata ");
-    if (xmlHasFeature(XML_WITH_EXPR)) fprintf(errStream, "Expr ");
+    if (xmlHasFeature(XML_WITH_REGEXP))
+        fprintf(errStream, "Regexps Automata ");
     if (xmlHasFeature(XML_WITH_RELAXNG)) fprintf(errStream, "RelaxNG ");
     if (xmlHasFeature(XML_WITH_SCHEMAS)) fprintf(errStream, "Schemas ");
     if (xmlHasFeature(XML_WITH_SCHEMATRON)) fprintf(errStream, "Schematron ");

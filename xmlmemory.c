@@ -493,7 +493,7 @@ xmlGcMemSetup(xmlFreeFunc freeFunc, xmlMallocFunc mallocFunc,
  * The mallocAtomicFunc is specialized for atomic block
  * allocations (i.e. of areas  useful for garbage collected memory allocators
  *
- * @deprecated #xmlMemGet.
+ * @deprecated Use #xmlMemGet.
  *
  * @param freeFunc  place to save the free() function in use
  * @param mallocFunc  place to save the malloc() function in use

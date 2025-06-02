@@ -241,13 +241,15 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
 
 /**
  * Set the thread-local "generic" handler and context for error
- * messages. The generic error handler will only receive fragments
- * of error messages which should be concatenated or printed to a
- * stream.
+ * messages.
  *
  * @deprecated See #xmlSetStructuredErrorFunc for alternatives.
  *
- * If handler is NULL, use the built-in default handler which prints
+ * The generic error handler will only receive fragments of
+ * error messages which should be concatenated or printed to a
+ * stream.
+ *
+ * If `handler` is NULL, use the built-in default handler which prints
  * to stderr.
  *
  * Since this is a thread-local setting, it's a good idea to reset
@@ -272,9 +274,12 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
 }
 
 /**
- * It's recommended to use the per-context error handlers instead:
+ * Set the thread-local "structured" handler and context for error
+ * messages.
  *
  * @deprecated Use a per-context error handler.
+ *
+ * It's recommended to use the per-context error handlers instead:
  *
  * - #xmlCtxtSetErrorHandler (since 2.13.0)
  * - #xmlTextReaderSetStructuredErrorHandler
@@ -285,8 +290,7 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  * - #xmlRelaxNGSetParserStructuredErrors
  * - #xmlRelaxNGSetValidStructuredErrors
  *
- * Set the thread-local "structured" handler and context for error
- * messages. If handler is NULL, the error handler is deactivated.
+ * If `handler` is NULL, the error handler is deactivated.
  *
  * The structured error handler takes precedence over "generic"
  * handlers, even per-context generic handlers.

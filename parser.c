@@ -627,11 +627,7 @@ xmlHasFeature(xmlFeature feature)
             return(0);
 #endif
         case XML_WITH_EXPR:
-#ifdef LIBXML_EXPR_ENABLED
-            return(1);
-#else
             return(0);
-#endif
         case XML_WITH_RELAXNG:
 #ifdef LIBXML_RELAXNG_ENABLED
             return(1);

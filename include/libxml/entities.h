@@ -140,16 +140,21 @@ XMLPUBFUN xmlChar *
 XMLPUBFUN xmlChar *
 			xmlEncodeSpecialChars	(const xmlDoc *doc,
 						 const xmlChar *input);
+XML_DEPRECATED
 XMLPUBFUN xmlEntitiesTable *
 			xmlCreateEntitiesTable	(void);
+XML_DEPRECATED
 XMLPUBFUN xmlEntitiesTable *
 			xmlCopyEntitiesTable	(xmlEntitiesTable *table);
+XML_DEPRECATED
 XMLPUBFUN void
 			xmlFreeEntitiesTable	(xmlEntitiesTable *table);
 #ifdef LIBXML_OUTPUT_ENABLED
+XML_DEPRECATED
 XMLPUBFUN void
 			xmlDumpEntitiesTable	(xmlBuffer *buf,
 						 xmlEntitiesTable *table);
+XML_DEPRECATED
 XMLPUBFUN void
 			xmlDumpEntityDecl	(xmlBuffer *buf,
 						 xmlEntity *ent);

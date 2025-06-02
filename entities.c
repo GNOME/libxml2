@@ -555,6 +555,8 @@ xmlEncodeSpecialChars(const xmlDoc *doc ATTRIBUTE_UNUSED,
 /**
  * Create and initialize an empty entities hash table.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @returns the xmlEntitiesTable just created or NULL in case of error.
  */
 xmlEntitiesTable *
@@ -576,6 +578,8 @@ xmlFreeEntityWrapper(void *entity, const xmlChar *name ATTRIBUTE_UNUSED) {
 
 /**
  * Deallocate the memory used by an entities hash table.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param table  An entity table
  */
@@ -643,6 +647,8 @@ error:
 /**
  * Build a copy of an entity table.
  *
+ * @deprecated Internal function, don't use.
+ *
  * @param table  An entity table
  * @returns the new xmlEntitiesTable or NULL in case of error.
  */
@@ -656,6 +662,8 @@ xmlCopyEntitiesTable(xmlEntitiesTable *table) {
 /**
  * This will dump the content of the entity table as an XML DTD
  * definition.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param buf  An XML buffer.
  * @param ent  An entity table
@@ -690,6 +698,8 @@ xmlDumpEntityDeclScan(void *ent, void *save,
 /**
  * This will dump the content of the entity table as an XML DTD
  * definition.
+ *
+ * @deprecated Internal function, don't use.
  *
  * @param buf  An XML buffer.
  * @param table  An entity table

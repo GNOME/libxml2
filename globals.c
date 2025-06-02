@@ -33,6 +33,11 @@
 static xmlMutex xmlThrDefMutex;
 
 /*
+ * Deprecated global setting which is unused since 2.15.0
+ */
+static int lineNumbersDefaultValue = 1;
+
+/*
  * Thread-local storage emulation.
  *
  * This works by replacing a global variable
@@ -141,7 +146,6 @@ struct _xmlGlobalState {
     int doValidityCheckingDefaultValue;
     int getWarningsDefaultValue;
     int keepBlanksDefaultValue;
-    int lineNumbersDefaultValue;
     int loadExtDtdDefaultValue;
     int pedanticParserDefaultValue;
     int substituteEntitiesDefaultValue;
@@ -619,7 +623,7 @@ __xmlKeepBlanksDefaultValue(void) {
 
 int *
 __xmlLineNumbersDefaultValue(void) {
-    return(&xmlGetThreadLocalStorage(0)->lineNumbersDefaultValue);
+    return(&lineNumbersDefaultValue);
 }
 
 int *

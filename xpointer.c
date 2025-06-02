@@ -565,10 +565,11 @@ xmlXPtrEvalXPointer(xmlXPathParserContextPtr ctxt) {
 /**
  * Create a new XPointer context
  *
+ * @deprecated Same as xmlXPathNewContext.
+ *
  * @param doc  the XML document
- * @param here  the node that directly contains the XPointer being evaluated or NULL
- * @param origin  the element from which a user or program initiated traversal of
- *           the link, or NULL.
+ * @param here  unused
+ * @param origin  unused
  * @returns the xmlXPathContext just allocated.
  */
 xmlXPathContext *
@@ -585,12 +586,15 @@ xmlXPtrNewContext(xmlDoc *doc, xmlNode *here, xmlNode *origin) {
 }
 
 /**
- * Evaluate the XPath Location Path in the given context.
+ * Evaluate an XPointer expression.
  *
- * @param str  the XPointer expression
- * @param ctx  the XPointer context
- * @returns the xmlXPathObject resulting from the evaluation or NULL.
- *         the caller has to free the object.
+ * This function can only return nodesets. The caller has to
+ * free the object.
+ *
+ * @param str  an XPointer expression
+ * @param ctx  an XPath context
+ * @returns the xmlXPathObject resulting from the evaluation or NULL
+ * in case of error.
  */
 xmlXPathObject *
 xmlXPtrEval(const xmlChar *str, xmlXPathContext *ctx) {

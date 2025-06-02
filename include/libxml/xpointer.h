@@ -1,16 +1,17 @@
 /**
  * @file
- * 
- * @brief API to handle XML Pointers
- * 
- * API to handle XML Pointers
- * Base implementation was made accordingly to
- * W3C Candidate Recommendation 7 June 2000
- * http://www.w3.org/TR/2000/CR-xptr-20000607
  *
- * Added support for the element() scheme described in:
- * W3C Proposed Recommendation 13 November 2002
- * http://www.w3.org/TR/2002/PR-xptr-element-20021113/
+ * @brief XPointer framework and schemes
+ *
+ * API to evaluate XPointer expressions. The following schemes are
+ * supported:
+ *
+ * - element()
+ * - xmlns()
+ * - xpath1()
+ *
+ * xpointer() is an alias for the xpath1() scheme. The point and
+ * range extensions are not supported.
  *
  * @copyright See Copyright for the status of this software.
  *

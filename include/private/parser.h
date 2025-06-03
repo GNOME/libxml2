@@ -4,8 +4,6 @@
 #include <libxml/parser.h>
 #include <libxml/xmlversion.h>
 
-#include "private/dict.h"
-
 #define XML_INVALID_CHAR 0x200000
 
 #define XML_MAX_URI_LENGTH 2000
@@ -58,35 +56,13 @@
  */
 #define INPUT_CHUNK	250
 
-#define XML_SCAN_NC         1
-#define XML_SCAN_NMTOKEN    2
-#define XML_SCAN_OLD10      4
-
 struct _xmlAttrHashBucket {
     int index;
 };
 
-typedef struct {
-    xmlHashedString prefix;
-    xmlHashedString name;
-    xmlHashedString value;
-    const xmlChar *valueEnd;
-    int external;
-    int expandedSize;
-} xmlDefAttr;
-
-typedef struct _xmlDefAttrs xmlDefAttrs;
-typedef xmlDefAttrs *xmlDefAttrsPtr;
-struct _xmlDefAttrs {
-    int nbAttrs;	/* number of defaulted attributes on that element */
-    int maxAttrs;       /* the size of the array */
-#if __STDC_VERSION__ >= 199901L
-    /* Using a C99 flexible array member avoids UBSan errors. */
-    xmlDefAttr attrs[] ATTRIBUTE_COUNTED_BY(maxAttrs);
-#else
-    xmlDefAttr attrs[1];
-#endif
-};
+#define XML_SCAN_NC         1
+#define XML_SCAN_NMTOKEN    2
+#define XML_SCAN_OLD10      4
 
 XML_HIDDEN const xmlChar *
 xmlScanName(const xmlChar *buf, size_t maxSize, int flags);

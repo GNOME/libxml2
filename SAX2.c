@@ -950,7 +950,7 @@ xmlNsErrMsg(xmlParserCtxtPtr ctxt, xmlParserErrors error,
  * @param ctxt  the parser context
  * @param fullname  the attribute name, including namespace prefix
  * @param value  the attribute value
- * @param prefix  the namespace prefix of the element
+ * @param prefix  the namespace prefix
  */
 static void
 xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
@@ -1242,67 +1242,156 @@ error:
 static void
 xmlCheckDefaultedAttributes(xmlParserCtxtPtr ctxt, const xmlChar *name,
 	const xmlChar *prefix, const xmlChar **atts) {
-    xmlDefAttrsPtr defaults;
+    xmlElementPtr elemDecl;
+    const xmlChar *att;
+    int internal = 1;
     int i;
 
-    if (ctxt->attsDefault == NULL)
-        return;
+    elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->intSubset, name, prefix);
+    if (elemDecl == NULL) {
+	elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset, name, prefix);
+	internal = 0;
+    }
 
-    defaults = xmlHashLookup2(ctxt->attsDefault, name, prefix);
-    if (defaults == NULL)
-        return;
+process_external_subset:
 
-    for (i = 0; i < defaults->nbAttrs; i++) {
-        xmlDefAttr *def = &defaults->attrs[i];
-        const xmlChar *attname = def->name.name;
-        const xmlChar *aprefix = def->prefix.name;
+    if (elemDecl != NULL) {
+	xmlAttributePtr attr = elemDecl->attributes;
 
-        if (((aprefix != NULL) &&
-             (xmlStrEqual(aprefix, BAD_CAST "xmlns"))) ||
-            ((aprefix == NULL) &&
-             (xmlStrEqual(attname, BAD_CAST "xmlns"))) ||
-            (ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
-            xmlChar fn[50];
-            xmlChar *fulln;
-            const xmlChar *att;
-            int j;
+#ifdef LIBXML_VALID_ENABLED
+        /*
+         * Check against defaulted attributes from the external subset
+         * if the document is stamped as standalone.
+         *
+         * This should be moved to valid.c, but we don't keep track
+         * whether an attribute was defaulted.
+         */
+	if ((ctxt->myDoc->standalone == 1) &&
+	    (ctxt->myDoc->extSubset != NULL) &&
+	    (ctxt->validate)) {
+	    while (attr != NULL) {
+		if ((attr->defaultValue != NULL) &&
+		    (xmlGetDtdQAttrDesc(ctxt->myDoc->extSubset,
+					attr->elem, attr->name,
+					attr->prefix) == attr) &&
+		    (xmlGetDtdQAttrDesc(ctxt->myDoc->intSubset,
+					attr->elem, attr->name,
+					attr->prefix) == NULL)) {
+		    xmlChar *fulln;
 
-            fulln = xmlBuildQName(attname, aprefix, fn, 50);
-            if (fulln == NULL) {
-                xmlSAX2ErrMemory(ctxt);
-                return;
-            }
-
-            /*
-             * Check that the attribute is not declared in the
-             * serialization
-             */
-            att = NULL;
-            if (atts != NULL) {
-                j = 0;
-                att = atts[j];
-                while (att != NULL) {
-                    if (xmlStrEqual(att, fulln))
+		    if (attr->prefix != NULL) {
+			fulln = xmlStrdup(attr->prefix);
+                        if (fulln != NULL)
+			    fulln = xmlStrcat(fulln, BAD_CAST ":");
+                        if (fulln != NULL)
+			    fulln = xmlStrcat(fulln, attr->name);
+		    } else {
+			fulln = xmlStrdup(attr->name);
+		    }
+                    if (fulln == NULL) {
+                        xmlSAX2ErrMemory(ctxt);
                         break;
-                    j += 2;
-                    att = atts[j];
-                }
-            }
-            if (att == NULL) {
-                if ((ctxt->validate) &&
-                    (ctxt->myDoc->standalone == 1) &&
-                    (def->external)) {
-                    xmlErrValid(ctxt, XML_DTD_STANDALONE_DEFAULTED,
-                                "standalone: attribute %s on %s defaulted "
-                                "from external subset\n",
-                                fulln, name);
-                }
+                    }
 
-                xmlSAX1Attribute(ctxt, fulln, def->value.name, prefix);
-            }
-            if ((fulln != fn) && (fulln != attname))
-                xmlFree(fulln);
-        }
+		    /*
+		     * Check that the attribute is not declared in the
+		     * serialization
+		     */
+		    att = NULL;
+		    if (atts != NULL) {
+			i = 0;
+			att = atts[i];
+			while (att != NULL) {
+			    if (xmlStrEqual(att, fulln))
+				break;
+			    i += 2;
+			    att = atts[i];
+			}
+		    }
+		    if (att == NULL) {
+		        xmlErrValid(ctxt, XML_DTD_STANDALONE_DEFAULTED,
+      "standalone: attribute %s on %s defaulted from external subset\n",
+				    fulln,
+				    attr->elem);
+		    }
+                    xmlFree(fulln);
+		}
+		attr = attr->nexth;
+	    }
+	}
+#endif
+
+	/*
+	 * Actually insert defaulted values when needed
+	 */
+	attr = elemDecl->attributes;
+	while (attr != NULL) {
+	    /*
+	     * Make sure that attributes redefinition occurring in the
+	     * internal subset are not overridden by definitions in the
+	     * external subset.
+	     */
+	    if (attr->defaultValue != NULL) {
+		/*
+		 * the element should be instantiated in the tree if:
+		 *  - this is a namespace prefix
+		 *  - the user required for completion in the tree
+		 *    like XSLT
+		 *  - there isn't already an attribute definition
+		 *    in the internal subset overriding it.
+		 */
+		if (((attr->prefix != NULL) &&
+		     (xmlStrEqual(attr->prefix, BAD_CAST "xmlns"))) ||
+		    ((attr->prefix == NULL) &&
+		     (xmlStrEqual(attr->name, BAD_CAST "xmlns"))) ||
+		    (ctxt->loadsubset & XML_COMPLETE_ATTRS)) {
+		    xmlAttributePtr tst;
+
+		    tst = xmlGetDtdQAttrDesc(ctxt->myDoc->intSubset,
+					     attr->elem, attr->name,
+					     attr->prefix);
+		    if ((tst == attr) || (tst == NULL)) {
+		        xmlChar fn[50];
+			xmlChar *fulln;
+
+                        fulln = xmlBuildQName(attr->name, attr->prefix, fn, 50);
+			if (fulln == NULL) {
+			    xmlSAX2ErrMemory(ctxt);
+			    return;
+			}
+
+			/*
+			 * Check that the attribute is not declared in the
+			 * serialization
+			 */
+			att = NULL;
+			if (atts != NULL) {
+			    i = 0;
+			    att = atts[i];
+			    while (att != NULL) {
+				if (xmlStrEqual(att, fulln))
+				    break;
+				i += 2;
+				att = atts[i];
+			    }
+			}
+			if (att == NULL) {
+			    xmlSAX1Attribute(ctxt, fulln,
+					     attr->defaultValue, prefix);
+			}
+			if ((fulln != fn) && (fulln != attr->name))
+			    xmlFree(fulln);
+		    }
+		}
+	    }
+	    attr = attr->nexth;
+	}
+	if (internal == 1) {
+	    elemDecl = xmlGetDtdQElementDesc(ctxt->myDoc->extSubset,
+		                             name, prefix);
+	    internal = 0;
+	    goto process_external_subset;
+	}
     }
 }
 

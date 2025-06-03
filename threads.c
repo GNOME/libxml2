@@ -409,18 +409,29 @@ xmlInitParser(void) {
 }
 
 /**
+ * Free global memory allocations.
+ *
  * This function is named somewhat misleadingly. It does not clean up
- * parser state but global memory allocated by the library itself.
+ * parser state but frees global memory allocated by various components
+ * of the library.
  *
- * Since 2.9.11, cleanup is performed automatically if a shared or
- * dynamic libxml2 library is unloaded. This function should only
- * be used to avoid false positives from memory leak checkers in
- * static builds.
+ * Since 2.9.11, cleanup is performed automatically on most platforms
+ * and there's no need at all for manual cleanup. This includes all
+ * compilers and platforms that support GCC-style destructor attributes
+ * as well as Windows DLLs.
  *
- * WARNING: #xmlCleanupParser assumes that all other threads that called
- * libxml2 functions have terminated. No library calls must be made
- * after calling this function. In general, THIS FUNCTION SHOULD ONLY
- * BE CALLED RIGHT BEFORE THE WHOLE PROCESS EXITS.
+ * This function should only be used to avoid false positives from
+ * memory leak checkers if automatic cleanup isn't possible, for
+ * example with static builds on MSVC.
+ *
+ * WARNING: xmlCleanupParser is not thread-safe. If this function is
+ * called and any threads that could make calls into libxml2 are
+ * still running, memory corruption is likely to occur.
+ *
+ * No library calls must be made (from any thread) after calling this
+ * function. In general, *this function should only be called right
+ * before the whole process exits.* Calling this function too early
+ * will lead to memory corruption.
  */
 void
 xmlCleanupParser(void) {

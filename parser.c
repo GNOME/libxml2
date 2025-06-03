@@ -9749,12 +9749,11 @@ xmlParseCDSect(xmlParserCtxtPtr ctxt) {
      * OK the buffer is to be consumed as cdata.
      */
     if ((ctxt->sax != NULL) && (!ctxt->disableSAX)) {
-        if (ctxt->options & XML_PARSE_NOCDATA) {
-            if (ctxt->sax->characters != NULL)
-                ctxt->sax->characters(ctxt->userData, buf, len);
-        } else {
-            if (ctxt->sax->cdataBlock != NULL)
-                ctxt->sax->cdataBlock(ctxt->userData, buf, len);
+        if ((ctxt->sax->cdataBlock != NULL) &&
+            ((ctxt->options & XML_PARSE_NOCDATA) == 0)) {
+            ctxt->sax->cdataBlock(ctxt->userData, buf, len);
+        } else if (ctxt->sax->characters != NULL) {
+            ctxt->sax->characters(ctxt->userData, buf, len);
         }
     }
 

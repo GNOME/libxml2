@@ -23,7 +23,7 @@ install:
 .test:
   image: registry.gitlab.gnome.org/gnome/libxml2
   variables:
-    BASE_CONFIG: "--with-http --with-lzma --with-zlib --with-python"
+    BASE_CONFIG: "--with-http --with-schematron --with-lzma --with-zlib --with-python"
   before_script:
     - rm -rf libxml2-build
     - mkdir libxml2-build
@@ -94,7 +94,7 @@ clang:msan:
   tags:
     - win32-ps
   variables:
-    BASE_CONFIG: "--with-http --with-lzma --with-zlib --with-python"
+    BASE_CONFIG: "--with-http --with-schematron --with-lzma --with-zlib --with-python"
     # Python is disabled for now, see #658
     CONFIG: "--with-docs --without-python"
     CHERE_INVOKING: "yes"

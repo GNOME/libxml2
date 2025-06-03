@@ -18,6 +18,7 @@ if (-not (Test-Path xmlconf)) {
 cmake `
     -DBUILD_SHARED_LIBS="$Env:BUILD_SHARED_LIBS" `
     -DCMAKE_INSTALL_PREFIX=libxml2-install `
+    -DLIBXML2_WITH_SCHEMATRON=ON `
     -DLIBXML2_WITH_ICONV=OFF `
     -DLIBXML2_WITH_LZMA=OFF `
     -DLIBXML2_WITH_PYTHON=OFF `

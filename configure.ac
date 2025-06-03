@@ -109,7 +109,7 @@ AC_ARG_WITH(sax1,
 AC_ARG_WITH(schemas,
 [  --with-schemas          XML Schemas 1.0 support (on)])
 AC_ARG_WITH(schematron,
-[  --with-schematron       Schematron support (on)])
+[  --with-schematron       Schematron support (off)])
 AC_ARG_WITH(threads,
 [  --with-threads          multithreading support (on)])
 AC_ARG_WITH(thread-alloc,
@@ -139,6 +139,9 @@ dnl
 dnl Legacy defaults
 dnl
 if test "$with_legacy" = "yes"; then
+    if test "$with_schematron" = ""; then
+        with_schematron=yes
+    fi
     if test "$with_zlib" = ""; then
         with_zlib=yes
     fi
@@ -489,11 +492,11 @@ fi
 AC_SUBST(WITH_XINCLUDE)
 AM_CONDITIONAL(WITH_XINCLUDE_SOURCES, test "$WITH_XINCLUDE" = "1")
 
-if test "$with_schematron" = "no" ; then
-    echo "Disabling Schematron support"
-    WITH_SCHEMATRON=0
-else
+if test "$with_schematron" = "yes" ; then
+    echo "Enabling Schematron support"
     WITH_SCHEMATRON=1
+else
+    WITH_SCHEMATRON=0
 fi
 AC_SUBST(WITH_SCHEMATRON)
 AM_CONDITIONAL(WITH_SCHEMATRON_SOURCES, test "$WITH_SCHEMATRON" = "1")

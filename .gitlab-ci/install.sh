@@ -8,7 +8,7 @@ mkdir -p install
 installdir="$srcdir/install"
 export PKG_CONFIG_PATH="$installdir/lib/pkgconfig"
 
-sh autogen.sh "--prefix=$installdir" --with-docs --with-zlib
+sh autogen.sh "--prefix=$installdir" --with-docs --with-schematron --with-zlib
 make -j$(nproc)
 make install
 

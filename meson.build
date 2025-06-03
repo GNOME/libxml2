@@ -194,7 +194,7 @@ want_relaxng = want_minimum ? feature.enabled() : feature.allowed()
 feature = get_option('schematron') \
     .require(want_pattern, error_message: 'schematron requires pattern') \
     .require(want_xpath, error_message: 'schematron requires xpath')
-want_schematron = want_minimum ? feature.enabled() : feature.allowed()
+want_schematron = want_legacy ? feature.allowed() : feature.enabled()
 
 feature = get_option('writer') \
     .require(want_output, error_message: 'writer requires output') \

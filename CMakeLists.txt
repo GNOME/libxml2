@@ -67,7 +67,7 @@ cmake_dependent_option(
     LIBXML2_WITH_SCHEMAS "Add XML Schemas 1.0 support" ON
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_REGEXPS" OFF)
 cmake_dependent_option(
-    LIBXML2_WITH_SCHEMATRON "Add Schematron support" ON
+    LIBXML2_WITH_SCHEMATRON "Add Schematron support" OFF
     "LIBXML2_WITH_PATTERN;LIBXML2_WITH_XPATH" OFF)
 cmake_dependent_option(
     LIBXML2_WITH_THREAD_ALLOC "Add per-thread malloc hooks" OFF

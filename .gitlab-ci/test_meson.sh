@@ -13,6 +13,7 @@ meson  setup \
        --default-library shared \
        -Ddocs=enabled \
        -Dhttp=enabled \
+       -Dschematron=enabled \
        -Dlzma=enabled \
        -Dzlib=enabled \
        -Dpython=enabled \

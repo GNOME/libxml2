@@ -72,7 +72,7 @@ The following options disable or enable code modules and relevant symbols:
     --with-relaxng          RELAX NG support (on)
     --with-sax1             older SAX1 interface (on)
     --with-schemas          XML Schemas 1.0 support (on)
-    --with-schematron       Schematron support (on)
+    --with-schematron       Schematron support (off)
     --with-threads          multithreading support (on)
     --with-thread-alloc     per-thread malloc hooks (off)
     --with-valid            DTD validation support (on)
@@ -141,7 +141,7 @@ See the `meson_options.txt` file for options. For example:
 
     -Dprefix=$prefix
     -Dhistory=enabled
-    -Dschematron=disabled
+    -Dschemas=disabled
     -Dzlib=enabled
 
 ## Dependencies

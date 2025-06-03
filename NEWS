@@ -11,6 +11,8 @@ as Doxygen, xsltproc and the DocBook 4 XSLT stylesheets.
 The Python bindings are disabled by default now. Building the bindings
 also requires Doxygen.
 
+Support for Schematron is now disabled by default.
+
 ### Removals
 
 The built-in HTTP client was removed.

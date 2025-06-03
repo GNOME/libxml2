@@ -134,52 +134,129 @@ typedef xmlBuf *xmlBufPtr;
 /**
  * The different element types carried by an XML tree.
  *
- * NOTE: This is synchronized with DOM Level1 values
+ * NOTE: This is synchronized with DOM Level 1 values.
  *       See http://www.w3.org/TR/REC-DOM-Level-1/
  *
- * Actually this had diverged a bit, and now XML_DOCUMENT_TYPE_NODE should
- * be deprecated to use an XML_DTD_NODE.
+ * Actually this had diverged a bit, and XML_DTD_NODE is used instead
+ * of XML_DOCUMENT_TYPE_NODE.
  */
 typedef enum {
-    /** element */
+    /**
+     * An element.
+     *
+     * Objects of this type are an xmlNode.
+     */
     XML_ELEMENT_NODE=		1,
-    /** attribute */
+    /**
+     * An attribute.
+     *
+     * Objects of this type are an xmlAttr.
+     */
     XML_ATTRIBUTE_NODE=		2,
-    /** text */
+    /**
+     * A text node.
+     *
+     * Objects of this type are an xmlNode.
+     */
     XML_TEXT_NODE=		3,
-    /** CDATA section */
+    /**
+     * A CDATA section.
+     *
+     * Objects of this type are an xmlNode.
+     */
     XML_CDATA_SECTION_NODE=	4,
-    /** entity reference */
+    /**
+     * An entity reference.
+     *
+     * Objects of this type are an xmlNode. The `children` member
+     * points to the entity declaration if available.
+     */
     XML_ENTITY_REF_NODE=	5,
     /** unused */
     XML_ENTITY_NODE=		6,
-    /** processing instruction */
+    /**
+     * A processing instruction.
+     *
+     * Objects of this type are an xmlNode.
+     */
     XML_PI_NODE=		7,
-    /** comment */
+    /**
+     * A comment.
+     *
+     * Objects of this type are an xmlNode.
+     */
     XML_COMMENT_NODE=		8,
-    /** document */
+    /**
+     * A document.
+     *
+     * Objects of this type are an xmlDoc.
+     */
     XML_DOCUMENT_NODE=		9,
     /** unused */
     XML_DOCUMENT_TYPE_NODE=	10,
-    /** document fragment */
+    /**
+     * A document fragment.
+     *
+     * Objects of this type are an xmlNode.
+     */
     XML_DOCUMENT_FRAG_NODE=	11,
-    /** notation, unused */
+    /** A notation, unused */
     XML_NOTATION_NODE=		12,
-    /** HTML document */
+    /**
+     * An HTML document.
+     *
+     * Objects of this type are an xmlDoc.
+     */
     XML_HTML_DOCUMENT_NODE=	13,
-    /** DTD */
+    /**
+     * A document type definition.
+     *
+     * Objects of this type are an xmlDtd.
+     */
     XML_DTD_NODE=		14,
-    /** element declaration */
+    /**
+     * An element declaration.
+     *
+     * Objects of this type are an xmlElement.
+     */
     XML_ELEMENT_DECL=		15,
-    /** attribute declaration */
+    /**
+     * An attribute declaration.
+     *
+     * Objects of this type are an xmlAttribute.
+     */
     XML_ATTRIBUTE_DECL=		16,
-    /** entity declaration */
+    /**
+     * An entity declaration.
+     *
+     * Objects of this type are an xmlEntity.
+     */
     XML_ENTITY_DECL=		17,
-    /** XPath namespace node */
+    /**
+     * An XPath namespace node.
+     *
+     * Can only be returned by the XPath engine. Objects of this
+     * type are an xmlNs which has a completely different layout
+     * than xmlNode. The `next` member contains a pointer to the
+     * xmlNode element to which the namespace applies.
+     *
+     * Nodes of this type must be handled with extreme care to
+     * avoid type confusion bugs.
+     */
     XML_NAMESPACE_DECL=		18,
-    /** XInclude start marker */
+    /**
+     * An XInclude start marker.
+     *
+     * Objects of this type are an xmlNode. Inserted as preceding
+     * sibling of XIncluded content.
+     */
     XML_XINCLUDE_START=		19,
-    /** XInclude end marker */
+    /**
+     * An XInclude end marker.
+     *
+     * Objects of this type are an xmlNode. Inserted as following
+     * sibling of XIncluded content.
+     */
     XML_XINCLUDE_END=		20
     /* XML_DOCB_DOCUMENT_NODE=	21 */ /* removed */
 } xmlElementType;
@@ -410,7 +487,9 @@ typedef xmlNs *xmlNsPtr;
  *
  * Note that the XPath engine returns XPath namespace nodes as
  * xmlNs cast to xmlNode. This is a terrible design decision that
- * can easily cause type confusion errors.
+ * can easily cause type confusion errors. In this case, the `next`
+ * member points to the xmlNode element to which the namespace
+ * node belongs.
  */
 struct _xmlNs {
     /** next namespace */
@@ -477,7 +556,7 @@ struct _xmlDtd {
 typedef struct _xmlAttr xmlAttr;
 typedef xmlAttr *xmlAttrPtr;
 /**
- * An attribute on an XML node.
+ * An attribute of element.
  */
 struct _xmlAttr {
     /** application data */
@@ -554,7 +633,7 @@ struct _xmlRef {
 typedef struct _xmlNode xmlNode;
 typedef xmlNode *xmlNodePtr;
 /**
- * A node in an XML or HTML tree.
+ * Generic node type in an XML or HTML tree.
  *
  * This is used for
  *
@@ -564,50 +643,92 @@ typedef xmlNode *xmlNodePtr;
  * - XML_ENTITY_REF_NODE
  * - XML_PI_NODE
  * - XML_COMMENT_NODE
+ * - XML_DOCUMENT_FRAG_NODE
  * - XML_XINCLUDE_START_NODE
  * - XML_XINCLUDE_END_NODE
+ *
+ * Other node types have a different struct layout than xmlNode,
+ * see xmlElementType. Except for XML_NAMESPACE_DECL all nodes
+ * share the following members at the same offset:
+ *
+ * - `_private`
+ * - `type` (also for XML_NAMESPACE_DECL)
+ * - `name`
+ * - `children`
+ * - `last`
+ * - `parent`
+ * - `next`
+ * - `prev`
+ * - `doc`
+ *
+ * xmlNode and xmlAttr also share the `ns` member.
  */
 struct _xmlNode {
-    /** application data */
+    /** Application data. Often used by language bindings. */
     void           *_private;
-    /** type enum */
+    /** Type enum, an xmlElementType value */
     xmlElementType   type;
-    /** local name for elements */
+    /**
+     * Name of the node.
+     *
+     * - Local name of elements or attributes. As a corner case,
+     *   this can also contain Names which are invalid QNames in
+     *   non-namespace-wellformed documents.
+     * - Name of entity references
+     * - Target of processing instructions
+     * - Fixed string for text and comments
+     * - Unused otherwise
+     */
     const xmlChar   *name;
-    /** first child */
+    /** First child. Entity declaration of entity references. */
     struct _xmlNode *children;
-    /** last child */
+    /** Last child */
     struct _xmlNode *last;
-    /** parent node */
+    /** Parent node. NULL for documents or unlinked root nodes. */
     struct _xmlNode *parent;
-    /** next sibling */
+    /** Next sibling */
     struct _xmlNode *next;
-    /** previous sibling */
+    /** Previous sibling */
     struct _xmlNode *prev;
-    /** containing document */
+    /**
+     * Associated document.
+     *
+     * Used to access DTDs, entities, ID tables, dictionary or
+     * other document properties. All children of a node share the
+     * same document.
+     */
     struct _xmlDoc  *doc;
 
     /* End of common part */
 
-    /** namespace if any */
+    /** Namespace of element if any */
     xmlNs           *ns;
-    /** content of text, comment, PI nodes */
+    /**
+     * Content of text, comment, PI nodes.
+     *
+     * Sort index for elements after calling #xmlXPathOrderDocElems.
+     * Content of internal entities for entity references.
+     */
     xmlChar         *content;
-    /** attributes for elements */
+    /**
+     * First attribute of element.
+     *
+     * Also used to store small strings with XML_PARSE_COMPACT.
+     */
     struct _xmlAttr *properties;
-    /** namespace definitions on this node */
+    /** First namespace definition of element */
     xmlNs           *nsDef;
-    /** for type/PSVI information */
+    /** For type/PSVI information */
     void            *psvi;
-    /** line number */
+    /** Line number */
     unsigned short   line;
-    /** extra data for XPath/XSLT */
+    /** Extra data for XPath/XSLT */
     unsigned short   extra;
 };
 
 /**
- * Set of properties of the document as found by the parser
- * Some of them are linked to similarly named xmlParserOption
+ * Set of properties of the document as found by the parser.
+ * Some of them are linked to similarly named xmlParserOption.
  */
 typedef enum {
     /** document is XML well formed */

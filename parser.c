@@ -12044,12 +12044,7 @@ xmlCtxtParseContent(xmlParserCtxt *ctxt, xmlParserInput *input,
             goto exit;
     }
 
-#ifdef LIBXML_HTML_ENABLED
-    if (ctxt->html)
-        htmlCtxtReset(ctxt);
-    else
-#endif
-        xmlCtxtReset(ctxt);
+    xmlCtxtReset(ctxt);
 
     oldDict = ctxt->dict;
     oldOptions = ctxt->options;
@@ -13012,7 +13007,7 @@ xmlCtxtReset(xmlParserCtxt *ctxt)
     ctxt->standalone = -1;
     ctxt->hasExternalSubset = 0;
     ctxt->hasPErefs = 0;
-    ctxt->html = 0;
+    ctxt->html = ctxt->html ? 1 : 0;
     ctxt->instate = XML_PARSER_START;
 
     ctxt->wellFormed = 1;

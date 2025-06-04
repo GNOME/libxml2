@@ -3055,10 +3055,17 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
             lint->ctxt = ctxt;
 
             for (j = 0; j < lint->repeat; j++) {
+                if (j > 0) {
 #ifdef LIBXML_PUSH_ENABLED
-                if ((lint->push) && (j > 0))
-                    xmlCtxtResetPush(ctxt, NULL, 0, NULL, NULL);
+                    if (lint->push) {
+                        xmlCtxtResetPush(ctxt, NULL, 0, NULL, NULL);
+                    } else
 #endif
+                    {
+                        xmlCtxtReset(ctxt);
+                    }
+                }
+
                 if (lint->sax) {
                     testSAX(lint, filename);
                 } else {

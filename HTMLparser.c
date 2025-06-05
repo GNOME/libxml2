@@ -3614,6 +3614,50 @@ htmlParseAttribute(htmlParserCtxtPtr ctxt, xmlChar **value) {
     return(hname);
 }
 
+static int
+htmlCharEncCheckAsciiCompatible(htmlParserCtxt *ctxt,
+                                const xmlChar *encoding) {
+    xmlCharEncodingHandler *handler;
+    xmlChar in[9] = "<a A=\"/>";
+    xmlChar out[9];
+    int inlen, outlen;
+    int res;
+
+    res = xmlCreateCharEncodingHandler(
+            (const char *) encoding,
+            XML_ENC_INPUT | XML_ENC_HTML,
+            ctxt->convImpl, ctxt->convCtxt,
+            &handler);
+    /*
+     * TODO: Unlike the XML parser, we shouldn't raise a fatal
+     * if the encoding is unsupported.
+     */
+    if (res != XML_ERR_OK) {
+        xmlFatalErr(ctxt, res, (const char *) encoding);
+        return(-1);
+    }
+
+    /* UTF-8 */
+    if (handler == NULL)
+        return(0);
+
+    inlen = 8;
+    outlen = 8;
+    res = xmlEncInputChunk(handler, out, &outlen, in, &inlen, /* flush */ 1);
+
+    xmlCharEncCloseFunc(handler);
+
+    if ((res != XML_ENC_ERR_SUCCESS) ||
+        (inlen != 8) || (outlen != 8) ||
+        (memcmp(in, out, 8) != 0)) {
+        htmlParseErr(ctxt, XML_ERR_UNSUPPORTED_ENCODING,
+                     "Encoding %s isn't ASCII-compatible", encoding, NULL);
+        return(-1);
+    }
+
+    return(0);
+}
+
 /**
  * Handle charset encoding in meta tag.
  *
@@ -3626,6 +3670,7 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
     const xmlChar *att, *value;
     int isContentType = 0;
     const xmlChar *content = NULL;
+    xmlChar *encoding = NULL;
 
     if ((ctxt == NULL) || (atts == NULL))
 	return;
@@ -3639,12 +3684,10 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
                 (!xmlStrcasecmp(value, BAD_CAST "Content-Type"))) {
                 isContentType = 1;
             } else if (!xmlStrcasecmp(att, BAD_CAST "charset")) {
-                xmlChar *encoding;
-
                 encoding = xmlStrdup(value);
                 if (encoding == NULL)
                     htmlErrMemory(ctxt);
-                xmlSetDeclaredEncoding(ctxt, encoding);
+                break;
             } else if (!xmlStrcasecmp(att, BAD_CAST "content")) {
                 content = value;
             }
@@ -3652,17 +3695,27 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
 	att = atts[i++];
     }
 
-    if ((isContentType) && (content != NULL)) {
+    if ((encoding == NULL) && (isContentType) && (content != NULL)) {
         htmlMetaEncodingOffsets off;
 
         if (htmlParseContentType(content, &off)) {
-            xmlChar *encoding;
-
             encoding = xmlStrndup(content + off.start, off.end - off.start);
             if (encoding == NULL)
                 htmlErrMemory(ctxt);
-            xmlSetDeclaredEncoding(ctxt, encoding);
         }
+    }
+
+    if (encoding != NULL) {
+        if (htmlCharEncCheckAsciiCompatible(ctxt, encoding) < 0) {
+            xmlFree(encoding);
+            return;
+        }
+
+        /*
+         * TODO: Unlike the XML parser, we shouldn't raise a fatal
+         * if the encoding is unsupported.
+         */
+        xmlSetDeclaredEncoding(ctxt, encoding);
     }
 }
 

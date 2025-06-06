@@ -468,14 +468,24 @@ void
 xmlFatalErr(xmlParserCtxt *ctxt, xmlParserErrors code, const char *info)
 {
     const char *errmsg;
+    xmlErrorDomain domain = XML_FROM_PARSER;
+    xmlErrorLevel level = XML_ERR_FATAL;
 
     errmsg = xmlErrString(code);
 
+    if ((ctxt != NULL) && (ctxt->html)) {
+        domain = XML_FROM_HTML;
+
+        /* Continue if encoding is unsupported */
+        if (code == XML_ERR_UNSUPPORTED_ENCODING)
+            level = XML_ERR_ERROR;
+    }
+
     if (info == NULL) {
-        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, code, XML_ERR_FATAL,
+        xmlCtxtErr(ctxt, NULL, domain, code, level,
                    NULL, NULL, NULL, 0, "%s\n", errmsg);
     } else {
-        xmlCtxtErr(ctxt, NULL, XML_FROM_PARSER, code, XML_ERR_FATAL,
+        xmlCtxtErr(ctxt, NULL, domain, code, level,
                    (const xmlChar *) info, NULL, NULL, 0,
                    "%s: %s\n", errmsg, info);
     }

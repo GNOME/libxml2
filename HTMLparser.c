@@ -3628,10 +3628,6 @@ htmlCharEncCheckAsciiCompatible(htmlParserCtxt *ctxt,
             XML_ENC_INPUT | XML_ENC_HTML,
             ctxt->convImpl, ctxt->convCtxt,
             &handler);
-    /*
-     * TODO: Unlike the XML parser, we shouldn't raise a fatal
-     * if the encoding is unsupported.
-     */
     if (res != XML_ERR_OK) {
         xmlFatalErr(ctxt, res, (const char *) encoding);
         return(-1);
@@ -3711,10 +3707,6 @@ htmlCheckMeta(htmlParserCtxtPtr ctxt, const xmlChar **atts) {
             return;
         }
 
-        /*
-         * TODO: Unlike the XML parser, we shouldn't raise a fatal
-         * if the encoding is unsupported.
-         */
         xmlSetDeclaredEncoding(ctxt, encoding);
     }
 }

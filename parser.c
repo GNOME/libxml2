@@ -8982,7 +8982,7 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
                                         ((unsigned) alloc << 31);
             atts[nbatts++] = attname;
             atts[nbatts++] = aprefix;
-            atts[nbatts++] = (const xmlChar *) (size_t) haprefix.hashValue;
+            atts[nbatts++] = XML_INT_TO_PTR(haprefix.hashValue);
             if (alloc) {
                 atts[nbatts++] = attvalue;
                 attvalue += len;
@@ -8993,9 +8993,9 @@ xmlParseStartTag2(xmlParserCtxtPtr ctxt, const xmlChar **pref,
                  * reallocated. Store differences to input->base instead.
                  * The pointers will be reconstructed later.
                  */
-                atts[nbatts++] = (void *) (attvalue - BASE_PTR);
+                atts[nbatts++] = XML_INT_TO_PTR(attvalue - BASE_PTR);
                 attvalue += len;
-                atts[nbatts++] = (void *) (attvalue - BASE_PTR);
+                atts[nbatts++] = XML_INT_TO_PTR(attvalue - BASE_PTR);
             }
             /*
              * tag if some deallocation is needed

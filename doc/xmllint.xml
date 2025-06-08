@@ -11,7 +11,7 @@
 
 <refentryinfo>
     <title>xmllint Manual</title>
-    <productname>libxml2</productname>
+    <productname>xmllint</productname>
     <copyright>
         <year>2001</year>
         <year>2004</year>
@@ -147,56 +147,16 @@
         errors both in <acronym>XML</acronym> code and in
         the <acronym>XML</acronym> parser itself.
     </para>
-    <para>&xmllint; is included in <citerefentry>
-        <refentrytitle>libxml</refentrytitle>
-        <manvolnum>3</manvolnum>
-    </citerefentry>.</para>
+    <para>&xmllint; is part of the libxml2 library.</para>
 </refsect1>
 
-<refsect1 id="options">
-    <title>OPTIONS</title>
+<refsect1 id="validation-options">
+    <title>VALIDATION OPTIONS</title>
     <para>
-        &xmllint; accepts the following options (in alphabetical order):
+        Options enabling validation.
     </para>
 
     <variablelist>
-
-        <varlistentry>
-            <term><option>--catalogs</option></term>
-            <listitem>
-                <para>
-                    Use the <acronym>SGML</acronym> catalog(s) from <envar>SGML_CATALOG_FILES</envar>.
-                    Otherwise <acronym>XML</acronym> catalogs starting
-                    from <filename>/etc/xml/catalog</filename> or, more specifically,
-                    <filename>${sysconfdir}/xml/catalog</filename> are used by default.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--compress</option></term>
-            <listitem>
-                <para>
-                    Turn on <citerefentry>
-                <refentrytitle>gzip</refentrytitle>
-                <manvolnum>1</manvolnum>
-            </citerefentry> compression of output.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--c14n</option></term>
-            <term><option>--c14n11</option></term>
-            <term><option>--exc-c14n</option></term>
-            <listitem>
-                <para>
-                    Use the W3C <acronym>XML</acronym> Canonicalisation (<acronym>C14N</acronym>) to
-                    serialize the result of parsing to <filename class="devicefile">stdout</filename>.
-                    It keeps comments in the result.
-                </para>
-            </listitem>
-        </varlistentry>
 
         <varlistentry>
             <term><option>--dtdvalid <replaceable class="option">URL</replaceable></option></term>
@@ -220,48 +180,67 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--dropdtd</option></term>
+            <term><option>--relaxng <replaceable class="option">SCHEMA</replaceable></option></term>
             <listitem>
-                <para>Remove <acronym>DTD</acronym> from output.</para>
+                <para>
+                    Use RelaxNG file named <replaceable class="option">SCHEMA</replaceable>
+                    for validation.
+                </para>
             </listitem>
         </varlistentry>
+
+        <varlistentry>
+            <term><option>--schema <replaceable>SCHEMA</replaceable></option></term>
+            <listitem>
+                <para>
+                    Use a W3C <acronym>XML</acronym> Schema file
+                    named <replaceable>SCHEMA</replaceable> for validation.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--schematron <replaceable>SCHEMA</replaceable></option></term>
+            <listitem>
+                <para>
+                    Use a Schematron file
+                    named <replaceable>SCHEMA</replaceable> for validation.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--valid</option></term>
+            <listitem>
+                <para>
+                    Determine if the document is a valid instance of the included
+                    Document Type Definition (<acronym>DTD</acronym>).
+                    A <acronym>DTD</acronym> to be validated against also can be
+                    specified at the command line using the <option>--dtdvalid</option>
+                    option. By default, &xmllint; also checks to determine if the
+                    document is well-formed.
+                </para>
+            </listitem>
+        </varlistentry>
+
+    </variablelist>
+</refsect1>
+
+<refsect1 id="parser-options">
+    <title>PARSER OPTIONS</title>
+    <para>
+        The following options set the respective parser options.
+    </para>
+
+    <variablelist>
 
         <varlistentry>
             <term><option>--dtdattr</option></term>
             <listitem>
                 <para>
                     Fetch external <acronym>DTD</acronym> and populate the tree with
-                    inherited attributes.
+                    inherited attributes. Implies <option>--loaddtd</option>.
                 </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--encode <replaceable class="option">ENCODING</replaceable></option></term>
-            <listitem>
-                <para>Output in the given encoding. Note that this works for full document not fragments or result from XPath queries.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--format</option></term>
-            <listitem>
-                <para>
-                    Reformat and reindent the output. The <envar>XMLLINT_INDENT</envar>
-                    environment variable controls the indentation. The default value is two
-                    spaces &quot;  &quot;).
-                </para>
-                <para>
-                    Especially in the absence of a DTD, this feature has never worked reliably
-                    and is fundamentally broken.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--html</option></term>
-            <listitem>
-                <para>Use the <acronym>HTML</acronym> parser.</para>
             </listitem>
         </varlistentry>
 
@@ -275,7 +254,10 @@
         <varlistentry>
             <term><option>--loaddtd</option></term>
             <listitem>
-                <para>Fetch an external <acronym>DTD</acronym>.</para>
+                <para>
+                    Fetch an external <acronym>DTD</acronym> and external
+                    parameter entities.
+                </para>
             </listitem>
         </varlistentry>
 
@@ -294,7 +276,10 @@
         <varlistentry>
             <term><option>--noblanks</option></term>
             <listitem>
-                <para>Drop ignorable blank spaces.</para>
+                <para>
+                    Drop "ignorable" blank spaces. This option is unreliable
+                    and shouldn't be used.
+                </para>
             </listitem>
         </varlistentry>
 
@@ -337,7 +322,8 @@
             <listitem>
                 <para>
                     Substitute entity values for entity references. By default, &xmllint;
-                    leaves entity references in place.
+                    leaves entity references in place. This enables loading of
+                    external DTDs and entities.
                 </para>
             </listitem>
         </varlistentry>
@@ -356,16 +342,7 @@
             <term><option>--nonet</option></term>
             <listitem>
                 <para>
-                    Do not use the Internet to fetch <acronym>DTD</acronym>s or entities.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--noout</option></term>
-            <listitem>
-                <para>
-                    Suppress output. By default, &xmllint; outputs the result tree.
+                    Do not use the Internet to fetch <acronym>DTD</acronym>s or entities. Has no effect with libxml2 2.15 or later.
                 </para>
             </listitem>
         </varlistentry>
@@ -395,14 +372,62 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--output <replaceable class="option">FILE</replaceable></option></term>
+            <term><option>--pedantic</option></term>
+            <listitem>
+                <para>Enable additional warnings.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--recover</option></term>
             <listitem>
                 <para>
-                    Define a file path where &xmllint; will save the result of parsing.
-                    Usually the programs build a tree and save it
-                    on <filename class="devicefile">stdout</filename>, with this option
-                    the result <acronym>XML</acronym> instance will be saved onto a file.
+                    Output any parsable portions of an invalid document.
+                    Exact behavior is unspecified. Use of this option
+                    is discouraged.
                 </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--xinclude</option></term>
+            <listitem>
+                <para>Do XInclude processing.</para>
+            </listitem>
+        </varlistentry>
+
+    </variablelist>
+</refsect1>
+
+<refsect1 id="miscellaneous-options">
+    <title>MISCELLANEOUS OPTIONS</title>
+    <para>
+        Options that don't fall in another category.
+    </para>
+
+    <variablelist>
+
+        <varlistentry>
+            <term><option>--catalogs</option></term>
+            <listitem>
+                <para>
+                    Use the <acronym>SGML</acronym> catalog(s) from <envar>SGML_CATALOG_FILES</envar>.
+                    <acronym>XML</acronym> catalogs are loaded by default.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--dropdtd</option></term>
+            <listitem>
+                <para>Remove <acronym>DTD</acronym> after parsing.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--html</option></term>
+            <listitem>
+                <para>Use the <acronym>HTML</acronym> parser.</para>
             </listitem>
         </varlistentry>
 
@@ -418,23 +443,6 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--pedantic</option></term>
-            <listitem>
-                <para>Enable additional warnings.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--pretty <replaceable class="option">INTEGER</replaceable></option></term>
-            <listitem>
-                <para>
-                    Value 0 means no formatting, 1 means XML_SAVE_FORMAT
-                    (same as --format), 2 means XML_SAVE_WSNONSIG.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--quiet</option></term>
             <listitem>
                 <para>Don't print informational messages to stderr.</para>
@@ -442,38 +450,12 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--recover</option></term>
-            <listitem>
-                <para>Output any parsable portions of an invalid document.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--relaxng <replaceable class="option">SCHEMA</replaceable></option></term>
+            <term><option>--sax</option></term>
             <listitem>
                 <para>
-                    Use RelaxNG file named <replaceable class="option">SCHEMA</replaceable>
-                    for validation.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--schema <replaceable>SCHEMA</replaceable></option></term>
-            <listitem>
-                <para>
-                    Use a W3C <acronym>XML</acronym> Schema file
-                    named <replaceable>SCHEMA</replaceable> for validation.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--schematron <replaceable>SCHEMA</replaceable></option></term>
-            <listitem>
-                <para>
-                    Use a Schematron file
-                    named <replaceable>SCHEMA</replaceable> for validation.
+                    Print SAX callbacks for debugging. Can be used
+                    for streaming DTD and Schema validation when used
+                    with <option>--noout</option>.
                 </para>
             </listitem>
         </varlistentry>
@@ -500,35 +482,101 @@
         </varlistentry>
 
         <varlistentry>
-            <term><option>--valid</option></term>
-            <listitem>
-                <para>
-                    Determine if the document is a valid instance of the included
-                    Document Type Definition (<acronym>DTD</acronym>).
-                    A <acronym>DTD</acronym> to be validated against also can be
-                    specified at the command line using the <option>--dtdvalid</option>
-                    option. By default, &xmllint; also checks to determine if the
-                    document is well-formed.
-                </para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
             <term><option>--version</option></term>
             <listitem>
                 <para>
-                    Display the version of <citerefentry>
-                <refentrytitle>libxml</refentrytitle>
-                <manvolnum>3</manvolnum>
-            </citerefentry> used.
+                    Display the version of libxml2 used.
+                </para>
+            </listitem>
+        </varlistentry>
+
+    </variablelist>
+</refsect1>
+
+<refsect1 id="output-options">
+    <title>OUTPUT OPTIONS</title>
+    <para>
+        Options controlling output. Except for <option>--noout</option>
+        these have no effect in SAX or stream mode.
+    </para>
+
+    <variablelist>
+
+        <varlistentry>
+            <term><option>--compress</option></term>
+            <listitem>
+                <para>
+                    Turn on <citerefentry>
+                <refentrytitle>gzip</refentrytitle>
+                <manvolnum>1</manvolnum>
+            </citerefentry> compression of output.
                 </para>
             </listitem>
         </varlistentry>
 
         <varlistentry>
-            <term><option>--xinclude</option></term>
+            <term><option>--c14n</option></term>
+            <term><option>--c14n11</option></term>
+            <term><option>--exc-c14n</option></term>
             <listitem>
-                <para>Do XInclude processing.</para>
+                <para>
+                    Use the W3C <acronym>XML</acronym> Canonicalisation (<acronym>C14N</acronym>) to
+                    serialize the result of parsing to <filename class="devicefile">stdout</filename>.
+                    It keeps comments in the result.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--encode <replaceable class="option">ENCODING</replaceable></option></term>
+            <listitem>
+                <para>Output in the given encoding. Note that this works for full document not fragments or result from XPath queries.</para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--format</option></term>
+            <listitem>
+                <para>
+                    Reformat and reindent the output. The <envar>XMLLINT_INDENT</envar>
+                    environment variable controls the indentation. The default value is two
+                    spaces &quot;  &quot;).
+                </para>
+                <para>
+                    Especially in the absence of a DTD, this feature has never worked reliably
+                    and is fundamentally broken.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--noout</option></term>
+            <listitem>
+                <para>
+                    Suppress output. By default, &xmllint; outputs the result tree.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--output <replaceable class="option">FILE</replaceable></option></term>
+            <listitem>
+                <para>
+                    Define a file path where &xmllint; will save the result of parsing.
+                    Usually the programs build a tree and save it
+                    on <filename class="devicefile">stdout</filename>, with this option
+                    the result <acronym>XML</acronym> instance will be saved onto a file.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--pretty <replaceable class="option">INTEGER</replaceable></option></term>
+            <listitem>
+                <para>
+                    Value 0 means no formatting, 1 means XML_SAVE_FORMAT
+                    (same as --format), 2 means XML_SAVE_WSNONSIG.
+                </para>
             </listitem>
         </varlistentry>
 
@@ -681,13 +729,6 @@
             <term><option>--repeat</option></term>
             <listitem>
                 <para>Repeat 100 times, for timing or profiling.</para>
-            </listitem>
-        </varlistentry>
-
-        <varlistentry>
-            <term><option>--sax</option></term>
-            <listitem>
-                <para>Print SAX callbacks (only for debugging).</para>
             </listitem>
         </varlistentry>
 
@@ -1006,22 +1047,9 @@
 
 <refsect1 id="seealso">
     <title>SEE ALSO</title>
-    <para><citerefentry>
-            <refentrytitle>libxml</refentrytitle>
-            <manvolnum>3</manvolnum>
-        </citerefentry>
-    </para>
     <para>
-        More information can be found at
-        <itemizedlist>
-            <listitem>
-                <para><citerefentry>
-                        <refentrytitle>libxml</refentrytitle>
-                        <manvolnum>3</manvolnum>
-                    </citerefentry> web page <ulink url="https://gitlab.gnome.org/GNOME/libxml2"/>
-                </para>
-            </listitem>
-        </itemizedlist>
+        More information can be found in the libxml2 repo at
+        <ulink url="https://gitlab.gnome.org/GNOME/libxml2"/>
     </para>
 </refsect1>
 

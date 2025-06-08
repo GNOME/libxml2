@@ -3380,6 +3380,10 @@ htmlParseComment(htmlParserCtxtPtr ctxt, int bogus) {
             SKIP(1);
         comment = buf;
     } else {
+        if ((!PARSER_PROGRESSIVE(ctxt)) &&
+            (ctxt->input->end - ctxt->input->cur < 2))
+            xmlParserGrow(ctxt);
+
         if (CUR == '>') {
             SKIP(1);
         } else if ((CUR == '-') && (NXT(1) == '>')) {

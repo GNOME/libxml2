@@ -130,7 +130,14 @@ typedef struct {
     const char *encoding;
     const char *indentString;
     int format;
+#ifdef LIBXML_ZLIB_ENABLED
     int compress;
+#endif
+#ifdef LIBXML_C14N_ENABLED
+    int canonical;
+    int canonical_11;
+    int exc_canonical;
+#endif
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_VALID_ENABLED
     int postvalid;
@@ -151,10 +158,12 @@ typedef struct {
     xmlSchematronPtr wxschematron;
 #endif
     int repeat;
-#if defined(LIBXML_HTML_ENABLED)
+#ifdef LIBXML_HTML_ENABLED
     int html;
     int htmlOptions;
+#ifdef LIBXML_OUTPUT_ENABLED
     int xmlout;
+#endif
 #endif
 #ifdef LIBXML_PUSH_ENABLED
     int push;
@@ -172,11 +181,6 @@ typedef struct {
     int timing;
     int generate;
     int dropdtd;
-#ifdef LIBXML_C14N_ENABLED
-    int canonical;
-    int canonical_11;
-    int exc_canonical;
-#endif
 #ifdef LIBXML_READER_ENABLED
     int stream;
     int walker;
@@ -1887,8 +1891,10 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_OUTPUT_ENABLED
     if (lint->noout == 0) {
+#ifdef LIBXML_ZLIB_ENABLED
         if (lint->compress)
             xmlSetDocCompressMode(doc, 9);
+#endif
 
 	/*
 	 * print it.
@@ -1944,9 +1950,12 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		}
 	    } else
 #endif
+#ifdef LIBXML_ZLIB_ENABLED
 	    if (lint->compress) {
 		xmlSaveFile(lint->output ? lint->output : "-", doc);
-	    } else {
+	    } else
+#endif
+            {
 	        xmlSaveCtxtPtr ctxt;
 		int saveOpts = 0;
 
@@ -2285,8 +2294,10 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--dropdtd : remove the DOCTYPE of the input docs\n");
 #ifdef LIBXML_HTML_ENABLED
     fprintf(f, "\t--html : use the HTML parser\n");
-    fprintf(f, "\t--xmlout : force to use the XML serializer when using --html\n");
     fprintf(f, "\t--nodefdtd : do not default HTML doctype\n");
+#ifdef LIBXML_OUTPUT_ENABLED
+    fprintf(f, "\t--xmlout : force to use the XML serializer when using --html\n");
+#endif
 #endif
 #ifdef LIBXML_PUSH_ENABLED
     fprintf(f, "\t--push : use the push mode of the parser\n");
@@ -2311,12 +2322,12 @@ static void usage(FILE *f, const char *name) {
 #ifdef LIBXML_ZLIB_ENABLED
     fprintf(f, "\t--compress : turn on gzip compression of output\n");
 #endif
-#endif /* LIBXML_OUTPUT_ENABLED */
+#ifdef LIBXML_C14N_ENABLED
     fprintf(f, "\t--c14n : save in W3C canonical format v1.0 (with comments)\n");
     fprintf(f, "\t--c14n11 : save in W3C canonical format v1.1 (with comments)\n");
     fprintf(f, "\t--exc-c14n : save in W3C exclusive canonical format (with comments)\n");
-#ifdef LIBXML_C14N_ENABLED
 #endif /* LIBXML_C14N_ENABLED */
+#endif /* LIBXML_OUTPUT_ENABLED */
     fprintf(f, "\t--nsclean : remove redundant namespace declarations\n");
 #ifdef LIBXML_CATALOG_ENABLED
     fprintf(f, "\t--catalogs : use SGML catalogs from $SGML_CATALOG_FILES\n");
@@ -2525,12 +2536,14 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         } else if ((!strcmp(argv[i], "-html")) ||
                    (!strcmp(argv[i], "--html"))) {
             lint->html = 1;
-        } else if ((!strcmp(argv[i], "-xmlout")) ||
-                   (!strcmp(argv[i], "--xmlout"))) {
-            lint->xmlout = 1;
         } else if ((!strcmp(argv[i], "-nodefdtd")) ||
                    (!strcmp(argv[i], "--nodefdtd"))) {
             lint->htmlOptions |= HTML_PARSE_NODEFDTD;
+#ifdef LIBXML_OUTPUT_ENABLED
+        } else if ((!strcmp(argv[i], "-xmlout")) ||
+                   (!strcmp(argv[i], "--xmlout"))) {
+            lint->xmlout = 1;
+#endif
 #endif /* LIBXML_HTML_ENABLED */
         } else if ((!strcmp(argv[i], "-loaddtd")) ||
                    (!strcmp(argv[i], "--loaddtd"))) {
@@ -2619,20 +2632,6 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--pedantic"))) {
             lint->options |= XML_PARSE_PEDANTIC;
             lint->options &= ~XML_PARSE_NOWARNING;
-#ifdef LIBXML_C14N_ENABLED
-        } else if ((!strcmp(argv[i], "-c14n")) ||
-                   (!strcmp(argv[i], "--c14n"))) {
-            lint->canonical = 1;
-            lint->options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
-        } else if ((!strcmp(argv[i], "-c14n11")) ||
-                   (!strcmp(argv[i], "--c14n11"))) {
-            lint->canonical_11 = 1;
-            lint->options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
-        } else if ((!strcmp(argv[i], "-exc-c14n")) ||
-                   (!strcmp(argv[i], "--exc-c14n"))) {
-            lint->exc_canonical = 1;
-            lint->options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
-#endif
 #ifdef LIBXML_CATALOG_ENABLED
         } else if ((!strcmp(argv[i], "-catalogs")) ||
                    (!strcmp(argv[i], "--catalogs"))) {
@@ -2681,6 +2680,20 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--compress"))) {
             lint->compress = 1;
 #endif
+#ifdef LIBXML_C14N_ENABLED
+        } else if ((!strcmp(argv[i], "-c14n")) ||
+                   (!strcmp(argv[i], "--c14n"))) {
+            lint->canonical = 1;
+            lint->options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
+        } else if ((!strcmp(argv[i], "-c14n11")) ||
+                   (!strcmp(argv[i], "--c14n11"))) {
+            lint->canonical_11 = 1;
+            lint->options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
+        } else if ((!strcmp(argv[i], "-exc-c14n")) ||
+                   (!strcmp(argv[i], "--exc-c14n"))) {
+            lint->exc_canonical = 1;
+            lint->options |= XML_PARSE_NOENT | XML_PARSE_DTDATTR | XML_PARSE_DTDLOAD;
+#endif /* LIBXML_C14N_ENABLED */
 #endif /* LIBXML_OUTPUT_ENABLED */
 #ifdef LIBXML_READER_ENABLED
         } else if ((!strcmp(argv[i], "-stream")) ||
@@ -2842,6 +2855,7 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         if (lint->format > 0)
             xmllintOptWarnNoSupport(errStream, specialMode,
                                     "--format or -pretty");
+#ifdef LIBXML_ZLIB_ENABLED
         if (lint->compress)
             xmllintOptWarnNoSupport(errStream, specialMode, "--compress");
 #endif
@@ -2849,6 +2863,15 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         if (lint->xmlout)
             xmllintOptWarnNoSupport(errStream, specialMode, "--xmlout");
 #endif
+#ifdef LIBXML_C14N_ENABLED
+        if (lint->canonical)
+            xmllintOptWarnNoSupport(errStream, specialMode, "--c14n");
+        if (lint->canonical_11)
+            xmllintOptWarnNoSupport(errStream, specialMode, "--c14n11");
+        if (lint->exc_canonical)
+            xmllintOptWarnNoSupport(errStream, specialMode, "--exc-c14n");
+#endif
+#endif /* LIBXML_OUTPUT_ENABLED */
     }
 
 #if defined(LIBXML_READER_ENABLED) && defined(LIBXML_PATTERN_ENABLED)
@@ -2887,9 +2910,11 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
         if (lint->htmlOptions & HTML_PARSE_NODEFDTD)
             fprintf(errStream, "Warning: Option %s requires %s\n",
                     "--nodefdtd", "--html");
+#ifdef LIBXML_OUTPUT_ENABLED
         if (lint->xmlout)
             fprintf(errStream, "Warning: Option %s requires %s\n",
                     "--xmlout", "--html");
+#endif
     }
 #endif
 

@@ -5856,6 +5856,7 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
                     if (attronly == 1) {
                         /*
                          * migrate tmp to attrs
+                         * if this runs twice an infinite attrs->next loop can be created
                          */
                         pre->next = tmp->next;
                         tmp->next = cur->attrs;
@@ -5876,9 +5877,13 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
                     if ((parent == NULL) && (prev == NULL)) {
                         cur->type = XML_RELAXNG_NOOP;
                     } else if (prev == NULL) {
-                        parent->content = cur->content;
-                        cur->content->next = cur->next;
-                        cur = cur->content;
+                        // this simplification may already have happened
+                        // if this is done twice this leads to an infinite loop of attrs->next
+                        if (parent->content != cur->content) {
+                            parent->content = cur->content;
+                            cur->content->next = cur->next;
+                            cur = cur->content;
+                        }
                     } else {
                         cur->content->next = cur->next;
                         prev->next = cur->content;

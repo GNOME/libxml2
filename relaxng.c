@@ -5877,8 +5877,10 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
                     if ((parent == NULL) && (prev == NULL)) {
                         cur->type = XML_RELAXNG_NOOP;
                     } else if (prev == NULL) {
-                        // this simplification may already have happened
-                        // if this is done twice this leads to an infinite loop of attrs->next
+                        /* 
+                         * this simplification may already have happened
+                         * if this is done twice this leads to an infinite loop of attrs->next
+                         */
                         if (parent->content != cur->content) {
                             parent->content = cur->content;
                             cur->content->next = cur->next;

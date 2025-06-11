@@ -4441,7 +4441,7 @@ xmlParsePubidLiteral(xmlParserCtxt *ctxt) {
             int newSize;
 
 	    newSize = xmlGrowCapacity(size, 1, 1, maxLength);
-            if (newSize) {
+            if (newSize < 0) {
                 xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "Public ID");
                 xmlFree(buf);
                 return(NULL);
@@ -9908,7 +9908,7 @@ xmlParseVersionNum(xmlParserCtxt *ctxt) {
             int newSize;
 
             newSize = xmlGrowCapacity(size, 1, 1, maxLength);
-            if (newSize) {
+            if (newSize < 0) {
                 xmlFatalErr(ctxt, XML_ERR_NAME_TOO_LONG, "VersionNum");
                 xmlFree(buf);
                 return(NULL);

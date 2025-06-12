@@ -4446,7 +4446,7 @@ xmlParsePubidLiteral(xmlParserCtxt *ctxt) {
                 xmlFree(buf);
                 return(NULL);
             }
-	    tmp = xmlRealloc(buf, size);
+	    tmp = xmlRealloc(buf, newSize);
 	    if (tmp == NULL) {
 		xmlErrMemory(ctxt);
 		xmlFree(buf);

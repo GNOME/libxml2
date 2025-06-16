@@ -1,5 +1,32 @@
 NEWS file for libxml2
 
+v2.14.4: Jun 16 2025
+
+### Regressions
+
+- parser: Fix parsing of PublicIds and VersionNums
+- parser: Fix custom SAX parsers without cdataBlock handler
+- error: Fix initGenericErrorDefaultFunc compatibility macro again
+- io: Make xmlOutputBufferCreate* not free encoder on error
+- reader: Fix null deref on malloc failure
+- Revert "meson: Install libxml2.py"
+
+### Security
+
+- tree: Fix integer overflow in xmlBuildQName
+
+### Improvements
+
+- parser: Use parser context as default in resource loader
+- parser: Only validate EnumerationTypes when requested
+- parser: Undeprecate some parser context members
+
+### Build systems
+
+- cmake: Avoid overlinking with non-CMake libxml2-config.cmake
+- cmake: Make iconv a private dependency
+
+
 v2.14.3: May 13 2025
 
 ### Regressions

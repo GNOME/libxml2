@@ -31,14 +31,14 @@ extern "C" {
  * @param filename  the filename or URI
  * @returns 1 if yes and 0 if another Input module should be used
  */
-typedef int (*xmlInputMatchCallback) (char const *filename);
+typedef int (*xmlInputMatchCallback) (const char *filename);
 /**
  * Callback used in the I/O Input API to open the resource
  *
  * @param filename  the filename or URI
  * @returns an Input context or NULL in case or error
  */
-typedef void * (*xmlInputOpenCallback) (char const *filename);
+typedef void * (*xmlInputOpenCallback) (const char *filename);
 /**
  * Callback used in the I/O Input API to read the resource
  *
@@ -64,14 +64,14 @@ typedef int (*xmlInputCloseCallback) (void * context);
  * @param filename  the filename or URI
  * @returns 1 if yes and 0 if another Output module should be used
  */
-typedef int (*xmlOutputMatchCallback) (char const *filename);
+typedef int (*xmlOutputMatchCallback) (const char *filename);
 /**
  * Callback used in the I/O Output API to open the resource
  *
  * @param filename  the filename or URI
  * @returns an Output context or NULL in case or error
  */
-typedef void * (*xmlOutputOpenCallback) (char const *filename);
+typedef void * (*xmlOutputOpenCallback) (const char *filename);
 /**
  * Callback used in the I/O Output API to write to the resource
  *

@@ -1940,7 +1940,7 @@ xmlCtxtNewInputFromString(xmlParserCtxt *ctxt, const char *url,
 }
 
 /**
- * Creates a new parser input to read from a zero-terminated string.
+ * Creates a new parser input to read from a file descriptor.
  *
  * `url` is used as base to resolve external entities and for
  * error reporting.
@@ -2011,7 +2011,7 @@ xmlCtxtNewInputFromFd(xmlParserCtxt *ctxt, const char *url,
 
 /**
  * Creates a new parser input to read from input callbacks and
- * cintext.
+ * context.
  *
  * `url` is used as base to resolve external entities and for
  * error reporting.

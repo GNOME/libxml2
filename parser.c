@@ -184,7 +184,8 @@ xmlParseEntityRefInternal(xmlParserCtxtPtr ctxt);
 #define XML_PARSER_CHUNK_SIZE 100
 
 /**
- * Constant string describing the internal version of the library
+ * Constant string describing the version of the library used at
+ * run-time.
  */
 const char *const
 xmlParserVersion = LIBXML_VERSION_STRING LIBXML_VERSION_EXTRA;

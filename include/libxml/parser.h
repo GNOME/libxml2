@@ -1237,9 +1237,6 @@ typedef xmlParserInput *(*xmlExternalEntityLoader) (const char *URL,
  * Variables
  */
 
-/**
- * Run-time version string.
- */
 XMLPUBVAR const char *const xmlParserVersion;
 
 /** @cond ignore */

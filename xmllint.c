@@ -161,7 +161,9 @@ typedef enum {
     /** Deactivate all catalogs */
     XML_LINT_USE_NO_CATALOGS = (1 << 22),
     /** Print trace of all external entities loaded */
-    XML_LINT_USE_LOAD_TRACE = (1 << 23)
+    XML_LINT_USE_LOAD_TRACE = (1 << 23),
+    /** Return application failure if document has any namespace errors */
+    XML_LINT_STRICT_NAMESPACE = (1 << 24)
 
 
 } xmllintAppOptions;
@@ -1768,10 +1770,15 @@ parseFile(xmllintState *lint, const char *filename) {
         else
 	    lint->progresult = XMLLINT_ERR_RDFILE;
     } else {
-#ifdef LIBXML_VALID_ENABLED
-        if ((lint->parseOptions & XML_PARSE_DTDVALID) && (lint->ctxt->valid == 0))
+        xmlParserStatus status = xmlCtxtGetStatus(lint->ctxt);
+        if ((lint->parseOptions & XML_PARSE_DTDVALID) &&
+            (status & XML_STATUS_DTD_VALIDATION_FAILED))
             lint->progresult = XMLLINT_ERR_VALID;
-#endif /* LIBXML_VALID_ENABLED */
+
+        if ((lint->appOptions & XML_LINT_STRICT_NAMESPACE) &&
+            (status & XML_STATUS_NOT_NS_WELL_FORMED)) {
+            lint->progresult = XMLLINT_ERR_RDFILE;
+        }
     }
 
     return(doc);
@@ -2321,6 +2328,7 @@ static void usage(FILE *f, const char *name) {
     fprintf(f, "\t--dtdvalidfpi FPI : same but name the DTD with a Public Identifier\n");
     fprintf(f, "\t--insert : ad-hoc test for valid insertions\n");
 #endif /* LIBXML_VALID_ENABLED */
+    fprintf(f, "\t--strict-namespace : Return application failure if document has any namespace errors\n");
     fprintf(f, "\t--quiet : be quiet when succeeded\n");
     fprintf(f, "\t--timing : print some timings\n");
     fprintf(f, "\t--repeat : repeat 100 times, for timing or profiling\n");
@@ -2606,6 +2614,9 @@ xmllintParseOptions(xmllintState *lint, int argc, const char **argv) {
                    (!strcmp(argv[i], "--insert"))) {
             lint->appOptions |= XML_LINT_VALID_INSERTIONS;
 #endif /* LIBXML_VALID_ENABLED */
+        } else if ((!strcmp(argv[i], "-strict-namespace")) ||
+            (!strcmp(argv[i], "--strict-namespace"))) {
+            lint->appOptions |= XML_LINT_STRICT_NAMESPACE;
         } else if ((!strcmp(argv[i], "-dropdtd")) ||
                    (!strcmp(argv[i], "--dropdtd"))) {
             lint->appOptions |= XML_LINT_DROP_DTD;

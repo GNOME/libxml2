@@ -93,6 +93,7 @@
             <arg choice="plain"><option>--output <replaceable class="option">FILE</replaceable></option></arg>
             <arg choice="plain"><option>--repeat</option></arg>
             <arg choice="plain"><option>--insert</option></arg>
+            <arg choice="plain"><option>--strict-namespace</option></arg>
             <arg choice="plain"><option>--compress</option></arg>
             <arg choice="plain"><option>--html</option></arg>
             <arg choice="plain"><option>--xmlout</option></arg>
@@ -219,6 +220,16 @@
                     specified at the command line using the <option>--dtdvalid</option>
                     option. By default, &xmllint; also checks to determine if the
                     document is well-formed.
+                </para>
+            </listitem>
+        </varlistentry>
+
+        <varlistentry>
+            <term><option>--strict-namespace</option></term>
+            <listitem>
+                <para>
+                    Determine if the document is a well-formed, but has namespace
+					errors.  This enforces namespace-well-formedness.
                 </para>
             </listitem>
         </varlistentry>

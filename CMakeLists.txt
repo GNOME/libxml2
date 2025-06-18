@@ -354,7 +354,7 @@ if(WIN32)
 endif()
 
 if(LIBXML2_WITH_ICONV)
-    target_link_libraries(LibXml2 PUBLIC Iconv::Iconv)
+    target_link_libraries(LibXml2 PRIVATE Iconv::Iconv)
     if(NOT Iconv_IS_BUILT_IN)
         set(ICONV_LIBS "-liconv")
     endif()

@@ -359,11 +359,11 @@ struct _xmlAttribute {
     /** attribute default */
     xmlAttributeDefault      def XML_DEPRECATED_MEMBER;
     /** default value */
-    const xmlChar  *defaultValue XML_DEPRECATED_MEMBER;
+    const xmlChar  *defaultValue;
     /** enumeration tree if any */
     xmlEnumeration         *tree XML_DEPRECATED_MEMBER;
     /** namespace prefix if any */
-    const xmlChar        *prefix XML_DEPRECATED_MEMBER;
+    const xmlChar        *prefix;
     /** element name */
     const xmlChar          *elem XML_DEPRECATED_MEMBER;
 };
@@ -777,7 +777,7 @@ struct _xmlDoc {
     /* End of common part */
 
     /** level of zlib compression */
-    int             compression XML_DEPRECATED_MEMBER;
+    int             compression;
     /**
      * standalone document (no external refs)
      *
@@ -799,13 +799,13 @@ struct _xmlDoc {
     /** actual encoding if any */
     const xmlChar  *encoding;
     /** hash table for ID attributes if any */
-    void           *ids XML_DEPRECATED_MEMBER;
+    void           *ids;
     /** hash table for IDREFs attributes if any */
     void           *refs XML_DEPRECATED_MEMBER;
     /** URI of the document */
     const xmlChar  *URL;
     /** unused */
-    int             charset XML_DEPRECATED_MEMBER;
+    int             charset;
     /** dict used to allocate names if any */
     struct _xmlDict *dict;
     /** for type/PSVI information */

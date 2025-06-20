@@ -3327,7 +3327,7 @@ xmlCtxtIsStopped(xmlParserCtxtPtr ctxt) {
     if (ctxt == NULL)
         return(0);
 
-    return(PARSER_STOPPED(ctxt));
+    return(ctxt->disableSAX != 0);
 }
 
 #ifdef LIBXML_VALID_ENABLED

@@ -2181,13 +2181,27 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 
 #ifdef LIBXML_XINCLUDE_ENABLED
     if (lint->xinclude) {
+        xmlXIncludeCtxt *xinc;
+        int res;
+
 	if ((lint->timing) && (lint->repeat == 1)) {
 	    startTimer(lint);
 	}
-	if (xmlXIncludeProcessFlags(doc, lint->options) < 0) {
+
+        xinc = xmlXIncludeNewContext(doc);
+        if (xinc == NULL) {
+            lint->progresult = XMLLINT_ERR_MEM;
+            goto done;
+        }
+        xmlXIncludeSetResourceLoader(xinc, xmllintResourceLoader, lint);
+        xmlXIncludeSetFlags(xinc, lint->options);
+        res = xmlXIncludeProcessNode(xinc, (xmlNode *) doc);
+        xmlXIncludeFreeContext(xinc);
+        if (res < 0) {
 	    lint->progresult = XMLLINT_ERR_UNCLASS;
             goto done;
         }
+
 	if ((lint->timing) && (lint->repeat == 1)) {
 	    endTimer(lint, "Xinclude processing");
 	}

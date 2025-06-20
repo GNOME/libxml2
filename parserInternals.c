@@ -3195,6 +3195,11 @@ xmlCtxtIsHtml(xmlParserCtxt *ctxt) {
 }
 
 /**
+ * Check whether the parser is stopped.
+ *
+ * The parser is stopped on fatal (non-wellformedness) errors or
+ * on user request with #xmlStopParser.
+ *
  * @since 2.14.0
  *
  * @param ctxt  parser context
@@ -3205,7 +3210,7 @@ xmlCtxtIsStopped(xmlParserCtxt *ctxt) {
     if (ctxt == NULL)
         return(0);
 
-    return(PARSER_STOPPED(ctxt));
+    return(ctxt->disableSAX != 0);
 }
 
 #ifdef LIBXML_VALID_ENABLED

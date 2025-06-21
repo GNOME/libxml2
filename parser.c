@@ -11404,6 +11404,9 @@ xmlStopParser(xmlParserCtxt *ctxt) {
     if (ctxt == NULL)
         return;
     xmlHaltParser(ctxt);
+    /*
+     * TODO: Update ctxt->lastError and ctxt->wellFormed?
+     */
     if (ctxt->errNo != XML_ERR_NO_MEMORY)
         ctxt->errNo = XML_ERR_USER_STOP;
 }

@@ -12065,6 +12065,7 @@ xmlCtxtParseContent(xmlParserCtxt *ctxt, xmlParserInput *input,
      * Disable IDs
      */
     ctxt->loadsubset |= XML_SKIP_IDS;
+    ctxt->options |= XML_PARSE_SKIP_IDS;
 
     ctxt->myDoc = doc;
 
@@ -13142,6 +13143,7 @@ xmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
     ctxt->replaceEntities = (options & XML_PARSE_NOENT) ? 1 : 0;
     ctxt->loadsubset = (options & XML_PARSE_DTDLOAD) ? XML_DETECT_IDS : 0;
     ctxt->loadsubset |= (options & XML_PARSE_DTDATTR) ? XML_COMPLETE_ATTRS : 0;
+    ctxt->loadsubset |= (options & XML_PARSE_SKIP_IDS) ? XML_SKIP_IDS : 0;
     ctxt->validate = (options & XML_PARSE_DTDVALID) ? 1 : 0;
     ctxt->pedantic = (options & XML_PARSE_PEDANTIC) ? 1 : 0;
     ctxt->keepBlanks = (options & XML_PARSE_NOBLANKS) ? 0 : 1;

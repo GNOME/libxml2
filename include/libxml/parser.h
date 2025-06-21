@@ -489,8 +489,7 @@ struct _xmlParserCtxt {
      *   process default attributes.
      * - XML_SKIP_IDS: Load external subset and ignore IDs.
      */
-    /* TODO: See issue #873 */
-    int loadsubset;
+    int loadsubset XML_DEPRECATED_MEMBER;
     /* unused */
     int linenumbers XML_DEPRECATED_MEMBER;
     /**
@@ -1861,7 +1860,13 @@ typedef enum {
      *
      * @since 2.14.0
      */
-    XML_PARSE_CATALOG_PI = 1<<26
+    XML_PARSE_CATALOG_PI = 1<<26,
+    /**
+     * Force the parser to ignore IDs.
+     *
+     * @since 2.15.0
+     */
+    XML_PARSE_SKIP_IDS = 1<<27
 } xmlParserOption;
 
 XMLPUBFUN void

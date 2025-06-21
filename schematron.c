@@ -1453,6 +1453,8 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
             select = xmlGetNoNsProp(child, BAD_CAST "select");
             comp = xmlXPathCtxtCompile(ctxt->xctxt, select);
             eval = xmlXPathCompiledEval(comp, ctxt->xctxt);
+            if (eval == NULL)
+                return ret;
 
             switch (eval->type) {
             case XPATH_NODESET: {

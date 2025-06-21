@@ -1033,6 +1033,10 @@ xmlCtxtDumpOneNode(xmlDebugCtxtPtr ctxt, xmlNodePtr node)
     xmlCtxtGenericNodeCheck(ctxt, node);
 }
 
+#define MAX_PROMPT_SIZE     500
+#define MAX_ARG_SIZE        400
+#define MAX_COMMAND_SIZE    100
+
 /**
  * xmlCtxtDumpNode:
  * @output:  the FILE * for the output
@@ -2795,10 +2799,10 @@ void
 xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
          FILE * output)
 {
-    char prompt[500] = "/ > ";
+    char prompt[MAX_PROMPT_SIZE] = "/ > ";
     char *cmdline = NULL, *cur;
-    char command[100];
-    char arg[400];
+    char command[MAX_COMMAND_SIZE];
+    char arg[MAX_ARG_SIZE];
     int i;
     xmlShellCtxtPtr ctxt;
     xmlXPathObjectPtr list;
@@ -2856,7 +2860,8 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
             cur++;
         i = 0;
         while ((*cur != ' ') && (*cur != '\t') &&
-               (*cur != '\n') && (*cur != '\r')) {
+               (*cur != '\n') && (*cur != '\r') &&
+               (i < (MAX_COMMAND_SIZE - 1))) {
             if (*cur == 0)
                 break;
             command[i++] = *cur++;
@@ -2871,7 +2876,7 @@ xmlShell(xmlDocPtr doc, const char *filename, xmlShellReadlineFunc input,
         while ((*cur == ' ') || (*cur == '\t'))
             cur++;
         i = 0;
-        while ((*cur != '\n') && (*cur != '\r') && (*cur != 0)) {
+        while ((*cur != '\n') && (*cur != '\r') && (*cur != 0) && (i < (MAX_ARG_SIZE-1))) {
             if (*cur == 0)
                 break;
             arg[i++] = *cur++;

@@ -1011,6 +1011,10 @@ xmllintShellPwd(xmllintShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
     return (0);
 }
 
+#define MAX_PROMPT_SIZE     500
+#define MAX_ARG_SIZE        400
+#define MAX_COMMAND_SIZE    100
+
 /**
  * Read a string
  *
@@ -1020,7 +1024,7 @@ xmllintShellPwd(xmllintShellCtxtPtr ctxt ATTRIBUTE_UNUSED, char *buffer,
  */
 static char *
 xmllintShellReadline(char *prompt) {
-    char buf[501];
+    char buf[MAX_PROMPT_SIZE+1];
     char *ret;
     int len;
 
@@ -1044,9 +1048,9 @@ xmllintShellReadline(char *prompt) {
     if (prompt != NULL)
        fprintf(stdout, "%s", prompt);
     fflush(stdout);
-    if (!fgets(buf, 500, stdin))
+    if (!fgets(buf, MAX_PROMPT_SIZE, stdin))
         return(NULL);
-    buf[500] = 0;
+    buf[MAX_PROMPT_SIZE] = 0;
     len = strlen(buf);
     ret = (char *) malloc(len + 1);
     if (ret != NULL) {
@@ -1067,10 +1071,10 @@ xmllintShellReadline(char *prompt) {
 void
 xmllintShell(xmlDoc *doc, const char *filename, FILE * output)
 {
-    char prompt[500] = "/ > ";
+    char prompt[MAX_PROMPT_SIZE] = "/ > ";
     char *cmdline = NULL, *cur;
-    char command[100];
-    char arg[400];
+    char command[MAX_COMMAND_SIZE];
+    char arg[MAX_ARG_SIZE];
     int i;
     xmllintShellCtxtPtr ctxt;
 #ifdef LIBXML_XPATH_ENABLED
@@ -1127,7 +1131,8 @@ xmllintShell(xmlDoc *doc, const char *filename, FILE * output)
             cur++;
         i = 0;
         while ((*cur != ' ') && (*cur != '\t') &&
-               (*cur != '\n') && (*cur != '\r')) {
+               (*cur != '\n') && (*cur != '\r') &&
+               (i < (MAX_COMMAND_SIZE - 1))) {
             if (*cur == 0)
                 break;
             command[i++] = *cur++;
@@ -1142,7 +1147,7 @@ xmllintShell(xmlDoc *doc, const char *filename, FILE * output)
         while ((*cur == ' ') || (*cur == '\t'))
             cur++;
         i = 0;
-        while ((*cur != '\n') && (*cur != '\r') && (*cur != 0)) {
+        while ((*cur != '\n') && (*cur != '\r') && (*cur != 0) && (i < (MAX_ARG_SIZE-1))) {
             if (*cur == 0)
                 break;
             arg[i++] = *cur++;

@@ -130,6 +130,22 @@ blockList = {
     'htmlReadFd': True,
     'xmlReadFd': True,
     'xmlReaderForFd': True,
+
+    # uses va_list
+    'xmlStrVPrintf': True,
+    'xmlTextWriterWriteVFormatAttribute': True,
+    'xmlTextWriterWriteVFormatAttributeNS': True,
+    'xmlTextWriterWriteVFormatCDATA': True,
+    'xmlTextWriterWriteVFormatComment': True,
+    'xmlTextWriterWriteVFormatDTD': True,
+    'xmlTextWriterWriteVFormatDTDAttlist': True,
+    'xmlTextWriterWriteVFormatDTDElement': True,
+    'xmlTextWriterWriteVFormatDTDInternalEntity': True,
+    'xmlTextWriterWriteVFormatElement': True,
+    'xmlTextWriterWriteVFormatElementNS': True,
+    'xmlTextWriterWriteVFormatPI': True,
+    'xmlTextWriterWriteVFormatRaw': True,
+    'xmlTextWriterWriteVFormatString': True,
 }
 
 # Parse document

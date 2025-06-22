@@ -1,0 +1,5 @@
+# Image used to generate documentation with a recent version of Doxygen.
+# 1.14.0 fixes an important bug.
+
+FROM archlinux:base-devel
+RUN pacman -Syu --noconfirm doxygen libxslt docbook-xsl git

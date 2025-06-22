@@ -5,7 +5,7 @@ include:
       tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
 
 install:
-  image: registry.gitlab.gnome.org/gnome/libxml2
+  image: registry.gitlab.gnome.org/gnome/libxml2/docs
   before_script:
     - rm -rf libxml2-build
     - mkdir libxml2-build

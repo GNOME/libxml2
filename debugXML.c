@@ -338,12 +338,6 @@ xmlCtxtGenericNodeCheck(xmlDebugCtxtPtr ctxt, xmlNodePtr node) {
 	    if ((node->name == xmlStringText) ||
 	        (node->name == xmlStringTextNoenc))
 		break;
-	    /* some case of entity substitution can lead to this */
-	    if ((ctxt->dict != NULL) &&
-	        (node->name == xmlDictLookup(ctxt->dict, BAD_CAST "nbktext",
-		                             7)))
-		break;
-
 	    xmlDebugErr3(ctxt, XML_CHECK_WRONG_NAME,
 			 "Text node has wrong name '%s'",
 			 (const char *) node->name);

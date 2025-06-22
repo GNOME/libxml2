@@ -228,8 +228,8 @@
             <term><option>--strict-namespace</option></term>
             <listitem>
                 <para>
-                    Determine if the document is a well-formed, but has namespace
-					errors.  This enforces namespace-well-formedness.
+                    Return an error if the document is well-formed, but has namespace
+                    errors.  This enforces namespace-well-formedness.
                 </para>
             </listitem>
         </varlistentry>
@@ -1005,7 +1005,7 @@
         <varlistentry>
             <term><errorcode>4</errorcode></term>
             <listitem>
-                <para>Validation error</para>
+                <para>Document isn't well-formed or couldn't be read</para>
             </listitem>
         </varlistentry>
 

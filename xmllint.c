@@ -91,7 +91,7 @@ typedef enum {
     XMLLINT_ERR_UNCLASS = 1,	    /* Unclassified */
     XMLLINT_ERR_DTD = 2,	    /* Error in DTD */
     XMLLINT_ERR_VALID = 3,	    /* Validation error */
-    XMLLINT_ERR_RDFILE = 4,	    /* CtxtReadFile error */
+    XMLLINT_ERR_RDFILE = 4,	    /* Wellformedness or IO error */
     XMLLINT_ERR_SCHEMACOMP = 5,	    /* Schema compilation */
     XMLLINT_ERR_OUT = 6,	    /* Error writing output */
     XMLLINT_ERR_SCHEMAPAT = 7,	    /* Error in schema pattern */

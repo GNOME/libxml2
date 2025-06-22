@@ -5792,7 +5792,7 @@ xmlValidateElement(xmlValidCtxt *ctxt, xmlDoc *doc, xmlNode *root) {
     xmlNodePtr elem;
     xmlAttrPtr attr;
     xmlNsPtr ns;
-    const xmlChar *value;
+    xmlChar *value;
     int ret = 1;
 
     if (root == NULL) return(0);
@@ -5815,7 +5815,7 @@ xmlValidateElement(xmlValidCtxt *ctxt, xmlDoc *doc, xmlNode *root) {
                     ret = 0;
                 } else {
                     ret &= xmlValidateOneAttribute(ctxt, doc, elem, attr, value);
-                    xmlFree((char *)value);
+                    xmlFree(value);
                 }
                 attr= attr->next;
             }

@@ -477,17 +477,19 @@ struct _xmlParserCtxt {
      */
     void *_private;
     /**
-     * @deprecated Use xmlParserOption XML_PARSE_DTDLOAD or
-     * XML_PARSE_DTDATTR
+     * @deprecated Use xmlParserOption XML_PARSE_DTDLOAD,
+     * XML_PARSE_DTDATTR or XML_PARSE_SKIP_IDS.
      *
-     * Control loading of the external subset. Other options like
-     * `validate` can override this value.
+     * Control loading of the external subset and handling of IDs.
+     * Other options like `validate` can override this value.
      *
-     * - 0: Don't load external subset.
-     * - XML_DETECT_IDS: Load external subset and store IDs.
-     * - XML_COMPLETE_ATTRS: Load external subset, store IDs and
-     *   process default attributes.
-     * - XML_SKIP_IDS: Load external subset and ignore IDs.
+     * - 0: The default behavior is to process IDs and to ignore
+     *   the external subset.
+     * - XML_DETECT_IDS: Load external subset. This flag is
+     *   misnamed. ID handling is only controlled by XML_SKIP_IDS.
+     * - XML_COMPLETE_ATTRS: Load external subset and process
+     *   default attributes.
+     * - XML_SKIP_IDS: Ignore IDs.
      */
     int loadsubset XML_DEPRECATED_MEMBER;
     /* unused */

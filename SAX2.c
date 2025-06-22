@@ -272,7 +272,7 @@ xmlSAX2ExternalSubset(void *ctx, const xmlChar *name,
     if (ctx == NULL) return;
     if ((systemId != NULL) &&
         ((ctxt->options & XML_PARSE_NO_XXE) == 0) &&
-        (((ctxt->validate) || (ctxt->loadsubset)) &&
+        (((ctxt->validate) || (ctxt->loadsubset & ~XML_SKIP_IDS)) &&
 	 (ctxt->wellFormed && ctxt->myDoc))) {
 	/*
 	 * Try to fetch and parse the external subset.

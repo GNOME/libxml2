@@ -7647,7 +7647,7 @@ xmlParsePERefInternal(xmlParserCtxt *ctxt, int markupDecl) {
 	} else {
 	    if ((entity->etype == XML_EXTERNAL_PARAMETER_ENTITY) &&
                 ((ctxt->options & XML_PARSE_NO_XXE) ||
-		 ((ctxt->loadsubset == 0) &&
+		 (((ctxt->loadsubset & ~XML_SKIP_IDS) == 0) &&
 		  (ctxt->replaceEntities == 0) &&
 		  (ctxt->validate == 0))))
 		return;

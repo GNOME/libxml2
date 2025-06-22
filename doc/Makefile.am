@@ -47,18 +47,8 @@ DOCBOOK_HTML = http://docbook.sourceforge.net/release/xsl/current/html/docbook.x
 
 install-data-local:
 	$(MKDIR_P) "$(DESTDIR)$(docdir)/html/search"
-	$(INSTALL_DATA) \
-	    html/*.css \
-	    html/*.html \
-	    html/*.js \
-	    html/*.png \
-	    html/*.svg \
-	    "$(DESTDIR)$(docdir)/html"
-	$(INSTALL_DATA) \
-	    html/search/*.css \
-	    html/search/*.js \
-	    html/search/*.svg \
-	    "$(DESTDIR)$(docdir)/html/search"
+	$(INSTALL_DATA) html/*.* "$(DESTDIR)$(docdir)/html"
+	$(INSTALL_DATA) html/search/*.* "$(DESTDIR)$(docdir)/html/search"
 
 uninstall-local:
 	-rm -rf "$(DESTDIR)$(docdir)/html"

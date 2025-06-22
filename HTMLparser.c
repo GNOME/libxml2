@@ -5483,16 +5483,6 @@ htmlNodeStatus(xmlNode *node ATTRIBUTE_UNUSED,
  *	New set (2.6.0) of simpler and more flexible APIs		*
  *									*
  ************************************************************************/
-/**
- * Free a string if it is not owned by the "dict" dictionary in the
- * current scope
- *
- * @param str  a string
- */
-#define DICT_FREE(str)						\
-	if ((str) && ((!dict) ||				\
-	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
-	    xmlFree((char *)(str));
 
 /**
  * Reset a parser context

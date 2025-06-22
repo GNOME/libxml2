@@ -1658,7 +1658,7 @@ xmlSetDeclaredEncoding(xmlParserCtxt *ctxt, xmlChar *encoding) {
     }
 
     if (ctxt->encoding != NULL)
-        xmlFree((xmlChar *) ctxt->encoding);
+        xmlFree(ctxt->encoding);
     ctxt->encoding = encoding;
 }
 
@@ -2903,10 +2903,10 @@ xmlFreeParserCtxt(xmlParserCtxt *ctxt)
     if (ctxt->nodeTab != NULL) xmlFree(ctxt->nodeTab);
     if (ctxt->nodeInfoTab != NULL) xmlFree(ctxt->nodeInfoTab);
     if (ctxt->inputTab != NULL) xmlFree(ctxt->inputTab);
-    if (ctxt->version != NULL) xmlFree((char *) ctxt->version);
-    if (ctxt->encoding != NULL) xmlFree((char *) ctxt->encoding);
-    if (ctxt->extSubURI != NULL) xmlFree((char *) ctxt->extSubURI);
-    if (ctxt->extSubSystem != NULL) xmlFree((char *) ctxt->extSubSystem);
+    if (ctxt->version != NULL) xmlFree(ctxt->version);
+    if (ctxt->encoding != NULL) xmlFree(ctxt->encoding);
+    if (ctxt->extSubURI != NULL) xmlFree(ctxt->extSubURI);
+    if (ctxt->extSubSystem != NULL) xmlFree(ctxt->extSubSystem);
 #ifdef LIBXML_SAX1_ENABLED
     if ((ctxt->sax != NULL) &&
         (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler))

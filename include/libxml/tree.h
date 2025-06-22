@@ -546,9 +546,9 @@ struct _xmlDtd {
     /** hash table for entities if any */
     void          *entities XML_DEPRECATED_MEMBER;
     /** public identifier */
-    const xmlChar *ExternalID XML_DEPRECATED_MEMBER;
+    xmlChar *ExternalID XML_DEPRECATED_MEMBER;
     /** system identifier */
-    const xmlChar *SystemID XML_DEPRECATED_MEMBER;
+    xmlChar *SystemID XML_DEPRECATED_MEMBER;
     /** hash table for parameter entities if any */
     void          *pentities XML_DEPRECATED_MEMBER;
 };
@@ -599,7 +599,7 @@ struct _xmlID {
     /* next ID */
     struct _xmlID    *next XML_DEPRECATED_MEMBER;
     /* The ID name */
-    const xmlChar    *value XML_DEPRECATED_MEMBER;
+    xmlChar *value XML_DEPRECATED_MEMBER;
     /* The attribute holding it */
     xmlAttr          *attr XML_DEPRECATED_MEMBER;
     /* The attribute if attr is not available */
@@ -795,15 +795,15 @@ struct _xmlDoc {
     /** used to hold the XML namespace if needed */
     struct _xmlNs   *oldNs XML_DEPRECATED_MEMBER;
     /** version string from XML declaration */
-    const xmlChar  *version;
+    xmlChar  *version;
     /** actual encoding if any */
-    const xmlChar  *encoding;
+    xmlChar  *encoding;
     /** hash table for ID attributes if any */
     void           *ids;
     /** hash table for IDREFs attributes if any */
     void           *refs XML_DEPRECATED_MEMBER;
     /** URI of the document */
-    const xmlChar  *URL;
+    xmlChar  *URL;
     /** unused */
     int             charset;
     /** dict used to allocate names if any */

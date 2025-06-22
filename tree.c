@@ -842,9 +842,14 @@ xmlFreeDtd(xmlDtd *cur) {
 	    c = next;
 	}
     }
+
     DICT_FREE(cur->name)
-    DICT_FREE(cur->SystemID)
-    DICT_FREE(cur->ExternalID)
+
+    if (cur->SystemID != NULL)
+        xmlFree(cur->SystemID);
+    if (cur->ExternalID != NULL)
+        xmlFree(cur->ExternalID);
+
     /* TODO !!! */
     if (cur->notations != NULL)
         xmlFreeNotationTable((xmlNotationTablePtr) cur->notations);
@@ -949,10 +954,15 @@ xmlFreeDoc(xmlDoc *cur) {
     if (cur->children != NULL) xmlFreeNodeList(cur->children);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
 
-    DICT_FREE(cur->version)
     DICT_FREE(cur->name)
-    DICT_FREE(cur->encoding)
-    DICT_FREE(cur->URL)
+
+    if (cur->version != NULL)
+        xmlFree(cur->version);
+    if (cur->encoding != NULL)
+        xmlFree(cur->encoding);
+    if (cur->URL != NULL)
+        xmlFree(cur->URL);
+
     xmlFree(cur);
     if (dict) xmlDictFree(dict);
 }
@@ -4956,7 +4966,7 @@ xmlNodeSetBase(xmlNode *cur, const xmlChar* uri) {
 	    xmlDocPtr doc = (xmlDocPtr) cur;
 
 	    if (doc->URL != NULL)
-		xmlFree((xmlChar *) doc->URL);
+		xmlFree(doc->URL);
 	    if (uri == NULL) {
 		doc->URL = NULL;
             } else {

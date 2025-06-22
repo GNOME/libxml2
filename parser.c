@@ -7706,7 +7706,7 @@ static int
 xmlLoadEntityContent(xmlParserCtxtPtr ctxt, xmlEntityPtr entity) {
     xmlParserInputPtr oldinput, input = NULL;
     xmlParserInputPtr *oldinputTab;
-    const xmlChar *oldencoding;
+    xmlChar *oldencoding;
     xmlChar *content = NULL;
     xmlResourceType rtype;
     size_t length, i;
@@ -7823,7 +7823,7 @@ error:
     while (ctxt->inputNr > 0)
         xmlFreeInputStream(xmlCtxtPopInput(ctxt));
     xmlFree(ctxt->inputTab);
-    xmlFree((xmlChar *) ctxt->encoding);
+    xmlFree(ctxt->encoding);
 
     ctxt->input = oldinput;
     ctxt->inputNr = oldinputNr;
@@ -10080,7 +10080,7 @@ xmlParseEncodingDecl(xmlParserCtxt *ctxt) {
         encoding = xmlParseEncName(ctxt);
         if (RAW != '"') {
             xmlFatalErr(ctxt, XML_ERR_STRING_NOT_CLOSED, NULL);
-            xmlFree((xmlChar *) encoding);
+            xmlFree(encoding);
             return(NULL);
         } else
             NEXT;
@@ -10089,7 +10089,7 @@ xmlParseEncodingDecl(xmlParserCtxt *ctxt) {
         encoding = xmlParseEncName(ctxt);
         if (RAW != '\'') {
             xmlFatalErr(ctxt, XML_ERR_STRING_NOT_CLOSED, NULL);
-            xmlFree((xmlChar *) encoding);
+            xmlFree(encoding);
             return(NULL);
         } else
             NEXT;
@@ -10249,7 +10249,7 @@ xmlParseXMLDecl(xmlParserCtxt *ctxt) {
 	    }
 	}
 	if (ctxt->version != NULL)
-	    xmlFree((void *) ctxt->version);
+	    xmlFree(ctxt->version);
 	ctxt->version = version;
     }
 
@@ -12941,17 +12941,6 @@ xmlParseDoc(const xmlChar *cur) {
  ************************************************************************/
 
 /**
- * Free a string if it is not owned by the "dict" dictionary in the
- * current scope
- *
- * @param str  a string
- */
-#define DICT_FREE(str)						\
-	if ((str) && ((!dict) ||				\
-	    (xmlDictOwns(dict, (const xmlChar *)(str)) == 0)))	\
-	    xmlFree((char *)(str));
-
-/**
  * Reset a parser context
  *
  * @param ctxt  an XML parser context
@@ -12960,12 +12949,9 @@ void
 xmlCtxtReset(xmlParserCtxt *ctxt)
 {
     xmlParserInputPtr input;
-    xmlDictPtr dict;
 
     if (ctxt == NULL)
         return;
-
-    dict = ctxt->dict;
 
     while ((input = xmlCtxtPopInput(ctxt)) != NULL) { /* Non consuming */
         xmlFreeInputStream(input);
@@ -12991,15 +12977,22 @@ xmlCtxtReset(xmlParserCtxt *ctxt)
     ctxt->nsNr = 0;
     xmlParserNsReset(ctxt->nsdb);
 
-    DICT_FREE(ctxt->version);
-    ctxt->version = NULL;
-    DICT_FREE(ctxt->encoding);
-    ctxt->encoding = NULL;
-    DICT_FREE(ctxt->extSubURI);
-    ctxt->extSubURI = NULL;
-    DICT_FREE(ctxt->extSubSystem);
-    ctxt->extSubSystem = NULL;
-
+    if (ctxt->version != NULL) {
+        xmlFree(ctxt->version);
+        ctxt->version = NULL;
+    }
+    if (ctxt->encoding != NULL) {
+        xmlFree(ctxt->encoding);
+        ctxt->encoding = NULL;
+    }
+    if (ctxt->extSubURI != NULL) {
+        xmlFree(ctxt->extSubURI);
+        ctxt->extSubURI = NULL;
+    }
+    if (ctxt->extSubSystem != NULL) {
+        xmlFree(ctxt->extSubSystem);
+        ctxt->extSubSystem = NULL;
+    }
     if (ctxt->directory != NULL) {
         xmlFree(ctxt->directory);
         ctxt->directory = NULL;

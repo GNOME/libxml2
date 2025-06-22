@@ -276,13 +276,13 @@ struct _xmlParserCtxt {
      *
      * the XML version string
      */
-    const xmlChar *version;
+    xmlChar *version;
     /**
      * @deprecated Use xmlCtxtGetDeclaredEncoding()
      *
      * the declared encoding, if any
      */
-    const xmlChar *encoding;
+    xmlChar *encoding;
     /**
      * @deprecated Use xmlCtxtGetStandalone()
      *

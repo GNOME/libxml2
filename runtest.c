@@ -2346,8 +2346,8 @@ testParseContent(xmlParserCtxtPtr ctxt, xmlDocPtr doc, const char *filename) {
     xmlFreeNodeList(list);
 
     /* xmlParseInNodeContext uses the document's encoding. */
-    xmlFree((xmlChar *) doc->encoding);
-    doc->encoding = (const xmlChar *) xmlStrdup(BAD_CAST "UTF-8");
+    xmlFree(doc->encoding);
+    doc->encoding = xmlStrdup(BAD_CAST "UTF-8");
     xmlParseInNodeContext(root, content, strlen(content),
                           ctxt->options | XML_PARSE_NOERROR,
                           &list);

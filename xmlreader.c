@@ -538,11 +538,11 @@ xmlTextReaderFreeDoc(xmlTextReaderPtr reader, xmlDocPtr cur) {
 
     if (cur->children != NULL) xmlTextReaderFreeNodeList(reader, cur->children);
 
-    if (cur->version != NULL) xmlFree((char *) cur->version);
+    if (cur->version != NULL) xmlFree(cur->version);
     if (cur->name != NULL) xmlFree((char *) cur->name);
-    if (cur->encoding != NULL) xmlFree((char *) cur->encoding);
+    if (cur->encoding != NULL) xmlFree(cur->encoding);
     if (cur->oldNs != NULL) xmlFreeNsList(cur->oldNs);
-    if (cur->URL != NULL) xmlFree((char *) cur->URL);
+    if (cur->URL != NULL) xmlFree(cur->URL);
     if (cur->dict != NULL) xmlDictFree(cur->dict);
 
     xmlFree(cur);

@@ -2202,7 +2202,7 @@ xmlAddIDInternal(xmlAttrPtr attr, const xmlChar *value, xmlIDPtr *idPtr) {
      */
     table = (xmlIDTablePtr) doc->ids;
     if (table == NULL)  {
-        doc->ids = table = xmlHashCreateDict(0, doc->dict);
+        doc->ids = table = xmlHashCreate(0);
         if (table == NULL)
             return(-1);
     } else {
@@ -2563,7 +2563,7 @@ xmlAddRef(xmlValidCtxt *ctxt, xmlDoc *doc, const xmlChar *value,
      */
     table = (xmlRefTablePtr) doc->refs;
     if (table == NULL) {
-        doc->refs = table = xmlHashCreateDict(0, doc->dict);
+        doc->refs = table = xmlHashCreate(0);
         if (table == NULL)
             goto failed;
     }

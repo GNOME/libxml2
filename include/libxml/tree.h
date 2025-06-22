@@ -359,7 +359,7 @@ struct _xmlAttribute {
     /** attribute default */
     xmlAttributeDefault      def XML_DEPRECATED_MEMBER;
     /** default value */
-    const xmlChar  *defaultValue;
+    xmlChar *defaultValue;
     /** enumeration tree if any */
     xmlEnumeration         *tree XML_DEPRECATED_MEMBER;
     /** namespace prefix if any */

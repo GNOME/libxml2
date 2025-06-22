@@ -1527,19 +1527,16 @@ xmlFreeAttribute(xmlAttributePtr attr) {
 	    xmlFree((xmlChar *) attr->name);
         if ((attr->prefix != NULL) && (!xmlDictOwns(dict, attr->prefix)))
 	    xmlFree((xmlChar *) attr->prefix);
-        if ((attr->defaultValue != NULL) &&
-	    (!xmlDictOwns(dict, attr->defaultValue)))
-	    xmlFree((xmlChar *) attr->defaultValue);
     } else {
 	if (attr->elem != NULL)
 	    xmlFree((xmlChar *) attr->elem);
 	if (attr->name != NULL)
 	    xmlFree((xmlChar *) attr->name);
-	if (attr->defaultValue != NULL)
-	    xmlFree((xmlChar *) attr->defaultValue);
 	if (attr->prefix != NULL)
 	    xmlFree((xmlChar *) attr->prefix);
     }
+    if (attr->defaultValue != NULL)
+        xmlFree(attr->defaultValue);
     xmlFree(attr);
 }
 
@@ -1662,10 +1659,7 @@ xmlAddAttributeDecl(xmlValidCtxt *ctxt,
     ret->tree = tree;
     tree = NULL;
     if (defaultValue != NULL) {
-        if (dict)
-	    ret->defaultValue = xmlDictLookup(dict, defaultValue, -1);
-	else
-	    ret->defaultValue = xmlStrdup(defaultValue);
+	ret->defaultValue = xmlStrdup(defaultValue);
         if (ret->defaultValue == NULL)
             goto mem_error;
     }

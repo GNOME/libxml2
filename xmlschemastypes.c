@@ -540,11 +540,13 @@ xmlSchemaInitTypes(void)
     xmlSchemaPINF = INFINITY;
     xmlSchemaNINF = -INFINITY;
 #else
-    /* MSVC doesn't allow division by zero in constant expressions. */
-    double zero = 0.0;
-    xmlSchemaNAN = 0.0 / zero;
-    xmlSchemaPINF = 1.0 / zero;
-    xmlSchemaNINF = -xmlSchemaPINF;
+    {
+        /* MSVC doesn't allow division by zero in constant expressions. */
+        double zero = 0.0;
+        xmlSchemaNAN = 0.0 / zero;
+        xmlSchemaPINF = 1.0 / zero;
+        xmlSchemaNINF = -xmlSchemaPINF;
+    }
 #endif
 
     xmlSchemaTypesBank = xmlHashCreate(40);

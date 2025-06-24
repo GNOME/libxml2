@@ -4450,60 +4450,68 @@ xmlGetLineNo(const xmlNode *node)
 xmlChar *
 xmlGetNodePath(const xmlNode *node)
 {
-    const xmlNode *cur, *tmp, *next;
-    xmlChar *buffer = NULL;
-    size_t buf_len, len;
-    xmlChar *buf;
-    const char *sep;
-    const char *name;
-    char nametemp[100];
-    int occur = 0, generic;
+    const xmlNode *cur, *tmp;
+    const xmlNode **nodes = NULL;
+    xmlChar *ret = NULL;
+    xmlBuf *buf;
+    size_t numNodes, i;
 
     if ((node == NULL) || (node->type == XML_NAMESPACE_DECL))
-        return (NULL);
+        return(NULL);
 
-    buf_len = 500;
-    buffer = xmlMalloc(buf_len);
-    if (buffer == NULL)
-        return (NULL);
-    buf = xmlMalloc(buf_len);
-    if (buf == NULL) {
-        xmlFree(buffer);
-        return (NULL);
-    }
+    buf = xmlBufCreate(50);
+    if (buf == NULL)
+        return(NULL);
 
-    buffer[0] = 0;
-    cur = node;
-    do {
-        name = "";
-        sep = "?";
-        occur = 0;
+    /*
+     * Get list of ancestors
+     */
+    numNodes = 0;
+    for (cur = node; cur != NULL; cur = cur->parent)
+        numNodes += 1;
+    if (numNodes > SIZE_MAX / sizeof(nodes[0]))
+        goto error;
+    nodes = xmlMalloc(numNodes * sizeof(nodes[0]));
+    if (nodes == NULL)
+        goto error;
+    i = 0;
+    for (cur = node; cur != NULL && i < numNodes; cur = cur->parent)
+        nodes[i++] = cur;
+
+    /*
+     * Iterate in reverse to start at root
+     */
+    while (i > 0) {
+        int occur = 0;
+
+        i -= 1;
+        cur = nodes[i];
+
         if ((cur->type == XML_DOCUMENT_NODE) ||
             (cur->type == XML_HTML_DOCUMENT_NODE)) {
-            if (buffer[0] == '/')
-                break;
-            sep = "/";
-            next = NULL;
+            if (i == 0)
+                xmlBufCat(buf, BAD_CAST "/");
         } else if (cur->type == XML_ELEMENT_NODE) {
-	    generic = 0;
-            sep = "/";
-            name = (const char *) cur->name;
+            int generic = 0;
+
+            xmlBufCat(buf, BAD_CAST "/");
+
             if (cur->ns) {
 		if (cur->ns->prefix != NULL) {
-                    snprintf(nametemp, sizeof(nametemp) - 1, "%s:%s",
-			(char *)cur->ns->prefix, (char *)cur->name);
-		    nametemp[sizeof(nametemp) - 1] = 0;
-		    name = nametemp;
+                    xmlBufCat(buf, cur->ns->prefix);
+                    xmlBufCat(buf, BAD_CAST ":");
+                    xmlBufCat(buf, cur->name);
 		} else {
 		    /*
 		    * We cannot express named elements in the default
 		    * namespace, so use "*".
 		    */
 		    generic = 1;
-		    name = "*";
+                    xmlBufCat(buf, BAD_CAST "*");
 		}
+            } else {
+                xmlBufCat(buf, cur->name);
             }
-            next = cur->parent;
 
             /*
              * Thumbler index computation
@@ -4537,9 +4545,7 @@ xmlGetNodePath(const xmlNode *node)
             } else
                 occur++;
         } else if (cur->type == XML_COMMENT_NODE) {
-            sep = "/";
-	    name = "comment()";
-            next = cur->parent;
+            xmlBufCat(buf, BAD_CAST "/comment()");
 
             /*
              * Thumbler index computation
@@ -4563,9 +4569,7 @@ xmlGetNodePath(const xmlNode *node)
                 occur++;
         } else if ((cur->type == XML_TEXT_NODE) ||
                    (cur->type == XML_CDATA_SECTION_NODE)) {
-            sep = "/";
-	    name = "text()";
-            next = cur->parent;
+            xmlBufCat(buf, BAD_CAST "/text()");
 
             /*
              * Thumbler index computation
@@ -4595,13 +4599,9 @@ xmlGetNodePath(const xmlNode *node)
             } else
                 occur++;
         } else if (cur->type == XML_PI_NODE) {
-            sep = "/";
-	    snprintf(nametemp, sizeof(nametemp) - 1,
-		     "processing-instruction('%s')", (char *)cur->name);
-            nametemp[sizeof(nametemp) - 1] = 0;
-            name = nametemp;
-
-	    next = cur->parent;
+            xmlBufCat(buf, BAD_CAST "/processing-instruction('");
+            xmlBufCat(buf, cur->name);
+            xmlBufCat(buf, BAD_CAST "')");
 
             /*
              * Thumbler index computation
@@ -4627,70 +4627,30 @@ xmlGetNodePath(const xmlNode *node)
                 occur++;
 
         } else if (cur->type == XML_ATTRIBUTE_NODE) {
-            sep = "/@";
-            name = (const char *) (((xmlAttrPtr) cur)->name);
-            if (cur->ns) {
-	        if (cur->ns->prefix != NULL)
-                    snprintf(nametemp, sizeof(nametemp) - 1, "%s:%s",
-			(char *)cur->ns->prefix, (char *)cur->name);
-		else
-		    snprintf(nametemp, sizeof(nametemp) - 1, "%s",
-			(char *)cur->name);
-                nametemp[sizeof(nametemp) - 1] = 0;
-                name = nametemp;
+            xmlBufCat(buf, BAD_CAST "/@");
+            if (cur->ns && cur->ns->prefix != NULL) {
+                xmlBufCat(buf, cur->ns->prefix);
+                xmlBufCat(buf, BAD_CAST ":");
             }
-            next = ((xmlAttrPtr) cur)->parent;
+            xmlBufCat(buf, cur->name);
         } else {
-            xmlFree(buf);
-            xmlFree(buffer);
-            return (NULL);
+            goto error;
         }
 
-        /*
-         * Make sure there is enough room
-         */
-        len = strlen((const char *) buffer);
-        if (buf_len - len < sizeof(nametemp) + 20) {
-            xmlChar *temp;
-            int newSize;
+        if (occur > 0) {
+            char tmpbuf[30];
 
-            if ((buf_len > SIZE_MAX / 2) ||
-                (2 * buf_len > SIZE_MAX - len - sizeof(nametemp) - 20)) {
-                xmlFree(buf);
-                xmlFree(buffer);
-                return (NULL);
-            }
-            newSize = 2 * buf_len + len + sizeof(nametemp) + 20;
-
-            temp = xmlRealloc(buffer, newSize);
-            if (temp == NULL) {
-                xmlFree(buf);
-                xmlFree(buffer);
-                return (NULL);
-            }
-            buffer = temp;
-
-            temp = xmlRealloc(buf, newSize);
-            if (temp == NULL) {
-                xmlFree(buf);
-                xmlFree(buffer);
-                return (NULL);
-            }
-            buf = temp;
-
-            buf_len = newSize;
+            snprintf(tmpbuf, sizeof(tmpbuf), "[%d]", occur);
+            xmlBufCat(buf, BAD_CAST tmpbuf);
         }
-        if (occur == 0)
-            snprintf((char *) buf, buf_len, "%s%s%s",
-                     sep, name, (char *) buffer);
-        else
-            snprintf((char *) buf, buf_len, "%s%s[%d]%s",
-                     sep, name, occur, (char *) buffer);
-        snprintf((char *) buffer, buf_len, "%s", (char *)buf);
-        cur = next;
-    } while (cur != NULL);
-    xmlFree(buf);
-    return (buffer);
+    }
+
+    ret = xmlBufDetach(buf);
+
+error:
+    xmlBufFree(buf);
+    xmlFree(nodes);
+    return(ret);
 }
 
 /**

@@ -2198,8 +2198,11 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
         res = xmlXIncludeProcessNode(xinc, (xmlNode *) doc);
         xmlXIncludeFreeContext(xinc);
         if (res < 0) {
+            /*
+             * Return an error but continue to print the document
+             * to match long-standing behavior.
+             */
 	    lint->progresult = XMLLINT_ERR_UNCLASS;
-            goto done;
         }
 
 	if ((lint->timing) && (lint->repeat == 1)) {

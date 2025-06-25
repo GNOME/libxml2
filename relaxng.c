@@ -36,6 +36,7 @@
 #include "private/error.h"
 #include "private/regexp.h"
 #include "private/string.h"
+#include "private/threads.h"
 
 /*
  * The Relax-NG namespace
@@ -2677,6 +2678,20 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar * namespace, void *data,
     return (0);
 }
 
+static xmlMutex xmlRelaxNGMutex;
+
+void
+xmlInitRelaxNGInternal(void)
+{
+    xmlInitMutex(&xmlRelaxNGMutex);
+}
+
+void
+xmlCleanupRelaxNGInternal(void)
+{
+    xmlCleanupMutex(&xmlRelaxNGMutex);
+}
+
 /**
  * Initialize the default type libraries.
  *
@@ -2685,11 +2700,19 @@ xmlRelaxNGRegisterTypeLibrary(const xmlChar * namespace, void *data,
 int
 xmlRelaxNGInitTypes(void)
 {
-    if (xmlRelaxNGTypeInitialized != 0)
+    xmlInitParser();
+
+    xmlMutexLock(&xmlRelaxNGMutex);
+    if (xmlRelaxNGTypeInitialized != 0) {
+        xmlMutexUnlock(&xmlRelaxNGMutex);
         return (0);
+    }
+
     xmlRelaxNGRegisteredTypes = xmlHashCreate(10);
-    if (xmlRelaxNGRegisteredTypes == NULL)
+    if (xmlRelaxNGRegisteredTypes == NULL) {
+        xmlMutexUnlock(&xmlRelaxNGMutex);
         return (-1);
+    }
     xmlRelaxNGRegisterTypeLibrary(BAD_CAST
                                   "http://www.w3.org/2001/XMLSchema-datatypes",
                                   NULL, xmlRelaxNGSchemaTypeHave,
@@ -2703,6 +2726,7 @@ xmlRelaxNGInitTypes(void)
                                   xmlRelaxNGDefaultTypeCompare, NULL,
                                   NULL);
     xmlRelaxNGTypeInitialized = 1;
+    xmlMutexUnlock(&xmlRelaxNGMutex);
     return (0);
 }
 
@@ -2719,10 +2743,14 @@ void
 xmlRelaxNGCleanupTypes(void)
 {
     xmlSchemaCleanupTypes();
-    if (xmlRelaxNGTypeInitialized == 0)
+    xmlMutexLock(&xmlRelaxNGMutex);
+    if (xmlRelaxNGTypeInitialized == 0) {
+        xmlMutexUnlock(&xmlRelaxNGMutex);
         return;
+    }
     xmlHashFree(xmlRelaxNGRegisteredTypes, xmlRelaxNGFreeTypeLibrary);
     xmlRelaxNGTypeInitialized = 0;
+    xmlMutexUnlock(&xmlRelaxNGMutex);
 }
 
 /************************************************************************

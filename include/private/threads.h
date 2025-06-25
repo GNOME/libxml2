@@ -65,5 +65,12 @@ XML_HIDDEN void
 xmlCleanupSchemasTypesInternal(void);
 #endif
 
+#ifdef LIBXML_RELAXNG_ENABLED
+XML_HIDDEN void
+xmlInitRelaxNGInternal(void);
+XML_HIDDEN void
+xmlCleanupRelaxNGInternal(void);
+#endif
+
 
 #endif /* XML_THREADS_H_PRIVATE__ */

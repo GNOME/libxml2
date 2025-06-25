@@ -543,7 +543,6 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlStrEqual(NULL, NULL);
     xmlStrPrintf(NULL, 0, NULL, 0);
     xmlStrQEqual(NULL, NULL, NULL);
-    xmlStrVPrintf(NULL, 0, NULL, 0);
     xmlStrcasecmp(NULL, NULL);
     xmlStrcasestr(NULL, NULL);
     xmlFree(xmlStrcat(NULL, NULL));
@@ -1198,19 +1197,6 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlTextWriterWriteRaw(NULL, NULL);
     xmlTextWriterWriteRawLen(NULL, NULL, 0);
     xmlTextWriterWriteString(NULL, NULL);
-    xmlTextWriterWriteVFormatAttribute(NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatAttributeNS(NULL, NULL, NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatCDATA(NULL, NULL, 0);
-    xmlTextWriterWriteVFormatComment(NULL, NULL, 0);
-    xmlTextWriterWriteVFormatDTD(NULL, NULL, NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatDTDAttlist(NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatDTDElement(NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatDTDInternalEntity(NULL, 0, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatElement(NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatElementNS(NULL, NULL, NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatPI(NULL, NULL, NULL, 0);
-    xmlTextWriterWriteVFormatRaw(NULL, NULL, 0);
-    xmlTextWriterWriteVFormatString(NULL, NULL, 0);
 #endif /* LIBXML_WRITER_ENABLED */
 
 #ifdef LIBXML_XINCLUDE_ENABLED

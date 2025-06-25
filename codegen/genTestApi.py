@@ -168,15 +168,22 @@ for file in os.listdir(xmlDocDir):
             module1, module2 = xmlmod.findModules(module, name)
 
             cargs = []
+            skip = False
             for arg in func.findall('param'):
                 atype = etree.tostring(arg.find('type'),
                     method='text', encoding='unicode').rstrip()
                 if atype == 'void':
                     continue
+                if atype == 'va_list':
+                    skip = True
+                    break
                 if re.search(r'(Ptr|\*)$', atype):
                     cargs.append('NULL')
                 else:
                     cargs.append('0')
+
+            if skip:
+                continue
 
             mfunc = functions.get(module1)
             if mfunc is None:

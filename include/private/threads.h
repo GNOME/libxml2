@@ -58,4 +58,12 @@ xmlInitRMutex(xmlRMutex *mutex);
 XML_HIDDEN void
 xmlCleanupRMutex(xmlRMutex *mutex);
 
+#ifdef LIBXML_SCHEMAS_ENABLED
+XML_HIDDEN void
+xmlInitSchemasTypesInternal(void);
+XML_HIDDEN void
+xmlCleanupSchemasTypesInternal(void);
+#endif
+
+
 #endif /* XML_THREADS_H_PRIVATE__ */

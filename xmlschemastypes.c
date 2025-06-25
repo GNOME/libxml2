@@ -35,6 +35,7 @@
 #include <libxml/xmlschemastypes.h>
 
 #include "private/error.h"
+#include "private/threads.h"
 
 #ifndef isnan
   #define isnan(x) (!((x) == (x)))
@@ -514,6 +515,20 @@ xmlSchemaCleanupTypesInternal(void) {
     /* Note that the xmlSchemaType*Def pointers aren't set to NULL. */
 }
 
+static xmlMutex xmlSchemasTypesMutex;
+
+void
+xmlInitSchemasTypesInternal(void)
+{
+    xmlInitMutex(&xmlSchemasTypesMutex);
+}
+
+void
+xmlCleanupSchemasTypesInternal(void)
+{
+    xmlCleanupMutex(&xmlSchemasTypesMutex);
+}
+
 /**
  * Initialize the default XML Schemas type library
  *
@@ -522,8 +537,13 @@ xmlSchemaCleanupTypesInternal(void) {
 int
 xmlSchemaInitTypes(void)
 {
-    if (xmlSchemaTypesInitialized != 0)
+    xmlInitParser();
+
+    xmlMutexLock(&xmlSchemasTypesMutex);
+    if (xmlSchemaTypesInitialized != 0) {
+        xmlMutexUnlock(&xmlSchemasTypesMutex);
         return (0);
+    }
 
 #if defined(NAN) && defined(INFINITY)
     xmlSchemaNAN = NAN;
@@ -853,10 +873,12 @@ xmlSchemaInitTypes(void)
     xmlSchemaTypeNmtokensDef->subtypes = xmlSchemaTypeNmtokenDef;
 
     xmlSchemaTypesInitialized = 1;
+    xmlMutexUnlock(&xmlSchemasTypesMutex);
     return (0);
 
 error:
     xmlSchemaCleanupTypesInternal();
+    xmlMutexUnlock(&xmlSchemasTypesMutex);
     return (-1);
 }
 
@@ -871,10 +893,12 @@ error:
  */
 void
 xmlSchemaCleanupTypes(void) {
+    xmlMutexLock(&xmlSchemasTypesMutex);
     if (xmlSchemaTypesInitialized != 0) {
         xmlSchemaCleanupTypesInternal();
         xmlSchemaTypesInitialized = 0;
     }
+    xmlMutexUnlock(&xmlSchemasTypesMutex);
 }
 
 /**
@@ -965,8 +989,7 @@ xmlSchemaIsBuiltInTypeFacet(xmlSchemaType *type, int facetType)
 xmlSchemaType *
 xmlSchemaGetBuiltInType(xmlSchemaValType type)
 {
-    if ((xmlSchemaTypesInitialized == 0) &&
-	(xmlSchemaInitTypes() < 0))
+    if (xmlSchemaInitTypes() < 0)
         return (NULL);
     switch (type) {
 
@@ -1299,8 +1322,7 @@ xmlSchemaFreeValue(xmlSchemaVal *value) {
  */
 xmlSchemaType *
 xmlSchemaGetPredefinedType(const xmlChar *name, const xmlChar *ns) {
-    if ((xmlSchemaTypesInitialized == 0) &&
-	(xmlSchemaInitTypes() < 0))
+    if (xmlSchemaInitTypes() < 0)
         return (NULL);
     if (name == NULL)
 	return(NULL);
@@ -2418,8 +2440,7 @@ xmlSchemaValAtomicType(xmlSchemaTypePtr type, const xmlChar * value,
     xmlChar *norm = NULL;
     int ret = 0;
 
-    if ((xmlSchemaTypesInitialized == 0) &&
-	(xmlSchemaInitTypes() < 0))
+    if (xmlSchemaInitTypes() < 0)
         return (-1);
     if (type == NULL)
         return (-1);

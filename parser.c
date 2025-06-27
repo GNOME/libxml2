@@ -4562,6 +4562,7 @@ xmlParseCharDataInternal(xmlParserCtxtPtr ctxt, int partial) {
     int line = ctxt->input->line;
     int col = ctxt->input->col;
     int ccol;
+    int terminate = 0;
 
     GROW;
     /*
@@ -4608,17 +4609,27 @@ get_more:
             goto get_more;
         }
         if (*in == ']') {
-            if ((in[1] == ']') && (in[2] == '>')) {
-                xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
-                ctxt->input->cur = in + 1;
-                return;
+            size_t avail = ctxt->input->end - in;
+
+            if (partial && avail < 2) {
+                terminate = 1;
+                goto invoke_callback;
             }
-            if ((!partial) || (ctxt->input->end - in >= 2)) {
-                in++;
-                ctxt->input->col++;
-                goto get_more;
+            if (in[1] == ']') {
+                if (partial && avail < 3) {
+                    terminate = 1;
+                    goto invoke_callback;
+                }
+                if (in[2] == '>')
+                    xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
             }
+
+            in++;
+            ctxt->input->col++;
+            goto get_more;
         }
+
+invoke_callback:
         while (in > ctxt->input->cur) {
             const xmlChar *tmp = ctxt->input->cur;
             size_t nbchar = in - tmp;
@@ -4649,7 +4660,7 @@ get_more:
         if (*in == '&') {
             return;
         }
-        if ((partial) && (*in == ']') && (ctxt->input->end - in < 2)) {
+        if (terminate) {
             return;
         }
         SHRINK;
@@ -4681,12 +4692,20 @@ xmlParseCharDataComplex(xmlParserCtxtPtr ctxt, int partial) {
     cur = xmlCurrentCharRecover(ctxt, &l);
     while ((cur != '<') && /* checked */
            (cur != '&') &&
-           ((!partial) || (cur != ']') ||
-            (ctxt->input->end - ctxt->input->cur >= 2)) &&
 	   (IS_CHAR(cur))) {
-	if ((cur == ']') && (NXT(1) == ']') && (NXT(2) == '>')) {
-	    xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
-	}
+        if (cur == ']') {
+            size_t avail = ctxt->input->end - ctxt->input->cur;
+
+            if (partial && avail < 2)
+                break;
+            if (NXT(1) == ']') {
+                if (partial && avail < 3)
+                    break;
+                if (NXT(2) == '>')
+                    xmlFatalErr(ctxt, XML_ERR_MISPLACED_CDATA_END, NULL);
+            }
+        }
+
 	COPY_BUF(buf, nbchar, cur);
 	/* move current position before possible calling of ctxt->sax->characters */
 	NEXTL(l);

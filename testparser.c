@@ -536,7 +536,7 @@ testPushCDataEnd(void) {
     int err = 0;
     int k;
 
-    for (k = 0; k < 2; k++) {
+    for (k = 0; k < 4; k++) {
         xmlBufferPtr buf;
         xmlChar *chunk;
         xmlParserCtxtPtr ctxt;
@@ -554,7 +554,7 @@ testPushCDataEnd(void) {
         /*
          * Also test xmlParseCharDataCopmlex
          */
-        if (k == 0)
+        if (k & 1)
             xmlBufferCCat(buf, "x");
         else
             xmlBufferCCat(buf, "\xC3\xA4");
@@ -566,12 +566,19 @@ testPushCDataEnd(void) {
         for (i = 0; i < 2000; i++)
             xmlBufferCCat(buf, "x");
 
-        xmlBufferCCat(buf, "]");
+        if (k & 2)
+            xmlBufferCCat(buf, "]");
+        else
+            xmlBufferCCat(buf, "]]");
+
         chunk = xmlBufferDetach(buf);
         xmlBufferFree(buf);
 
         xmlParseChunk(ctxt, (char *) chunk, xmlStrlen(chunk), 0);
-        xmlParseChunk(ctxt, "]>xxx</doc>", 11, 1);
+        if (k & 2)
+            xmlParseChunk(ctxt, "]>xxx</doc>", 11, 1);
+        else
+            xmlParseChunk(ctxt, ">xxx</doc>", 10, 1);
 
         if (ctxt->errNo != XML_ERR_MISPLACED_CDATA_END) {
             fprintf(stderr, "xmlParseChunk failed to detect CData end: %d\n",

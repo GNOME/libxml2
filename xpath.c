@@ -636,34 +636,34 @@ int wrap_cmp( xmlNodePtr x, xmlNodePtr y );
  * The array xmlXPathErrorMessages corresponds to the enum xmlXPathError
  */
 static const char* const xmlXPathErrorMessages[] = {
-    "Ok\n",
-    "Number encoding\n",
-    "Unfinished literal\n",
-    "Start of literal\n",
-    "Expected $ for variable reference\n",
-    "Undefined variable\n",
-    "Invalid predicate\n",
-    "Invalid expression\n",
-    "Missing closing curly brace\n",
-    "Unregistered function\n",
-    "Invalid operand\n",
-    "Invalid type\n",
-    "Invalid number of arguments\n",
-    "Invalid context size\n",
-    "Invalid context position\n",
-    "Memory allocation error\n",
-    "Syntax error\n",
-    "Resource error\n",
-    "Sub resource error\n",
-    "Undefined namespace prefix\n",
-    "Encoding error\n",
-    "Char out of XML range\n",
-    "Invalid or incomplete context\n",
-    "Stack usage error\n",
-    "Forbidden variable\n",
-    "Operation limit exceeded\n",
-    "Recursion limit exceeded\n",
-    "?? Unknown error ??\n"	/* Must be last in the list! */
+    "Ok",
+    "Number encoding",
+    "Unfinished literal",
+    "Start of literal",
+    "Expected $ for variable reference",
+    "Undefined variable",
+    "Invalid predicate",
+    "Invalid expression",
+    "Missing closing curly brace",
+    "Unregistered function",
+    "Invalid operand",
+    "Invalid type",
+    "Invalid number of arguments",
+    "Invalid context size",
+    "Invalid context position",
+    "Memory allocation error",
+    "Syntax error",
+    "Resource error",
+    "Sub resource error",
+    "Undefined namespace prefix",
+    "Encoding error",
+    "Char out of XML range",
+    "Invalid or incomplete context",
+    "Stack usage error",
+    "Forbidden variable",
+    "Operation limit exceeded",
+    "Recursion limit exceeded",
+    "?? Unknown error ??"	/* Must be last in the list! */
 };
 #define MAXERRNO ((int)(sizeof(xmlXPathErrorMessages) /	\
 		   sizeof(xmlXPathErrorMessages[0])) - 1)
@@ -700,10 +700,12 @@ xmlXPathPErrMemory(xmlXPathParserContext *ctxt)
  *
  * @param ctxt  a XPath parser context
  * @param code  the error code
+ * @param fmt  format string for error message
+ * @param ...  extra args
  */
-void
-xmlXPathErr(xmlXPathParserContext *ctxt, int code)
-{
+static void
+xmlXPathErrFmt(xmlXPathParserContext *ctxt, int code, const char *fmt, ...) {
+    va_list ap;
     xmlStructuredErrorFunc schannel = NULL;
     xmlGenericErrorFunc channel = NULL;
     void *data = NULL;
@@ -753,14 +755,27 @@ xmlXPathErr(xmlXPathParserContext *ctxt, int code)
         data = xmlGenericErrorContext;
     }
 
-    res = xmlRaiseError(schannel, channel, data, NULL, node, XML_FROM_XPATH,
-                        code + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
-                        XML_ERR_ERROR, NULL, 0,
-                        (const char *) ctxt->base, NULL, NULL,
-                        ctxt->cur - ctxt->base, 0,
-                        "%s", xmlXPathErrorMessages[code]);
+    va_start(ap, fmt);
+    res = xmlVRaiseError(schannel, channel, data, NULL, node, XML_FROM_XPATH,
+                         code + XML_XPATH_EXPRESSION_OK - XPATH_EXPRESSION_OK,
+                         XML_ERR_ERROR, NULL, 0,
+                         (const char *) ctxt->base, NULL, NULL,
+                         ctxt->cur - ctxt->base, 0,
+                         fmt, ap);
+    va_end(ap);
     if (res < 0)
         xmlXPathPErrMemory(ctxt);
+}
+
+/**
+ * Handle an XPath error
+ *
+ * @param ctxt  a XPath parser context
+ * @param code  the error code
+ */
+void
+xmlXPathErr(xmlXPathParserContext *ctxt, int code) {
+    xmlXPathErrFmt(ctxt, code, "%s\n", xmlXPathErrorMessages[code]);
 }
 
 /**
@@ -9398,7 +9413,8 @@ xmlXPathCompStep(xmlXPathParserContextPtr ctxt) {
         if ((prefix != NULL) && (ctxt->context != NULL) &&
 	    (ctxt->context->flags & XML_XPATH_CHECKNS)) {
 	    if (xmlXPathNsLookup(ctxt->context, prefix) == NULL) {
-		xmlXPathErr(ctxt, XPATH_UNDEF_PREFIX_ERROR);
+		xmlXPathErrFmt(ctxt, XPATH_UNDEF_PREFIX_ERROR,
+                               "Undefined namespace prefix: %s\n", prefix);
 	    }
 	}
 
@@ -9812,7 +9828,9 @@ xmlXPathNodeCollectAndTest(xmlXPathParserContextPtr ctxt,
         URI = xmlXPathNsLookup(xpctxt, prefix);
         if (URI == NULL) {
 	    xmlXPathReleaseObject(xpctxt, obj);
-            XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
+            xmlXPathErrFmt(ctxt, XPATH_UNDEF_PREFIX_ERROR,
+                           "Undefined namespace prefix: %s\n", prefix);
+            return 0;
 	}
     }
     /*
@@ -10868,21 +10886,30 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                         xmlXPathCompOpEval(ctxt, &comp->steps[op->ch1]);
                 if (op->value5 == NULL) {
 		    val = xmlXPathVariableLookup(ctxt->context, op->value4);
-		    if (val == NULL)
-			XP_ERROR0(XPATH_UNDEF_VARIABLE_ERROR);
+		    if (val == NULL) {
+                        xmlXPathErrFmt(ctxt, XPATH_UNDEF_VARIABLE_ERROR,
+                                       "Undefined variable: %s\n", op->value4);
+                        return 0;
+                    }
                     xmlXPathValuePush(ctxt, val);
 		} else {
                     const xmlChar *URI;
 
                     URI = xmlXPathNsLookup(ctxt->context, op->value5);
                     if (URI == NULL) {
-                        XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
-                        break;
+                        xmlXPathErrFmt(ctxt, XPATH_UNDEF_PREFIX_ERROR,
+                                       "Undefined namespace prefix: %s\n",
+                                       op->value5);
+                        return 0;
                     }
 		    val = xmlXPathVariableLookupNS(ctxt->context,
                                                        op->value4, URI);
-		    if (val == NULL)
-			XP_ERROR0(XPATH_UNDEF_VARIABLE_ERROR);
+		    if (val == NULL) {
+                        xmlXPathErrFmt(ctxt, XPATH_UNDEF_VARIABLE_ERROR,
+                                       "Undefined variable: %s:%s\n",
+                                       op->value5, op->value4);
+                        return 0;
+                    }
                     xmlXPathValuePush(ctxt, val);
                 }
                 break;
@@ -10911,19 +10938,32 @@ xmlXPathCompOpEval(xmlXPathParserContextPtr ctxt, xmlXPathStepOpPtr op)
                 else {
                     const xmlChar *URI = NULL;
 
-                    if (op->value5 == NULL)
-                        func =
-                            xmlXPathFunctionLookup(ctxt->context,
-                                                   op->value4);
-                    else {
+                    if (op->value5 == NULL) {
+                        func = xmlXPathFunctionLookup(ctxt->context,
+                                                      op->value4);
+                        if (func == NULL) {
+                            xmlXPathErrFmt(ctxt, XPATH_UNKNOWN_FUNC_ERROR,
+                                           "Unregistered function: %s\n",
+                                           op->value4);
+                            return 0;
+                        }
+                    } else {
                         URI = xmlXPathNsLookup(ctxt->context, op->value5);
-                        if (URI == NULL)
-                            XP_ERROR0(XPATH_UNDEF_PREFIX_ERROR);
+                        if (URI == NULL) {
+                            xmlXPathErrFmt(ctxt, XPATH_UNDEF_PREFIX_ERROR,
+                                           "Undefined namespace prefix: %s\n",
+                                           op->value5);
+                            return 0;
+                        }
                         func = xmlXPathFunctionLookupNS(ctxt->context,
                                                         op->value4, URI);
+                        if (func == NULL) {
+                            xmlXPathErrFmt(ctxt, XPATH_UNKNOWN_FUNC_ERROR,
+                                           "Unregistered function: %s:%s\n",
+                                           op->value5, op->value4);
+                            return 0;
+                        }
                     }
-                    if (func == NULL)
-                        XP_ERROR0(XPATH_UNKNOWN_FUNC_ERROR);
                     op->cache = func;
                     op->cacheURI = (void *) URI;
                 }

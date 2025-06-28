@@ -13213,8 +13213,6 @@ xmlCtxtGetOptions(xmlParserCtxt *ctxt)
  * Applies the options to the parser context. The following options
  * are never cleared and can only be enabled:
  *
- * @deprecated Use #xmlCtxtSetOptions.
- *
  * - XML_PARSE_NOERROR
  * - XML_PARSE_NOWARNING
  * - XML_PARSE_NONET
@@ -13223,9 +13221,11 @@ xmlCtxtGetOptions(xmlParserCtxt *ctxt)
  * - XML_PARSE_COMPACT
  * - XML_PARSE_OLD10
  * - XML_PARSE_HUGE
- * - XML_PARSE_OLDSA- X
+ * - XML_PARSE_OLDSAX
  * - XML_PARSE_IGNORE_ENC
  * - XML_PARSE_BIG_LINES
+ *
+ * @deprecated Use #xmlCtxtSetOptions.
  *
  * @param ctxt  an XML parser context
  * @param options  a combination of xmlParserOption

@@ -17,8 +17,9 @@
 #include <libxml/parserInternals.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
+
 #if (defined(LIBXML_RELAXNG_ENABLED) || defined(LIBXML_SCHEMAS_ENABLED)) && \
-    defined(LIBXML_XPATH_ENABLED)
+    defined(LIBXML_XPATH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)
 #include <libxml/xmlreader.h>
 
 #include <libxml/xpath.h>

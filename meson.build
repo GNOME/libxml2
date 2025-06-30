@@ -534,18 +534,20 @@ foreach check, deps : checks
     endif
 endforeach
 
-sh = find_program('sh', required: false)
+if want_output
+    sh = find_program('sh', required: false)
 
-if sh.found()
-    if want_debug
-        test('xmllint shell', sh,
-             args: [ 'test/scripts/test.sh', xmllint.full_path() ],
-             workdir: meson.current_source_dir())
-    endif
-    if want_catalog and want_output
-        test('xmlcatalog shell', sh,
-             args: [ 'test/catalogs/test.sh', xmlcatalog.full_path() ],
-             workdir: meson.current_source_dir())
+    if sh.found()
+        if want_debug
+            test('xmllint shell', sh,
+                 args: [ 'test/scripts/test.sh', xmllint.full_path() ],
+                 workdir: meson.current_source_dir())
+        endif
+        if want_catalog
+            test('xmlcatalog shell', sh,
+                 args: [ 'test/catalogs/test.sh', xmlcatalog.full_path() ],
+                 workdir: meson.current_source_dir())
+        endif
     endif
 endif
 

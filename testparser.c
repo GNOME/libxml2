@@ -621,6 +621,7 @@ testHtmlIds(void) {
 
 #define MHE "meta http-equiv=\"Content-Type\""
 
+#ifdef LIBXML_OUTPUT_ENABLED
 static int
 testHtmlInsertMetaEncoding(void) {
     /* We currently require a head element to be present. */
@@ -741,6 +742,7 @@ testHtmlUpdateMetaEncoding(void) {
     xmlFreeDoc(doc);
     return err;
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 #ifdef LIBXML_PUSH_ENABLED
 static int
@@ -806,6 +808,7 @@ testReaderEncoding(void) {
     return err;
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
 static int
 testReaderContent(void) {
     xmlTextReader *reader;
@@ -840,6 +843,7 @@ testReaderContent(void) {
     xmlFreeTextReader(reader);
     return err;
 }
+#endif /* LIBXML_OUTPUT_ENABLED */
 
 static int
 testReaderNode(xmlTextReader *reader) {
@@ -1424,15 +1428,19 @@ main(void) {
 #endif
 #ifdef LIBXML_HTML_ENABLED
     err |= testHtmlIds();
+#ifdef LIBXML_OUTPUT_ENABLED
     err |= testHtmlInsertMetaEncoding();
     err |= testHtmlUpdateMetaEncoding();
+#endif
 #ifdef LIBXML_PUSH_ENABLED
     err |= testHtmlPushWithEncoding();
 #endif
 #endif
 #ifdef LIBXML_READER_ENABLED
     err |= testReaderEncoding();
+#ifdef LIBXML_OUTPUT_ENABLED
     err |= testReaderContent();
+#endif
     err |= testReader();
 #ifdef LIBXML_XINCLUDE_ENABLED
     err |= testReaderXIncludeError();

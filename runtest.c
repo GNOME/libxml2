@@ -3787,7 +3787,7 @@ rngStreamTest(const char *filename,
      */
     if ((!strcmp(prefix, "tutor10_1")) || (!strcmp(prefix, "tutor10_2")) ||
         (!strcmp(prefix, "tutor3_2")) || (!strcmp(prefix, "307377")) ||
-        (!strcmp(prefix, "tutor8_2")))
+        (!strcmp(prefix, "tutor8_2")) || (!strcmp(prefix, "simplifyChoiceNotAllowed")))
 	disable_err = 1;
 
     if (snprintf(pattern, 499, "./test/relaxng/%s_?.xml", prefix) >= 499)

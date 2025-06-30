@@ -2206,7 +2206,7 @@ xmlRelaxNGDumpValidError(xmlRelaxNGValidCtxtPtr ctxt)
 {
     int i, j, k;
     xmlRelaxNGValidErrorPtr err, dup;
-
+    
     for (i = 0, k = 0; i < ctxt->errNr; i++) {
         err = &ctxt->errTab[i];
         if (k < MAX_ERROR) {
@@ -4697,6 +4697,7 @@ xmlRelaxNGParsePattern(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr node)
             xmlRngPErr(ctxt, node, XML_RNGP_EMPTY_CONSTRUCT,
                        "Element %s is empty\n", node->name, NULL);
         } else {
+            ctxt->def = def;
             def->content =
                 xmlRelaxNGParsePatterns(ctxt, node->children, 0);
         }
@@ -5345,6 +5346,7 @@ xmlRelaxNGParsePatterns(xmlRelaxNGParserCtxtPtr ctxt, xmlNodePtr nodes,
                     last->next = cur;
                     last = cur;
                 }
+                cur->parent = parent;
             }
         }
         nodes = nodes->next;
@@ -5779,12 +5781,26 @@ xmlRelaxNGTryUnlink(xmlRelaxNGParserCtxtPtr ctxt ATTRIBUTE_UNUSED,
         prev->next = cur->next;
     } else {
         if (parent != NULL) {
-            if (parent->content == cur)
-                parent->content = cur->next;
-            else if (parent->attrs == cur)
+            if (parent->attrs == cur)
                 parent->attrs = cur->next;
             else if (parent->nameClass == cur)
                 parent->nameClass = cur->next;
+            else {
+                xmlRelaxNGDefinePtr content, last = NULL;
+                content = parent->content;
+                while (content != NULL) {
+                    if (content == cur) {
+                        if (last == NULL) {
+                            parent->content = cur->next;
+                        } else {
+                            last->next = cur->next;
+                        }
+                        break;
+                    }
+                    last = content;
+                    content = content->next;
+                }
+            }
         } else {
             cur->type = XML_RELAXNG_NOOP;
             prev = cur;
@@ -5811,7 +5827,9 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
             (cur->type == XML_RELAXNG_PARENTREF)) {
             if (cur->depth != -3) {
                 cur->depth = -3;
+                ctxt->def = cur;
                 xmlRelaxNGSimplify(ctxt, cur->content, cur);
+                ctxt->def = NULL;
             }
         } else if (cur->type == XML_RELAXNG_NOT_ALLOWED) {
             cur->parent = parent;
@@ -5825,8 +5843,14 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
                 parent->type = XML_RELAXNG_NOT_ALLOWED;
                 break;
             }
-            if ((parent != NULL) && (parent->type == XML_RELAXNG_CHOICE)) {
-                prev = xmlRelaxNGTryUnlink(ctxt, cur, parent, prev);
+            if ((parent != NULL) && ((parent->type == XML_RELAXNG_CHOICE) || 
+                ((parent->type == XML_RELAXNG_DEF) &&
+                    (ctxt->def != NULL && ctxt->def->parent != NULL) && (ctxt->def->parent->type == XML_RELAXNG_CHOICE)))) {
+                if (parent->type == XML_RELAXNG_CHOICE)
+                    prev = xmlRelaxNGTryUnlink(ctxt, cur, parent, prev);
+                else if (ctxt->def->parent->type == XML_RELAXNG_CHOICE) {
+                    prev = xmlRelaxNGTryUnlink(ctxt, ctxt->def, ctxt->def->parent, prev);
+                }
             } else
                 prev = cur;
         } else if (cur->type == XML_RELAXNG_EMPTY) {
@@ -5837,10 +5861,17 @@ xmlRelaxNGSimplify(xmlRelaxNGParserCtxtPtr ctxt,
                 parent->type = XML_RELAXNG_EMPTY;
                 break;
             }
-            if ((parent != NULL) &&
+            if ((parent != NULL) && 
                 ((parent->type == XML_RELAXNG_GROUP) ||
-                 (parent->type == XML_RELAXNG_INTERLEAVE))) {
-                prev = xmlRelaxNGTryUnlink(ctxt, cur, parent, prev);
+                 (parent->type == XML_RELAXNG_INTERLEAVE) ||
+                    ((parent->type == XML_RELAXNG_DEF) &&
+                     (ctxt->def != NULL && ctxt->def->parent != NULL) &&
+                         (ctxt->def->parent->type == XML_RELAXNG_GROUP ||
+                          ctxt->def->parent->type == XML_RELAXNG_INTERLEAVE)))) {
+                if (parent->type == XML_RELAXNG_GROUP || parent->type == XML_RELAXNG_INTERLEAVE)
+                    prev = xmlRelaxNGTryUnlink(ctxt, cur, parent, prev);
+                else if (ctxt->def->parent->type == XML_RELAXNG_GROUP || ctxt->def->parent->type == XML_RELAXNG_INTERLEAVE) 
+                    prev = xmlRelaxNGTryUnlink(ctxt, ctxt->def, ctxt->def->parent, prev);
             } else
                 prev = cur;
         } else {

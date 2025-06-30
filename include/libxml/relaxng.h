@@ -161,10 +161,12 @@ XMLPUBFUN xmlRelaxNG *
 		    xmlRelaxNGParse		(xmlRelaxNGParserCtxt *ctxt);
 XMLPUBFUN void
 		    xmlRelaxNGFree		(xmlRelaxNG *schema);
-#ifdef LIBXML_OUTPUT_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
 XMLPUBFUN void
 		    xmlRelaxNGDump		(FILE *output,
 					 xmlRelaxNG *schema);
+#endif /* LIBXML_DEBUG_ENABLED */
+#ifdef LIBXML_OUTPUT_ENABLED
 XMLPUBFUN void
 		    xmlRelaxNGDumpTree	(FILE * output,
 					 xmlRelaxNG *schema);

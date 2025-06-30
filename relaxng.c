@@ -7466,7 +7466,7 @@ xmlRelaxNGSetResourceLoader(xmlRelaxNGParserCtxt *ctxt,
     ctxt->resourceCtxt = vctxt;
 }
 
-#ifdef LIBXML_OUTPUT_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
 
 /************************************************************************
  *									*
@@ -7677,7 +7677,9 @@ xmlRelaxNGDump(FILE * output, xmlRelaxNG *schema)
     }
     xmlRelaxNGDumpGrammar(output, schema->topgrammar, 1);
 }
+#endif /* LIBXML_DEBUG_ENABLED */
 
+#ifdef LIBXML_OUTPUT_ENABLED
 /**
  * Dump the transformed RelaxNG tree.
  *

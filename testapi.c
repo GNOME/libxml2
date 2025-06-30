@@ -977,8 +977,10 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlRelaxNGValidatePushCData(NULL, NULL, 0);
     xmlRelaxNGValidatePushElement(NULL, NULL, NULL);
     xmlRelaxParserSetFlag(NULL, 0);
-#ifdef LIBXML_OUTPUT_ENABLED
+#ifdef LIBXML_DEBUG_ENABLED
     xmlRelaxNGDump(NULL, NULL);
+#endif /* LIBXML_DEBUG_ENABLED */
+#ifdef LIBXML_OUTPUT_ENABLED
     xmlRelaxNGDumpTree(NULL, NULL);
 #endif /* LIBXML_OUTPUT_ENABLED */
 #endif /* LIBXML_RELAXNG_ENABLED */

@@ -72,13 +72,13 @@ symbolMap2 = {
     'xmlXPathDebugDumpCompExpr': 'DEBUG',
     'xmlXPathDebugDumpObject': 'DEBUG',
     'xmlSchemaDump': 'DEBUG',
+    'xmlRelaxNGDump': 'DEBUG',
 
     'xmlACatalogDump': 'OUTPUT',
     'xmlCatalogDump': 'OUTPUT',
     'xmlIOHTTPOpenW': 'OUTPUT',
     'xmlNanoHTTPSave': 'OUTPUT',
     'xmlRegisterHTTPPostCallbacks': 'OUTPUT',
-    'xmlRelaxNGDump': 'OUTPUT',
     'xmlRelaxNGDumpTree': 'OUTPUT',
 
     'xmlTextReaderPreservePattern': 'PATTERN',

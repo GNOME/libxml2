@@ -62,7 +62,7 @@ XMLPUBFUN int
 			xmlPatternMatch		(xmlPattern *comp,
 						 xmlNode *node);
 
-/* streaming interfaces */
+/** State object for streaming interface */
 typedef struct _xmlStreamCtxt xmlStreamCtxt;
 typedef xmlStreamCtxt *xmlStreamCtxtPtr;
 

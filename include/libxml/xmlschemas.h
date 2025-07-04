@@ -83,9 +83,7 @@ typedef enum {
 	* xsi:noNamespaceSchemaLocation
 */
 
-/**
- * The schemas related types are kept internal
- */
+/** XML schema */
 typedef struct _xmlSchema xmlSchema;
 typedef xmlSchema *xmlSchemaPtr;
 
@@ -109,12 +107,11 @@ typedef void (*xmlSchemaValidityErrorFunc)
 typedef void (*xmlSchemaValidityWarningFunc)
                  (void *ctx, const char *msg, ...) LIBXML_ATTR_FORMAT(2,3);
 
-/**
- * A schemas validation context
- */
+/** Schema parser context */
 typedef struct _xmlSchemaParserCtxt xmlSchemaParserCtxt;
 typedef xmlSchemaParserCtxt *xmlSchemaParserCtxtPtr;
 
+/** Schema validation context */
 typedef struct _xmlSchemaValidCtxt xmlSchemaValidCtxt;
 typedef xmlSchemaValidCtxt *xmlSchemaValidCtxtPtr;
 
@@ -224,7 +221,7 @@ XMLPUBFUN int
 XMLPUBFUN xmlParserCtxt *
 	    xmlSchemaValidCtxtGetParserCtxt(xmlSchemaValidCtxt *ctxt);
 
-/*
+/**
  * Interface to insert Schemas SAX validation in a SAX stream
  */
 typedef struct _xmlSchemaSAXPlug xmlSchemaSAXPlugStruct;

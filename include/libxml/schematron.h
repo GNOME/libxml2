@@ -45,9 +45,7 @@ typedef enum {
     XML_SCHEMATRON_OUT_IO = 1 << 10
 } xmlSchematronValidOptions;
 
-/**
- * The schemas related types are kept internal
- */
+/** Schematron schema */
 typedef struct _xmlSchematron xmlSchematron;
 typedef xmlSchematron *xmlSchematronPtr;
 
@@ -69,12 +67,11 @@ typedef void (*xmlSchematronValidityErrorFunc) (void *ctx, const char *msg, ...)
  */
 typedef void (*xmlSchematronValidityWarningFunc) (void *ctx, const char *msg, ...);
 
-/**
- * A schemas validation context
- */
+/** Schematron parser context */
 typedef struct _xmlSchematronParserCtxt xmlSchematronParserCtxt;
 typedef xmlSchematronParserCtxt *xmlSchematronParserCtxtPtr;
 
+/** Schematron validation context */
 typedef struct _xmlSchematronValidCtxt xmlSchematronValidCtxt;
 typedef xmlSchematronValidCtxt *xmlSchematronValidCtxtPtr;
 

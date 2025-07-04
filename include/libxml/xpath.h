@@ -34,8 +34,10 @@
 extern "C" {
 #endif
 
+/** XPath context */
 typedef struct _xmlXPathContext xmlXPathContext;
 typedef xmlXPathContext *xmlXPathContextPtr;
+/** XPath parser and evaluation context */
 typedef struct _xmlXPathParserContext xmlXPathParserContext;
 typedef xmlXPathParserContext *xmlXPathParserContextPtr;
 
@@ -73,6 +75,7 @@ typedef enum {
     XPATH_RECURSION_LIMIT_EXCEEDED
 } xmlXPathError;
 
+/** XPath node set */
 typedef struct _xmlNodeSet xmlNodeSet;
 typedef xmlNodeSet *xmlNodeSetPtr;
 /**
@@ -112,6 +115,7 @@ typedef enum {
 #define XPATH_LOCATIONSET 7
 /** @endcond */
 
+/** XPath object */
 typedef struct _xmlXPathObject xmlXPathObject;
 typedef xmlXPathObject *xmlXPathObjectPtr;
 /**
@@ -352,16 +356,15 @@ struct _xmlXPathContext {
     int depth;
 };
 
-/*
- * The structure of a compiled expression form is not public.
- */
-
+/** Compiled XPath expression */
 typedef struct _xmlXPathCompExpr xmlXPathCompExpr;
 typedef xmlXPathCompExpr *xmlXPathCompExprPtr;
 
 /**
  * An XPath parser context. It contains pure parsing information,
  * an xmlXPathContext, and the stack of objects.
+ *
+ * This struct is used for evaluation as well and misnamed.
  */
 struct _xmlXPathParserContext {
     /* the current char being parsed */

@@ -20,9 +20,19 @@
 extern "C" {
 #endif
 
+/**
+ * Linked list item
+ *
+ * @deprecated Don't use in new code.
+ */
 typedef struct _xmlLink xmlLink;
 typedef xmlLink *xmlLinkPtr;
 
+/**
+ * Linked list
+ *
+ * @deprecated Don't use in new code.
+ */
 typedef struct _xmlList xmlList;
 typedef xmlList *xmlListPtr;
 

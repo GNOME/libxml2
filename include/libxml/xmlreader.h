@@ -112,14 +112,8 @@ typedef enum {
     XML_READER_TYPE_XML_DECLARATION = 17
 } xmlReaderTypes;
 
-/**
- * Structure for an xmlReader context.
- */
+/** xmlReader context */
 typedef struct _xmlTextReader xmlTextReader;
-
-/**
- * Pointer to an xmlReader context.
- */
 typedef xmlTextReader *xmlTextReaderPtr;
 
 /*

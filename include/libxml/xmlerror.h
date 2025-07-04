@@ -110,6 +110,7 @@ typedef enum {
     XML_FROM_URI
 } xmlErrorDomain;
 
+/** Structured error */
 typedef struct _xmlError xmlError;
 typedef xmlError *xmlErrorPtr;
 /**

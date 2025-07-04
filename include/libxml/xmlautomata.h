@@ -24,13 +24,15 @@ extern "C" {
 #endif
 
 /**
- * A libxml automata description, It can be compiled into a regexp
+ * A libxml automata description
+ *
+ * It can be compiled into a regexp
  */
 typedef struct _xmlAutomata xmlAutomata;
 typedef xmlAutomata *xmlAutomataPtr;
 
 /**
- * A state int the automata description,
+ * A state in the automata description
  */
 typedef struct _xmlAutomataState xmlAutomataState;
 typedef xmlAutomataState *xmlAutomataStatePtr;

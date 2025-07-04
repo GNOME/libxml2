@@ -25,6 +25,7 @@
 extern "C" {
 #endif
 
+/** RelaxNG schema */
 typedef struct _xmlRelaxNG xmlRelaxNG;
 typedef xmlRelaxNG *xmlRelaxNGPtr;
 
@@ -51,12 +52,11 @@ typedef void (*xmlRelaxNGValidityWarningFunc) (void *ctx,
 							const char *msg,
 							...) LIBXML_ATTR_FORMAT(2,3);
 
-/**
- * A schemas validation context
- */
+/** RelaxNG parser context */
 typedef struct _xmlRelaxNGParserCtxt xmlRelaxNGParserCtxt;
 typedef xmlRelaxNGParserCtxt *xmlRelaxNGParserCtxtPtr;
 
+/** RelaxNG validation context */
 typedef struct _xmlRelaxNGValidCtxt xmlRelaxNGValidCtxt;
 typedef xmlRelaxNGValidCtxt *xmlRelaxNGValidCtxtPtr;
 

@@ -22,8 +22,8 @@
 extern "C" {
 #endif
 
-/*
- * The dictionary.
+/**
+ * Dictionary (pool for interned strings)
  */
 typedef struct _xmlDict xmlDict;
 typedef xmlDict *xmlDictPtr;

@@ -86,6 +86,7 @@ typedef enum {
     XML_SAVE_INDENT     = 1<<10
 } xmlSaveOption;
 
+/** XML and HTML serializer */
 typedef struct _xmlSaveCtxt xmlSaveCtxt;
 typedef xmlSaveCtxt *xmlSaveCtxtPtr;
 

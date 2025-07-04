@@ -26,6 +26,7 @@
 extern "C" {
 #endif
 
+    /** Writer object */
     typedef struct _xmlTextWriter xmlTextWriter;
     typedef xmlTextWriter *xmlTextWriterPtr;
 

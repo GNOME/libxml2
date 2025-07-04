@@ -65,6 +65,7 @@ extern "C" {
  */
 #define XINCLUDE_PARSE_XPOINTER (const xmlChar *) "xpointer"
 
+/** XInclude context */
 typedef struct _xmlXIncludeCtxt xmlXIncludeCtxt;
 typedef xmlXIncludeCtxt *xmlXIncludeCtxtPtr;
 

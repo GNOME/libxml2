@@ -63,6 +63,7 @@ typedef enum {
 
 /** @endcond */
 
+/** XML catalog */
 typedef struct _xmlCatalog xmlCatalog;
 typedef xmlCatalog *xmlCatalogPtr;
 

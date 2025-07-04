@@ -22,6 +22,7 @@
 extern "C" {
 #endif
 
+/** Parsed URI */
 typedef struct _xmlURI xmlURI;
 typedef xmlURI *xmlURIPtr;
 /**

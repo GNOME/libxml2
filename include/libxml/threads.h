@@ -20,15 +20,11 @@
 extern "C" {
 #endif
 
-/*
- * xmlMutex are a simple mutual exception locks.
- */
+/** Mutual exclusion object */
 typedef struct _xmlMutex xmlMutex;
 typedef xmlMutex *xmlMutexPtr;
 
-/*
- * xmlRMutex are reentrant mutual exception locks.
- */
+/** Reentrant mutual exclusion object */
 typedef struct _xmlRMutex xmlRMutex;
 typedef xmlRMutex *xmlRMutexPtr;
 

@@ -137,12 +137,6 @@ struct _xmlParserInput {
 
 /** @cond ignore */
 
-/*
- * The parser can be asked to collect Node information, i.e. at what
- * place in the file they were detected.
- *
- * NOTE: This feature is off by default and deprecated.
- */
 typedef struct _xmlParserNodeInfo xmlParserNodeInfo;
 typedef xmlParserNodeInfo *xmlParserNodeInfoPtr;
 
@@ -1181,6 +1175,11 @@ struct _xmlSAXHandler {
     xmlStructuredErrorFunc serror;
 };
 
+/**
+ * SAX handler, version 1.
+ *
+ * @deprecated Use version 2 handlers.
+ */
 typedef struct _xmlSAXHandlerV1 xmlSAXHandlerV1;
 typedef xmlSAXHandlerV1 *xmlSAXHandlerV1Ptr;
 /**

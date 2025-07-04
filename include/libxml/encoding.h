@@ -188,6 +188,7 @@ typedef xmlCharEncError
 typedef void
 (*xmlCharEncConvCtxtDtor)(void *vctxt);
 
+/** Character encoding converter */
 typedef struct _xmlCharEncodingHandler xmlCharEncodingHandler;
 typedef xmlCharEncodingHandler *xmlCharEncodingHandlerPtr;
 /**

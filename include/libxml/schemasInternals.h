@@ -143,15 +143,19 @@ typedef enum {
     XML_SCHEMA_CONTENT_ANY
 } xmlSchemaContentType;
 
+/** Schema value */
 typedef struct _xmlSchemaVal xmlSchemaVal;
 typedef xmlSchemaVal *xmlSchemaValPtr;
 
+/** Schema type */
 typedef struct _xmlSchemaType xmlSchemaType;
 typedef xmlSchemaType *xmlSchemaTypePtr;
 
+/** Schema facet */
 typedef struct _xmlSchemaFacet xmlSchemaFacet;
 typedef xmlSchemaFacet *xmlSchemaFacetPtr;
 
+/** Schema annotation */
 typedef struct _xmlSchemaAnnot xmlSchemaAnnot;
 typedef xmlSchemaAnnot *xmlSchemaAnnotPtr;
 /**
@@ -222,6 +226,7 @@ struct _xmlSchemaAnnot {
  */
 #define XML_SCHEMAS_ATTR_FIXED        1 << 9
 
+/** Schema attribute definition */
 typedef struct _xmlSchemaAttribute xmlSchemaAttribute;
 typedef xmlSchemaAttribute *xmlSchemaAttributePtr;
 /**
@@ -250,6 +255,7 @@ struct _xmlSchemaAttribute {
     xmlSchemaAttribute *refDecl; /* Deprecated; not used */
 };
 
+/** Linked list of schema attributes */
 typedef struct _xmlSchemaAttributeLink xmlSchemaAttributeLink;
 typedef xmlSchemaAttributeLink *xmlSchemaAttributeLinkPtr;
 /**
@@ -266,6 +272,7 @@ struct _xmlSchemaAttributeLink {
  */
 #define XML_SCHEMAS_WILDCARD_COMPLETE 1 << 0
 
+/** Namespace wildcard */
 typedef struct _xmlSchemaWildcardNs xmlSchemaWildcardNs;
 typedef xmlSchemaWildcardNs *xmlSchemaWildcardNsPtr;
 /**
@@ -276,6 +283,7 @@ struct _xmlSchemaWildcardNs {
     const xmlChar *value;/* the value */
 };
 
+/** Name wildcard */
 typedef struct _xmlSchemaWildcard xmlSchemaWildcard;
 typedef xmlSchemaWildcard *xmlSchemaWildcardPtr;
 /**
@@ -317,6 +325,7 @@ struct _xmlSchemaWildcard {
  */
 #define XML_SCHEMAS_ATTRGROUP_HAS_REFS 1 << 4
 
+/** Attribute group */
 typedef struct _xmlSchemaAttributeGroup xmlSchemaAttributeGroup;
 typedef xmlSchemaAttributeGroup *xmlSchemaAttributeGroupPtr;
 /**
@@ -344,6 +353,7 @@ struct _xmlSchemaAttributeGroup {
     void *attrUses;
 };
 
+/** Linked list of schema types */
 typedef struct _xmlSchemaTypeLink xmlSchemaTypeLink;
 typedef xmlSchemaTypeLink *xmlSchemaTypeLinkPtr;
 /**
@@ -355,6 +365,7 @@ struct _xmlSchemaTypeLink {
     xmlSchemaType *type;/* the linked type */
 };
 
+/** Linked list of schema facets */
 typedef struct _xmlSchemaFacetLink xmlSchemaFacetLink;
 typedef xmlSchemaFacetLink *xmlSchemaFacetLinkPtr;
 /**
@@ -618,6 +629,7 @@ struct _xmlSchemaType {
  */
 #define XML_SCHEMAS_ELEM_INTERNAL_CHECKED        1 << 18
 
+/** Schema element definition */
 typedef struct _xmlSchemaElement xmlSchemaElement;
 typedef xmlSchemaElement *xmlSchemaElementPtr;
 /**
@@ -689,6 +701,7 @@ struct _xmlSchemaFacet {
     xmlRegexp      *regexp; /* The regex for patterns */
 };
 
+/** Schema notation */
 typedef struct _xmlSchemaNotation xmlSchemaNotation;
 typedef xmlSchemaNotation *xmlSchemaNotationPtr;
 /**

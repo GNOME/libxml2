@@ -20,8 +20,10 @@
 extern "C" {
 #endif
 
-/*
- * The hash table.
+/**
+ * Hash table mapping strings to pointers
+ *
+ * Also supports lookup using two or three strings as key.
  */
 typedef struct _xmlHashTable xmlHashTable;
 typedef xmlHashTable *xmlHashTablePtr;

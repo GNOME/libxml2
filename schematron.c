@@ -1414,27 +1414,15 @@ exit:
  *                                                                      *
  ************************************************************************/
 
-static xmlNodePtr
+static xmlXPathObjectPtr
 xmlSchematronGetNode(xmlSchematronValidCtxtPtr ctxt,
                      xmlNodePtr cur, const xmlChar *xpath) {
-    xmlNodePtr node = NULL;
-    xmlXPathObjectPtr ret;
-
     if ((ctxt == NULL) || (cur == NULL) || (xpath == NULL))
         return(NULL);
 
     ctxt->xctxt->doc = cur->doc;
     ctxt->xctxt->node = cur;
-    ret = xmlXPathEval(xpath, ctxt->xctxt);
-    if (ret == NULL)
-        return(NULL);
-
-    if ((ret->type == XPATH_NODESET) &&
-        (ret->nodesetval != NULL) && (ret->nodesetval->nodeNr > 0))
-        node = ret->nodesetval->nodeTab[0];
-
-    xmlXPathFreeObject(ret);
-    return(node);
+    return(xmlXPathEval(xpath, ctxt->xctxt));
 }
 
 /**
@@ -1480,25 +1468,40 @@ xmlSchematronFormatReport(xmlSchematronValidCtxtPtr ctxt,
             (child->type == XML_CDATA_SECTION_NODE))
             ret = xmlStrcat(ret, child->content);
         else if (IS_SCHEMATRON(child, "name")) {
+            xmlXPathObject *obj = NULL;
             xmlChar *path;
 
             path = xmlGetNoNsProp(child, BAD_CAST "path");
 
             node = cur;
             if (path != NULL) {
-                node = xmlSchematronGetNode(ctxt, cur, path);
-                if (node == NULL)
-                    node = cur;
+                obj = xmlSchematronGetNode(ctxt, cur, path);
+                if ((obj != NULL) &&
+                    (obj->type == XPATH_NODESET) &&
+                    (obj->nodesetval != NULL) &&
+                    (obj->nodesetval->nodeNr > 0))
+                    node = obj->nodesetval->nodeTab[0];
                 xmlFree(path);
             }
 
-            if ((node->ns == NULL) || (node->ns->prefix == NULL))
-                ret = xmlStrcat(ret, node->name);
-            else {
-                ret = xmlStrcat(ret, node->ns->prefix);
-                ret = xmlStrcat(ret, BAD_CAST ":");
-                ret = xmlStrcat(ret, node->name);
+            switch (node->type) {
+                case XML_ELEMENT_NODE:
+                case XML_ATTRIBUTE_NODE:
+                    if ((node->ns == NULL) || (node->ns->prefix == NULL))
+                        ret = xmlStrcat(ret, node->name);
+                    else {
+                        ret = xmlStrcat(ret, node->ns->prefix);
+                        ret = xmlStrcat(ret, BAD_CAST ":");
+                        ret = xmlStrcat(ret, node->name);
+                    }
+                    break;
+
+                /* TODO: handle other node types */
+                default:
+                    break;
             }
+
+            xmlXPathFreeObject(obj);
         } else if (IS_SCHEMATRON(child, "value-of")) {
             xmlChar *select;
             xmlXPathObjectPtr eval;

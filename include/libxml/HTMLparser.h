@@ -27,8 +27,6 @@
 extern "C" {
 #endif
 
-/** @cond ignore */
-
 /*
  * Backward compatibility
  */
@@ -41,15 +39,20 @@ extern "C" {
 /*
  * Most of the back-end structures from XML and HTML are shared.
  */
+/** Same as xmlParserCtxt */
 typedef xmlParserCtxt htmlParserCtxt;
 typedef xmlParserCtxtPtr htmlParserCtxtPtr;
 typedef xmlParserNodeInfo htmlParserNodeInfo;
+/** Same as xmlSAXHandler */
 typedef xmlSAXHandler htmlSAXHandler;
 typedef xmlSAXHandlerPtr htmlSAXHandlerPtr;
+/** Same as xmlParserInput */
 typedef xmlParserInput htmlParserInput;
 typedef xmlParserInputPtr htmlParserInputPtr;
 typedef xmlDocPtr htmlDocPtr;
 typedef xmlNodePtr htmlNodePtr;
+
+/** @cond ignore */
 
 /*
  * Internal description of an HTML element, representing HTML 4.01

@@ -45,6 +45,10 @@
 #include "private/memory.h"
 #include "private/tree.h"
 
+#ifndef SIZE_MAX
+  #define SIZE_MAX ((size_t) -1)
+#endif
+
 /*
  * Internal variable indicating whether a callback has been registered
  * for node creation/destruction. This avoids looking up thread-local

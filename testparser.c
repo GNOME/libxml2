@@ -182,6 +182,24 @@ testUndeclEntInContent(void) {
     return err;
 }
 
+static int
+testInvalidCharRecovery(void) {
+    const char *xml = "<doc>&#x10;</doc>";
+    xmlDoc *doc;
+    int err = 0;
+
+    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL, XML_PARSE_RECOVER);
+
+    if (strcmp((char *) doc->children->children->content, "\x10") != 0) {
+        fprintf(stderr, "Failed to recover from invalid char ref\n");
+        err = 1;
+    }
+
+    xmlFreeDoc(doc);
+
+    return err;
+}
+
 #ifdef LIBXML_VALID_ENABLED
 static void
 testSwitchDtdExtSubset(void *vctxt, const xmlChar *name ATTRIBUTE_UNUSED,
@@ -1250,6 +1268,7 @@ main(void) {
     err |= testNodeGetContent();
     err |= testCFileIO();
     err |= testUndeclEntInContent();
+    err |= testInvalidCharRecovery();
 #ifdef LIBXML_VALID_ENABLED
     err |= testSwitchDtd();
 #endif

@@ -5739,6 +5739,11 @@ htmlCtxtSetOptionsInternal(xmlParserCtxtPtr ctxt, int options, int keepMask)
     ctxt->keepBlanks = (options & HTML_PARSE_NOBLANKS) ? 0 : 1;
 
     /*
+     * Recover from character encoding errors
+     */
+    ctxt->recovery = 1;
+
+    /*
      * Changing SAX callbacks is a bad idea. This should be fixed.
      */
     if (options & HTML_PARSE_NOBLANKS) {

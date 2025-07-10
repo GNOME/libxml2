@@ -438,7 +438,7 @@ invalid:
     /* Only report the first error */
     if ((ctxt->input->flags & XML_INPUT_ENCODING_ERROR) == 0) {
         htmlParseErr(ctxt, XML_ERR_INVALID_ENCODING,
-                     "Invalid bytes in character encoding", NULL, NULL);
+                     "Invalid bytes in character encoding\n", NULL, NULL);
         ctxt->input->flags |= XML_INPUT_ENCODING_ERROR;
     }
 

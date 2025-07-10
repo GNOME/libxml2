@@ -1,5 +1,31 @@
 NEWS file for libxml2
 
+v2.14.5: Jul 10 2025
+
+### Regressions
+
+- html: Don't abort on encoding errors
+- parser: Fix handling of invalid char refs in recovery mode
+- xmllint: Print document even in case of XInclude errors
+- xmllint: Fix --xinclude --path
+
+### Security
+
+- schematron: Fix memory safety issues in xmlSchematronReportOutput
+- Schematron: Fix null pointer dereference leading to DoS (Michael Mann)
+- Fix potential buffer overflows of interactive shell (Michael Mann)
+
+### Improvements
+
+- parser: Fix xmlCtxtIsStopped
+
+### Build systems and portability
+
+- schemas: Fix compilation with pre-C99 MSVC
+- cmake: Add missing endif() in libxml2-config.cmake.in
+- Fix CMake iconv handling after change to private dependency (Markus Rickert)
+
+
 v2.14.4: Jun 16 2025
 
 ### Regressions

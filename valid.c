@@ -64,7 +64,10 @@ xmlVErrMemory(xmlValidCtxtPtr ctxt)
     }
 }
 
-static void
+/*
+ * @returns 0 on success, -1 if a memory allocation failed
+ */
+static int
 xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
               xmlParserErrors code, int level,
               const xmlChar *str1, const xmlChar *str2, const xmlChar *str3,
@@ -72,9 +75,10 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
               const char *msg, ...) {
     xmlParserCtxtPtr pctxt = NULL;
     va_list ap;
+    int ret = 0;
 
     if (ctxt == NULL)
-        return;
+        return -1;
     if (ctxt->flags & XML_VCTXT_USE_PCTXT)
         pctxt = ctxt->userData;
 
@@ -82,6 +86,8 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
     if (pctxt != NULL) {
         xmlCtxtVErr(pctxt, node, XML_FROM_VALID, code, level,
                     str1, str2, str3, int1, msg, ap);
+        if (pctxt->errNo == XML_ERR_NO_MEMORY)
+            ret = -1;
     } else {
         xmlGenericErrorFunc channel = NULL;
         void *data = NULL;
@@ -96,10 +102,14 @@ xmlDoErrValid(xmlValidCtxtPtr ctxt, xmlNodePtr node,
                              (const char *) str1, (const char *) str2,
                              (const char *) str2, int1, 0,
                              msg, ap);
-        if (res < 0)
+        if (res < 0) {
             xmlVErrMemory(ctxt);
+            ret = -1;
+        }
     }
     va_end(ap);
+
+    return ret;
 }
 
 /**
@@ -171,15 +181,16 @@ xmlErrValidNodeNr(xmlValidCtxtPtr ctxt,
  * @param str1  extra information
  * @param str2  extra information
  * @param str3  extra information
+ * @returns 0 on success, -1 if a memory allocation failed
  */
-static void LIBXML_ATTR_FORMAT(4,0)
+static int LIBXML_ATTR_FORMAT(4,0)
 xmlErrValidWarning(xmlValidCtxtPtr ctxt,
                 xmlNodePtr node, xmlParserErrors error,
                 const char *msg, const xmlChar * str1,
                 const xmlChar * str2, const xmlChar * str3)
 {
-    xmlDoErrValid(ctxt, node, error, XML_ERR_WARNING, str1, str2, str3, 0,
-                  msg, str1, str2, str3);
+    return xmlDoErrValid(ctxt, node, error, XML_ERR_WARNING, str1, str2, str3,
+                         0, msg, str1, str2, str3);
 }
 
 
@@ -5688,13 +5699,19 @@ child_ok:
 		    ret = 0;
 		}
 	    } else if (qualified == 0) {
-		xmlErrValidWarning(ctxt, elem, XML_DTD_NO_PREFIX,
-		   "Element %s required attribute %s:%s has no prefix\n",
-		       elem->name, attr->prefix, attr->name);
+		if (xmlErrValidWarning(ctxt, elem, XML_DTD_NO_PREFIX,
+		                       "Element %s required attribute %s:%s "
+                                       "has no prefix\n",
+		                       elem->name, attr->prefix,
+                                       attr->name) < 0)
+                    ret = 0;
 	    } else if (qualified == 1) {
-		xmlErrValidWarning(ctxt, elem, XML_DTD_DIFFERENT_PREFIX,
-		   "Element %s required attribute %s:%s has different prefix\n",
-		       elem->name, attr->prefix, attr->name);
+		if (xmlErrValidWarning(ctxt, elem, XML_DTD_DIFFERENT_PREFIX,
+		                       "Element %s required attribute %s:%s "
+                                       "has different prefix\n",
+		                       elem->name, attr->prefix,
+                                       attr->name) < 0)
+                    ret = 0;
 	    }
 	}
 found:

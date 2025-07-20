@@ -1098,7 +1098,8 @@ xmlNodeParseContentInternal(const xmlDoc *doc, xmlNodePtr parent,
                          */
 			if (xmlBufCat(buf, ent->content))
 			    goto out;
-		    } else {
+                    } else if (ent == NULL ||
+                               (ent->flags & XML_ENT_EXPANDING) == 0) {
 			/*
 			 * Flush buffer so far
 			 */
@@ -1120,7 +1121,6 @@ xmlNodeParseContentInternal(const xmlDoc *doc, xmlNodePtr parent,
 
 			if ((ent != NULL) &&
                             ((ent->flags & XML_ENT_PARSED) == 0) &&
-                            ((ent->flags & XML_ENT_EXPANDING) == 0) &&
                             (ent->content != NULL)) {
                             int res;
 

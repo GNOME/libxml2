@@ -1197,7 +1197,7 @@ typedef off_t xmlFileOffset;
 #endif
 
 static xmlFileOffset
-xmlSeek(int fd, int offset, int whence) {
+xmlSeek(int fd, xmlFileOffset offset, int whence) {
 #ifdef _WIN32
     HANDLE h = (HANDLE) _get_osfhandle(fd);
 

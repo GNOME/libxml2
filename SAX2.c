@@ -30,6 +30,10 @@
 #include "private/parser.h"
 #include "private/tree.h"
 
+#ifndef SIZE_MAX
+  #define SIZE_MAX ((size_t) -1)
+#endif
+
 /*
  * @param ctxt  an XML validation parser context
  * @param msg  a string to accompany the error message
@@ -1136,7 +1140,7 @@ xmlSAX1Attribute(xmlParserCtxtPtr ctxt, const xmlChar *fullname,
     }
 
     if (ctxt->replaceEntities == 0) {
-        if (xmlNodeParseContent((xmlNodePtr) ret, value, INT_MAX) < 0)
+        if (xmlNodeParseAttValue(ret->doc, ret, value, SIZE_MAX, NULL) < 0)
             xmlSAX2ErrMemory(ctxt);
     } else if (value != NULL) {
         ret->children = xmlNewDocText(ctxt->myDoc, value);
@@ -1967,8 +1971,8 @@ xmlSAX2AttributeNs(xmlParserCtxtPtr ctxt,
 		tmp->parent = (xmlNodePtr) ret;
 	    }
 	} else if (valueend > value) {
-            if (xmlNodeParseContent((xmlNodePtr) ret, value,
-                                    valueend - value) < 0)
+            if (xmlNodeParseAttValue(ret->doc, ret, value, valueend - value,
+                                     NULL) < 0)
                 xmlSAX2ErrMemory(ctxt);
 	}
     } else if (value != NULL) {

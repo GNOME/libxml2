@@ -10,7 +10,8 @@ XML_HIDDEN int
 xmlSearchNsByHrefSafe(xmlNode *node, const xmlChar *href, xmlNs **out);
 
 XML_HIDDEN int
-xmlNodeParseContent(xmlNode *node, const xmlChar *content, int len);
+xmlNodeParseAttValue(const xmlDoc *doc, xmlAttr *parent,
+                     const xmlChar *value, size_t len, xmlNode **listPtr);
 XML_HIDDEN xmlNode *
 xmlStaticCopyNode(xmlNode *node, xmlDoc *doc, xmlNode *parent,
                   int extended);

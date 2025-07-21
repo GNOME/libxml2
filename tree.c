@@ -3060,6 +3060,10 @@ xmlAddChildList(xmlNode *parent, xmlNode *cur) {
  * `parent`. If the attribute list contains an attribute with a name
  * matching `cur`, the old attribute is destroyed.
  *
+ * Before version 2.13, this function didn't unlink `cur` before
+ * moving it. Callers must unlink the node manually if it has
+ * siblings.
+ *
  * General notes:
  *
  * Move operations like #xmlAddChild can cause element or attribute
@@ -5397,6 +5401,8 @@ xmlNodeSetContentLen(xmlNode *cur, const xmlChar *content, int len) {
  * to be raw text, so unescaped XML special chars are allowed, entity
  * references are not supported.
  *
+ * This doesn't work on attributes before version 2.15.
+ *
  * @param cur  the node being modified
  * @param content  extra content
  * @param len  the size of `content`
@@ -5444,6 +5450,8 @@ xmlNodeAddContentLen(xmlNode *cur, const xmlChar *content, int len) {
  * NOTE: In contrast to #xmlNodeSetContent, `content` is supposed
  * to be raw text, so unescaped XML special chars are allowed, entity
  * references are not supported.
+ *
+ * This doesn't work on attributes before version 2.15.
  *
  * @param cur  the node being modified
  * @param content  extra content

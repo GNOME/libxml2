@@ -487,7 +487,6 @@ xmlParserEntityCheck(xmlParserCtxtPtr ctxt, unsigned long extra)
         xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                        "Maximum entity amplification factor exceeded, see "
                        "xmlCtxtSetMaxAmplification.\n");
-        xmlHaltParser(ctxt);
         return(1);
     }
 
@@ -1928,7 +1927,6 @@ xmlCtxtPushInput(xmlParserCtxt *ctxt, xmlParserInput *value)
         if (newSize < 0) {
             xmlFatalErrMsg(ctxt, XML_ERR_RESOURCE_LIMIT,
                            "Maximum entity nesting depth exceeded");
-            xmlHaltParser(ctxt);
             return(-1);
         }
         tmp = xmlRealloc(ctxt->inputTab, newSize * sizeof(tmp[0]));
@@ -2023,7 +2021,6 @@ nodePush(xmlParserCtxt *ctxt, xmlNode *value)
                     "Excessive depth in document: %d,"
                     " use XML_PARSE_HUGE option\n",
                     ctxt->nodeNr);
-            xmlHaltParser(ctxt);
             return(-1);
         }
 
@@ -3588,7 +3585,6 @@ xmlExpandPEsInEntityValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
 
             if (ent->flags & XML_ENT_EXPANDING) {
                 xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
-                xmlHaltParser(ctxt);
                 return;
             }
 
@@ -3728,7 +3724,6 @@ xmlCheckEntityInAttValue(xmlParserCtxtPtr ctxt, xmlEntityPtr pent, int depth) {
 
     if (pent->flags & XML_ENT_EXPANDING) {
         xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
-        xmlHaltParser(ctxt);
         return;
     }
 
@@ -3842,7 +3837,6 @@ xmlExpandEntityInAttValue(xmlParserCtxtPtr ctxt, xmlSBuf *buf,
     if (pent != NULL) {
         if (pent->flags & XML_ENT_EXPANDING) {
             xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
-            xmlHaltParser(ctxt);
             return(0);
         }
 
@@ -5612,7 +5606,6 @@ xmlParseEntityDecl(xmlParserCtxt *ctxt) {
 	if (RAW != '>') {
 	    xmlFatalErrMsgStr(ctxt, XML_ERR_ENTITY_NOT_FINISHED,
 	            "xmlParseEntityDecl: entity %s not terminated\n", name);
-	    xmlHaltParser(ctxt);
 	} else {
 #ifdef LIBXML_VALID_ENABLED
 	    if ((ctxt->validate) && (ctxt->inputNr > oldInputNr)) {
@@ -7672,7 +7665,6 @@ xmlParsePERefInternal(xmlParserCtxt *ctxt, int markupDecl) {
 
             if (entity->flags & XML_ENT_EXPANDING) {
                 xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
-                xmlHaltParser(ctxt);
                 return;
             }
 
@@ -9736,7 +9728,6 @@ xmlParseElementStart(xmlParserCtxtPtr ctxt) {
         xmlFatalErrMsgInt(ctxt, XML_ERR_RESOURCE_LIMIT,
                 "Excessive depth in document: %d use XML_PARSE_HUGE option\n",
                 ctxt->nameNr);
-	xmlHaltParser(ctxt);
 	return(-1);
     }
 
@@ -11296,7 +11287,6 @@ xmlParseChunk(xmlParserCtxt *ctxt, const char *chunk, int size,
     xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
     if (res < 0) {
         xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
-        xmlHaltParser(ctxt);
         return(ctxt->errNo);
     }
 
@@ -11309,7 +11299,6 @@ xmlParseChunk(xmlParserCtxt *ctxt, const char *chunk, int size,
     if (curBase > maxLength) {
         xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
                     "Buffer size limit exceeded, try XML_PARSE_HUGE\n");
-        xmlHaltParser(ctxt);
     }
 
     if ((ctxt->errNo != XML_ERR_OK) && (ctxt->disableSAX != 0))
@@ -11321,7 +11310,6 @@ xmlParseChunk(xmlParserCtxt *ctxt, const char *chunk, int size,
 	xmlBufUpdateInput(ctxt->input->buf->buffer, ctxt->input, pos);
         if (res < 0) {
             xmlCtxtErrIO(ctxt, ctxt->input->buf->error, NULL);
-            xmlHaltParser(ctxt);
             return(ctxt->errNo);
         }
     }
@@ -11421,12 +11409,21 @@ void
 xmlStopParser(xmlParserCtxt *ctxt) {
     if (ctxt == NULL)
         return;
-    xmlHaltParser(ctxt);
+
+    /* This stops the parser */
+    ctxt->disableSAX = 2;
+
     /*
-     * TODO: Update ctxt->lastError and ctxt->wellFormed?
+     * xmlStopParser is often called from error handlers,
+     * so we can't raise an error here to avoid infinite
+     * loops. Just make sure that an error condition is
+     * reported.
      */
-    if (ctxt->errNo != XML_ERR_NO_MEMORY)
+    if (ctxt->errNo == XML_ERR_OK) {
         ctxt->errNo = XML_ERR_USER_STOP;
+        ctxt->lastError.code = XML_ERR_USER_STOP;
+        ctxt->wellFormed = 0;
+    }
 }
 
 /**
@@ -11795,7 +11792,6 @@ xmlCtxtParseEntity(xmlParserCtxtPtr ctxt, xmlEntityPtr ent) {
      */
     if (ent->flags & XML_ENT_EXPANDING) {
         xmlFatalErr(ctxt, XML_ERR_ENTITY_LOOP, NULL);
-        xmlHaltParser(ctxt);
         goto error;
     }
 

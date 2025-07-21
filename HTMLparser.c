@@ -5173,7 +5173,6 @@ htmlParseChunk(htmlParserCtxt *ctxt, const char *chunk, int size,
 	if (res < 0) {
             htmlParseErr(ctxt, ctxt->input->buf->error,
                          "xmlParserInputBufferPush failed", NULL, NULL);
-            xmlHaltParser(ctxt);
 	    return (ctxt->errNo);
 	}
     }

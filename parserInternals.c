@@ -390,8 +390,18 @@ xmlCtxtVErr(xmlParserCtxt *ctxt, xmlNode *node, xmlErrorDomain domain,
     if (level == XML_ERR_FATAL) {
         ctxt->wellFormed = 0;
 
-        if (xmlCtxtIsCatastrophicError(ctxt))
-            ctxt->disableSAX = 2; /* stop parser */
+        /*
+         * By long-standing design, the parser isn't completely
+         * stopped on well-formedness errors. Only SAX callbacks
+         * are disabled.
+         *
+         * In some situations, we really want to abort as fast
+         * as possible.
+         */
+        if (xmlCtxtIsCatastrophicError(ctxt) ||
+            code == XML_ERR_RESOURCE_LIMIT ||
+            code == XML_ERR_ENTITY_LOOP)
+            ctxt->disableSAX = 2; /* really stop parser */
         else if (ctxt->recovery == 0)
             ctxt->disableSAX = 1;
     }
@@ -521,20 +531,6 @@ xmlIsLetter(int c) {
 #define LINE_LEN        80
 
 /**
- * Blocks further parser processing don't override error
- * for internal use
- *
- * @param ctxt  an XML parser context
- */
-void
-xmlHaltParser(xmlParserCtxt *ctxt) {
-    if (ctxt == NULL)
-        return;
-    ctxt->instate = XML_PARSER_EOF; /* TODO: Remove after refactoring */
-    ctxt->disableSAX = 2;
-}
-
-/**
  * @deprecated This function was internal and is deprecated.
  *
  * @param in  an XML parser input
@@ -577,7 +573,6 @@ xmlParserGrow(xmlParserCtxt *ctxt) {
     if (curBase > maxLength) {
         xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
                     "Buffer size limit exceeded, try XML_PARSE_HUGE\n");
-        xmlHaltParser(ctxt);
 	return(-1);
     }
 

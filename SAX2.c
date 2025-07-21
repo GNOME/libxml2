@@ -2513,7 +2513,6 @@ xmlSAX2Text(xmlParserCtxtPtr ctxt, const xmlChar *ch, int len,
         if ((len > maxSize) || (oldSize > maxSize - len)) {
             xmlFatalErr(ctxt, XML_ERR_RESOURCE_LIMIT,
                         "Text node too long, try XML_PARSE_HUGE");
-            xmlHaltParser(ctxt);
             return;
         }
 

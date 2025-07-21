@@ -87,8 +87,6 @@ xmlCtxtErrIO(xmlParserCtxt *ctxt, int code, const char *uri);
 XML_HIDDEN int
 xmlCtxtIsCatastrophicError(xmlParserCtxt *ctxt);
 
-XML_HIDDEN void
-xmlHaltParser(xmlParserCtxt *ctxt);
 XML_HIDDEN int
 xmlParserGrow(xmlParserCtxt *ctxt);
 XML_HIDDEN void

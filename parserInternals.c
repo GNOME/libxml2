@@ -97,6 +97,9 @@ xmlCheckVersion(int version) {
  * Register a callback function that will be called on errors and
  * warnings. If handler is NULL, the error handler will be deactivated.
  *
+ * If you only want to disable parser errors being printed to
+ * stderr, use xmlParserOption XML_PARSE_NOERROR.
+ *
  * This is the recommended way to collect errors from the parser and
  * takes precedence over all other error reporting mechanisms.
  * These are (in order of precedence):

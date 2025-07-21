@@ -245,6 +245,9 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
  *
  * @deprecated See #xmlSetStructuredErrorFunc for alternatives.
  *
+ * If you only want to disable parser errors being printed to
+ * stderr, use xmlParserOption XML_PARSE_NOERROR.
+ *
  * The generic error handler will only receive fragments of
  * error messages which should be concatenated or printed to a
  * stream.
@@ -278,6 +281,9 @@ xmlSetGenericErrorFunc(void *ctx, xmlGenericErrorFunc handler) {
  * messages.
  *
  * @deprecated Use a per-context error handler.
+ *
+ * If you only want to disable parser errors being printed to
+ * stderr, use xmlParserOption XML_PARSE_NOERROR.
  *
  * It's recommended to use the per-context error handlers instead:
  *

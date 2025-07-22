@@ -33,12 +33,40 @@ extern "C" {
 typedef enum {
     /** Success */
     XML_ERR_NONE = 0,
-    /** A simple warning */
+    /**
+     * A warning
+     *
+     * When parsing XML, warnings are only reported to error
+     * handlers.
+     */
     XML_ERR_WARNING = 1,
-    /** A recoverable error (namespace and validity errors,
-        certain undeclared entities) */
+    /**
+     * An error
+     *
+     * When parsing XML, this is used for recoverable errors like
+     *
+     * - namespace errors
+     * - validity errors when validating
+     * - certain undeclared entities
+     * - ID uniqueness and xml:id errors
+     *
+     * Note that some recoverable errors in the sense of the XML
+     * spec are reported as warnings.
+     *
+     * In other contexts, this may be used for unrecoverable
+     * errors.
+     */
     XML_ERR_ERROR = 2,
-    /** A fatal error (not well-formed, OOM and I/O errors) */
+    /**
+     * A fatal error
+     *
+     * When parsing XML, a "fatal error" according to the XML spec.
+     * This typically means that the document isn't well-formed.
+     *
+     * This also includes OOM and I/O errors, resource limit
+     * exhaustion, unexpected errors from other libraries and
+     * invalid argument errors.
+     */
     XML_ERR_FATAL = 3
 } xmlErrorLevel;
 

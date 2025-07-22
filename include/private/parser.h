@@ -1,6 +1,8 @@
 #ifndef XML_PARSER_H_PRIVATE__
 #define XML_PARSER_H_PRIVATE__
 
+#include <limits.h>
+
 #include <libxml/parser.h>
 #include <libxml/xmlversion.h>
 
@@ -152,5 +154,21 @@ xmlExpandEntitiesInAttValue(xmlParserCtxt *ctxt, const xmlChar *str,
 
 XML_HIDDEN void
 xmlParserCheckEOF(xmlParserCtxt *ctxt, xmlParserErrors code);
+
+static XML_INLINE void
+xmlSaturatedAdd(unsigned long *dst, unsigned long val) {
+    if (val > ULONG_MAX - *dst)
+        *dst = ULONG_MAX;
+    else
+        *dst += val;
+}
+
+static XML_INLINE void
+xmlSaturatedAddSizeT(unsigned long *dst, size_t val) {
+    if (val > ULONG_MAX - *dst)
+        *dst = ULONG_MAX;
+    else
+        *dst += val;
+}
 
 #endif /* XML_PARSER_H_PRIVATE__ */

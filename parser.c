@@ -408,22 +408,6 @@ xmlNsWarn(xmlParserCtxtPtr ctxt, xmlParserErrors error,
                info1, info2, info3, 0, msg, info1, info2, info3);
 }
 
-static void
-xmlSaturatedAdd(unsigned long *dst, unsigned long val) {
-    if (val > ULONG_MAX - *dst)
-        *dst = ULONG_MAX;
-    else
-        *dst += val;
-}
-
-static void
-xmlSaturatedAddSizeT(unsigned long *dst, size_t val) {
-    if (val > ULONG_MAX - *dst)
-        *dst = ULONG_MAX;
-    else
-        *dst += val;
-}
-
 /**
  * Check for non-linear entity expansion behaviour.
  *

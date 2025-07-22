@@ -697,11 +697,7 @@ xmlParserShrink(xmlParserCtxt *ctxt) {
 
         if (res > 0) {
             used -= res;
-            if ((res > ULONG_MAX) ||
-                (in->consumed > ULONG_MAX - (unsigned long)res))
-                in->consumed = ULONG_MAX;
-            else
-                in->consumed += res;
+            xmlSaturatedAddSizeT(&in->consumed, res);
         }
 
         xmlBufUpdateInput(buf->buffer, in, used);
@@ -732,11 +728,7 @@ xmlParserInputShrink(xmlParserInput *in) {
 	ret = xmlBufShrink(in->buf->buffer, used - LINE_LEN);
 	if (ret > 0) {
             used -= ret;
-            if ((ret > ULONG_MAX) ||
-                (in->consumed > ULONG_MAX - (unsigned long)ret))
-                in->consumed = ULONG_MAX;
-            else
-                in->consumed += ret;
+            xmlSaturatedAddSizeT(&in->consumed, ret);
 	}
 
         xmlBufUpdateInput(in->buf->buffer, in, used);

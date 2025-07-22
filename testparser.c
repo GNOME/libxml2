@@ -201,6 +201,75 @@ testInvalidCharRecovery(void) {
     return err;
 }
 
+static void
+testCtxtInputGetterError(void *errCtxt, const xmlError *error) {
+    int *err = errCtxt;
+    xmlParserCtxt *ctxt = error->ctxt;
+    const char *filename;
+    int line, col;
+    unsigned long bytePos;
+    const xmlChar *start;
+    int size, offset;
+
+    xmlCtxtGetInputPosition(ctxt, 0, &filename, &line, &col, &bytePos);
+
+    if (strcmp(filename, "test.xml") != 0 ||
+        line != 4 || col != 11 || bytePos != 62) {
+        fprintf(stderr, "unexpected position: %s %d %d %lu\n",
+                filename, line, col, bytePos);
+        *err = 1;
+    }
+
+    size = 80;
+    xmlCtxtGetInputWindow(ctxt, 0, &start, &size, &offset);
+
+    if (strncmp((char *) start, "<doc>&ent;", 10) != 0 ||
+        size != 16 || offset != 10) {
+        fprintf(stderr, "unexpected window: %.10s %d %d\n",
+                start, size, offset);
+        *err = 1;
+    }
+
+    xmlCtxtGetInputPosition(ctxt, -1, &filename, &line, &col, &bytePos);
+
+    if (filename != NULL ||
+        line != 1 || col != 11 || bytePos != 10) {
+        fprintf(stderr, "unexpected position: %s %d %d %lu\n",
+                filename, line, col, bytePos);
+        *err = 1;
+    }
+
+    size = 80;
+    xmlCtxtGetInputWindow(ctxt, -1, &start, &size, &offset);
+
+    if (strncmp((char *) start, "xxx &fail;", 10) != 0 ||
+        size != 14 || offset != 10) {
+        fprintf(stderr, "unexpected window: %.10s %d %d\n",
+                start, size, offset);
+        *err = 1;
+    }
+}
+
+static int
+testCtxtInputGetters(void) {
+    const char *xml =
+        "<!DOCTYPE doc [\n"
+        "  <!ENTITY ent 'xxx &fail; xxx'>\n"
+        "]>\n"
+        "<doc>&ent;</doc>\n";
+    xmlParserCtxt *ctxt;
+    xmlDoc *doc;
+    int err = 0;
+
+    ctxt = xmlNewParserCtxt();
+    xmlCtxtSetErrorHandler(ctxt, testCtxtInputGetterError, &err);
+    doc = xmlCtxtReadDoc(ctxt, BAD_CAST xml, "test.xml", NULL, 0);
+    xmlFreeDoc(doc);
+    xmlFreeParserCtxt(ctxt);
+
+    return err;
+}
+
 #ifdef LIBXML_VALID_ENABLED
 static void
 testSwitchDtdExtSubset(void *vctxt, const xmlChar *name ATTRIBUTE_UNUSED,
@@ -1428,6 +1497,7 @@ main(void) {
     err |= testCFileIO();
     err |= testUndeclEntInContent();
     err |= testInvalidCharRecovery();
+    err |= testCtxtInputGetters();
 #ifdef LIBXML_VALID_ENABLED
     err |= testSwitchDtd();
 #endif

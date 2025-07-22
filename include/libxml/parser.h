@@ -111,7 +111,11 @@ struct _xmlParserInput {
     const char *directory XML_DEPRECATED_MEMBER;
     /* Base of the array to parse */
     const xmlChar *base;
-    /* Current char being parsed */
+    /**
+     * @deprecated Use #xmlCtxtGetInputWindow
+     *
+     * Current char being parsed
+     */
     const xmlChar *cur;
     /* end of the array to parse */
     const xmlChar *end;
@@ -1949,6 +1953,12 @@ XMLPUBFUN int
 					 int *line,
 					 int *col,
 					 unsigned long *bytePos);
+XMLPUBFUN int
+		xmlCtxtGetInputWindow	(xmlParserCtxt *ctxt,
+					 int inputIndex,
+					 const xmlChar **startOut,
+					 int *sizeInOut,
+					 int *offsetOut);
 XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxt *ctxt,
 					 xmlStructuredErrorFunc handler,

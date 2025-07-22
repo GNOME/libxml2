@@ -3436,9 +3436,56 @@ xmlCtxtGetInputPosition(xmlParserCtxt *ctxt, int inputIndex,
         unsigned long consumed;
 
         consumed = input->consumed;
-        xmlSaturatedAddSizeT(&consumed, input->end - input->base);
+        xmlSaturatedAddSizeT(&consumed, input->cur - input->base);
         *utf8BytePos = consumed;
     }
+
+    return 0;
+}
+
+/**
+ * Return window into input data.
+ *
+ * Should only be used by error handlers or SAX callbacks.
+ * The returned pointer is only valid until the callback returns.
+ *
+ * Because of entities, there can be multiple inputs. Non-negative
+ * values of `inputIndex` (0, 1, 2, ...)  select inputs starting
+ * from the outermost input. Negative values (-1, -2, ...) select
+ * inputs starting from the innermost input.
+ *
+ * @since 2.15.0
+ *
+ * @param ctxt  parser context
+ * @param inputIndex  input index
+ * @param startOut  start of window (output)
+ * @param sizeInOut  maximum size of window (in)
+ *                   actual size of window (out)
+ * @param offsetOut  offset of current position inside
+ *                   window (out)
+ * @returns 0 on success, -1 if arguments are invalid
+ */
+int
+xmlCtxtGetInputWindow(xmlParserCtxt *ctxt, int inputIndex,
+                      const xmlChar **startOut,
+                      int *sizeInOut, int *offsetOut) {
+    xmlParserInput *input;
+
+    if (ctxt == NULL || startOut == NULL || sizeInOut == NULL ||
+        offsetOut == NULL)
+        return -1;
+
+    if (inputIndex < 0) {
+        inputIndex += ctxt->inputNr;
+        if (inputIndex < 0)
+            return -1;
+    }
+    if (inputIndex >= ctxt->inputNr)
+        return -1;
+
+    input = ctxt->inputTab[inputIndex];
+
+    xmlParserInputGetWindow(input, startOut, sizeInOut, offsetOut);
 
     return 0;
 }

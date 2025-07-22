@@ -188,7 +188,8 @@ testInvalidCharRecovery(void) {
     xmlDoc *doc;
     int err = 0;
 
-    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL, XML_PARSE_RECOVER);
+    doc = xmlReadDoc(BAD_CAST xml, NULL, NULL,
+                     XML_PARSE_RECOVER | XML_PARSE_NOERROR);
 
     if (strcmp((char *) doc->children->children->content, "\x10") != 0) {
         fprintf(stderr, "Failed to recover from invalid char ref\n");

@@ -155,6 +155,10 @@ xmlExpandEntitiesInAttValue(xmlParserCtxt *ctxt, const xmlChar *str,
 XML_HIDDEN void
 xmlParserCheckEOF(xmlParserCtxt *ctxt, xmlParserErrors code);
 
+XML_HIDDEN void
+xmlParserInputGetWindow(xmlParserInput *input, const xmlChar **startOut,
+                        int *sizeInOut, int *offsetOut);
+
 static XML_INLINE void
 xmlSaturatedAdd(unsigned long *dst, unsigned long val) {
     if (val > ULONG_MAX - *dst)

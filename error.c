@@ -18,6 +18,7 @@
 
 #include "private/error.h"
 #include "private/globals.h"
+#include "private/parser.h"
 #include "private/string.h"
 
 /**
@@ -359,64 +360,27 @@ xmlParserPrintFileInfo(struct _xmlParserInput *input) {
 static void
 xmlParserPrintFileContextInternal(xmlParserInputPtr input ,
 		xmlGenericErrorFunc channel, void *data ) {
-    const xmlChar *cur, *base, *start;
-    unsigned int n, col;	/* GCC warns if signed, because compared with sizeof() */
-    xmlChar  content[81]; /* space for 80 chars + line terminator */
-    xmlChar *ctnt;
+    const xmlChar *start;
+    int n, col;
+    xmlChar content[81]; /* space for 80 chars + line terminator */
 
     if ((input == NULL) || (input->cur == NULL))
         return;
 
-    cur = input->cur;
-    base = input->base;
-    /* skip backwards over any end-of-lines */
-    while ((cur > base) && ((*(cur) == '\n') || (*(cur) == '\r'))) {
-	cur--;
-    }
-    n = 0;
-    /* search backwards for beginning-of-line (to max buff size) */
-    while ((n < sizeof(content) - 1) && (cur > base) &&
-	   (*cur != '\n') && (*cur != '\r')) {
-        cur--;
-        n++;
-    }
-    if ((n > 0) && ((*cur == '\n') || (*cur == '\r'))) {
-        cur++;
-    } else {
-        /* skip over continuation bytes */
-        while ((cur < input->cur) && ((*cur & 0xC0) == 0x80))
-            cur++;
-    }
-    /* calculate the error position in terms of the current position */
-    col = input->cur - cur;
-    /* search forward for end-of-line (to max buff size) */
-    n = 0;
-    start = cur;
-    /* copy selected text to our buffer */
-    while ((*cur != 0) && (*(cur) != '\n') && (*(cur) != '\r')) {
-        int len = input->end - cur;
-        int c = xmlGetUTF8Char(cur, &len);
+    n = sizeof(content) - 1;
+    xmlParserInputGetWindow(input, &start, &n, &col);
 
-        if ((c < 0) || (n + len > sizeof(content)-1))
-            break;
-        cur += len;
-	n += len;
-    }
     memcpy(content, start, n);
     content[n] = 0;
     /* print out the selected text */
     channel(data ,"%s\n", content);
     /* create blank line with problem pointer */
-    n = 0;
-    ctnt = content;
-    /* (leave buffer space for pointer + line terminator) */
-    while ((n<col) && (n++ < sizeof(content)-2) && (*ctnt != 0)) {
-	if (*(ctnt) != '\t')
-	    *(ctnt) = ' ';
-	ctnt++;
+    for (n = 0; n < col; n++) {
+	if (content[n] != '\t')
+	    content[n] = ' ';
     }
-    *ctnt++ = '^';
-    *ctnt = 0;
+    content[n++] = '^';
+    content[n] = 0;
     channel(data ,"%s\n", content);
 }
 

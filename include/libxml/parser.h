@@ -243,9 +243,10 @@ struct _xmlParserCtxt {
      */
     struct _xmlSAXHandler *sax;
     /**
+     * @deprecated Use #xmlCtxtGetUserData
+     *
      * user data for SAX interface, defaults to the context itself
      */
-    /* TODO: Add accessor */
     void *userData;
     /**
      * @deprecated Use xmlCtxtGetDocument()
@@ -308,16 +309,10 @@ struct _xmlParserCtxt {
     /* Node analysis stack only used for DOM building */
 
     /**
+     * @deprecated Use #xmlCtxtGetNode
+     *
      * The current element.
-     *
-     * This is only valid and useful if the default SAX callbacks
-     * which build a document tree are intercepted. This mode of
-     * operation is fragile and discouraged.
-     *
-     * Contains the current element whose content is being parsed,
-     * or NULL if the parser is in top-level or DTD content.
      */
-    /* TODO: Add accessor */
     xmlNode *node;
     /* Depth of the parsing stack */
     int nodeNr XML_DEPRECATED_MEMBER;
@@ -370,10 +365,11 @@ struct _xmlParserCtxt {
     int token XML_DEPRECATED_MEMBER;
 
     /**
+     * @deprecated Don't use
+     *
      * The main document URI, if available, with its last
      * component stripped.
      */
-    /* TODO: Add accessor */
     char *directory;
 
     /* Node name stack */
@@ -404,38 +400,36 @@ struct _xmlParserCtxt {
      */
     int disableSAX XML_DEPRECATED_MEMBER;
     /**
+     * @deprecated Use xmlCtxtIsInSubset
+     *
      * Set if DTD content is parsed.
      *
      * - 0: not in DTD
      * - 1: in internal DTD subset
      * - 2: in external DTD subset
      */
-    /* TODO: Add accessor */
     int inSubset;
     /**
      * @deprecated Use the `name` argument of the
-     * `internalSubset` SAX callback.
+     * `internalSubset` SAX callback or #xmlCtxtGetDocTypeDecl
      *
      * Name of the internal subset (root element type).
      */
-    /* TODO: Add accessor */
     const xmlChar *intSubName;
     /**
      * @deprecated Use the `systemId` argument of the
-     * `internalSubset` SAX callback.
+     * `internalSubset` SAX callback or #xmlCtxtGetDocTypeDecl
      *
      * System identifier (URI) of external the subset.
      */
-    /* TODO: Add accessor */
     xmlChar *extSubURI;
     /**
      * @deprecated Use the `publicId` argument of the
-     * `internalSubset` SAX callback.
+     * `internalSubset` SAX callback or #xmlCtxtGetDocTypeDecl
      *
      * This member is MISNAMED. It contains the *public* identifier
      * of the external subset.
      */
-    /* TODO: Add accessor */
     xmlChar *extSubSystem;
 
     /* xml:space values */
@@ -1909,6 +1903,8 @@ XMLPUBFUN int
 		xmlCtxtIsHtml		(xmlParserCtxt *ctxt);
 XMLPUBFUN int
 		xmlCtxtIsStopped	(xmlParserCtxt *ctxt);
+XMLPUBFUN int
+		xmlCtxtIsInSubset	(xmlParserCtxt *ctxt);
 #ifdef LIBXML_VALID_ENABLED
 XMLPUBFUN xmlValidCtxt *
 		xmlCtxtGetValidCtxt	(xmlParserCtxt *ctxt);
@@ -1921,6 +1917,15 @@ XMLPUBFUN int
 		xmlCtxtGetStandalone	(xmlParserCtxt *ctxt);
 XMLPUBFUN xmlParserStatus
 		xmlCtxtGetStatus	(xmlParserCtxt *ctxt);
+XMLPUBFUN void *
+		xmlCtxtGetUserData	(xmlParserCtxt *ctxt);
+XMLPUBFUN xmlNode *
+		xmlCtxtGetNode		(xmlParserCtxt *ctxt);
+XMLPUBFUN int
+		xmlCtxtGetDocTypeDecl	(xmlParserCtxt *ctxt,
+					 const xmlChar **name,
+					 const xmlChar **systemId,
+					 const xmlChar **publicId);
 XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxt *ctxt,
 					 xmlStructuredErrorFunc handler,

@@ -101,7 +101,11 @@ typedef void (* xmlParserInputDeallocate)(xmlChar *str);
 struct _xmlParserInput {
     /* Input buffer */
     xmlParserInputBuffer *buf;
-    /* The file analyzed, if any */
+    /**
+     * @deprecated Use #xmlCtxtGetInputPosition
+     *
+     * The filename or URI, if any
+     */
     const char *filename;
     /* unused */
     const char *directory XML_DEPRECATED_MEMBER;
@@ -113,11 +117,23 @@ struct _xmlParserInput {
     const xmlChar *end;
     /* unused */
     int length XML_DEPRECATED_MEMBER;
-    /* Current line */
+    /**
+     * @deprecated Use #xmlCtxtGetInputPosition
+     *
+     * Current line
+     */
     int line;
-    /* Current column */
+    /**
+     * @deprecated Use #xmlCtxtGetInputPosition
+     *
+     * Current column
+     */
     int col;
-    /* How many xmlChars already consumed */
+    /**
+     * @deprecated Use #xmlCtxtGetInputPosition
+     *
+     * How many xmlChars already consumed
+     */
     unsigned long consumed;
     /* function to deallocate the base */
     xmlParserInputDeallocate free XML_DEPRECATED_MEMBER;
@@ -1926,6 +1942,13 @@ XMLPUBFUN int
 					 const xmlChar **name,
 					 const xmlChar **systemId,
 					 const xmlChar **publicId);
+XMLPUBFUN int
+		xmlCtxtGetInputPosition	(xmlParserCtxt *ctxt,
+					 int inputIndex,
+					 const char **filname,
+					 int *line,
+					 int *col,
+					 unsigned long *bytePos);
 XMLPUBFUN void
 		xmlCtxtSetErrorHandler	(xmlParserCtxt *ctxt,
 					 xmlStructuredErrorFunc handler,

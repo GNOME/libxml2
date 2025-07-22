@@ -3318,6 +3318,63 @@ xmlCtxtGetDocTypeDecl(xmlParserCtxt *ctxt,
     return 0;
 }
 
+/**
+ * Return input position.
+ *
+ * Should only be used by error handlers or SAX callbacks.
+ *
+ * Because of entities, there can be multiple inputs. Non-negative
+ * values of `inputIndex` (0, 1, 2, ...)  select inputs starting
+ * from the outermost input. Negative values (-1, -2, ...) select
+ * inputs starting from the innermost input.
+ *
+ * @since 2.15.0
+ *
+ * @param ctxt  parser context
+ * @param inputIndex  input index
+ * @param filename  filename (output)
+ * @param line  line number (output)
+ * @param col  column number (output)
+ * @param bytePos  byte position (output)
+ * @returns 0 on success, -1 if arguments are invalid
+ */
+int
+xmlCtxtGetInputPosition(xmlParserCtxt *ctxt, int inputIndex,
+                        const char **filename, int *line, int *col,
+                        unsigned long *bytePos) {
+    xmlParserInput *input;
+
+    if (ctxt == NULL)
+        return -1;
+
+    if (inputIndex < 0) {
+        inputIndex += ctxt->inputNr;
+        if (inputIndex < 0)
+            return -1;
+    }
+    if (inputIndex >= ctxt->inputNr)
+        return -1;
+
+    input = ctxt->inputTab[inputIndex];
+
+    if (filename != NULL)
+        *filename = input->filename;
+    if (line != NULL)
+        *line = input->line;
+    if (col != NULL)
+        *col = input->col;
+
+    if (bytePos != NULL) {
+        unsigned long consumed;
+
+        consumed = input->consumed;
+        xmlSaturatedAddSizeT(&consumed, input->end - input->base);
+        *bytePos = consumed;
+    }
+
+    return 0;
+}
+
 /************************************************************************
  *									*
  *		Handling of node information				*

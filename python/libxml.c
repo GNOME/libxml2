@@ -516,6 +516,7 @@ libxml_outputBufferGetPythonFile(ATTRIBUTE_UNUSED PyObject *self,
 	Py_INCREF(Py_None);
 	return(Py_None);
     }
+XML_IGNORE_DEPRECATION_WARNINGS
     if (obj->closecallback != xmlPythonFileClose) {
 	fprintf(stderr,
 	        "outputBufferGetPythonFile: not a python file wrapper\n");
@@ -527,6 +528,7 @@ libxml_outputBufferGetPythonFile(ATTRIBUTE_UNUSED PyObject *self,
 	Py_INCREF(Py_None);
 	return(Py_None);
     }
+XML_POP_WARNINGS
     Py_INCREF(file);
     return(file);
 }

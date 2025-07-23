@@ -107,9 +107,17 @@ typedef xmlBuffer *xmlBufferPtr;
  * is being deprecated, use API with xmlBuf instead.
  */
 struct _xmlBuffer {
-    /* The buffer content UTF8 */
+    /**
+     * @deprecated Use #xmlBufferContent
+     *
+     * The buffer content UTF8
+     */
     xmlChar *content XML_DEPRECATED_MEMBER;
-    /* The buffer size used */
+    /**
+     * @deprecated Use #xmlBufferLength
+     *
+     * The buffer size used
+     */
     unsigned int use XML_DEPRECATED_MEMBER;
     /* The buffer size */
     unsigned int size XML_DEPRECATED_MEMBER;

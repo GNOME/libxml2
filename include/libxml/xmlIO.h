@@ -124,17 +124,22 @@ typedef xmlOutputBuffer *
  * be removed from the public interface.
  */
 struct _xmlParserInputBuffer {
-    void*                  context;
-    xmlInputReadCallback   readcallback;
-    xmlInputCloseCallback  closecallback;
+    void*                  context XML_DEPRECATED_MEMBER;
+    xmlInputReadCallback   readcallback XML_DEPRECATED_MEMBER;
+    xmlInputCloseCallback  closecallback XML_DEPRECATED_MEMBER;
 
-    xmlCharEncodingHandler *encoder; /* I18N conversions to UTF-8 */
+    /* I18N conversions to UTF-8 */
+    xmlCharEncodingHandler *encoder XML_DEPRECATED_MEMBER;
 
-    xmlBuf *buffer;    /* Local buffer encoded in UTF-8 */
-    xmlBuf *raw;       /* if encoder != NULL buffer for raw input */
-    int	compressed;	    /* -1=unknown, 0=not compressed, 1=compressed */
-    int error;
-    unsigned long rawconsumed;/* amount consumed from raw */
+    /* Local buffer encoded in UTF-8 */
+    xmlBuf *buffer XML_DEPRECATED_MEMBER;
+    /* if encoder != NULL buffer for raw input */
+    xmlBuf *raw XML_DEPRECATED_MEMBER;
+    /* -1=unknown, 0=not compressed, 1=compressed */
+    int	compressed XML_DEPRECATED_MEMBER;
+    int error XML_DEPRECATED_MEMBER;
+    /* amount consumed from raw */
+    unsigned long rawconsumed XML_DEPRECATED_MEMBER;
 };
 
 

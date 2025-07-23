@@ -100,7 +100,7 @@ typedef void (* xmlParserInputDeallocate)(xmlChar *str);
  */
 struct _xmlParserInput {
     /* Input buffer */
-    xmlParserInputBuffer *buf;
+    xmlParserInputBuffer *buf XML_DEPRECATED_MEMBER;
     /**
      * @deprecated Use #xmlCtxtGetInputPosition
      *

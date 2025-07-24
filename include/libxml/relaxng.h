@@ -213,6 +213,8 @@ XMLPUBFUN int
 		    xmlRelaxNGValidateFullElement	(xmlRelaxNGValidCtxt *ctxt,
 					 xmlDoc *doc,
 					 xmlNode *elem);
+XMLPUBFUN void
+                    xmlRelaxNGValidCtxtClearErrors(xmlRelaxNGValidCtxt* ctxt);
 
 #ifdef __cplusplus
 }

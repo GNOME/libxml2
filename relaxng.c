@@ -8056,6 +8056,8 @@ xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxt *ctxt,
                               xmlNode *elem)
 {
     int ret = 1;
+    xmlNodePtr prevPNode;
+    int prevPState;
 
     if ((ctxt == NULL) || (elem == NULL))
         return (-1);
@@ -8089,6 +8091,9 @@ xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxt *ctxt,
         }
         xmlRelaxNGElemPush(ctxt, exec);
     }
+    prevPNode = ctxt->pnode;
+    prevPState = ctxt->pstate;
+
     ctxt->pnode = elem;
     ctxt->pstate = 0;
     if (elem->ns != NULL) {
@@ -8100,14 +8105,22 @@ xmlRelaxNGValidatePushElement(xmlRelaxNGValidCtxt *ctxt,
     }
     if (ret < 0) {
         VALID_ERR2(XML_RELAXNG_ERR_ELEMWRONG, elem->name);
+        goto Recovery;
     } else {
         if (ctxt->pstate == 0)
             ret = 0;
-        else if (ctxt->pstate < 0)
+        else if (ctxt->pstate < 0) {
             ret = -1;
+            goto Recovery;
+        }
         else
             ret = 1;
     }
+    return (ret);
+
+Recovery:
+    ctxt->pnode = prevPNode;
+    ctxt->pstate = prevPState;
     return (ret);
 }
 
@@ -8217,6 +8230,23 @@ xmlRelaxNGValidateFullElement(xmlRelaxNGValidCtxt *ctxt,
     xmlRelaxNGFreeValidState(ctxt, ctxt->state);
     ctxt->state = NULL;
     return (ret);
+}
+
+/**
+ * Clear errors in the context, allowing to recover
+ * from errors during streaming validation and continue it
+ *
+ * @remarks it doesn's reset the last internal libxml2 error
+ * @param ctxt  the validation context
+ */
+void
+xmlRelaxNGValidCtxtClearErrors(xmlRelaxNGValidCtxt* ctxt)
+{
+    xmlRegExecClearErrors(ctxt->elem);
+    xmlRelaxNGPopErrors(ctxt, 0);
+    ctxt->err = NULL;
+    ctxt->nbErrors = 0;
+    ctxt->errNo = XML_RELAXNG_OK;
 }
 
 /************************************************************************

@@ -4462,6 +4462,22 @@ xmlRegExecErrInfo(xmlRegExecCtxt *exec, const xmlChar **string,
     return(xmlRegExecGetValues(exec, 1, nbval, nbneg, values, terminal));
 }
 
+/**
+ * Clear errors in the context, allowing to recover
+ * from errors on specific scenarios
+ *
+ * @param exec  a regexp execution context
+ * @remarks it doesn's reset the last internal libxml2 error
+ */
+void
+xmlRegExecClearErrors(xmlRegExecCtxt* exec) {
+    exec->status = 0;
+    exec->errState = NULL;
+    exec->errStateNo = -1;
+    xmlFree(exec->errString);
+    exec->errString = NULL;
+}
+
 /************************************************************************
  *									*
  *	Parser for the Schemas Datatype Regular Expressions		*

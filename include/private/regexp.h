@@ -18,6 +18,9 @@
 XML_HIDDEN void
 xmlAutomataSetFlags(xmlAutomata *am, int flags);
 
+XML_HIDDEN void
+xmlRegExecClearErrors(xmlRegExecCtxt* exec);
+
 #endif /* LIBXML_REGEXP_ENABLED */
 
 #endif /* XML_REGEXP_H_PRIVATE__ */

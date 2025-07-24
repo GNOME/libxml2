@@ -2143,7 +2143,7 @@ htmlEncodeEntities(unsigned char* out, int *outlen,
  * into the html40ElementTable array but I don't want to risk any
  * binary incompatibility
  */
-static const char *allowPCData[] = {
+static const char *const allowPCData[] = {
     "a", "abbr", "acronym", "address", "applet", "b", "bdo", "big",
     "blockquote", "body", "button", "caption", "center", "cite", "code",
     "dd", "del", "dfn", "div", "dt", "em", "font", "form", "h1", "h2",

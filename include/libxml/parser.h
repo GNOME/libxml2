@@ -1727,6 +1727,9 @@ typedef enum {
      * This option enables DTD validation which requires to load
      * external DTDs and external entities (both general and
      * parameter entities) unless XML_PARSE_NO_XXE was set.
+     *
+     * DTD validation is vulnerable to algorithmic complexity
+     * attacks and should never be enabled with untrusted input.
      */
     XML_PARSE_DTDVALID = 1<<4,
     /**

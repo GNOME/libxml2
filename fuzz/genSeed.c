@@ -60,43 +60,17 @@ fuzzResourceRecorder(void *data ATTRIBUTE_UNUSED, const char *URL,
                      xmlResourceType type ATTRIBUTE_UNUSED,
                      xmlParserInputFlags flags,
                      xmlParserInputPtr *out) {
-    xmlParserInputPtr in;
-    static const int chunkSize = 16384;
-    int code, len;
-
     *out = NULL;
 
-    code = xmlNewInputFromUrl(URL, flags, &in);
-    if (code != XML_ERR_OK)
-        return(code);
+    if (globalData.entities == NULL ||
+        xmlHashLookup(globalData.entities, BAD_CAST URL) == NULL) {
+        data = xmlSlurpFile(URL, NULL);
 
-    if (globalData.entities == NULL) {
-        globalData.entities = xmlHashCreate(4);
-    } else if (xmlHashLookup(globalData.entities,
-                             (const xmlChar *) URL) != NULL) {
-        *out = in;
-        return(XML_ERR_OK);
+        if (globalData.entities == NULL)
+            globalData.entities = xmlHashCreate(4);
+
+        xmlHashAddEntry(globalData.entities, (const xmlChar *) URL, data);
     }
-
-    do {
-        len = xmlParserInputGrow(in, chunkSize);
-        if (len < 0) {
-            fprintf(stderr, "Error reading %s\n", URL);
-            xmlFreeInputStream(in);
-            return(in->buf->error);
-        }
-    } while (len > 0);
-
-    data = xmlStrdup(xmlBufContent(in->buf->buffer));
-    if (data == NULL) {
-        fprintf(stderr, "Error allocating entity data\n");
-        xmlFreeInputStream(in);
-        return(XML_ERR_NO_MEMORY);
-    }
-
-    xmlFreeInputStream(in);
-
-    xmlHashAddEntry(globalData.entities, (const xmlChar *) URL, data);
 
     return(xmlNewInputFromUrl(URL, flags, out));
 }

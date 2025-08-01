@@ -71,6 +71,7 @@ global_args = [
     '-Wwrite-strings',
     '-Wstrict-prototypes',
     '-Wmissing-prototypes',
+    '-Wmissing-variable-declarations',
     '-Wno-long-long',
     '-Wno-format-extra-args',
     '-Wno-array-bounds',

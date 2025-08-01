@@ -14,7 +14,7 @@
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
 
-int lastError;
+static int lastError;
 
 static void errorHandler(void *unused, const xmlError *err) {
     if ((unused == NULL) && (err != NULL) && (lastError == 0)) {
@@ -22,8 +22,8 @@ static void errorHandler(void *unused, const xmlError *err) {
     }
 }
 
-char document1[100] = "<doc>XXXX</doc>";
-char document2[100] = "<doc foo='XXXX'/>";
+static char document1[100] = "<doc>XXXX</doc>";
+static char document2[100] = "<doc foo='XXXX'/>";
 
 static int testDocumentRangeByte1(xmlParserCtxtPtr ctxt, char *document,
                   int len,  char *data, int forbid1, int forbid2) {

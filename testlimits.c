@@ -39,7 +39,7 @@ static int tests_quiet = 0;
 #define MAX_TIME 2 /* seconds */
 
 static clock_t t0;
-int timeout = 0;
+static int timeout = 0;
 
 static void reset_timout(void) {
     timeout = 0;
@@ -142,7 +142,7 @@ hugeClose(void * context) {
 
 #define CHUNK 4096
 
-char filling[CHUNK + 1];
+static char filling[CHUNK + 1];
 
 static void fillFilling(void) {
     int i;
@@ -153,9 +153,9 @@ static void fillFilling(void) {
     filling[CHUNK] = 0;
 }
 
-size_t maxlen = 64 * 1024 * 1024;
-size_t curlen = 0;
-size_t dotlen;
+static size_t maxlen = 64 * 1024 * 1024;
+static size_t curlen = 0;
+static size_t dotlen;
 
 /**
  * Implement an huge: query read.
@@ -221,9 +221,9 @@ hugeRead(void *context, char *buffer, int len)
  *									*
  ************************************************************************/
 
-unsigned int crazy_indx = 0;
+static unsigned int crazy_indx = 0;
 
-const char *crazy = "<?xml version='1.0' encoding='UTF-8'?>\
+static const char *const crazy = "<?xml version='1.0' encoding='UTF-8'?>\
 <?tst ?>\
 <!-- tst -->\
 <!DOCTYPE foo [\
@@ -386,7 +386,7 @@ initializeLibxml2(void) {
  *									*
  ************************************************************************/
 
-unsigned long callbacks = 0;
+static unsigned long callbacks = 0;
 
 /**
  * Is this document tagged standalone ?

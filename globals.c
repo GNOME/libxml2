@@ -15,6 +15,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/xmlIO.h>
+#include <libxml/HTMLparser.h>
 #include <libxml/parser.h>
 #include <libxml/threads.h>
 #include <libxml/tree.h>

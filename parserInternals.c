@@ -330,11 +330,31 @@ xmlCtxtVErr(xmlParserCtxt *ctxt, xmlNode *node, xmlErrorDomain domain,
             return;
         ctxt->nbWarnings += 1;
     } else {
-        /* Report at least one fatal error. */
-        if ((ctxt->nbErrors >= XML_MAX_ERRORS) &&
-            ((level < XML_ERR_FATAL) || (ctxt->wellFormed == 0)) &&
-            (!xmlIsCatastrophicError(level, code)))
-            return;
+        /*
+         * By long-standing design, the parser isn't completely
+         * stopped on well-formedness errors. Only SAX callbacks
+         * are disabled.
+         *
+         * In some situations, we really want to abort as fast
+         * as possible.
+         */
+        if (xmlIsCatastrophicError(level, code) ||
+            code == XML_ERR_RESOURCE_LIMIT ||
+            code == XML_ERR_ENTITY_LOOP) {
+            ctxt->disableSAX = 2; /* really stop parser */
+        } else {
+            /* Report at least one fatal error. */
+            if (ctxt->nbErrors >= XML_MAX_ERRORS &&
+                (level < XML_ERR_FATAL || ctxt->wellFormed == 0))
+                return;
+
+            if (level == XML_ERR_FATAL && ctxt->recovery == 0)
+                ctxt->disableSAX = 1;
+        }
+
+        if (level == XML_ERR_FATAL)
+            ctxt->wellFormed = 0;
+        ctxt->errNo = code;
         ctxt->nbErrors += 1;
     }
 
@@ -383,27 +403,6 @@ xmlCtxtVErr(xmlParserCtxt *ctxt, xmlNode *node, xmlErrorDomain domain,
     if (res < 0) {
         xmlCtxtErrMemory(ctxt);
         return;
-    }
-
-    if (level >= XML_ERR_ERROR)
-        ctxt->errNo = code;
-    if (level == XML_ERR_FATAL) {
-        ctxt->wellFormed = 0;
-
-        /*
-         * By long-standing design, the parser isn't completely
-         * stopped on well-formedness errors. Only SAX callbacks
-         * are disabled.
-         *
-         * In some situations, we really want to abort as fast
-         * as possible.
-         */
-        if (xmlCtxtIsCatastrophicError(ctxt) ||
-            code == XML_ERR_RESOURCE_LIMIT ||
-            code == XML_ERR_ENTITY_LOOP)
-            ctxt->disableSAX = 2; /* really stop parser */
-        else if (ctxt->recovery == 0)
-            ctxt->disableSAX = 1;
     }
 }
 

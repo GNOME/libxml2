@@ -65,5 +65,5 @@ with open('codegen/escape.inc', 'w') as out:
 
     out.write('#ifdef LIBXML_HTML_ENABLED\n\n')
     gen_tab(out, 'htmlEscapeTab', '&<>', False)
-    gen_tab(out, 'htmlEscapeTabAttr', '"&', False)
+    gen_tab(out, 'htmlEscapeTabAttr', '"&<>', False)
     out.write('#endif /* LIBXML_HTML_ENABLED */\n')

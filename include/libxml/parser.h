@@ -1259,6 +1259,9 @@ XMLPUBVAR const char *const xmlParserVersion;
 XML_DEPRECATED
 XMLPUBVAR const xmlSAXLocator xmlDefaultSAXLocator;
 #ifdef LIBXML_SAX1_ENABLED
+/**
+ * @deprecated Use #xmlSAXVersion or #xmlSAX2InitDefaultSAXHandler
+ */
 XML_DEPRECATED
 XMLPUBVAR const xmlSAXHandlerV1 xmlDefaultSAXHandler;
 #endif

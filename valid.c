@@ -3945,7 +3945,7 @@ xmlValidateOneAttribute(xmlValidCtxt *ctxt, xmlDoc *doc,
 	       attr->name, elem->name, NULL);
 	return(0);
     }
-    if (attr->atype == XML_ATTRIBUTE_ID)
+    if (attr->id != NULL)
         xmlRemoveID(doc, attr);
     attr->atype = attrDecl->atype;
 

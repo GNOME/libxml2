@@ -1139,8 +1139,6 @@ xmlFreeElement(xmlElementPtr elem) {
  * @type:  the element type
  * @content:  the element content tree or NULL
  *
- * DEPRECATED: Internal function, don't use.
- *
  * Register a new element declaration
  *
  * Returns NULL if not, otherwise the entity
@@ -1651,8 +1649,6 @@ xmlFreeAttribute(xmlAttributePtr attr) {
  * @defaultValue:  the attribute default value
  * @tree:  if it's an enumeration, the associated list
  *
- * DEPRECATED: Internal function, don't use.
- *
  * Register a new attribute declaration
  * Note that @tree becomes the ownership of the DTD
  *
@@ -2063,8 +2059,6 @@ xmlFreeNotation(xmlNotationPtr nota) {
  * @name:  the entity name
  * @PublicID:  the public identifier or NULL
  * @SystemID:  the system identifier or NULL
- *
- * DEPRECATED: Internal function, don't use.
  *
  * Register a new notation declaration
  *

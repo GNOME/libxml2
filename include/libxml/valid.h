@@ -107,7 +107,6 @@ typedef struct _xmlHashTable xmlRefTable;
 typedef xmlRefTable *xmlRefTablePtr;
 
 /* Notation */
-XML_DEPRECATED
 XMLPUBFUN xmlNotation *
 		xmlAddNotationDecl	(xmlValidCtxt *ctxt,
 					 xmlDtd *dtd,
@@ -170,7 +169,6 @@ XMLPUBFUN void
 #endif /* LIBXML_OUTPUT_ENABLED */
 
 /* Element */
-XML_DEPRECATED
 XMLPUBFUN xmlElement *
 		xmlAddElementDecl	(xmlValidCtxt *ctxt,
 					 xmlDtd *dtd,
@@ -206,7 +204,6 @@ XMLPUBFUN xmlEnumeration *
 		xmlCopyEnumeration	(xmlEnumeration *cur);
 
 /* Attribute */
-XML_DEPRECATED
 XMLPUBFUN xmlAttribute *
 		xmlAddAttributeDecl	(xmlValidCtxt *ctxt,
 					 xmlDtd *dtd,

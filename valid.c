@@ -1092,9 +1092,7 @@ xmlFreeElement(xmlElementPtr elem) {
 /**
  * Register a new element declaration.
  *
- * @deprecated Internal function, don't use.
- *
- * @param ctxt  the validation context
+ * @param ctxt  the validation context (optional)
  * @param dtd  pointer to the DTD
  * @param name  the entity name
  * @param type  the element type
@@ -1555,9 +1553,7 @@ xmlFreeAttribute(xmlAttributePtr attr) {
 /**
  * Register a new attribute declaration.
  *
- * @deprecated Internal function, don't use.
- *
- * @param ctxt  the validation context
+ * @param ctxt  the validation context (optional)
  * @param dtd  pointer to the DTD
  * @param elem  the element name
  * @param name  the attribute name
@@ -1918,10 +1914,8 @@ xmlFreeNotation(xmlNotationPtr nota) {
 /**
  * Register a new notation declaration.
  *
- * @deprecated Internal function, don't use.
- *
+ * @param ctxt  the validation context (optional)
  * @param dtd  pointer to the DTD
- * @param ctxt  the validation context
  * @param name  the entity name
  * @param publicId  the public identifier or NULL
  * @param systemId  the system identifier or NULL

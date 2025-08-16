@@ -50,11 +50,6 @@ typedef struct {
     const xmlChar *name;
 } xmlHashedString;
 
-XML_HIDDEN void
-xmlInitDictInternal(void);
-XML_HIDDEN void
-xmlCleanupDictInternal(void);
-
 XML_HIDDEN unsigned
 xmlDictComputeHash(const xmlDict *dict, const xmlChar *string);
 XML_HIDDEN unsigned

@@ -361,7 +361,6 @@ xmlInitParserInternal(void) {
     xmlInitMemoryInternal();
     xmlInitThreadsInternal();
     xmlInitGlobalsInternal();
-    xmlInitDictInternal();
     xmlInitEncodingInternal();
 #if defined(LIBXML_XPATH_ENABLED)
     xmlInitXPathInternal();
@@ -470,7 +469,6 @@ xmlCleanupParser(void) {
     xmlCleanupRelaxNGInternal();
 #endif
 
-    xmlCleanupDictInternal();
     xmlCleanupRandom();
     xmlCleanupGlobalsInternal();
     xmlCleanupThreadsInternal();

@@ -6,6 +6,8 @@
  * Author: Daniel Veillard
  */
 
+#define XML_DEPRECATED
+
 #include "libxml.h"
 
 #include <string.h>

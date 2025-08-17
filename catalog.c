@@ -407,6 +407,8 @@ xmlCreateNewCatalog(xmlCatalogType type, xmlCatalogPrefer prefer) {
 /**
  * Free the memory allocated to a Catalog
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  a Catalog
  */
 void
@@ -761,6 +763,8 @@ xmlCatalogConvertEntry(void *payload, void *data,
 /**
  * Convert all the SGML catalog entries as XML ones
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  the catalog
  * @returns the number of entries converted if successful, -1 otherwise
  */
@@ -851,7 +855,7 @@ xmlCatalogUnWrapURN(const xmlChar *urn) {
  * parse an XML file and build a tree. It's like #xmlParseFile
  * except it bypass all catalog lookups.
  *
- * @deprecated Use XML_PARSE_NO_SYS_CATALOG.
+ * @deprecated Internal function, don't use
  *
  * @param filename  the filename
  * @returns the resulting document tree or NULL in case of error
@@ -2541,6 +2545,8 @@ xmlCatalogSGMLResolve(xmlCatalogPtr catal, const xmlChar *pubID,
  * references. This is only needed for manipulating SGML Super Catalogs
  * like adding and removing CATALOG or DELEGATE entries.
  *
+ * @deprecated Internal function, don't use
+ *
  * @param filename  a file path
  * @returns the catalog parsed or NULL in case of error
  */
@@ -2575,6 +2581,8 @@ xmlLoadSGMLSuperCatalog(const char *filename)
  * This can be either an XML Catalog or an SGML Catalog
  * It will recurse in SGML CATALOG entries. On the other hand XML
  * Catalogs are not handled recursively.
+ *
+ * @deprecated Internal function, don't use
  *
  * @param filename  a file path
  * @returns the catalog parsed or NULL in case of error
@@ -2673,6 +2681,8 @@ xmlExpandCatalog(xmlCatalogPtr catal, const char *filename)
 /**
  * Try to lookup the catalog resource for a system ID
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  a Catalog
  * @param sysID  the system ID string
  * @returns the resource if found or NULL otherwise, the value returned
@@ -2706,6 +2716,8 @@ xmlACatalogResolveSystem(xmlCatalog *catal, const xmlChar *sysID) {
 /**
  * Try to lookup the catalog local reference associated to a public ID in that catalog
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  a Catalog
  * @param pubID  the public ID string
  * @returns the local resource if found or NULL otherwise, the value returned
@@ -2738,6 +2750,8 @@ xmlACatalogResolvePublic(xmlCatalog *catal, const xmlChar *pubID) {
 
 /**
  * Do a complete resolution lookup of an External Identifier
+ *
+ * @deprecated Internal function, don't use
  *
  * @param catal  a Catalog
  * @param pubID  the public ID string
@@ -2784,6 +2798,8 @@ xmlACatalogResolve(xmlCatalog *catal, const xmlChar * pubID,
 /**
  * Do a complete resolution lookup of an URI
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  a Catalog
  * @param URI  the URI
  * @returns the URI of the resource or NULL if not found, it must be freed
@@ -2818,6 +2834,8 @@ xmlACatalogResolveURI(xmlCatalog *catal, const xmlChar *URI) {
 /**
  * Dump the given catalog to the given file.
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  a Catalog
  * @param out  the file.
  */
@@ -2837,6 +2855,8 @@ xmlACatalogDump(xmlCatalog *catal, FILE *out) {
 /**
  * Add an entry in the catalog, it may overwrite existing but
  * different entries.
+ *
+ * @deprecated Internal function, don't use
  *
  * @param catal  a Catalog
  * @param type  the type of record to add to the catalog
@@ -2877,6 +2897,8 @@ xmlACatalogAdd(xmlCatalog *catal, const xmlChar * type,
 /**
  * Remove an entry from the catalog
  *
+ * @deprecated Internal function, don't use
+ *
  * @param catal  a Catalog
  * @param value  the value to remove
  * @returns the number of entries removed if successful, -1 otherwise
@@ -2901,6 +2923,8 @@ xmlACatalogRemove(xmlCatalog *catal, const xmlChar *value) {
 /**
  * create a new Catalog.
  *
+ * @deprecated Internal function, don't use
+ *
  * @param sgml  should this create an SGML catalog
  * @returns the xmlCatalog or NULL in case of error
  */
@@ -2921,6 +2945,8 @@ xmlNewCatalog(int sgml) {
 
 /**
  * Check is a catalog is empty
+ *
+ * @deprecated Internal function, don't use
  *
  * @param catal  should this create an SGML catalog
  * @returns 1 if the catalog is empty, 0 if not, amd -1 in case of error.

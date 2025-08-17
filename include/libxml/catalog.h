@@ -76,12 +76,14 @@ XMLPUBFUN xmlCatalog *
 XML_DEPRECATED
 XMLPUBFUN xmlCatalog *
 		xmlLoadACatalog		(const char *filename);
+#ifdef LIBXML_SGML_CATALOG_ENABLED
 XML_DEPRECATED
 XMLPUBFUN xmlCatalog *
 		xmlLoadSGMLSuperCatalog	(const char *filename);
 XML_DEPRECATED
 XMLPUBFUN int
 		xmlConvertSGMLCatalog	(xmlCatalog *catal);
+#endif /* LIBXML_SGML_CATALOG_ENABLED */
 XML_DEPRECATED
 XMLPUBFUN int
 		xmlACatalogAdd		(xmlCatalog *catal,
@@ -155,9 +157,11 @@ XMLPUBFUN int
 XML_DEPRECATED
 XMLPUBFUN xmlDoc *
 		xmlParseCatalogFile	(const char *filename);
+#ifdef LIBXML_SGML_CATALOG_ENABLED
 XML_DEPRECATED
 XMLPUBFUN int
 		xmlCatalogConvert	(void);
+#endif /* LIBXML_SGML_CATALOG_ENABLED */
 
 /*
  * Strictly minimal interfaces for per-document catalogs used

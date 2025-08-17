@@ -33,27 +33,6 @@ for i in test/catalogs/*.script ; do
     fi
 done
 
-for i in test/catalogs/*.script ; do
-    name=$(basename $i .script)
-    sgml="./test/catalogs/$name.sgml"
-
-    if [ -f $sgml ] ; then
-        if [ ! -f result/catalogs/$name ] ; then
-            echo New test file $name
-            $xmlcatalog --shell $sgml < $i > result/catalogs/$name
-        else
-            $xmlcatalog --shell $sgml < $i > catalog.out
-            log=$(diff result/catalogs/$name catalog.out)
-            if [ -n "$log" ] ; then
-                echo $name result
-                echo "$log"
-                exitcode=1
-            fi
-            rm catalog.out
-        fi
-    fi
-done
-
 # Add and del operations on XML Catalogs
 
 $xmlcatalog --create --noout mycatalog

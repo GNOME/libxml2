@@ -138,6 +138,7 @@
  * Whether the Catalog support is configured in
  */
 #define LIBXML_CATALOG_ENABLED
+#define LIBXML_SGML_CATALOG_ENABLED
 #endif
 
 #if @WITH_XPATH@

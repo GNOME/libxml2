@@ -182,6 +182,7 @@ if WITH_DEBUG_SOURCES
 endif
 if WITH_CATALOG_SOURCES
 	ASAN_OPTIONS=detect_leaks=0 test/catalogs/test.sh ./xmlcatalog$(EXEEXT)
+	ASAN_OPTIONS=detect_leaks=0 test/catalogs/test_sgml.sh ./xmlcatalog$(EXEEXT)
 endif
 endif
 

@@ -548,6 +548,9 @@ if want_output
             test('xmlcatalog shell', sh,
                  args: [ 'test/catalogs/test.sh', xmlcatalog.full_path() ],
                  workdir: meson.current_source_dir())
+            test('xmlcatalog shell SGML', sh,
+                 args: [ 'test/catalogs/test_sgml.sh', xmlcatalog.full_path() ],
+                 workdir: meson.current_source_dir())
         endif
     endif
 endif

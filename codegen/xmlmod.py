@@ -63,6 +63,10 @@ symbolMap1 = {
     'xmlCtxtGetValidCtxt': 'VALID',
     'xmlFreeValidCtxt': 'VALID',
     'xmlNewValidCtxt': 'VALID',
+
+    'xmlCatalogConvert': 'SGML_CATALOG',
+    'xmlConvertSGMLCatalog': 'SGML_CATALOG',
+    'xmlLoadSGMLSuperCatalog': 'SGML_CATALOG',
 }
 
 symbolMap2 = {

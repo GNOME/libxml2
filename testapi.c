@@ -146,6 +146,8 @@ main(int argc ATTRIBUTE_UNUSED, char **argv ATTRIBUTE_UNUSED) {
     xmlDictFree(xmlCtxtGetDict(NULL));
     xmlCtxtGetDocTypeDecl(NULL, NULL, NULL, NULL);
     xmlFreeDoc(xmlCtxtGetDocument(NULL));
+    xmlCtxtGetInputPosition(NULL, 0, NULL, NULL, NULL, NULL);
+    xmlCtxtGetInputWindow(NULL, 0, NULL, NULL, NULL);
     xmlCtxtGetLastError(NULL);
     xmlFreeNode(xmlCtxtGetNode(NULL));
     xmlCtxtGetOptions(NULL);

@@ -25,7 +25,7 @@ extern "C" {
  * @deprecated Use #xmlSetGenericErrorFunc
  */
 #define initGenericErrorDefaultFunc(h) \
-    xmlSetGenericErrorFunc(NULL, (h) ? *(h) : NULL)
+    xmlSetGenericErrorFunc(NULL, (h) ? *((xmlGenericErrorFunc *) (h)) : NULL)
 
 /**
  * Indicates the level of an error

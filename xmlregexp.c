@@ -37,6 +37,7 @@
 #endif
 
 #define MAX_PUSH 10000000
+#define MAX_ITEMS 1000000000
 
 #ifdef ERROR
 #undef ERROR
@@ -421,7 +422,7 @@ xmlRegCalloc2(size_t dim1, size_t dim2, size_t elemSize) {
         (dim1 > SIZE_MAX / dim2 / elemSize))
         return (NULL);
     numElems = dim1 * dim2;
-    if (numElems > XML_MAX_ITEMS)
+    if (numElems > MAX_ITEMS)
         return NULL;
     totalSize = numElems * elemSize;
     ret = xmlMalloc(totalSize);

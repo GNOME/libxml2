@@ -22,6 +22,10 @@
  * Set if the validation is enabled.
  */
 #define XML_VCTXT_VALIDATE (1u << 2)
+/**
+ * Set when parsing entities.
+ */
+#define XML_VCTXT_IN_ENTITY (1u << 3)
 
 /*
  * TODO: Rename to avoid confusion with xmlParserInputFlags

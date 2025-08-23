@@ -16,6 +16,10 @@
  * Set if the validation context is part of a parser context.
  */
 #define XML_VCTXT_USE_PCTXT (1u << 1)
+/**
+ * Set when parsing entities.
+ */
+#define XML_VCTXT_IN_ENTITY (1u << 3)
 
 #define XML_INPUT_HAS_ENCODING      (1u << 0)
 #define XML_INPUT_AUTO_ENCODING     (7u << 1)

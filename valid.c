@@ -3963,7 +3963,7 @@ xmlValidateOneAttribute(xmlValidCtxt *ctxt, xmlDoc *doc,
 
     /* Validity Constraint: ID uniqueness */
     if (attrDecl->atype == XML_ATTRIBUTE_ID &&
-        (ctxt->flags & XML_VCTXT_IN_ENTITY) == 0) {
+        (ctxt == NULL || (ctxt->flags & XML_VCTXT_IN_ENTITY) == 0)) {
         if (xmlAddID(ctxt, doc, value, attr) == NULL)
 	    ret = 0;
     }

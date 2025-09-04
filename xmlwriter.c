@@ -1051,6 +1051,7 @@ xmlTextWriterStartElementNS(xmlTextWriter *writer,
         if (p->uri == 0) {
             xmlWriterErrMsg(writer, XML_ERR_NO_MEMORY,
                             "xmlTextWriterStartElementNS : out of memory!\n");
+            xmlFree(p->prefix);
             xmlFree(p);
             return -1;
         }

@@ -1,5 +1,39 @@
 NEWS file for libxml2
 
+v2.13.9: Sep 8 2025
+
+### Regressions
+
+- valid: Don't add ids when validating entity content
+- io: Fix reading from pipes like stdin on Windows
+- parser: Fix handling of invalid char refs in recovery mode
+
+### Security
+
+- regexp: Avoid integer overflow and OOB array access
+- tree: Guard against atype corruption
+- [CVE-2025-49794] [CVE-2025-49796] schematron: Fix xmlSchematronReportOutput
+- [CVE-2025-49795] schematron: Fix null pointer dereference leading to DoS
+  (Michael Mann)
+- [CVE-2025-6170] Fix potential buffer overflows of interactive shell (Michael
+  Mann)
+- [CVE-2025-6021] tree: Fix integer overflow in xmlBuildQName
+
+### Bug fixes
+
+- save: Fix serialization of attribute defaults containing &lt;
+
+### Improvements
+
+- parser: Fix xmlSaturatedAddSizeT argument type
+
+### Build systems and portability
+
+- meson: Add libxml2 part of include dir to pc file (Heiko Becker)
+- cmake: Fix installation directories in libxml2-config.cmake
+- io: Fix linkage of __xml*BufferCreateFilename functions
+
+
 v2.13.8: Apr 17 2025
 
 ### Security

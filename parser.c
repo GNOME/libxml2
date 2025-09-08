@@ -12434,8 +12434,6 @@ xmlCreateURLParserCtxt(const char *filename, int options)
     if (ctxt == NULL)
 	return(NULL);
 
-    options |= XML_PARSE_UNZIP;
-
     xmlCtxtUseOptions(ctxt, options);
 
     input = xmlLoadResource(ctxt, filename, NULL, XML_RESOURCE_MAIN_DOCUMENT);
@@ -13396,10 +13394,9 @@ xmlReadDoc(const xmlChar *cur, const char *URL, const char *encoding,
  * Convenience function to parse an XML file from the filesystem
  * or a global, user-defined resource loader.
  *
- * This function always enables the XML_PARSE_UNZIP option for
- * backward compatibility. If a "-" filename is passed, it will
- * read from stdin. Both of these features are potentially
- * insecure and might be removed from later versions.
+ * If a "-" filename is passed, the function will read from stdin.
+ * This feature is potentially insecure and might be removed from
+ * later versions.
  *
  * See #xmlCtxtReadFile for details.
  *
@@ -13418,8 +13415,6 @@ xmlReadFile(const char *filename, const char *encoding, int options)
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL)
         return(NULL);
-
-    options |= XML_PARSE_UNZIP;
 
     xmlCtxtUseOptions(ctxt, options);
 
@@ -13591,10 +13586,6 @@ xmlCtxtReadDoc(xmlParserCtxt *ctxt, const xmlChar *str,
  * Parse an XML file from the filesystem or a global, user-defined
  * resource loader.
  *
- * This function always enables the XML_PARSE_UNZIP option for
- * backward compatibility. This feature is potentially insecure
- * and might be removed from later versions.
- *
  * @param ctxt  an XML parser context
  * @param filename  a file or URL
  * @param encoding  the document encoding (optional)
@@ -13609,8 +13600,6 @@ xmlCtxtReadFile(xmlParserCtxt *ctxt, const char *filename,
 
     if (ctxt == NULL)
         return(NULL);
-
-    options |= XML_PARSE_UNZIP;
 
     xmlCtxtReset(ctxt);
     xmlCtxtUseOptions(ctxt, options);

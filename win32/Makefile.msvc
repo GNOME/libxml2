@@ -67,9 +67,6 @@ LIBS = $(LIBS) icuuc.lib icuin.lib icudt.lib
 # LIBS = $(LIBS) zdll.lib
 LIBS = $(LIBS) zlib.lib
 !endif
-!if "$(WITH_LZMA)" == "1"
-LIBS = $(LIBS) liblzma.lib
-!endif
 !if "$(WITH_THREADS)" == "posix"
 LIBS = $(LIBS) pthreadVC.lib
 !endif
@@ -223,12 +220,6 @@ XML_OBJS_A_DLL = $(XML_INTDIR_A_DLL)\buf.obj\
 	$(XML_INTDIR_A_DLL)\xpath.obj\
 	$(XML_INTDIR_A_DLL)\xpointer.obj\
 	$(XML_INTDIR_A_DLL)\xmlstring.obj
-
-!if "$(WITH_LZMA)" == "1"
-XML_OBJS = $(XML_OBJS) $(XML_INTDIR)\xzlib.obj
-XML_OBJS_A = $(XML_OBJS_A) $(XML_INTDIR_A)\xzlib.obj
-XML_OBJS_A_DLL = $(XML_OBJS_A_DLL) $(XML_INTDIR_A_DLL)\xzlib.obj
-!endif
 
 # Xmllint and friends executables.
 UTILS = $(BINDIR)\xmllint.exe\

@@ -61,7 +61,6 @@ The following options disable or enable code modules and relevant symbols:
     --with-iconv[=DIR]      iconv support (on)
     --with-icu              ICU support (off)
     --with-iso8859x         ISO-8859-X support if no iconv (on)
-    --with-lzma[=DIR]       use liblzma in DIR (off)
     --with-modules          dynamic modules support (on)
     --with-output           serialization support (on)
     --with-pattern          xmlPattern selection interface (on)
@@ -153,10 +152,6 @@ This function is part of POSIX.1-2001. If your platform doesn't provide
 iconv, you need an external libiconv library, for example
 [GNU libiconv](https://www.gnu.org/software/libiconv/). Using
 [ICU](https://icu.unicode.org/) is also supported but discouraged.
-
-If enabled, libxml uses [libz](https://zlib.net/) or
-[liblzma](https://tukaani.org/xz/) to support reading compressed files.
-Use of this feature is discouraged.
 
 The xmllint executable uses libreadline and libhistory if enabled.
 

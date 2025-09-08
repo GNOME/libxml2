@@ -28,9 +28,6 @@
 #ifdef LIBXML_ZLIB_ENABLED
 #include <zlib.h>
 #endif
-#ifdef LIBXML_LZMA_ENABLED
-#include <lzma.h>
-#endif
 
 #include <libxml/xmlIO.h>
 #include <libxml/xmlmemory.h>
@@ -1138,47 +1135,6 @@ xmlGzfileClose (void * context) {
 
 /************************************************************************
  *									*
- *		I/O for compressed file accesses			*
- *									*
- ************************************************************************/
-
-#ifdef LIBXML_LZMA_ENABLED
-
-#include "private/xzlib.h"
-
-/**
- * Read `len` bytes to `buffer` from the compressed I/O channel.
- *
- * @param context  the I/O context
- * @param buffer  where to drop data
- * @param len  number of bytes to write
- * @returns the number of bytes written
- */
-static int
-xmlXzfileRead (void * context, char * buffer, int len) {
-    int ret;
-
-    ret = __libxml2_xzread((xzFile) context, &buffer[0], len);
-    if (ret < 0)
-        return(-XML_IO_UNKNOWN);
-    return(ret);
-}
-
-/**
- * Close a compressed I/O channel
- *
- * @param context  the I/O context
- */
-static int
-xmlXzfileClose (void * context) {
-    if (__libxml2_xzclose((xzFile) context) != LZMA_OK)
-        return(XML_IO_UNKNOWN);
-    return(0);
-}
-#endif /* LIBXML_LZMA_ENABLED */
-
-/************************************************************************
- *									*
  *			Input/output buffers				*
  *									*
  ************************************************************************/
@@ -1188,7 +1144,7 @@ xmlIODefaultMatch(const char *filename ATTRIBUTE_UNUSED) {
     return(1);
 }
 
-#if defined(LIBXML_LZMA_ENABLED) || defined(LIBXML_ZLIB_ENABLED)
+#if defined(LIBXML_ZLIB_ENABLED)
 
 #ifdef _WIN32
 typedef __int64 xmlFileOffset;
@@ -1212,7 +1168,7 @@ xmlSeek(int fd, xmlFileOffset offset, int whence) {
 #endif
 }
 
-#endif /* defined(LIBXML_LZMA_ENABLED) || defined(LIBXML_ZLIB_ENABLED) */
+#endif /* defined(LIBXML_ZLIB_ENABLED) */
 
 /**
  * Update the buffer to read from `fd`. Supports the XML_INPUT_UNZIP
@@ -1230,45 +1186,6 @@ xmlInputFromFd(xmlParserInputBuffer *buf, int fd,
     int copy;
 
     (void) flags;
-
-#ifdef LIBXML_LZMA_ENABLED
-    if (flags & XML_INPUT_UNZIP) {
-        xzFile xzStream;
-        xmlFileOffset pos;
-
-        pos = xmlSeek(fd, 0, SEEK_CUR);
-
-        copy = dup(fd);
-        if (copy == -1)
-            return(xmlIOErr(errno));
-
-        xzStream = __libxml2_xzdopen("?", copy, "rb");
-
-        if (xzStream == NULL) {
-            close(copy);
-        } else {
-            int compressed = (__libxml2_xzcompressed(xzStream) > 0);
-
-            if ((compressed) ||
-                /* Try to rewind if not gzip compressed */
-                (pos < 0) ||
-                (xmlSeek(fd, pos, SEEK_SET) < 0)) {
-                /*
-                 * If a file isn't seekable, we pipe uncompressed
-                 * input through xzlib.
-                 */
-                buf->context = xzStream;
-                buf->readcallback = xmlXzfileRead;
-                buf->closecallback = xmlXzfileClose;
-                buf->compressed = compressed;
-
-                return(XML_ERR_OK);
-            }
-
-            xmlXzfileClose(xzStream);
-        }
-    }
-#endif /* LIBXML_LZMA_ENABLED */
 
 #ifdef LIBXML_ZLIB_ENABLED
     if (flags & XML_INPUT_UNZIP) {

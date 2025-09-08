@@ -11,11 +11,11 @@ if [ "$SANITIZER" = undefined ]; then
     export CXXFLAGS="$CXXFLAGS $extra_cflags"
 fi
 
-# Don't enable zlib and liblzma with MSan
+# Don't enable zlib with MSan
 if [ "$SANITIZER" = memory ]; then
     CONFIG=''
 else
-    CONFIG='--with-zlib --with-lzma'
+    CONFIG='--with-zlib'
 fi
 
 # Workaround for a LeakSanitizer crashes,
@@ -51,7 +51,7 @@ do
         $OBJS fuzz.o \
         -o $OUT/$fuzzer \
         $LIB_FUZZING_ENGINE \
-        ../.libs/libxml2.a -Wl,-Bstatic -lz -llzma -Wl,-Bdynamic
+        ../.libs/libxml2.a -Wl,-Bstatic -lz -Wl,-Bdynamic
 
     if [ $fuzzer != api ]; then
         [ -e seed/$fuzzer ] || make seed/$fuzzer.stamp

@@ -56,11 +56,6 @@ option('legacy',
   description: 'Maximum ABI compatibility'
 )
 
-option('lzma',
-  type: 'feature',
-  description: 'LZMA support'
-)
-
 option('modules',
   type: 'feature',
   description: 'Dynamic modules support'

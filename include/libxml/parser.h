@@ -2145,7 +2145,7 @@ typedef enum {
     XML_WITH_ZLIB = 31,
     /** ICU */
     XML_WITH_ICU = 32,
-    /** LZMA compression */
+    /** @deprecated LZMA support was removed */
     XML_WITH_LZMA = 33,
     /** RELAXNG, since 2.14 */
     XML_WITH_RELAXNG = 34,

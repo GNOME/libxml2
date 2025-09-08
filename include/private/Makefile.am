@@ -17,5 +17,4 @@ EXTRA_DIST = \
 	threads.h \
 	tree.h \
 	xinclude.h \
-	xpath.h \
-	xzlib.h
+	xpath.h

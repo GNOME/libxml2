@@ -14,7 +14,6 @@ meson  setup \
        -Ddocs=enabled \
        -Dhttp=enabled \
        -Dschematron=enabled \
-       -Dlzma=enabled \
        -Dzlib=enabled \
        -Dpython=enabled \
        builddir

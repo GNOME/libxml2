@@ -81,9 +81,6 @@ LIBS = $(LIBS) iconvomf.lib
 !if "$(WITH_ZLIB)" == "1"
 LIBS = $(LIBS) zlibomf.lib
 !endif
-!if "$(WITH_LZMA)" == "1"
-LIBS = $(LIBS) liblzma.lib
-!endif
 !if "$(WITH_THREADS)" == "posix"
 LIBS = $(LIBS) pthreadVC.lib
 !endif

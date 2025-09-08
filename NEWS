@@ -15,7 +15,7 @@ Support for Schematron is now disabled by default.
 
 ### Removals
 
-The built-in HTTP client was removed.
+The built-in HTTP client and support for LZMA compression were removed.
 
 ### Planned removals
 

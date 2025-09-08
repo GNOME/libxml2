@@ -46,7 +46,6 @@ if py.found() == true
     setup_py.set('LIBXML_VERSION', meson.project_version())
     setup_py.set('WITH_ICONV', want_iconv.to_int())
     setup_py.set('WITH_ICU', want_icu.to_int())
-    setup_py.set('WITH_LZMA', want_lzma.to_int())
     setup_py.set('WITH_ZLIB', want_zlib.to_int())
     setup_py.set('WITH_THREADS', want_threads.to_int())
     configure_file(

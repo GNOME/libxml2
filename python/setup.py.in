@@ -26,7 +26,6 @@ with_threads = @WITH_THREADS@
 # Features of libxml2 requiring external DLLs
 with_iconv = @WITH_ICONV@
 with_zlib = @WITH_ZLIB@
-with_lzma = @WITH_LZMA@
 with_icu = @WITH_ICU@
 
 icu_series = 69
@@ -40,7 +39,6 @@ else:
 # (Check the value of `icu_series` above as well)
 iconv_dll = 'iconv.dll'
 zlib_dll = 'zlib1.dll'
-lzma_dll = 'liblzma.dll'
 icu_dlls = ['icuuc%s.dll' % icu_series_s, 'icudt%s.dll' % icu_series_s]
 
 # If this flag is set (windows only),
@@ -160,8 +158,6 @@ if WITHDLLS:
 
     if with_zlib == 1:
         dlls.append(zlib_dll)
-    if with_lzma == 1:
-        dlls.append(lzma_dll)
     if with_iconv == 1:
         dlls.append(iconv_dll)
     if with_icu == 1:

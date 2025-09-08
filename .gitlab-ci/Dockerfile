@@ -19,7 +19,7 @@ RUN apt-get update && \
         curl git ca-certificates \
         autoconf automake libtool pkg-config \
         make gcc clang llvm libclang-rt-dev \
-        zlib1g-dev liblzma-dev libgcrypt-dev \
+        zlib1g-dev libgcrypt-dev \
         python3-dev \
         cmake meson \
         xz-utils \

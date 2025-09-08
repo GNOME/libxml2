@@ -248,13 +248,6 @@
 #define LIBXML_ZLIB_ENABLED
 #endif
 
-#if @WITH_LZMA@
-/**
- * Whether the Lzma support is compiled in
- */
-#define LIBXML_LZMA_ENABLED
-#endif
-
 #include <libxml/xmlexports.h>
 
 #endif

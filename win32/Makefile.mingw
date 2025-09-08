@@ -57,9 +57,6 @@ ifeq ($(WITH_ZLIB),1)
 # LIBS += -lzdll
 LIBS += -lz
 endif
-ifeq ($(WITH_LZMA),1)
-LIBS += -llzma
-endif
 ifeq ($(WITH_THREADS),posix)
 LIBS += -lpthreadGC
 endif

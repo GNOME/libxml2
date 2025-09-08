@@ -2300,7 +2300,6 @@ static void showVersion(FILE *errStream, const char *name) {
     if (xmlHasFeature(XML_WITH_MODULES)) fprintf(errStream, "Modules ");
     if (xmlHasFeature(XML_WITH_DEBUG)) fprintf(errStream, "Debug ");
     if (xmlHasFeature(XML_WITH_ZLIB)) fprintf(errStream, "Zlib ");
-    if (xmlHasFeature(XML_WITH_LZMA)) fprintf(errStream, "Lzma ");
     fprintf(errStream, "\n");
 }
 

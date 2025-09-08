@@ -60,7 +60,7 @@ typedef xmlHashedString xmlDictEntry;
  * The entire dictionary
  */
 struct _xmlDict {
-    xmlRefCount refCount;
+    int ref_counter;
 
     xmlDictEntry *table;
     size_t size;
@@ -74,6 +74,12 @@ struct _xmlDict {
     size_t limit;
 };
 
+/*
+ * A mutex for modifying the reference counter for shared
+ * dictionaries.
+ */
+static xmlMutex xmlDictMutex;
+
 /**
  * @deprecated Alias for #xmlInitParser.
  *
@@ -86,6 +92,14 @@ xmlInitializeDict(void) {
 }
 
 /**
+ * Initialize mutex.
+ */
+void
+xmlInitDictInternal(void) {
+    xmlInitMutex(&xmlDictMutex);
+}
+
+/**
  * @deprecated This function is a no-op. Call #xmlCleanupParser
  * to free global state but see the warnings there. #xmlCleanupParser
  * should be only called once at program exit. In most cases, you don't
@@ -93,6 +107,14 @@ xmlInitializeDict(void) {
  */
 void
 xmlDictCleanup(void) {
+}
+
+/**
+ * Free the dictionary mutex.
+ */
+void
+xmlCleanupDictInternal(void) {
+    xmlCleanupMutex(&xmlDictMutex);
 }
 
 /*
@@ -236,6 +258,7 @@ xmlDictCreate(void) {
     dict = xmlMalloc(sizeof(xmlDict));
     if (dict == NULL)
         return(NULL);
+    dict->ref_counter = 1;
     dict->limit = 0;
 
     dict->size = 0;
@@ -247,9 +270,6 @@ xmlDictCreate(void) {
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
     dict->seed = 0;
 #endif
-
-    xmlRefCountInit(&dict->refCount);
-
     return(dict);
 }
 
@@ -283,7 +303,9 @@ xmlDictCreateSub(xmlDict *sub) {
 int
 xmlDictReference(xmlDict *dict) {
     if (dict == NULL) return -1;
-    xmlRefCountInc(&dict->refCount);
+    xmlMutexLock(&xmlDictMutex);
+    dict->ref_counter++;
+    xmlMutexUnlock(&xmlDictMutex);
     return(0);
 }
 
@@ -301,8 +323,14 @@ xmlDictFree(xmlDict *dict) {
 	return;
 
     /* decrement the counter, it may be shared by a parser and docs */
-    if (xmlRefCountDec(&dict->refCount) > 0)
+    xmlMutexLock(&xmlDictMutex);
+    dict->ref_counter--;
+    if (dict->ref_counter > 0) {
+        xmlMutexUnlock(&xmlDictMutex);
         return;
+    }
+
+    xmlMutexUnlock(&xmlDictMutex);
 
     if (dict->subdict != NULL) {
         xmlDictFree(dict->subdict);

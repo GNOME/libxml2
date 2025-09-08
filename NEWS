@@ -13,13 +13,56 @@ also requires Doxygen.
 
 Support for Schematron is now disabled by default.
 
+The parser option XML_PARSE_UNZIP is now required to read compressed data.
+
+HTML serialization and handling of character encodings is more in line
+with the HTML5 spec now.
+
+More accessors for xmlParserCtxt were added.
+
+### Deprecations
+
+More internal functions and struct members were deprecated.
+
 ### Removals
 
 The built-in HTTP client and support for LZMA compression were removed.
 
 ### Planned removals
 
-The Python bindings are planned to be removed in the 2.16 release.
+The Python bindings and support for Schematron validation are planned to
+be removed in the 2.16 release.
+
+The following features are considered for removal:
+
+- Modules API (xmlmodule.h)
+- Support for zlib compressed file I/O
+- Legacy Windows build system in win32
+
+RELAX NG support is still in a bad state and a long-term removal
+candidate.
+
+### Thanks
+
+Thanks to the following contributors:
+
+- Alex Richardson
+- Benjamin Gilbert
+- Caolán McNamara
+- Collin Funk
+- Dag-Erling Smørgrav
+- Dan Yeaw
+- Daniel P. Berrangé
+- Francesco Pretto
+- Lovell Fuller
+- Maks Verver
+- Markus Rickert
+- Michael Mann
+- Omar Siam
+- Pavel Kopylov
+- Peter Kokot
+- Samuel Thibault
+- ThomasK
 
 
 v2.14.0: Mar 27 2025

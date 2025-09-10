@@ -28,6 +28,8 @@ More internal functions and struct members were deprecated.
 
 The built-in HTTP client and support for LZMA compression were removed.
 
+The custom Windows build system in `win32` was removed in favor of CMake.
+
 ### Planned removals
 
 The Python bindings and support for Schematron validation are planned to
@@ -37,7 +39,6 @@ The following features are considered for removal:
 
 - Modules API (xmlmodule.h)
 - Support for zlib compressed file I/O
-- Legacy Windows build system in win32
 
 RELAX NG support is still in a bad state and a long-term removal
 candidate.

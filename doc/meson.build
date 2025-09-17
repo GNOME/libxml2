@@ -31,7 +31,7 @@ if want_docs
 
     xsltproc = find_program('xsltproc')
     types = [
-        [ 'manpages', '.1',    dir_man ],
+        [ 'manpages', '.1',    dir_man / 'man1' ],
         [ 'html',     '.html', dir_doc ],
     ]
     programs = [ 'xmllint' ]

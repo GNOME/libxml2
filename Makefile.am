@@ -186,10 +186,12 @@ endif
 # Compatibility name of the check target
 runtests: check
 
+VALGRIND = valgrind -q --leak-check=full --error-exitcode=1
+
 check-valgrind valgrind:
 	@echo '## Running the regression tests under Valgrind'
 	@echo '## Go get a cup of coffee it is gonna take a while ...'
-	$(MAKE) CHECKER='valgrind -q' check
+	$(MAKE) check CHECKER="$(LIBTOOL) --mode=execute $(VALGRIND)"
 
 dist-hook:
 	(cd $(srcdir) ; tar -cf - --exclude .git win32 test result) | (cd $(distdir); tar xf -)

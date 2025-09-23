@@ -532,6 +532,15 @@ foreach check, deps : checks
     endif
 endforeach
 
+add_test_setup(
+  'valgrind',
+  exe_wrapper: [
+    'valgrind', '--quiet', '--leak-check=full', '--error-exitcode=1',
+  ],
+  # default timeout in meson is 30s
+  timeout_multiplier: 4,
+)
+
 if want_output
     sh = find_program('sh', required: false)
 

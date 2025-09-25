@@ -55,8 +55,12 @@
 #ifndef XML_DEPRECATED
   #if defined(IN_LIBXML)
     #define XML_DEPRECATED
-  #elif __GNUC__ * 100 + __GNUC_MINOR__ >= 301
+  #elif __GNUC__ * 100 + __GNUC_MINOR__ >= 405
+    /* GCC 4.5+ supports deprecated with message */
     #define XML_DEPRECATED __attribute__((deprecated("See https://gnome.pages.gitlab.gnome.org/libxml2/html/deprecated.html")))
+  #elif __GNUC__ * 100 + __GNUC_MINOR__ >= 301
+    /* GCC 3.1+ supports deprecated without message */
+    #define XML_DEPRECATED __attribute__((deprecated))
   #elif defined(_MSC_VER) && _MSC_VER >= 1400
     /* Available since Visual Studio 2005 */
     #define XML_DEPRECATED __declspec(deprecated("See https://gnome.pages.gitlab.gnome.org/libxml2/html/deprecated.html"))

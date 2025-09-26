@@ -6383,8 +6383,6 @@ xmlCtxtValidateDocument(xmlParserCtxt *ctxt, xmlDoc *doc) {
 /**
  * Build/extend a list of  potential children allowed by the content tree
  *
- * @deprecated Internal function, don't use.
- *
  * @param ctree  an element content tree
  * @param names  an array to store the list of child names
  * @param len  a pointer to the number of element in the list

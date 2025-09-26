@@ -395,7 +395,6 @@ XMLPUBFUN xmlElement *
 
 #ifdef LIBXML_VALID_ENABLED
 
-XML_DEPRECATED
 XMLPUBFUN int
 		xmlValidGetPotentialChildren(xmlElementContent *ctree,
 					 const xmlChar **names,

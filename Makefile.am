@@ -137,9 +137,9 @@ runsuite_DEPENDENCIES = $(DEPS)
 runsuite_LDADD= $(LDADDS)
 
 xmllint_SOURCES = xmllint.c shell.c lintmain.c
-xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS)
+xmllint_CFLAGS = $(AM_CFLAGS) $(RDL_CFLAGS) $(Z_CFLAGS)
 xmllint_DEPENDENCIES = $(DEPS)
-xmllint_LDADD=  $(RDL_LIBS) $(LDADDS)
+xmllint_LDADD = $(RDL_LIBS) $(Z_LIBS) $(LDADDS)
 
 testModule_SOURCES=testModule.c
 testModule_DEPENDENCIES = $(DEPS)

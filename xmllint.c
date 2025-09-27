@@ -33,6 +33,10 @@
   #endif
 #endif
 
+#ifdef LIBXML_ZLIB_ENABLED
+  #include <zlib.h>
+#endif
+
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -329,10 +333,28 @@ xmllintResourceLoader(void *ctxt, const char *URL,
  *									*
  ************************************************************************/
 
+#ifdef LIBXML_ZLIB_ENABLED
+static int
+xmllintGzRead(void *ctxt, char *buf, int len) {
+    return gzread(ctxt, buf, len);
+}
+
+static int
+xmllintGzClose(void *ctxt) {
+    if (gzclose(ctxt) != Z_OK)
+        return -1;
+
+    return 0;
+}
+#endif
+
 static xmlDocPtr
 parseXml(xmllintState *lint, const char *filename) {
     xmlParserCtxtPtr ctxt = lint->ctxt;
     xmlDocPtr doc;
+#ifdef LIBXML_ZLIB_ENABLED
+    gzFile gz;
+#endif
 
 #ifdef LIBXML_PUSH_ENABLED
     if (lint->appOptions & XML_LINT_PUSH_ENABLED) {
@@ -380,12 +402,26 @@ parseXml(xmllintState *lint, const char *filename) {
     }
 #endif
 
+#ifdef LIBXML_ZLIB_ENABLED
     if (strcmp(filename, "-") == 0)
-        doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL,
-                            lint->parseOptions | XML_PARSE_UNZIP);
+        gz = gzdopen(STDIN_FILENO, "rb");
     else
-        doc = xmlCtxtReadFile(ctxt, filename, NULL,
-                              lint->parseOptions | XML_PARSE_UNZIP);
+        gz = gzopen(filename, "rb");
+
+    if (gz == NULL) {
+        fprintf(lint->errStream, "Can't open %s\n", filename);
+        lint->progresult = XMLLINT_ERR_RDFILE;
+        return(NULL);
+    }
+
+    doc = xmlCtxtReadIO(ctxt, xmllintGzRead, xmllintGzClose, gz,
+                        filename, NULL, lint->parseOptions);
+#else
+    if (strcmp(filename, "-") == 0)
+        doc = xmlCtxtReadFd(ctxt, STDIN_FILENO, "-", NULL, lint->parseOptions);
+    else
+        doc = xmlCtxtReadFile(ctxt, filename, NULL, lint->parseOptions);
+#endif
 
     return(doc);
 }
@@ -1351,16 +1387,35 @@ static void streamFile(xmllintState *lint, const char *filename) {
     } else
 #endif
     {
+#ifdef LIBXML_ZLIB_ENABLED
+        gzFile gz;
+#endif
+
         xmlResetLastError();
 
+#ifdef LIBXML_ZLIB_ENABLED
+        if (strcmp(filename, "-") == 0)
+            gz = gzdopen(STDIN_FILENO, "rb");
+        else
+            gz = gzopen(filename, "rb");
+
+        if (gz == NULL) {
+            fprintf(lint->errStream, "Can't open %s\n", filename);
+            lint->progresult = XMLLINT_ERR_RDFILE;
+            return;
+        }
+
+        reader = xmlReaderForIO(xmllintGzRead, xmllintGzClose, gz,
+                                filename, NULL, lint->parseOptions);
+#else
         if (strcmp(filename, "-") == 0) {
             reader = xmlReaderForFd(STDIN_FILENO, "-", NULL,
-                                    lint->parseOptions | XML_PARSE_UNZIP);
+                                    lint->parseOptions);
         }
         else {
-            reader = xmlReaderForFile(filename, NULL,
-                                      lint->parseOptions | XML_PARSE_UNZIP);
+            reader = xmlReaderForFile(filename, NULL, lint->parseOptions);
         }
+#endif
         if (reader == NULL) {
             const xmlError *error = xmlGetLastError();
 

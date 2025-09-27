@@ -782,9 +782,9 @@ xmlDllMain(ATTRIBUTE_UNUSED void *hinstDLL, unsigned long fdwReason,
 /* declare to avoid "no previous prototype for 'DllMain'" warning */
 /* Note that we do NOT want to include this function declaration in
    a public header because it's meant to be called by Windows itself,
-   not a program that uses this library.  This also has to be exported. */
+   not a program that uses this library. */
 
-XMLPUBFUN BOOL WINAPI
+BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
          DWORD     fdwReason,
          LPVOID    lpvReserved);

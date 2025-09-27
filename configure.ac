@@ -838,6 +838,8 @@ if test "$with_zlib" != "no" && test "$with_zlib" != ""; then
     XML_PRIVATE_LIBS="${XML_PRIVATE_LIBS} ${Z_LIBS}"
 fi
 AC_SUBST(WITH_ZLIB)
+AC_SUBST(Z_CFLAGS)
+AC_SUBST(Z_LIBS)
 
 dnl
 dnl Checks for iconv library.

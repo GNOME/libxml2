@@ -356,6 +356,10 @@ if want_history
     xmllint_deps += history_dep
 endif
 
+if want_zlib
+    xmllint_deps += dependency('zlib')
+endif
+
 ### crypto
 if sys_windows == true
     bcrypt_dep = cc.find_library('bcrypt', required: true)

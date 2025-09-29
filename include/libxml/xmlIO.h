@@ -148,20 +148,20 @@ struct _xmlParserInputBuffer {
  * Output buffer
  */
 struct _xmlOutputBuffer {
-    void*                   context XML_DEPRECATED_MEMBER;
-    xmlOutputWriteCallback  writecallback XML_DEPRECATED_MEMBER;
-    xmlOutputCloseCallback  closecallback XML_DEPRECATED_MEMBER;
+    void*                   context;
+    xmlOutputWriteCallback  writecallback;
+    xmlOutputCloseCallback  closecallback;
 
     /* I18N conversions to UTF-8 */
-    xmlCharEncodingHandler *encoder XML_DEPRECATED_MEMBER;
+    xmlCharEncodingHandler *encoder;
 
     /* Local buffer encoded in UTF-8 or ISOLatin */
-    xmlBuf *buffer XML_DEPRECATED_MEMBER;
+    xmlBuf *buffer;
     /* if encoder != NULL buffer for output */
-    xmlBuf *conv XML_DEPRECATED_MEMBER;
+    xmlBuf *conv;
     /* total number of byte written */
-    int written XML_DEPRECATED_MEMBER;
-    int error XML_DEPRECATED_MEMBER;
+    int written;
+    int error;
 };
 #endif /* LIBXML_OUTPUT_ENABLED */
 

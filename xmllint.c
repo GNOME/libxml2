@@ -339,6 +339,13 @@ xmllintGzRead(void *ctxt, char *buf, int len) {
     return gzread(ctxt, buf, len);
 }
 
+#ifdef LIBXML_OUTPUT_ENABLED
+static int
+xmllintGzWrite(void *ctxt, const char *buf, int len) {
+    return gzwrite(ctxt, buf, len);
+}
+#endif
+
 static int
 xmllintGzClose(void *ctxt) {
     if (gzclose(ctxt) != Z_OK)
@@ -1989,11 +1996,6 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 #endif /* LIBXML_READER_ENABLED */
 #ifdef LIBXML_OUTPUT_ENABLED
     if (lint->noout == 0) {
-#ifdef LIBXML_ZLIB_ENABLED
-        if (lint->appOptions & XML_LINT_ZLIB_COMPRESSION)
-            xmlSetDocCompressMode(doc, 9);
-#endif
-
 	/*
 	 * print it.
 	 */
@@ -2048,13 +2050,8 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		}
 	    } else
 #endif
-#ifdef LIBXML_ZLIB_ENABLED
-	    if (lint->appOptions & XML_LINT_ZLIB_COMPRESSION) {
-		xmlSaveFile(lint->output ? lint->output : "-", doc);
-	    } else
-#endif
             {
-	        xmlSaveCtxtPtr ctxt;
+	        xmlSaveCtxtPtr ctxt = NULL;
 		int saveOpts = 0;
 
                 if (lint->format == 1)
@@ -2067,12 +2064,28 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
                     saveOpts |= XML_SAVE_AS_XML;
 #endif
 
-		if (lint->output == NULL)
-		    ctxt = xmlSaveToFd(STDOUT_FILENO, lint->encoding,
-                                       saveOpts);
-		else
-		    ctxt = xmlSaveToFilename(lint->output, lint->encoding,
-                                             saveOpts);
+#ifdef LIBXML_ZLIB_ENABLED
+	        if (lint->appOptions & XML_LINT_ZLIB_COMPRESSION) {
+                    gzFile gz;
+
+                    if (lint->output == NULL)
+                        gz = gzdopen(STDOUT_FILENO, "wb9");
+                    else
+                        gz = gzopen(lint->output, "wb9");
+
+                    if (gz != NULL)
+                        ctxt = xmlSaveToIO(xmllintGzWrite, xmllintGzClose, gz,
+                                           lint->encoding, saveOpts);
+                } else
+#endif
+                {
+                    if (lint->output == NULL)
+                        ctxt = xmlSaveToFd(STDOUT_FILENO, lint->encoding,
+                                           saveOpts);
+                    else
+                        ctxt = xmlSaveToFilename(lint->output, lint->encoding,
+                                                 saveOpts);
+                }
 
 		if (ctxt != NULL) {
                     if (lint->indentString != NULL)
@@ -2085,6 +2098,8 @@ parseAndPrintFile(xmllintState *lint, const char *filename) {
 		    }
 		    xmlSaveClose(ctxt);
 		} else {
+                    fprintf(errStream, "failed save to %s\n",
+                            lint->output ? lint->output : "-");
 		    lint->progresult = XMLLINT_ERR_OUT;
 		}
 	    }

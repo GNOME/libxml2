@@ -79,6 +79,24 @@ Create or update a GitLab release on
 Announce the release on https://discourse.gnome.org under topics 'libxml2'
 and 'announcements'.
 
+## Removing public API functions
+
+General process to remove public API functions (or variables):
+
+- Make sure that there's a reasonable alternative.
+- Mark the function as deprecated in the documentation and mention
+  alternatives.
+- Mark the function as XML_DEPRECATED in the header files.
+- For whole modules: disable the module by default and only enable
+  it in "legacy mode".
+- Remove the function body and make the function return an error code
+  or a no-op. Make sure that the symbol is kept and exported. This
+  should only be done after allowing users enough time to adjust.
+- At the next ABI bump, remove the symbol completely.
+
+You can wait for the next feature release between some of the steps to
+make the process more gradual.
+
 ## Breaking the ABI
 
 Unfortunately, libxml2 exposes many internal structs which makes some

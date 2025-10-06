@@ -296,11 +296,11 @@ typedef xmlNotation *xmlNotationPtr;
  */
 struct _xmlNotation {
     /** Notation name */
-    const xmlChar               *name XML_DEPRECATED_MEMBER;
+    const xmlChar               *name;
     /** Public identifier, if any */
-    const xmlChar               *PublicID XML_DEPRECATED_MEMBER;
+    const xmlChar               *PublicID;
     /** System identifier, if any */
-    const xmlChar               *SystemID XML_DEPRECATED_MEMBER;
+    const xmlChar               *SystemID;
 };
 
 /**
@@ -375,11 +375,11 @@ struct _xmlAttribute {
     struct _xmlDoc          *doc;
 
     /** next in hash table */
-    struct _xmlAttribute  *nexth XML_DEPRECATED_MEMBER;
+    struct _xmlAttribute  *nexth;
     /** attribute type */
-    xmlAttributeType       atype XML_DEPRECATED_MEMBER;
+    xmlAttributeType       atype;
     /** attribute default */
-    xmlAttributeDefault      def XML_DEPRECATED_MEMBER;
+    xmlAttributeDefault      def;
     /** default value */
     xmlChar *defaultValue;
     /** enumeration tree if any */
@@ -387,7 +387,7 @@ struct _xmlAttribute {
     /** namespace prefix if any */
     const xmlChar        *prefix;
     /** element name */
-    const xmlChar          *elem XML_DEPRECATED_MEMBER;
+    const xmlChar          *elem;
 };
 
 /**
@@ -478,13 +478,13 @@ struct _xmlElement {
     struct _xmlDoc          *doc;
 
     /** element type */
-    xmlElementTypeVal      etype XML_DEPRECATED_MEMBER;
+    xmlElementTypeVal      etype;
     /** allowed element content */
-    xmlElementContent *content XML_DEPRECATED_MEMBER;
+    xmlElementContent *content;
     /** list of declared attributes */
-    xmlAttribute     *attributes XML_DEPRECATED_MEMBER;
+    xmlAttribute     *attributes;
     /** namespace prefix if any */
-    const xmlChar        *prefix XML_DEPRECATED_MEMBER;
+    const xmlChar        *prefix;
 #ifdef LIBXML_REGEXP_ENABLED
     /** validating regexp */
     xmlRegexp         *contModel XML_DEPRECATED_MEMBER;
@@ -564,19 +564,19 @@ struct _xmlDtd {
     /* End of common part */
 
     /** hash table for notations if any */
-    void          *notations XML_DEPRECATED_MEMBER;
+    void          *notations;
     /** hash table for elements if any */
-    void          *elements XML_DEPRECATED_MEMBER;
+    void          *elements;
     /** hash table for attributes if any */
-    void          *attributes XML_DEPRECATED_MEMBER;
+    void          *attributes;
     /** hash table for entities if any */
-    void          *entities XML_DEPRECATED_MEMBER;
+    void          *entities;
     /** public identifier */
-    xmlChar *ExternalID XML_DEPRECATED_MEMBER;
+    xmlChar *ExternalID;
     /** system identifier */
-    xmlChar *SystemID XML_DEPRECATED_MEMBER;
+    xmlChar *SystemID;
     /** hash table for parameter entities if any */
-    void          *pentities XML_DEPRECATED_MEMBER;
+    void          *pentities;
 };
 
 /** Attribute of an element */
@@ -823,7 +823,7 @@ struct _xmlDoc {
     /** external subset */
     struct _xmlDtd  *extSubset;
     /** used to hold the XML namespace if needed */
-    struct _xmlNs   *oldNs XML_DEPRECATED_MEMBER;
+    struct _xmlNs   *oldNs;
     /** version string from XML declaration */
     xmlChar  *version;
     /** actual encoding if any */

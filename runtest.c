@@ -3741,6 +3741,70 @@ rngTest(const char *filename,
     return(ret);
 }
 
+/**
+ * Parse an RNG schemas with a custom RNG_INCLUDE_LIMIT
+ *
+ * @param filename  the schemas file
+ * @param result  the file with expected result
+ * @param err  the file with error messages
+ * @returns 0 in case of success, an error code otherwise
+ */
+static int
+rngIncludeTest(const char *filename,
+               const char *resul ATTRIBUTE_UNUSED,
+               const char *errr ATTRIBUTE_UNUSED,
+               int options ATTRIBUTE_UNUSED) {
+    xmlRelaxNGParserCtxtPtr ctxt;
+    xmlRelaxNGPtr schemas;
+    int ret = 0;
+
+    /* first compile the schemas if possible */
+    ctxt = xmlRelaxNGNewParserCtxt(filename);
+    xmlRelaxNGSetParserStructuredErrors(ctxt, testStructuredErrorHandler,
+                                        NULL);
+
+    /* Should work */
+    schemas = xmlRelaxNGParse(ctxt);
+    if (schemas == NULL) {
+        testErrorHandler(NULL, "Relax-NG schema %s failed to compile\n",
+                         filename);
+        ret = -1;
+        goto done;
+    }
+    xmlRelaxNGFree(schemas);
+    xmlRelaxNGFreeParserCtxt(ctxt);
+
+    ctxt = xmlRelaxNGNewParserCtxt(filename);
+    /* Should fail */
+    xmlRelaxParserSetIncLImit(ctxt, 2);
+    xmlRelaxNGSetParserStructuredErrors(ctxt, testStructuredErrorHandler,
+                                        NULL);
+    schemas = xmlRelaxNGParse(ctxt);
+    if (schemas != NULL) {
+        ret = -1;
+        xmlRelaxNGFree(schemas);
+    }
+    xmlRelaxNGFreeParserCtxt(ctxt);
+
+    ctxt = xmlRelaxNGNewParserCtxt(filename);
+    /* Should work */
+    xmlRelaxParserSetIncLImit(ctxt, 3);
+    xmlRelaxNGSetParserStructuredErrors(ctxt, testStructuredErrorHandler,
+                                        NULL);
+    schemas = xmlRelaxNGParse(ctxt);
+    if (schemas == NULL) {
+        testErrorHandler(NULL, "Relax-NG schema %s failed to compile\n",
+                         filename);
+        ret = -1;
+        goto done;
+    }
+    xmlRelaxNGFree(schemas);
+
+done:
+    xmlRelaxNGFreeParserCtxt(ctxt);
+    return(ret);
+}
+
 #ifdef LIBXML_READER_ENABLED
 /**
  * Parse a set of files with streaming, applying an RNG schemas
@@ -5202,6 +5266,9 @@ testDesc testDescriptions[] = {
     { "Relax-NG regression tests" ,
       rngTest, "./test/relaxng/*.rng", NULL, NULL, NULL,
       XML_PARSE_DTDATTR | XML_PARSE_NOENT },
+    { "Relax-NG include limit tests" ,
+      rngIncludeTest, "./test/relaxng/include/include-limit.rng", NULL, NULL, NULL,
+      0 },
 #ifdef LIBXML_READER_ENABLED
     { "Relax-NG streaming regression tests" ,
       rngStreamTest, "./test/relaxng/*.rng", NULL, NULL, NULL,

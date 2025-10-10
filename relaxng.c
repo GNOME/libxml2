@@ -18,6 +18,8 @@
 
 #ifdef LIBXML_RELAXNG_ENABLED
 
+#include <errno.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -43,6 +45,12 @@
  */
 static const xmlChar *xmlRelaxNGNs = (const xmlChar *)
     "http://relaxng.org/ns/structure/1.0";
+
+/*
+ * Default include limit, this can be override with RNG_INCLUDE_LIMIT
+ * env variable
+ */
+static const int _xmlRelaxNGIncludeLimit = 1000;
 
 #define IS_RELAXNG(node, typ)						\
    ((node != NULL) && (node->ns != NULL) &&				\
@@ -218,6 +226,7 @@ struct _xmlRelaxNGParserCtxt {
     int incNr;                  /* Depth of the include parsing stack */
     int incMax;                 /* Max depth of the parsing stack */
     xmlRelaxNGIncludePtr *incTab;       /* array of incs */
+    int incLimit;               /* Include limit, to avoid stack-overflow on parse */
 
     int idref;                  /* requires idref checking */
 
@@ -1342,6 +1351,23 @@ xmlRelaxParserSetFlag(xmlRelaxNGParserCtxt *ctxt, int flags)
     return(0);
 }
 
+/**
+ * Semi private function used to set the include recursion limit to a
+ * parser context. Set to 0 to use the default value.
+ *
+ * @param ctxt  a RelaxNG parser context
+ * @param limit the new include depth limit
+ * @returns 0 if success and -1 in case of error
+ */
+int
+xmlRelaxParserSetIncLImit(xmlRelaxNGParserCtxt *ctxt, int limit)
+{
+    if (ctxt == NULL) return(-1);
+    if (limit < 0) return(-1);
+    ctxt->incLimit = limit;
+    return(0);
+}
+
 /************************************************************************
  *									*
  *			Document functions				*
@@ -1397,7 +1423,7 @@ xmlRelaxReadMemory(xmlRelaxNGParserCtxtPtr ctxt, const char *buf, int size) {
  *
  * @param ctxt  the parser context
  * @param value  the element doc
- * @returns 0 in case of error, the index in the stack otherwise
+ * @returns -1 in case of error, the index in the stack otherwise
  */
 static int
 xmlRelaxNGIncludePush(xmlRelaxNGParserCtxtPtr ctxt,
@@ -1411,9 +1437,15 @@ xmlRelaxNGIncludePush(xmlRelaxNGParserCtxtPtr ctxt,
                                                sizeof(ctxt->incTab[0]));
         if (ctxt->incTab == NULL) {
             xmlRngPErrMemory(ctxt);
-            return (0);
+            return (-1);
         }
     }
+    if (ctxt->incNr >= ctxt->incLimit) {
+        xmlRngPErr(ctxt, (xmlNodePtr)value->doc, XML_RNGP_PARSE_ERROR,
+                   "xmlRelaxNG: inclusion recursion limit reached\n", NULL, NULL);
+        return(-1);
+    }
+
     if (ctxt->incNr >= ctxt->incMax) {
         ctxt->incMax *= 2;
         ctxt->incTab =
@@ -1422,7 +1454,7 @@ xmlRelaxNGIncludePush(xmlRelaxNGParserCtxtPtr ctxt,
                                                 sizeof(ctxt->incTab[0]));
         if (ctxt->incTab == NULL) {
             xmlRngPErrMemory(ctxt);
-            return (0);
+            return (-1);
         }
     }
     ctxt->incTab[ctxt->incNr] = value;
@@ -1586,7 +1618,9 @@ xmlRelaxNGLoadInclude(xmlRelaxNGParserCtxtPtr ctxt, const xmlChar * URL,
     /*
      * push it on the stack
      */
-    xmlRelaxNGIncludePush(ctxt, ret);
+    if (xmlRelaxNGIncludePush(ctxt, ret) < 0) {
+        return (NULL);
+    }
 
     /*
      * Some preprocessing of the document content, this include recursing
@@ -7261,10 +7295,31 @@ xmlRelaxNGParse(xmlRelaxNGParserCtxt *ctxt)
     xmlDocPtr doc;
     xmlNodePtr root;
 
+    const char *include_limit_env = getenv("RNG_INCLUDE_LIMIT");
+
     xmlRelaxNGInitTypes();
 
     if (ctxt == NULL)
         return (NULL);
+
+    if (ctxt->incLimit == 0) {
+        ctxt->incLimit = _xmlRelaxNGIncludeLimit;
+        if (include_limit_env != NULL) {
+            char *strEnd;
+            unsigned long val = 0;
+            errno = 0;
+            val = strtoul(include_limit_env, &strEnd, 10);
+            if (errno != 0 || *strEnd != 0 || val > INT_MAX) {
+                xmlRngPErr(ctxt, NULL, XML_RNGP_PARSE_ERROR,
+                           "xmlRelaxNGParse: invalid RNG_INCLUDE_LIMIT %s\n",
+                           (const xmlChar*)include_limit_env,
+                           NULL);
+                return(NULL);
+            }
+            if (val)
+                ctxt->incLimit = val;
+        }
+    }
 
     /*
      * First step is to parse the input document into an DOM/Infoset

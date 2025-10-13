@@ -1309,7 +1309,8 @@ xmlEncodingMatch(const char *name1, const char *name2) {
         name2 += 1;
     }
 
-    return((*name1 == 0) && (*name2 == 0));
+    /* Only check whether name1 starts with name2 */
+    return(*name2 == 0);
 }
 #endif /* FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION */
 

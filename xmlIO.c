@@ -498,7 +498,8 @@ xmlIOErr(int err)
 #ifdef ENOTDIR
         case ENOTDIR: code = XML_IO_ENOTDIR; break;
 #endif
-#ifdef ENOTEMPTY
+/* AIX uses the same value for ENOTEMPTY and EEXIST */
+#if defined(ENOTEMPTY) && ENOTEMPTY != EEXIST
         case ENOTEMPTY: code = XML_IO_ENOTEMPTY; break;
 #endif
 #ifdef ENOTSUP

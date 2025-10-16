@@ -1,5 +1,24 @@
 NEWS file for libxml2
 
+v2.15.1: Oct 16 2025
+
+### Regressions
+
+- parser: Fix attribute normalization and standalone check
+
+### Build
+
+- io: Handle clashing error codes on AIX
+- Fixed compilation error on GCC versions prior to 4.5 (Lars Erik Wik)
+- meson: Fix install dir of man pages
+
+### Deprecations
+
+- tree: Undeprecate several struct members
+- io: Undeprecate xmlOutputBuffer members
+- valid: Undeprecate xmlValidGetPotentialChildren
+
+
 v2.15.0: Sep 15 2025
 
 ### Major changes

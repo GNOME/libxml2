@@ -138,6 +138,12 @@ option('valid',
   description: 'DTD validation support'
 )
 
+option('winpath',
+       type: 'feature',
+       value: 'auto',
+       description: 'Handling Windows-styled path'
+)
+
 option('writer',
   type: 'feature',
   description: 'xmlWriter serialization interface'

@@ -3202,7 +3202,7 @@ xmlLoadCatalogs(const char *pathss) {
     const char *cur;
     const char *paths;
     xmlChar *path;
-#ifdef _WIN32
+#ifdef LIBXML2_WINPATH_ENABLED
     int i, iLen;
 #endif
 
@@ -3218,7 +3218,7 @@ xmlLoadCatalogs(const char *pathss) {
 		cur++;
 	    path = xmlStrndup((const xmlChar *)paths, cur - paths);
 	    if (path != NULL) {
-#ifdef _WIN32
+#ifdef LIBXML2_WINPATH_ENABLED
         iLen = strlen((const char*)path);
         for(i = 0; i < iLen; i++) {
             if(path[i] == '\\') {

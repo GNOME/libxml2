@@ -1231,7 +1231,7 @@ testBuildRelativeUri(void) {
             "/b2/c2",
             "with%20space/x%20x/y%20y"
         }
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(LIBXML_WINPATH_ENABLED)
         , {
             "\\a\\b1\\c1",
             "\\a\\b2\\c2",
@@ -1298,7 +1298,7 @@ testBuildRelativeUri(void) {
     return err;
 }
 
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(LIBXML_WINPATH_ENABLED)
 static int
 testWindowsUri(void) {
     const char *url = "c:/a%20b/file.txt";
@@ -1371,7 +1371,7 @@ testWindowsUri(void) {
 
     return err;
 }
-#endif /* WIN32 */
+#endif /* LIBXML_WINPATH_ENABLED */
 
 #if defined(LIBXML_ICONV_ENABLED) || defined(LIBXML_ICU_ENABLED)
 static int
@@ -1584,7 +1584,7 @@ main(void) {
     err |= testWriterClose();
 #endif
     err |= testBuildRelativeUri();
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(LIBXML_WINPATH_ENABLED)
     err |= testWindowsUri();
 #endif
 #if defined(LIBXML_ICONV_ENABLED) || defined(LIBXML_ICU_ENABLED)

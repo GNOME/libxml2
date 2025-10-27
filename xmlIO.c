@@ -681,23 +681,31 @@ static int
 xmlConvertUriToPath(const char *uri, char **out) {
     const char *escaped;
     char *unescaped;
+#ifdef LIBXML_WINPATH_ENABLED
+    xmlChar ch;
+#endif
 
     *out = NULL;
 
     if (!xmlStrncasecmp(BAD_CAST uri, BAD_CAST "file://localhost/", 17)) {
-	escaped = &uri[16];
+        escaped = &uri[16];
     } else if (!xmlStrncasecmp(BAD_CAST uri, BAD_CAST "file:///", 8)) {
-	escaped = &uri[7];
+        escaped = &uri[7];
     } else if (!xmlStrncasecmp(BAD_CAST uri, BAD_CAST "file:/", 6)) {
         /* lots of generators seems to lazy to read RFC 1738 */
-	escaped = &uri[5];
+        escaped = &uri[5];
     } else {
         return(1);
     }
 
-#ifdef _WIN32
+#ifdef LIBXML_WINPATH_ENABLED
     /* Ignore slash like in file:///C:/file.txt */
-    escaped += 1;
+    if (escaped[0] == '/') {
+        ch = escaped[1];
+        if (((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
+            && escaped[2] == ':')
+            escaped += 1;
+    }
 #endif
 
     unescaped = xmlURIUnescapeString(escaped, 0, NULL);
@@ -2701,7 +2709,7 @@ xmlParserGetDirectory(const char *filename) {
 
     if (filename == NULL) return(NULL);
 
-#if defined(_WIN32)
+#if defined(LIBXML_WINPATH_ENABLED)
 #   define IS_XMLPGD_SEP(ch) ((ch=='/')||(ch=='\\'))
 #else
 #   define IS_XMLPGD_SEP(ch) (ch=='/')

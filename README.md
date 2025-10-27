@@ -93,6 +93,7 @@ The following options disable or enable code modules and relevant symbols:
     --with-threads          multithreading support (on)
     --with-thread-alloc     per-thread malloc hooks (off)
     --with-valid            DTD validation support (on)
+    --with-winpath          Windows path support (on for Windows)
     --with-writer           xmlWriter serialization interface (on)
     --with-xinclude         XInclude 1.0 support (on)
     --with-xpath            XPath 1.0 support (on)

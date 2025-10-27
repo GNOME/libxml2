@@ -118,6 +118,10 @@ want_sax1 = want_minimum ? feature.enabled() : feature.allowed()
 feature = get_option('threads')
 want_threads = want_minimum ? feature.enabled() : feature.allowed()
 
+# auto-enabled on Windows
+feature = get_option('winpath')
+want_winpath = (sys_cygwin or sys_windows) ? feature.allowed() : feature.enabled()
+
 feature = get_option('valid')
 want_valid = want_minimum ? feature.enabled() : feature.allowed()
 
@@ -650,6 +654,7 @@ summary(
         'thread-alloc': want_thread_alloc,
         'tls': want_tls,
         'valid': want_valid,
+        'winpath': want_winpath,
         'writer': want_writer,
         'xinclude': want_xinclude,
         'xpath': want_xpath,

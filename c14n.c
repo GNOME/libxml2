@@ -598,7 +598,7 @@ xmlC14NProcessNamespacesAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int visible)
     }
 
     /* check all namespaces */
-    for(n = cur; n != NULL; n = n->parent) {
+    for(n = cur; n != NULL && n->type == XML_ELEMENT_NODE; n = n->parent) {
 	for(ns = n->nsDef; ns != NULL; ns = ns->next) {
 	    tmp = xmlSearchNs(cur->doc, cur, ns->prefix);
 

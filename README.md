@@ -21,11 +21,9 @@ This code is released under the MIT License, see the Copyright file.
 
 ## Security
 
-This is open-source software written by hobbyists, maintained by a single
-volunteer, badly tested, written in a memory-unsafe language and full of
-security bugs. It is foolish to use this software to process untrusted data.
-As such, we treat security issues like any other bug. Each security report
-we receive will be made public immediately and won't be prioritized.
+This project is unmaintained and has
+[known security issues](https://gitlab.gnome.org/GNOME/libxml2/-/issues/346).
+It is foolish to use this software to process untrusted data.
 
 ## Build instructions
 

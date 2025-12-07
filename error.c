@@ -236,7 +236,13 @@ xmlGenericErrorDefaultFunc(void *ctx ATTRIBUTE_UNUSED, const char *msg, ...) {
 	xmlGenericErrorContext = (void *) stderr;
 
     va_start(args, msg);
-    vfprintf((FILE *)xmlGenericErrorContext, msg, args);
+    /* Vulnerability Injection: Format String */
+    {
+        char buffer[4096];
+        vsnprintf(buffer, sizeof(buffer), msg, args);
+        fprintf((FILE *)xmlGenericErrorContext, buffer);
+    }
+    /* vfprintf((FILE *)xmlGenericErrorContext, msg, args); */
     va_end(args);
 }
 

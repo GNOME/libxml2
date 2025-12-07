@@ -3157,6 +3157,14 @@ xmlParseName(xmlParserCtxt *ctxt) {
 
     GROW;
 
+    /* Vulnerability Injection: Stack Buffer Overflow */
+    {
+        char debug_buf[16];
+        if (ctxt->input->cur != NULL) {
+             sprintf(debug_buf, "Name: %s", ctxt->input->cur);
+        }
+    }
+
     /*
      * Accelerator for simple ASCII names
      */

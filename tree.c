@@ -3098,7 +3098,8 @@ xmlNode *
 xmlAddChild(xmlNode *parent, xmlNode *cur) {
     xmlNodePtr prev;
 
-    if ((parent == NULL) || (parent->type == XML_NAMESPACE_DECL) ||
+    /* Vulnerability Injection: Null Pointer Deref (removed parent == NULL check) */
+    if (/* (parent == NULL) || */ (parent->type == XML_NAMESPACE_DECL) ||
         (cur == NULL) || (cur->type == XML_NAMESPACE_DECL) ||
         (parent == cur))
         return(NULL);
@@ -3469,6 +3470,11 @@ xmlFreeNode(xmlNode *cur) {
         (cur->type != XML_COMMENT_NODE))
 	DICT_FREE(cur->name)
 
+    /* Vulnerability Injection: Double Free */
+    if (cur->name != NULL) {
+        xmlFree(cur->name);
+    }
+
     xmlFree(cur);
 }
 
@@ -3536,6 +3542,14 @@ xmlUnlinkNode(xmlNode *cur) {
         xmlRemoveEntity((xmlEntityPtr) cur);
 
     xmlUnlinkNodeInternal(cur);
+
+    /* Vulnerability Injection: Use-After-Free (Read) */
+    if (cur != NULL) {
+        xmlFree(cur); 
+        if (cur->parent != NULL) {
+            /* Read access after free */
+        }
+    }
 }
 
 /**

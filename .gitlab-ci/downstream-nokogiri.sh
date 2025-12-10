@@ -9,6 +9,7 @@ export NOCONFIGURE=1
 
 git clone https://github.com/sparklemotion/nokogiri
 cd nokogiri
-bundle install
-bundle exec rake compile -- --with-xml2-source-dir=${LIBXML_DIR}
+gem install bundler:2.7.2
+bundle _2.7.2_ install
+bundle exec rake compile -- --with-xml2-source-dir=${LIBXML_DIR} --disable-xml2-legacy
 bundle exec rake test

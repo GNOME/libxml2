@@ -26,8 +26,14 @@ CygWin, MacOS X, RISC Os, OS/2, QNX, MVS,
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Daniel Veillard</foaf:name>
-      <gnome:userid>veillard</gnome:userid>
+      <foaf:name>Iván Chavero</foaf:name>
+      <gnome:userid>ichavero</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Daniel Garcia Moreno</foaf:name>
+      <gnome:userid>danigm</gnome:userid>
     </foaf:Person>
   </maintainer>
 </Project>

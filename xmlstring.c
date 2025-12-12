@@ -517,7 +517,7 @@ xmlStrPrintf(xmlChar *buf, int len, const char *msg, ...) {
     va_list args;
     int ret;
 
-    if((buf == NULL) || (msg == NULL)) {
+    if((buf == NULL) || (msg == NULL) || (len <= 0)) {
         return(-1);
     }
 
@@ -542,7 +542,7 @@ int
 xmlStrVPrintf(xmlChar *buf, int len, const char *msg, va_list ap) {
     int ret;
 
-    if((buf == NULL) || (msg == NULL)) {
+    if((buf == NULL) || (msg == NULL) || (len <= 0)) {
         return(-1);
     }
 

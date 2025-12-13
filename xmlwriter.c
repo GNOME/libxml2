@@ -1014,7 +1014,7 @@ xmlTextWriterStartElementNS(xmlTextWriter *writer,
     int sum;
     xmlChar *buf;
 
-    if ((writer == NULL) || (name == NULL) || (*name == '\0'))
+    if ((writer == NULL) || (writer->nsstack == NULL) || (name == NULL) || (*name == '\0'))
         return -1;
 
     buf = NULL;
@@ -1759,7 +1759,7 @@ xmlTextWriterStartAttributeNS(xmlTextWriter *writer,
     xmlChar *buf;
     xmlTextWriterNsStackEntry *p;
 
-    if ((writer == NULL) || (name == NULL) || (*name == '\0'))
+    if ((writer == NULL) || (writer->nsstack == NULL) || (name == NULL) || (*name == '\0'))
         return -1;
 
     /* Handle namespace first in case of error */
@@ -4166,6 +4166,9 @@ xmlTextWriterOutputNSDecl(xmlTextWriterPtr writer)
     xmlTextWriterNsStackEntry *np;
     int count;
     int sum;
+
+    if ((writer == NULL) || (writer->nsstack == NULL))
+        return -1;
 
     sum = 0;
     while (!xmlListEmpty(writer->nsstack)) {

@@ -169,6 +169,30 @@ if(LIBXML2_WITH_TLS)
     endif()
 endif()
 
+# Headers which are private.
+set(
+    LIBXML2_PRIVATE_HDRS
+    include/private/buf.h
+    include/private/cata.h
+    include/private/dict.h
+    include/private/enc.h
+    include/private/entities.h
+    include/private/error.h
+    include/private/globals.h
+    include/private/html.h
+    include/private/io.h
+    include/private/lint.h
+    include/private/memory.h
+    include/private/parser.h
+    include/private/regexp.h
+    include/private/save.h
+    include/private/string.h
+    include/private/threads.h
+    include/private/tree.h
+    include/private/xinclude.h
+    include/private/xpath.h
+)
+
 set(
     LIBXML2_HDRS
     include/libxml/c14n.h
@@ -240,6 +264,7 @@ set(
     xmlmemory.c
     xmlstring.c
 )
+
 if(LIBXML2_WITH_C14N)
     list(APPEND LIBXML2_SRCS c14n.c)
 endif()
@@ -304,7 +329,7 @@ if(WIN32)
     )
 endif()
 
-add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS})
+add_library(LibXml2 ${LIBXML2_HDRS} ${LIBXML2_SRCS} ${LIBXML2_PRIVATE_HDRS})
 add_library(LibXml2::LibXml2 ALIAS LibXml2)
 
 target_include_directories(
@@ -705,6 +730,9 @@ install(
 configure_file(config.h.cmake.in config.h)
 configure_file(include/libxml/xmlversion.h.in libxml/xmlversion.h)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libxml/xmlversion.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
+                  FILES ${LIBXML2_SRCS} ${LIBXML2_HDRS} ${LIBXML2_PRIVATE_HDRS})
 
 if(LIBXML2_WITH_PYTHON)
     set(prefix "${CMAKE_INSTALL_PREFIX}")

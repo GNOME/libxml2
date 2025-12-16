@@ -4,6 +4,10 @@
 *.lo
 *.pyc
 
+# local build directories
+/build
+/install
+
 # Executables
 /xmlcatalog
 /xmllint

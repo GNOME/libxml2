@@ -2025,11 +2025,20 @@ static xmlChar *
 xmlCatalogListXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
     xmlChar *ret = NULL;
     xmlChar *urnID = NULL;
+    xmlCatalogEntryPtr cur = NULL;
 
     if (catal == NULL)
         return(NULL);
     if (URI == NULL)
 	return(NULL);
+
+    if (catal->depth > MAX_CATAL_DEPTH) {
+	xmlCatalogErr(catal, NULL, XML_CATALOG_RECURSION,
+		      "Detected recursion in catalog %s\n",
+		      catal->name, NULL, NULL);
+	return(NULL);
+    }
+    catal->depth++;
 
     if (!xmlStrncmp(URI, BAD_CAST XML_URN_PUBID, sizeof(XML_URN_PUBID) - 1)) {
 	urnID = xmlCatalogUnWrapURN(URI);
@@ -2044,21 +2053,27 @@ xmlCatalogListXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
 	ret = xmlCatalogListXMLResolve(catal, urnID, NULL);
 	if (urnID != NULL)
 	    xmlFree(urnID);
+	catal->depth--;
 	return(ret);
     }
-    while (catal != NULL) {
-	if (catal->type == XML_CATA_CATALOG) {
-	    if (catal->children == NULL) {
-		xmlFetchXMLCatalogFile(catal);
+    cur = catal;
+    while (cur != NULL) {
+	if (cur->type == XML_CATA_CATALOG) {
+	    if (cur->children == NULL) {
+		xmlFetchXMLCatalogFile(cur);
 	    }
-	    if (catal->children != NULL) {
-		ret = xmlCatalogXMLResolveURI(catal->children, URI);
-		if (ret != NULL)
+	    if (cur->children != NULL) {
+		ret = xmlCatalogXMLResolveURI(cur->children, URI);
+		if (ret != NULL) {
+		    catal->depth--;
 		    return(ret);
+		}
 	    }
 	}
-	catal = catal->next;
+	cur = cur->next;
     }
+
+    catal->depth--;
     return(ret);
 }
 

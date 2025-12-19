@@ -1223,9 +1223,27 @@ xmlParseXMLCatalogNode(xmlNodePtr cur, xmlCatalogPrefer prefer,
 		BAD_CAST "delegateURI", BAD_CAST "uriStartString",
 		BAD_CAST "catalog", prefer, cgroup);
     } else if (xmlStrEqual(cur->name, BAD_CAST "nextCatalog")) {
+	xmlCatalogEntryPtr prev = parent->children;
+
 	entry = xmlParseXMLCatalogOneNode(cur, XML_CATA_NEXT_CATALOG,
 		BAD_CAST "nextCatalog", NULL,
 		BAD_CAST "catalog", prefer, cgroup);
+	/* Avoid duplication of nextCatalog */
+	while (prev != NULL) {
+	    if ((prev->type == XML_CATA_NEXT_CATALOG) &&
+		(xmlStrEqual (prev->URL, entry->URL)) &&
+		(xmlStrEqual (prev->value, entry->value)) &&
+		(prev->prefer == entry->prefer) &&
+		(prev->group == entry->group)) {
+		    if (xmlDebugCatalogs)
+			xmlCatalogPrintDebug(
+			    "Ignoring repeated nextCatalog %s\n", entry->URL);
+		    xmlFreeCatalogEntry(entry, NULL);
+		    entry = NULL;
+		    break;
+	    }
+	    prev = prev->next;
+	}
     }
     if (entry != NULL) {
         if (parent != NULL) {

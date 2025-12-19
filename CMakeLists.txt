@@ -498,6 +498,7 @@ if(LIBXML2_WITH_TESTS)
         runxmlconf
         runsuite
         testapi
+        testcatalog
         testchar
         testdict
         testModule
@@ -520,6 +521,7 @@ if(LIBXML2_WITH_TESTS)
         add_test(NAME runxmlconf COMMAND runxmlconf WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
     add_test(NAME testapi COMMAND testapi)
+    add_test(NAME testcatalog COMMAND testcatalog)
     add_test(NAME testchar COMMAND testchar)
     add_test(NAME testdict COMMAND testdict)
     add_test(NAME testparser COMMAND testparser WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

@@ -517,6 +517,7 @@ checks = {
 # Disabled for now, see #694
 #    'testModule': [],
     'testapi': [],
+    'testcatalog': [],
     'testchar': [],
     'testdict': [],
     'testlimits': [],

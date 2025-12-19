@@ -640,42 +640,53 @@ static void xmlDumpXMLCatalogNode(xmlCatalogEntryPtr catal, xmlNodePtr catalog,
     }
 }
 
-static int
-xmlDumpXMLCatalog(FILE *out, xmlCatalogEntryPtr catal) {
-    int ret;
-    xmlDocPtr doc;
+static xmlDocPtr
+xmlDumpXMLCatalogToDoc(xmlCatalogEntryPtr catal) {
     xmlNsPtr ns;
     xmlDtdPtr dtd;
     xmlNodePtr catalog;
-    xmlOutputBufferPtr buf;
+    xmlDocPtr doc = xmlNewDoc(NULL);
+    if (doc == NULL) {
+        return(NULL);
+    }
 
-    /*
-     * Rebuild a catalog
-     */
-    doc = xmlNewDoc(NULL);
-    if (doc == NULL)
-	return(-1);
     dtd = xmlNewDtd(doc, BAD_CAST "catalog",
-	       BAD_CAST "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN",
-BAD_CAST "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd");
+                    BAD_CAST "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN",
+                    BAD_CAST "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd");
 
     xmlAddChild((xmlNodePtr) doc, (xmlNodePtr) dtd);
 
     ns = xmlNewNs(NULL, XML_CATALOGS_NAMESPACE, NULL);
     if (ns == NULL) {
-	xmlFreeDoc(doc);
-	return(-1);
+        xmlFreeDoc(doc);
+        return(NULL);
     }
     catalog = xmlNewDocNode(doc, ns, BAD_CAST "catalog", NULL);
     if (catalog == NULL) {
-	xmlFreeNs(ns);
-	xmlFreeDoc(doc);
-	return(-1);
+        xmlFreeDoc(doc);
+        xmlFreeNs(ns);
+        return(NULL);
     }
     catalog->nsDef = ns;
     xmlAddChild((xmlNodePtr) doc, catalog);
-
     xmlDumpXMLCatalogNode(catal, catalog, doc, ns, NULL);
+
+    return(doc);
+}
+
+static int
+xmlDumpXMLCatalog(FILE *out, xmlCatalogEntryPtr catal) {
+    int ret;
+    xmlDocPtr doc;
+    xmlOutputBufferPtr buf;
+
+    /*
+     * Rebuild a catalog
+     */
+    doc = xmlDumpXMLCatalogToDoc(catal);
+    if (doc == NULL) {
+        return(-1);
+    }
 
     /*
      * reserialize it
@@ -3351,6 +3362,20 @@ xmlCatalogDump(FILE *out) {
 	xmlInitializeCatalog();
 
     xmlACatalogDump(xmlDefaultCatalog, out);
+}
+
+/**
+ * Dump all the global catalog content as a xmlDoc
+ * This function is just for testing/debugging purposes
+ *
+ * @returns  The catalog as xmlDoc or NULL if failed, it must be freed by the caller.
+ */
+xmlDocPtr
+xmlCatalogDumpDoc(void) {
+    if (!xmlCatalogInitialized)
+        xmlInitializeCatalog();
+
+    return xmlDumpXMLCatalogToDoc(xmlDefaultCatalog->xml);
 }
 #endif /* LIBXML_OUTPUT_ENABLED */
 

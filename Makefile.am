@@ -23,6 +23,7 @@ check_PROGRAMS = \
 	runxmlconf \
 	testModule \
 	testapi \
+	testcatalog \
 	testchar \
 	testdict \
 	testlimits \
@@ -120,6 +121,10 @@ testlimits_SOURCES=testlimits.c
 testlimits_DEPENDENCIES = $(DEPS)
 testlimits_LDADD= $(LDADDS)
 
+testcatalog_SOURCES=testcatalog.c
+testcatalog_DEPENDENCIES = $(DEPS)
+testcatalog_LDADD= $(LDADDS)
+
 testchar_SOURCES=testchar.c
 testchar_DEPENDENCIES = $(DEPS)
 testchar_LDADD= $(LDADDS)
@@ -167,6 +172,7 @@ check-local:
 	$(CHECKER) ./runtest$(EXEEXT)
 	$(CHECKER) ./testrecurse$(EXEEXT)
 	$(CHECKER) ./testapi$(EXEEXT)
+	$(CHECKER) ./testcatalog$(EXEEXT)
 	$(CHECKER) ./testchar$(EXEEXT)
 	$(CHECKER) ./testdict$(EXEEXT)
 	$(CHECKER) ./testparser$(EXEEXT)

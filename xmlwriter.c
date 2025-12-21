@@ -1552,6 +1552,11 @@ xmlOutputBufferWriteBase64(xmlOutputBufferPtr out, int len,
  * @param start  the position within the data of the first byte to encode
  * @param len  the number of bytes to encode
  * @returns the bytes written (may be 0 because of buffering) or -1 in case of error
+ *
+ * NOTE: No safety check is done on the length of data. This check is 
+ *       something that should happen outside of this call, the caller 
+ *       should know better the actual data and if it's reaching the end 
+ *       of the buffer or not.
  */
 int
 xmlTextWriterWriteBase64(xmlTextWriter *writer, const char *data,

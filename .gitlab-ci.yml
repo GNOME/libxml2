@@ -365,3 +365,8 @@ downstream-xmlstarlet:
   needs: [install]
   script:
     - sh .gitlab-ci/downstream-xmlstarlet.sh
+
+downstream-fuzzingharness:
+  image: gcr.io/oss-fuzz-base/base-builder@sha256:0241b5bf8a95a788807fd6632d544a0bae7289bd17f04b766dec79db7acab5f5
+  script:
+    - .gitlab-ci/downstream-harnessagent.sh

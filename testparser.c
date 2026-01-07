@@ -399,6 +399,49 @@ testCtxtParseContent(void) {
     return err;
 }
 
+/*
+ * Test that xmlParseInNodeContext doesn't hang when called on a node
+ * whose parent is an entity reference (not an element).
+ * Regression test for infinite loop bug in xmlCtxtParseContent.
+ */
+static int
+testParseInNodeContextEntityParent(void) {
+    xmlDocPtr doc;
+    xmlNodePtr root, entRef, textNode, result = NULL;
+    int err = 0;
+
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    root = xmlNewNode(NULL, BAD_CAST "root");
+    xmlDocSetRootElement(doc, root);
+
+    /* Create an entity reference node */
+    entRef = xmlNewReference(doc, BAD_CAST "testentity");
+    xmlAddChild(root, entRef);
+
+    /* Create a text node as child of the entity reference */
+    textNode = xmlNewText(BAD_CAST "content");
+    xmlAddChild(entRef, textNode);
+
+    /*
+     * This used to hang in an infinite loop because the code walked
+     * up parents with "cur = node->parent" instead of "cur = cur->parent".
+     */
+    xmlParseInNodeContext(textNode, "<x/>", 4, 0, &result);
+
+    if (result != NULL)
+        xmlFreeNodeList(result);
+
+    /*
+     * Entity reference children aren't freed automatically by xmlFreeDoc,
+     * so we need to unlink and free the text node manually.
+     */
+    xmlUnlinkNode(textNode);
+    xmlFreeNode(textNode);
+    xmlFreeDoc(doc);
+
+    return err;
+}
+
 static int
 testNoBlanks(void) {
     const xmlChar xml[] =
@@ -1504,6 +1547,7 @@ main(void) {
 #endif
 #ifdef LIBXML_OUTPUT_ENABLED
     err |= testCtxtParseContent();
+    err |= testParseInNodeContextEntityParent();
     err |= testNoBlanks();
     err |= testSaveNullEnc();
     err |= testDocDumpFormatMemoryEnc();

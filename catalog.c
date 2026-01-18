@@ -1243,7 +1243,6 @@ xmlParseXMLCatalogNode(xmlNodePtr cur, xmlCatalogPrefer prefer,
 	while (prev != NULL) {
 	    if ((prev->type == XML_CATA_NEXT_CATALOG) &&
 		(xmlStrEqual (prev->URL, entry->URL)) &&
-		(xmlStrEqual (prev->value, entry->value)) &&
 		(prev->prefer == entry->prefer) &&
 		(prev->group == entry->group)) {
 		    if (xmlDebugCatalogs)

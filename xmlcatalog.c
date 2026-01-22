@@ -105,7 +105,7 @@ xmlShellReadline(const char *prompt) {
     len = strlen(buf);
     ret = (char *) malloc(len + 1);
     if (ret != NULL) {
-       memcpy (ret, buf, len + 1);
+       memcpy(ret, buf, len); ret[len] = 0;
     }
     return(ret);
 }

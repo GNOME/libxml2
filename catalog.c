@@ -191,6 +191,62 @@ static xmlRMutex xmlCatalogMutex;
  */
 static int xmlCatalogInitialized = 0;
 
+/*
+ * HashTable to store any resolution query done to a XML_CATA_CATALOG
+ * entry to avoid cycles in resolution.
+ */
+static xmlHashTablePtr xmlCatalogResolveCache = NULL;
+
+/*
+ * xmlResetCatalogResolveCache
+ * Free the xmlCatalogResolveCache and sets to NULL
+ */
+static void
+xmlResetCatalogResolveCache(void)
+{
+    xmlRMutexLock(&xmlCatalogMutex);
+    if (xmlCatalogResolveCache != NULL) {
+        xmlHashFree(xmlCatalogResolveCache, NULL);
+        xmlCatalogResolveCache = NULL;
+    }
+    xmlRMutexUnlock(&xmlCatalogMutex);
+}
+
+/*
+ * xmlCatalogResolveCacheVisited
+ * Check if the url/pubID/sysID combination is present in the
+ * xmlCatalogResolveCache, and if not insert it.
+ *
+ * @param url  The catalog url
+ * @param pubID  The pubID resolve filed
+ * @param sysID  The sysID resolve filed
+ * @returns 1 if already present in the cache, 0 if not
+ */
+static int
+xmlCatalogResolveCacheVisited(const xmlChar *url,
+                              const xmlChar *pubID,
+                              const xmlChar *sysID)
+{
+    int ret = 0;
+    xmlRMutexLock(&xmlCatalogMutex);
+    if (xmlCatalogResolveCache == NULL) {
+        xmlCatalogResolveCache = xmlHashCreate(10);
+        xmlHashAddEntry3(xmlCatalogResolveCache, url, pubID, sysID, BAD_CAST url);
+        xmlRMutexUnlock(&xmlCatalogMutex);
+        return 0;
+    }
+
+    if (xmlHashLookup3(xmlCatalogResolveCache, url, pubID, sysID)) {
+        ret = 1;
+    } else {
+        xmlHashAddEntry3(xmlCatalogResolveCache, url, pubID, sysID, BAD_CAST url);
+        ret = 0;
+    }
+
+    xmlRMutexUnlock(&xmlCatalogMutex);
+    return ret;
+}
+
 /************************************************************************
  *									*
  *			Catalog error handlers				*
@@ -1162,6 +1218,7 @@ xmlParseXMLCatalogOneNode(xmlNodePtr cur, xmlCatalogEntryType type,
     return(ret);
 }
 
+
 /**
  * Examines an XML tree node of a catalog and build
  * a Catalog entry from it adding it to its parent. The examination can
@@ -2019,6 +2076,11 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
     }
     while (catal != NULL) {
 	if (catal->type == XML_CATA_CATALOG) {
+            if (xmlCatalogResolveCacheVisited(catal->URL, pubID, sysID)) {
+                if (xmlDebugCatalogs) xmlCatalogPrintDebug("Ignoring %s, already visited for %s, %s\n", catal->URL, pubID, sysID);
+                catal = catal->next;
+                continue;
+            }
 	    if (catal->children == NULL) {
 		xmlFetchXMLCatalogFile(catal);
 	    }
@@ -2087,6 +2149,12 @@ xmlCatalogListXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
     cur = catal;
     while (cur != NULL) {
 	if (cur->type == XML_CATA_CATALOG) {
+            if (xmlCatalogResolveCacheVisited(cur->URL, URI, NULL)) {
+                if (xmlDebugCatalogs) xmlCatalogPrintDebug("Ignoring %s, already visited for %s\n", cur->URL, URI);
+                cur = cur->next;
+                continue;
+            }
+
 	    if (cur->children == NULL) {
 		xmlFetchXMLCatalogFile(cur);
 	    }
@@ -2788,7 +2856,9 @@ xmlACatalogResolveSystem(xmlCatalog *catal, const xmlChar *sysID) {
     } else
 #endif /* LIBXML_SGML_CATALOG_ENABLED */
     {
-	ret = xmlCatalogListXMLResolve(catal->xml, NULL, sysID);
+        xmlResetCatalogResolveCache();
+        ret = xmlCatalogListXMLResolve(catal->xml, NULL, sysID);
+        xmlResetCatalogResolveCache();
 	if (ret == XML_CATAL_BREAK)
 	    ret = NULL;
     }
@@ -2826,7 +2896,9 @@ xmlACatalogResolvePublic(xmlCatalog *catal, const xmlChar *pubID) {
     } else
 #endif /* LIBXML_SGML_CATALOG_ENABLED */
     {
-	ret = xmlCatalogListXMLResolve(catal->xml, pubID, NULL);
+        xmlResetCatalogResolveCache();
+        ret = xmlCatalogListXMLResolve(catal->xml, pubID, NULL);
+        xmlResetCatalogResolveCache();
 	if (ret == XML_CATAL_BREAK)
 	    ret = NULL;
     }
@@ -2876,7 +2948,10 @@ xmlACatalogResolve(xmlCatalog *catal, const xmlChar * pubID,
     } else
 #endif /* LIBXML_SGML_CATALOG_ENABLED */
     {
+        xmlResetCatalogResolveCache();
         ret = xmlCatalogListXMLResolve(catal->xml, pubID, sysID);
+        xmlResetCatalogResolveCache();
+
 	if (ret == XML_CATAL_BREAK)
 	    ret = NULL;
     }
@@ -3655,7 +3730,9 @@ xmlCatalogLocalResolve(void *catalogs, const xmlChar *pubID,
     catal = (xmlCatalogEntryPtr) catalogs;
     if (catal == NULL)
 	return(NULL);
+    xmlResetCatalogResolveCache();
     ret = xmlCatalogListXMLResolve(catal, pubID, sysID);
+    xmlResetCatalogResolveCache();
     if ((ret != NULL) && (ret != XML_CATAL_BREAK))
 	return(ret);
     return(NULL);
@@ -3726,7 +3803,9 @@ xmlCatalogGetSystem(const xmlChar *sysID) {
      * Check first the XML catalogs
      */
     if (xmlDefaultCatalog != NULL) {
-	ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, NULL, sysID);
+        xmlResetCatalogResolveCache();
+        ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, NULL, sysID);
+        xmlResetCatalogResolveCache();
 	if ((ret != NULL) && (ret != XML_CATAL_BREAK)) {
 	    snprintf((char *) result, sizeof(result) - 1, "%s", (char *) ret);
 	    result[sizeof(result) - 1] = 0;
@@ -3771,7 +3850,9 @@ xmlCatalogGetPublic(const xmlChar *pubID) {
      * Check first the XML catalogs
      */
     if (xmlDefaultCatalog != NULL) {
-	ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, pubID, NULL);
+        xmlResetCatalogResolveCache();
+        ret = xmlCatalogListXMLResolve(xmlDefaultCatalog->xml, pubID, NULL);
+        xmlResetCatalogResolveCache();
 	if ((ret != NULL) && (ret != XML_CATAL_BREAK)) {
 	    snprintf((char *) result, sizeof(result) - 1, "%s", (char *) ret);
 	    result[sizeof(result) - 1] = 0;

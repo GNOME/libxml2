@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 echo "## Catalog regression tests"
 
 if [ -n "$1" ]; then

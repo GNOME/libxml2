@@ -2445,11 +2445,11 @@ xmlRemoveEntity(xmlEntityPtr ent) {
                (ent->etype == XML_EXTERNAL_PARAMETER_ENTITY)) {
         if (intSubset != NULL) {
             if (xmlHashLookup(intSubset->pentities, ent->name) == ent)
-                xmlHashRemoveEntry(intSubset->entities, ent->name, NULL);
+                xmlHashRemoveEntry(intSubset->pentities, ent->name, NULL);
         }
         if (extSubset != NULL) {
             if (xmlHashLookup(extSubset->pentities, ent->name) == ent)
-                xmlHashRemoveEntry(extSubset->entities, ent->name, NULL);
+                xmlHashRemoveEntry(extSubset->pentities, ent->name, NULL);
         }
     }
 }

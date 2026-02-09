@@ -432,7 +432,7 @@ set_target_properties(
     MACHO_CURRENT_VERSION "${LIBXML_MACHO_COMPAT}.${LIBXML_MICRO_VERSION}"
 )
 
-if(MSVC)
+if(WIN32)
     if(BUILD_SHARED_LIBS)
         set_target_properties(
             LibXml2

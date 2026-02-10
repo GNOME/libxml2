@@ -8658,7 +8658,7 @@ xmlRelaxNGValidateValue(xmlRelaxNGValidCtxtPtr ctxt,
 
                 if ((ret == 0) && (ctxt->state->value != NULL) &&
                     (ctxt->state->value != ctxt->state->endvalue)) {
-                    VALID_ERR2(XML_RELAXNG_ERR_LISTEXTRA,
+                    VALID_ERR2P(XML_RELAXNG_ERR_LISTEXTRA,
                                ctxt->state->value);
                     ret = -1;
                 }

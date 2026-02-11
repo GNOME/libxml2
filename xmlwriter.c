@@ -1801,6 +1801,7 @@ xmlTextWriterStartAttributeNS(xmlTextWriter *writer,
             if (p == 0) {
                 xmlWriterErrMsg(writer, XML_ERR_NO_MEMORY,
 								        "xmlTextWriterStartAttributeNS : out of memory!\n");
+                xmlFree(buf);
                 return -1;
             }
 
@@ -1809,12 +1810,20 @@ xmlTextWriterStartAttributeNS(xmlTextWriter *writer,
             if (p->uri == 0) {
                 xmlWriterErrMsg(writer, XML_ERR_NO_MEMORY,
                         "xmlTextWriterStartAttributeNS : out of memory!\n");
+                xmlFree(p->prefix);
                 xmlFree(p);
                 return -1;
             }
             p->elem = xmlListFront(writer->nodes);
 
-            xmlListPushFront(writer->nsstack, p);
+            if (xmlListPushFront(writer->nsstack, p) == 0) {
+                xmlWriterErrMsg(writer, XML_ERR_NO_MEMORY,
+                        "xmlTextWriterStartAttributeNS : out of memory!\n");
+                xmlFree(p->uri);
+                xmlFree(p->prefix);
+                xmlFree(p);
+                return -1;
+            }
         }
     }
 

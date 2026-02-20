@@ -2491,9 +2491,9 @@ xmlBuildRelativeURISafe(const xmlChar * URI, const xmlChar * base,
 {
     xmlChar *val = NULL;
     int ret = 0;
-    int ix;
-    int nbslash = 0;
-    int len;
+    size_t ix = 0;
+    size_t nbslash = 0;
+    size_t len = 0;
     xmlURIPtr ref = NULL;
     xmlURIPtr bas = NULL;
     const xmlChar *bptr, *uptr, *rptr;
@@ -2574,7 +2574,7 @@ xmlBuildRelativeURISafe(const xmlChar * URI, const xmlChar * base,
      * At this point we can compare the two paths
      */
     {
-        int pos = 0;
+        size_t pos = 0;
 
         /*
          * Next we compare the two strings and find where they first differ
@@ -2618,7 +2618,7 @@ xmlBuildRelativeURISafe(const xmlChar * URI, const xmlChar * base,
 	    goto done;
 	}
 
-	len = xmlStrlen (uptr) + 1;
+	len = (size_t) xmlStrlen (uptr) + 1;
     }
 
     if (nbslash == 0) {
@@ -2636,6 +2636,10 @@ xmlBuildRelativeURISafe(const xmlChar * URI, const xmlChar * base,
      * length of the remainder of the URI, plus enough space
      * for the "../" groups, plus one for the terminator
      */
+    if (len + 3 * nbslash > SIZE_MAX) {
+        ret = -1;
+        goto done;
+    }
     val = (xmlChar *) xmlMalloc (len + 3 * nbslash);
     if (val == NULL) {
         ret = -1;

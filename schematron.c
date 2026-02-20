@@ -1005,6 +1005,13 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
             }
 
             let = (xmlSchematronLetPtr) xmlMalloc(sizeof(xmlSchematronLet));
+            if (let == NULL) {
+                xmlSchematronPErrMemory(ctxt);
+                xmlFree(name);
+                xmlFree(value);
+                xmlXPathFreeCompExpr(var_comp);
+                return;
+            }
             let->name = name;
             let->comp = var_comp;
             let->next = NULL;

@@ -985,12 +985,14 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
                                   XML_SCHEMAP_NOROOT,
                                   "let has no value attribute",
                                   NULL, NULL);
+                xmlFree(name);
                 return;
             } else if (value[0] == 0) {
                 xmlSchematronPErr(ctxt, cur,
                                   XML_SCHEMAP_NOROOT,
                                   "let has an empty value attribute",
                                   NULL, NULL);
+                xmlFree(name);
                 xmlFree(value);
                 return;
             }
@@ -1001,6 +1003,8 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
                                   XML_SCHEMAP_NOROOT,
                                   "Failed to compile let expression %s",
                                   value, NULL);
+                xmlFree(name);
+                xmlFree(value);
                 return;
             }
 

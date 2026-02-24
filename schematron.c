@@ -361,6 +361,7 @@ xmlSchematronAddTest(xmlSchematronParserCtxtPtr ctxt,
     ret = (xmlSchematronTestPtr) xmlMalloc(sizeof(xmlSchematronTest));
     if (ret == NULL) {
         xmlSchematronPErrMemory(ctxt);
+        xmlXPathFreeCompExpr(comp);
         return (NULL);
     }
     memset(ret, 0, sizeof(xmlSchematronTest));
@@ -1047,8 +1048,10 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
 
                 testptr = xmlSchematronAddTest(ctxt, XML_SCHEMATRON_ASSERT,
                                                ruleptr, cur, test, report);
-                if (testptr == NULL)
+                if (testptr == NULL) {
                     xmlFree(test);
+                    xmlFree(report);
+                }
             }
         } else if (IS_SCHEMATRON(cur, "report")) {
             nbChecks++;
@@ -1070,8 +1073,10 @@ xmlSchematronParseRule(xmlSchematronParserCtxtPtr ctxt,
 
                 testptr = xmlSchematronAddTest(ctxt, XML_SCHEMATRON_REPORT,
                                                ruleptr, cur, test, report);
-                if (testptr == NULL)
+                if (testptr == NULL) {
                     xmlFree(test);
+                    xmlFree(report);
+                }
             }
         } else {
             xmlSchematronPErr(ctxt, cur,

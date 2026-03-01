@@ -5,7 +5,6 @@ project(
     license: 'MIT',
     default_options: [
         meson.version().version_compare('>=1.3.0') ? 'c_std=c11,c99,c89' : 'c_std=c11',
-        'buildtype=debug',
         'warning_level=3',
     ],
     meson_version: '>= 0.61',

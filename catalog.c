@@ -3338,6 +3338,7 @@ xmlCatalogCleanup(void) {
     if (xmlDebugCatalogs)
 	xmlCatalogPrintDebug(
 		"Catalogs cleanup\n");
+    xmlResetCatalogResolveCache();
     if (xmlCatalogXMLFiles != NULL)
 	xmlHashFree(xmlCatalogXMLFiles, xmlFreeCatalogHashEntryList);
     xmlCatalogXMLFiles = NULL;

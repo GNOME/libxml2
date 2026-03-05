@@ -348,23 +348,11 @@ downstream-nokogiri:
   script:
     - .gitlab-ci/downstream-nokogiri.sh
 
-downstream-perl:
-  image: registry.gitlab.gnome.org/gnome/libxml2
-  needs: [install]
-  script:
-    - sh .gitlab-ci/downstream-perl.sh
-
 downstream-php:
   image: registry.gitlab.gnome.org/gnome/libxml2
   needs: [install]
   script:
     - sh .gitlab-ci/downstream-php.sh
-
-downstream-xmlstarlet:
-  image: registry.gitlab.gnome.org/gnome/libxml2
-  needs: [install]
-  script:
-    - sh .gitlab-ci/downstream-xmlstarlet.sh
 
 downstream-fuzzingharness:
   image: gcr.io/oss-fuzz-base/base-builder@sha256:0241b5bf8a95a788807fd6632d544a0bae7289bd17f04b766dec79db7acab5f5

@@ -38,7 +38,7 @@ static int tests_quiet = 0;
 /* default maximum time for one parsing before declaring a timeout */
 #define DEFAULT_MAX_TIME 2 /* seconds */
 
-static int max_time = DEFAULT_MAX_TIME;
+static clock_t max_time = DEFAULT_MAX_TIME;
 static clock_t t0;
 static int timeout = 0;
 

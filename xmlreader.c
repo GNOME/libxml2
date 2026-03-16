@@ -5096,8 +5096,6 @@ xmlReaderForFd(int fd, const char *URL, const char *encoding, int options)
         xmlTextReaderErr(code, "failed to open fd");
         return(NULL);
     }
-    input->closecallback = NULL;
-
     reader = xmlNewTextReader(input, URL);
     if (reader == NULL) {
         xmlTextReaderErrMemory(NULL);
@@ -5353,8 +5351,6 @@ xmlReaderNewFd(xmlTextReader *reader, int fd,
         xmlTextReaderErr(code, "failed to open fd");
         return(-1);
     }
-    input->closecallback = NULL;
-
     if (xmlTextReaderSetup(reader, input, URL, encoding, options) < 0) {
         xmlTextReaderErrMemory(NULL);
         return(-1);

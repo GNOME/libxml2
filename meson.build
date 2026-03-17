@@ -356,7 +356,10 @@ if want_history
 endif
 
 if want_zlib
-    xmllint_deps += dependency('zlib')
+    zlib_dep = dependency('zlib')
+    xmllint_deps += zlib_dep
+else
+    zlib_dep = dependency('', required: false)
 endif
 
 ### crypto
@@ -507,7 +510,7 @@ testdso_mod = shared_module(
 
 checks = {
     'runsuite': [],
-    'runtest': threads_dep,
+    'runtest': [threads_dep, zlib_dep],
     'runxmlconf': [],
 # Disabled for now, see #694
 #    'testModule': [],

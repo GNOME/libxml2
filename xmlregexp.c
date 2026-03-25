@@ -5064,8 +5064,21 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 static void
 xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
     do {
-	if (CUR == '\\') {
-	    xmlFAParseCharClassEsc(ctxt);
+        if (CUR == '\\') {
+	    switch (NXT(1)) {
+		case 'n': case 'r': case 't':
+		case '\\': case '|': case '.': case '-': case '^': case '?':
+		case '*': case '+': case '{': case '}': case '(': case ')':
+		case '[': case ']':
+		    if (NXT(2) == '-') {
+			xmlFAParseCharRange(ctxt);
+		    } else {
+			xmlFAParseCharClassEsc(ctxt);
+		    }
+		    break;
+		default:
+		    xmlFAParseCharClassEsc(ctxt);
+	    }
 	} else {
 	    xmlFAParseCharRange(ctxt);
 	}

@@ -1046,6 +1046,153 @@ testReader(void) {
     return err;
 }
 
+#if defined(LIBXML_SCHEMAS_ENABLED) || defined(LIBXML_RELAXNG_ENABLED)
+typedef struct {
+    int sawRemote;
+} testReaderResourceLoaderCtxt;
+#endif
+
+#ifdef LIBXML_SCHEMAS_ENABLED
+static xmlParserErrors
+testReaderResourceLoader(void *ctxt, const char *url,
+                         const char *publicId ATTRIBUTE_UNUSED,
+                         xmlResourceType type ATTRIBUTE_UNUSED,
+                         xmlParserInputFlags flags,
+                         xmlParserInputPtr *out) {
+    testReaderResourceLoaderCtxt *loaderCtxt = ctxt;
+    static const char importedXsd[] =
+        "<?xml version='1.0'?>\n"
+        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'\n"
+        "           targetNamespace='urn:remote'\n"
+        "           xmlns='urn:remote'\n"
+        "           elementFormDefault='qualified'>\n"
+        "  <xs:simpleType name='RemoteType'>\n"
+        "    <xs:restriction base='xs:string'/>\n"
+        "  </xs:simpleType>\n"
+        "</xs:schema>\n";
+
+    if ((url == NULL) ||
+        (strcmp(url, "http://example.invalid/imported.xsd") != 0)) {
+        return xmlNewInputFromUrl(url, flags, out);
+    }
+
+    loaderCtxt->sawRemote = 1;
+    *out = xmlNewInputFromString(url, importedXsd, flags);
+    if (*out == NULL)
+        return XML_ERR_NO_MEMORY;
+
+    return XML_ERR_OK;
+}
+
+static int
+testReaderSchemaResourceLoader(void) {
+    const char *doc = "<doc>ok</doc>";
+    const char *xsd = "test/schemas/v012-reader-schema-main.xsd";
+    testReaderResourceLoaderCtxt loaderCtxt;
+    xmlTextReader *reader;
+    int err = 0;
+    int ret;
+
+    reader = xmlReaderForDoc(BAD_CAST doc, "test://doc.xml", NULL, 0);
+    if (reader == NULL) {
+        fprintf(stderr, "xmlReaderForDoc failed without resource loader\n");
+        return 1;
+    }
+    ret = xmlTextReaderSchemaValidate(reader, xsd);
+    if (ret == 0) {
+        fprintf(stderr, "xmlTextReaderSchemaValidate unexpectedly succeeded\n");
+        err = 1;
+    }
+    xmlFreeTextReader(reader);
+
+    loaderCtxt.sawRemote = 0;
+    reader = xmlReaderForDoc(BAD_CAST doc, "test://doc.xml", NULL, 0);
+    if (reader == NULL) {
+        fprintf(stderr, "xmlReaderForDoc failed with resource loader\n");
+        return 1;
+    }
+    xmlTextReaderSetResourceLoader(reader, testReaderResourceLoader,
+                                   &loaderCtxt);
+    ret = xmlTextReaderSchemaValidate(reader, xsd);
+    if (ret != 0 || loaderCtxt.sawRemote == 0) {
+        fprintf(stderr,
+                "xmlTextReaderSetResourceLoader was not used for schema imports\n");
+        err = 1;
+    }
+    xmlFreeTextReader(reader);
+
+    return err;
+}
+#endif
+
+#ifdef LIBXML_RELAXNG_ENABLED
+static xmlParserErrors
+testReaderRelaxNGResourceLoader(void *ctxt, const char *url,
+                                const char *publicId ATTRIBUTE_UNUSED,
+                                xmlResourceType type ATTRIBUTE_UNUSED,
+                                xmlParserInputFlags flags,
+                                xmlParserInputPtr *out) {
+    testReaderResourceLoaderCtxt *loaderCtxt = ctxt;
+    static const char importedRng[] =
+        "<grammar xmlns='http://relaxng.org/ns/structure/1.0'>\n"
+        "  <define name='docdef'>\n"
+        "    <element name='doc'><text/></element>\n"
+        "  </define>\n"
+        "</grammar>\n";
+
+    if ((url != NULL) &&
+        (strcmp(url, "http://example.invalid/imported.rng") == 0)) {
+        loaderCtxt->sawRemote = 1;
+        *out = xmlNewInputFromString(url, importedRng, flags);
+        if (*out == NULL)
+            return XML_ERR_NO_MEMORY;
+        return XML_ERR_OK;
+    }
+
+    return xmlNewInputFromUrl(url, flags, out);
+}
+
+static int
+testReaderRelaxNGResourceLoaderCtxt(void) {
+    const char *doc = "<doc>ok</doc>";
+    const char *rng = "test/relaxng/v012-reader-main.rng";
+    testReaderResourceLoaderCtxt loaderCtxt;
+    xmlTextReader *reader;
+    int err = 0;
+    int ret;
+
+    reader = xmlReaderForDoc(BAD_CAST doc, "test://doc.xml", NULL, 0);
+    if (reader == NULL) {
+        fprintf(stderr, "xmlReaderForDoc failed without Relax NG loader\n");
+        return 1;
+    }
+    ret = xmlTextReaderRelaxNGValidate(reader, rng);
+    if (ret == 0) {
+        fprintf(stderr, "xmlTextReaderRelaxNGValidate unexpectedly succeeded\n");
+        err = 1;
+    }
+    xmlFreeTextReader(reader);
+
+    loaderCtxt.sawRemote = 0;
+    reader = xmlReaderForDoc(BAD_CAST doc, "test://doc.xml", NULL, 0);
+    if (reader == NULL) {
+        fprintf(stderr, "xmlReaderForDoc failed with Relax NG loader\n");
+        return 1;
+    }
+    xmlTextReaderSetResourceLoader(reader, testReaderRelaxNGResourceLoader,
+                                   &loaderCtxt);
+    ret = xmlTextReaderRelaxNGValidate(reader, rng);
+    if (ret != 0 || loaderCtxt.sawRemote == 0) {
+        fprintf(stderr,
+                "xmlTextReaderSetResourceLoader was not used for Relax NG includes\n");
+        err = 1;
+    }
+    xmlFreeTextReader(reader);
+
+    return err;
+}
+#endif
+
 #ifdef LIBXML_XINCLUDE_ENABLED
 typedef struct {
     char *message;
@@ -1638,6 +1785,12 @@ main(void) {
     err |= testReaderContent();
 #endif
     err |= testReader();
+#ifdef LIBXML_SCHEMAS_ENABLED
+    err |= testReaderSchemaResourceLoader();
+#endif
+#ifdef LIBXML_RELAXNG_ENABLED
+    err |= testReaderRelaxNGResourceLoaderCtxt();
+#endif
 #ifdef LIBXML_XINCLUDE_ENABLED
     err |= testReaderXIncludeError();
 #endif
@@ -1658,4 +1811,3 @@ main(void) {
 
     return err;
 }
-

@@ -415,14 +415,19 @@ for file in os.listdir(xmlDocDir):
 
                 docs = extractDocs(func.find('detaileddescription'))
 
+                # python 2.7 compat, https://gitlab.gnome.org/GNOME/libxml2/-/issues/1092
+                encoding = 'unicode'
+                if sys.version_info[0] == 2:
+                    encoding = 'utf-8'
+
                 rtype = etree.tostring(func.find('type'),
-                    method='text', encoding='utf-8').rstrip()
+                    method='text', encoding=encoding).rstrip()
 
                 valid = True
                 args = []
                 for arg in func.findall('param'):
                     atype = etree.tostring(arg.find('type'),
-                        method='text', encoding='utf-8').rstrip()
+                        method='text', encoding=encoding).rstrip()
                     if atype == 'void':
                         continue
 

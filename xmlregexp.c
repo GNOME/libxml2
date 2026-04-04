@@ -4896,6 +4896,12 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
                 case 't':
                     cur = '\t';
                     break;
+                case 'u':
+                    cur = parse_escaped_codepoint(ctxt);
+                    if (cur < 0) {
+                        return;
+                    }
+                    break;
             }
 	    xmlRegAtomAddRange(ctxt, ctxt->atom, ctxt->neg,
 			       XML_REGEXP_CHARVAL, cur, cur, NULL);
@@ -4980,9 +4986,17 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	    case 'n': start = 0xA; break;
 	    case 'r': start = 0xD; break;
 	    case 't': start = 0x9; break;
+	    case 'u':
+		start = parse_escaped_codepoint(ctxt);
+		if (start < 0) {
+		    return;
+		}
+		break;
 	    case '\\': case '|': case '.': case '-': case '^': case '?':
 	    case '*': case '+': case '{': case '}': case '(': case ')':
-	    case '[': case ']':
+	    case '[': case ']': case '!': case '"': case '#': case '$':
+	    case '%': case ',': case '/': case ':': case ';': case '=':
+	    case '>': case '@': case '`': case '~':
 		start = cur; break;
 	    default:
 		ERROR("Invalid escape value");
@@ -5025,9 +5039,17 @@ xmlFAParseCharRange(xmlRegParserCtxtPtr ctxt) {
 	    case 'n': end = 0xA; break;
 	    case 'r': end = 0xD; break;
 	    case 't': end = 0x9; break;
+	    case 'u':
+		end = parse_escaped_codepoint(ctxt);
+		if (end < 0) {
+		    return;
+		}
+		break;
 	    case '\\': case '|': case '.': case '-': case '^': case '?':
 	    case '*': case '+': case '{': case '}': case '(': case ')':
-	    case '[': case ']':
+	    case '[': case ']': case '!': case '"': case '#': case '$':
+	    case '%': case ',': case '/': case ':': case ';': case '=':
+	    case '>': case '@': case '`': case '~':
 		end = cur; break;
 	    default:
 		ERROR("Invalid escape value");
@@ -5069,8 +5091,17 @@ xmlFAParsePosCharGroup(xmlRegParserCtxtPtr ctxt) {
 		case 'n': case 'r': case 't':
 		case '\\': case '|': case '.': case '-': case '^': case '?':
 		case '*': case '+': case '{': case '}': case '(': case ')':
-		case '[': case ']':
+		case '[': case ']': case '!': case '"': case '#': case '$':
+		case '%': case ',': case '/': case ':': case ';': case '=':
+		case '>': case '@': case '`': case '~':
 		    if (NXT(2) == '-') {
+			xmlFAParseCharRange(ctxt);
+		    } else {
+			xmlFAParseCharClassEsc(ctxt);
+		    }
+		    break;
+		case 'u':
+		    if (NXT(6) == '-') {
 			xmlFAParseCharRange(ctxt);
 		    } else {
 			xmlFAParseCharClassEsc(ctxt);

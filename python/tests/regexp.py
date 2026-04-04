@@ -29,7 +29,11 @@ check_regex(r"[\t-\r]", "\t\n\r", ["a", "(", ""])
 check_regex("[\\t-\\r]", "\t\n\r", ["a", "(", ""])
 check_regex(r"[\[-\]]", "[]\\", "Z^")
 check_regex(r"[\*-/]", "*+,-./", "()0")
-
+# Non-standard escape sequences
+check_regex(r"[\u0041-\u005A]", "ABCMYZ", ["a", "0", "[", ""])
+check_regex(r"[\u0009\u0061-\u007A]", "\tabcmyz", ["A", "0", "{", "", "\n"])
+check_regex(r"[\!-\%]", '!"#$%', ["&", " ", "a", ""])
+check_regex(r"[\:-\>]", ':;<=>',  ["?", "9", "@", ""])
 
 # Memory debug specific
 libxml2.cleanupParser()

@@ -5232,6 +5232,57 @@ automataTest(const char *filename, const char *result,
 #endif /* LIBXML_REGEXP_ENABLED */
 
 /************************************************************************
+ *                                                                      *
+ *                      xmlCopy Tests                                   *
+ *                                                                      *
+ ************************************************************************/
+static int
+xmlCopyEntityTest(const char *filename ATTRIBUTE_UNUSED,
+                  const char *result ATTRIBUTE_UNUSED,
+                  const char *err ATTRIBUTE_UNUSED,
+                  int options ATTRIBUTE_UNUSED) {
+
+    int ret = 0;
+    xmlDocPtr doc = NULL;
+    xmlDocPtr copy = NULL;
+    xmlChar *before = NULL;
+    xmlChar *after = NULL;
+    const char *xml =
+        "<!DOCTYPE x [<!ENTITY e \"AAAA\">]>"
+        "<r ID=\"&e;_suffix\"/>";
+
+    doc = xmlReadMemory(xml, (int)strlen(xml), "doc.xml", NULL, 0);
+    if (!doc) {
+        fprintf(stderr, "xmlReadMemory failed\n");
+        ret = 1;
+        goto done;
+    }
+    copy = xmlCopyDoc(doc, 1);
+    if (!copy) {
+        fprintf(stderr, "xmlCopyDoc failed\n");
+        ret = 1;
+        goto done;
+    }
+
+    before = xmlGetProp(xmlDocGetRootElement(doc), BAD_CAST "ID");
+    after = xmlGetProp(xmlDocGetRootElement(copy), BAD_CAST "ID");
+
+    if (xmlStrcmp(before, after) != 0) {
+        fprintf(stderr, "RESET Attribute value changed after copy!\n");
+        ret = 1;
+    }
+
+done:
+    xmlFree(before);
+    xmlFree(after);
+    xmlFreeDoc(doc);
+    xmlFreeDoc(copy);
+
+    return ret;
+}
+
+
+/************************************************************************
  *									*
  *			Tests Descriptions				*
  *									*
@@ -5465,6 +5516,8 @@ testDesc testDescriptions[] = {
       xmlReaderForFdGzTest, "./test/slashdot.xml", NULL, NULL, NULL, 0 },
 #endif
 #endif
+
+    { "xmlCopyEntity children test" , xmlCopyEntityTest, NULL, NULL, NULL, NULL, 0 },
 
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}
 };

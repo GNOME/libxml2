@@ -1170,7 +1170,7 @@ xmlC14NProcessAttrsAxis(xmlC14NCtxPtr ctx, xmlNodePtr cur, int parent_visible)
              * visible!
              */
             tmp = cur->parent;
-            while (tmp != NULL) {
+            while (tmp != NULL && tmp->type == XML_ELEMENT_NODE) {
                 attr = tmp->properties;
                 while (attr != NULL) {
                     if (xmlC14NIsXmlAttr(attr) != 0) {

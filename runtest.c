@@ -3619,9 +3619,6 @@ schemasOneTest(const char *sch,
         testErrorsSize = parseErrorsSize;
         testErrors[parseErrorsSize] = 0;
 
-        if (schemas == NULL)
-            goto done;
-
         ctxt = xmlSchemaNewValidCtxt(schemas);
         xmlSchemaSetValidStructuredErrors(ctxt, testStructuredErrorHandler,
                                           NULL);
@@ -3632,6 +3629,7 @@ schemasOneTest(const char *sch,
             doc = xmlReadFile(filename, NULL, options);
             if (doc == NULL) {
                 fprintf(stderr, "failed to parse instance %s for %s\n", filename, sch);
+                xmlSchemaFreeValidCtxt(ctxt);
                 return(-1);
             }
             validResult = xmlSchemaValidateDoc(ctxt, doc);
@@ -3651,9 +3649,9 @@ schemasOneTest(const char *sch,
 
         xmlSchemaFreeValidCtxt(ctxt);
 
-done:
         if (compareFileMem(err, testErrors, testErrorsSize)) {
-            fprintf(stderr, "Error for %s on %s failed\n", filename, sch);
+            fprintf(stderr, "Error for %s on %s failed in round %d: %s\n",
+                filename, sch, i, testErrors);
             ret = 1;
         }
     }
@@ -3742,14 +3740,57 @@ schemasTest(const char *filename,
 	}
 
         nb_tests++;
-        ret = schemasOneTest(filename, instance, err, options, schemas);
-        if (ret != 0)
-            res = ret;
+        if (schemas == NULL) {
+            /* schema load failed, verify the error message*/
+            if (compareFileMem(err, testErrors, testErrorsSize)) {
+                fprintf(stderr, "Error for %s failed\n", filename);
+                res = 1;
+            }
+        } else {
+            ret = schemasOneTest(filename, instance, err, options, schemas);
+            if (ret != 0)
+                res = ret;
+        }
     }
     globfree(&globbuf);
     xmlSchemaFree(schemas);
 
     return(res);
+}
+
+/**
+ * Validate an XML instance using XSI-based dynamic schema assembly.
+ * The validation context is created with a NULL schema, so the schema
+ * is discovered from xsi:schemaLocation in the instance document.
+ *
+ * @param filename  the XML instance file
+ * @param result  unused
+ * @param err  unused
+ * @param options  parser options
+ * @returns 0 in case of success, an error code otherwise
+ */
+static int
+schemasXsiTest(const char *filename,
+               const char *resul ATTRIBUTE_UNUSED,
+               const char *errr ATTRIBUTE_UNUSED,
+               int options) {
+    const char *base = baseFilename(filename);
+    int len, ret;
+    char err[500];
+    char prefix[500];
+
+    len = strlen(base);
+    if ((len > 499) || (len < 5))
+        return(-1);
+    memcpy(prefix, base, len - 4); /* remove .xml */
+    prefix[len - 4] = 0;
+
+    ret = snprintf(err, 499, "result/schemas/%s_0.err", prefix);
+    if (ret >= 499)
+        err[499] = 0;
+
+    nb_tests++;
+    return(schemasOneTest(filename, filename, err, options, NULL));
 }
 #endif /* LIBXML_SCHEMAS_ENABLED */
 
@@ -5450,6 +5491,9 @@ testDesc testDescriptions[] = {
 #ifdef LIBXML_SCHEMAS_ENABLED
     { "Schemas regression tests" ,
       schemasTest, "./test/schemas/*_*.xsd", NULL, NULL, NULL,
+      0 },
+    { "Schemas XSI assembly tests" ,
+      schemasXsiTest, "./test/schemas/any1_0.xml", "result/schemas/",  NULL, NULL,
       0 },
 #endif
 #ifdef LIBXML_RELAXNG_ENABLED

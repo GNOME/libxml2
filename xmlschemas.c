@@ -9971,17 +9971,18 @@ xmlSchemaSchemaRelationAddChild(xmlSchemaBucketPtr bucket,
 
 static const xmlChar *
 xmlSchemaBuildAbsoluteURI(xmlDictPtr dict, const xmlChar* location,
-			  xmlNodePtr ctxtNode)
+			  xmlNodePtr ctxtNode,
+			  const xmlChar *baseURI)
 {
     /*
     * Build an absolute location URI.
     */
     if (location != NULL) {
-	if (ctxtNode == NULL)
-	    return(location);
-	else {
-	    xmlChar *base, *URI;
-	    const xmlChar *ret = NULL;
+	xmlChar *URI;
+	const xmlChar *ret;
+
+	if (ctxtNode != NULL) {
+	    xmlChar *base;
 
 	    base = xmlNodeGetBase(ctxtNode->doc, ctxtNode);
 	    if (base == NULL) {
@@ -9990,11 +9991,15 @@ xmlSchemaBuildAbsoluteURI(xmlDictPtr dict, const xmlChar* location,
 		URI = xmlBuildURI(location, base);
 		xmlFree(base);
 	    }
-	    if (URI != NULL) {
-		ret = xmlDictLookup(dict, URI, -1);
-		xmlFree(URI);
-		return(ret);
-	    }
+	} else if (baseURI != NULL) {
+	    URI = xmlBuildURI(location, baseURI);
+	} else {
+	    return(location);
+	}
+	if (URI != NULL) {
+	    ret = xmlDictLookup(dict, URI, -1);
+	    xmlFree(URI);
+	    return(ret);
 	}
     }
     return(NULL);
@@ -10564,7 +10569,7 @@ xmlSchemaParseImport(xmlSchemaParserCtxtPtr pctxt, xmlSchemaPtr schema,
     */
     if (schemaLocation != NULL)
 	schemaLocation = xmlSchemaBuildAbsoluteURI(pctxt->dict,
-	    schemaLocation, node);
+	    schemaLocation, node, NULL);
     ret = xmlSchemaAddSchemaDoc(pctxt, XML_SCHEMA_SCHEMA_IMPORT,
 	schemaLocation, NULL, NULL, 0, node, thisTargetNamespace,
 	namespaceName, &bucket);
@@ -21176,6 +21181,7 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
     int ret = 0;
     xmlSchemaParserCtxtPtr pctxt;
     xmlSchemaBucketPtr bucket = NULL;
+    const xmlChar *baseURI = NULL;
 
     if ((vctxt == NULL) || (schema == NULL))
 	return (-1);
@@ -21193,9 +21199,15 @@ xmlSchemaAssembleByLocation(xmlSchemaValidCtxtPtr vctxt,
     }
     /*
     * Acquire the schema document.
+    * In streaming mode, node is NULL, so pass the input document's
+    * filename as the base URI for resolving relative locations.
     */
+    if ((node == NULL) &&
+        (vctxt->parserCtxt != NULL) &&
+        (vctxt->parserCtxt->input != NULL))
+        baseURI = BAD_CAST vctxt->parserCtxt->input->filename;
     location = xmlSchemaBuildAbsoluteURI(pctxt->dict,
-	location, node);
+        location, node, baseURI);
     /*
     * Note that we pass XML_SCHEMA_SCHEMA_IMPORT here;
     * the process will automatically change this to

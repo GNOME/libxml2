@@ -15,6 +15,7 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
+#include <libxml/xmlschemas.h>
 
 #include <string.h>
 
@@ -1123,6 +1124,55 @@ testReaderSchemaResourceLoader(void) {
 
     return err;
 }
+
+/*
+ * Regression test for a type confusion in xmlParseReference that crashed
+ * a schema-validating xmlTextReader whenever the document expanded an
+ * internal entity.
+ */
+static int
+testReaderSchemaEntityExpansion(void) {
+    static const char xsd[] =
+        "<?xml version='1.0'?>\n"
+        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>\n"
+        "  <xs:element name='e' type='xs:integer'/>\n"
+        "</xs:schema>\n";
+    static const char xml[] =
+        "<!DOCTYPE e [<!ENTITY n \"not-an-int\">]>\n"
+        "<e>&n;</e>";
+    xmlSchemaParserCtxtPtr spc;
+    xmlSchemaPtr schema;
+    xmlTextReaderPtr reader;
+    int err = 0;
+    int ret;
+
+    spc = xmlSchemaNewMemParserCtxt(xsd, (int) sizeof(xsd) - 1);
+    schema = xmlSchemaParse(spc);
+    xmlSchemaFreeParserCtxt(spc);
+    if (schema == NULL) {
+        fprintf(stderr, "xmlSchemaParse failed\n");
+        return 1;
+    }
+
+    reader = xmlReaderForMemory(xml, (int) sizeof(xml) - 1, "doc.xml", NULL,
+                                XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+    xmlTextReaderSetSchema(reader, schema);
+
+    while ((ret = xmlTextReaderRead(reader)) == 1)
+        ;
+    if (ret != 0) {
+        fprintf(stderr, "reader failed on entity-expanded document\n");
+        err = 1;
+    }
+    if (xmlTextReaderIsValid(reader) != 0) {
+        fprintf(stderr, "schema missed invalid entity-expanded text\n");
+        err = 1;
+    }
+
+    xmlFreeTextReader(reader);
+    xmlSchemaFree(schema);
+    return err;
+}
 #endif
 
 #ifdef LIBXML_RELAXNG_ENABLED
@@ -1787,6 +1837,7 @@ main(void) {
     err |= testReader();
 #ifdef LIBXML_SCHEMAS_ENABLED
     err |= testReaderSchemaResourceLoader();
+    err |= testReaderSchemaEntityExpansion();
 #endif
 #ifdef LIBXML_RELAXNG_ENABLED
     err |= testReaderRelaxNGResourceLoaderCtxt();

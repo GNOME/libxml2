@@ -3865,31 +3865,22 @@ xmlRelaxNGGetElements(xmlRelaxNGParserCtxtPtr ctxt,
             if (ret == NULL) {
                 max = 10;
                 ret = (xmlRelaxNGDefinePtr *)
-                    xmlMalloc((max + 1) * sizeof(xmlRelaxNGDefinePtr));
+                    xmlMalloc(max * sizeof(xmlRelaxNGDefinePtr));
                 if (ret == NULL) {
                     xmlRngPErrMemory(ctxt);
                     return (NULL);
                 }
-            } else if (max <= len) {
-	        xmlRelaxNGDefinePtr *temp;
-                int newSize;
+            } else if (max <= len + 1) {
+                xmlRelaxNGDefinePtr *temp;
 
-                newSize = xmlGrowCapacity(max,
-                        sizeof(xmlRelaxNGDefinePtr), 10, XML_MAX_ITEMS);
-                if (newSize < 0) {
-                    xmlRngPErrMemory(ctxt);
-		    xmlFree(ret);
-                    return (NULL);
-                }
-                temp = xmlRealloc(ret,
-                        (newSize + 1) * sizeof(xmlRelaxNGDefinePtr));
+                temp = xmlGrowArray(ret, sizeof(xmlRelaxNGDefinePtr),
+                                    &max, 10, XML_MAX_ITEMS);
                 if (temp == NULL) {
                     xmlRngPErrMemory(ctxt);
-		    xmlFree(ret);
+                    xmlFree(ret);
                     return (NULL);
                 }
-		ret = temp;
-                max = newSize;
+                ret = temp;
             }
             ret[len++] = cur;
             ret[len] = NULL;

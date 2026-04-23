@@ -54,20 +54,6 @@ xmlGrowCapacity(int capacity, size_t elemSize, int min, int max) {
     return(capacity + extra);
 }
 
-/**
- * @array:  pointer to the array
- * @elemSize:  size of each element in bytes
- * @capacity:  pointer to current capacity (updated on success)
- * @min:  initial allocation size
- * @max:  maximum number of elements
- *
- * Grow an array, combining overflow-checked capacity growth with
- * reallocation. Similar to reallocarray(3) with built-in growth.
- *
- * On success, returns the new pointer and updates *capacity.
- * On failure, returns NULL with the original array and capacity
- * preserved.
- */
 XML_HIDDEN void *
 xmlGrowArray(void *array, size_t elemSize, int *capacity, int min, int max);
 

@@ -3876,7 +3876,8 @@ xmlStaticCopyNode(xmlNode *node, xmlDoc *doc, xmlNode *parent,
 		return((xmlNodePtr) xmlCopyPropInternal(doc, parent, (xmlAttrPtr) node));
         case XML_NAMESPACE_DECL:
 	    return((xmlNodePtr) xmlCopyNamespaceList((xmlNsPtr) node));
-
+        case XML_DTD_NODE:
+            return((xmlNodePtr) xmlCopyDtd((xmlDtdPtr) node));
         case XML_DOCUMENT_NODE:
         case XML_HTML_DOCUMENT_NODE:
 	    return((xmlNodePtr) xmlCopyDoc((xmlDocPtr) node, extended));

@@ -2884,6 +2884,50 @@ xmlReaderForFdGzTest(const char *filename, const char *result ATTRIBUTE_UNUSED,
 
 #endif
 
+#ifdef LIBXML_READER_ENABLED
+/**
+ * Checking that xmlTextReaderReadOuterXml copy the XML_DTD_NODE
+ *
+ * xmlTextReaderReadOuterXml does not copy XML_DTD_NODE since libxml2 2.13.0
+ * https://gitlab.gnome.org/GNOME/libxml2/-/issues/1108
+ */
+static int
+xmlTextReaderReadOuterXmlTest(const char *filename ATTRIBUTE_UNUSED,
+                              const char *result ATTRIBUTE_UNUSED,
+                              const char *err ATTRIBUTE_UNUSED,
+                              int options ATTRIBUTE_UNUSED) {
+    xmlTextReaderPtr reader = NULL;
+    int ret = 0;
+    int res = 1;
+    xmlChar *out = NULL;
+
+    const char *doc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                      "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\""
+                      "  \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+                      "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\">"
+                      "  <rect width=\"400\" height=\"300\" fill=\"white\"/>"
+                      "</svg>";
+
+    reader = xmlReaderForMemory(doc, strlen(doc), "doc.svg", NULL, XML_PARSE_NOENT);
+
+    while (res == 1) {
+        res = xmlTextReaderRead(reader);
+        if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_DOCUMENT_TYPE) {
+            out = xmlTextReaderReadOuterXml(reader);
+            ret = xmlStrEqual(out, BAD_CAST "<!DOCTYPE svg PUBLIC \"-//W3C//DTD //SVG //1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">") == 1;
+            if (out != NULL) {
+                xmlFree(out);
+                out = NULL;
+            }
+            break;
+        }
+    }
+
+    xmlFreeTextReader(reader);
+    return(ret);
+}
+#endif
+
 /**
  * Parse a file using the reader API and check for errors.
  *
@@ -5560,7 +5604,10 @@ testDesc testDescriptions[] = {
       xmlReaderForFdGzTest, "./test/slashdot.xml", NULL, NULL, NULL, 0 },
 #endif
 #endif
-
+#if defined(LIBXML_OUTPUT_ENABLED) && defined(LIBXML_READER_ENABLED)
+    { "xmlTextReaderReadOuterXml copy XML_DTD_NODE",
+      xmlTextReaderReadOuterXmlTest, NULL, NULL, NULL, NULL, 0 },
+#endif
     { "xmlCopyEntity children test" , xmlCopyEntityTest, NULL, NULL, NULL, NULL, 0 },
 
     {NULL, NULL, NULL, NULL, NULL, NULL, 0}

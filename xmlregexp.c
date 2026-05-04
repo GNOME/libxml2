@@ -736,12 +736,12 @@ xmlRegNewParserCtxt(const xmlChar *string) {
 	return(NULL);
     memset(ret, 0, sizeof(xmlRegParserCtxt));
     if (string != NULL) {
-	ret->string = xmlStrdup(string);
-	ret->len = strlen((const char *) ret->string);
+        ret->string = xmlStrdup(string);
         if (ret->string == NULL) {
             xmlFree(ret);
             return(NULL);
         }
+        ret->len = strlen((const char *) ret->string);
     }
     ret->cur = ret->string;
     ret->neg = 0;

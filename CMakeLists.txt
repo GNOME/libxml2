@@ -574,17 +574,19 @@ if(LIBXML2_WITH_TESTS)
         endforeach()
     endfunction()
 
-    add_suite("scripts" xmllint)
-    add_suite("catalogs" xmlcatalog)
+    if(LIBXML2_WITH_PROGRAMS)
+        add_suite("scripts" xmllint)
+        add_suite("catalogs" xmlcatalog)
 
-    add_test(
-        NAME catalog_add_del
-        COMMAND ${CMAKE_COMMAND}
-                -DXMLCAT=$<TARGET_FILE:xmlcatalog>
-                -DEXPECTED_FULL=${CMAKE_CURRENT_SOURCE_DIR}/result/catalogs/mycatalog.full
-                -DEXPECTED_EMPTY=${CMAKE_CURRENT_SOURCE_DIR}/result/catalogs/mycatalog.empty
-                -P ${CMAKE_CURRENT_SOURCE_DIR}/test_xmlcatalog_add_del.cmake
-    )
+        add_test(
+            NAME catalog_add_del
+            COMMAND ${CMAKE_COMMAND}
+                    -DXMLCAT=$<TARGET_FILE:xmlcatalog>
+                    -DEXPECTED_FULL=${CMAKE_CURRENT_SOURCE_DIR}/result/catalogs/mycatalog.full
+                    -DEXPECTED_EMPTY=${CMAKE_CURRENT_SOURCE_DIR}/result/catalogs/mycatalog.empty
+                    -P ${CMAKE_CURRENT_SOURCE_DIR}/test_xmlcatalog_add_del.cmake
+        )
+    endif()
 
 endif()
 

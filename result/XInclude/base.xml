@@ -6,7 +6,7 @@
         ents/one/two2
     </elem><elem xml:base="../../ents/one2/two">
         ents/one2/two
-    </elem><elem xml:base="two/three/four">
+    </elem><elem xml:base="../../../docs/one/two/three/four">
         docs/one/two/three/four
     </elem>
 </doc>

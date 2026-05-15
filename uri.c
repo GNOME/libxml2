@@ -1507,7 +1507,7 @@ xmlNormalizePath(char *path, int isFile) {
                         break;
                     cur += 3;
                     continue;
-                } else if (out[0] == '/') {
+                } else if (path[0] == '/') {
                     /* Ignore extraneous ".." in absolute paths */
                     if (cur[2] == 0)
                         break;

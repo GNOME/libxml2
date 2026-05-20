@@ -128,6 +128,9 @@ xmlBufCreateMem(const xmlChar *mem, size_t size, int isStatic) {
     if (mem == NULL)
         return(NULL);
 
+    if (size == SIZE_MAX)
+        return(NULL);
+
     ret = xmlMalloc(sizeof(*ret));
     if (ret == NULL)
         return(NULL);

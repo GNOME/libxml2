@@ -757,8 +757,13 @@ xmlBufferDetach(xmlBuffer *buf) {
 xmlBuffer *
 xmlBufferCreateStatic(void *mem, size_t size) {
     xmlBufferPtr buf = xmlBufferCreateSize(size);
+    if (buf == NULL)
+        return(NULL);
 
-    xmlBufferAdd(buf, mem, size);
+    if (xmlBufferAdd(buf, mem, size) != XML_ERR_OK) {
+        xmlBufferFree(buf);
+        return(NULL);
+    }
     return(buf);
 }
 

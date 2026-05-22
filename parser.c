@@ -11568,7 +11568,6 @@ xmlIOParseDTD(xmlSAXHandler *sax, xmlParserInputBuffer *input,
 
     pinput = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
     if (pinput == NULL) {
-        xmlFreeParserInputBuffer(input);
 	xmlFreeParserCtxt(ctxt);
 	return(NULL);
     }

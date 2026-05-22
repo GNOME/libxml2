@@ -12,6 +12,7 @@
 
 #include "libxml.h"
 #include <stdio.h>
+#include <string.h>
 
 #ifdef LIBXML_CATALOG_ENABLED
 #include <libxml/catalog.h>
@@ -78,12 +79,63 @@ testRepeatedNextCatalog(void) {
     return ret;
 }
 
+/*
+ * Test repeated call to xmlCatalogResolveURI
+ * See https://gitlab.gnome.org/GNOME/libxml2/-/work_items/1125
+ */
+static int
+testRepeatedResolveURI(void) {
+    int ret = 0;
+    const char *cat = "test/catalogs/stylesheet.xml";
+    const char *uri = "http://www.oasis-open.org/committes/tr.xsl";
+    xmlDocPtr doc = NULL;
+
+    xmlChar *call1 = NULL;
+    xmlChar *call2 = NULL;
+
+    xmlInitParser();
+    xmlLoadCatalog(cat);
+
+    call1 = xmlCatalogResolveURI(BAD_CAST uri);
+    call2 = xmlCatalogResolveURI(BAD_CAST uri);
+
+    xmlCatalogCleanup();
+    xmlFreeDoc(doc);
+
+    /* Ensure that both calls returns the same */
+
+    if (call1 == NULL && call2 == NULL) {
+        ret = 0;
+    } else if (call1 == NULL || call2 == NULL) {
+        fprintf(stderr,
+                "CATALOG-FAILURE: Different output for the "
+                "same resolve call %s != %s\n",
+                call1, call2);
+        ret = 1;
+    } else if (strcmp((char*)call1, (char*)call2) != 0) {
+        fprintf(stderr,
+                "CATALOG-FAILURE: Different output for the "
+                "same resolve call %s != %s\n",
+                call1, call2);
+        ret = 1;
+    }
+
+
+    if (call1)
+        xmlFree(call1);
+    if (call2)
+        xmlFree(call2);
+
+    return ret;
+}
+
 int
 main(void) {
     int err = 0;
 
     err |= testRecursiveDelegateUri();
     err |= testRepeatedNextCatalog();
+    err |= testRepeatedResolveURI();
 
     return err;
 }

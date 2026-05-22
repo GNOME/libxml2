@@ -10,6 +10,17 @@ fi
 
 exitcode=0
 
+# Test xmlcatalog --shell command line
+# Case 1: Really long argument (470 chars)
+input=""; for i in {1..470}; do input="${input}A"; done
+echo $input | $xmlcatalog --shell test/catalogs/dockbook.xml || exit 1
+# Case 2: public + long argument
+input="public "; for i in {1..470}; do input="${input}A"; done
+echo $input | $xmlcatalog --shell test/catalogs/dockbook.xml || exit 1
+# Case 3: public + lots of args
+input="public "; for i in {1..80}; do input="${input} x"; done
+echo $input | $xmlcatalog --shell test/catalogs/dockbook.xml || exit 1
+
 for i in test/catalogs/*.script ; do
     name=$(basename $i .script)
     xml="./test/catalogs/$name.xml"

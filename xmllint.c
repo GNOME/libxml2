@@ -3075,8 +3075,9 @@ xmllintMain(int argc, const char **argv, FILE *errStream,
      * Note that we must not make any memory allocations through xmlMalloc
      * before calling xmlMemSetup.
      */
+    xmllintMaxmem = 0;
     if (lint->maxmem != 0) {
-        xmllintMaxmem = 0;
+        xmllintMaxmem = lint->maxmem;
         xmllintMaxmemReached = 0;
         xmllintOom = 0;
         xmlMemSetup(myFreeFunc, myMallocFunc, myReallocFunc, myStrdupFunc);

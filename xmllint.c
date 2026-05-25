@@ -2494,6 +2494,11 @@ parseInteger(unsigned long *result, FILE *errStream, const char *ctxt,
     char *strEnd;
     unsigned long val;
 
+    if (str != NULL && *str == '-') {
+        fprintf(errStream, "%s: value not allowed: %s\n", ctxt, str);
+        return(-1);
+    }
+
     errno = 0;
     val = strtoul(str, &strEnd, 10);
     if (errno == EINVAL || *strEnd != 0) {

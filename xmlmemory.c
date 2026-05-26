@@ -367,6 +367,9 @@ xmlGrowArray(void *array, size_t elemSize, int *capacity, int min, int max) {
     void *tmp;
     int newSize;
 
+    if (capacity == NULL)
+        return(NULL);
+
     newSize = xmlGrowCapacity(*capacity, elemSize, min, max);
     if (newSize < 0)
         return(NULL);

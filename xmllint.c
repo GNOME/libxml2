@@ -305,7 +305,11 @@ xmllintResourceLoader(void *ctxt, const char *URL,
 	xmlChar *newURL;
 
 	newURL = xmlStrdup((const xmlChar *) lint->paths[i]);
+	if (newURL == NULL)
+	    return(XML_ERR_NO_MEMORY);
 	newURL = xmlStrcat(newURL, (const xmlChar *) "/");
+	if (newURL == NULL)
+	    return(XML_ERR_NO_MEMORY);
 	newURL = xmlStrcat(newURL, (const xmlChar *) lastsegment);
 	if (newURL != NULL) {
             if (lint->defaultResourceLoader != NULL)

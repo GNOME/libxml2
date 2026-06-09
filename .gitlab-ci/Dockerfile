@@ -11,7 +11,7 @@
 # xsltproc          documentation
 # docbook-xsl       documentation
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -48,8 +48,10 @@ RUN apt-get install -y --no-install-recommends \
         bison re2c libsqlite3-dev
 
 # lxml
+# ubuntu cython3 is too old, so we install using pip
 RUN apt-get install -y --no-install-recommends \
-        cython3
+        python3-pip
+RUN pip3 install Cython --break-system-packages
 
 # xmlstarlet
 RUN apt-get install -y --no-install-recommends \

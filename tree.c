@@ -5122,41 +5122,6 @@ xmlNodeBufGetContent(xmlBuffer *buffer, const xmlNode *cur)
     return(0);
 }
 
-/**
- * TODO: move this to parserInternals?
- * TODO: This function should also remove leading and trailing
- *       whitespaces, and also group whitespaces together, but right
- *       now the parse doesn't do that with XML_PARSE_NOENT, so this
- *       replacement is consistent with the parser normalization
- *
- * Normalize attritube entity values
- * Replaces any space character with 0x20
- * https://www.w3.org/TR/REC-xml/#AVNormalize
- */
-static xmlChar *
-xmlAttrNormalize(xmlChar *src)
-{
-    xmlChar *out = NULL;
-    xmlChar *dst = NULL;
-
-    if (src == NULL)
-        return(NULL);
-
-    out = src;
-    dst = out;
-    while (*src != 0) {
-        if (*src < 0x20) {
-            src++;
-            *dst++ = 0x20;
-        } else {
-            *dst++ = *src++;
-        }
-    }
-    *dst = 0;
-    return(out);
-}
-
-
 static void
 xmlBufGetEntityRefContent(xmlBufPtr buf, const xmlNode *ref, int normalize) {
     xmlEntityPtr ent;

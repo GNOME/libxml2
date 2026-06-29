@@ -17,11 +17,24 @@ examples = [
     'xpath2',
 ]
 
+exes = []
 foreach example : examples
     exe = executable(
         example,
         files(example + '.c'),
         dependencies: xml_dep,
         include_directories: config_dir,
+        build_by_default: false,
     )
+    exes += exe
+    if example == 'io1'
+        io1 = exe
+    endif
 endforeach
+
+# arrange to build examples alongside tests
+test(
+    'examples',
+    io1,
+    depends: exes,
+)

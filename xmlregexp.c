@@ -44,8 +44,10 @@
 #undef ERROR
 #endif
 #define ERROR(str)							\
-    ctxt->error = XML_REGEXP_COMPILE_ERROR;				\
-    xmlRegexpErrCompile(ctxt, str);
+    if (ctxt->error == 0) {						\
+        ctxt->error = XML_REGEXP_COMPILE_ERROR;				\
+        xmlRegexpErrCompile(ctxt, str);					\
+    }
 #define NEXT ctxt->cur++
 #define CUR (*(ctxt->cur))
 #define NXT(index)									\

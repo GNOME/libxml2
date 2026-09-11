@@ -89,6 +89,13 @@ want_python = get_option('python').enabled()
 want_thread_alloc = get_option('thread-alloc').enabled()
 want_tls = get_option('tls').enabled()
 
+# Experimental -fbounds-safety (OFF by default). Inert macros otherwise.
+want_bounds_safety = get_option('bounds-safety').enabled()
+if want_bounds_safety
+  add_project_arguments('-DLIBXML_BOUNDS_SAFETY', language: 'c')
+  add_project_arguments('-fbounds-safety', language: 'c')
+endif
+
 # default depends on minimum option
 
 want_minimum = get_option('minimum')

@@ -174,3 +174,9 @@ option('minimum',
   value: false,
   description: 'build a minimally sized library'
 )
+
+option('bounds-safety',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Clang -fbounds-safety annotations (experimental, OFF by default)'
+)

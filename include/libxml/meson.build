@@ -50,6 +50,7 @@ configure_file(
 
 libxml_headers = files(
     'HTMLparser.h',
+    'boundsafety.h',
     'HTMLtree.h',
     'SAX.h',
     'SAX2.h',

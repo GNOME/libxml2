@@ -22,6 +22,7 @@
 #include <libxml/tree.h>
 
 #include "private/buf.h"
+#include <libxml/boundsafety.h>
 
 #ifndef SIZE_MAX
 #define SIZE_MAX ((size_t) -1)
@@ -41,7 +42,13 @@
  */
 
 struct _xmlBuf {
-    xmlChar *content;		/* The buffer content UTF8 */
+    /*
+     * Capacity-first bounds pair (first CL only):
+     * content is sized by size (allocation capacity excluding NUL).
+     * Macros are inert unless LIBXML_BOUNDS_SAFETY is enabled.
+     * Follow-ups: mem windowing after shrink; parser input cur/end.
+     */
+    xmlChar * XML_SIZED_BY_OR_NULL(size) content; /* buffer content UTF8 */
     xmlChar *mem;		/* Start of the allocation */
     size_t use;		        /* The buffer size used */
     size_t size;		/* The buffer size, excluding terminating 0 */

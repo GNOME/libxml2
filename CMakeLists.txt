@@ -46,6 +46,7 @@ option(LIBXML2_WITH_SAX1 "Add the older SAX1 interface" ON)
 option(LIBXML2_WITH_TESTS "Build tests" ON)
 option(LIBXML2_WITH_THREADS "Add multithread support" ON)
 option(LIBXML2_WITH_TLS "Enable thread-local storage" OFF)
+option(LIBXML2_WITH_BOUNDS_SAFETY "Clang -fbounds-safety annotations (experimental, OFF by default)" OFF)
 option(LIBXML2_WITH_VALID "Add the DTD validation support" ON)
 if(WIN32 OR CYGWIN)
     option(LIBXML2_WITH_WINPATH "Handle Windows-styled path" ON)
@@ -148,6 +149,11 @@ if(LIBXML2_WITH_READLINE)
     endif()
 endif()
 
+if(LIBXML2_WITH_BOUNDS_SAFETY)
+    add_compile_definitions(LIBXML_BOUNDS_SAFETY)
+    add_compile_options($<$<COMPILE_LANGUAGE:C>:-fbounds-safety>)
+endif()
+
 if(LIBXML2_WITH_TLS)
     check_c_source_compiles(
         "_Thread_local int v; int main(){return 0;}"
@@ -200,6 +206,7 @@ set(
 
 set(
     LIBXML2_HDRS
+    include/libxml/boundsafety.h
     include/libxml/c14n.h
     include/libxml/catalog.h
     include/libxml/chvalid.h

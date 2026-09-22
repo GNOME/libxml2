@@ -225,6 +225,7 @@ EXTRA_DIST = Copyright libxml2-config.cmake.in autogen.sh \
 	     timsort.h \
 	     README.zOS README.md \
 	     CMakeLists.txt config.h.cmake.in libxml2-config.cmake.cmake.in \
+	     run_and_diff.cmake test_xmlcatalog_add_del.cmake \
 	     meson.build meson_options.txt xml2-config-meson
 
 pkgconfigdir = $(libdir)/pkgconfig

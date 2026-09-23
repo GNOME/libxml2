@@ -1,0 +1,2 @@
+Regexp: [\P{L}-\D]
+   failed to compile

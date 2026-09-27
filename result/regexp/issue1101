@@ -1,0 +1,9 @@
+Regexp: \P{L}
+A: Fail
+0: Ok
+Regexp: [\P{L}]
+A: Fail
+0: Ok
+Regexp: [^\P{L}]
+A: Ok
+0: Fail

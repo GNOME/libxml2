@@ -4830,13 +4830,16 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 	}
 	NEXT;
     } else if (cur == 'P') {
+	int neg = ctxt->neg;
 	NEXT;
 	if (CUR != '{') {
 	    ERROR("Expecting '{'");
 	    return;
 	}
 	NEXT;
+        ctxt->neg = !ctxt->neg;
 	xmlFAParseCharProp(ctxt);
+        ctxt->neg = neg;
         if (ctxt->atom != NULL)
 	    ctxt->atom->neg = 1;
 	if (CUR != '}') {

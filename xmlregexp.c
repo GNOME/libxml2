@@ -4836,9 +4836,27 @@ xmlFAParseCharClassEsc(xmlRegParserCtxtPtr ctxt) {
 	    return;
 	}
 	NEXT;
-	xmlFAParseCharProp(ctxt);
-        if (ctxt->atom != NULL)
-	    ctxt->atom->neg = 1;
+	if ((ctxt->atom != NULL) &&
+	    (ctxt->atom->type == XML_REGEXP_RANGES)) {
+	    /*
+	     * Inside a character class, the per-atom negation flag is
+	     * ignored by xmlRegCheckCharacter(), so negate the range
+	     * instead, following the same idiom as '^' in
+	     * xmlFAParseCharGroup(). Note that in a subtraction
+	     * context (neg == 2) this resolves to 0: subtracting a
+	     * complemented class can't be expressed with negated
+	     * ranges, and adding it as a plain range is the closest
+	     * the engine can represent.
+	     */
+	    int neg = ctxt->neg;
+	    ctxt->neg = !ctxt->neg;
+	    xmlFAParseCharProp(ctxt);
+	    ctxt->neg = neg;
+	} else {
+	    xmlFAParseCharProp(ctxt);
+	    if (ctxt->atom != NULL)
+		ctxt->atom->neg = 1;
+	}
 	if (CUR != '}') {
 	    ERROR("Expecting '}'");
 	    return;

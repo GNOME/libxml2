@@ -792,7 +792,7 @@ xmlParse3986HierPart(xmlURIPtr uri, const char **str)
         /*
          * An empty server is marked with a special URI value.
          */
-	if ((uri->server == NULL) && (uri->port == PORT_EMPTY))
+	if ((uri != NULL) && (uri->server == NULL) && (uri->port == PORT_EMPTY))
 	    uri->port = PORT_EMPTY_SERVER;
 	ret = xmlParse3986PathAbEmpty(uri, &cur);
 	if (ret != 0) return(ret);
@@ -1367,6 +1367,9 @@ void
 xmlPrintURI(FILE *stream, xmlURI *uri) {
     xmlChar *out;
 
+    if (stream == NULL)
+        return;
+
     out = xmlSaveUri(uri);
     if (out != NULL) {
 	fprintf(stream, "%s", (char *) out);
@@ -1583,8 +1586,12 @@ xmlURIUnescapeString(const char *str, int len, char *target) {
 
     if (str == NULL)
 	return(NULL);
-    if (len <= 0) len = strlen(str);
-    if (len < 0) return(NULL);
+    if (len <= 0) {
+        size_t slen = strlen(str);
+        if (slen > INT_MAX)
+            return(NULL);
+        len = (int) slen;
+    }
 
     if (target == NULL) {
 	ret = xmlMalloc(len + 1);
@@ -2242,11 +2249,14 @@ xmlBuildURISafe(const xmlChar *URI, const xmlChar *base, xmlChar **valPtr) {
      *
      * Allocate a buffer large enough for the result string.
      */
-    len = 2; /* extra / and 0 */
-    if (ref->path != NULL)
-	len += strlen(ref->path);
-    if (bas->path != NULL)
-	len += strlen(bas->path);
+    {
+        size_t rlen = (ref->path != NULL) ? strlen(ref->path) : 0;
+        size_t blen = (bas->path != NULL) ? strlen(bas->path) : 0;
+
+        if (rlen > (size_t) INT_MAX - 2 - blen)
+            goto done;
+        len = 2 + (int) rlen + (int) blen;
+    }
     res->path = xmlMalloc(len);
     if (res->path == NULL)
 	goto done;
@@ -2346,8 +2356,13 @@ xmlParseUriOrPath(const char *str, xmlURIPtr *out, int *drive) {
     char *buf = NULL;
     int ret;
 
+    if (out == NULL)
+        return(1);
     *out = NULL;
-    *drive = 0;
+    if (drive != NULL)
+        *drive = 0;
+    if (str == NULL)
+        return(1);
 
     uri = xmlCreateURI();
     if (uri == NULL) {
@@ -2693,10 +2708,11 @@ done:
     /*
      * Free the working variables
      */
-    if (remove_path != 0)
-        ref->path = NULL;
-    if (ref != NULL)
+    if (ref != NULL) {
+        if (remove_path != 0)
+            ref->path = NULL;
 	xmlFreeURI (ref);
+    }
     if (bas != NULL)
 	xmlFreeURI (bas);
     if (ret != 0) {

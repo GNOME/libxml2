@@ -182,6 +182,7 @@ cmake:linux:clang:static:
     - win32-ps
   variables:
     CHERE_INVOKING: "yes"
+    CC: gcc
   before_script:
     - $Env:Path="C:\msys64\usr\bin;$Env:Path"
     - bash -lc 'sh .gitlab-ci/setup_mingw.sh cmake ninja'

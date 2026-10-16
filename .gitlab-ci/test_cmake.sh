@@ -10,7 +10,6 @@ cmake "$@" \
     -DLIBXML2_WITH_HTTP=ON \
     -DLIBXML2_WITH_SCHEMATRON=ON \
     -DLIBXML2_WITH_ZLIB=ON \
-    -DLIBXML2_WITH_PYTHON=ON \
     $CONFIG \
     -S . -B libxml2-build
 cmake --build libxml2-build --target install

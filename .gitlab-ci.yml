@@ -96,7 +96,9 @@ clang:msan:
   variables:
     BASE_CONFIG: "--with-http --with-schematron --with-zlib --with-python"
     # Python is disabled for now, see #658
-    CONFIG: "--with-docs --without-python"
+    # doxygen is broken on MINGW64 https://github.com/msys2/MINGW-packages/issues/32325
+    # CONFIG: "--with-docs --without-python"
+    CONFIG: "--without-python"
     CHERE_INVOKING: "yes"
   before_script:
     - $Env:Path="C:\msys64\usr\bin;$Env:Path"
@@ -141,12 +143,16 @@ mingw:w64-i686:shared:
     paths:
       - libxml2-$CI_COMMIT_SHORT_SHA-$SUFFIX.tar.gz
     expire_in: 1 day
+  variables:
+    BUILD_SHARED_LIBS: "ON"
+    CONFIG: "-DLIBXML2_WITH_PYTHON=ON"
 
 cmake:linux:gcc:shared:
   extends: .cmake:linux
   variables:
     BUILD_SHARED_LIBS: "ON"
-    CONFIG: "-DLIBXML2_WITH_DOCS=ON"
+    # doxygen is broken on MINGW64 https://github.com/msys2/MINGW-packages/issues/32325
+    CONFIG: "-DLIBXML2_WITH_DOCS=OFF"
     CC: gcc
     SUFFIX: linux-gcc-shared
 
@@ -183,6 +189,9 @@ cmake:linux:clang:static:
   variables:
     CHERE_INVOKING: "yes"
     CC: gcc
+    # doxygen is broken on MINGW64 https://github.com/msys2/MINGW-packages/issues/32325
+    CONFIG: "-DLIBXML2_WITH_PYTHON=OFF"
+    CONFIG: "-DLIBXML2_WITH_DOCS=OFF"
   before_script:
     - $Env:Path="C:\msys64\usr\bin;$Env:Path"
     - bash -lc 'sh .gitlab-ci/setup_mingw.sh cmake ninja'
@@ -203,7 +212,8 @@ cmake:mingw:w64-i686:shared:
     - schedules
   variables:
     BUILD_SHARED_LIBS: "ON"
-    CONFIG: "-DLIBXML2_WITH_DOCS=ON"
+    # doxygen is broken on MINGW64 https://github.com/msys2/MINGW-packages/issues/32325
+    CONFIG: "-DLIBXML2_WITH_DOCS=OFF"
     MSYSTEM: MINGW32
     SUFFIX: mingw-w64-i686-shared
 

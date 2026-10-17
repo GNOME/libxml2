@@ -215,7 +215,7 @@ xmlResetCatalogResolveCache(void)
 /*
  * xmlCatalogResolveCacheVisited
  * Check if the url/pubID/sysID combination is present in the
- * xmlCatalogResolveCache, and if not insert it.
+ * xmlCatalogResolveCache
  *
  * @param url  The catalog url
  * @param pubID  The pubID resolve filed
@@ -228,23 +228,38 @@ xmlCatalogResolveCacheVisited(const xmlChar *url,
                               const xmlChar *sysID)
 {
     int ret = 0;
-    xmlRMutexLock(&xmlCatalogMutex);
+
     if (xmlCatalogResolveCache == NULL) {
-        xmlCatalogResolveCache = xmlHashCreate(10);
-        xmlHashAddEntry3(xmlCatalogResolveCache, url, pubID, sysID, BAD_CAST url);
-        xmlRMutexUnlock(&xmlCatalogMutex);
         return 0;
     }
 
-    if (xmlHashLookup3(xmlCatalogResolveCache, url, pubID, sysID)) {
+    xmlRMutexLock(&xmlCatalogMutex);
+    if (xmlHashLookup3(xmlCatalogResolveCache, url, pubID, sysID))
         ret = 1;
-    } else {
-        xmlHashAddEntry3(xmlCatalogResolveCache, url, pubID, sysID, BAD_CAST url);
-        ret = 0;
-    }
-
     xmlRMutexUnlock(&xmlCatalogMutex);
     return ret;
+}
+
+/*
+ * xmlCatalogResolveCacheAdd
+ * Insert the url/pubID/sysId in xmlCatalogResolveCache
+ *
+ * @param url  The catalog url
+ * @param pubID  The pubID resolve filed
+ * @param sysID  The sysID resolve filed
+ */
+static void
+xmlCatalogResolveCacheAdd(const xmlChar *url,
+                                 const xmlChar *pubID,
+                                 const xmlChar *sysID)
+{
+    xmlRMutexLock(&xmlCatalogMutex);
+    if (xmlCatalogResolveCache == NULL) {
+        xmlCatalogResolveCache = xmlHashCreate(10);
+    }
+
+    xmlHashAddEntry3(xmlCatalogResolveCache, url, pubID, sysID, BAD_CAST url);
+    xmlRMutexUnlock(&xmlCatalogMutex);
 }
 
 /************************************************************************
@@ -2125,6 +2140,7 @@ xmlCatalogListXMLResolve(xmlCatalogEntryPtr catal, const xmlChar *pubID,
 		    break;
 	        }
 	    }
+            xmlCatalogResolveCacheAdd(catal->URL, pubID, sysID);
 	}
 	catal = catal->next;
     }
@@ -2197,6 +2213,7 @@ xmlCatalogListXMLResolveURI(xmlCatalogEntryPtr catal, const xmlChar *URI) {
 		    return(ret);
 		}
 	    }
+            xmlCatalogResolveCacheAdd(cur->URL, URI, NULL);
 	}
 	cur = cur->next;
     }

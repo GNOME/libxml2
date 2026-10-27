@@ -981,6 +981,54 @@ testUTF16(void) {
     return(ret);
 }
 
+static int
+testGetUTF8Char(void) {
+    static const struct {
+        const char *utf;
+        int value;
+    } valid[] = {
+        { "\xF0\x90\x80\x80", 0x10000 },
+        { "\xF4\x8F\xBF\xBF", 0x10FFFF }
+    };
+    unsigned char utf[5];
+    int i, j, len, c;
+    int ret = 0;
+
+    for (i = 0; i < (int) (sizeof(valid) / sizeof(valid[0])); i++) {
+        len = 4;
+        c = xmlGetUTF8Char((const unsigned char *) valid[i].utf, &len);
+        if ((c != valid[i].value) || (len != 4)) {
+            fprintf(stderr, "xmlGetUTF8Char: expected 0x%X, got 0x%X\n",
+                    valid[i].value, c);
+            ret = 1;
+        }
+    }
+
+    /*
+     * Lead bytes from 0xF8 would start sequences of five bytes or
+     * more, which UTF-8 doesn't allow.
+     */
+    utf[2] = 0x80;
+    utf[3] = 0x80;
+    utf[4] = 0;
+    for (i = 0xF8; i <= 0xFF; i++) {
+        for (j = 0x80; j <= 0xBF; j++) {
+            utf[0] = i;
+            utf[1] = j;
+            len = 4;
+            c = xmlGetUTF8Char(utf, &len);
+            if ((c >= 0) || (len != 0)) {
+                fprintf(stderr,
+                        "xmlGetUTF8Char: accepted 0x%02X 0x%02X 0x80 0x80 "
+                        "as 0x%X\n", i, j, c);
+                ret = 1;
+            }
+        }
+    }
+
+    return(ret);
+}
+
 int main(void) {
     int ret = 0;
 
@@ -1001,6 +1049,7 @@ int main(void) {
      * Run the tests
      */
     ret += testCharRanges();
+    ret += testGetUTF8Char();
     ret += testDocumentRanges();
     ret += testUserEncoding();
 #if defined(LIBXML_PUSH_ENABLED) && defined(LIBXML_OUTPUT_ENABLED)

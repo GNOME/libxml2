@@ -847,6 +847,18 @@ xmlGetUTF8Char(const unsigned char *utf, int *len) {
             } else {
                 if ((*len < 4) || ((utf[3] & 0xc0) != 0x80))
                     goto error;
+                /*
+                 * The lead byte of a 4-byte sequence is 11110xxx and its
+                 * payload is the last 3 bits. Lead bytes from 0xF8 aren't
+                 * valid in UTF-8 (RFC 3629) because they would start a
+                 * sequence of five or more bytes, but masking with 0x7
+                 * reads them as 0xF0 to 0xF7, so F8 90 80 80 would decode
+                 * as U+10000. Reject them before decoding. Lead bytes 0xF5
+                 * to 0xF7 give values from 0x140000, which the range check
+                 * below rejects.
+                 */
+                if (c >= 0xf8)
+                    goto error;
                 *len = 4;
                 /* 4-byte code */
                 c = (c & 0x7) << 18;

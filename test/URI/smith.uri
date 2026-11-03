@@ -17,3 +17,10 @@ foo/bar/..
 /../
 /../foo
 /../../foo
+/a/../..
+/foo/../..
+/foo/../../bar
+a/../../b
+one/../../../docs/one/two/three/four
+/one/../../../docs/one/two/three/four
+/foo//bar

@@ -17,3 +17,10 @@ foo
 /
 /foo
 /foo
+/
+/
+/bar
+../b
+../../docs/one/two/three/four
+/docs/one/two/three/four
+/foo/bar

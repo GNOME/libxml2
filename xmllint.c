@@ -1838,9 +1838,11 @@ parseFile(xmllintState *lint, const char *filename) {
 	    lint->progresult = XMLLINT_ERR_RDFILE;
     } else {
         xmlParserStatus status = xmlCtxtGetStatus(lint->ctxt);
-        if ((lint->parseOptions & XML_PARSE_DTDVALID) &&
-            (status & XML_STATUS_DTD_VALIDATION_FAILED))
+
+#ifdef LIBXML_VALID_ENABLED
+        if ((lint->parseOptions & XML_PARSE_DTDVALID) && (lint->ctxt->valid == 0))
             lint->progresult = XMLLINT_ERR_VALID;
+#endif /* LIBXML_VALID_ENABLED */
 
         if ((lint->appOptions & XML_LINT_STRICT_NAMESPACE) &&
             (status & XML_STATUS_NOT_NS_WELL_FORMED)) {

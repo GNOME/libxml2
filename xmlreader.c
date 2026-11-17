@@ -2444,6 +2444,10 @@ xmlTextReaderGetRemainder(xmlTextReader *reader) {
     reader->node = NULL;
     reader->curnode = NULL;
     reader->mode = XML_TEXTREADER_MODE_EOF;
+    if (reader->faketext != NULL) {
+        xmlFreeNode(reader->faketext);
+        reader->faketext = NULL;
+    }
     if (reader->ctxt != NULL) {
 	xmlStopParser(reader->ctxt);
 	if (reader->ctxt->myDoc != NULL) {
@@ -4802,6 +4806,10 @@ xmlTextReaderSetup(xmlTextReader *reader,
 	    xmlParserInputPtr inputStream;
 	    xmlParserInputBufferPtr buf;
 
+	    if (reader->faketext != NULL) {
+	        xmlFreeNode(reader->faketext);
+	        reader->faketext = NULL;
+	    }
 	    xmlCtxtReset(reader->ctxt);
 	    buf = xmlAllocParserInputBuffer(XML_CHAR_ENCODING_NONE);
 	    if (buf == NULL) return(-1);
@@ -5177,6 +5185,10 @@ xmlReaderNewWalker(xmlTextReader *reader, xmlDoc *doc)
 
     if (reader->input != NULL) {
         xmlFreeParserInputBuffer(reader->input);
+    }
+    if (reader->faketext != NULL) {
+        xmlFreeNode(reader->faketext);
+        reader->faketext = NULL;
     }
     if (reader->ctxt != NULL) {
 	xmlCtxtReset(reader->ctxt);
